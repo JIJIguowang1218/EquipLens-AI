@@ -169,6 +169,7 @@ UNIQUE(brand, model_name, generation)。
 
 | 值 | 中文 | 说明 |
 |---|---|---|
+| untagged | 未打标 | **v0.1.1 占位**：M1 导入后、M4 打标前的过渡状态；不参与完备度统计与视角筛选 |
 | hero_lf / hero_rf | 左前/右前 3/4 主视角 | 主视角图；特征线页（FR-3）必须 hero_lf/hero_rf |
 | front / rear | 正前 / 正后 | |
 | side_l / side_r | 左侧 / 右侧 | |
@@ -179,7 +180,7 @@ UNIQUE(brand, model_name, generation)。
 | nameplate | 铭牌/Logo 特写 | 闭集对号最强证据 |
 
 ### 4.2 asset_nature 素材性质
-`render` 官方渲染（比例可能失真，不可当实拍用） / `official_photo` 官方宣传照 / `real_photo` 实拍 / `report_screenshot` 旧报告截图
+`untagged` 未打标（v0.1.1 占位，语义同 §4.1） / `render` 官方渲染（比例可能失真，不可当实拍用） / `official_photo` 官方宣传照 / `real_photo` 实拍 / `report_screenshot` 旧报告截图
 
 ### 4.3 quality_flags 质量标记
 `blur` 模糊 / `overexposed` 过曝 / `occluded` 遮挡 / `cluttered` 背景杂乱 / `watermarked` 有水印（水印大图排版不可用，确认时人工把关）
@@ -195,11 +196,12 @@ UNIQUE(brand, model_name, generation)。
 ```
 data/
 ├── equiplens.db                     # SQLite
-└── assets/<vehicle_id>/
+└── assets/<vehicle_id | _pool>/
     ├── originals/<asset_id>.<ext>   # 原图，写入后不可覆盖
     └── crops/<asset_id>.<ext>       # 裁图，由访问层从原图派生
 ```
 
+- **v0.1.1**：未对号素材存于 `_pool`（待归号池暂存区）；对号后**不强制迁移文件**，归属以数据库记录为准——目录是整理手段，不是事实来源；
 - file_path 存相对 data/ 的 POSIX 风格路径，跨目录迁移不碎；
 - 原图不可变由访问层 `save_original()` 强制：目标文件已存在即拒绝；
 - 镜像翻转等修图只发生在排版渲染阶段，永不改原图文件。
@@ -234,3 +236,4 @@ data/
 | 版本 | 修改 |
 |---|---|
 | v0.1 | 初版：按 2026-10-10 讨论定稿六表+vocab、三不变量、派生规则；补记 ortho_sheet 枚举值（宣传册三视图图版经裁图拆分） |
+| v0.1.1 | M1 开发修订：view_angle / asset_nature 增加 `untagged` 占位值（导入后未打标的过渡态，不参与完备度统计）；目录约定增加 `_pool` 暂存区，对号后不强制迁移文件 |

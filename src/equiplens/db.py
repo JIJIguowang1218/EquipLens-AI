@@ -25,6 +25,11 @@ def connect(db_path) -> sqlite3.Connection:
 
 
 def init_db(conn: sqlite3.Connection) -> None:
+    """幂等建库: 已有表结构则跳过（支持同一数据目录多次运行）。"""
+    exists = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'vocab'").fetchone()
+    if exists:
+        return
     conn.executescript(DDL_PATH.read_text(encoding="utf-8"))
     conn.commit()
 
@@ -138,17 +143,17 @@ def save_original(data_dir: Path, vehicle_id: str, asset_id: str, ext: str, data
         raise FileExistsError(f"原图不可覆盖: {rel}")
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_bytes(data)
-    return Path(rel)
+    return str(rel)
 
 
-def save_crop(data_dir: Path, vehicle_id: str, asset_id: str, ext: str, data: bytes) -> Path:
+def save_crop(data_dir: Path, vehicle_id: str, asset_id: str, ext: str, data: bytes) -> str:
     rel = f"assets/{vehicle_id}/crops/{asset_id}.{ext}"
     dest = Path(data_dir) / rel
     if dest.exists():
         raise FileExistsError(f"文件已存在: {rel}")
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_bytes(data)
-    return Path(rel)
+    return str(rel)
 
 
 # ---------------------------------------------------------------- 派生查询（只查不存）
