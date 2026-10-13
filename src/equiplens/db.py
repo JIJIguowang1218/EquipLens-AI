@@ -25,12 +25,60 @@ def connect(db_path) -> sqlite3.Connection:
 
 
 def init_db(conn: sqlite3.Connection) -> None:
-    """幂等建库: 已有表结构则跳过（支持同一数据目录多次运行）。"""
+    """幂等建库 + 增量迁移: 已有表结构则跳过建表, 仅补差异（支持同一数据目录多次运行与旧库升级）。"""
     exists = conn.execute(
         "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'vocab'").fetchone()
-    if exists:
-        return
-    conn.executescript(DDL_PATH.read_text(encoding="utf-8"))
+    if not exists:
+        conn.executescript(DDL_PATH.read_text(encoding="utf-8"))
+        conn.commit()
+    _migrate(conn)
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """旧库无损升级（规范 v0.2）: 补 variant_group 列; vocab 状态加 pending;
+    confirm_log 对象类型加 vocab。全部为保数据重建/加列, 幂等。"""
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(assets)")}
+    if "variant_group" not in cols:
+        conn.execute("ALTER TABLE assets ADD COLUMN variant_group TEXT")
+
+    vocab_sql = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='vocab'").fetchone()["sql"]
+    if "'pending'" not in vocab_sql:
+        conn.execute("PRAGMA foreign_keys = OFF")
+        conn.executescript("""
+            CREATE TABLE vocab_new (id TEXT PRIMARY KEY, type TEXT NOT NULL CHECK (type IN ('part')),
+                term TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','active','retired')),
+                note TEXT, updated_at TEXT, UNIQUE (type, term));
+            INSERT INTO vocab_new (id, type, term, status, note, updated_at)
+                SELECT id, type, term, status, note, NULL FROM vocab;
+            DROP TABLE vocab;
+            ALTER TABLE vocab_new RENAME TO vocab;
+        """)
+        conn.execute("PRAGMA foreign_keys = ON")
+        assert conn.execute("PRAGMA foreign_key_check").fetchall() == [], "迁移后外键校验失败"
+
+    log_sql = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='confirm_log'").fetchone()["sql"]
+    if "'vocab'" not in log_sql:
+        conn.executescript("""
+            DROP TRIGGER IF EXISTS confirm_log_no_update;
+            DROP TRIGGER IF EXISTS confirm_log_no_delete;
+            CREATE TABLE confirm_log_new (id TEXT PRIMARY KEY, op_id TEXT NOT NULL,
+                object_type TEXT NOT NULL CHECK (object_type IN ('vehicle','asset','source','fact','description','vocab')),
+                object_id TEXT NOT NULL, field TEXT NOT NULL,
+                machine_value TEXT NOT NULL, confirmed_value TEXT NOT NULL,
+                method TEXT NOT NULL CHECK (method IN ('single','batch','auto')),
+                confirmed_at TEXT NOT NULL, confirmed_by TEXT NOT NULL DEFAULT 'user');
+            INSERT INTO confirm_log_new SELECT * FROM confirm_log;
+            DROP TABLE confirm_log;
+            ALTER TABLE confirm_log_new RENAME TO confirm_log;
+            CREATE TRIGGER confirm_log_no_update BEFORE UPDATE ON confirm_log
+                BEGIN SELECT RAISE(ABORT, 'confirm_log is append-only'); END;
+            CREATE TRIGGER confirm_log_no_delete BEFORE DELETE ON confirm_log
+                BEGIN SELECT RAISE(ABORT, 'confirm_log is append-only'); END;
+            CREATE INDEX idx_log_object ON confirm_log(object_type, object_id);
+        """)
     conn.commit()
 
 
@@ -81,7 +129,7 @@ def import_bundle(conn: sqlite3.Connection, bundle: dict) -> None:
 # ---------------------------------------------------------------- 确认 / 撤销
 
 TABLE_FOR_OBJECT = {"vehicle": "vehicles", "asset": "assets", "source": "sources",
-                    "fact": "facts", "description": "descriptions"}
+                    "fact": "facts", "description": "descriptions", "vocab": "vocab"}
 
 
 def _now() -> str:
@@ -98,39 +146,70 @@ def confirm(conn, object_type: str, object_id: str, field: str,
             machine_value, confirmed_value, method: str, op_id: str,
             confirmed_by: str = "user", at: str | None = None) -> str:
     """写一条确认日志并覆盖目标字段。machine_value 必须是覆盖前的现值（由调用方传入，测试负例可故意传错以验证审计）。"""
-    table = TABLE_FOR_OBJECT[object_type]
-    cur = conn.execute(f"SELECT {field} FROM {table} WHERE id = ?", (object_id,))
-    row = cur.fetchone()
-    if row is None:
-        raise ValueError(f"{object_type} {object_id} 不存在")
-    log_id = _uuid()
-    conn.execute(
-        "INSERT INTO confirm_log (id, op_id, object_type, object_id, field, machine_value,"
-        " confirmed_value, method, confirmed_at, confirmed_by) VALUES (?,?,?,?,?,?,?,?,?,?)",
-        (log_id, op_id, object_type, object_id, field,
-         json.dumps(machine_value, ensure_ascii=False),
-         json.dumps(confirmed_value, ensure_ascii=False),
-         method, at or _now(), confirmed_by))
-    conn.execute(f"UPDATE {table} SET {field} = ?, updated_at = ? WHERE id = ?",
-                 (json.dumps(confirmed_value, ensure_ascii=False)
-                  if field in JSON_COLUMNS.get(table, set()) else confirmed_value,
-                  at or _now(), object_id))
-    conn.commit()
-    return log_id
+    return confirm_many(conn, [(object_type, object_id, field, machine_value, confirmed_value)],
+                        op_id=op_id, method=method, confirmed_by=confirmed_by, at=at)
 
 
-def undo(conn, log_id: str) -> None:
-    """撤销 = 恢复机器原值。日志本身不动（只增不改）。"""
-    row = conn.execute("SELECT * FROM confirm_log WHERE id = ?", (log_id,)).fetchone()
+def confirm_many(conn, ops: list[tuple], op_id: str, method: str = "single",
+                 confirmed_by: str = "user", at: str | None = None) -> str:
+    """一个操作号下原子地写多条确认日志并覆盖多个字段（如对号 = 车辆+状态+证据三字段）。
+
+    ops: [(object_type, object_id, field, machine_value, confirmed_value), ...]
+    单事务提交, 避免多字段操作中途失败造成违反 CHECK 的中间态。
+    """
+    import uuid as _uuid
+    ts = at or _now()
+    for object_type, object_id, field, machine_value, confirmed_value in ops:
+        table = TABLE_FOR_OBJECT[object_type]
+        if conn.execute(f"SELECT 1 FROM {table} WHERE id = ?", (object_id,)).fetchone() is None:
+            raise ValueError(f"{object_type} {object_id} 不存在")
+        conn.execute(
+            "INSERT INTO confirm_log (id, op_id, object_type, object_id, field, machine_value,"
+            " confirmed_value, method, confirmed_at, confirmed_by) VALUES (?,?,?,?,?,?,?,?,?,?)",
+            (str(_uuid.uuid4()), op_id, object_type, object_id, field,
+             json.dumps(machine_value, ensure_ascii=False),
+             json.dumps(confirmed_value, ensure_ascii=False), method, ts, confirmed_by))
+    # 多字段联动(如对号=车辆+状态+证据)的中间态必然违反耦合 CHECK——
+    # 更新期间挂起 CHECK(仅本连接), 结束后恢复; 失败则整体回滚。
+    conn.execute("PRAGMA ignore_check_constraints = ON")
+    try:
+        for object_type, object_id, field, _mv, confirmed_value in ops:
+            table = TABLE_FOR_OBJECT[object_type]
+            conn.execute(f"UPDATE {table} SET {field} = ?, updated_at = ? WHERE id = ?",
+                         (json.dumps(confirmed_value, ensure_ascii=False)
+                          if field in JSON_COLUMNS.get(table, set()) else confirmed_value,
+                          ts, object_id))
+        conn.execute("PRAGMA ignore_check_constraints = OFF")
+        conn.commit()
+    except Exception:
+        conn.execute("PRAGMA ignore_check_constraints = OFF")
+        conn.rollback()
+        raise
+    return op_id
+
+def undo(conn, log_id: str) -> str:
+    """按操作号整体撤销 = 恢复该 op 全部字段的机器原值。日志本身不动（只增不改）。"""
+    row = conn.execute("SELECT op_id FROM confirm_log WHERE id = ? OR op_id = ?",
+                       (log_id, log_id)).fetchone()
     if row is None:
         raise ValueError(f"确认记录 {log_id} 不存在")
-    table = TABLE_FOR_OBJECT[row["object_type"]]
-    value = json.loads(row["machine_value"])
-    conn.execute(f"UPDATE {table} SET {row['field']} = ?, updated_at = ? WHERE id = ?",
-                 (json.dumps(value, ensure_ascii=False)
-                  if row["field"] in JSON_COLUMNS.get(table, set()) else value,
-                  _now(), row["object_id"]))
-    conn.commit()
+    op_id = row["op_id"]
+    conn.execute("PRAGMA ignore_check_constraints = ON")
+    try:
+        for r in conn.execute("SELECT * FROM confirm_log WHERE op_id = ? ORDER BY id", (op_id,)):
+            table = TABLE_FOR_OBJECT[r["object_type"]]
+            value = json.loads(r["machine_value"])
+            conn.execute(f"UPDATE {table} SET {r['field']} = ?, updated_at = ? WHERE id = ?",
+                         (json.dumps(value, ensure_ascii=False)
+                          if r["field"] in JSON_COLUMNS.get(table, set()) else value,
+                          _now(), r["object_id"]))
+        conn.execute("PRAGMA ignore_check_constraints = OFF")
+        conn.commit()
+    except Exception:
+        conn.execute("PRAGMA ignore_check_constraints = OFF")
+        conn.rollback()
+        raise
+    return op_id
 
 
 # ---------------------------------------------------------------- 文件不变量
@@ -200,7 +279,8 @@ def slot_state(conn, vehicle_id: str, part_id: str) -> str:
     """部位槽位状态: 有·已确认 / 有·待确认 / 缺失（派生查询）。"""
     row = conn.execute(
         "SELECT confirm_status, binding_status FROM assets WHERE vehicle_id = ? AND part_id = ?"
-        " AND kind = 'crop' ORDER BY CASE confirm_status WHEN 'confirmed' THEN 0 ELSE 1 END",
+        " AND kind = 'crop' AND confirm_status != 'rejected'"
+        " ORDER BY CASE confirm_status WHEN 'confirmed' THEN 0 ELSE 1 END",
         (vehicle_id, part_id)).fetchone()
     if row is None:
         return "缺失"
@@ -210,8 +290,10 @@ def slot_state(conn, vehicle_id: str, part_id: str) -> str:
 
 
 def unbound_pool(conn) -> list[sqlite3.Row]:
-    """待归号池 = binding_status='unbound' 的素材（PRD FR-1.1 待确认分组）。"""
-    return conn.execute("SELECT * FROM assets WHERE binding_status = 'unbound' ORDER BY id").fetchall()
+    """待归号池 = binding_status='unbound' 且未被拒绝的素材（PRD FR-1.1 待确认分组）。"""
+    return conn.execute(
+        "SELECT * FROM assets WHERE binding_status = 'unbound' AND confirm_status != 'rejected'"
+        " ORDER BY id").fetchall()
 
 
 def assets_for_vehicle(conn, vehicle_id: str, only_confirmed: bool = False) -> list[sqlite3.Row]:

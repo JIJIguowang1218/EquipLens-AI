@@ -6,8 +6,9 @@ CREATE TABLE vocab (
   id     TEXT PRIMARY KEY,
   type   TEXT NOT NULL CHECK (type IN ('part')),
   term   TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active','retired')),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','active','retired')),
   note   TEXT,
+  updated_at TEXT,
   UNIQUE (type, term)
 );
 
@@ -42,6 +43,7 @@ CREATE TABLE assets (
   hash_sha256      TEXT NOT NULL CHECK (length(hash_sha256) = 64),
   phash            TEXT CHECK (phash IS NULL OR length(phash) = 16),
   confirm_status   TEXT NOT NULL CHECK (confirm_status IN ('machine_tagged','confirmed','rejected')),
+  variant_group    TEXT,                        -- 变体分组: 同一真实图像的变体共享一个 UUID (D10)
   notes            TEXT,
   created_at       TEXT NOT NULL,
   updated_at       TEXT NOT NULL,
@@ -95,7 +97,7 @@ CREATE TABLE descriptions (
 CREATE TABLE confirm_log (
   id              TEXT PRIMARY KEY,
   op_id           TEXT NOT NULL,
-  object_type     TEXT NOT NULL CHECK (object_type IN ('vehicle','asset','source','fact','description')),
+  object_type     TEXT NOT NULL CHECK (object_type IN ('vehicle','asset','source','fact','description','vocab')),
   object_id       TEXT NOT NULL,
   field           TEXT NOT NULL,
   machine_value   TEXT NOT NULL,               -- JSON 文本, 撤销依据

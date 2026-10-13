@@ -23,6 +23,8 @@
 | D7 | 视角单枚举（朝向并入）；新增 `ortho_sheet`（三视图图版）与 `interior`/`scene`（范围外·归档）取值 | 已确认 |
 | D8 | 工作区/正式库**逻辑分离**：同库，机器字段可覆盖，确认记录只增不改，"正式"=按状态过滤的视图 | 已确认 |
 | D9 | 冗余收窄 S1–S5：分析实体并入描述档案；完备度/T档/槽位状态不存储；朝向并入枚举；两库物理分离降级为逻辑分离 | 已确认 |
+| D10 | **变体链接**：人工确认为同图变体的素材建 variant_group 分组（共享 UUID，可撤销、落账），全部保留不合并；检索归组展示，报告引用提示同源 | 暂按推荐执行，**待产品负责人确认** |
+| D11 | **自由标签提名池**：用户随手标签进 vocab `pending` 状态（可用可搜、标记未受控），人工提升转 `active`；退役为 `retired`；词表操作一律落账 | 暂按推荐执行，**待产品负责人确认** |
 
 **设计律（三条不变量，全库强制）：**
 
@@ -89,6 +91,7 @@ UNIQUE(brand, model_name, generation)。
 | hash_sha256 | TEXT | R | 文件哈希，判重与完整性 |
 | phash | TEXT | O | 感知哈希，近似判重/区域匹配（P1.5 启用） |
 | confirm_status | TEXT | R | `machine_tagged` / `confirmed` / `rejected` |
+| variant_group | TEXT | O | **v0.2**：变体分组 UUID（D10），同组互为同图变体 |
 | notes | TEXT | O | |
 | created_at / updated_at | TEXT | R | |
 
@@ -161,7 +164,7 @@ UNIQUE(brand, model_name, generation)。
 | id | 部位 slug（bumper/headlamp/grille/step/fender/mirror/sunvisor/skirt/fluid_window/width_pole/brand_zone/paint/other） |
 | type | 仅 `part`（后续可扩） |
 | term | 中文词（附录 B v0 全量预填） |
-| status | `active` / `retired`（词表可退役不可删） |
+| status | `pending`（**v0.2 提名池**，D11）/ `active` / `retired`（词表可退役不可删）；流转全部落账 |
 
 ## 4. 枚举取值表
 
@@ -237,3 +240,4 @@ data/
 |---|---|
 | v0.1 | 初版：按 2026-10-10 讨论定稿六表+vocab、三不变量、派生规则；补记 ortho_sheet 枚举值（宣传册三视图图版经裁图拆分） |
 | v0.1.1 | M1 开发修订：view_angle / asset_nature 增加 `untagged` 占位值（导入后未打标的过渡态，不参与完备度统计）；目录约定增加 `_pool` 暂存区，对号后不强制迁移文件 |
+| v0.2 | M3 开发修订：assets 增加 `variant_group`（D10 变体链接）；vocab 状态增加 `pending`（D11 提名池）并补 `updated_at` 列；confirm_log 对象类型增加 `vocab`（词表流转落账）；配套旧库无损迁移机制（init_db 自动增量迁移） |

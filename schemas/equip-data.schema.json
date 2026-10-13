@@ -36,6 +36,7 @@
     "BindingEvidence": { "enum": ["none", "self_derived", "region_match", "co_occurrence_labeled", "co_occurrence_only", "human"] },
     "ConfirmStatus": { "enum": ["machine_tagged", "confirmed", "rejected"] },
     "ConfirmMethod": { "enum": ["single", "batch", "auto"] },
+    "VocabStatus": { "enum": ["pending", "active", "retired"] },
     "AxisType": { "enum": ["structure", "design_feature", "intent"] },
     "Scope": { "enum": ["family", "model"] },
     "NodeType": { "enum": ["whole", "part"] },
@@ -92,6 +93,7 @@
         "hash_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
         "phash": { "type": ["string", "null"], "pattern": "^[0-9a-f]{16}$" },
         "confirm_status": { "$ref": "#/$defs/ConfirmStatus" },
+        "variant_group": { "oneOf": [{ "$ref": "#/$defs/Uuid" }, { "type": "null" }] },
         "notes": { "type": ["string", "null"] },
         "created_at": { "$ref": "#/$defs/IsoTime" },
         "updated_at": { "$ref": "#/$defs/IsoTime" }
@@ -195,7 +197,7 @@
       "properties": {
         "id": { "$ref": "#/$defs/Uuid" },
         "op_id": { "type": "string", "minLength": 1 },
-        "object_type": { "enum": ["vehicle", "asset", "source", "fact", "description"] },
+        "object_type": { "enum": ["vehicle", "asset", "source", "fact", "description", "vocab"] },
         "object_id": { "$ref": "#/$defs/Uuid" },
         "field": { "type": "string", "minLength": 1 },
         "machine_value": { "type": ["string", "number", "boolean", "null"] },
@@ -214,8 +216,9 @@
         "id": { "type": "string", "minLength": 1 },
         "type": { "enum": ["part"] },
         "term": { "type": "string", "minLength": 1 },
-        "status": { "enum": ["active", "retired"] },
-        "note": { "type": ["string", "null"] }
+        "status": { "$ref": "#/$defs/VocabStatus" },
+        "note": { "type": ["string", "null"] },
+        "updated_at": { "oneOf": [{ "$ref": "#/$defs/IsoTime" }, { "type": "null" }] }
       }
     }
   }

@@ -152,7 +152,7 @@ def phase_b():
                              "single", "op-test-001", at="2026-10-10T10:00:00+08:00")
         cur = CONN.execute("SELECT body FROM descriptions WHERE id = ?", (fx.D5,)).fetchone()
         assert cur["body"] == user_text, "确认后字段未更新"
-        row = CONN.execute("SELECT machine_value, confirmed_value FROM confirm_log WHERE id = ?",
+        row = CONN.execute("SELECT machine_value, confirmed_value FROM confirm_log WHERE op_id = ?",
                            (log_id,)).fetchone()
         assert json.loads(row["machine_value"]) == machine_text, "机器原值未保留"
         edb.undo(CONN, log_id)
