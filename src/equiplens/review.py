@@ -18,6 +18,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from . import db as _db
 from . import workflow
 
 VIEWS = ["untagged", "hero_lf", "hero_rf", "front", "rear", "side_l", "side_r",
@@ -72,9 +73,10 @@ _CARD = """<fieldset class="card" data-asset="{aid}" data-vehicle="{vehicle_id}"
  <div class="meta">{w}x{h}｜{view_label}｜{nature_label}</div>
  <div class="meta">来源: <a href="{url}" target="_blank">{platform}</a>｜授权: {license}</div>
  <div class="meta">{flags}</div>
+ <div class="meta" style="color:#666">证据: {note}</div>
+ {bind_row}
  <label><input type="radio" name="{aid}" value="accept">接受</label>
  <label><input type="radio" name="{aid}" value="reject">驳回</label>
- <div>对号到当前车型? <label><input type="checkbox" class="dovehicle" checked>是</label></div>
  <div>视角: <select class="view">{view_opts}</select></div>
  <input class="reason" placeholder="驳回理由（可空）">
 </fieldset>"""
@@ -121,13 +123,21 @@ def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> di
             flags = "、".join(json.loads(r["quality_flags"] or "[]")) or "无质量标记"
             view_opts = "".join(
                 f'<option {"selected" if v == r["view_angle"] else ""}>{v}</option>' for v in VIEWS)
+            if r["binding_status"] == "provisional":
+                bind_row = '<div class="meta">机器已挂到本车型（接受 = 确认对号）</div>'
+            elif vid != "_pool":
+                bind_row = '<div class="meta">接受时对号到本车型</div>'
+            else:
+                bind_row = ""
             cards.append(_CARD.format(
-                aid=r["id"], vehicle_id=vfield, label=r["id"][:8],
+                aid=r["id"], vehicle_id=vfield, provisional=1 if r["binding_status"] == "provisional" else 0,
+                label=r["id"][:8],
                 thumb=_thumb(Path(data_dir), r["file_path"]),
                 w=r["width"] or "?", h=r["height"] or "?",
                 view_label=r["view_angle"], nature_label=r["asset_nature"],
                 url=html.escape(src["url"] or "#"), platform=html.escape(src["platform"] or "未知"),
-                license=src["license"], flags=flags, view_opts=view_opts))
+                license=src["license"], flags=flags, view_opts=view_opts,
+                note=html.escape(src["note"] or "（无）"), bind_row=bind_row))
         parts_html.append(
             f'<details class="veh" open><summary>{html.escape(head)}'
             f'（{len(items)} 个素材）</summary><div class="grid">{"".join(cards)}</div></details>')
@@ -172,7 +182,20 @@ def apply_review(conn, decisions_input, data_dir: Path) -> dict:
                 summary["rejected"] += 1
             else:
                 summary["accepted"] += 1
-                if d.get("vehicle_id"):
+                row = conn.execute("SELECT binding_status FROM assets WHERE id = ?",
+                                   (aid,)).fetchone()
+                if row is None:
+                    raise ValueError(f"素材 {aid} 不存在")
+                if row["binding_status"] == "provisional":
+                    # T2 机器挂载 → 人工接受 = 确认对号, 证据升级为 human
+                    old_ev = conn.execute("SELECT binding_evidence FROM assets WHERE id = ?",
+                                          (aid,)).fetchone()["binding_evidence"]
+                    _db.confirm_many(conn, [
+                        ("asset", aid, "binding_status", "provisional", "confirmed"),
+                        ("asset", aid, "binding_evidence", old_ev, "human"),
+                    ], op_id=f"op-accept-{uuid.uuid4().hex[:8]}", method="batch")
+                    summary["bound"] += 1
+                elif row["binding_status"] == "unbound" and d.get("vehicle_id"):
                     workflow.bind_asset(conn, aid, d["vehicle_id"])
                     summary["bound"] += 1
                 if d.get("view") and d["view"] != "untagged":

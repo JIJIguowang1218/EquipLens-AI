@@ -1,18 +1,13 @@
-"""EquipLens 命令行入口。
+"""EquipLens 命令行入口。所有子命令均支持 --data-dir（默认 ./data）。
 
-用法（在仓库根目录, 需 PYTHONPATH=src）:
-  python -m equiplens ingest <图片文件夹> [--data-dir data] [--platform 名称] [--license 档位]
-  python -m equiplens vehicle-add <品牌> <型号> [--category 类别] [--generation 年款]
-  python -m equiplens vehicle-list
-  python -m equiplens pool                          # 待归号池
-  python -m equiplens bind <素材ID> <车型ID>         # 对号
-  python -m equiplens unbind <素材ID>
-  python -m equiplens tag <素材ID> <视角>            # 视角打标(hero_lf/front/...)
-  python -m equiplens crop <源素材ID> <x> <y> <w> <h> <部位ID>
-  python -m equiplens hero <车型ID> <素材ID>
-  python -m equiplens reject <素材ID>
-  python -m equiplens summary <车型ID>
-  python -m equiplens undo <日志ID或操作号>
+常用流程（在仓库根目录, 需 PYTHONPATH=src）:
+  python -m equiplens ingest <图片文件夹> --platform 甲方邮件 --license client_provided
+  python -m equiplens vehicle-add 品牌 型号 && vehicle-list
+  python -m equiplens plan --type full --vehicles ... --out plan.json
+  python -m equiplens retrieve plan.json --channel-root <夹具渠道目录>
+  python -m equiplens review-pack <批次号> --out review.html
+  python -m equiplens apply-review decisions.json
+  python -m equiplens doctor
 """
 
 import argparse
@@ -20,45 +15,44 @@ import json
 import sys
 from pathlib import Path
 
-from . import db, doctor, ingest, query, retrieval, review, workflow
+from . import channels, db, doctor, ingest, query, retrieval, review, workflow
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="equiplens", description="EquipLens-AI 数据工具")
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--data-dir", default="data", help="数据目录（默认 ./data）")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p = sub.add_parser("ingest", help="批量导入图片并判重（M1）")
+    p = sub.add_parser("ingest", parents=[common], help="批量导入图片并判重（M1）")
     p.add_argument("folder")
-    p.add_argument("--data-dir", default="data")
     p.add_argument("--platform", default="本地导入")
     p.add_argument("--license", default="web_third_party",
                    choices=["client_provided", "self_captured", "web_official", "web_third_party"])
     p.add_argument("--report", default=None)
 
-    p = sub.add_parser("vehicle-add", help="新建车型")
+    p = sub.add_parser("vehicle-add", parents=[common], help="新建车型")
     p.add_argument("brand"); p.add_argument("model")
     p.add_argument("--category", default=None); p.add_argument("--generation", default=None)
+    sub.add_parser("vehicle-list", parents=[common], help="车型列表")
+    sub.add_parser("pool", parents=[common], help="待归号池")
 
-    sub.add_parser("vehicle-list", help="车型列表")
-    sub.add_parser("pool", help="待归号池")
-
-    p = sub.add_parser("bind", help="素材对号到车型")
+    p = sub.add_parser("bind", parents=[common], help="素材对号到车型")
     p.add_argument("asset_id"); p.add_argument("vehicle_id")
-    p = sub.add_parser("unbind", help="退回待归号池"); p.add_argument("asset_id")
-    p = sub.add_parser("tag", help="视角打标"); p.add_argument("asset_id"); p.add_argument("view")
-    p = sub.add_parser("crop", help="从原图裁部件特写")
+    p = sub.add_parser("unbind", parents=[common], help="退回待归号池"); p.add_argument("asset_id")
+    p = sub.add_parser("tag", parents=[common], help="视角打标"); p.add_argument("asset_id"); p.add_argument("view")
+    p = sub.add_parser("crop", parents=[common], help="从原图裁部件特写")
     p.add_argument("asset_id"); p.add_argument("x", type=int); p.add_argument("y", type=int)
     p.add_argument("w", type=int); p.add_argument("h", type=int); p.add_argument("part_id")
-    p = sub.add_parser("hero", help="设主图"); p.add_argument("vehicle_id"); p.add_argument("asset_id")
-    p = sub.add_parser("reject", help="拒绝素材"); p.add_argument("asset_id")
-    p = sub.add_parser("summary", help="车型摘要"); p.add_argument("vehicle_id")
-    p = sub.add_parser("undo", help="按日志ID/操作号撤销"); p.add_argument("ref")
-    p.add_argument("--force", action="store_true", help="同字段存在更新操作时强制回退")
+    p = sub.add_parser("hero", parents=[common], help="设主图"); p.add_argument("vehicle_id"); p.add_argument("asset_id")
+    p = sub.add_parser("reject", parents=[common], help="拒绝素材"); p.add_argument("asset_id")
+    p = sub.add_parser("summary", parents=[common], help="车型摘要"); p.add_argument("vehicle_id")
+    p = sub.add_parser("undo", parents=[common], help="按日志ID/操作号撤销")
+    p.add_argument("ref"); p.add_argument("--force", action="store_true")
 
-    p = sub.add_parser("doctor", help="数据完整性巡检")
-    p.add_argument("--data-dir", default="data")
+    sub.add_parser("doctor", parents=[common], help="数据完整性巡检")
 
-    p = sub.add_parser("plan", help="生成检索计划（D12 输入四要素→任务树）")
+    p = sub.add_parser("plan", parents=[common], help="生成检索计划（D12 输入四要素→任务树）")
     p.add_argument("--type", dest="ptype", required=True,
                    choices=["full", "gap_fill", "part_focus"])
     p.add_argument("--vehicles", nargs="+", required=True, help="名录（测试期人工给定，R2 起联网生成）")
@@ -68,38 +62,46 @@ def main(argv=None):
     p.add_argument("--category", default=None)
     p.add_argument("--out", required=True, help="计划 JSON 输出路径")
 
-    p = sub.add_parser("review-pack", help="按批次生成审核包 HTML")
+    p = sub.add_parser("review-pack", parents=[common], help="按批次生成审核包 HTML")
     p.add_argument("batch_id"); p.add_argument("--out", required=True)
 
-    p = sub.add_parser("apply-review", help="回读审核决策落账")
+    p = sub.add_parser("apply-review", parents=[common], help="回读审核决策落账")
     p.add_argument("decisions")
 
-    p = sub.add_parser("find", help="组合过滤检索")
+    p = sub.add_parser("retrieve", parents=[common], help="执行检索计划（R1: images 任务, 夹具渠道）")
+    p.add_argument("plan_json")
+    p.add_argument("--channel-root", required=True, help="夹具渠道根目录（含 pages/ 与图片）")
+    p.add_argument("--license", default="web_third_party")
+
+    p = sub.add_parser("find", parents=[common], help="组合过滤检索")
     p.add_argument("--vehicle", default=None); p.add_argument("--view", default=None)
     p.add_argument("--kind", default=None); p.add_argument("--part", default=None)
     p.add_argument("--license", default=None); p.add_argument("--flag", default=None)
     p.add_argument("--status", default=None); p.add_argument("--binding", default=None)
     p.add_argument("--all-rejected", action="store_true")
-    p = sub.add_parser("search", help="全局文字搜索"); p.add_argument("text")
-    p = sub.add_parser("clusters", help="同尺寸疑似变体聚类"); p.add_argument("--min", type=int, default=2)
-    p = sub.add_parser("similar", help="感知哈希相似检索"); p.add_argument("asset_id")
+    p = sub.add_parser("search", parents=[common], help="全局文字搜索"); p.add_argument("text")
+    p = sub.add_parser("clusters", parents=[common], help="同尺寸疑似变体聚类"); p.add_argument("--min", type=int, default=2)
+    p = sub.add_parser("similar", parents=[common], help="感知哈希相似检索"); p.add_argument("asset_id")
     p.add_argument("--max-dist", type=int, default=8)
-    p = sub.add_parser("group-variant", help="人工确认后建立变体分组")
+    p = sub.add_parser("group-variant", parents=[common], help="人工确认后建立变体分组")
     p.add_argument("assets", nargs="+")
-    p = sub.add_parser("ungroup", help="移出变体分组"); p.add_argument("asset_id")
-    sub.add_parser("vocab-list", help="词表(默认仅正式项)")
-    p = sub.add_parser("vocab-add", help="新增自由标签(进提名池)"); p.add_argument("term")
-    p = sub.add_parser("vocab-promote", help="提名转正"); p.add_argument("term_id")
-    p = sub.add_parser("vocab-retire", help="退役词表项"); p.add_argument("term_id")
+    p = sub.add_parser("ungroup", parents=[common], help="移出变体分组"); p.add_argument("asset_id")
+    sub.add_parser("vocab-list", parents=[common], help="词表(默认仅正式项)")
+    p = sub.add_parser("vocab-add", parents=[common], help="新增自由标签(进提名池)"); p.add_argument("term")
+    p = sub.add_parser("vocab-promote", parents=[common], help="提名转正"); p.add_argument("term_id")
+    p = sub.add_parser("vocab-retire", parents=[common], help="退役词表项"); p.add_argument("term_id")
 
     args = parser.parse_args(argv)
-    conn = db.connect(Path(args.data_dir if hasattr(args, "data_dir") else "data") / "equiplens.db") \
-        if args.command != "ingest" else None
-    if conn is not None:
+    data_dir = Path(args.data_dir)
+    if args.command != "ingest":
+        data_dir.mkdir(parents=True, exist_ok=True)
+        conn = db.connect(data_dir / "equiplens.db")
         db.init_db(conn)  # 幂等建库 + 旧库无损迁移
+    else:
+        conn = None
 
     if args.command == "ingest":
-        report = ingest.ingest_directory(Path(args.data_dir), Path(args.folder),
+        report = ingest.ingest_directory(data_dir, Path(args.folder),
                                          platform=args.platform, license=args.license)
         print(ingest.summarize(report))
         for item in report["skipped"]:
@@ -134,7 +136,7 @@ def main(argv=None):
         workflow.set_view(conn, args.asset_id, args.view)
         print(f"已打标: {args.asset_id} view={args.view}")
     elif args.command == "crop":
-        aid = workflow.crop_asset(conn, Path("data"), args.asset_id,
+        aid = workflow.crop_asset(conn, data_dir, args.asset_id,
                                   {"x": args.x, "y": args.y, "w": args.w, "h": args.h},
                                   args.part_id)
         print(f"裁图已生成: {aid}")
@@ -151,7 +153,7 @@ def main(argv=None):
         op = db.undo(conn, args.ref, force=args.force)
         print(f"已整体撤销操作: {op}")
     elif args.command == "doctor":
-        report = doctor.doctor(conn, Path(args.data_dir))
+        report = doctor.doctor(conn, data_dir)
         if report["ok"]:
             print("巡检通过: 无问题")
         else:
@@ -217,11 +219,25 @@ def main(argv=None):
         Path(args.out).write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"检索计划已生成: {plan['plan_id']}（任务 {len(plan['tasks'])} 条, 每车配额 {plan['quota_per_vehicle']}）→ {args.out}")
     elif args.command == "review-pack":
-        info = review.build_review_pack(conn, Path("data"), args.batch_id, Path(args.out))
+        info = review.build_review_pack(conn, data_dir, args.batch_id, Path(args.out))
         print(f"审核包已生成: {info['assets']} 个素材 / {info['groups']} 组 → {info['out']}")
     elif args.command == "apply-review":
-        summary = review.apply_review(conn, args.decisions, Path("data"))
+        summary = review.apply_review(conn, args.decisions, data_dir)
         print(f"审核落账完成: {summary}")
+    elif args.command == "retrieve":
+        plan = json.loads(Path(args.plan_json).read_text(encoding="utf-8"))
+        channel = channels.FixtureChannel(Path(args.channel_root))
+        result = retrieval.execute_plan(conn, data_dir, plan, channel, license=args.license)
+        print(f"批次 {result['batch_id']}（计划 {result['plan_id']}）:")
+        for r in result["reports"]:
+            line = f"  {r['vehicle']}: 新候选 {r['candidates']}, 已在库 {r.get('existing', 0)}, 跳过 {r['skipped']}"
+            if r.get("status"):
+                line += f" — {r['status']}"
+            print(line)
+            for s in r.get("statuses", []):
+                print(f"    {s['status']:>14}  {s['src']}")
+        print(f"下一步: python -m equiplens review-pack {result['batch_id']} --out review.html --data-dir {data_dir}")
+
     conn.close()
     return 0
 
