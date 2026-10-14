@@ -64,6 +64,7 @@ CREATE TABLE sources (
   license      TEXT NOT NULL CHECK (license IN ('client_provided','self_captured','web_official','web_third_party')),
   is_primary   INTEGER NOT NULL CHECK (is_primary IN (0,1)),
   note         TEXT,
+  batch_id     TEXT,                        -- 检索批次号 (D14), 人工导入来源为空
   updated_at   TEXT
 );
 

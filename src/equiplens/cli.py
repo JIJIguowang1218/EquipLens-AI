@@ -20,7 +20,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import db, doctor, ingest, query, workflow
+from . import db, doctor, ingest, query, retrieval, review, workflow
 
 
 def main(argv=None):
@@ -57,6 +57,22 @@ def main(argv=None):
 
     p = sub.add_parser("doctor", help="数据完整性巡检")
     p.add_argument("--data-dir", default="data")
+
+    p = sub.add_parser("plan", help="生成检索计划（D12 输入四要素→任务树）")
+    p.add_argument("--type", dest="ptype", required=True,
+                   choices=["full", "gap_fill", "part_focus"])
+    p.add_argument("--vehicles", nargs="+", required=True, help="名录（测试期人工给定，R2 起联网生成）")
+    p.add_argument("--parts", nargs="*", default=[])
+    p.add_argument("--page-type", default="vehicle_page")
+    p.add_argument("--pages", type=int, default=1)
+    p.add_argument("--category", default=None)
+    p.add_argument("--out", required=True, help="计划 JSON 输出路径")
+
+    p = sub.add_parser("review-pack", help="按批次生成审核包 HTML")
+    p.add_argument("batch_id"); p.add_argument("--out", required=True)
+
+    p = sub.add_parser("apply-review", help="回读审核决策落账")
+    p.add_argument("decisions")
 
     p = sub.add_parser("find", help="组合过滤检索")
     p.add_argument("--vehicle", default=None); p.add_argument("--view", default=None)
@@ -193,6 +209,19 @@ def main(argv=None):
     elif args.command == "vocab-retire":
         query.vocab_retire(conn, args.term_id)
         print(f"已退役: {args.term_id}")
+    elif args.command == "plan":
+        plan = retrieval.build_plan(
+            {"type": args.ptype, "vehicles": args.vehicles, "parts": args.parts,
+             "page_types": [{"type": args.page_type, "pages": args.pages}],
+             "category": args.category}, conn=conn)
+        Path(args.out).write_text(json.dumps(plan, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"检索计划已生成: {plan['plan_id']}（任务 {len(plan['tasks'])} 条, 每车配额 {plan['quota_per_vehicle']}）→ {args.out}")
+    elif args.command == "review-pack":
+        info = review.build_review_pack(conn, Path("data"), args.batch_id, Path(args.out))
+        print(f"审核包已生成: {info['assets']} 个素材 / {info['groups']} 组 → {info['out']}")
+    elif args.command == "apply-review":
+        summary = review.apply_review(conn, args.decisions, Path("data"))
+        print(f"审核落账完成: {summary}")
     conn.close()
     return 0
 

@@ -140,6 +140,7 @@
         "license": { "$ref": "#/$defs/License" },
         "is_primary": { "type": "integer", "enum": [0, 1] },
         "note": { "type": ["string", "null"] },
+        "batch_id": { "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }] },
         "updated_at": { "oneOf": [{ "$ref": "#/$defs/IsoTime" }, { "type": "null" }] }
       }
     },

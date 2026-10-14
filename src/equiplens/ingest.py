@@ -48,11 +48,14 @@ def hamming(hex_a: str, hex_b: str) -> int:
 
 
 def ingest_directory(data_dir: Path, source_dir: Path, *, platform: str = "本地导入",
-                     license: str = "web_third_party", conn=None) -> dict:
+                     license: str = "web_third_party", conn=None,
+                     batch_id: str | None = None) -> dict:
     """导入 source_dir 下全部可解码图片。返回导入报告 dict。
 
     license: 本批素材的授权档（调用方声明，如甲方包=client_provided、网络收集=web_third_party）。
+    batch_id: 检索批次号（D14，检索渠道产生时传入；人工导入为空）。
     """
+    batch_id = batch_id or str(uuid.uuid4())
     data_dir = Path(data_dir)
     source_dir = Path(source_dir)
     own_conn = conn is None
@@ -66,8 +69,8 @@ def ingest_directory(data_dir: Path, source_dir: Path, *, platform: str = "本�
                                conn.execute("SELECT id, phash FROM assets WHERE phash IS NOT NULL")}
 
     report = {"source_dir": str(source_dir), "platform": platform, "license": license,
-              "total": 0, "imported": [], "merged": [], "source_exists": [],
-              "near_duplicate": [], "skipped": []}
+              "batch_id": batch_id, "total": 0, "imported": [], "merged": [],
+              "source_exists": [], "near_duplicate": [], "skipped": []}
 
     for path in sorted(p for p in source_dir.rglob("*") if p.is_file()):
         report["total"] += 1
@@ -93,8 +96,8 @@ def ingest_directory(data_dir: Path, source_dir: Path, *, platform: str = "本�
             if dup_src is None:
                 conn.execute(
                     "INSERT INTO sources (id, asset_id, url, platform, retrieved_at, license,"
-                    " is_primary, note) VALUES (?,?,?,?,?,?,?,?)",
-                    (str(uuid.uuid4()), hit["id"], None, platform, _now(), license, 0, note))
+                    " is_primary, note, batch_id) VALUES (?,?,?,?,?,?,?,?,?)",
+                    (str(uuid.uuid4()), hit["id"], None, platform, _now(), license, 0, note, batch_id))
                 conn.commit()
                 report["merged"].append({"file": str(path), "asset_id": hit["id"]})
             else:
@@ -124,8 +127,8 @@ def ingest_directory(data_dir: Path, source_dir: Path, *, platform: str = "本�
              _now(), _now()))
         conn.execute(
             "INSERT INTO sources (id, asset_id, url, platform, retrieved_at, license,"
-            " is_primary, note) VALUES (?,?,?,?,?,?,?,?)",
-            (str(uuid.uuid4()), asset_id, None, platform, _now(), license, 1, note))
+            " is_primary, note, batch_id) VALUES (?,?,?,?,?,?,?,?,?)",
+            (str(uuid.uuid4()), asset_id, None, platform, _now(), license, 1, note, batch_id))
         phashes[asset_id] = new_hash
         conn.commit()
         entry = {"file": str(path), "asset_id": asset_id}

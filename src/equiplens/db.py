@@ -45,6 +45,9 @@ def _migrate(conn: sqlite3.Connection) -> None:
         tcols = {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}
         if "updated_at" not in tcols:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN updated_at TEXT")
+    scols = {r[1] for r in conn.execute("PRAGMA table_info(sources)")}
+    if "batch_id" not in scols:
+        conn.execute("ALTER TABLE sources ADD COLUMN batch_id TEXT")  # D14 检索批次
 
     vocab_sql = conn.execute(
         "SELECT sql FROM sqlite_master WHERE type='table' AND name='vocab'").fetchone()["sql"]

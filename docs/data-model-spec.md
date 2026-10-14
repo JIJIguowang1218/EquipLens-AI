@@ -241,3 +241,4 @@ data/
 | v0.1 | 初版：按 2026-10-10 讨论定稿六表+vocab、三不变量、派生规则；补记 ortho_sheet 枚举值（宣传册三视图图版经裁图拆分） |
 | v0.1.1 | M1 开发修订：view_angle / asset_nature 增加 `untagged` 占位值（导入后未打标的过渡态，不参与完备度统计）；目录约定增加 `_pool` 暂存区，对号后不强制迁移文件 |
 | v0.2 | M3 开发修订：assets 增加 `variant_group`（D10 变体链接）；vocab 状态增加 `pending`（D11 提名池）并补 `updated_at` 列；confirm_log 对象类型增加 `vocab`（词表流转落账）；配套旧库无损迁移机制（init_db 自动增量迁移） |
+| v0.2.1 | M3.1/R0 修订：vehicles 与 sources 补 `updated_at` 列（确认机制统一要求，迁移自动补齐）；sources 增加 `batch_id`（D14 检索批次号，人工导入来源为空，支持整批审核与归档） |
