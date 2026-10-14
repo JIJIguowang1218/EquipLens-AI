@@ -20,7 +20,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import db, ingest, query, workflow
+from . import db, doctor, ingest, query, workflow
 
 
 def main(argv=None):
@@ -53,6 +53,10 @@ def main(argv=None):
     p = sub.add_parser("reject", help="拒绝素材"); p.add_argument("asset_id")
     p = sub.add_parser("summary", help="车型摘要"); p.add_argument("vehicle_id")
     p = sub.add_parser("undo", help="按日志ID/操作号撤销"); p.add_argument("ref")
+    p.add_argument("--force", action="store_true", help="同字段存在更新操作时强制回退")
+
+    p = sub.add_parser("doctor", help="数据完整性巡检")
+    p.add_argument("--data-dir", default="data")
 
     p = sub.add_parser("find", help="组合过滤检索")
     p.add_argument("--vehicle", default=None); p.add_argument("--view", default=None)
@@ -128,8 +132,22 @@ def main(argv=None):
         s = workflow.vehicle_summary(conn, args.vehicle_id)
         print(json.dumps(s, ensure_ascii=False, indent=2))
     elif args.command == "undo":
-        op = db.undo(conn, args.ref)
+        op = db.undo(conn, args.ref, force=args.force)
         print(f"已整体撤销操作: {op}")
+    elif args.command == "doctor":
+        report = doctor.doctor(conn, Path(args.data_dir))
+        if report["ok"]:
+            print("巡检通过: 无问题")
+        else:
+            print(f"巡检发现 {report['total_issues']} 项问题:")
+            labels = {"missing_files": "缺失文件", "orphan_files": "孤儿文件",
+                      "dangling_hero": "悬空主图", "dangling_parent": "悬空父图",
+                      "dangling_vehicle": "悬空车型", "stale_variant_groups": "残留变体组"}
+            for key, items in report["issues"].items():
+                for it in items:
+                    print(f"  [{labels[key]}] {it}")
+        conn.close()
+        return 0 if report["ok"] else 1
     elif args.command == "find":
         rows = query.query_assets(conn, vehicle_id=args.vehicle, view=args.view,
                                   kind=args.kind, part_id=args.part, license=args.license,

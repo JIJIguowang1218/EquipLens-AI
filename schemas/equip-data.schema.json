@@ -67,7 +67,8 @@
         "list_status": { "$ref": "#/$defs/ListStatus" },
         "hero_asset_id": { "oneOf": [{ "$ref": "#/$defs/Uuid" }, { "type": "null" }] },
         "project_id": { "type": ["string", "null"] },
-        "created_at": { "$ref": "#/$defs/IsoTime" }
+        "created_at": { "$ref": "#/$defs/IsoTime" },
+        "updated_at": { "oneOf": [{ "$ref": "#/$defs/IsoTime" }, { "type": "null" }] }
       }
     },
 
@@ -138,7 +139,8 @@
         "retrieved_at": { "oneOf": [{ "$ref": "#/$defs/IsoTime" }, { "type": "null" }] },
         "license": { "$ref": "#/$defs/License" },
         "is_primary": { "type": "integer", "enum": [0, 1] },
-        "note": { "type": ["string", "null"] }
+        "note": { "type": ["string", "null"] },
+        "updated_at": { "oneOf": [{ "$ref": "#/$defs/IsoTime" }, { "type": "null" }] }
       }
     },
 

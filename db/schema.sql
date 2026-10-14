@@ -22,6 +22,7 @@ CREATE TABLE vehicles (
   hero_asset_id TEXT,                          -- 逻辑指针, 访问层 set_hero() 校验
   project_id    TEXT,                          -- 预留
   created_at    TEXT NOT NULL,
+  updated_at    TEXT,
   UNIQUE (brand, model_name, generation)
 );
 
@@ -62,7 +63,8 @@ CREATE TABLE sources (
   retrieved_at TEXT,
   license      TEXT NOT NULL CHECK (license IN ('client_provided','self_captured','web_official','web_third_party')),
   is_primary   INTEGER NOT NULL CHECK (is_primary IN (0,1)),
-  note         TEXT
+  note         TEXT,
+  updated_at   TEXT
 );
 
 CREATE TABLE facts (

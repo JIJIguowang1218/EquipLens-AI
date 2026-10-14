@@ -40,6 +40,11 @@ def _migrate(conn: sqlite3.Connection) -> None:
     cols = {r[1] for r in conn.execute("PRAGMA table_info(assets)")}
     if "variant_group" not in cols:
         conn.execute("ALTER TABLE assets ADD COLUMN variant_group TEXT")
+    # 确认机制统一更新 updated_at, 补齐缺失该列的表
+    for table in ("vehicles", "sources"):
+        tcols = {r[1] for r in conn.execute(f"PRAGMA table_info({table})")}
+        if "updated_at" not in tcols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN updated_at TEXT")
 
     vocab_sql = conn.execute(
         "SELECT sql FROM sqlite_master WHERE type='table' AND name='vocab'").fetchone()["sql"]
@@ -187,13 +192,30 @@ def confirm_many(conn, ops: list[tuple], op_id: str, method: str = "single",
         raise
     return op_id
 
-def undo(conn, log_id: str) -> str:
-    """按操作号整体撤销 = 恢复该 op 全部字段的机器原值。日志本身不动（只增不改）。"""
+def undo(conn, log_id: str, force: bool = False) -> str:
+    """按操作号整体撤销 = 恢复该 op 全部字段的机器原值。日志本身不动（只增不改）。
+
+    M3.1 守卫: 同一对象的同一字段若在此操作之后还有更新的操作,
+    拒绝撤销（防止静默覆盖后续修改）, 除非 force=True 显式强制。
+    """
     row = conn.execute("SELECT op_id FROM confirm_log WHERE id = ? OR op_id = ?",
                        (log_id, log_id)).fetchone()
     if row is None:
         raise ValueError(f"确认记录 {log_id} 不存在")
     op_id = row["op_id"]
+    if not force:
+        touched = conn.execute(
+            "SELECT object_type, object_id, field, MAX(rowid) AS rid FROM confirm_log"
+            " WHERE op_id = ? GROUP BY object_type, object_id, field", (op_id,)).fetchall()
+        for f in touched:
+            newer = conn.execute(
+                "SELECT 1 FROM confirm_log WHERE object_type = ? AND object_id = ?"
+                " AND field = ? AND rowid > ? LIMIT 1",
+                (f["object_type"], f["object_id"], f["field"], f["rid"])).fetchone()
+            if newer:
+                raise ValueError(
+                    f"同一字段在此操作后还有更新记录, 撤销会覆盖它; 如确认要回退请用 force:"
+                    f" {f['object_type']}/{f['object_id'][:8]}/{f['field']}")
     conn.execute("PRAGMA ignore_check_constraints = ON")
     try:
         for r in conn.execute("SELECT * FROM confirm_log WHERE op_id = ? ORDER BY id", (op_id,)):
@@ -329,9 +351,12 @@ def find_asset_by_hash(conn, hash_sha256: str) -> sqlite3.Row | None:
 
 
 def set_hero(conn, vehicle_id: str, asset_id: str) -> None:
-    row = conn.execute("SELECT vehicle_id, kind, view_angle FROM assets WHERE id = ?", (asset_id,)).fetchone()
+    row = conn.execute("SELECT vehicle_id, kind, view_angle, confirm_status FROM assets WHERE id = ?",
+                       (asset_id,)).fetchone()
     if row is None:
         raise ValueError(f"素材 {asset_id} 不存在")
+    if row["confirm_status"] == "rejected":
+        raise ValueError("被拒素材不得设为主图")
     if row["vehicle_id"] != vehicle_id or row["view_angle"] not in ("hero_lf", "hero_rf"):
         raise ValueError("主图必须是该车已对号的 3/4 主视角素材")
     conn.execute("UPDATE vehicles SET hero_asset_id = ? WHERE id = ?", (asset_id, vehicle_id))

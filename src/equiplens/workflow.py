@@ -65,8 +65,15 @@ def bind_asset(conn, asset_id: str, vehicle_id: str, method: str = "single") -> 
     ], op_id=_op(), method=method)
 
 
+def _hero_clear_entries(conn, asset_id: str) -> list[tuple]:
+    """素材失效(拒绝/退回)时, 若它是某车主图, 生成清空指针的确认条目(M3.1 漏洞①修复)。"""
+    rows = conn.execute("SELECT id, hero_asset_id FROM vehicles WHERE hero_asset_id = ?",
+                        (asset_id,)).fetchall()
+    return [("vehicle", r["id"], "hero_asset_id", r["hero_asset_id"], None) for r in rows]
+
+
 def unbind_asset(conn, asset_id: str) -> str:
-    """退回待归号池（对号的逆操作, 同样落账）。"""
+    """退回待归号池（对号的逆操作, 同样落账; 若为主图则联动清空指针）。"""
     a = conn.execute("SELECT vehicle_id, binding_status, binding_evidence FROM assets WHERE id = ?",
                      (asset_id,)).fetchone()
     if a is None or a["binding_status"] == "unbound":
@@ -75,7 +82,7 @@ def unbind_asset(conn, asset_id: str) -> str:
         ("asset", asset_id, "vehicle_id", a["vehicle_id"], None),
         ("asset", asset_id, "binding_status", a["binding_status"], "unbound"),
         ("asset", asset_id, "binding_evidence", a["binding_evidence"], "none"),
-    ], op_id=_op(), method="single")
+    ] + _hero_clear_entries(conn, asset_id), op_id=_op(), method="single")
 
 
 # ---------------------------------------------------------------- 打标 / 拒绝
@@ -107,8 +114,9 @@ def reject_asset(conn, asset_id: str) -> str:
     row = conn.execute("SELECT confirm_status FROM assets WHERE id = ?", (asset_id,)).fetchone()
     if row is None:
         raise ValueError(f"素材 {asset_id} 不存在")
-    return db.confirm(conn, "asset", asset_id, "confirm_status",
-                      row["confirm_status"], "rejected", method="single", op_id=_op())
+    return db.confirm_many(conn, [
+        ("asset", asset_id, "confirm_status", row["confirm_status"], "rejected"),
+    ] + _hero_clear_entries(conn, asset_id), op_id=_op(), method="single")
 
 
 # ---------------------------------------------------------------- 裁图（内生, T1 自证）
