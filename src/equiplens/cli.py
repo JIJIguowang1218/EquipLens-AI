@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import channels, db, doctor, ingest, query, retrieval, review, workflow
+from . import channels, db, doctor, ingest, query, retrieval, review, webchannel, workflow
 
 
 def main(argv=None):
@@ -67,6 +67,13 @@ def main(argv=None):
 
     p = sub.add_parser("apply-review", parents=[common], help="回读审核决策落账")
     p.add_argument("decisions")
+
+    p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
+    p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
+    p.add_argument("--keywords", nargs="*", default=None, help="产品页筛选关键词")
+    p.add_argument("--max-pages", type=int, default=10)
+    p.add_argument("--max-total", type=int, default=40)
+    p.add_argument("--license", default="web_third_party")
 
     p = sub.add_parser("retrieve", parents=[common], help="执行检索计划（R1: images 任务, 夹具渠道）")
     p.add_argument("plan_json")
@@ -224,6 +231,13 @@ def main(argv=None):
     elif args.command == "apply-review":
         summary = review.apply_review(conn, args.decisions, data_dir)
         print(f"审核落账完成: {summary}")
+    elif args.command == "crawl-web":
+        result = webchannel.crawl_vendor_sites(
+            conn, data_dir, args.roots, keywords=args.keywords,
+            max_pages=args.max_pages, max_total=args.max_total, license=args.license)
+        slim = {k: v for k, v in result.items()}
+        print(json.dumps(slim, ensure_ascii=False, indent=1)[:2600])
+        print(f"下一步: python -m equiplens review-pack {result['batch_id']} --out review.html --data-dir {data_dir}")
     elif args.command == "retrieve":
         plan = json.loads(Path(args.plan_json).read_text(encoding="utf-8"))
         channel = channels.FixtureChannel(Path(args.channel_root))

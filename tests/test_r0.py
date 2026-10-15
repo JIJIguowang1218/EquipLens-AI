@@ -135,7 +135,7 @@ def r02_apply_reject():
     row = CONN.execute("SELECT confirm_status, notes FROM assets WHERE id = ?", (A[1],)).fetchone()
     assert row["confirm_status"] == "rejected" and "水印太大" in row["notes"]
     assert CONN.execute("SELECT confirm_status c FROM assets WHERE id = ?",
-                        (A[2],)).fetchone()["c"] == "machine_tagged", "接受=保持待确认态(无状态变更)"
+                        (A[2],)).fetchone()["c"] == "confirmed", "接受=人工确认素材可用(与驳回对称)"
     assert list((DATA / "reviews").glob("*.json")), "决策原件应归档"
 
 

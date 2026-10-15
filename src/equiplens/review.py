@@ -174,6 +174,13 @@ def apply_review(conn, decisions_input, data_dir: Path) -> dict:
             continue
         try:
             if action == "reject":
+                row = conn.execute("SELECT confirm_status FROM assets WHERE id = ?",
+                                   (aid,)).fetchone()
+                if row is None:
+                    raise ValueError(f"素材 {aid} 不存在")
+                if row["confirm_status"] == "rejected":
+                    summary["rejected"] += 1  # 幂等: 已驳回不重复落账
+                    continue
                 workflow.reject_asset(conn, aid)
                 if d.get("reason"):
                     conn.execute("UPDATE assets SET notes = ? WHERE id = ?",
@@ -181,11 +188,14 @@ def apply_review(conn, decisions_input, data_dir: Path) -> dict:
                     conn.commit()
                 summary["rejected"] += 1
             else:
-                summary["accepted"] += 1
-                row = conn.execute("SELECT binding_status FROM assets WHERE id = ?",
+                row = conn.execute("SELECT binding_status, confirm_status FROM assets WHERE id = ?",
                                    (aid,)).fetchone()
                 if row is None:
                     raise ValueError(f"素材 {aid} 不存在")
+                if row["confirm_status"] == "rejected":
+                    summary["skipped"] += 1  # 已驳回素材不复活
+                    continue
+                summary["accepted"] += 1
                 if row["binding_status"] == "provisional":
                     # T2 机器挂载 → 人工接受 = 确认对号, 证据升级为 human
                     old_ev = conn.execute("SELECT binding_evidence FROM assets WHERE id = ?",
@@ -198,6 +208,11 @@ def apply_review(conn, decisions_input, data_dir: Path) -> dict:
                 elif row["binding_status"] == "unbound" and d.get("vehicle_id"):
                     workflow.bind_asset(conn, aid, d["vehicle_id"])
                     summary["bound"] += 1
+                if row["confirm_status"] == "machine_tagged":
+                    # 人工接受 = 确认素材可用（与驳回对称, 状态可见可撤销）
+                    _db.confirm(conn, "asset", aid, "confirm_status",
+                                "machine_tagged", "confirmed",
+                                method="batch", op_id=f"op-accept-{uuid.uuid4().hex[:8]}")
                 if d.get("view") and d["view"] != "untagged":
                     workflow.set_view(conn, aid, d["view"])
         except ValueError:

@@ -42,7 +42,7 @@ class ExtractedPage:
         return (self.h1 or self.title).strip()
 
 
-class _PageParser(HTMLParser):
+class PageParser(HTMLParser):
     def __init__(self):
         super().__init__()
         self.title = ""
@@ -110,7 +110,7 @@ class FixtureChannel:
         return hits
 
     def parse_page(self, page_path: Path) -> ExtractedPage:
-        parser = _PageParser()
+        parser = PageParser()
         parser.feed(page_path.read_text(encoding="utf-8"))
         return ExtractedPage(path=page_path, title=parser.title.strip(),
                              h1=parser.h1.strip(), images=parser.images,

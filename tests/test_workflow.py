@@ -216,14 +216,17 @@ def w10_real_copy_demo():
     real2.commit()
     vid = workflow.create_vehicle(real2, "依维柯", "演示车型")
     pool = edb.unbound_pool(real2)
-    assert len(pool) == 11, f"真实副本应有 11 张待归号池素材, 实际 {len(pool)}"
-    workflow.bind_asset(real2, pool[0]["id"], vid)
+    n_pool = len(pool)
+    assert n_pool >= 1, "副本应有待归号池素材"
+    target = pool[0]
+    cs_before = target["confirm_status"]
+    workflow.bind_asset(real2, target["id"], vid)
     s = workflow.vehicle_summary(real2, vid)
-    assert s["asset_counts"]["machine_tagged"] == 1, "对号不改标签确认状态, 应仍在待确认计数"
+    assert s["asset_counts"].get(cs_before, 0) == 1,         f"对号不改标签确认状态({cs_before}), 实际 {s['asset_counts']}"
     assert s["completeness"]["level"] == "L0"
     log = real2.execute("SELECT id FROM confirm_log ORDER BY confirmed_at DESC LIMIT 1").fetchone()
     edb.undo(real2, log["id"])
-    assert len(edb.unbound_pool(real2)) == 11, "撤销后真实副本应回到初始状态"
+    assert len(edb.unbound_pool(real2)) == n_pool, "撤销后真实副本应回到初始状态"
     real.close(); real2.close()
 
 

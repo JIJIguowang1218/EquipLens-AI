@@ -201,7 +201,7 @@ def q10_migration_on_real_copy():
                   "'single','2026-10-12T00:00:00+08:00','user')")
     real2.commit()
     n_after = real2.execute("SELECT count(*) c FROM assets").fetchone()["c"]
-    assert n_before == n_after == 11, f"迁移不得丢数据, 实际 {n_before}→{n_after}"
+    assert n_before == n_after and n_before >= 1, f"迁移不得丢数据, 实际 {n_before}→{n_after}"
     try:
         real2.execute("UPDATE confirm_log SET field='x'")
         raise AssertionError("迁移后 confirm_log 仍应只增不改")

@@ -50,11 +50,11 @@ def hamming(hex_a: str, hex_b: str) -> int:
 
 
 def _insert_source(conn, asset_id: str, platform: str, license: str, note: str,
-                   is_primary: int, batch_id: str | None) -> None:
+                   is_primary: int, batch_id: str | None, url: str | None = None) -> None:
     conn.execute(
         "INSERT INTO sources (id, asset_id, url, platform, retrieved_at, license,"
         " is_primary, note, batch_id) VALUES (?,?,?,?,?,?,?,?,?)",
-        (str(uuid.uuid4()), asset_id, None, platform, _now(), license, is_primary, note, batch_id))
+        (str(uuid.uuid4()), asset_id, url, platform, _now(), license, is_primary, note, batch_id))
 
 
 def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
@@ -64,7 +64,8 @@ def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
                       view_angle: str = "untagged",
                       part_id: str | None = None,
                       asset_nature: str = "untagged",
-                      evidence_note: str | None = None) -> dict:
+                      evidence_note: str | None = None,
+                      source_url: str | None = None) -> dict:
     """单文件入库。任何解码失败抛 ValueError（调用方按"跳过"处理）。
 
     vehicle_id 给定时按 binding_evidence 挂载: human→confirmed, 其余(T2 共现等)→provisional。
@@ -87,7 +88,7 @@ def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
             "SELECT 1 FROM sources WHERE asset_id = ? AND platform = ? AND note = ?",
             (hit["id"], platform, note)).fetchone()
         if dup_src is None:
-            _insert_source(conn, hit["id"], platform, license, note, 0, batch_id)
+            _insert_source(conn, hit["id"], platform, license, note, 0, batch_id, url=source_url)
             conn.commit()
             return {"status": "merged", "asset_id": hit["id"]}
         return {"status": "source_exists", "asset_id": hit["id"]}
@@ -119,7 +120,7 @@ def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
          sha, new_hash, "machine_tagged",
          f"疑似重复:{near_id} 距离={near_dist}" if is_near else None,
          _now(), _now()))
-    _insert_source(conn, asset_id, platform, license, note, 1, batch_id)
+    _insert_source(conn, asset_id, platform, license, note, 1, batch_id, url=source_url)
     conn.commit()
     return {"status": "near_duplicate" if is_near else "imported", "asset_id": asset_id}
 
