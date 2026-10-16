@@ -49,6 +49,53 @@ def _migrate(conn: sqlite3.Connection) -> None:
     if "batch_id" not in scols:
         conn.execute("ALTER TABLE sources ADD COLUMN batch_id TEXT")  # D14 检索批次
 
+    # v0.2.3: view_angle 枚举扩展 hero_45/side(方向未定态) —— CHECK 在表定义中, 重建迁移
+    assets_sql = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='assets'").fetchone()["sql"]
+    if "'hero_45'" not in assets_sql:
+        conn.execute("PRAGMA foreign_keys = OFF")
+        conn.executescript("""
+            DROP TABLE IF EXISTS assets_new;
+            CREATE TABLE assets_new (
+                id TEXT PRIMARY KEY,
+                vehicle_id TEXT REFERENCES vehicles(id),
+                binding_status TEXT NOT NULL CHECK (binding_status IN ('unbound','provisional','confirmed')),
+                binding_evidence TEXT NOT NULL CHECK (binding_evidence IN ('none','self_derived','region_match','co_occurrence_labeled','co_occurrence_only','human')),
+                kind TEXT NOT NULL CHECK (kind IN ('source_image','crop')),
+                parent_asset_id TEXT REFERENCES assets_new(id),
+                crop_bbox TEXT,
+                file_path TEXT NOT NULL,
+                view_angle TEXT NOT NULL CHECK (view_angle IN ('untagged','hero_45','hero_lf','hero_rf','front','rear','side','side_l','side_r','ortho_sheet','detail','interior','scene','nameplate')),
+                asset_nature TEXT NOT NULL CHECK (asset_nature IN ('untagged','render','official_photo','real_photo','report_screenshot')),
+                part_id TEXT REFERENCES vocab(id),
+                width INTEGER, height INTEGER, quality_flags TEXT,
+                hash_sha256 TEXT NOT NULL CHECK (length(hash_sha256) = 64),
+                phash TEXT CHECK (phash IS NULL OR length(phash) = 16),
+                confirm_status TEXT NOT NULL CHECK (confirm_status IN ('machine_tagged','confirmed','rejected')),
+                variant_group TEXT, notes TEXT,
+                created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+                CHECK ((kind = 'crop') = (parent_asset_id IS NOT NULL AND crop_bbox IS NOT NULL)),
+                CHECK ((vehicle_id IS NULL) = (binding_status = 'unbound')),
+                CHECK ((binding_evidence = 'none') = (binding_status = 'unbound'))
+            );
+            INSERT INTO assets_new (id, vehicle_id, binding_status, binding_evidence, kind,
+                parent_asset_id, crop_bbox, file_path, view_angle, asset_nature, part_id,
+                width, height, quality_flags, hash_sha256, phash, confirm_status,
+                variant_group, notes, created_at, updated_at)
+                SELECT id, vehicle_id, binding_status, binding_evidence, kind,
+                parent_asset_id, crop_bbox, file_path, view_angle, asset_nature, part_id,
+                width, height, quality_flags, hash_sha256, phash, confirm_status,
+                variant_group, notes, created_at,
+                COALESCE(updated_at, created_at, '1970-01-01T00:00:00+08:00') FROM assets;
+            DROP TABLE assets;
+            ALTER TABLE assets_new RENAME TO assets;
+            CREATE INDEX idx_assets_vehicle ON assets(vehicle_id);
+            CREATE INDEX idx_assets_parent ON assets(parent_asset_id);
+        """)
+        conn.execute("PRAGMA foreign_keys = ON")
+        assert conn.execute("PRAGMA foreign_key_check").fetchall() == [], "assets 迁移后外键校验失败"
+    conn.commit()
+
     vocab_sql = conn.execute(
         "SELECT sql FROM sqlite_master WHERE type='table' AND name='vocab'").fetchone()["sql"]
     if "'pending'" not in vocab_sql:
@@ -262,7 +309,7 @@ def save_crop(data_dir: Path, vehicle_id: str, asset_id: str, ext: str, data: by
 
 # ---------------------------------------------------------------- 派生查询（只查不存）
 
-L1_VIEWS = ("hero_lf", "hero_rf", "side_l", "side_r")
+L1_VIEWS = ("hero_lf", "hero_rf", "side_l", "side_r", "hero_45", "side")
 FRONT_PARTS = ("bumper", "headlamp", "grille")
 
 

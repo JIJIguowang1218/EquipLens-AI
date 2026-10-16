@@ -21,8 +21,17 @@ from PIL import Image
 from . import db as _db
 from . import workflow
 
-VIEWS = ["untagged", "hero_lf", "hero_rf", "front", "rear", "side_l", "side_r",
+VIEWS = ["untagged", "hero_45", "hero_lf", "hero_rf", "front", "rear", "side", "side_l", "side_r",
          "ortho_sheet", "detail", "interior", "scene", "nameplate"]
+ZH_VIEW = {"untagged": "未打标", "hero_lf": "主视角·左前45°", "hero_rf": "主视角·右前45°",
+           "hero_45": "3/4前视角·方向待定", "side": "正侧·方向待定",
+           "front": "正前", "rear": "正后", "side_l": "左侧", "side_r": "右侧",
+           "ortho_sheet": "三视图版", "detail": "局部特写", "interior": "内饰",
+           "scene": "场景图", "nameplate": "铭牌/Logo"}
+ZH_NATURE = {"untagged": "未打标", "render": "官方渲染", "official_photo": "官方宣传照",
+             "real_photo": "实拍", "report_screenshot": "旧报告截图"}
+ZH_FLAGS = {"blur": "模糊", "overexposed": "过曝", "occluded": "遮挡",
+            "cluttered": "背景杂乱", "watermarked": "有水印", "multi_vehicle": "多车排列"}
 
 _HTML = """<!doctype html>
 <html lang="zh"><head><meta charset="utf-8">
@@ -35,19 +44,51 @@ _HTML = """<!doctype html>
  .card{{width:230px;border:1px solid #ccc;border-radius:6px;padding:8px;font-size:12px}}
  .card img{{width:100%;height:150px;object-fit:contain;background:#eee}}
  .card .meta{{margin:4px 0;color:#333;word-break:break-all}}
+ .card.rejected{{opacity:.42;border-color:#c66}}
+ .badge{{font-size:11px;padding:1px 6px;border-radius:8px;margin-left:4px}}
+ .badge.pending{{background:#fff3cd;color:#856404}}
+ .badge.confirmed{{background:#d4edda;color:#155724}}
+ .badge.rejected{{background:#f8d7da;color:#721c24}}
  .card a{{color:#0366d6}}
  label{{margin-right:8px}}
  .reason{{width:95%}}
  .bar{{position:sticky;top:0;background:#fff;padding:8px;border-bottom:2px solid #0366d6;margin:-16px -16px 12px}}
  button{{padding:6px 14px;font-size:14px}}
 </style></head><body>
-<div class="bar"><b>批次 {batch}</b>（{count} 个素材）
+<div class="bar"><b>批次 {batch}</b>（{count} 个素材：{tally}）
  <button onclick="exportDecisions()">✅ 导出 decisions.json</button>
  <span style="color:#888">审完点导出，然后运行: python -m equiplens apply-review decisions.json</span>
 </div>
 {groups}
 <script>
 const BATCH_ID = {batch_json};
+const LIVE = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+function flash(fs, msg) {{
+  let b = fs.querySelector(".live-msg");
+  if (!b) {{ b = document.createElement("div"); b.className = "live-msg";
+    b.style.cssText = "color:#1a7f37;font-size:12px;margin-top:4px"; fs.appendChild(b); }}
+  b.textContent = msg;
+  setTimeout(() => b.textContent = "", 1800);
+}}
+if (LIVE) {{
+  document.addEventListener("change", async (e) => {{
+    const fs = e.target.closest("fieldset[data-asset]");
+    if (!fs) return;
+    const aid = fs.dataset.asset;
+    if (e.target.type === "radio") {{
+      const reason = (fs.querySelector(".reason") || {{value: ""}}).value;
+      const view = (fs.querySelector(".view") || {{value: ""}}).value;
+      const r = await fetch("/decision", {{method: "POST", body: JSON.stringify(
+        {{asset_id: aid, action: e.target.value, reason, view,
+          vehicle_id: fs.dataset.vehicle || null}})}});
+      flash(fs, r.ok ? "✓ 已实时保存" : "✗ 保存失败");
+    }} else if (e.target.classList.contains("view")) {{
+      const r = await fetch("/view", {{method: "POST", body: JSON.stringify(
+        {{asset_id: aid, view: e.target.value}})}});
+      flash(fs, r.ok ? "✓ 视角已保存" : "✗ 保存失败");
+    }}
+  }});
+}}
 function exportDecisions(){{
   const ds = [];
   document.querySelectorAll('fieldset[data-asset]').forEach(fs => {{
@@ -67,13 +108,14 @@ function exportDecisions(){{
 </script>
 </body></html>"""
 
-_CARD = """<fieldset class="card" data-asset="{aid}" data-vehicle="{vehicle_id}">
- <legend><b>{label}</b></legend>
+_CARD = """<fieldset class="card {css}" data-asset="{aid}" data-vehicle="{vehicle_id}">
+ <legend><b>{label}</b> {badge}</legend>
  <img src="{thumb}" alt="">
  <div class="meta">{w}x{h}｜{view_label}｜{nature_label}</div>
  <div class="meta">来源: <a href="{url}" target="_blank">{platform}</a>｜授权: {license}</div>
  <div class="meta">{flags}</div>
  <div class="meta" style="color:#666">证据: {note}</div>
+ <div class="meta" style="color:#a33">{asset_notes}</div>
  {bind_row}
  <label><input type="radio" name="{aid}" value="accept">接受</label>
  <label><input type="radio" name="{aid}" value="reject">驳回</label>
@@ -96,7 +138,8 @@ def _thumb(data_dir: Path, file_path: str) -> str:
             b'<rect width="100%" height="100%" fill="#ddd"/></svg>').decode())
 
 
-def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> dict:
+def render_review_html(conn, data_dir: Path, batch_id: str) -> tuple[str, dict]:
+    """渲染审核包 HTML（服务端实时模式与文件模式共用）。返回 (html, stats)。"""
     rows = conn.execute(
         """SELECT DISTINCT a.* FROM assets a JOIN sources s ON s.asset_id = a.id
            WHERE s.batch_id = ? ORDER BY a.vehicle_id, a.id""", (batch_id,)).fetchall()
@@ -120,21 +163,27 @@ def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> di
             src = conn.execute(
                 "SELECT * FROM sources WHERE asset_id = ? ORDER BY is_primary DESC LIMIT 1",
                 (r["id"],)).fetchone()
-            flags = "、".join(json.loads(r["quality_flags"] or "[]")) or "无质量标记"
+            flags = "、".join(ZH_FLAGS.get(f, f) for f in json.loads(r["quality_flags"] or "[]")) or "无质量标记"
             view_opts = "".join(
-                f'<option {"selected" if v == r["view_angle"] else ""}>{v}</option>' for v in VIEWS)
+                f'<option value="{v}" {"selected" if v == r["view_angle"] else ""}>{ZH_VIEW.get(v, v)}</option>'
+                for v in VIEWS)
             if r["binding_status"] == "provisional":
                 bind_row = '<div class="meta">机器已挂到本车型（接受 = 确认对号）</div>'
             elif vid != "_pool":
                 bind_row = '<div class="meta">接受时对号到本车型</div>'
             else:
                 bind_row = ""
+            status = {"confirmed": "已确认", "rejected": "已驳回"}.get(r["confirm_status"], "待审")
+            badge_css = {"confirmed": "confirmed", "rejected": "rejected"}.get(r["confirm_status"], "pending")
             cards.append(_CARD.format(
                 aid=r["id"], vehicle_id=vfield, provisional=1 if r["binding_status"] == "provisional" else 0,
-                label=r["id"][:8],
+                label=r["id"][:8], css="rejected" if r["confirm_status"] == "rejected" else "",
+                badge=f'<span class="badge {badge_css}">{status}</span>',
+                asset_notes=html.escape(r["notes"] or ""),
                 thumb=_thumb(Path(data_dir), r["file_path"]),
                 w=r["width"] or "?", h=r["height"] or "?",
-                view_label=r["view_angle"], nature_label=r["asset_nature"],
+                view_label=ZH_VIEW.get(r["view_angle"], r["view_angle"]),
+                nature_label=ZH_NATURE.get(r["asset_nature"], r["asset_nature"]),
                 url=html.escape(src["url"] or "#"), platform=html.escape(src["platform"] or "未知"),
                 license=src["license"], flags=flags, view_opts=view_opts,
                 note=html.escape(src["note"] or "（无）"), bind_row=bind_row))
@@ -142,11 +191,25 @@ def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> di
             f'<details class="veh" open><summary>{html.escape(head)}'
             f'（{len(items)} 个素材）</summary><div class="grid">{"".join(cards)}</div></details>')
 
+    from collections import Counter
+    tally = Counter("已确认" if r["confirm_status"] == "confirmed"
+                    else "已驳回" if r["confirm_status"] == "rejected" else "待审" for r in rows)
+    html_text = _HTML.format(batch=batch_id, batch_json=json.dumps(batch_id),
+                             count=len(rows),
+                             tally=" ".join(f"{k} {v}" for k, v in tally.items()),
+                             groups="".join(parts_html))
+    stats = {"batch_id": batch_id, "assets": len(rows), "groups": len(groups)}
+    return html_text, stats
+
+
+def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> dict:
+    """文件模式: 生成离线 HTML。实时模式用 render_review_html + reviewserver。"""
+    html_text, stats = render_review_html(conn, data_dir, batch_id)
     out = Path(out_path)
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(_HTML.format(batch=batch_id, batch_json=json.dumps(batch_id),
-                                count=len(rows), groups="".join(parts_html)), encoding="utf-8")
-    return {"batch_id": batch_id, "assets": len(rows), "groups": len(groups), "out": str(out)}
+    out.write_text(html_text, encoding="utf-8")
+    stats["out"] = str(out)
+    return stats
 
 
 def apply_review(conn, decisions_input, data_dir: Path) -> dict:

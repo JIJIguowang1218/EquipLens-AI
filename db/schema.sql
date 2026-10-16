@@ -35,7 +35,7 @@ CREATE TABLE assets (
   parent_asset_id  TEXT REFERENCES assets(id),
   crop_bbox        TEXT,                       -- JSON {"x","y","w","h"}
   file_path        TEXT NOT NULL,
-  view_angle       TEXT NOT NULL CHECK (view_angle IN ('untagged','hero_lf','hero_rf','front','rear','side_l','side_r','ortho_sheet','detail','interior','scene','nameplate')),
+  view_angle       TEXT NOT NULL CHECK (view_angle IN ('untagged','hero_45','hero_lf','hero_rf','front','rear','side','side_l','side_r','ortho_sheet','detail','interior','scene','nameplate')),
   asset_nature     TEXT NOT NULL CHECK (asset_nature IN ('untagged','render','official_photo','real_photo','report_screenshot')),
   part_id          TEXT REFERENCES vocab(id),
   width            INTEGER,

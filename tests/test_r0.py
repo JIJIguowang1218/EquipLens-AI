@@ -98,7 +98,7 @@ def p03_gap_fill_plan():
     by_v = {t["vehicle"]: t for t in plan["tasks"]}
     assert by_v[V1]["missing_views"] == [], "V1 已有 hero, 视角无缺口"
     assert set(by_v[V1]["missing_parts"]) == {"grille", "headlamp", "step"}
-    assert set(by_v[V2]["missing_views"]) == {"hero_lf", "hero_rf", "side_l", "side_r"}, "V2 空车全缺口"
+    assert set(by_v[V2]["missing_views"]) == {"hero_lf", "hero_rf", "side_l", "side_r", "hero_45", "side"}, "V2 空车全缺口(含方向未定态)"
     # 配置校验负例
     for bad in [{"type": "unknown", "vehicles": ["x"]},
                 {"type": "part_focus", "vehicles": ["x"], "parts": []},

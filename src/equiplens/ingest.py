@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import uuid
 from datetime import datetime
 from io import BytesIO
@@ -65,7 +66,8 @@ def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
                       part_id: str | None = None,
                       asset_nature: str = "untagged",
                       evidence_note: str | None = None,
-                      source_url: str | None = None) -> dict:
+                      source_url: str | None = None,
+                      quality_flags: list | None = None) -> dict:
     """单文件入库。任何解码失败抛 ValueError（调用方按"跳过"处理）。
 
     vehicle_id 给定时按 binding_evidence 挂载: human→confirmed, 其余(T2 共现等)→provisional。
@@ -116,7 +118,8 @@ def ingest_file_bytes(conn, data_dir: Path, *, name: str, data: bytes,
         " width, height, quality_flags, hash_sha256, phash, confirm_status, notes,"
         " created_at, updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (asset_id, vehicle_id, binding_status, binding_evidence, "source_image",
-         None, None, rel, view_angle, asset_nature, part_id, width, height, "[]",
+         None, None, rel, view_angle, asset_nature, part_id, width, height,
+         json.dumps(quality_flags or [], ensure_ascii=False),
          sha, new_hash, "machine_tagged",
          f"疑似重复:{near_id} 距离={near_dist}" if is_near else None,
          _now(), _now()))

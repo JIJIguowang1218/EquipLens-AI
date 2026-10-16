@@ -19,7 +19,7 @@ PAGE_TEMPLATES = {
     # 素材需求模板（暂定，随 FR-4 报告规划模块细化）
     "vehicle_page": {
         "label": "竞品分析单车页",
-        "key_views": ["hero_lf", "hero_rf", "side_l", "side_r"],   # L1 底线视角
+        "key_views": ["hero_lf", "hero_rf", "side_l", "side_r", "hero_45", "side"],  # L1 底线视角(含方向未定态)
         "front_parts": ["grille", "headlamp", "bumper"],           # 前脸部件组（L2 要求）
         "images_per_page": 6,
     },

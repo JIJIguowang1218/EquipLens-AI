@@ -178,7 +178,7 @@ def q09_variant_group():
 
 
 def q10_migration_on_real_copy():
-    real = edb.connect("data/equiplens.db")
+    real = edb.connect("data-test/equiplens.db")
     copy_path = TD / "real_copy.db"
     real2 = edb.connect(copy_path)
     real2.executescript("\n".join(f"{r[0]};" for r in real.execute(

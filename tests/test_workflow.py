@@ -201,7 +201,7 @@ def w09_summary():
 
 def w10_real_copy_demo():
     """真实库副本演练: 把 IEVCO 池中 1 张挂到演示车型再撤销, 不留改动。"""
-    real = edb.connect("data/equiplens.db")
+    real = edb.connect("data-test/equiplens.db")
     real2 = edb.connect(TD / "real_copy.db")
     real2.executescript(
         "\n".join(f"{r[0]};" for r in real.execute(

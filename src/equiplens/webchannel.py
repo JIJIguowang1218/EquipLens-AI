@@ -16,7 +16,7 @@ from pathlib import Path
 
 import requests
 
-from . import ingest
+from . import gate, ingest
 from .channels import ExtractedPage, PageParser, map_alt_to_tags
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) EquipLensResearch/0.1 "
@@ -49,22 +49,51 @@ def robots_allows(url: str) -> bool:
     return rp.can_fetch(UA, url) if rp else True
 
 
-def _render_pages(urls: list[str]) -> dict[str, str]:
-    """Crawl4AI 渲染 JS 门户页 → url: 渲染后 HTML。"""
+PAGE_CACHE_TTL = 7 * 24 * 3600  # 渲染缓存有效期(秒)
+
+
+def _cache_path(data_dir: Path, url: str) -> Path:
+    import hashlib
+    return Path(data_dir) / "cache" / "pages" / (hashlib.sha1(url.encode()).hexdigest() + ".html")
+
+
+def _render_pages(urls: list[str], data_dir: Path | None = None) -> dict[str, str]:
+    """渲染 JS 页 → url: HTML。命中本地缓存(7 天)免渲染——第三轮慢的根因之一是每轮重渲染全部页面。"""
     import asyncio
+    import time as _time
     from crawl4ai import AsyncWebCrawler, BrowserConfig, CrawlerRunConfig
 
-    async def _run() -> dict[str, str]:
-        out = {}
-        async with AsyncWebCrawler(config=BrowserConfig(headless=True, user_agent=UA)) as crawler:
-            results = await crawler.arun_many(
-                urls, config=CrawlerRunConfig(page_timeout=35000, verbose=False))
-            for r in results:
-                if r.success and r.html:
-                    out[r.url] = r.html
-        return out
+    out: dict[str, str] = {}
+    todo = []
+    if data_dir is not None:
+        for u in urls:
+            cp = _cache_path(data_dir, u)
+            if cp.is_file() and _time.time() - cp.stat().st_mtime < PAGE_CACHE_TTL:
+                out[u] = cp.read_text(encoding="utf-8")
+            else:
+                todo.append(u)
+    else:
+        todo = list(urls)
 
-    return asyncio.run(_run())
+    if todo:
+        async def _run() -> dict[str, str]:
+            fetched = {}
+            async with AsyncWebCrawler(config=BrowserConfig(headless=True, user_agent=UA)) as crawler:
+                results = await crawler.arun_many(
+                    todo, config=CrawlerRunConfig(page_timeout=35000, verbose=False))
+                for r in results:
+                    if r.success and r.html:
+                        fetched[r.url] = r.html
+            return fetched
+
+        fetched = asyncio.run(_run())
+        out.update(fetched)
+        if data_dir is not None:
+            for u, h in fetched.items():
+                cp = _cache_path(data_dir, u)
+                cp.parent.mkdir(parents=True, exist_ok=True)
+                cp.write_text(h, encoding="utf-8")
+    return out
 
 
 @dataclass
@@ -187,25 +216,29 @@ def discover_from_pages(rendered: dict[str, str], roots: list[str],
 def crawl_vendor_sites(conn, data_dir: Path, roots: list[str], *,
                        keywords: list[str] | None = None,
                        max_pages: int = 10, images_per_page: int = 10,
-                       max_total: int = 40, license: str = "web_third_party") -> dict:
+                       max_total: int = 40, license: str = "web_third_party",
+                       use_gate: bool = True) -> dict:
     """B 案真实抓取入口：渲染首页 → 发现产品页 → 渲染产品页 → 图片候选入库。
 
-    预算三帽: max_pages / images_per_page / max_total。返回 batch 报告。
+    预算三帽: max_pages / images_per_page / max_total。
+    CLIP 门卫(use_gate): 下载字节先过"是否卡车/工程机械图"零样本判定(本地 22ms/图,
+    历史人工判定校准准确率 93%)，拦截二维码/图表/人物/建筑类杂图。返回 batch 报告。
     """
     keywords = keywords or ["牵引", "重卡", "卡车", "产品"]
     batch_id = f"batch-web-{uuid.uuid4().hex[:10]}"
     report = {"batch_id": batch_id, "roots": roots, "pages_crawled": 0,
-              "candidates": 0, "skipped": 0, "denied_robots": 0, "pages": []}
+              "candidates": 0, "skipped": 0, "denied_robots": 0,
+              "gate_blocked": [], "gate_ms": 0.0, "pages": []}
 
     root_set = {r.rstrip("/") for r in roots}
-    home = {u: h for u, h in _render_pages(roots).items()}
+    home = {u: h for u, h in _render_pages(roots, data_dir).items()}
     # 两波发现: 首页→产品列表页→车型详情页（首页自身不作图片来源——首轮教训: 轮播/杂图主因）
     listing_urls = discover_product_urls(home, roots, keywords, max_pages)
-    listing = _render_pages(listing_urls) if listing_urls else {}
+    listing = _render_pages(listing_urls, data_dir) if listing_urls else {}
     detail_urls = discover_from_pages(listing, roots,
                                       ["车型", "详情", "配置", "参数"] + keywords,
                                       max_pages, exclude=set(listing_urls) | root_set)
-    detail = _render_pages(detail_urls[:max_pages]) if detail_urls else {}
+    detail = _render_pages(detail_urls[:max_pages], data_dir) if detail_urls else {}
 
     rendered = {}
     for src_dict in (listing, detail):
@@ -226,6 +259,11 @@ def crawl_vendor_sites(conn, data_dir: Path, roots: list[str], *,
         for img in hit.page.images:
             if taken >= images_per_page or report["candidates"] >= max_total:
                 break
+            # URL 预查重: 下载前先查来源表——第三轮 34 次下载里 18 次是已见过的图
+            if conn.execute("SELECT 1 FROM sources WHERE url = ? LIMIT 1", (img.src,)).fetchone():
+                report["skipped"] += 1
+                page_report["images"].append({"src": img.src[:90], "status": "URL 已在库, 免下载"})
+                continue
             time.sleep(SLEEP_SECONDS)
             try:
                 data = channel.read_bytes(img.src)
@@ -234,12 +272,26 @@ def crawl_vendor_sites(conn, data_dir: Path, roots: list[str], *,
                 probe = Image.open(BytesIO(data))
                 if probe.size[0] < MIN_IMG_WIDTH:
                     raise ValueError(f"图片过小 {probe.size}")
+                g = gate.check(data) if use_gate else None
+                if g is not None:
+                    report["gate_ms"] += g["ms"]
+                    if not g["pass"]:
+                        report["skipped"] += 1
+                        report["gate_blocked"].append(
+                            {"src": img.src[:90], "keep": g["keep"],
+                             "drop": g["drop"], "margin": g["margin"]})
+                        page_report["images"].append(
+                            {"src": img.src[:90],
+                             "status": f"门卫拦截(margin={g['margin']}, keep={g['keep']}, drop={g['drop']})"})
+                        continue
                 view, part = map_alt_to_tags(img.alt or "", conn)
+                gate_note = f"｜门卫 margin={g['margin']} 场景={g.get('scene')}" if g else ""
+                qflags = ["multi_vehicle"] if (g and g.get("scene") == "multi_vehicle") else []
                 result = ingest.ingest_file_bytes(
                     conn, data_dir, name=Path(img.src).name, data=data,
                     platform=channel.name, license=license, batch_id=batch_id,
-                    view_angle=view, part_id=part,
-                    evidence_note=f"alt: {img.alt or '(无 alt)'}｜页标题: {hit.page.title or '(无)'}｜URL: {hit.url}",
+                    view_angle=view, part_id=part, quality_flags=qflags,
+                    evidence_note=f"alt: {img.alt or '(无 alt)'}｜页标题: {hit.page.title or '(无)'}｜URL: {hit.url}{gate_note}",
                     source_url=hit.url)
             except Exception as e:  # noqa: BLE001
                 report["skipped"] += 1

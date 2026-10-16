@@ -173,7 +173,13 @@ UNIQUE(brand, model_name, generation)。
 | 值 | 中文 | 说明 |
 |---|---|---|
 | untagged | 未打标 | **v0.1.1 占位**：M1 导入后、M4 打标前的过渡状态；不参与完备度统计与视角筛选 |
+
+**左右定义（v0.2.3，产品负责人约定）**：前 = 车头方向；**左右 = 驾驶员视角**（驾驶位坐姿向前时的左手/右手侧）。一切视角标签、排版一致性、对比分析均以此为准；机器判定左右不可靠时必须用 hero_45/side 未定态，禁止瞎猜。
+
+**方向待定态是过渡态，不是终态（v0.2.4，意见 #11）**：人眼定向是一眼的事，机器亦可学会（判向探针/VLM）；接受入库的素材必须方向明确——hero_45/side 状态仅允许存在于"未确认"阶段，确认动作应先定向（探针自动+人工修正，或人工下拉直接定）。
 | hero_lf / hero_rf | 左前/右前 3/4 主视角 | 主视角图；特征线页（FR-3）必须 hero_lf/hero_rf |
+| hero_45 | 3/4 前视角·方向未定 | **v0.2.3**：机器判为 3/4 前但左右未定时的诚实态，人工/VLM 定向后升级 hero_lf/rf |
+| side | 正侧·方向未定 | **v0.2.3**：同上，升级 side_l/r；对 L1 完备度已算数（左右不影响 L1） |
 | front / rear | 正前 / 正后 | |
 | side_l / side_r | 左侧 / 右侧 | |
 | ortho_sheet | 三视图图版 | **v0.1 补记**：宣传册单图含多个正交视，经裁图拆分为 front/side/rear |
@@ -186,7 +192,7 @@ UNIQUE(brand, model_name, generation)。
 `untagged` 未打标（v0.1.1 占位，语义同 §4.1） / `render` 官方渲染（比例可能失真，不可当实拍用） / `official_photo` 官方宣传照 / `real_photo` 实拍 / `report_screenshot` 旧报告截图
 
 ### 4.3 quality_flags 质量标记
-`blur` 模糊 / `overexposed` 过曝 / `occluded` 遮挡 / `cluttered` 背景杂乱 / `watermarked` 有水印（水印大图排版不可用，确认时人工把关）
+`blur` 模糊 / `overexposed` 过曝 / `occluded` 遮挡 / `cluttered` 背景杂乱 / `watermarked` 有水印（水印大图排版不可用，确认时人工把关） / `multi_vehicle` 多车排列（**v0.2.2**：门卫场景分类标记，主体被遮挡、可裁切救回，人工快筛）
 
 ### 4.4 license 授权（挂来源，D5）
 `client_provided` 甲方授权 / `self_captured` 自摄 / `web_official` 网络-官方渠道 / `web_third_party` 网络-第三方（待确认）。报告只允许引用授权通过的来源。
@@ -242,3 +248,6 @@ data/
 | v0.1.1 | M1 开发修订：view_angle / asset_nature 增加 `untagged` 占位值（导入后未打标的过渡态，不参与完备度统计）；目录约定增加 `_pool` 暂存区，对号后不强制迁移文件 |
 | v0.2 | M3 开发修订：assets 增加 `variant_group`（D10 变体链接）；vocab 状态增加 `pending`（D11 提名池）并补 `updated_at` 列；confirm_log 对象类型增加 `vocab`（词表流转落账）；配套旧库无损迁移机制（init_db 自动增量迁移） |
 | v0.2.1 | M3.1/R0 修订：vehicles 与 sources 补 `updated_at` 列（确认机制统一要求，迁移自动补齐）；sources 增加 `batch_id`（D14 检索批次号，人工导入来源为空，支持整批审核与归档） |
+| v0.2.2 | R1.5 修订：quality_flags 增加 `multi_vehicle`（门卫场景分类标记，多车排列图放行待人工快筛/裁切，不丢弃） |
+| v0.2.4 | 意见 #11：方向待定态定性为**过渡态**——终态必须定向（探针自动定向+人工修正）；接受入库前视角不得停留在 hero_45/side |
+| v0.2.3 | T7 审核意见 #8 修订：明确**左右=驾驶员视角**约定；view_angle 增加 `hero_45`/`side`（方向未定态——机器判向不可靠时的诚实状态，升级路径 hero_45→hero_lf/rf、side→side_l/r）；**禁止查询词声称充当视角判定**，视角以视觉判定+人工终审为准 |

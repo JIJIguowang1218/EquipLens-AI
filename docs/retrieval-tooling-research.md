@@ -107,7 +107,40 @@
 | 通义 DeepResearch | https://github.com/Alibaba-NLP/DeepResearch |
 | CLIP 搜图参考（前轮） | https://github.com/haltakov/natural-language-image-search 等，见架构稿 §7.3 |
 
-## 10. 局限说明
+## 11. 补充调研（2026-10-15，轮 5–7：图片相关性过滤与整体类似项目）
+
+背景：第一轮真实抓取人工采纳率仅 27%，根因判定为"筛选全部依赖文本启发式，图内容信息不可达"——调研开源界如何"看图过滤"。
+
+### 轮 5：整体类似项目
+
+| 项目 | 星数 | 状态 | 要点 |
+|---|---|---|---|
+| QmiAI/Qmedia | ~635 | 活跃 | AI 内容搜索引擎（图/文/短视频素材）：内容卡片呈现、来源分解、**本地部署离线搜索**——与我们审核包+素材库形态高度同构 |
+| TheoCoombes/crawlingathome | ~33 | 归档 | LAION 用 CLIP 过滤 CommonCrawl 的客户端——"抓取→CLIP 过滤→入库"范式的规模化实证 |
+
+### 轮 6：CLIP 零样本过滤与打分（本轮核心收获）
+
+| 项目 | 星数 | 状态 | 要点 |
+|---|---|---|---|
+| nsfw-filter/nsfw-filter | ~1.8k | 活跃（v3, 2026-10） | **零样本图片分类门卫的成熟实现**：ViT 模型在本机分类、阈值可调、无数据上传——把 NSFW 标签集换成"卡车整车/部件特写/无关图"即为我们所需 |
+| christophschuhmann/improved-aesthetic-predictor | ~1.3k | 维护 | CLIP+MLP 美观度打分（LAION 生态标配） |
+| idealo/image-quality-assessment | ~2.2k | 维护 | CNN 图片美学/技术质量分 |
+| unum-cloud/UForm | ~1.3k | 活跃 | 口袋级多模态模型（onnx，CPU 友好）——轻量 CLIP 替代 |
+
+### 轮 7：以文搜图/图像搜索引擎
+
+open-semantic-search（~1.2k）、pastec（~0.6k 图像识别检索引擎）；OpenCLIP（mlfoundations/open_clip，~11k*，名称被同名项目淹没，引自知识库）。
+
+### 结论（策略 v3 的依据）
+
+1. "抓取→CLIP 过滤→打分→入库"是 LAION 生态验证过的成熟范式，**我们缺的"看图"环节有免费、本地、零 API 成本的开源解**（nsfw-filter 证明该模式甚至能在浏览器跑）；
+2. 策略 v3：深爬（保留）→ **CLIP 零样本门卫**（标签集：工程机械整车外观照/部件特写/无关图，阈值放行）→ 尺寸/去重（已有）→ 人工审。杂图拦截不再依赖 VLM API——VLM（M4）专注精细打标；
+3. 模型选型：UForm（轻量 CPU）或 open_clip+torch（生态标准、依赖 2GB），倾向 UForm 先行；
+4. Qmedia 的内容卡片呈现可参考（与审核包同构）。
+
+新 URL 索引：nsfw-filter https://github.com/nsfw-filter/nsfw-filter ｜ aesthetic-predictor https://github.com/christophschuhmann/improved-aesthetic-predictor ｜ UForm https://github.com/unum-cloud/UForm ｜ Qmedia https://github.com/QmiAI/Qmedia ｜ crawlingathome https://github.com/TheoCoombes/crawlingathome ｜ idealo 质量分 https://github.com/idealo/image-quality-assessment
+
+## 12. 局限说明（含前轮延续）
 
 - 星数为 2026-10-14 快照；Firecrawl/Scrapling/Crawl4AI 星数增长异常（191k/87k/85k 远超常见开源项目增速），仅作方向参考，不作为选型依据（沿用架构稿 §7.4 原则）；
 - SearXNG 的 JSON API 与图片频道为已知配置能力，README 未直接载明，**待部署实测核实**；

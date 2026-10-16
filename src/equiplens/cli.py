@@ -15,7 +15,7 @@ import json
 import sys
 from pathlib import Path
 
-from . import channels, db, doctor, ingest, query, retrieval, review, webchannel, workflow
+from . import channels, db, doctor, ingest, query, retrieval, review, reviewserver, webchannel, workflow
 
 
 def main(argv=None):
@@ -67,6 +67,9 @@ def main(argv=None):
 
     p = sub.add_parser("apply-review", parents=[common], help="回读审核决策落账")
     p.add_argument("decisions")
+
+    p = sub.add_parser("review-serve", parents=[common], help="实时审核服务(localhost, 每点即存)")
+    p.add_argument("batch_id"); p.add_argument("--port", type=int, default=8765)
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -231,12 +234,20 @@ def main(argv=None):
     elif args.command == "apply-review":
         summary = review.apply_review(conn, args.decisions, data_dir)
         print(f"审核落账完成: {summary}")
+    elif args.command == "review-serve":
+        reviewserver.serve(conn, data_dir, args.batch_id, port=args.port)
+        return 0
     elif args.command == "crawl-web":
         result = webchannel.crawl_vendor_sites(
             conn, data_dir, args.roots, keywords=args.keywords,
             max_pages=args.max_pages, max_total=args.max_total, license=args.license)
-        slim = {k: v for k, v in result.items()}
-        print(json.dumps(slim, ensure_ascii=False, indent=1)[:2600])
+        # 完整报告落盘(data/*.json 已放行), 控制台只打摘要——避免管道截断丢统计
+        (data_dir / f"{result['batch_id']}.json").write_text(
+            json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(f"完整报告: {data_dir / (result['batch_id'] + '.json')}")
+        print(f"来源页 {result['pages_crawled']} | 新候选 {result['candidates']} | "
+              f"跳过 {result['skipped']} | 门卫拦截 {len(result['gate_blocked'])} | "
+              f"门卫耗时 {result['gate_ms']:.0f}ms")
         print(f"下一步: python -m equiplens review-pack {result['batch_id']} --out review.html --data-dir {data_dir}")
     elif args.command == "retrieve":
         plan = json.loads(Path(args.plan_json).read_text(encoding="utf-8"))
