@@ -94,8 +94,8 @@ def _search_bing(query: str, limit: int) -> list[dict]:
 
 
 VIEW_QUERIES = {  # 视角词 → (查询后缀, 初始视角标签——机器猜测, 证据记查询词, 人工可改)
-    "hero": ("45度", "hero_lf"),
-    "side": ("侧视图", "side_l"),
+    "hero": ("45度", "hero_45"),   # v0.2.5: 查询词只标粗类（禁冒充左右定向, 意见 #8）
+    "side": ("侧视图", "side"),
     "front": ("正前", "front"),
     "rear": ("尾部", "rear"),
     "interior": ("内饰", "interior"),
@@ -115,9 +115,33 @@ def crawl_model_views(conn, data_dir: Path, vehicle_id: str, vehicle_name: str, 
                                  limit=per_view, license=license,
                                  batch_id=batch_id, view_guess=guess)
         report["views"][key] = {"query": q, "candidates": rep["candidates"],
-                                "gate_blocked": rep["gate_blocked"], "found": rep["found"]}
+                                "gate_blocked": rep["gate_blocked"], "found": rep["found"],
+                                "existing": rep["existing"]}
         report["batch_id"] = rep["batch_id"]
     return report
+
+
+def _download_and_gate(hit: dict) -> dict:
+    """下载+门卫（线程池内跑; SQLite 入库只在主线程做）。"""
+    out = {"hit": hit, "data": None, "gate": None, "error": None}
+    try:
+        src = quote(hit["url"], safe=":/?&=%._-#")
+        r = requests.get(src, headers={"User-Agent": UA, "Referer": hit["url"]},
+                         timeout=20, stream=True)
+        data = b""
+        for chunk in r.iter_content(65536):
+            data += chunk
+            if len(data) > MAX_IMG_BYTES:
+                raise ValueError("图片超过 8MB")
+        from PIL import Image
+        from io import BytesIO
+        if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
+            raise ValueError("图片过小")
+        out["data"] = data
+        out["gate"] = gate.check(data)
+    except Exception as e:  # noqa: BLE001
+        out["error"] = str(e)
+    return out
 
 
 def crawl_model_images(conn, data_dir: Path, vehicle_id: str, vehicle_name: str,
@@ -125,7 +149,10 @@ def crawl_model_images(conn, data_dir: Path, vehicle_id: str, vehicle_name: str,
                        license: str = "web_third_party",
                        batch_id: str | None = None,
                        view_guess: str | None = None) -> dict:
-    """按型号搜图并入库（弱关联 provisional 挂载）。"""
+    """按型号搜图并入库（弱关联 provisional 挂载）。
+    速度（2026-10-17）: 图片下载线程池并行（此前逐张串行+每张硬睡 1s,
+    12 车型全量检索不可接受——产品负责人反馈"整个流程太长"）。"""
+    from concurrent.futures import ThreadPoolExecutor
     query = query or f"{vehicle_name} 牵引车"
     batch_id = batch_id or f"batch-img-{uuid.uuid4().hex[:10]}"
     report = {"vehicle": vehicle_name, "vehicle_id": vehicle_id, "query": query,
@@ -134,46 +161,37 @@ def crawl_model_images(conn, data_dir: Path, vehicle_id: str, vehicle_name: str,
 
     hits = search_images(query, limit=limit * 2)  # 多取, 过滤后保量
     report["found"] = len(hits)
-    for hit in hits:
+    time.sleep(SLEEP_SECONDS)  # 查询间礼让（下载已并行, 不逐张睡）
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        downloads = list(ex.map(_download_and_gate, hits))
+    for res in downloads:
+        hit, g, data = res["hit"], res["gate"], res["data"]
         if report["candidates"] >= limit:
             break
-        time.sleep(SLEEP_SECONDS)
-        try:
-            src = quote(hit["url"], safe=":/?&=%._-#")
-            r = requests.get(src, headers={"User-Agent": UA, "Referer": hit["url"]},
-                             timeout=20, stream=True)
-            data = b""
-            for chunk in r.iter_content(65536):
-                data += chunk
-                if len(data) > MAX_IMG_BYTES:
-                    raise ValueError("图片超过 8MB")
-            from PIL import Image
-            from io import BytesIO
-            if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
-                raise ValueError("图片过小")
-            g = gate.check(data)
-            if not g["pass"]:
-                report["gate_blocked"] += 1
-                report["items"].append({"src": hit["url"][:80],
-                                        "status": f"门卫拦截(margin={g['margin']})"})
-                continue
-            qflags = ["multi_vehicle"] if g.get("scene") == "multi_vehicle" else []
-            result = ingest.ingest_file_bytes(
-                conn, data_dir, name=Path(hit["url"].split("?")[0]).name or "search.jpg",
-                data=data, platform=f"Bing图片搜索({query})", license=license,
-                batch_id=batch_id, vehicle_id=vehicle_id,
-                binding_evidence="co_occurrence_only",  # T3 弱关联: 搜索词声称, 待人工确认
-                view_angle=view_guess or "untagged",
-                quality_flags=qflags,
-                evidence_note=f"搜索词声称: {query}｜图题: {hit['title'] or '(无)'}｜门卫 margin={g['margin']}",
-                source_url=hit["url"])
-            if result["status"] in ("merged", "source_exists"):
-                report["existing"] += 1
-            else:
-                report["candidates"] += 1
-            report["items"].append({"src": hit["url"][:80], "status": result["status"],
-                                    "asset_id": result["asset_id"]})
-        except Exception as e:  # noqa: BLE001
+        if res["error"] is not None:
             report["skipped"] += 1
-            report["items"].append({"src": hit["url"][:80], "status": f"跳过: {e}"})
+            report["items"].append({"src": hit["url"][:80],
+                                    "status": f"跳过: {res['error']}"})
+            continue
+        if not g["pass"]:
+            report["gate_blocked"] += 1
+            report["items"].append({"src": hit["url"][:80],
+                                    "status": f"门卫拦截(margin={g['margin']})"})
+            continue
+        qflags = ["multi_vehicle"] if g.get("scene") == "multi_vehicle" else []
+        result = ingest.ingest_file_bytes(
+            conn, data_dir, name=Path(hit["url"].split("?")[0]).name or "search.jpg",
+            data=data, platform=f"图片搜索({query})", license=license,
+            batch_id=batch_id, vehicle_id=vehicle_id,
+            binding_evidence="co_occurrence_only",  # T3 弱关联: 搜索词声称, 待人工确认
+            view_angle=view_guess or "untagged",
+            quality_flags=qflags,
+            evidence_note=f"搜索词声称: {query}｜图题: {hit['title'] or '(无)'}｜门卫 margin={g['margin']}",
+            source_url=hit["url"])
+        if result["status"] in ("merged", "source_exists"):
+            report["existing"] += 1
+        else:
+            report["candidates"] += 1
+        report["items"].append({"src": hit["url"][:80], "status": result["status"],
+                                "asset_id": result["asset_id"]})
     return report

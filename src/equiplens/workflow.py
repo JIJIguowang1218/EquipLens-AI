@@ -87,14 +87,16 @@ def unbind_asset(conn, asset_id: str) -> str:
 
 # ---------------------------------------------------------------- 打标 / 拒绝
 
-def set_view(conn, asset_id: str, view_angle: str, method: str = "single") -> str:
+def set_view(conn, asset_id: str, view_angle: str, method: str = "single",
+             op_id: str | None = None) -> str:
     if view_angle not in VALID_VIEWS:
         raise ValueError(f"非法视角: {view_angle}")
     row = conn.execute("SELECT view_angle FROM assets WHERE id = ?", (asset_id,)).fetchone()
     if row is None:
         raise ValueError(f"素材 {asset_id} 不存在")
     return db.confirm(conn, "asset", asset_id, "view_angle",
-                      row["view_angle"], view_angle, method=method, op_id=_op())
+                      row["view_angle"], view_angle, method=method,
+                      op_id=op_id or _op())
 
 
 def batch_set_view(conn, items: list[tuple[str, str]]) -> str:

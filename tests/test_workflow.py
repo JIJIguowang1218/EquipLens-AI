@@ -218,7 +218,15 @@ def w10_real_copy_demo():
     pool = edb.unbound_pool(real2)
     n_pool = len(pool)
     assert n_pool >= 1, "副本应有待归号池素材"
-    target = pool[0]
+    target = next((a for a in pool if a["view_angle"] == "untagged"), None)
+    if target is None:
+        # 真实库池内素材可能已带视角标签（标注飞轮推进后是常态）:
+        # 一次性副本上直接清为未打标（不走账本）, 保持"绑 1 张→完备度 L0"的演练前提
+        target = pool[0]
+        real2.execute("UPDATE assets SET view_angle='untagged' WHERE id=?",
+                      (target["id"],))
+        real2.commit()
+    target = real2.execute("SELECT * FROM assets WHERE id=?", (target["id"],)).fetchone()
     cs_before = target["confirm_status"]
     workflow.bind_asset(real2, target["id"], vid)
     s = workflow.vehicle_summary(real2, vid)

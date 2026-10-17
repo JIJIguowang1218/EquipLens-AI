@@ -15,9 +15,14 @@ from pathlib import Path
 from . import db, review, workflow
 
 
-def serve(conn, data_dir: Path, batch_id: str, port: int = 8765) -> None:
-    html_text, stats = review.render_review_html(conn, data_dir, batch_id)
-    print(f"批次 {batch_id}: {stats['assets']} 个素材 / {stats['groups']} 组")
+def serve(conn, data_dir: Path, batch_id: str | None = None, port: int = 8765,
+          probe_file: str | None = None) -> None:
+    if probe_file:
+        html_text, stats = review.render_probe_review_html(conn, data_dir, probe_file)
+        print(f"判向复核页: {stats['assets']} 张建议 / {stats['groups']} 组（{probe_file}）")
+    else:
+        html_text, stats = review.render_review_html(conn, data_dir, batch_id)
+        print(f"批次 {batch_id}: {stats['assets']} 个素材 / {stats['groups']} 组")
     print(f"实时审核地址: http://127.0.0.1:{port}  （每点即存, 关闭浏览器即结束）")
 
     def _post_conn():

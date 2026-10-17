@@ -13,6 +13,7 @@
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 from . import channels, db, doctor, ingest, query, retrieval, review, reviewserver, webchannel, workflow
@@ -69,7 +70,28 @@ def main(argv=None):
     p.add_argument("decisions")
 
     p = sub.add_parser("review-serve", parents=[common], help="实时审核服务(localhost, 每点即存)")
-    p.add_argument("batch_id"); p.add_argument("--port", type=int, default=8765)
+    p.add_argument("batch_id", nargs="?", default=None)
+    p.add_argument("--probe-file", default=None, help="判向复核页: probe-suggest.json 路径")
+    p.add_argument("--port", type=int, default=8765)
+
+    p = sub.add_parser("probe-train", parents=[common],
+                       help="判向探针: 提特征+拟合质心（87 条人工标注, 意见 #11 路线）")
+    p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
+    p = sub.add_parser("probe-eval", parents=[common],
+                       help="判向探针: 留一验证准确率（对比 UForm 基线 36%）")
+    p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
+    p = sub.add_parser("probe-suggest", parents=[common],
+                       help="判向探针: 对机器值图出 v2 建议（默认只出报告, --apply 才落账）")
+    p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
+    p.add_argument("--apply", action="store_true",
+                   help="把与现值不同的建议落账（op-probe2, 可撤销）; 默认仅出报告——"
+                        "T12 实盘 54% 表明机器建议需人审, 不宜自动落账")
+
+    p = sub.add_parser("roster-generate", parents=[common],
+                       help="R2 首半: 类目→检索生成候选名录（意见 #14 冷启动, 待人锁定）")
+    p.add_argument("category", help="设备类目, 如 沙漠牵引车/重型吊车")
+    p.add_argument("--max-articles", type=int, default=8)
+    p.add_argument("--top", type=int, default=12, help="候选上限（频次序）")
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -235,8 +257,54 @@ def main(argv=None):
         summary = review.apply_review(conn, args.decisions, data_dir)
         print(f"审核落账完成: {summary}")
     elif args.command == "review-serve":
-        reviewserver.serve(conn, data_dir, args.batch_id, port=args.port)
+        reviewserver.serve(conn, data_dir, args.batch_id, port=args.port,
+                           probe_file=args.probe_file)
         return 0
+    elif args.command == "probe-train":
+        from . import probe
+        fit = probe.fit_from_db(conn, data_dir, args.backend)
+        counts = sorted(Counter(fit["labels"]).items())
+        print(f"训练集 {len(fit['labels'])} 条: "
+              + " ".join(f"{k}×{v}" for k, v in counts))
+        print(f"质心 {len(fit['cents'])} 类就绪（后端 {args.backend}）")
+    elif args.command == "probe-eval":
+        from . import probe
+        rep = probe.run_eval(conn, data_dir, args.backend)
+        s = rep["summary"]
+        print(f"后端 {s['backend']}｜留一验证 {s['n']} 条")
+        print(f"  普通质心口径准确率:   {s['accuracy']:.1%}")
+        print(f"  镜像增广口径准确率:   {s['accuracy_mirror']:.1%}")
+        print(f"  镜像增广各类召回: {s['per_class_mirror']}")
+        print(f"  镜像一致性检验: {s['mirror_sanity']}")
+        print(f"  报告: {rep['out']}")
+    elif args.command == "probe-suggest":
+        from . import probe
+        rep = probe.build_suggestions(conn, data_dir, backend=args.backend,
+                                      apply=args.apply)
+        changed = rep.get("changed", [])
+        print(f"复查对象 {rep['targets']} 张：建议已写 {rep.get('out', '')}"
+              f"（落账改动 {len(changed)} 张"
+              f"{'，--apply 未指定仅出报告' if not args.apply else ''}）")
+        for c in changed:
+            print(f"  {c['asset_id'][:8]}  {c['from']} → {c['to']}")
+        print("人工复核: python -m equiplens review-serve "
+              f"--probe-file {rep.get('out', 'data-test/probe-suggest.json')} --data-dir "
+              f"{args.data_dir}")
+        return 0
+    elif args.command == "roster-generate":
+        from . import roster
+        out = roster.generate_roster(args.category, data_dir,
+                                     max_articles=args.max_articles, top_n=args.top)
+        arts = [a for a in out["articles"] if "error" not in a]
+        errs = [a for a in out["articles"] if "error" in a]
+        print(f"类目『{args.category}』候选名录（{len(arts)} 篇来源文章"
+              f"{'，' + str(len(errs)) + ' 篇抓取失败' if errs else ''}）：")
+        for i, c in enumerate(out["candidates"], 1):
+            print(f"  {i:>2}. {c['brand']} {c['model']:<10} 提及{c['mentions']}"
+                  f"  来源×{len(c['sources'])}")
+        if not out["candidates"]:
+            print("  （无候选——检查搜索渠道/品牌词典覆盖）")
+        print(f"名录归档: {out['path']}（status=pending_lock, 增删后回复锁定名单）")
     elif args.command == "crawl-web":
         result = webchannel.crawl_vendor_sites(
             conn, data_dir, args.roots, keywords=args.keywords,

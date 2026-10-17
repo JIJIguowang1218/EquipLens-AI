@@ -23,6 +23,8 @@ from . import workflow
 
 VIEWS = ["untagged", "hero_45", "hero_lf", "hero_rf", "front", "rear", "side", "side_l", "side_r",
          "ortho_sheet", "detail", "interior", "scene", "nameplate"]
+# 人工下拉只给终态（规范 v0.2.4: 待定态=机器过渡态, 人必须定向, 不提供待定选项）
+HUMAN_VIEWS = [v for v in VIEWS if v not in ("hero_45", "side")]
 ZH_VIEW = {"untagged": "未打标", "hero_lf": "主视角·左前45°", "hero_rf": "主视角·右前45°",
            "hero_45": "3/4前视角·方向待定", "side": "正侧·方向待定",
            "front": "正前", "rear": "正后", "side_l": "左侧", "side_r": "右侧",
@@ -166,7 +168,7 @@ def render_review_html(conn, data_dir: Path, batch_id: str) -> tuple[str, dict]:
             flags = "、".join(ZH_FLAGS.get(f, f) for f in json.loads(r["quality_flags"] or "[]")) or "无质量标记"
             view_opts = "".join(
                 f'<option value="{v}" {"selected" if v == r["view_angle"] else ""}>{ZH_VIEW.get(v, v)}</option>'
-                for v in VIEWS)
+                for v in HUMAN_VIEWS)
             if r["binding_status"] == "provisional":
                 bind_row = '<div class="meta">机器已挂到本车型（接受 = 确认对号）</div>'
             elif vid != "_pool":
@@ -200,6 +202,97 @@ def render_review_html(conn, data_dir: Path, batch_id: str) -> tuple[str, dict]:
                              groups="".join(parts_html))
     stats = {"batch_id": batch_id, "assets": len(rows), "groups": len(groups)}
     return html_text, stats
+
+
+_PROBE_HTML = """<!doctype html>
+<html lang="zh"><head><meta charset="utf-8">
+<title>判向复核·探针 {backend}</title>
+<style>
+ body{{font-family:"Microsoft YaHei",sans-serif;margin:16px;background:#f7f7f7}}
+ .veh{{background:#fff;border:1px solid #ddd;border-radius:8px;margin-bottom:14px;padding:10px}}
+ .veh>summary{{cursor:pointer;font-weight:bold;font-size:15px}}
+ .grid{{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}}
+ .card{{width:250px;border:1px solid #ccc;border-radius:6px;padding:8px;font-size:12px}}
+ .card img{{width:100%;height:150px;object-fit:contain;background:#eee}}
+ .card .meta{{margin:4px 0;color:#333;word-break:break-all}}
+ .badge{{font-size:11px;padding:1px 6px;border-radius:8px;margin-left:4px;background:#e2e3ff;color:#2a2a8c}}
+ .chg{{color:#a33;font-weight:bold}}
+ .bar{{position:sticky;top:0;background:#fff;padding:8px;border-bottom:2px solid #0366d6;margin:-16px -16px 12px}}
+</style></head><body>
+<div class="bar"><b>判向复核·探针 {backend}</b>（{count} 张：{tally}）——
+ 下拉改成对的视角即<b>实时落账</b>（改过即人工值）；机器建议仅供参考，<b>方向以人眼为准</b></div>
+{groups}
+<script>
+const LIVE = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+function flash(fs, msg) {{
+  let b = fs.querySelector(".live-msg");
+  if (!b) {{ b = document.createElement("div"); b.className = "live-msg";
+    b.style.cssText = "color:#1a7f37;font-size:12px;margin-top:4px"; fs.appendChild(b); }}
+  b.textContent = msg;
+  setTimeout(() => b.textContent = "", 1800);
+}}
+if (LIVE) {{
+  document.addEventListener("change", async (e) => {{
+    const fs = e.target.closest("fieldset[data-asset]");
+    if (!fs || !e.target.classList.contains("view")) return;
+    const r = await fetch("/view", {{method: "POST", body: JSON.stringify(
+      {{asset_id: fs.dataset.asset, view: e.target.value}})}});
+    flash(fs, r.ok ? "✓ 视角已保存" : "✗ 保存失败");
+  }});
+}}
+</script>
+</body></html>"""
+
+
+def render_probe_review_html(conn, data_dir: Path, suggest_path) -> tuple[str, dict]:
+    """判向复核页（T12）：探针 v2 建议 vs 机器原值, 人工下拉定向实时落账。
+    suggest_path: data-test/probe-suggest.json（probe-suggest 产出）。"""
+    pack = json.loads(Path(suggest_path).read_text(encoding="utf-8"))
+    veh_names = {r["id"]: f"{r['brand']} {r['model_name']}" for r in
+                 conn.execute("SELECT id, brand, model_name FROM vehicles")}
+    groups: dict[str, list] = {}
+    for s in pack["suggestions"]:
+        groups.setdefault(s["vehicle_id"] or "_pool", []).append(s)
+    parts = []
+    for vid, items in sorted(groups.items(), key=lambda kv: kv[0] or ""):
+        head = veh_names.get(vid, "待归号池") if vid != "_pool" else "待归号池"
+        cards = []
+        for s in items:
+            r = conn.execute("SELECT * FROM assets WHERE id=?", (s["asset_id"],)).fetchone()
+            if r is None:
+                continue
+            cur = r["view_angle"]
+            changed = "" if cur == s["suggested"] else ' class="chg"'
+            opts = "".join(
+                f'<option value="{v}" {"selected" if v == cur else ""}>{ZH_VIEW.get(v, v)}</option>'
+                for v in HUMAN_VIEWS)
+            mirror = f'｜镜检 orig={s["mirror"]["orig"]} flip={s["mirror"]["flip"]}' \
+                if s.get("mirror") else ""
+            scores = " ".join(f"{ZH_VIEW.get(k, k)}={v}" for k, v in s["scores"].items())
+            if cur == s["suggested"]:
+                delta = (f'<div class="meta">本轮已按机器建议落账'
+                         f'（原机器值: {ZH_VIEW.get(s["current"], s["current"])}，仅历史记录）</div>')
+            else:
+                delta = (f'<div class="meta{changed}">机器原值: {ZH_VIEW.get(s["current"], s["current"])}'
+                         f' → 建议: {ZH_VIEW.get(s["suggested"], s["suggested"])}（裕量 {s["margin"]}）</div>')
+            cards.append(f'''<fieldset class="card" data-asset="{s["asset_id"]}">
+ <legend><b>{r["id"][:8]}</b><span class="badge">{ZH_VIEW.get(s["suggested"], s["suggested"])}</span></legend>
+ <img src="{_thumb(Path(data_dir), r["file_path"])}" alt="">
+ <div class="meta">{veh_names.get(s["vehicle_id"], "")}｜{r["width"] or "?"}x{r["height"] or "?"}</div>
+ {delta}
+ <div class="meta">{s["reason"]}{mirror}</div>
+ <div class="meta" style="color:#888">{scores}</div>
+ <div class="meta">人工定向: <select class="view">{opts}</select></div>
+</fieldset>''')
+        parts.append(f'<details class="veh" open><summary>{html.escape(head)}'
+                     f'（{len(items)} 张）</summary><div class="grid">{"".join(cards)}</div></details>')
+    from collections import Counter
+    tally = Counter(s["suggested"] for s in pack["suggestions"])
+    html_text = _PROBE_HTML.format(
+        backend=pack.get("backend", "?"), count=len(pack["suggestions"]),
+        tally=" ".join(f"{ZH_VIEW.get(k, k)}×{v}" for k, v in tally.most_common()),
+        groups="".join(parts))
+    return html_text, {"assets": len(pack["suggestions"]), "groups": len(groups)}
 
 
 def build_review_pack(conn, data_dir: Path, batch_id: str, out_path: Path) -> dict:
