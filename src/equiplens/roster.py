@@ -120,6 +120,19 @@ def _scan_lines(md: str, q: str, src: dict | None, category: str,
                 rec["sources"].append(cur_src)
 
 
+def _queries(category: str) -> list[str]:
+    """查询词模板 + 类目同义词扩展（吊车→起重机/汽车起重机/履带吊, 文章用词与
+    口语不同——第 2 轮重型吊车被卡车底盘污染的教训）。"""
+    SYNONYMS = {"吊车": ["起重机", "汽车起重机", "履带吊"],
+                "铲车": ["装载机"], "翻斗": ["自卸"]}
+    terms = [category]
+    for k, vs in SYNONYMS.items():
+        if k in category:
+            terms += [category.replace(k, v) for v in vs]
+    return [f'"{t}" 车型大全 推荐' for t in terms] + \
+           [f'"{category}" 有哪些型号', f'"{category}" 大吨位 型号']
+
+
 def generate_roster(category: str, data_dir: Path, max_articles: int = 8,
                     top_n: int = 12) -> dict:
     """类目 → 候选名录。两阶段共用一次浏览器会话:
@@ -128,9 +141,7 @@ def generate_roster(category: str, data_dir: Path, max_articles: int = 8,
     Bing 网页搜索被反爬降级——全部走 Crawl4AI 真浏览器渲染。"""
     import asyncio
 
-    queries = [f'"{category}" 车型大全 推荐', f'"{category}" 有哪些型号',
-               f'{category} 6x6 油田', f'"{category}" 品牌 报价',
-               f'{category} 越野 卡车 型号']
+    queries = _queries(category)
     state = {"counter": {}, "articles": [], "article_links": []}
 
     async def _crawl():
