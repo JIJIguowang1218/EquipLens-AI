@@ -16,7 +16,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from . import channels, db, doctor, ingest, query, retrieval, review, reviewserver, webchannel, workflow
+from . import channels, corpus, db, doctor, ingest, query, retrieval, review, reviewserver, webchannel, workflow
 
 
 def main(argv=None):
@@ -92,6 +92,10 @@ def main(argv=None):
     p.add_argument("category", help="设备类目, 如 沙漠牵引车/重型吊车")
     p.add_argument("--max-articles", type=int, default=8)
     p.add_argument("--top", type=int, default=12, help="候选上限（频次序）")
+
+    p = sub.add_parser("corpus-crawl", parents=[common],
+                       help="调研语料采集批: 四类信源配额抓正文（先爬后研·第0步, R2 后半前置）")
+    p.add_argument("plan_json", help="采集计划 JSON: {queries:{official/spec/review/industry:[...]}, quota?, batch_id?}")
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -305,6 +309,19 @@ def main(argv=None):
         if not out["candidates"]:
             print("  （无候选——检查搜索渠道/品牌词典覆盖）")
         print(f"名录归档: {out['path']}（status=pending_lock, 增删后回复锁定名单）")
+    elif args.command == "corpus-crawl":
+        plan = json.loads(Path(args.plan_json).read_text(encoding="utf-8"))
+        rep = corpus.collect_corpus(plan, data_dir)
+        s = rep["summary"]
+        print(f"采集批 {rep['batch_id']} → {rep['outdir']}")
+        for st in ("official", "spec", "review", "industry"):
+            if st in s:
+                print(f"  {st:>9}: 落盘 {s[st]['saved']} / 失败 {s[st]['failed']}")
+        for r in rep["index"]:
+            mark = "✓" if r["status"] == "saved" else "✗"
+            print(f"  {mark} [{r['status']:>13}] {r['source_type']:>8} {r['chars']:>6}字  {r['title'][:40]}")
+        print(f"索引: {Path(rep['outdir']) / 'index.json'}")
+
     elif args.command == "crawl-web":
         result = webchannel.crawl_vendor_sites(
             conn, data_dir, args.roots, keywords=args.keywords,
