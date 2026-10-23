@@ -1,0 +1,741 @@
+{
+ "run_id": "run-gaokong-blind-v2",
+ "started_at": "2026-10-23T16:13:49.718",
+ "ended_at": "2026-10-23T16:14:50.517",
+ "duration_ms": 60798.6,
+ "meta": {
+  "intent": "tmp/intent-gaokong.json",
+  "category": "高空作业车",
+  "models": [],
+  "profile": null
+ },
+ "stages": [
+  {
+   "stage": "validate_intent",
+   "duration_ms": 1.3,
+   "status": "ok"
+  },
+  {
+   "stage": "plan_r1",
+   "duration_ms": 2.0,
+   "status": "ok",
+   "profile": null,
+   "profile_status": "missing"
+  },
+  {
+   "stage": "execute_r1",
+   "duration_ms": 28625.8,
+   "status": "ok",
+   "batch_id": "batch-text-20261023-161349"
+  },
+  {
+   "stage": "grade_r1",
+   "duration_ms": 40.5,
+   "status": "ok",
+   "batch_id": "batch-text-20261023-161349"
+  },
+  {
+   "stage": "plan_r2",
+   "duration_ms": 2.3,
+   "status": "ok",
+   "profile": null,
+   "profile_status": "missing"
+  },
+  {
+   "stage": "execute_r2",
+   "duration_ms": 32081.9,
+   "status": "ok",
+   "batch_id": "batch-text-20261023-161418-r2"
+  },
+  {
+   "stage": "grade_r2",
+   "duration_ms": 37.7,
+   "status": "ok",
+   "batch_id": "batch-text-20261023-161418-r2"
+  }
+ ],
+ "tools": [
+  {
+   "name": "corpus.collect_corpus",
+   "args": {
+    "batch_id": "batch-text-20261023-161349",
+    "queries": 2,
+    "quota": {
+     "industry": 3,
+     "review": 3
+    }
+   },
+   "result": {
+    "saved": 33
+   },
+   "duration_ms": 28625.3,
+   "status": "ok"
+  },
+  {
+   "name": "corpus.collect_corpus",
+   "args": {
+    "batch_id": "batch-text-20261023-161418-r2",
+    "queries": 3,
+    "quota": {
+     "industry": 3,
+     "review": 2,
+     "academic": 2
+    }
+   },
+   "result": {
+    "saved": 16
+   },
+   "duration_ms": 32081.3,
+   "status": "ok"
+  }
+ ],
+ "llm_calls": [
+  {
+   "model": "assistant-manual",
+   "prompt_version": "text-plan-v0.1",
+   "input_tokens_est": 68,
+   "output_tokens_est": 9,
+   "est": true,
+   "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"
+  }
+ ],
+ "decisions": [
+  {
+   "action": "replan",
+   "reason": "A 占比 2.5% < 6.0%; 失败率 88% > 60%; 类目档案缺失且通用层产出不足",
+   "round": 1,
+   "scope": [
+    "expand_design_queries",
+    "switch_sources",
+    "generic_layer",
+    "propose_profile"
+   ],
+   "constraints": [
+    "robots/UA/授权",
+    "配额上限",
+    "账本不变量",
+    "原图不可变",
+    "人工检查点",
+    "schema 校验"
+   ]
+  },
+  {
+   "action": "stop",
+   "reason": "失败率 75% > 60%; 已用 2/2 轮，停止并上报缺口",
+   "round": 2,
+   "scope": [],
+   "constraints": [
+    "robots/UA/授权",
+    "配额上限",
+    "账本不变量",
+    "原图不可变",
+    "人工检查点",
+    "schema 校验"
+   ]
+  }
+ ],
+ "summary": {
+  "status": "ok",
+  "rounds": 2,
+  "final_action": "stop"
+ },
+ "metrics": {
+  "articles": 8,
+  "articles_with_a": 4,
+  "total_chars": 54599,
+  "a_chars": 2438,
+  "b_chars": 18290,
+  "a_share": 0.0447,
+  "a_per_article": 304.8,
+  "source_types": [
+   "academic",
+   "industry",
+   "review"
+  ],
+  "failed": 41,
+  "blocked_url": 24,
+  "robots_denied": 9,
+  "dims": [
+   "CMF",
+   "意图",
+   "比例/姿态"
+  ]
+ },
+ "token_estimate": {
+  "input": 68,
+  "output": 9,
+  "note": "启发式估算，非 API usage"
+ },
+ "events": "data-test\\runs\\run-gaokong-blind-v2\\events.jsonl",
+ "rounds": [
+  {
+   "round": 1,
+   "plan": {
+    "batch_id": "batch-text-20261023-161349",
+    "purpose": "text_design_scan",
+    "category": "高空作业车",
+    "models": [],
+    "profile_ref": null,
+    "profile_status": "missing",
+    "queries": {
+     "industry": [
+      "工程机械 造型 设计",
+      "工程车辆 外观 设计 解读",
+      "高空作业车 造型 设计 解读"
+     ],
+     "review": [
+      "商用车 设计 语言 家族化",
+      "驾驶室 造型 设计",
+      "高空作业车 外观 设计 语言"
+     ]
+    },
+    "quota": {
+     "industry": 3,
+     "review": 3
+    },
+    "negative_terms": [
+     "油耗",
+     "马力",
+     "配置",
+     "报价",
+     "优惠",
+     "试驾",
+     "保养",
+     "维修",
+     "参数",
+     "经销商",
+     "促销",
+     "扭矩",
+     "变速箱",
+     "发动机",
+     "裸车价",
+     "促销价",
+     "询价"
+    ],
+    "relevant_terms": [
+     "高空作业车",
+     "工程机械",
+     "商用车",
+     "工程车辆",
+     "驾驶室"
+    ],
+    "skip_domains": [
+     "docin.com",
+     "baike.baidu.com",
+     "b2b.baidu.com"
+    ],
+    "budget": {
+     "max_queries": 10,
+     "max_fetch": 10,
+     "max_rounds": 2
+    },
+    "round": 1,
+    "fallback": [
+     "generic_layer",
+     "switch_sources",
+     "propose_profile"
+    ]
+   },
+   "grade": {
+    "batch_id": "batch-text-20261023-161349",
+    "docs": [
+     {
+      "title": "星品博览 | 一文读懂车载式高空车全家福 - 新闻 - 高空作业平台|高空作业车厂家|高空作业设备制造商-湖南「星邦智能",
+      "url": "https://www.sinoboom.com.cn/content/details_34_1952.html",
+      "source_type": "review",
+      "chars": 2556,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "low",
+      "top_passages": []
+     },
+     {
+      "title": "欧洲合资的超高紧凑型40米高空作业车",
+      "url": "https://www.ykl.cn/DT40.html",
+      "source_type": "review",
+      "chars": 4190,
+      "a_chars": 252,
+      "a_count": 1,
+      "a_share": 0.0601,
+      "dims": [
+       "CMF",
+       "比例/姿态"
+      ],
+      "source_trust": "medium",
+      "top_passages": [
+       "CELA DT TRUCK 40由意大利CELA公司原厂设计制造。CELA以生产高空消防车和特种高空作业平台著称，其车载式高空作业平台与消防车产自同一生产线，遵循同样严格的欧洲安全标准和质量控制体系。这一背景为DT TRUCK 40赋予了天然的“安全基因”——在材料选型、结构设计、焊接工艺、电气防护等各个环节均以消防级安全要求为基准，显著高于一般工业高空作业平台的安全标准。整车采用双安全传感器控制"
+      ]
+     },
+     {
+      "title": "中联杯国际大学生设计竞赛2026：工程机械设计从选题到答辩全攻略",
+      "url": "https://bbs.csdn.net/weixin_30047059/article/details/100618905",
+      "source_type": "industry",
+      "chars": 11815,
+      "a_chars": 463,
+      "a_count": 6,
+      "a_share": 0.0392,
+      "dims": [
+       "CMF",
+       "意图",
+       "比例/姿态"
+      ],
+      "source_trust": "medium",
+      "top_passages": [
+       "如果你是工业设计背景，你的优势在于造型能力、用户研究和人机交互；如果你是机械背景，你的优势在于结构计算和系统设计。最理想的组队方式是两种背景的人搭配，一个负责\"好不好用、好不好看\"，一个负责\"能不能造、结不结实\"。",
+       "造型设计 ：在满足功能和结构要求的前提下，进行外观造型设计。工程机械的造型设计不是单纯的\"好看\"，而是要体现力量感、稳定感、科技感，同时要考虑制造工艺的可行性。",
+       "美观性 ：造型是否协调？比例是否合理？细节处理是否到位？"
+      ]
+     },
+     {
+      "title": "美通重工取得高空作业车六节臂缩臂机构专利，减少高空作业车整体自重和高度|滑轮|国家知识产权局_网易订阅",
+      "url": "https://www.163.com/dy/article/KHNA91MI0519QIKK.html",
+      "source_type": "industry",
+      "chars": 9968,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "medium",
+      "top_passages": []
+     }
+    ],
+    "metrics": {
+     "articles": 4,
+     "articles_with_a": 2,
+     "total_chars": 28529,
+     "a_chars": 715,
+     "b_chars": 7028,
+     "a_share": 0.0251,
+     "a_per_article": 178.8,
+     "source_types": [
+      "industry",
+      "review"
+     ],
+     "failed": 29,
+     "blocked_url": 20,
+     "robots_denied": 6,
+     "dims": [
+      "CMF",
+      "意图",
+      "比例/姿态"
+     ]
+    },
+    "failed": [
+     {
+      "title": "日产Townstar是日产于2021年发布的紧凑型MPV/轻型 _商用车_ ，作为NV200和e-NV200的替代车型。",
+      "status": "source_skipped",
+      "url": "https://baike.baidu.com/item/%E6%97%A5%E4%BA%A7Townstar/61506287"
+     },
+     {
+      "title": "播放视频",
+      "status": "robots_denied",
+      "url": "https://t8.baidu.com/it/u=3135332405,366261449&fm=74&app=80&size=f256,256&n=0&f=JPEG&fmt=auto?s=6702DF00424B06EE4C9C7D050100E0C0&sec=1792861200&t=8db5d24b69eb7935484be756231c9a45"
+     },
+     {
+      "title": "驾驶室(驾驶员的工作场所) - 百度百科",
+      "status": "source_skipped",
+      "url": "https://baike.baidu.com/item/%E9%A9%BE%E9%A9%B6%E5%AE%A4/2507176"
+     },
+     {
+      "title": "_驾驶室 造型 设计_ - 相关论文(共804篇) - 百度学术",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=%E9%A9%BE%E9%A9%B6%E5%AE%A4+%E9%80%A0%E5%9E%8B+%E8%AE%BE%E8%AE%A1&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_hit=1"
+     },
+     {
+      "title": "装载车 _驾驶室_ 外部 _造型设计_ 中CATIA的应用",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(9f197a62a3c46072c3344052087e6f85)&filter=sc_long_sign&sc_ks_para=q%3D%E8%A3%85%E8%BD%BD%E8%BD%A6%E9%A9%BE%E9%A9%B6%E5%AE%A4%E5%A4%96%E9%83%A8%E9%80%A0%E5%9E%8B%E8%AE%BE%E8%AE%A1%E4%B8%ADCATIA%E7%9A%84%E5%BA%94%E7%94%A8&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=2185060379031713044"
+     },
+     {
+      "title": "基于行为分析的叉车 _驾驶室造型设计_ 研究",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(1b7002k0c67308q0b07q02j0k9681613)&filter=sc_long_sign&sc_ks_para=q%3D%E5%9F%BA%E4%BA%8E%E8%A1%8C%E4%B8%BA%E5%88%86%E6%9E%90%E7%9A%84%E5%8F%89%E8%BD%A6%E9%A9%BE%E9%A9%B6%E5%AE%A4%E9%80%A0%E5%9E%8B%E8%AE%BE%E8%AE%A1%E7%A0%94%E7%A9%B6&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=3094905441133513440"
+     },
+     {
+      "title": "CATIA在装载车 _驾驶室_ 外部 _造型设计_ 中的应用",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(afdf4e005592fd0d1b3a3200e104c614)&filter=sc_long_sign&sc_ks_para=q%3DCATIA%E5%9C%A8%E8%A3%85%E8%BD%BD%E8%BD%A6%E9%A9%BE%E9%A9%B6%E5%AE%A4%E5%A4%96%E9%83%A8%E9%80%A0%E5%9E%8B%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=11281913100023984756"
+     },
+     {
+      "title": "装甲防护型 _驾驶室造型设计_",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(bdae7d2b05021d5b5e80e264edf051bc)&filter=sc_long_sign&sc_ks_para=q%3D%E8%A3%85%E7%94%B2%E9%98%B2%E6%8A%A4%E5%9E%8B%E9%A9%BE%E9%A9%B6%E5%AE%A4%E9%80%A0%E5%9E%8B%E8%AE%BE%E8%AE%A1&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=16290785341892032686"
+     },
+     {
+      "title": "从模仿到自创,再到数字化座舱的超越,中国重卡 _驾驶室_ 的升级之路",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1779611072475235765%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1779611072475235765%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743229&signature=12c51d63e6036292539196afd8ddf1b2"
+     },
+     {
+      "title": "平地板 _驾驶室_ 的先驱,雷诺马格农的核心影响力,离不开这位大佬 - 卡车之家",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1650708354269559190%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1650708354269559190%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743230&signature=3314613e3b94b73d49e51ce6da2416b0"
+     },
+     {
+      "title": "欧曼 _驾驶室_ - 百度百科",
+      "status": "source_skipped",
+      "url": "https://baike.baidu.com/item/%E6%AC%A7%E6%9B%BC%E9%A9%BE%E9%A9%B6%E5%AE%A4/3858559?fr=aladdin"
+     },
+     {
+      "title": "乌鲁木齐重汽东风20米 _高空作业车_",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1875611413768780154%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1875611413768780154%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743234&signature=6d5d64e1e51d7bf4ec03def97cfed8cb"
+     },
+     {
+      "title": "烟台江铃24米东风 _高空作业车_",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1879236629922417029%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1879236629922417029%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743234&signature=5f9a0a443e5a49900fe963daaeaa3ae8"
+     },
+     {
+      "title": "![查看更多内容",
+      "status": "robots_denied",
+      "url": "https://t8.baidu.com/it/u=2667801977,498934715&fm=74&app=80&size=f256,256&n=0&f=JPEG&fmt=auto?sec=1792861200&t=9a271e7ed610bdc8254e765a09e294f2"
+     },
+     {
+      "title": "_工程机械_ 微型挖掘机 _造型_ 模型图纸 Solidworks _设计_ - 知乎",
+      "status": "robots_denied",
+      "url": "https://zhuanlan.zhihu.com/p/40158503"
+     },
+     {
+      "title": "_工程机械 造型 设计_ - 相关论文(共1176篇) - 百度学术",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=%E5%B7%A5%E7%A8%8B%E6%9C%BA%E6%A2%B0+%E9%80%A0%E5%9E%8B+%E8%AE%BE%E8%AE%A1&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_hit=1"
+     },
+     {
+      "title": "工业 _设计_ 视角下的 _工程机械_ 外观 _造型设计_",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(7442926bc7a2e0c74c07d76d9ef051af)&filter=sc_long_sign&sc_ks_para=q%3D%E5%B7%A5%E4%B8%9A%E8%AE%BE%E8%AE%A1%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84%E5%B7%A5%E7%A8%8B%E6%9C%BA%E6%A2%B0%E5%A4%96%E8%A7%82%E9%80%A0%E5%9E%8B%E8%AE%BE%E8%AE%A1&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=16479726620804258082"
+     },
+     {
+      "title": "工程机械",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=confuri%3A%28cf1f0217c709b5d1%29+%E5%B7%A5%E7%A8%8B%E6%9C%BA%E6%A2%B0&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_f_para=sc_hilight=publish&sort=sc_cited"
+     },
+     {
+      "title": "面向品牌的 _工程机械造型_ 特征 _设计_ 研究",
+      "status": "blocked_url",
+      "url": "http://xueshu.baidu.com/s?wd=paperuri:(a2738d17a6b6f57e923038bccacda0dc)&filter=sc_long_sign&sc_ks_para=q%3D%E9%9D%A2%E5%90%91%E5%93%81%E7%89%8C%E7%9A%84%E5%B7%A5%E7%A8%8B%E6%9C%BA%E6%A2%B0%E9%80%A0%E5%9E%8B%E7%89%B9%E5%BE%81%E8%AE%BE%E8%AE%A1%E7%A0%94%E7%A9%B6&tn=SE_baiduxueshu_c1gjeupa&ie=utf-8&sc_us=14935333409295661135"
+     },
+     {
+      "title": "实力 _工程机械_ 外观 _设计_ 背后的创新技术与美学融合",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1876890032155433957%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1876890032155433957%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743241&signature=fefd65aaa84da3d0f2c1f6fb140f30dc"
+     },
+     {
+      "title": "如何认识 _工程机械_ 设备 _造型设计_ 的风格分类 - 百度知道",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing_v2.html?ak=c66NZZrP4HZtBDgXqdByfpyEtsGH55H3&backurl=https%3A%2F%2Fzhidao.baidu.com%2Fquestion%2F1908355856385443700.html&bfe_logid=8211708117511945182&timestamp=1792743246&signature=9ab8a8d1f947dd2d5574e775e234d8a9"
+     },
+     {
+      "title": "_工程车辆_ 造型 _设计_ 案例",
+      "status": "blocked_url",
+      "url": "https://wenku.baidu.com/view/ee803818b964783e0912a21614791711cc797902.html?fr=aladdin266&ind=3&aigcsid=0&qtype=0&lcid=3&queryKey=%E5%B7%A5%E7%A8%8B%E8%BD%A6%E8%BE%86%20%E5%A4%96%E8%A7%82%20%E8%AE%BE%E8%AE%A1%20%E8%A7%A3%E8%AF%BB&verifyType=undefined"
+     },
+     {
+      "title": "_工程车辆_ 绘制解析",
+      "status": "blocked_url",
+      "url": "https://wenku.baidu.com/view/aa0f2827b24e852458fb770bf78a6529657d3581.html?fr=aladdin266&ind=4&aigcsid=0&qtype=0&lcid=4&queryKey=%E5%B7%A5%E7%A8%8B%E8%BD%A6%E8%BE%86%20%E5%A4%96%E8%A7%82%20%E8%AE%BE%E8%AE%A1%20%E8%A7%A3%E8%AF%BB&verifyType=undefined"
+     },
+     {
+      "title": "_工程车辆 外观 设计 解读_ - 精选笔记",
+      "status": "blocked_url",
+      "url": "https://www.baidu.com/s?pd=note&rpf=pc&word=%E5%B7%A5%E7%A8%8B%E8%BD%A6%E8%BE%86+%E5%A4%96%E8%A7%82+%E8%AE%BE%E8%AE%A1+%E8%A7%A3%E8%AF%BB&sa=vs_video_top_ugc"
+     },
+     {
+      "title": "高空作业车-高空设备-厂家直销-价格优惠-欢迎咨询",
+      "status": "robots_denied",
+      "url": "https://www.baidu.com/baidu.php?url=Kf0000K5cNxA6dzipRV9XCxOPJhtWF2TtgmVSNbA37QTiT3siijB_jkV95KVHCj3BI0q-kS2-grZys8541gx3BY_GiXwbdgupO3fa0cPt_QIN3wUybjr6jr7lD1CpB26dvSlpMVymt1zGaxjWAave9l3ll0jqbLXuy-PHDlJ4Mi9Vy1QTLxvBT31j1cqjpE7thWf_Vsn-VBXXvoQ1Ndx2gtK6w8H.7b_NR2Ar5Od663rj6tCvuJ2XiavrjNf6eOjSU3N2s1f_NePvlVf.U1Yk0ZDq8PSOdIxLYoy1ViRznPH_YnY-nWjFlQ1AFHcsEX2vsfKspynqn0KsTv-MUWd-mhm4nW6vPHfLPH7huAuhnW7Wnhu-njf4nymsrjmsm6KY5UWxEqggqq2d_eR0pyYqnWcd0ATqTZPWUvdBUsKdpHdBmy-bIfKspyfqnWD0mv-b5HDdPfKVIjY4njRsg1DsnHIxnW0dnNtknjD4g1csPWFxn1msnfKopHYs0ZFY5HDLPfKBpHYkPH9xnW0Y0AdW5HbsPHKxnH0kPdtznjRkg1DsnH-xnW0vn-ts0Z7spyfqn0Kkmv-b5H00ThIYmyTqn0K8my-b5H00Uh7YTjYs0APdujYYnWbznjmsrHT0mycqn7ts0ANzu1Ys0ZKs5H00UMus5H08nj0snj0snj00Ugws5H00uAwETjYs0ZFJ5H00uANv5gKW0AuY5H00TA6qn0KET1Ys0AFL5HDs0A4Y5H00TLCq0A71gv-bm1dsTzdBuAw30A-bm1dcfbR0TA9YXHY0IA7zuvNY5Hnkg1nknNtknHD0IZN15Hnzrjm4P16srH61PHR1nWRkrHc0ThNkIjYkP1bzP1f1nWcdP1cL0A-W5H00Tv-b5yRYP1fkPWR4nj0snyf3Pvn0mLPV5RNAnjNaP1RswjD1rHb1PWm0UAF15H00mynqnfKsUWYs0Z7VIjYs0Z7VT1Ys0ZGY5H00mMub5H00uLKY5HD0uv7Y5HD0UyPxuMFEUHYsg1Kxn7tsg1Kxn0Kbmy4dmhNxTAk9Uh-bT1YYPWmYPWcdg1Kxn7tsg1Kxn0Ksmgwxuhk9u1Ys0AwWpyfqnHb4nWc4Pjf0ugwGujYVnfK9TLKWm1Ys0ZNspy4Wm1Ys0Z7VuWYs0AuWIgfqn0KGTvP_5H00mywhUA7M5HD0UAuW5H00uAPWujY0IZF9uARqnW0sPH0d0AFbpyfqn1b3wRPjf1fLPHuDf1wDnjnYf1csn1-DrHPAwjDzrDR0UvnqnfKBIjYs0Aq9IZTqn0KEIjYs0AqzTZfqnanscznsc10WnansQW0snj0snanscYwANansczYWna3snj0snj0Wni3snj0snj0Wnansc108nj0snj0sc10Wnansc10Wnansc10Wna3snansc100mh78pv7Wm1Ysc10Wnans0Z91IZRqn1Dsrjnkn1m0TNqv5H08PH9xna3sn7tsQW0sg108PjFxna3sn7tsQW0sg108nHwxna3kP7tsg1Kxn0KBTdqsThqbpyfqn0KzUv-hUA7M5H00UyNY5H00mLmq0A-1gvPsmHYs0APs5H00ugPY5H00TyILujYs0AqsnHYs0ZKsPjYz0APzm1YdrjD1n0&us=newvui&xst=mWY1rH97fYPjPjTdPbwjPDfsn1wjnW01rRf4nYuDnHc3wf715HDvPjmkrj0LnH04PjRYnjcvrjTvg1czPNts0gTq8PSOdIxLYoy1Vf7k5UWxEqggqq2d_eR6dr1f1ijFlQ1AcQLBV_DKIHY1nH03n1D1P67Y5HDLrHcLPjnznWmKUgDqn0cs0BYKmv6quhPxTAnKUZRqn07WUWdBmy-bIf7zIjYs0HRLnjn1P1fLn6&word=&ck=0.0.0.0.0.0.0.0&shh=www.baidu.com"
+     },
+     {
+      "title": "直臂伸缩臂高空作业车,操作简单,安全高效,满足您的高空作业需求",
+      "status": "robots_denied",
+      "url": "https://www.baidu.com/baidu.php?url=Kf0000K5cNxA6dzipTJoVq1E9pAxDWpwxUljwTLVOb_jnsLYhzaNG765yNc_k2PWZ6nV5hcaMrZYu5p98ATQXhiQD7oY9O2QNVk5RY3nmFvco3wmiQtijBcaub8ZmQaiqxCfHa3tsVQkxXIBDMbLJtvRmCGKV1s2ZlduZ4Jp0KqppK_nJ7L1BotuyuO_stAAFfHwIJpZRQzNWg0gNf_e1DQe5MQl.DY_NR2Ar5Od66EzgSNerQ0BK-qjgKZLqWAZ1tTrOdsSEu9tqhZu33IhHj4qhZdSZjlen5M33xg3T5VL3x5u9vXrZubsSXOjexgjEvmx5ksSLx9qxU9tS1jlOQjESZj4qhZdvmIOVsSX1jlOQjeXMoohIGmWi1PjNdd3hrhExgbLIrOFdWCp2Q7Oy5Dkg8o_o3qMNM-eRlrKYdvFB8Eu3qreGvIr1xELIyXgKDS9BmozI-xHEvyTXreJ1z3lQnyFB8Ex8LI5WYderVqLQqAFBQqOHOv51xVOQW7-Ofem_VOOmOPSOoWBOUYtx1N3rBQqOgqDg4pZUJoSRTgWfOeAJE4T54_8hlUQOoOeDget5A2ki_nYQZu8LdJ0.U1Yk0ZDq8PSOdIxLYoy1ViRznPH_YnY-nWjFlQ1AFHcsEX2vsfKspynqnfKY5Ipk_IEFenEd_I83LeONdOxiVUrd0A-V5HDYPWD0u1dsTvPEUyFE0ZNG5yF9pywd0ZKGujYznfKWpyfqnHRd0AdY5HDsnHIxnW0dnNtknjD4g1nvnj7xrHDLr0KopHYs0ZFY5HDLPfKBpHYkPH9xnW0Y0AdW5HDsnHIxnW0dnNtknjD4g1KxrHDLr0KkTA-b5H00TyPGujYs0ZFMIA7M5H00Uh7GujYs0A49IZ0qn0KWIyfqnW0snj0snj0sn0K9mWYsg100ugFM5H00TZ0qn0K8IM0qna3snj0snj0sn0KVIZ0qn0KbuAqs5H00ThCqn0KbugmqTAn0uMfqn0KspjYs0Aq15H00mMTqnH00UMfqn0K1XWY0mgPxpywW5gK1QyFbuZ60pywW5R9awfKspZw45fKYmgFMugfqn17xn1DYg1DknfKYIgnqPWf1rHbLrjbvPj6sP101rjm3PsKzug7Y5HDLrHcLPjnznWRLnWT0pynqn0K1pyfquHfLPjDvPHbsnj0kuj6LmsKWTvYqwRmsPRcLPHKDnHn4rHnvP6K_mMnqn0K9m1Yk0ZK85H00TydY5H00Tyd15H00XMfqn0KBIhfqn6KMTZfqnfKMmgfqnfKVmdqhThqV5HKxn7tsg1Kxn0Kbmy4dmhNxTAk9Uh-bT1Ysg1Kxn7tsg100TA7Ygvu_myTqn0Kbmv-b5HmLnWn4rHfL0ANYpyfqPWf0mgPsmvnqn0KdTA-8mvnqn0KkUymqn0KhmLNY5H00pgPWUjYs0A7buhk9u1Yk0Akhm1Ys0AwWmvfq0Zwzmyw-5HcsnWfsnfKBuA-b5Hn4rDNjfYnYP1RvwDnYwj01PDnznjn4wjb1wbfknW970AFY5HD0Uv7YI1Ys0AqY5HD0ULFsIjYzc10WnWTWnBn1P16dnHRvPHRLc1n3nj0Wn16sna3snj0snj0Wnanzc10WQinsQW01rHRdninkQW0snj0snankc10Wna3snj0snj0WnanznjmvnjmvrjDsPansc10Wninsc10Wna3snan1rj0sc100mh78pv7Wm1Ysc10Wnans0Z91IZRqn1D4rHDLn1f0TNqv5H08njwxna3sn7tsQW0sg108P19xna3sn7tsQWD3g108Pj-xna3YrNtsg1Kxn0KBTdqsThqbpyfqn0KzUv-hUA7M5H00UyNY5H00mLmq0A-1gvPsmHYs0APs5H00ugPY5H00TyILujYs0AqsnHYkPjf0TZ0Y5HDs0APzm1YknHDkr0&us=newvui&xst=mWY1rH97fYPjPjTdPbwjPDfsn1wjnW01rRf4nYuDnHc3wf715HDvPjmkrj0LnH04PjRYnjcvrjTvg1DYPW7xn07L5Ipk_IEFenEd_I83LeONdOxiVUrd0gDq8PSOdIxLYoy1VijRePjPcnMCEnm6EX2vsf7d5HnkrHbkP1nY0gfqnHT4nWTYn1czP67VTHYs0W0aQf7Wpjdhmdqsms7_IHYs0yP85yF9pywd0gFY5H0KnWcvPH0knjRvrf&word=&ck=0.0.0.0.0.0.0.0&shh=www.baidu.com"
+     },
+     {
+      "title": "不要忽视 _高空作业车_ 的结构稳定性,它关乎作业效率与安全底线",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1865296010424688935%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1865296010424688935%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743251&signature=26431bdce2db60bd594b793cc964cfce"
+     },
+     {
+      "title": "高空作业车辆-全新升级-操作灵活-安全防护-效率提升",
+      "status": "robots_denied",
+      "url": "https://www.baidu.com/baidu.php?url=Kf0000K5cNxA6dzippApZBoC6gVLdGeEmxY2oszPFma4hLPanrUpfXLi9Em8QbZaGgCRqmuM1AaG7ryDo0uzppKuyL57ddQS3WAvAU3jRwIQNtMxpp2ipQn3_CiYMkS4iPX3jyrsA2nWQ9d-JM0oTaqoKEjglLjPlZWPN5PEDsUIozIBpsIGvPGBmc8unAX4TM2QHJfX0Pn6huB8Gx58NjI1Dxb6.7b_NR2Ar5Od66hHTSunPjzWxGEutJjQovgc6h8es_mc8E0k6BXl2PrMov_X5ug3eVIxAZke2qLWIol3vPrM-zI5HkzuPv1-3eorzEFb4XrHIkvX5HblL_xtyEOB35dPxO6SZ1OQSU2OO_xzQOuo3X_UZgykNfCm3t5Zv3TMds45o6C_kgXNK-deQbmTMdWHGs45ofEWi1PjN93OyurEZBstx-GYt8HGlXrHF8vTEZIuvN4nMQkzU8r1klThZFYqJIZ0lpejkSyZF8tqSZF8qEo9zUVS1jbLXxW9zUEUEs4PLoeTrHI4qhZF8qx-9zUVOs3The1enrHIlenrHIEq8ZF8tqhZF8qx-9zUEUY3The1vmThedttrHI_lTrHI4enrHIlOQjbLXLGRojPak8tIMWER.U1Yk0ZDq8PSOdIxLYoy1ViRznPH_YnY-nWjFlQ1AFHcsEX2vsfKspynqnfKY5UWxEqggqq2d_egKEord0A-V5HDdn1f0u1dsTvPEUyFE0ZNG5yF9pywd0ZKGujYznfKWpyfqnHRd0AdY5HDsnHIxn1Dzn7tznjRkg1DsnH-xn1msnfKopHYs0ZFY5HDLPfKBpHYkPH9xnW0Y0AdW5HDsnHIxn1Dzn7tznjRkg1DsnH-xn0KkTA-b5H00TyPGujYs0ZFMIA7M5H00Uh7GujYs0A49IZ0qn0KWIyfqPjc4nH0LnHRL0A7B5HKxn0K-ThTqn0KsTjYs0A4vTjYsQW0snj0snj0s0AdYTjYs0AwbUL0qn0KzpWYs0Aw-IWdsmsKhIjYs0ZKC5H00ULnqn0KBI1Ykn0K8IjYs0ZPl5fK9TdqGuAnqTZnVmhwbX0KGuAnqiDF70ZKCIZbq0Zw9ThI-IjY1nNt1nHFxnHc0IZN15HDLnWn4nHRsnW03nWmsrHcsPWbL0ZF-TgfqnHT4nWTYn1czPHTzPsKGm1Ys0ZPGujd-PjTYnHmdrH0snj7brjIW0AP1UHd7wW0dfWTdnDfkn1b4n1mv0AkBT1Ys0A7W5HD0TA3qn0KkUgfqn0KkUgnqn0KlIjYs0AFvujYs0AIsIjYk0AI9IjYk0AdWgvuzUvYqn7tsg1Kxn7ts0Aw9UMNBuNqsUA78pyw15HKxnH04Pjc3njD3g1Kxn7ts0ZK9I7qhUA7M5H00uAPGujYkn1DsP1R0ugwGujYvP0K9TLKWm1Ys0ZNspy4Wm1Ys0Z7VuWYs0AuWIgfqn0KGTvP_5H00mywhUA7M5HD0UAuW5H00uAPWujY0IZF9uARqnW0znW0z0AFbpyfqn1b3wRPjf1fLPHuDf1wDnjnYf1csn1-DrHPAwjDzrDR0mMfqn0KEmgwL5H00ULfqn0KETMKY5H0WnanWnansc10Wna3snj0snj0WnaPDw-fWnanVc108nj0snj0sc1D8nj0snj0sc10WnansQW0snj0snansc10Wnansc10Wnansc108nj0Wnans0AF9UhV9mvnqnansc10Wn0KkgLmqna3snNtsQW0sg108njKxna34r7tsQW0sg108nj7xna31ndtsQWn1g1Kxn7ts0AF1gLKzUvwGujYs0ZFEpyu_myTqn0KsTMP-5HRY0Ad-IjYs0APv5fKGTdqWTADqn0KWTjYs0AN1IjYs0Z7MIvfqn0KETjDqn0KsTjfqn6KWThnqnHDYrjm&us=newvui&word=&ck=0.0.0.0.0.0.0.0&shh=www.baidu.com"
+     },
+     {
+      "title": "_高空作业车_ 工作平台调平机构 - 百度文库",
+      "status": "blocked_url",
+      "url": "https://wenku.baidu.com/view/ca079c7d27284b73f242502a.html"
+     }
+    ]
+   },
+   "decision": {
+    "action": "replan",
+    "reasons": [
+     "A 占比 2.5% < 6.0%",
+     "失败率 88% > 60%",
+     "类目档案缺失且通用层产出不足"
+    ],
+    "scope": [
+     "expand_design_queries",
+     "switch_sources",
+     "generic_layer",
+     "propose_profile"
+    ],
+    "constraints": [
+     "robots/UA/授权",
+     "配额上限",
+     "账本不变量",
+     "原图不可变",
+     "人工检查点",
+     "schema 校验"
+    ]
+   }
+  },
+  {
+   "round": 2,
+   "plan": {
+    "batch_id": "batch-text-20261023-161418-r2",
+    "purpose": "text_design_scan",
+    "category": "高空作业车",
+    "models": [],
+    "profile_ref": null,
+    "profile_status": "missing",
+    "queries": {
+     "industry": [
+      "工程机械 工业设计",
+      "特种车辆 外观 设计 解读",
+      "商用车 CMF 色彩 材质 趋势",
+      "作业车 造型 设计"
+     ],
+     "review": [
+      "高空作业车 驾驶室 设计",
+      "专用车 造型 设计"
+     ],
+     "academic": [
+      "高空作业车 工业设计 研究",
+      "工程机械 造型设计 研究"
+     ]
+    },
+    "quota": {
+     "industry": 3,
+     "review": 2,
+     "academic": 2
+    },
+    "negative_terms": [
+     "油耗",
+     "马力",
+     "配置",
+     "报价",
+     "优惠",
+     "试驾",
+     "保养",
+     "维修",
+     "参数",
+     "经销商",
+     "促销",
+     "扭矩",
+     "变速箱",
+     "发动机",
+     "裸车价",
+     "促销价",
+     "询价"
+    ],
+    "relevant_terms": [
+     "高空作业车",
+     "工程机械",
+     "商用车",
+     "工程车辆",
+     "驾驶室"
+    ],
+    "skip_domains": [
+     "docin.com",
+     "baike.baidu.com",
+     "b2b.baidu.com"
+    ],
+    "budget": {
+     "max_queries": 10,
+     "max_fetch": 10,
+     "max_rounds": 2
+    },
+    "round": 2,
+    "fallback": [
+     "generic_layer",
+     "switch_sources",
+     "propose_profile"
+    ]
+   },
+   "grade": {
+    "batch_id": "batch-text-20261023-161418-r2",
+    "docs": [
+     {
+      "title": "解读：重卡驾驶室从模仿到自创的升级_卡车之家",
+      "url": "https://www.360che.com/news/231010/184772.html",
+      "source_type": "review",
+      "chars": 6808,
+      "a_chars": 1121,
+      "a_count": 11,
+      "a_share": 0.1647,
+      "dims": [
+       "CMF",
+       "意图"
+      ],
+      "source_trust": "high",
+      "top_passages": [
+       "随着运输业的发展和技术进步，到了90年代左右，中国重卡的驾驶室环境有了显著改善。驾驶座椅采用了机械减震设计，驾驶室与大梁采用气囊减震，提高了驾驶员的舒适性。密封性和隔音性的提升使得驾驶室内的噪音得到有效控制，乘坐感受也显著提升。此外，驾驶室的设计开始注重外观和质感，给人一种更加现代化和舒适的感觉。",
+       "大约在10年之前，中国重卡向欧洲同行学习成为一种热潮，驾驶室设计更加前卫和时尚。方向盘和档把的设计更加符合重卡的风格，仪表盘采用双色搭配，提升了整体的视觉效果。驾驶室的密封性和隔音性继续改善，使得驾驶员在驾驶过程中能够更好地享受舒适的环境。驾驶室的布局也更加人性化，高低顶的设计提供了更多的休息空间，但在上下卧铺时可能存在一些不便之处。",
+       "驾驶室设计和开发涉及到多个方面的技术、制造和工艺，因此相对复杂。一款全新驾驶室的开发也需要大量的资金投入。按照行业标准，至少需要上亿资金，甚至更多。"
+      ]
+     },
+     {
+      "title": "爱采购寻源宝",
+      "url": "https://ckjzcf.smartapps.baidu.com?_swebScene=3711000610001000&_chatQuery=%E6%8C%96%E6%8E%98%E6%9C%BA%E5%8D%87%E9%99%8D%E9%A9%BE%E9%A9%B6%E5%AE%A4%E8%AE%BE%E8%AE%A1%E5%9B%BE&searchid=82f13a2e000285a2&_chatParams=%7B%22agent_id%22%3A%224891%22%2C%22content_build_id%22%3A%2238f148bc%22%2C%22from%22%3A%22q2c%22%2C%22token%22%3A%22VGF2ekhJNDBHUTB3T0ZkeWtrYURLTzFWekJqc0VhdDVEQ01lVFNRQVBBWkh0S1lUbklhNkpaQ2lUTnM1U083OGE4M3poWksxRm1GRjYrQUdqaVg2SzNpVHdjc2xWQnJTRkZKTXN2SzRSRWxtNzRSc1FoRHdzUmlzVXVYN1oxOGFlRHBBL0lhVE4vdVFlanZJTGJCMmtlOCtzbkZFZm9LVFhRbVVkVFJyRVo2TEJvM2tXS2Q4VTJBa2c1cnFQZE40%22%2C%22chat_no_login%22%3Atrue%7D",
+      "source_type": "review",
+      "chars": 0,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "medium",
+      "top_passages": []
+     },
+     {
+      "title": "工程机械总体与工装设计 (豆瓣)",
+      "url": "https://book.douban.com/subject/11511401/",
+      "source_type": "industry",
+      "chars": 608,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "medium",
+      "top_passages": []
+     },
+     {
+      "title": "毕设设计|机械设计|机械毕业设计|机械毕设项目|—纯电动垂直升降高空作业车的建模_高空作业平台升降车论文-CSDN博客",
+      "url": "https://blog.csdn.net/2201_75937987/article/details/153195545",
+      "source_type": "academic",
+      "chars": 18654,
+      "a_chars": 602,
+      "a_count": 2,
+      "a_share": 0.0323,
+      "dims": [
+       "CMF",
+       "意图"
+      ],
+      "source_trust": "medium",
+      "top_passages": [
+       "AI编程实战：零基础用AI搭建YOLO27/YOLO26/YOLO11/YOLOv8 _毕设_ _项目_ （附完整Prompt） 已经选好了 _毕设_ 题目，也写完了开题报告，接下来该怎么开始写代码？对于很多计算机、人工智能、软件工程专业的本科生来说，真正困难的不是没有代码，而是不知道如何把一个 _项目_ 从空文件夹逐步搭建起来：目录怎么 _设计_ 、依赖如何管理、AI 生成的代码能不能运行、报错",
+       "在结构改进方面，针对操纵稳定性受质心高度和重量分布影响的问题，重新设计车架结构，采用高强度铝合金等轻质材料替换部分传统钢材，在保证结构强度的前提下，降低整车重量 。优化底盘与升降机构的连接方式，增强连接部位的刚性，减少在作业过程中的振动和变形 。如采用新型的焊接工艺或高强度连接件，提高连接的可靠性。对于升降机构，优化剪叉连杆的结构形状和尺寸，增加其强度和稳定性 。例如，通过有限元分析，对连杆的截面"
+      ]
+     }
+    ],
+    "metrics": {
+     "articles": 4,
+     "articles_with_a": 2,
+     "total_chars": 26070,
+     "a_chars": 1723,
+     "b_chars": 11262,
+     "a_share": 0.0661,
+     "a_per_article": 430.8,
+     "source_types": [
+      "academic",
+      "industry",
+      "review"
+     ],
+     "failed": 12,
+     "blocked_url": 4,
+     "robots_denied": 3,
+     "dims": [
+      "CMF",
+      "意图"
+     ]
+    },
+    "failed": [
+     {
+      "title": "起重机 _驾驶室_ 标准及要求解析-百度爱采购",
+      "status": "source_skipped",
+      "url": "https://b2b.baidu.com/q/aland?q=0F391F11723375140372031B78231E7575791B630E3A742B073F&id=qidecfc5f38bd87dfabe336d70818e7bd9c&answer=2720948086762224883&utype=2"
+     },
+     {
+      "title": "中国 _工程机械_ 不够高端?_工业设计_ 如何比肩欧美?",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1714759415466700638%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1714759415466700638%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743263&signature=18259dcb4d6da2d4933ff3b0f23f7ea0"
+     },
+     {
+      "title": "浅析 _工业设计_ 视角下的 _工程机械_ 产品外观造型设计",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1837859534130737583%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1837859534130737583%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743264&signature=253b9e4bc06154bc398240dc98b6d3c1"
+     },
+     {
+      "title": "![查看更多内容",
+      "status": "robots_denied",
+      "url": "https://t9.baidu.com/it/u=3307074681,1047260440&fm=74&app=80&size=f256,256&n=0&f=JPEG&fmt=auto?s=BB2A6F81060A0AEE0A8C851903009093&sec=1792861200&t=d95c5acec5d450d1976e8c3df5cf4c94"
+     },
+     {
+      "title": "![查看更多内容",
+      "status": "robots_denied",
+      "url": "https://t8.baidu.com/it/u=3541984035,853242197&fm=74&app=80&size=f256,256&n=0&f=JPEG&fmt=auto?sec=1792861200&t=70e34afcf76ccb120b241beb6e75b9bc"
+     },
+     {
+      "title": "_高空作业车_ 机械综合 _设计_ _图文",
+      "status": "too_short",
+      "url": "https://www.renrendoc.com/paper/187157466.html"
+     },
+     {
+      "title": "_高空作业车_ 作业平台毕业 _设计_ 附全套图纸",
+      "status": "too_short",
+      "url": "https://www.renrendoc.com/paper/195214682.html"
+     },
+     {
+      "title": "探秘科奥湖北 _高空作业车_ 工厂智能生产线与安全 _设计_",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1864571953398277838%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1864571953398277838%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1792743279&signature=4a3d195a52877256e442c6849d9d5f39"
+     },
+     {
+      "title": "机械毕设毕业 _设计_ 之纯电动垂直升降 _高空作业车_ 的建模设计毕设演示_哔哩哔哩_bilibili",
+      "status": "blocked_url",
+      "url": "https://www.bilibili.com/video/BV1bQtQz2EpS/"
+     },
+     {
+      "title": "_工程机械_ 外观 _造型设计_(工业设计范文) - 豆丁网",
+      "status": "source_skipped",
+      "url": "https://www.docin.com/touch_new/preview_new.do?id=2491481067"
+     },
+     {
+      "title": "工业设计视角下的 _工程机械_ 外观 _造型设计_.docx",
+      "status": "too_short",
+      "url": "https://www.renrendoc.com/paper/235286086.html"
+     },
+     {
+      "title": "_工程机械_ 载运产品形态 _设计_ 方法 _研究_ |科研之友",
+      "status": "robots_denied",
+      "url": "http://www.baidu.com/link?url=xYez77zJRmRSgLC3hyoWN3xGuykv0kqynnInnaasAqgz0ACARDlUG9386D9VxBIi"
+     }
+    ]
+   },
+   "decision": {
+    "action": "stop",
+    "reasons": [
+     "失败率 75% > 60%",
+     "已用 2/2 轮，停止并上报缺口"
+    ],
+    "scope": [],
+    "constraints": [
+     "robots/UA/授权",
+     "配额上限",
+     "账本不变量",
+     "原图不可变",
+     "人工检查点",
+     "schema 校验"
+    ]
+   }
+  }
+ ],
+ "artifacts": {
+  "run_dir": "data-test\\runs\\run-gaokong-blind-v2",
+  "report": "data-test\\runs\\run-gaokong-blind-v2\\report.md",
+  "events": "data-test\\runs\\run-gaokong-blind-v2\\events.jsonl"
+ }
+}

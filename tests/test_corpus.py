@@ -87,6 +87,23 @@ def test_slugify():
     assert len(h) == 12 and h.isalnum()
 
 
+def test_serp_blocked_and_bing():
+    assert corpus.serp_looks_blocked("")
+    assert corpus.serp_looks_blocked("百度安全验证，输入验证码")
+    assert corpus.serp_looks_blocked("没有与此相关的结果")
+    assert not corpus.serp_looks_blocked("高空作业车外观设计全文" * 20)
+    url = corpus._bing_serp_url("高空作业车 造型")
+    assert url.startswith("https://www.bing.com/search?q=") and "format=rss" in url
+    rss = ("<rss><channel>"
+           "<item><title><![CDATA[高空作业车造型解读]]></title>"
+           "<link><![CDATA[https://www.360che.com/a.html]]></link></item>"
+           "<item><title>百度百科</title><link>https://baike.baidu.com/x</link></item>"
+           "</channel></rss>")
+    md = corpus._parse_bing_rss(rss)
+    assert "[高空作业车造型解读](https://www.360che.com/a.html)" in md
+    assert "[百度百科](https://baike.baidu.com/x)" in md
+
+
 def test_write_doc_and_summarize():
     tmp = Path(tempfile.mkdtemp())
     try:
@@ -114,6 +131,7 @@ if __name__ == "__main__":
     check("锚点抽取过滤与去重", test_pick_anchors_filters_and_dedup)
     check("锚点排除与上限", test_pick_anchors_exclude_and_cap)
     check("slug 生成", test_slugify)
+    check("SERP 被拦识别与 Bing RSS 解析", test_serp_blocked_and_bing)
     check("语料落盘与结算", test_write_doc_and_summarize)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:

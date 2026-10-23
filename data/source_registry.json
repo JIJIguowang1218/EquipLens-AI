@@ -1,0 +1,31 @@
+{
+ "version": "0.1",
+ "updated_at": "2026-10-23",
+ "purpose": "来源可信度与适配性注册表：检索计划按类目选源，段落评估按来源加权；不是硬性黑名单。",
+ "trust_tiers": {
+  "high": "原创行业媒体/厂商设计中心/学术全文，设计文本产出率高",
+  "medium": "门户转载或垂类门户，可能有 AI 生成/SEO 稿，需抽检",
+  "low": "问答/百科/文档预览/经销商页，只作线索，不作 A 候选",
+  "exclude": "商品批发/价格/配置列表，直接排除"
+ },
+ "sources": [
+  {"domain": "360che.com", "type": "truck_media", "trust": "high", "design_yield": "high", "notes": "卡车之家图解/详评/技术；T17/T18 主要正例来源"},
+  {"domain": "dealer.360che.com", "type": "dealer_media", "trust": "medium", "design_yield": "medium", "notes": "经销商页，但 T17 的《浅谈中国重卡造型设计》出自此域；需看正文质量"},
+  {"domain": "pcauto.com.cn", "type": "auto_portal", "trust": "medium", "design_yield": "medium", "notes": "太平洋汽车；问答页多为泛化描述"},
+  {"domain": "autohome.com.cn", "type": "auto_portal", "trust": "medium", "design_yield": "medium", "notes": "汽车之家；问答/导购多，需看正文"},
+  {"domain": "jianshu.com", "type": "ugc", "trust": "low", "design_yield": "low", "notes": "简书等 UGC；T18 盲测出现价格问答页"},
+  {"domain": "163.com", "type": "portal", "trust": "medium", "design_yield": "medium", "notes": "网易号转载；正文常带 80+ 推荐位，且疑似 AI/SEO 稿，需清洗与抽检"},
+  {"domain": "qq.com", "type": "portal", "trust": "medium", "design_yield": "medium", "notes": "腾讯新闻转载；同上"},
+  {"domain": "docin.com", "type": "doc_preview", "trust": "low", "design_yield": "preview_only", "notes": "豆丁只有摘要预览，不能作为正文证据"},
+  {"domain": "baike.baidu.com", "type": "encyclopedia", "trust": "low", "design_yield": "none", "notes": "百科；robots 常拒"},
+  {"domain": "b2b.baidu.com", "type": "procurement", "trust": "exclude", "design_yield": "none", "notes": "百度爱采购商品/厂家页；T18-broad 起重机查询被其淹没"},
+  {"domain": "sinotruk.com", "type": "oem", "trust": "high", "design_yield": "low", "notes": "中国重汽官网；参数/新闻为主，设计解读少"},
+  {"domain": "faw.com", "type": "oem", "trust": "high", "design_yield": "low", "notes": "一汽解放官网；同上"}
+ ],
+ "exclude_patterns": ["/pic", "/photo", "/comment", "/share", "/fav", "/download", "/price", "/dealer"],
+ "negative_terms": ["油耗", "马力", "配置", "报价", "优惠", "试驾", "保养", "维修", "参数", "经销商", "促销", "扭矩", "变速箱", "发动机", "裸车价", "促销价", "询价"],
+ "notes": [
+  "exclude_patterns 只作降权线索：T18-broad 有 4 篇好文被 /pic、/comment 等规则误拦，正式执行应先抓后判或进人工复核队列。",
+  "trust 是选源先验，不是最终判决；段落评估仍看正文证据。"
+ ]
+}

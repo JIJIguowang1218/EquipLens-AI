@@ -1,0 +1,21 @@
+{"ts": "2026-10-23T16:03:58.964", "event": "run_start", "meta": {"intent": "tmp/intent-suicheche.json", "category": "随车吊", "models": [], "profile": null}}
+{"ts": "2026-10-23T16:03:58.964", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 66, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-23T16:03:58.964", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-23T16:03:58.966", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.3, "status": "ok"}
+{"ts": "2026-10-23T16:03:58.966", "event": "stage_start", "stage": "plan_r1", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:03:58.968", "event": "stage_end", "stage": "plan_r1", "duration_ms": 1.4, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:03:58.968", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261023-160358"}
+{"ts": "2026-10-23T16:04:14.639", "event": "tool_call", "name": "corpus.collect_corpus", "args": {"batch_id": "batch-text-20261023-160358", "queries": 2, "quota": {"industry": 3, "review": 3}}, "result": {"saved": 18}, "duration_ms": 15670.9, "status": "ok"}
+{"ts": "2026-10-23T16:04:14.639", "event": "stage_end", "stage": "execute_r1", "duration_ms": 15671.3, "status": "ok", "batch_id": "batch-text-20261023-160358"}
+{"ts": "2026-10-23T16:04:14.639", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261023-160358"}
+{"ts": "2026-10-23T16:04:14.652", "event": "stage_end", "stage": "grade_r1", "duration_ms": 12.7, "status": "ok", "batch_id": "batch-text-20261023-160358"}
+{"ts": "2026-10-23T16:04:14.653", "event": "decision", "action": "replan", "reason": "文章数 1 < 3; A 占比 1.9% < 6.0%; A 字数 99 < 300; 来源类型 1 < 2; 失败率 94% > 60%; 类目档案缺失且通用层产出不足", "round": 1, "scope": ["expand_design_queries", "switch_sources", "generic_layer", "propose_profile"], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-23T16:04:14.653", "event": "stage_start", "stage": "plan_r2", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:04:14.656", "event": "stage_end", "stage": "plan_r2", "duration_ms": 2.1, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:04:14.656", "event": "stage_start", "stage": "execute_r2", "batch_id": "batch-text-20261023-160414-r2"}
+{"ts": "2026-10-23T16:04:43.912", "event": "tool_call", "name": "corpus.collect_corpus", "args": {"batch_id": "batch-text-20261023-160414-r2", "queries": 2, "quota": {"industry": 3, "review": 3}}, "result": {"saved": 26}, "duration_ms": 29255.1, "status": "ok"}
+{"ts": "2026-10-23T16:04:43.913", "event": "stage_end", "stage": "execute_r2", "duration_ms": 29255.6, "status": "ok", "batch_id": "batch-text-20261023-160414-r2"}
+{"ts": "2026-10-23T16:04:43.913", "event": "stage_start", "stage": "grade_r2", "batch_id": "batch-text-20261023-160414-r2"}
+{"ts": "2026-10-23T16:04:43.945", "event": "stage_end", "stage": "grade_r2", "duration_ms": 32.8, "status": "ok", "batch_id": "batch-text-20261023-160414-r2"}
+{"ts": "2026-10-23T16:04:43.946", "event": "decision", "action": "stop", "reason": "A 占比 0.8% < 6.0%; A 字数 228 < 300; 失败率 88% > 60%; 类目档案缺失且通用层产出不足; 已用 2/2 轮，停止并上报缺口", "round": 2, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-23T16:04:43.947", "event": "run_end", "duration_ms": 44982.9, "summary": {"status": "ok", "rounds": 2, "final_action": "stop"}, "metrics": {"articles": 4, "articles_with_a": 3, "total_chars": 33697, "a_chars": 327, "b_chars": 2154, "a_share": 0.0097, "a_per_article": 81.8, "source_types": ["industry", "review"], "failed": 40, "blocked_url": 17, "robots_denied": 21, "dims": []}}

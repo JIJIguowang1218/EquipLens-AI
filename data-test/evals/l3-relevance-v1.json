@@ -1,0 +1,111 @@
+{
+ "eval_id": "l3-relevance-v1",
+ "created": "2026-10-23",
+ "purpose": "L3 段落级类目相关性/主题类型判定的评测基准。由对话模型（LLM judge）逐段标注，产品负责人可复核。",
+ "judging_criteria": {
+  "A_cat": "明确描述目标类目或其部件的形态/CMF/比例/设计意图，有具体证据（部件名、形状、材质、色彩、比例关系）",
+  "A_comp": "描述目标类目的共享部件（如驾驶室/吊臂/支腿），有具体形态证据，但不指名目标类目",
+  "A_gen": "通用设计分析/行业观察，可迁移到目标类目，有具体论据，但不针对特定车型",
+  "C": "跑题（其他类目）、空洞（只有形容词无具体证据）、错类型（竞赛/毕设/价格/经销商/新闻通稿）"
+ },
+ "items": [
+  {
+   "id": "01",
+   "title": "程力随车吊——超越千万的设计",
+   "url": "https://www.chenglix.com/xingyezixun/15495.html",
+   "run": "run-suicheche-blind-v2",
+   "current_label": "A",
+   "current_a_chars": 99,
+   "llm_tier": "C",
+   "subject": "随车吊（经销商宣传页）",
+   "concrete_anchors": ["黄色配色", "流线型"],
+   "reason": "空洞营销：仅一句'经典的黄色配色和流线型的造型让人过目难忘'，无具体部件、无形态细节、无比例/CMF 深度。是宣传语不是设计分析。"
+  },
+  {
+   "id": "10",
+   "title": "中联杯国际大学生设计竞赛2026：工程机械设计从选题到答辩全攻略",
+   "url": "https://bbs.csdn.net/weixin_30047059/article/details/100618905",
+   "run": "run-suicheche-profile",
+   "current_label": "A",
+   "current_a_chars": 463,
+   "llm_tier": "C",
+   "subject": "设计竞赛流程/评分策略",
+   "concrete_anchors": ["力量感", "稳定感", "科技感", "色彩搭配"],
+   "reason": "错类型：讲怎么打设计比赛、怎么组队、评分策略，不是对某台工程机械的设计分析。有设计词汇但主题是教育/流程。"
+  },
+  {
+   "id": "12",
+   "title": "欧洲合资的超高紧凑型40米高空作业车",
+   "url": "https://www.ykl.cn/DT40.html",
+   "run": "run-gaokong-blind-v3",
+   "current_label": "A",
+   "current_a_chars": 252,
+   "llm_tier": "A_cat",
+   "subject": "高空作业车（CELA DT TRUCK 40）",
+   "concrete_anchors": ["材料选型", "结构设计", "焊接工艺", "双安全传感器", "载荷监测", "倾角保护"],
+   "reason": "类目相关：明确讲高空作业车的设计制造。偏结构安全设计而非外观造型，但仍是该车型的真实设计描述。"
+  },
+  {
+   "id": "14",
+   "title": "蓝牌全新一代25米合资的电动车载式高空作业车",
+   "url": "https://www.ykl.cn/DT25.html",
+   "run": "run-gaokong-blind-v3",
+   "current_label": "A",
+   "current_a_chars": 232,
+   "llm_tier": "A_cat",
+   "subject": "高空作业车（CELA DT TRUCK 25）",
+   "concrete_anchors": ["双伸缩臂", "微工字钢造型", "主臂4节", "副臂3节", "管线内置"],
+   "reason": "类目相关且有具体形态证据：臂体造型、结构设计、管线布局——可直接支撑部件描述。"
+  },
+  {
+   "id": "15",
+   "title": "解读：重卡驾驶室从模仿到自创的升级_卡车之家",
+   "url": "https://www.360che.com/news/231010/184772.html",
+   "run": "run-gaokong-blind-v3",
+   "current_label": "A",
+   "current_a_chars": 1121,
+   "llm_tier": "A_gen",
+   "subject": "重卡驾驶室设计演变（非高空作业车）",
+   "concrete_anchors": ["机械减震", "气囊减震", "双色仪表盘", "高低顶", "密封性", "隔音性"],
+   "reason": "通用设计分析，有具体形态/CMF/意图证据，可迁移到任何带驾驶室的车型。但主题是重卡，不是高空作业车——不计入类目产出，留给下游。"
+  },
+  {
+   "id": "17",
+   "title": "毕设设计|机械设计|机械毕业设计|机械毕设项目|—纯电动垂直升降高空作业车的建模_CSDN博客",
+   "url": "https://blog.csdn.net/2201_75937987/article/details/153195545",
+   "run": "run-gaokong-blind-v3",
+   "current_label": "A",
+   "current_a_chars": 602,
+   "llm_tier": "C",
+   "subject": "毕业设计代做/建模服务页",
+   "concrete_anchors": ["车架结构", "高强度铝合金", "轻质材料", "底盘与升降机构"],
+   "reason": "错类型：是毕设代做/建模服务推销页，不是真实车型的设计分析。结构描述是毕设方案而非实车。且同页混杂 YOLO 编程广告。"
+  },
+  {
+   "id": "18",
+   "title": "高空作业设备外观设计_产品_资讯_工程机械商贸网",
+   "url": "https://news.21-sun.com/detail/2022/01/20220124135719944.shtml",
+   "run": "run-gaokong-budget20",
+   "current_label": "A",
+   "current_a_chars": 1926,
+   "llm_tier": "A_cat",
+   "subject": "高空作业车外观设计行业分析",
+   "concrete_anchors": ["仿生学设计元素", "蜘蛛爬行造型", "造型大众化", "外观质量", "色彩设计", "工业设计范畴"],
+   "reason": "最优命中：纯外观设计行业分析，有国内外对比、具体造型描述（仿生/蜘蛛）、色彩设计论述、工业设计方法论。是高空作业车设计文本的标杆。"
+  }
+ ],
+ "summary": {
+  "total_items": 7,
+  "current_A_docs": 7,
+  "current_A_chars": 4695,
+  "llm_A_cat": 3,
+  "llm_A_cat_chars": 2410,
+  "llm_A_gen": 1,
+  "llm_A_gen_chars": 1121,
+  "llm_C": 3,
+  "llm_C_chars": 1164,
+  "false_positive_rate": "3/7 = 43% 的 A 级文档被 LLM 判为 C",
+  "precision_current": "57% (4/7 真正可用)",
+  "note": "T18 高空作业车 v3 的 6.6% A 占比中，真正类目相关仅约一半（A_cat 2410 / 全部正文 59044 ≈ 4.1%）"
+ }
+}

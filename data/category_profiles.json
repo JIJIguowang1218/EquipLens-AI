@@ -1,0 +1,96 @@
+{
+ "version": "0.1",
+ "updated_at": "2026-10-23",
+ "purpose": "类目档案：别名/市场词/代表车型/部件词/来源提示/已知混淆。LLM 提议、人工确认后生效；缺失时走通用层兜底。",
+ "profiles": {
+  "重卡": {
+   "aliases": ["重卡", "重型卡车", "卡车", "牵引车", "干线牵引车"],
+   "market_terms": ["干线物流", "长途运输", "牵引车"],
+   "adjacent": ["自卸车", "载货车"],
+   "representative_models": ["汕德卡C9H", "解放J7", "黄河X7"],
+   "component_vocab": ["前脸", "格栅", "大灯", "保险杠", "后视镜", "导流罩", "遮阳板", "蹬车踏板"],
+   "design_lexicon": ["家族化", "设计语言", "造型", "线条", "体量", "前脸", "姿态"],
+   "source_hints": ["industry", "design_media", "review"],
+   "known_confusions": [],
+   "confidence": 0.85,
+   "provenance": ["T17", "T18-pre", "T18-broad"],
+   "confirmed_by": "product-owner",
+   "last_verified": "2026-10-23"
+  },
+  "自卸车": {
+   "aliases": ["自卸车", "翻斗车", "翻斗铲车", "工程自卸车"],
+   "market_terms": ["工程运输", "矿用自卸", "城市渣土"],
+   "adjacent": ["载货车", "矿卡", "装载机"],
+   "representative_models": ["虎6G", "豪沃V7-X"],
+   "component_vocab": ["前脸", "格栅", "大灯", "保险杠", "货厢", "蹬车踏板"],
+   "design_lexicon": ["V字前脸", "线条", "配色", "寓意", "层次感"],
+   "source_hints": ["review", "industry"],
+   "known_confusions": ["口语“翻斗铲车”也可能指装载机，必须让用户确认"],
+   "confidence": 0.75,
+   "provenance": ["T15", "T18-broad"],
+   "confirmed_by": "product-owner",
+   "last_verified": "2026-10-23"
+  },
+  "汽车起重机": {
+   "aliases": ["汽车起重机", "汽车吊", "吊车", "起重机", "起重车"],
+   "market_terms": ["汽车起重运输车", "随车吊", "履带吊", "全地面起重机"],
+   "adjacent": ["随车吊", "履带起重机", "高空作业车"],
+   "representative_models": ["徐工 XCT25", "三一 STC250", "中联 ZTC250"],
+   "component_vocab": ["吊臂", "支腿", "回转平台", "配重", "驾驶室", "操作室"],
+   "design_lexicon": ["造型", "设计语言", "家族化", "涂装", "比例"],
+   "source_hints": ["industry", "design_media", "academic"],
+   "known_confusions": ["吊车/起重机/随车吊常被混用；爱采购商品页会污染设计查询"],
+   "confidence": 0.6,
+   "provenance": ["T14", "T18-broad"],
+   "confirmed_by": "product-owner",
+   "last_verified": "2026-10-23"
+  },
+  "装载机": {
+   "aliases": ["装载机", "铲车", "轮式装载机", "铲运机"],
+   "market_terms": ["土方机械", "轮式装载机", "铲装作业"],
+   "adjacent": ["挖掘机", "自卸车", "推土机"],
+   "representative_models": ["柳工 856H", "临工 L956F", "龙工 855N"],
+   "component_vocab": ["铲斗", "动臂", "驾驶室", "发动机罩", "配重"],
+   "design_lexicon": ["造型设计", "美学", "人机工程", "涂装", "线条"],
+   "source_hints": ["academic", "industry", "design_media"],
+   "known_confusions": ["口语“铲车”可能指装载机；“翻斗铲车”更常指自卸车"],
+   "confidence": 0.55,
+   "provenance": ["T18-broad"],
+   "confirmed_by": "product-owner",
+   "last_verified": "2026-10-23"
+  },
+  "沙漠牵引车": {
+   "aliases": ["沙漠牵引车", "沙漠卡车", "油田牵引车", "沙漠运输车"],
+   "market_terms": ["油田运输", "沙漠工况", "高温高辐射"],
+   "adjacent": ["重卡", "油田专用车", "越野卡车"],
+   "representative_models": ["豪沃 6X6 油田牵引车", "H6066 6x6"],
+   "component_vocab": ["前脸", "大灯防护网", "保险杠", "遮阳板", "后视镜", "涂装"],
+   "design_lexicon": ["环境适配", "白色涂装", "防护", "姿态", "线条"],
+   "source_hints": ["review", "industry"],
+   "known_confusions": ["沙漠牵引车常被写成“沙漠卡车/油田车”，同义词必须扩展"],
+   "confidence": 0.7,
+   "provenance": ["T13", "T18-broad"],
+   "confirmed_by": "product-owner",
+   "last_verified": "2026-10-23"
+  },
+  "随车吊": {
+   "status": "draft",
+   "aliases": ["随车吊", "随车起重运输车", "汽车起重运输车", "随车起重机"],
+   "market_terms": ["专用车", "工程运输", "随车起重"],
+   "adjacent": ["汽车起重机", "载货车", "高空作业车"],
+   "representative_models": ["程力 随车吊"],
+   "component_vocab": ["吊臂", "支腿", "货厢", "转台", "驾驶室"],
+   "design_lexicon": ["造型", "涂装", "线条", "比例", "人机工程"],
+   "source_hints": ["industry", "design_media"],
+   "known_confusions": ["随车吊常与汽车起重机/载货车混用，需确认是起重功能还是载货功能"],
+   "confidence": 0.4,
+   "provenance": ["T18-blind-v1", "T18-blind-v2"],
+   "confirmed_by": "LLM-draft（待人工确认）",
+   "last_verified": "2026-10-23"
+  }
+ },
+ "notes": [
+  "随车吊、高空作业车、抓料机、港口牵引车、井下矿卡暂不建档——作为留出类目盲测通用层。",
+  "档案只存差异；通用设计词表与来源注册表共享。"
+ ]
+}

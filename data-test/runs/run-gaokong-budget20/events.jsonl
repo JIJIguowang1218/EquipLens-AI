@@ -1,0 +1,13 @@
+{"ts": "2026-10-23T16:30:07.328", "event": "run_start", "meta": {"intent": "tmp/intent-gaokong-budget20.json", "category": "高空作业车", "models": [], "profile": null}}
+{"ts": "2026-10-23T16:30:07.329", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 68, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-23T16:30:07.329", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-23T16:30:07.330", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.5, "status": "ok"}
+{"ts": "2026-10-23T16:30:07.331", "event": "stage_start", "stage": "plan_r1", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:30:07.333", "event": "stage_end", "stage": "plan_r1", "duration_ms": 1.8, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:30:07.333", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261023-163007"}
+{"ts": "2026-10-23T16:30:38.830", "event": "tool_call", "name": "corpus.collect_corpus", "args": {"batch_id": "batch-text-20261023-163007", "queries": 2, "quota": {"industry": 3, "review": 3}}, "result": {"saved": 37}, "duration_ms": 31497.5, "status": "ok"}
+{"ts": "2026-10-23T16:30:38.831", "event": "stage_end", "stage": "execute_r1", "duration_ms": 31497.9, "status": "ok", "batch_id": "batch-text-20261023-163007"}
+{"ts": "2026-10-23T16:30:38.831", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261023-163007"}
+{"ts": "2026-10-23T16:30:38.857", "event": "stage_end", "stage": "grade_r1", "duration_ms": 25.5, "status": "ok", "batch_id": "batch-text-20261023-163007"}
+{"ts": "2026-10-23T16:30:38.858", "event": "decision", "action": "ok", "reason": "指标达标", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-23T16:30:38.859", "event": "run_end", "duration_ms": 31530.0, "summary": {"status": "ok", "rounds": 1, "final_action": "ok"}, "metrics": {"articles": 3, "articles_with_a": 2, "total_chars": 11437, "a_chars": 2178, "b_chars": 920, "a_share": 0.1904, "a_per_article": 726.0, "source_types": ["industry", "review"], "failed": 34, "hard_failed": 4, "policy_skipped": 30, "blocked_url": 20, "robots_denied": 4, "dims": ["CMF", "形态", "意图", "比例/姿态"]}}

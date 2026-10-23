@@ -16,7 +16,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from . import channels, corpus, db, doctor, ingest, query, retrieval, review, reviewserver, webchannel, workflow
+from . import channels, corpus, db, doctor, ingest, query, retrieval, review, reviewserver, textrun, webchannel, workflow
 
 
 def main(argv=None):
@@ -96,6 +96,15 @@ def main(argv=None):
     p = sub.add_parser("corpus-crawl", parents=[common],
                        help="调研语料采集批: 四类信源配额抓正文（先爬后研·第0步, R2 后半前置）")
     p.add_argument("plan_json", help="采集计划 JSON: {queries:{official/spec/review/industry:[...]}, quota?, batch_id?}")
+
+    p = sub.add_parser("text-run", parents=[common],
+                       help="文本检索编排: intent→plan→retrieve→grade（含运行日志/低信度重规划）")
+    p.add_argument("intent_json", help="意图 JSON（schemas/intent.schema.json）")
+    p.add_argument("--registry", default=None, help="来源注册表（默认 data/source_registry.json）")
+    p.add_argument("--profiles", default=None, help="类目档案（默认 data/category_profiles.json）")
+    p.add_argument("--run-root", default=None, help="运行日志根目录（默认 <data-dir>/runs）")
+    p.add_argument("--run-id", default=None, help="指定运行号（默认自动生成）")
+    p.add_argument("--no-replan", action="store_true", help="禁用低信度重规划（只跑一轮）")
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -321,6 +330,24 @@ def main(argv=None):
             mark = "✓" if r["status"] == "saved" else "✗"
             print(f"  {mark} [{r['status']:>13}] {r['source_type']:>8} {r['chars']:>6}字  {r['title'][:40]}")
         print(f"索引: {Path(rep['outdir']) / 'index.json'}")
+
+    elif args.command == "text-run":
+        out = textrun.run(
+            args.intent_json, data_dir,
+            registry_path=args.registry, profiles_path=args.profiles,
+            run_root=args.run_root, run_id=args.run_id,
+            do_replan=not args.no_replan)
+        if out["summary"].get("status") == "need_clarification":
+            print(out["summary"].get("question"))
+            print(f"运行日志: {out['artifacts']['run_dir'] if 'artifacts' in out else out['run_id']}")
+        else:
+            m = out["metrics"]
+            print(f"运行 {out['run_id']} → {out['artifacts']['run_dir']}")
+            print(f"  文章 {m['articles']} / 有A段 {m['articles_with_a']} / "
+                  f"A {m['a_chars']} 字（{m['a_share']*100:.1f}%）/ 单篇 {m['a_per_article']} 字")
+            print(f"  最终决策 {out['summary']['final_action']} / 轮次 {out['summary']['rounds']}")
+            print(f"  报告: {out['artifacts']['report']}")
+            print(f"  事件流: {out['artifacts']['events']}")
 
     elif args.command == "crawl-web":
         result = webchannel.crawl_vendor_sites(

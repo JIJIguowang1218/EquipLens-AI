@@ -13,24 +13,76 @@ SERP 走 Crawl4AI 真浏览器(roster 实测: requests 直连百度必触发安�
 from __future__ import annotations
 
 import asyncio
+import html as _html
 import json
 import re
 import time
 from datetime import datetime
 from pathlib import Path
+from urllib.parse import quote, urlparse
 
 import requests
 
 from . import webchannel
 from .roster import BAIDU_SELF, VEHICLE_WORDS, _baidu_serp_url, _strip_tags
 
-SOURCE_TYPES = ["official", "spec", "review", "industry"]
-DEFAULT_QUOTA = {"official": 3, "spec": 2, "review": 4, "industry": 3}
+SOURCE_TYPES = ["official", "spec", "review", "industry", "design_media",
+                "cmf_trend", "interview", "academic", "event"]
+DEFAULT_QUOTA = {"official": 3, "spec": 2, "review": 4, "industry": 3,
+                 "design_media": 2, "cmf_trend": 2, "interview": 2,
+                 "academic": 2, "event": 2}
 # SERP 锚点过滤: baidu 自有域(roster 教训)、验证页/站内搜索/视频/PDF/收藏评论等功能页
 BLOCK_URL_RE = re.compile(
     r"captcha|/s\?|wappass|video|\.pdf($|\?)|tieba|zhidao|wenku"
     r"|/fav|/collect|/comment|/share|/login|/download|/pic|/photo|/album", re.I)
 MIN_CHARS = 200  # 正文过短 = 空壳页(登录墙/JS 骨架), 只记索引不落盘
+
+
+def serp_looks_blocked(md: str) -> bool:
+    """百度验证/空结果识别：避免把“SERP 被拦”静默成“0 命中”。"""
+    if len(md.strip()) < 200:
+        return True
+    low = md.lower()
+    return any(k in md for k in ("安全验证", "验证码", "百度安全", "人机验证",
+                                 "没有与此相关的结果")) \
+        or "captcha" in low or "no results" in low
+
+
+def _bing_serp_url(query: str) -> str:
+    return ("https://www.bing.com/search?q=" + quote(query)
+            + "&format=rss&count=20")
+
+
+def _parse_bing_rss(text: str) -> str:
+    """Bing RSS XML → markdown 链接行（纯函数，可离线测试）。"""
+    lines = []
+    for item in re.findall(r"<item>(.*?)</item>", text, re.S):
+        t = re.search(r"<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</title>", item, re.S)
+        u = re.search(r"<link>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?</link>", item, re.S)
+        if not (t and u):
+            continue
+        title = _html.unescape(_strip_tags(t.group(1))).strip()
+        url = _html.unescape(u.group(1)).strip()
+        if title and url.startswith("http"):
+            lines.append(f"[{title}]({url})")
+    return "\n".join(lines)
+
+
+def _bing_serps(queries: list[str]) -> dict[str, str]:
+    """Bing RSS 网页结果 → markdown 链接行（百度验证页兜底）。"""
+    out: dict[str, str] = {}
+    for q in queries:
+        try:
+            r = requests.get(_bing_serp_url(q),
+                             headers={"User-Agent": webchannel.UA}, timeout=15)
+        except requests.RequestException:
+            continue
+        if r.status_code != 200:
+            continue
+        md = _parse_bing_rss(r.text)
+        if md:
+            out[q] = md
+    return out
 
 
 def build_plan(queries: dict[str, list[str]], quota: dict | None = None,
@@ -56,13 +108,16 @@ def slugify(title: str, url: str) -> str:
     return safe
 
 
-def pick_anchors(md: str, max_n: int, exclude: set[str] | None = None) -> list[dict]:
+def pick_anchors(md: str, max_n: int, exclude: set[str] | None = None,
+                 relevant_terms: list[str] | None = None) -> list[dict]:
     """SERP markdown → 候选文章链接(title+url)。
 
     过滤: baidu 自有域与 BLOCK_URL_RE、空/超短标题、已见 URL(exclude); 保序去重。
+    relevant_terms: 类目/档案词（长尾类目不再依赖写死的 VEHICLE_WORDS）。
     """
     out: list[dict] = []
     seen = set(exclude or set())
+    terms = list(relevant_terms) if relevant_terms else list(VEHICLE_WORDS)
     if max_n <= 0:
         return out
     for m in re.finditer(r"\[([^\]]+)\]\((http[^)]+)\)", md):
@@ -71,7 +126,7 @@ def pick_anchors(md: str, max_n: int, exclude: set[str] | None = None) -> list[d
         if len(title) < 4 or url in seen or BAIDU_SELF.search(url) \
                 or BLOCK_URL_RE.search(url):
             continue
-        if not any(w in title for w in VEHICLE_WORDS) and not any(
+        if not any(w in title for w in terms) and not any(
                 w in url for w in ("truck", "auto", "car", "360che", "d1cm")):
             continue  # 松相关过滤: SERP 混入的无关站推荐位
         seen.add(url)
@@ -122,26 +177,48 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
 
     返回 report: {batch_id, outdir, index, summary}; 正文文件 + index.json 落盘。
     """
-    plan = build_plan(**{k: plan[k] for k in ("queries", "quota", "batch_id")
-                         if k in plan})
+    raw = dict(plan)
+    plan = build_plan(queries=raw["queries"], quota=raw.get("quota"),
+                      batch_id=raw.get("batch_id"))
+    for k in ("relevant_terms", "negative_terms", "source_trust", "purpose",
+              "profile_ref", "profile_status", "budget", "round", "fallback",
+              "skip_domains", "serp_channel"):
+        if k in raw:
+            plan[k] = raw[k]
     outdir = Path(data_dir) / "corpus" / plan["batch_id"]
     outdir.mkdir(parents=True, exist_ok=True)
     all_queries = [(st, q) for st, qs in plan["queries"].items() for q in qs]
     index: list[dict] = []
+    serp_stats: dict = {}
     seen: set[str] = set()
     fetched_total = sum(plan["quota"].values())
 
     async def _run() -> None:
         from crawl4ai import AsyncWebCrawler
         async with AsyncWebCrawler(headless=True, verbose=False) as c:
-            serp_raw = await asyncio.gather(
-                *[c.arun(url=_baidu_serp_url(q)) for _, q in all_queries],
-                return_exceptions=True)
+            channel = plan.get("serp_channel", "baidu")
             serp_md: dict[str, str] = {}
-            for (st, q), r in zip(all_queries, serp_raw):
-                if hasattr(r, "success") and r.success:
-                    serp_md[q] = r.markdown if isinstance(r.markdown, str) \
-                        else str(r.markdown)
+            if channel == "bing":
+                serp_md.update(await asyncio.to_thread(
+                    _bing_serps, [q for _, q in all_queries]))
+            else:
+                serp_raw = await asyncio.gather(
+                    *[c.arun(url=_baidu_serp_url(q)) for _, q in all_queries],
+                    return_exceptions=True)
+                for (st, q), r in zip(all_queries, serp_raw):
+                    if hasattr(r, "success") and r.success:
+                        serp_md[q] = r.markdown if isinstance(r.markdown, str) \
+                            else str(r.markdown)
+                if channel == "auto":
+                    blocked = [q for q in serp_md
+                               if serp_looks_blocked(serp_md[q])]
+                    if blocked:
+                        serp_md.update(await asyncio.to_thread(
+                            _bing_serps, blocked))
+            serp_stats.update({
+                q: {"chars": len(serp_md.get(q, "")),
+                    "blocked": serp_looks_blocked(serp_md.get(q, ""))}
+                for _, q in all_queries})
             idx = 1
             for st in SOURCE_TYPES:
                 if st not in plan["queries"]:
@@ -150,7 +227,9 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
                 for st_, q in all_queries:
                     if st_ != st or got >= quota:
                         continue
-                    for a in pick_anchors(serp_md.get(q, ""), quota - got, seen):
+                    for a in pick_anchors(
+                            serp_md.get(q, ""), max(4, (quota - got) * 3), seen,
+                            relevant_terms=plan.get("relevant_terms")):
                         seen.add(a["url"])
                         real = resolve_redirect(a["url"])
                         rec = {"source_type": st, "query": q,
@@ -159,6 +238,11 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
                         index.append(rec)
                         if real != a["url"] and BLOCK_URL_RE.search(real):
                             rec["status"] = "blocked_url"  # 解析后落入功能页(收藏/图库等)
+                            continue
+                        host = (urlparse(real).hostname or "").lower()
+                        if any(host == d or host.endswith("." + d)
+                               for d in plan.get("skip_domains", [])):
+                            rec["status"] = "source_skipped"
                             continue
                         if not webchannel.robots_allows(real):
                             rec["status"] = "robots_denied"
@@ -197,4 +281,5 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
         json.dumps({"batch_id": plan["batch_id"], "plan": plan, "index": index},
                    ensure_ascii=False, indent=1), encoding="utf-8")
     return {"batch_id": plan["batch_id"], "outdir": str(outdir),
-            "index": index, "summary": summarize(index)}
+            "index": index, "summary": summarize(index),
+            "serp": serp_stats}

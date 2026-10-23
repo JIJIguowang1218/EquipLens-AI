@@ -1,0 +1,44 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "title": "EquipLens text retrieval intent",
+ "type": "object",
+ "required": ["task_type", "target_content"],
+ "properties": {
+  "task_type": {
+   "type": "string",
+   "enum": ["text_design_scan", "vehicle_deep_dive", "component_focus", "gap_fill"]
+  },
+  "category": {"type": "string", "minLength": 1},
+  "models": {"type": "array", "items": {"type": "string", "minLength": 1}},
+  "target_content": {
+   "type": "string",
+   "enum": ["design_analysis", "facts", "mixed"]
+  },
+  "serp_channel": {"type": "string", "enum": ["auto", "baidu", "bing"]},
+  "constraints": {"type": "array", "items": {"type": "string"}},
+  "ambiguities": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": ["term", "options"],
+    "properties": {
+     "term": {"type": "string"},
+     "options": {"type": "array", "items": {"type": "string"}, "minItems": 2},
+     "needs_confirmation": {"type": "boolean", "default": true}
+    }
+   }
+  },
+  "budget": {
+   "type": "object",
+   "properties": {
+    "max_queries": {"type": "integer", "minimum": 1, "maximum": 40},
+    "max_fetch": {"type": "integer", "minimum": 1, "maximum": 60},
+    "max_rounds": {"type": "integer", "minimum": 1, "maximum": 3},
+    "per_type_quota": {"type": "integer", "minimum": 1, "maximum": 60}
+   },
+   "additionalProperties": false
+  },
+  "notes": {"type": "string"}
+ },
+ "additionalProperties": false
+}

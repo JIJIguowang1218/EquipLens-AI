@@ -1,0 +1,13 @@
+{"ts": "2026-10-23T16:41:01.247", "event": "run_start", "meta": {"intent": "tmp/intent-budget-q6.json", "category": "高空作业车", "models": [], "profile": null}}
+{"ts": "2026-10-23T16:41:01.247", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 73, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-23T16:41:01.247", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-23T16:41:01.249", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.6, "status": "ok"}
+{"ts": "2026-10-23T16:41:01.249", "event": "stage_start", "stage": "plan_r1", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:41:01.252", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.1, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-23T16:41:01.253", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261023-164101"}
+{"ts": "2026-10-23T16:41:03.520", "event": "tool_call", "name": "corpus.collect_corpus", "args": {"batch_id": "batch-text-20261023-164101", "queries": 2, "quota": {"industry": 6, "review": 6}}, "result": {"saved": 0, "serp_blocked": 6}, "duration_ms": 2267.8, "status": "ok"}
+{"ts": "2026-10-23T16:41:03.521", "event": "stage_end", "stage": "execute_r1", "duration_ms": 2268.3, "status": "ok", "batch_id": "batch-text-20261023-164101"}
+{"ts": "2026-10-23T16:41:03.521", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261023-164101"}
+{"ts": "2026-10-23T16:41:03.526", "event": "stage_end", "stage": "grade_r1", "duration_ms": 5.7, "status": "ok", "batch_id": "batch-text-20261023-164101"}
+{"ts": "2026-10-23T16:41:03.527", "event": "decision", "action": "stop", "reason": "文章数 0 < 3; A 占比 0.0% < 6.0%; A 字数 0 < 300; 来源类型 0 < 2; 类目档案缺失且通用层产出不足; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-23T16:41:03.528", "event": "run_end", "duration_ms": 2280.8, "summary": {"status": "ok", "rounds": 1, "final_action": "stop"}, "metrics": {"articles": 0, "articles_with_a": 0, "total_chars": 0, "a_chars": 0, "b_chars": 0, "a_share": 0.0, "a_per_article": 0.0, "source_types": [], "serp_blocked_queries": 6, "failed": 0, "hard_failed": 0, "policy_skipped": 0, "blocked_url": 0, "robots_denied": 0, "dims": []}}
