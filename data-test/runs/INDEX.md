@@ -16,6 +16,7 @@
 | run-budget-q6 | 高空作业车 | - | 0 | 0 | 0.0% | 0.0 | 0 | 0 | 0 | 6 | 1 | stop | 2.3 | 73/9 |
 | run-budget-q10 | 高空作业车 | - | 0 | 0 | 0.0% | 0.0 | 0 | 0 | 0 | 6 | 1 | stop | 2.0 | 73/9 |
 | run-budget-q1-bing | 高空作业车 | - | 0 | 0 | 0.0% | 0.0 | 0 | 0 | 0 | 0 | 1 | stop | 5.4 | 79/9 |
+| T18-roster-20261030 | 4 类目·39 车型 | - | 61 | 777(V) | 3.2%* | - | - | - | - | - | 1 | 报告 | - | - |
 
 说明：
 - 硬失败 = fetch_error/fetch_failed/robots_denied/too_short；政策跳过 = blocked_url/source_skipped；

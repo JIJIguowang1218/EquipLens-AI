@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L3 评测集 v1 人工审核包</title>
+<style>
+:root{--ink:#1c2430;--muted:#66707c;--line:#e3e7ec;--bg:#f6f7f9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:15px/1.75 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px 120px}
+h1{font-size:24px;margin:0 0 6px} .sub{color:var(--muted);margin-bottom:24px}
+table{border-collapse:collapse;background:#fff;border:1px solid var(--line);
+ border-radius:8px;overflow:hidden;margin:0 0 28px;width:100%}
+th,td{padding:8px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#eef1f5;font-weight:600}
+code{background:#eef1f5;padding:1px 6px;border-radius:4px;font-size:13px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 0 18px;overflow:hidden}
+.card header{padding:14px 18px;border-bottom:1px solid var(--line);background:#fbfcfd}
+.card h3{font-size:16px;margin:6px 0 4px;line-height:1.45}
+.card h3 a{color:var(--ink);text-decoration:none} .card h3 a:hover{color:#2563eb}
+.meta{color:var(--muted);font-size:12.5px}
+.badge{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;color:#fff;background:#64748b;margin-right:6px}
+.badge.grey{background:#64748b} .badge.blue{background:#1d4ed8}
+.row{display:flex;flex-wrap:wrap;gap:2px}
+.body{padding:6px 22px 16px}
+.sec{font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:600}
+.passage{background:#f8fafc;border-left:3px solid #94a3b8;padding:8px 12px;margin:8px 0;border-radius:0 6px 6px 0}
+mark{background:#fde68a;padding:0 2px;border-radius:3px}
+.reason{background:#fff7ed;border-left:3px solid #f59e0b;padding:8px 12px;border-radius:0 6px 6px 0;margin:6px 0}
+.dim{color:var(--muted);font-size:13px}
+.verdict{padding:12px 18px;border-top:1px solid var(--line);background:#fbfcfd;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.verdict button{padding:6px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;
+ font-size:13.5px;cursor:pointer;font-family:inherit}
+.verdict button:hover{border-color:#2563eb;color:#2563eb}
+.verdict button.on{background:#2563eb;border-color:#2563eb;color:#fff}
+.vstate{color:var(--muted);font-size:13px}
+.panel{position:fixed;right:20px;bottom:20px;background:#1c2430;color:#fff;border-radius:12px;
+ padding:14px 18px;box-shadow:0 8px 30px rgba(0,0,0,.25);max-width:340px;font-size:13px}
+.panel button{margin-top:8px;padding:7px 14px;border:0;border-radius:8px;background:#2563eb;color:#fff;cursor:pointer;font-family:inherit;font-size:13.5px}
+.tip{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:12px 18px;margin:0 0 22px;font-size:14px}
+</style></head><body><div class="wrap">
+<h1>L3 评测集 v1 · 人工审核包</h1>
+<div class="sub">2026-10-23 生成 ｜ 共 7 篇，均为关键词打分判 A 的文章，请逐篇核对复判是否成立</div>
+
+<div class="tip"><b>怎么审：</b>每张卡片里，灰底引用块是<strong>当时被关键词捞出的原文段落</strong>（黄色高亮=判定理由引用的具体性证据词），橙色块是<strong>复判等级与理由</strong>。看完点"同意/改判/待议"，最后点右下角"复制审核结论"贴回对话即可。</div>
+
+<h2 style="font-size:18px">判定标准（四级）</h2>
+<table><tr><th style="width:110px">等级</th><th>含义</th></tr><tr><td><code>A_cat</code></td><td>明确描述目标类目或其部件的形态/CMF/比例/设计意图，有具体证据（部件名、形状、材质、色彩、比例关系）</td></tr>
+<tr><td><code>A_comp</code></td><td>描述目标类目的共享部件（如驾驶室/吊臂/支腿），有具体形态证据，但不指名目标类目</td></tr>
+<tr><td><code>A_gen</code></td><td>通用设计分析/行业观察，可迁移到目标类目，有具体论据，但不针对特定车型</td></tr>
+<tr><td><code>C</code></td><td>跑题（其他类目）、空洞（只有形容词无具体证据）、错类型（竞赛/毕设/价格/经销商/新闻通稿）</td></tr></table>
+
+<h2 style="font-size:18px">当前汇总（待你复核）</h2>
+<table>
+<tr><th>关键词判 A 篇数 / 字数</th><th>复判 A_cat</th><th>复判 A_gen</th><th>复判 C（假阳性）</th><th>假阳性率</th></tr>
+<tr><td>7 篇 / 4695 字</td>
+<td>3 篇 / 2410 字</td>
+<td>1 篇 / 1121 字</td>
+<td>3 篇 / 1164 字</td>
+<td><b style="color:#b91c1c">3/7 = 43% 的 A 级文档被 LLM 判为 C</b></td></tr>
+</table>
+
+
+<div class="card" data-id="01">
+  <header>
+    <div class="row">
+      <span class="badge grey">#01</span>
+      <span class="badge blue">关键词判 A · 99 字</span>
+      <span class="badge" style="background:#b91c1c">复判 C 不可用</span>
+    </div>
+    <h3><a href="https://www.chenglix.com/xingyezixun/15495.html" target="_blank">程力随车吊——超越千万的设计</a></h3>
+    <div class="meta">主题：随车吊（经销商宣传页） ｜ 来源 run：run-suicheche-blind-v2 ｜ 段落出处：grade-r1.json · 5218字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>程力专用汽车股份有限公司的设计师们深谙设计理念，“用心、用智、用美”是他们的座右铭。程力随车吊的设计也是如此，除了拥有卓越的技术性能，其外观设计也十分优美，经典的<mark>黄色配色</mark>和<mark>流线型</mark>的造型让人过目难忘。</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">空洞营销：仅一句&#x27;经典的黄色配色和流线型的造型让人过目难忘&#x27;，无具体部件、无形态细节、无比例/CMF 深度。是宣传语不是设计分析。</p>
+    <p class="dim">文中具体性证据词：黄色配色、流线型</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="10">
+  <header>
+    <div class="row">
+      <span class="badge grey">#10</span>
+      <span class="badge blue">关键词判 A · 463 字</span>
+      <span class="badge" style="background:#b91c1c">复判 C 不可用</span>
+    </div>
+    <h3><a href="https://bbs.csdn.net/weixin_30047059/article/details/100618905" target="_blank">中联杯国际大学生设计竞赛2026：工程机械设计从选题到答辩全攻略</a></h3>
+    <div class="meta">主题：设计竞赛流程/评分策略 ｜ 来源 run：run-suicheche-profile ｜ 段落出处：grade-r2.json · 11815字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>如果你是工业设计背景，你的优势在于造型能力、用户研究和人机交互；如果你是机械背景，你的优势在于结构计算和系统设计。最理想的组队方式是两种背景的人搭配，一个负责&quot;好不好用、好不好看&quot;，一个负责&quot;能不能造、结不结实&quot;。</p>
+<p class='passage'>造型设计 ：在满足功能和结构要求的前提下，进行外观造型设计。工程机械的造型设计不是单纯的&quot;好看&quot;，而是要体现<mark>力量感</mark>、<mark>稳定感</mark>、<mark>科技感</mark>，同时要考虑制造工艺的可行性。</p>
+<p class='passage'>美观性 ：造型是否协调？比例是否合理？细节处理是否到位？</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">错类型：讲怎么打设计比赛、怎么组队、评分策略，不是对某台工程机械的设计分析。有设计词汇但主题是教育/流程。</p>
+    <p class="dim">文中具体性证据词：力量感、稳定感、科技感、色彩搭配</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="12">
+  <header>
+    <div class="row">
+      <span class="badge grey">#12</span>
+      <span class="badge blue">关键词判 A · 252 字</span>
+      <span class="badge" style="background:#0f766e">复判 A_cat 类目正中</span>
+    </div>
+    <h3><a href="https://www.ykl.cn/DT40.html" target="_blank">欧洲合资的超高紧凑型40米高空作业车</a></h3>
+    <div class="meta">主题：高空作业车（CELA DT TRUCK 40） ｜ 来源 run：run-gaokong-blind-v3 ｜ 段落出处：grade-r1.json · 4190字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>CELA DT TRUCK 40由意大利CELA公司原厂设计制造。CELA以生产高空消防车和特种高空作业平台著称，其车载式高空作业平台与消防车产自同一生产线，遵循同样严格的欧洲安全标准和质量控制体系。这一背景为DT TRUCK 40赋予了天然的“安全基因”——在<mark>材料选型</mark>、<mark>结构设计</mark>、<mark>焊接工艺</mark>、电气防护等各个环节均以消防级安全要求为基准，显著高于一般工业高空作业平台的安全标准。整车采用<mark>双安全传感器</mark>控制</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">类目相关：明确讲高空作业车的设计制造。偏结构安全设计而非外观造型，但仍是该车型的真实设计描述。</p>
+    <p class="dim">文中具体性证据词：材料选型、结构设计、焊接工艺、双安全传感器、载荷监测、倾角保护</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="14">
+  <header>
+    <div class="row">
+      <span class="badge grey">#14</span>
+      <span class="badge blue">关键词判 A · 232 字</span>
+      <span class="badge" style="background:#0f766e">复判 A_cat 类目正中</span>
+    </div>
+    <h3><a href="https://www.ykl.cn/DT25.html" target="_blank">蓝牌全新一代25米合资的电动车载式高空作业车</a></h3>
+    <div class="meta">主题：高空作业车（CELA DT TRUCK 25） ｜ 来源 run：run-gaokong-blind-v3 ｜ 段落出处：grade-r1.json · 4395字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>CELA DT TRUCK 25纯电动高空作业平台 由上装和底盘两部分组成。上装部分由意大利CELA（思蓝）公司原厂设计制造，采用CELA经典的<mark>双伸缩臂</mark>（DT，Double Telescopic） 专利结构设计，主臂部分为4节伸缩臂，副臂部分为3节伸缩式，臂体均采用经典的<mark>微工字钢造型</mark>。所有液压管路、电缆和信号线均整齐内置于臂架之中，既保证了伸缩臂作业时的顺畅运行，也从源头上避免了外露管线在运输和使</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">类目相关且有具体形态证据：臂体造型、结构设计、管线布局——可直接支撑部件描述。</p>
+    <p class="dim">文中具体性证据词：双伸缩臂、微工字钢造型、主臂4节、副臂3节、管线内置</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="15">
+  <header>
+    <div class="row">
+      <span class="badge grey">#15</span>
+      <span class="badge blue">关键词判 A · 1121 字</span>
+      <span class="badge" style="background:#b45309">复判 A_gen 通用可迁移</span>
+    </div>
+    <h3><a href="https://www.360che.com/news/231010/184772.html" target="_blank">解读：重卡驾驶室从模仿到自创的升级_卡车之家</a></h3>
+    <div class="meta">主题：重卡驾驶室设计演变（非高空作业车） ｜ 来源 run：run-gaokong-blind-v3 ｜ 段落出处：grade-r2.json · 6808字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>随着运输业的发展和技术进步，到了90年代左右，中国重卡的驾驶室环境有了显著改善。驾驶座椅采用了<mark>机械减震</mark>设计，驾驶室与大梁采用<mark>气囊减震</mark>，提高了驾驶员的舒适性。<mark>密封性</mark>和<mark>隔音性</mark>的提升使得驾驶室内的噪音得到有效控制，乘坐感受也显著提升。此外，驾驶室的设计开始注重外观和质感，给人一种更加现代化和舒适的感觉。</p>
+<p class='passage'>大约在10年之前，中国重卡向欧洲同行学习成为一种热潮，驾驶室设计更加前卫和时尚。方向盘和档把的设计更加符合重卡的风格，仪表盘采用双色搭配，提升了整体的视觉效果。驾驶室的<mark>密封性</mark>和<mark>隔音性</mark>继续改善，使得驾驶员在驾驶过程中能够更好地享受舒适的环境。驾驶室的布局也更加人性化，<mark>高低顶</mark>的设计提供了更多的休息空间，但在上下卧铺时可能存在一些不便之处。</p>
+<p class='passage'>驾驶室设计和开发涉及到多个方面的技术、制造和工艺，因此相对复杂。一款全新驾驶室的开发也需要大量的资金投入。按照行业标准，至少需要上亿资金，甚至更多。</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">通用设计分析，有具体形态/CMF/意图证据，可迁移到任何带驾驶室的车型。但主题是重卡，不是高空作业车——不计入类目产出，留给下游。</p>
+    <p class="dim">文中具体性证据词：机械减震、气囊减震、双色仪表盘、高低顶、密封性、隔音性</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="17">
+  <header>
+    <div class="row">
+      <span class="badge grey">#17</span>
+      <span class="badge blue">关键词判 A · 602 字</span>
+      <span class="badge" style="background:#b91c1c">复判 C 不可用</span>
+    </div>
+    <h3><a href="https://blog.csdn.net/2201_75937987/article/details/153195545" target="_blank">毕设设计|机械设计|机械毕业设计|机械毕设项目|—纯电动垂直升降高空作业车的建模_CSDN博客</a></h3>
+    <div class="meta">主题：毕业设计代做/建模服务页 ｜ 来源 run：run-gaokong-blind-v3 ｜ 段落出处：grade-r2.json · 18654字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>AI编程实战：零基础用AI搭建YOLO27/YOLO26/YOLO11/YOLOv8 _毕设_ _项目_ （附完整Prompt） 已经选好了 _毕设_ 题目，也写完了开题报告，接下来该怎么开始写代码？对于很多计算机、人工智能、软件工程专业的本科生来说，真正困难的不是没有代码，而是不知道如何把一个 _项目_ 从空文件夹逐步搭建起来：目录怎么 _设计_ 、依赖如何管理、AI 生成的代码能不能运行、报错</p>
+<p class='passage'>在结构改进方面，针对操纵稳定性受质心高度和重量分布影响的问题，重新设计<mark>车架结构</mark>，采用<mark>高强度铝合金</mark>等<mark>轻质材料</mark>替换部分传统钢材，在保证结构强度的前提下，降低整车重量 。优化<mark>底盘与升降机构</mark>的连接方式，增强连接部位的刚性，减少在作业过程中的振动和变形 。如采用新型的焊接工艺或高强度连接件，提高连接的可靠性。对于升降机构，优化剪叉连杆的结构形状和尺寸，增加其强度和稳定性 。例如，通过有限元分析，对连杆的截面</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">错类型：是毕设代做/建模服务推销页，不是真实车型的设计分析。结构描述是毕设方案而非实车。且同页混杂 YOLO 编程广告。</p>
+    <p class="dim">文中具体性证据词：车架结构、高强度铝合金、轻质材料、底盘与升降机构</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+
+<div class="card" data-id="18">
+  <header>
+    <div class="row">
+      <span class="badge grey">#18</span>
+      <span class="badge blue">关键词判 A · 1926 字</span>
+      <span class="badge" style="background:#0f766e">复判 A_cat 类目正中</span>
+    </div>
+    <h3><a href="https://news.21-sun.com/detail/2022/01/20220124135719944.shtml" target="_blank">高空作业设备外观设计_产品_资讯_工程机械商贸网</a></h3>
+    <div class="meta">主题：高空作业车外观设计行业分析 ｜ 来源 run：run-gaokong-budget20 ｜ 段落出处：grade-r1.json · 4691字</div>
+  </header>
+  <div class="body">
+    <h4 class="sec">被关键词打分为 A 的原文段落</h4>
+    <p class='passage'>再者，从作业状态时的整体造型来看，国外高空作业车具有仿生学的设计元素，作业时犹如一条正在爬行的“蜘蛛”，而国内产品模仿了国外上世纪的造型设计，<mark>造型大众化</mark>。</p>
+<p class='passage'>国内高空车除了产品性能方面与国外存在较大差距外，<mark>外观质量</mark>，造型设计，<mark>色彩设计</mark>也跟不上国际先进产品的步伐，追其原因是国内一流产品在模仿国外先进产品，而国内二流产品在模仿一流产品，如此形成恶性循环，没有创新和大胆的尝试，只是一味地仿造，那我们永远也做不出一流的产品来。</p>
+<p class='passage'>外观设计属<mark>工业设计范畴</mark>，其涉及到美学，人机工程学，力学，社会学，心理学等，是一门覆盖面广、涉足众多学科的研究领域。据测算，工业产品的外观设计贡献已占销售收入的51%。可以说，好的工业设计可以降低成本，增加用户认可度，提高产品附加值。</p>
+    <h4 class="sec">复判理由</h4>
+    <p class="reason">最优命中：纯外观设计行业分析，有国内外对比、具体造型描述（仿生/蜘蛛）、色彩设计论述、工业设计方法论。是高空作业车设计文本的标杆。</p>
+    <p class="dim">文中具体性证据词：仿生学设计元素、蜘蛛爬行造型、造型大众化、外观质量、色彩设计、工业设计范畴</p>
+  </div>
+  <div class="verdict">
+    <button data-v="agree">✓ 同意复判</button>
+    <button data-v="disagree">✗ 不同意，我改判</button>
+    <button data-v="hold">? 待议</button>
+    <span class="vstate"></span>
+  </div>
+</div>
+</div>
+<div class="panel" id="panel">
+  <div>已审核 <b id="done">0</b>/7 篇</div>
+  <button onclick="copyResult()">复制审核结论</button>
+</div>
+<script>
+const LS_KEY='l3-review-v1';
+let state={};
+try{state=JSON.parse(localStorage.getItem(LS_KEY)||'{}')||{};}catch(e){}
+function save(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));}catch(e){}}
+const items=[...document.querySelectorAll('.card')];
+function render(){
+  let done=0;
+  items.forEach(card=>{
+    const id=card.dataset.id, v=state[id];
+    card.querySelectorAll('.verdict button').forEach(b=>b.classList.toggle('on',v===b.dataset.v));
+    const label={agree:'已确认复判',disagree:'你将改判（请在对话里说明新等级）',hold:'待议'}[v]||'';
+    card.querySelector('.vstate').textContent=label;
+    if(v)done++;
+  });
+  document.getElementById('done').textContent=done;
+}
+items.forEach(card=>{
+  card.querySelectorAll('.verdict button').forEach(b=>b.addEventListener('click',()=>{
+    state[card.dataset.id]=b.dataset.v;
+    localStorage.setItem(LS_KEY,JSON.stringify(state));render();
+  }));
+});
+function copyResult(){
+  const names={agree:'同意',disagree:'不同意(我改判)',hold:'待议'};
+  const lines=items.map(c=>`#${c.dataset.id} ${c.querySelector('h3').textContent.trim()} → ${names[state[c.dataset.id]]||'未审'}`);
+  const text='L3 评测集 v1 审核结论\n'+lines.join('\n');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>alert('已复制：\n\n'+text),()=>prompt('自动复制失败，请手动复制：',text));
+  }else{prompt('请手动复制：',text);}
+}
+render();
+</script>
+</body></html>
