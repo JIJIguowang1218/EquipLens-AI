@@ -18,8 +18,9 @@ import time
 from collections import Counter
 from pathlib import Path
 
-from . import (audit, channels, corpus, db, doctor, domainbench, ingest, query,
-               retrieval, review, reviewserver, textrun, webchannel, workflow)
+from . import (audit, channels, corpus, db, doctor, domainbench, ingest, l3gate,
+               passage, query, retrieval, review, reviewserver, textrun,
+               webchannel, workflow)
 
 
 def main(argv=None):
@@ -118,6 +119,11 @@ def main(argv=None):
     p = sub.add_parser("audit-apply", parents=[common],
                        help="回读抽检判定，估计漏杀率并出报告")
     p.add_argument("sheet_json"); p.add_argument("verdicts_json")
+    p.add_argument("--out", default=None)
+
+    p = sub.add_parser("gate-batch", parents=[common],
+                       help="确定性闸门: 对象锚定+主题排除+具体性，筛出可判定段落")
+    p.add_argument("batch_dirs", nargs="+")
     p.add_argument("--out", default=None)
 
     p = sub.add_parser("domain-bench", parents=[common],
@@ -427,6 +433,38 @@ def main(argv=None):
         (out / "audit-report.md").write_text(audit.render_report(res),
                                              encoding="utf-8")
         print(audit.render_report(res))
+
+    elif args.command == "gate-batch":
+        out = Path(args.out) if args.out else (data_dir / "evals" / "gate")
+        out.mkdir(parents=True, exist_ok=True)
+        passed, stats = [], {}
+        for b in args.batch_dirs:
+            bdir = Path(b)
+            idx = json.loads((bdir / "index.json").read_text(encoding="utf-8"))
+            seen = set()
+            for r in idx["index"]:
+                if r.get("status") != "saved" or not r.get("file"):
+                    continue
+                if r["url"] in seen:
+                    continue
+                seen.add(r["url"])
+                body = passage._split_doc(bdir / r["file"])
+                g = passage.grade_text(body, "medium")
+                for p in g["passages"]:
+                    res = l3gate.evaluate(p["text"], title=r.get("title", ""),
+                                          url=r["url"])
+                    key = res["reasons"][0] if res["reasons"] else "pass"
+                    stats[key] = stats.get(key, 0) + 1
+                    if res["pass"]:
+                        passed.append({"batch": bdir.name,
+                                       "title": r.get("title", ""),
+                                       "url": r["url"], "chars": p["chars"],
+                                       "text": p["text"][:420]})
+        (out / "gate-passed.json").write_text(
+            json.dumps({"stats": stats, "items": passed}, ensure_ascii=False,
+                       indent=1), encoding="utf-8")
+        print(f"闸门通过 {len(passed)} 段 → {out / 'gate-passed.json'}")
+        print("  原因分布:", stats)
 
     elif args.command == "domain-bench":
         reg_path = Path("data") / "source_registry.json"

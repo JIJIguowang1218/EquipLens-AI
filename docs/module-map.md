@@ -9,7 +9,7 @@
 | L0 任务书 | 找什么、不找什么、判据 | 文档 + 产品负责人拍板 | `docs/PRD.md`、`data-test/evals/*`、`docs/test-log.md` 意见纪要 |
 | L1 意图与规划 | 意图解析、类目档案、查询计划、查询分层（vehicle/component/macro）、信源定向 | 规则 + 模型 | `schemas/intent.schema.json`、`textrun.resolve_profile`、`textrun.build_plan`、`data/category_profiles.json`、`data/source_registry.json` |
 | L2 检索执行 | 搜索、抓取、robots、配额、去重、锚点过滤 | 确定性代码 | `corpus.py`、`webchannel.py`、`roster.py`、`imagesearch.py`、`gate.py`、`channels.py` |
-| L3 结果质检 | 段落切分、设计相关性、指向性判定（V/P/G/C） | 规则粗筛 + 模型 judge | `passage.py`（配置行/主题排除/A-B-C 打分）+ 模型判定（评测集/审核包） |
+| L3 结果质检 | 段落切分、设计相关性、指向性判定（V/P/G/C） | 规则粗筛 + 模型 judge | `passage.py`（配置行/主题排除/A-B-C 打分）+ `l3gate.py`（对象锚定/主题类型/具体性，假阳性 6.9%）+ 模型判定（评测集/审核包） |
 | L4 迭代控制 | 重规划、降级、停止/问人、断点续跑 | 规则 | `strategy.assess`、`textrun` replan 循环、`runlog.py`；**降级链+重试=runner.py（本轮建设）** |
 | L5 结构化沉淀 | Facts/Descriptions 抽取、报告 | 未实现（下游） | — |
 | L6 评估 | 评测集、回归、运行台账、误杀抽检、域名基准 | 规则 + 人工 | `data-test/evals/`、`data-test/runs/INDEX.md`、`src/equiplens/audit.py`、`src/equiplens/domainbench.py`、`T18-*` 报告 |
