@@ -62,17 +62,17 @@ def test_blocked_then_bing_fallback():
         def collect(plan):
             ch = plan["serp_channel"]
             calls.append(ch)
-            if ch == "auto":
-                return make_report(td, 0, 5, "b-auto")
-            return make_report(td, 3, 0, "b-bing")
+            if ch == "bing":
+                return make_report(td, 3, 0, "b-bing")
+            return make_report(td, 0, 5, "b-" + ch)
 
         res = runner.run_unit(
             runner.Unit("u2", {"batch_id": "b2"}), collect=collect,
             grade=lambda d: {"docs": [{"a_count": 1}], "metrics": {}},
             data_dir=td, state_root=td / "state", sleep=lambda s: None)
         assert res.status == "ok", res
-        assert res.attempts == 2 and res.channel == "bing", res
-        assert calls == ["auto", "bing"], calls
+        assert res.attempts == 3 and res.channel == "bing", res
+        assert calls == ["auto", "baidu", "bing"], calls
 
 
 def test_all_channels_fail():
@@ -107,8 +107,8 @@ def test_low_yield_degrades_then_retries():
             data_dir=td, state_root=td / "state", sleep=lambda s: None)
         assert res.status == "degraded", res
         assert any("low_yield" in b for b in res.blockers), res
-        # 2 次尝试 × 2 个通道（auto/bing）
-        assert len(calls) == 4, calls
+        # 2 次尝试 × 3 个通道（auto / 延迟重试百度 / bing）
+        assert len(calls) == 6, calls
 
 
 def test_resume_skips_done_unit():

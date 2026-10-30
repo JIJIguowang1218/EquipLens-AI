@@ -49,7 +49,9 @@ class Unit:
     plan: dict
     contract: Contract = field(default_factory=Contract)
     channels: list[dict] = field(default_factory=lambda: [
-        {"serp_channel": "auto"}, {"serp_channel": "bing"}])
+        {"serp_channel": "auto"},
+        {"serp_channel": "baidu", "wait": 4},  # 百度间歇拦截：延迟重试常能恢复
+        {"serp_channel": "bing"}])
 
 
 @dataclass
@@ -158,7 +160,11 @@ def run_unit(unit: Unit, *, collect, grade, data_dir: Path | str,
             attempts += 1
             if attempts > 1:
                 sleep(policy.delay_ms(attempt) / 1000.0)
-            plan = {**unit.plan, **ch}
+            spec = dict(ch)
+            wait = spec.pop("wait", 0)  # 通道级等待（如百度延迟重试）
+            if wait:
+                sleep(wait)
+            plan = {**unit.plan, **spec}
             try:
                 report = collect(plan)
             except Exception as e:  # noqa: BLE001
