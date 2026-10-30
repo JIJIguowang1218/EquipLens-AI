@@ -1,0 +1,13 @@
+{"ts": "2026-10-30T21:29:49.059", "event": "run_start", "meta": {"intent": "tmp/intent-smoke.json", "category": "随车吊", "models": ["随车吊"], "profile": "随车吊"}}
+{"ts": "2026-10-30T21:29:49.059", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 53, "output_tokens_est": 11, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T21:29:49.059", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T21:29:49.060", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.3, "status": "ok"}
+{"ts": "2026-10-30T21:29:49.062", "event": "stage_start", "stage": "plan_r1", "profile": "随车吊", "profile_status": "found"}
+{"ts": "2026-10-30T21:29:49.063", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.0, "status": "ok", "profile": "随车吊", "profile_status": "found"}
+{"ts": "2026-10-30T21:29:49.064", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261030-212949"}
+{"ts": "2026-10-30T21:30:15.281", "event": "tool_call", "name": "runner.run_unit", "args": {"unit": "run-smoke-runner-r1", "queries": 1, "quota": {"industry": 2}}, "result": {"status": "ok", "attempts": 1, "channel": "auto", "saved": 2, "blockers": []}, "duration_ms": 26216.3, "status": "ok"}
+{"ts": "2026-10-30T21:30:15.281", "event": "stage_end", "stage": "execute_r1", "duration_ms": 26216.8, "status": "ok", "batch_id": "batch-text-20261030-212949"}
+{"ts": "2026-10-30T21:30:15.281", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261030-212949"}
+{"ts": "2026-10-30T21:30:15.285", "event": "stage_end", "stage": "grade_r1", "duration_ms": 3.5, "status": "ok", "batch_id": "batch-text-20261030-212949"}
+{"ts": "2026-10-30T21:30:15.285", "event": "decision", "action": "stop", "reason": "文章数 2 < 3; 来源类型 1 < 2; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T21:30:15.286", "event": "run_end", "duration_ms": 26227.5, "summary": {"status": "ok", "rounds": 1, "final_action": "stop"}, "metrics": {"articles": 2, "articles_with_a": 1, "total_chars": 10457, "a_chars": 1548, "b_chars": 0, "a_share": 0.148, "a_per_article": 774.0, "source_types": ["industry"], "serp_blocked_queries": 0, "failed": 15, "hard_failed": 3, "policy_skipped": 12, "blocked_url": 7, "robots_denied": 0, "dims": ["CMF", "意图"]}}

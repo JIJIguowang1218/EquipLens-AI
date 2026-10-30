@@ -67,6 +67,8 @@
 | **T18-budget-curve 预算-产出曲线** | `data-test/runs/BUDGET-CURVE-20261023.md`、`data-test/runs/INDEX.md`（14 条） | 2026-10-23 完成：在线 4 档被百度验证页全拦；离线近似 **q3≈6 篇 A 2,068 字（5.2%）**，边际由"高产出源"决定；Bing RSS/HTML 不可用已记录 |
 | **T18-eval L3 评测集 v1** | `data-test/evals/l3-relevance-v1.json` | 2026-10-23 完成：盲测 7 篇 A 级文章逐篇标注四级（A_cat/A_comp/A_gen/C），**关键词假阳性率 43%**（3/7 是空洞营销/竞赛攻略/毕设代做）；A_cat 真实产出仅 2,410 字（51%） |
 | **T18-roster 全名录大规模文本筛选测试** | `data-test/runs/T18-ROSTER-20261030.md`、`data-test/evals/review-roster-20261030.html`、批次 `batch-corpus-roster-*-20261030` | 2026-10-30 完成：4 类目 39 车型（T13–T15 锁定名录），61 篇/3.65M 字正文，265 段模型判定；**V 3.2% / P 12.9% / G 9.2% / C 74.8%**（候选段口径）；39 车型仅 8 个有 V/P 素材（HOWO MAX/JH6/J6G/豪沃6X6/QY25K5C/QY35K5/SAC16000S/金刚S1 EV）；**A 档假阳性 40.4% 复现 L3 v1**；C 档 47% 是汽车之家首页/报价页 |
+| **检索计划查询分层 + 信源定向 + 配置行过滤（待办1/2）** | `textrun.build_plan`（query_meta）、`corpus.collect_corpus`（按查询给词）、`passage.CONFIG_LINE_RE`、`source_registry.preferred_domains` | 2026-10-30 完成：查询按 vehicle/component/macro 三类配 relevant_terms；`site:` 定向 360che/21-sun；报价配置行判 C；回归候选段 **265→162（-39%）**，测试全绿 |
+| **L4 执行 loop（runner）：重试+降级链+断点** | `src/equiplens/runner.py`、`tests/test_runner.py`，`textrun.execute` 已接入 | 2026-10-30 完成：Temporal 式重试语义（有限尝试/退避）、Crawlee 式通道降级（auto→bing）、单元契约验收、状态 JSON 原子写续跑；runner 6/6 测试通过，真实小批 run-smoke-runner 验证 ok（2 篇/9 候选/auto 通道） |
 
 ## 2. 关键结论（30 秒版）
 
@@ -96,6 +98,7 @@
    - ~~T18-eval L3 评测集 v1~~ ✅（假阳性 43%）；10-30 产品负责人逐篇裁决（意见 #20）：指向性标准=对象锚定
    - ~~T18-roster 全名录大规模文本筛选~~ ✅（10-30：39 车型/265 段判定，V 3.2%/P 12.9%/G 9.2%；A 档假阳性 40.4% 复现）
    - **【暂停·待指令】确定性闸门**：目标按 10-30 校准改写为"对象锚定 + 主题类型排除 + 具体性"，兼修两个实测缺陷（配置行穿透、类目查询被车型名过滤误杀）
+   - ~~L4 执行 loop（runner）~~ ✅（10-30：重试策略+通道降级链+单元契约+断点续跑，textrun.execute 已接入）
    - **→ 方向已定（10-30，待落地）**：VLM 看图分析为主力，文本爬取/词表/档案作辅助；skill 为交付形态（schema+判据+档案+词表内核），VLM 实战 2–3 车型后固化
    - → T18 部件专项（12 部件 × 3 车型）→ T19 主题趋势 → T20 跨类目——仍只验证检索策略，不建类型学
    - **类型学与分析写作规范归下游分析整合模块**

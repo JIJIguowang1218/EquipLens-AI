@@ -15,7 +15,7 @@ from pathlib import Path
 
 import jsonschema
 
-from . import corpus, passage, runlog, strategy
+from . import corpus, passage, runner, runlog, strategy
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS = ROOT / "schemas"
@@ -310,16 +310,33 @@ def run(intent_path: str | Path, data_dir: str | Path, *,
             json.dumps(plan, ensure_ascii=False, indent=1), encoding="utf-8")
         with log.stage(f"execute_r{rno}", batch_id=plan["batch_id"]):
             t0 = time.perf_counter()
-            rep = corpus.collect_corpus(plan, data_dir)
-            log.tool("corpus.collect_corpus",
-                     args={"batch_id": plan["batch_id"],
+            res = runner.run_unit(
+                runner.Unit(unit_id=f"{log.run_id}-r{rno}", plan=plan),
+                collect=lambda p: corpus.collect_corpus(p, data_dir),
+                grade=lambda outdir: passage.grade_batch(Path(outdir), registry),
+                data_dir=data_dir, state_root=log.dir / "units")
+            log.tool("runner.run_unit",
+                     args={"unit": f"{log.run_id}-r{rno}",
                            "queries": len(plan["queries"]),
                            "quota": plan["quota"]},
-                     result={"saved": rep["summary"].get("total", 0),
-                             "serp_blocked": sum(
-                                 1 for v in rep.get("serp", {}).values()
-                                 if v.get("blocked"))},
+                     result={"status": res.status, "attempts": res.attempts,
+                             "channel": res.channel, "saved": res.saved,
+                             "blockers": res.blockers},
                      duration_ms=(time.perf_counter() - t0) * 1000)
+            rep = res.report
+        if rep is None:  # 所有通道都失败：结构化上报后停止
+            grade = {"docs": [], "metrics": {
+                "articles": 0, "articles_with_a": 0, "total_chars": 0,
+                "a_chars": 0, "b_chars": 0, "a_share": 0.0, "a_per_article": 0.0,
+                "source_types": [], "failed": 0, "hard_failed": 0,
+                "policy_skipped": 0, "blocked_url": 0, "robots_denied": 0,
+                "dims": []}}
+            log.decision("stop", "; ".join(res.blockers) or "all channels failed",
+                         round=rno)
+            rounds.append({"round": rno, "plan": plan, "grade": grade, "serp": {},
+                           "decision": {"action": "stop",
+                                        "reasons": res.blockers}})
+            break
         with log.stage(f"grade_r{rno}", batch_id=plan["batch_id"]):
             grade = passage.grade_batch(Path(rep["outdir"]), registry)
         (log.dir / f"grade-r{rno}.json").write_text(
