@@ -34,17 +34,21 @@ def test_classify():
 def test_summarize():
     pages = [
         {"url": "https://a.com/1", "title": "t1", "status": "saved",
-         "body_chars": 1000, "a_chars": 80},
+         "body_chars": 1000, "a_chars": 80, "channel": "baidu"},
         {"url": "https://a.com/2", "title": "t2", "status": "fetch_failed",
-         "body_chars": 0, "a_chars": 0},
+         "body_chars": 0, "a_chars": 0, "channel": "baidu"},
         {"url": "https://a.com/3", "title": "t3", "status": "robots_denied",
-         "body_chars": 0, "a_chars": 0},
+         "body_chars": 0, "a_chars": 0, "channel": "baidu"},
+        {"url": "https://a.com/4", "title": "t4", "status": "saved",
+         "body_chars": 500, "a_chars": 0, "channel": "bing"},
     ]
     s = domainbench.summarize("a.com", pages)
-    assert s["saved"] == 1 and s["body_chars"] == 1000 and s["a_chars"] == 80
-    assert s["a_per_kchar"] == 80.0, s["a_per_kchar"]
+    assert s["saved"] == 2 and s["body_chars"] == 1500 and s["a_chars"] == 80
+    assert s["a_per_kchar"] == round(80 / 1500 * 1000, 2), s["a_per_kchar"]
+    assert s["baidu_pages"] == 1 and s["baidu_a_share"] == 0.08
     assert s["trust_suggested"] == "high", s
     assert s["robots_denied"] == 1 and s["fetch_failed"] == 1
+    assert s["channels"] == ["baidu", "bing"]
 
 
 def test_proposals():
@@ -54,13 +58,13 @@ def test_proposals():
     ]}
     lb = [
         {"domain": "360che.com", "trust_suggested": "high", "a_share": 0.07,
-         "a_per_kchar": 70, "saved": 2},
+         "a_per_kchar": 70, "saved": 2, "body_chars": 8000, "baidu_pages": 2},
         {"domain": "autohome.com.cn", "trust_suggested": "none", "a_share": 0.0,
-         "a_per_kchar": 0, "saved": 2},
+         "a_per_kchar": 0, "saved": 3, "body_chars": 20000, "baidu_pages": 3},
         {"domain": "newgood.com", "trust_suggested": "high", "a_share": 0.06,
-         "a_per_kchar": 60, "saved": 2},
+         "a_per_kchar": 60, "saved": 2, "body_chars": 8000, "baidu_pages": 2},
         {"domain": "newbad.com", "trust_suggested": "none", "a_share": 0.0,
-         "a_per_kchar": 0, "saved": 1},
+         "a_per_kchar": 0, "saved": 1, "body_chars": 1000, "baidu_pages": 1},
     ]
     p = domainbench.build_proposals(lb, registry)
     assert any(x["domain"] == "newgood.com" for x in p["add"]), p
