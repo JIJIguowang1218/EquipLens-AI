@@ -69,6 +69,7 @@
 | **T18-roster 全名录大规模文本筛选测试** | `data-test/runs/T18-ROSTER-20261030.md`、`data-test/evals/review-roster-20261030.html`、批次 `batch-corpus-roster-*-20261030` | 2026-10-30 完成：4 类目 39 车型（T13–T15 锁定名录），61 篇/3.65M 字正文，265 段模型判定；**V 3.2% / P 12.9% / G 9.2% / C 74.8%**（候选段口径）；39 车型仅 8 个有 V/P 素材（HOWO MAX/JH6/J6G/豪沃6X6/QY25K5C/QY35K5/SAC16000S/金刚S1 EV）；**A 档假阳性 40.4% 复现 L3 v1**；C 档 47% 是汽车之家首页/报价页 |
 | **检索计划查询分层 + 信源定向 + 配置行过滤（待办1/2）** | `textrun.build_plan`（query_meta）、`corpus.collect_corpus`（按查询给词）、`passage.CONFIG_LINE_RE`、`source_registry.preferred_domains` | 2026-10-30 完成：查询按 vehicle/component/macro 三类配 relevant_terms；`site:` 定向 360che/21-sun；报价配置行判 C；回归候选段 **265→162（-39%）**，测试全绿 |
 | **L4 执行 loop（runner）：重试+降级链+断点** | `src/equiplens/runner.py`、`tests/test_runner.py`，`textrun.execute` 已接入 | 2026-10-30 完成：Temporal 式重试语义（有限尝试/退避）、Crawlee 式通道降级（auto→bing）、单元契约验收、状态 JSON 原子写续跑；runner 6/6 测试通过，真实小批 run-smoke-runner 验证 ok（2 篇/9 候选/auto 通道） |
+| **误杀抽样检测（audit）** | `src/equiplens/audit.py`、`tests/test_audit.py`、`data-test/evals/audit/` | 2026-10-30 完成：C 档按"域×长度"分层抽样 + 强语汇/型号护栏队列 + 加权漏杀率估计（含 Wilson 95% 上界）；T18-roster 四批实测 C 档 6,076 段，抽样 23 条全判 C（估计漏杀 0%，95% 上界 14.3%），护栏 166 条抽查 12 条 0 命中 |
 
 ## 2. 关键结论（30 秒版）
 
@@ -99,6 +100,7 @@
    - ~~T18-roster 全名录大规模文本筛选~~ ✅（10-30：39 车型/265 段判定，V 3.2%/P 12.9%/G 9.2%；A 档假阳性 40.4% 复现）
    - **【暂停·待指令】确定性闸门**：目标按 10-30 校准改写为"对象锚定 + 主题类型排除 + 具体性"，兼修两个实测缺陷（配置行穿透、类目查询被车型名过滤误杀）
    - ~~L4 执行 loop（runner）~~ ✅（10-30：重试策略+通道降级链+单元契约+断点续跑，textrun.execute 已接入）
+   - ~~误杀抽样检测~~ ✅（10-30：C 档分层抽样+护栏队列+加权漏杀率；首批实测漏杀 0%，上界 14.3%）
    - **→ 方向已定（10-30，待落地）**：VLM 看图分析为主力，文本爬取/词表/档案作辅助；skill 为交付形态（schema+判据+档案+词表内核），VLM 实战 2–3 车型后固化
    - → T18 部件专项（12 部件 × 3 车型）→ T19 主题趋势 → T20 跨类目——仍只验证检索策略，不建类型学
    - **类型学与分析写作规范归下游分析整合模块**

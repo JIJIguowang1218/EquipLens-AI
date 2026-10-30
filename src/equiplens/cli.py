@@ -16,7 +16,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from . import channels, corpus, db, doctor, ingest, query, retrieval, review, reviewserver, textrun, webchannel, workflow
+from . import (audit, channels, corpus, db, doctor, ingest, query, retrieval,
+               review, reviewserver, textrun, webchannel, workflow)
 
 
 def main(argv=None):
@@ -78,14 +79,14 @@ def main(argv=None):
                        help="判向探针: 提特征+拟合质心（87 条人工标注, 意见 #11 路线）")
     p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
     p = sub.add_parser("probe-eval", parents=[common],
-                       help="判向探针: 留一验证准确率（对比 UForm 基线 36%）")
+                       help="判向探针: 留一验证准确率（对比 UForm 基线 36%%）")
     p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
     p = sub.add_parser("probe-suggest", parents=[common],
                        help="判向探针: 对机器值图出 v2 建议（默认只出报告, --apply 才落账）")
     p.add_argument("--backend", default="chinese-clip", choices=["chinese-clip", "chinese-clip-l", "uform"])
     p.add_argument("--apply", action="store_true",
                    help="把与现值不同的建议落账（op-probe2, 可撤销）; 默认仅出报告——"
-                        "T12 实盘 54% 表明机器建议需人审, 不宜自动落账")
+                        "T12 实盘 54%% 表明机器建议需人审, 不宜自动落账")
 
     p = sub.add_parser("roster-generate", parents=[common],
                        help="R2 首半: 类目→检索生成候选名录（意见 #14 冷启动, 待人锁定）")
@@ -105,6 +106,17 @@ def main(argv=None):
     p.add_argument("--run-root", default=None, help="运行日志根目录（默认 <data-dir>/runs）")
     p.add_argument("--run-id", default=None, help="指定运行号（默认自动生成）")
     p.add_argument("--no-replan", action="store_true", help="禁用低信度重规划（只跑一轮）")
+
+    p = sub.add_parser("audit-batch", parents=[common],
+                       help="误杀抽样检测: C 档分层抽样 + 强语汇护栏 → 判定表")
+    p.add_argument("batch_dirs", nargs="+", help="语料批次目录（可多个）")
+    p.add_argument("--out", default=None, help="输出目录（默认 <data-dir>/evals/audit）")
+    p.add_argument("--sample-per-stratum", type=int, default=2)
+
+    p = sub.add_parser("audit-apply", parents=[common],
+                       help="回读抽检判定，估计漏杀率并出报告")
+    p.add_argument("sheet_json"); p.add_argument("verdicts_json")
+    p.add_argument("--out", default=None)
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -374,6 +386,42 @@ def main(argv=None):
             for s in r.get("statuses", []):
                 print(f"    {s['status']:>14}  {s['src']}")
         print(f"下一步: python -m equiplens review-pack {result['batch_id']} --out review.html --data-dir {data_dir}")
+
+    elif args.command == "audit-batch":
+        reg = textrun.load_registry()
+        rows = []
+        for b in args.batch_dirs:
+            rows += audit.collect_c_passages(b, reg)
+        sheet = audit.build_sheet(rows, args.sample_per_stratum)
+        out = Path(args.out) if args.out else (data_dir / "evals" / "audit")
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "audit-sheet.json").write_text(
+            json.dumps(sheet, ensure_ascii=False, indent=1), encoding="utf-8")
+        md = [f"# 误杀抽样判定表（C 档 {sheet['population']} 段，"
+              f"护栏 {sheet['guard_count']} 段）", "",
+              '判定档位：V/P/G=漏杀（可用），C=正确剔除。把结论写成 '
+              '{"id": "V|P|G|C"} 的 JSON。', ""]
+        for s in sheet["strata"]:
+            md.append(f"## {s['stratum']}（{s['size']} 段）")
+            for x in s["samples"]:
+                md.append(f"- **{x['id']}** {x['chars']}字 {x['title'][:30]}")
+                md.append(f"  > {x['text']}")
+            md.append("")
+        (out / "audit-sheet.md").write_text("\n".join(md), encoding="utf-8")
+        print(f"C 档 {len(rows)} 段 → 判定表 {out / 'audit-sheet.json'}（抽样 "
+              f"{sum(len(s['samples']) for s in sheet['strata'])} 条，"
+              f"护栏 {sheet['guard_count']} 条）")
+
+    elif args.command == "audit-apply":
+        sheet = json.loads(Path(args.sheet_json).read_text(encoding="utf-8"))
+        verd = json.loads(Path(args.verdicts_json).read_text(encoding="utf-8"))
+        res = audit.apply_verdicts(sheet, verd)
+        out = Path(args.out) if args.out else Path(args.sheet_json).parent
+        (out / "audit-report.json").write_text(
+            json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+        (out / "audit-report.md").write_text(audit.render_report(res),
+                                             encoding="utf-8")
+        print(audit.render_report(res))
 
     conn.close()
     return 0
