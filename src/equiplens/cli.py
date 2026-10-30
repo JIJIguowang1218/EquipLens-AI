@@ -11,13 +11,15 @@
 """
 
 import argparse
+import asyncio
 import json
 import sys
+import time
 from collections import Counter
 from pathlib import Path
 
-from . import (audit, channels, corpus, db, doctor, ingest, query, retrieval,
-               review, reviewserver, textrun, webchannel, workflow)
+from . import (audit, channels, corpus, db, doctor, domainbench, ingest, query,
+               retrieval, review, reviewserver, textrun, webchannel, workflow)
 
 
 def main(argv=None):
@@ -117,6 +119,15 @@ def main(argv=None):
                        help="回读抽检判定，估计漏杀率并出报告")
     p.add_argument("sheet_json"); p.add_argument("verdicts_json")
     p.add_argument("--out", default=None)
+
+    p = sub.add_parser("domain-bench", parents=[common],
+                       help="域名基准: 同查询跨站点对照，产出排行榜与升降级建议")
+    p.add_argument("queries_json", help="查询 JSON: {queries: [\"...\"]}")
+    p.add_argument("--out", default=None, help="输出目录（默认 <data-dir>/evals/domain-bench）")
+    p.add_argument("--apply", action="store_true",
+                   help="把晋升/降级/新增建议写回 data/source_registry.json")
+    p.add_argument("--max-anchors", type=int, default=8)
+    p.add_argument("--per-domain", type=int, default=2)
 
     p = sub.add_parser("crawl-web", parents=[common], help="B 案真实抓取: 厂商官网 → 候选")
     p.add_argument("--roots", nargs="+", required=True, help="厂商官网根 URL")
@@ -422,6 +433,50 @@ def main(argv=None):
         (out / "audit-report.md").write_text(audit.render_report(res),
                                              encoding="utf-8")
         print(audit.render_report(res))
+
+    elif args.command == "domain-bench":
+        qj = json.loads(Path(args.queries_json).read_text(encoding="utf-8"))
+        qs = [x["q"] if isinstance(x, dict) else x for x in qj["queries"]]
+        rows = asyncio.run(domainbench.run_bench(
+            qs, max_anchors_per_query=args.max_anchors,
+            max_pages_per_domain=args.per_domain))
+        reg_path = Path("data") / "source_registry.json"
+        registry = json.loads(reg_path.read_text(encoding="utf-8"))
+        known = {s["domain"]: s for s in registry.get("sources", [])}
+        for r in rows:
+            r["registry_trust"] = known.get(r["domain"], {}).get("trust", "新")
+        props = domainbench.build_proposals(rows, registry)
+        out = Path(args.out) if args.out else (data_dir / "evals" / "domain-bench")
+        out.mkdir(parents=True, exist_ok=True)
+        meta = {"generated_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
+                "queries": len(qs),
+                "pages": sum(r["pages"] for r in rows)}
+        (out / "leaderboard.json").write_text(
+            json.dumps({"meta": meta, "rows": rows}, ensure_ascii=False, indent=1),
+            encoding="utf-8")
+        (out / "proposals.json").write_text(
+            json.dumps(props, ensure_ascii=False, indent=1), encoding="utf-8")
+        (out / "report.md").write_text(
+            domainbench.render_report(rows, props, meta), encoding="utf-8")
+        if args.apply:
+            for p in props.get("promote", []):
+                known[p["domain"]]["trust"] = "high"
+            for p in props.get("demote", []):
+                known[p["domain"]]["trust"] = "low"
+            for p in props.get("add", []):
+                registry.setdefault("sources", []).append({
+                    "domain": p["domain"], "type": "unknown",
+                    "trust": p["trust"], "design_yield": p["design_yield"],
+                    "notes": p["notes"]})
+            reg_path.write_text(json.dumps(registry, ensure_ascii=False, indent=1),
+                                encoding="utf-8")
+            print(f"已写回注册表：晋升 {len(props.get('promote', []))} / "
+                  f"降级 {len(props.get('demote', []))} / "
+                  f"新增 {len(props.get('add', []))}")
+        print(f"域名 {len(rows)} 个 → {out / 'report.md'}")
+        for r in sorted(rows, key=lambda x: -x["a_per_kchar"])[:10]:
+            print(f"  {r['domain']:<28} A/千字 {r['a_per_kchar']:>6} "
+                  f"{r['trust_suggested']}")
 
     conn.close()
     return 0

@@ -34,6 +34,7 @@
 | T18-roster | 2026-10-30 | **全名录大规模文本筛选测试**——T13–T15 锁定名录全部 4 类目 39 车型，爬取+筛选，验证指向性机制与各车型文本储备；三分类 V/P/G/C | 4 批 61 篇 / 3.65M 字正文；候选段 265 段 / 24.5K 字；模型判定 265 段 | `data-test/runs/T18-ROSTER-20261030.md`；`data-test/evals/review-roster-20261030.html`；批次 `batch-corpus-roster-*-20261030` | **V 3.2% / P 12.9% / G 9.2% / C 74.8%**（候选段口径）；39 车型仅 8 个有 V/P 素材；A 档假阳性 **40.4%**（复现 L3 v1）；C 档 47% 来自汽车之家首页/报价页 | 三项机修：配置行穿透、类目查询被车型名过滤误杀、轻型吊车 SERP 被拦；详见报告 §6/§8 |
 | T18-runner | 2026-10-30 | **L4 执行 loop**——重试策略 + 通道降级链 + 单元契约验收 + 断点续跑；textrun.execute 接入 | runner 单元测试 6 项；真实小批 run-smoke-runner（2 篇/9 候选/auto 通道） | `src/equiplens/runner.py`、`tests/test_runner.py`、`data-test/runs/runs/run-smoke-runner/` | 首轮成功即 ok；被拦后自动换 Bing；全通道失败→failed+blockers；低产出→degraded；续跑跳过已完成单元 | 机制借鉴 Temporal/Crawlee/LangGraph 语义，不引框架运行时（见 `docs/agent-loop-mechanisms.md`） |
 | T18-audit | 2026-10-30 | **误杀抽样检测**——C 档按域×长度分层抽样 + 强语汇/型号护栏队列 + 加权漏杀率（Wilson 上界），替代全量人工审核 | T18-roster 四批：C 档 6,076 段；抽样 23 条；护栏 166 条抽查 12 条 | `src/equiplens/audit.py`、`tests/test_audit.py`、`data-test/evals/audit/audit-report.md` | 抽样 23 条全判 C（均广告/报价/验证页）；**估计漏杀 0%，95% 上界 14.3%**；护栏抽查 0 命中 | 结论：配置行修复后规则层误杀风险低；护栏队列保留为常驻复核入口 |
+| T18-domainbench | 2026-10-30 | **域名基准与发现通道**——同一组查询跨站点对照，按 A 产出/千字、抓取成功率、robots 分级，产出排行榜与升降级建议 | 10 条查询 / 18 域名 / 24 页 | `data-test/evals/domain-bench-20261030/`（report.md/leaderboard.json/proposals.json）；CLI `domain-bench` | 发现 **www.yoojia.com（A/千字 89.5，high）**，抽查为 PI 设计战略/CMF 解析转载；dealer.360che.com 32.9 medium 与注册表一致；百度系子域 0 产出 | 注册表新增 yoojia（high）；其余保持观察；建议加大每域页数复测一轮 |
 
 ## 2. 审核包与决策归档索引
 

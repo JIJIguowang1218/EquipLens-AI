@@ -12,7 +12,7 @@
 | L3 结果质检 | 段落切分、设计相关性、指向性判定（V/P/G/C） | 规则粗筛 + 模型 judge | `passage.py`（配置行/主题排除/A-B-C 打分）+ 模型判定（评测集/审核包） |
 | L4 迭代控制 | 重规划、降级、停止/问人、断点续跑 | 规则 | `strategy.assess`、`textrun` replan 循环、`runlog.py`；**降级链+重试=runner.py（本轮建设）** |
 | L5 结构化沉淀 | Facts/Descriptions 抽取、报告 | 未实现（下游） | — |
-| L6 评估 | 评测集、回归、运行台账 | 规则 + 人工 | `data-test/evals/`、`data-test/runs/INDEX.md`、`T18-*` 报告 |
+| L6 评估 | 评测集、回归、运行台账、误杀抽检、域名基准 | 规则 + 人工 | `data-test/evals/`、`data-test/runs/INDEX.md`、`src/equiplens/audit.py`、`src/equiplens/domainbench.py`、`T18-*` 报告 |
 
 横切：`cli.py`、`schemas/`、`doctor.py`、审核包生成（`tmp/build_*_review.py`）。
 
