@@ -14,7 +14,7 @@
 | L5 结构化沉淀 | Facts/Descriptions 抽取、报告 | 未实现（下游） | — |
 | L6 评估 | 评测集、回归、运行台账、误杀抽检、域名基准 | 规则 + 人工 | `data-test/evals/`、`data-test/runs/INDEX.md`、`src/equiplens/audit.py`、`src/equiplens/domainbench.py`、`T18-*` 报告 |
 
-横切：`cli.py`、`schemas/`、`doctor.py`、审核包生成（`tmp/build_*_review.py`）。
+横切：`cli.py`、`schemas/`、`doctor.py`、审核包生成（`scripts/build_*_review.py`）。
 
 ## 策略归属（一句话版）
 

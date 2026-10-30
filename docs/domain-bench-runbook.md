@@ -18,11 +18,11 @@
 
 ```bash
 # 基础（每域 2 页，适合日常）
-PYTHONPATH=src python -m equiplens domain-bench tmp/domain-bench-queries.json \
+PYTHONPATH=src python -m equiplens domain-bench scripts/domain-bench-queries.json \
   --data-dir data-test --out data-test/evals/domain-bench-YYYYMMDD
 
 # 复测确认（每域 5 页、换一组查询，用于晋升/降级前）
-PYTHONPATH=src python -m equiplens domain-bench tmp/domain-bench-queries-r2.json \
+PYTHONPATH=src python -m equiplens domain-bench scripts/domain-bench-queries-r2.json \
   --data-dir data-test --out data-test/evals/domain-bench-YYYYMMDD-r2 \
   --per-domain 5 --max-anchors 10
 
@@ -74,6 +74,6 @@ PYTHONPATH=src python -m equiplens domain-bench \
   依据：百度是间歇性拦截，延迟重试常能恢复；Bing 兜底结果偏官网/商品页、质量差，放最后。
 - **已验证不采用**：搜狗（结果被站内提示链接污染，真实结果不可靠）、360che 站内搜索
   （JS 渲染，抓不到结果）、Bing HTML（历史记录不可用）。再遇到新通道候选，先用
-  `tmp/` 脚本验证可解析性再接入。
+  `scripts/` 或 `tmp/` 脚本验证可解析性再接入。
 - 若某查询在 auto 阶段被拦并已退 Bing，runner 的下一级（延迟百度）会用新会话重试，
   成功则整批改用新结果，`events.jsonl` 会记录 attempts/channel。
