@@ -80,10 +80,21 @@ def test_apply_weighted_miss_rate():
         assert "估计漏杀率" in txt and "分层明细" in txt
 
 
+def test_render_sheet():
+    with tempfile.TemporaryDirectory() as td:
+        b = _make_batch(Path(td))
+        rows = audit.collect_c_passages(b, {"sources": []})
+        sheet = audit.build_sheet(rows, 2)
+        md = audit.render_sheet_md(sheet)
+        assert "判定档位" in md
+        assert sheet["strata"][0]["samples"][0]["id"] in md
+
+
 if __name__ == "__main__":
     check("C 档收集（只含 C）", test_collect_only_c)
     check("分层抽样与护栏队列", test_sheet_strata_and_guard)
     check("加权漏杀率估计与报告", test_apply_weighted_miss_rate)
+    check("判定表渲染", test_render_sheet)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

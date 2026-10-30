@@ -166,6 +166,21 @@ def apply_verdicts(sheet: dict, verdicts: dict) -> dict:
     }
 
 
+def render_sheet_md(sheet: dict) -> str:
+    """判定表的人类可读版（CLI 与 text-run 自动产物共用）。"""
+    md = [f"# 误杀抽样判定表（C 档 {sheet['population']} 段，"
+          f"护栏 {sheet['guard_count']} 段）", "",
+          '判定档位：V/P/G=漏杀（可用），C=正确剔除。把结论写成 '
+          '{"id": "V|P|G|C"} 的 JSON。', ""]
+    for s in sheet["strata"]:
+        md.append(f"## {s['stratum']}（{s['size']} 段）")
+        for x in s["samples"]:
+            md.append(f"- **{x['id']}** {x['chars']}字 {x['title'][:30]}")
+            md.append(f"  > {x['text']}")
+        md.append("")
+    return "\n".join(md)
+
+
 def render_report(result: dict) -> str:
     guard = ("无" if result["guard_miss_rate"] is None
              else f"{result['guard_miss_rate']*100:.1f}%")

@@ -15,7 +15,7 @@ from pathlib import Path
 
 import jsonschema
 
-from . import corpus, passage, runner, runlog, strategy
+from . import audit, corpus, passage, runner, runlog, strategy
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS = ROOT / "schemas"
@@ -354,8 +354,24 @@ def run(intent_path: str | Path, data_dir: str | Path, *,
             break
 
     metrics = _merge_metrics(rounds)
+    # 每次运行自动生成误杀抽检包（5 分钟人工复核用），避免事后补做
+    audit_info = None
+    if rounds:
+        bdir = data_dir / "corpus" / rounds[-1]["plan"]["batch_id"]
+        if (bdir / "index.json").exists():
+            rows = audit.collect_c_passages(bdir, registry)
+            sheet = audit.build_sheet(rows, sample_per_stratum=2)
+            (log.dir / "audit-sheet.json").write_text(
+                json.dumps(sheet, ensure_ascii=False, indent=1), encoding="utf-8")
+            (log.dir / "audit-sheet.md").write_text(
+                audit.render_sheet_md(sheet), encoding="utf-8")
+            audit_info = {"population": sheet["population"],
+                          "guard": sheet["guard_count"],
+                          "sample": sum(len(s["samples"])
+                                        for s in sheet["strata"])}
     summary = log.finish(summary={"status": "ok", "rounds": len(rounds),
-                                  "final_action": rounds[-1]["decision"]["action"]},
+                                  "final_action": rounds[-1]["decision"]["action"],
+                                  "audit": audit_info},
                          metrics=metrics)
     summary["rounds"] = rounds
     report = _write_report(log.dir, summary)

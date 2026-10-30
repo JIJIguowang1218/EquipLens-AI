@@ -1,0 +1,13 @@
+{"ts": "2026-10-30T21:52:31.897", "event": "run_start", "meta": {"intent": "tmp/intent-chain2.json", "category": "汽车起重机", "models": ["徐工 XCT25"], "profile": "汽车起重机"}}
+{"ts": "2026-10-30T21:52:31.897", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 55, "output_tokens_est": 13, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T21:52:31.897", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T21:52:31.898", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.1, "status": "ok"}
+{"ts": "2026-10-30T21:52:31.899", "event": "stage_start", "stage": "plan_r1", "profile": "汽车起重机", "profile_status": "found"}
+{"ts": "2026-10-30T21:52:31.901", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.1, "status": "ok", "profile": "汽车起重机", "profile_status": "found"}
+{"ts": "2026-10-30T21:52:31.901", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261030-215231"}
+{"ts": "2026-10-30T21:52:48.045", "event": "tool_call", "name": "runner.run_unit", "args": {"unit": "run-chain2b-r1", "queries": 1, "quota": {"industry": 4}}, "result": {"status": "ok", "attempts": 1, "channel": "auto", "saved": 4, "blockers": []}, "duration_ms": 16143.1, "status": "ok"}
+{"ts": "2026-10-30T21:52:48.046", "event": "stage_end", "stage": "execute_r1", "duration_ms": 16143.4, "status": "ok", "batch_id": "batch-text-20261030-215231"}
+{"ts": "2026-10-30T21:52:48.046", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261030-215231"}
+{"ts": "2026-10-30T21:52:48.069", "event": "stage_end", "stage": "grade_r1", "duration_ms": 23.8, "status": "ok", "batch_id": "batch-text-20261030-215231"}
+{"ts": "2026-10-30T21:52:48.070", "event": "decision", "action": "stop", "reason": "A 占比 0.4% < 6.0%; 来源类型 1 < 2; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T21:52:48.100", "event": "run_end", "duration_ms": 16202.6, "summary": {"status": "ok", "rounds": 1, "final_action": "stop", "audit": {"population": 766, "guard": 0, "sample": 10}}, "metrics": {"articles": 4, "articles_with_a": 2, "total_chars": 125771, "a_chars": 531, "b_chars": 669, "a_share": 0.0042, "a_per_article": 132.8, "source_types": ["industry"], "serp_blocked_queries": 0, "failed": 0, "hard_failed": 0, "policy_skipped": 0, "blocked_url": 0, "robots_denied": 0, "dims": ["CMF", "形态", "意图"]}}

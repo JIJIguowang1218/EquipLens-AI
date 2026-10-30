@@ -18,6 +18,8 @@
 | run-budget-q1-bing | 高空作业车 | - | 0 | 0 | 0.0% | 0.0 | 0 | 0 | 0 | 0 | 1 | stop | 5.4 | 79/9 |
 | T18-roster-20261030 | 4 类目·39 车型 | - | 61 | 777(V) | 3.2%* | - | - | - | - | - | 1 | 报告 | - | - |
 | run-smoke-runner | 随车吊 | - | 2 | 1,548 | 14.8% | 774.0 | - | - | - | - | 1 | stop | - | - |
+| run-chain2 | 汽车起重机 | 汽车起重机 | 4 | 531 | 0.6% | 132.8 | - | - | - | - | 1 | stop | - | - |
+| run-chain2b | 汽车起重机 | 汽车起重机 | 4 | 531 | 0.4% | 132.8 | - | - | - | - | 1 | stop | - | - |
 
 说明：
 - 硬失败 = fetch_error/fetch_failed/robots_denied/too_short；政策跳过 = blocked_url/source_skipped；

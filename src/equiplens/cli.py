@@ -411,17 +411,8 @@ def main(argv=None):
         out.mkdir(parents=True, exist_ok=True)
         (out / "audit-sheet.json").write_text(
             json.dumps(sheet, ensure_ascii=False, indent=1), encoding="utf-8")
-        md = [f"# 误杀抽样判定表（C 档 {sheet['population']} 段，"
-              f"护栏 {sheet['guard_count']} 段）", "",
-              '判定档位：V/P/G=漏杀（可用），C=正确剔除。把结论写成 '
-              '{"id": "V|P|G|C"} 的 JSON。', ""]
-        for s in sheet["strata"]:
-            md.append(f"## {s['stratum']}（{s['size']} 段）")
-            for x in s["samples"]:
-                md.append(f"- **{x['id']}** {x['chars']}字 {x['title'][:30]}")
-                md.append(f"  > {x['text']}")
-            md.append("")
-        (out / "audit-sheet.md").write_text("\n".join(md), encoding="utf-8")
+        (out / "audit-sheet.md").write_text(audit.render_sheet_md(sheet),
+                                            encoding="utf-8")
         print(f"C 档 {len(rows)} 段 → 判定表 {out / 'audit-sheet.json'}（抽样 "
               f"{sum(len(s['samples']) for s in sheet['strata'])} 条，"
               f"护栏 {sheet['guard_count']} 条）")
