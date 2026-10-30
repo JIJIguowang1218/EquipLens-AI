@@ -115,6 +115,26 @@ def classify_view(data: bytes) -> dict:
             "scores": {k: round(v, 4) for k, v in scores.items()}}
 
 
+EXTERIOR_VIEWS = ("hero_45", "side", "front", "rear")
+
+
+def check_exterior(data: bytes, threshold: float = DEFAULT_THRESHOLD,
+                   allowed_views: tuple[str, ...] = EXTERIOR_VIEWS) -> dict:
+    """整车外观判定 = 门卫放行 + 视角属于外观。
+
+    门卫本身**故意保留部件特写**（KEEP_LABELS 第三条，供部件页裁图用），
+    也没有"内饰"反例；所以选"整车主图"时必须再加一道视角判定，
+    否则内饰/局部结构图会混进来。
+    """
+    g = check(data, threshold)
+    if not g.get("pass"):
+        return dict(g, exterior=False, reason="gate_drop")
+    v = classify_view(data)
+    ok = v.get("view") in allowed_views
+    return dict(g, view=v.get("view"), view_score=v.get("score"),
+                exterior=ok, reason="ok" if ok else f"not_exterior:{v.get('view')}")
+
+
 def check(data: bytes, threshold: float = DEFAULT_THRESHOLD) -> dict:
     """门卫判定。返回 keep/drop 相似度、裕量、场景、耗时与是否放行。"""
     g = _get_gate()
