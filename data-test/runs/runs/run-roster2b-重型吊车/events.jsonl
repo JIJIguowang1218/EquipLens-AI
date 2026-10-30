@@ -1,0 +1,13 @@
+{"ts": "2026-10-30T22:00:12.265", "event": "run_start", "meta": {"intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-重型吊车.json", "category": "重型吊车", "models": ["徐工XGC88000", "三一SAC16000S", "中联重科ZTC250", "徐工QY35K5", "徐工QY25K5C", "徐工XCT25"], "profile": "汽车起重机"}}
+{"ts": "2026-10-30T22:00:12.265", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 80, "output_tokens_est": 13, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T22:00:12.265", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T22:00:12.267", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.2, "status": "ok"}
+{"ts": "2026-10-30T22:00:12.267", "event": "stage_start", "stage": "plan_r1", "profile": "汽车起重机", "profile_status": "found"}
+{"ts": "2026-10-30T22:00:12.269", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.4, "status": "ok", "profile": "汽车起重机", "profile_status": "found"}
+{"ts": "2026-10-30T22:00:12.270", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261030-220012"}
+{"ts": "2026-10-30T22:00:36.203", "event": "tool_call", "name": "runner.run_unit", "args": {"unit": "run-roster2b-重型吊车-r1", "queries": 2, "quota": {"review": 3, "industry": 3}}, "result": {"status": "ok", "attempts": 1, "channel": "auto", "saved": 5, "blockers": []}, "duration_ms": 23933.1, "status": "ok"}
+{"ts": "2026-10-30T22:00:36.203", "event": "stage_end", "stage": "execute_r1", "duration_ms": 23933.5, "status": "ok", "batch_id": "batch-text-20261030-220012"}
+{"ts": "2026-10-30T22:00:36.203", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261030-220012"}
+{"ts": "2026-10-30T22:00:36.231", "event": "stage_end", "stage": "grade_r1", "duration_ms": 27.2, "status": "ok", "batch_id": "batch-text-20261030-220012"}
+{"ts": "2026-10-30T22:00:36.232", "event": "decision", "action": "stop", "reason": "A 占比 0.6% < 6.0%; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T22:00:36.263", "event": "run_end", "duration_ms": 23997.9, "summary": {"status": "ok", "rounds": 1, "final_action": "stop", "audit": {"population": 1086, "guard": 40, "sample": 11}}, "metrics": {"articles": 5, "articles_with_a": 2, "total_chars": 95618, "a_chars": 532, "b_chars": 1002, "a_share": 0.0056, "a_per_article": 106.4, "source_types": ["industry", "review"], "serp_blocked_queries": 0, "failed": 0, "hard_failed": 0, "policy_skipped": 0, "blocked_url": 0, "robots_denied": 0, "dims": ["CMF", "形态", "意图", "比例/姿态"]}}

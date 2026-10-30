@@ -57,6 +57,9 @@ def resolve_profile(category: str | None, profiles: dict) -> tuple[str | None, d
 
 
 def ambiguity_unresolved(intent: dict, category: str | None, profiles: dict) -> bool:
+    # 已给出明确车型 = 意图已确认，不再因类目别名重叠而阻塞批量运行
+    if intent.get("models"):
+        return False
     for a in intent.get("ambiguities", []):
         if a.get("needs_confirmation", True):
             return True
@@ -112,6 +115,12 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
         query_meta.setdefault(q, {"info_type": info_type,
                                   "relevant_terms": _terms(info_type, extra_terms)})
 
+    # 0) 信源定向（实验性，默认关闭）：site: 查询在百度被拦、Bing 只回栏目页，
+    #    T18-roster2 实测无效；仅当注册表显式开启 source_targeting=site 时启用。
+    if registry.get("source_targeting") == "site":
+        for domain in (registry.get("preferred_domains") or [])[:2]:
+            if category:
+                add(f"site:{domain} {category} 造型 设计", "review", "macro")
     # 1) 档案层：有档案时优先具体查询（预算截断时先保住类目相关）
     if profile:
         for alias in (profile.get("aliases") or [])[:2]:
@@ -124,10 +133,6 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
         for term in (profile.get("market_terms") or [])[:2]:
             add(f"{term} 造型 设计 趋势", "industry", "macro",
                 extra_terms=[term])
-    # 1b) 信源定向：优先域站内查询（域名来自数据文件 registry.preferred_domains）
-    for domain in (registry.get("preferred_domains") or [])[:2]:
-        if category:
-            add(f"site:{domain} {category} 造型 设计", "review", "macro")
     # 2) 通用层/宽搜轮：宽搜轮只跑“不同的”查询，避免重复上一轮
     if wide:
         for q in ["工程机械 工业设计", "特种车辆 外观 设计 解读",
@@ -148,8 +153,15 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
             else:
                 add(q, st, "macro")
 
-    # 3) 预算：查询数上限
-    flat = [(st, q) for st, qs in queries.items() for q in qs]
+    # 3) 预算：查询数上限（按信源类型轮转截断，避免先到类型吃满配额）
+    buckets = [(st, list(qs)) for st, qs in queries.items()]
+    flat: list[tuple[str, str]] = []
+    i = 0
+    while any(i < len(qs) for _, qs in buckets):
+        for st, qs in buckets:
+            if i < len(qs):
+                flat.append((st, qs[i]))
+        i += 1
     if len(flat) > max_queries:
         flat = flat[:max_queries]
         queries = {}

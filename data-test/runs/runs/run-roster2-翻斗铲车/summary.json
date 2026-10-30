@@ -1,0 +1,622 @@
+{
+ "run_id": "run-roster2-翻斗铲车",
+ "started_at": "2026-10-30T21:56:10.066",
+ "ended_at": "2026-10-30T21:58:15.555",
+ "duration_ms": 125488.4,
+ "meta": {
+  "intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-翻斗铲车.json",
+  "category": "翻斗铲车",
+  "models": [
+   "福田金刚",
+   "福田金刚3",
+   "福田金刚C",
+   "沃尔沃FMX",
+   "一汽解放J6L",
+   "陕汽重卡德龙K3000"
+  ],
+  "profile": null
+ },
+ "stages": [
+  {
+   "stage": "validate_intent",
+   "duration_ms": 1.0,
+   "status": "ok"
+  },
+  {
+   "stage": "plan_r1",
+   "duration_ms": 2.0,
+   "status": "ok",
+   "profile": null,
+   "profile_status": "missing"
+  },
+  {
+   "stage": "execute_r1",
+   "duration_ms": 125476.0,
+   "status": "ok",
+   "batch_id": "batch-text-20261030-215610"
+  },
+  {
+   "stage": "grade_r1",
+   "duration_ms": 3.2,
+   "status": "ok",
+   "batch_id": "batch-text-20261030-215610"
+  }
+ ],
+ "tools": [
+  {
+   "name": "runner.run_unit",
+   "args": {
+    "unit": "run-roster2-翻斗铲车-r1",
+    "queries": 2,
+    "quota": {
+     "review": 3,
+     "industry": 3
+    }
+   },
+   "result": {
+    "status": "ok",
+    "attempts": 5,
+    "channel": "baidu",
+    "saved": 2,
+    "blockers": []
+   },
+   "duration_ms": 125475.6,
+   "status": "ok"
+  }
+ ],
+ "llm_calls": [
+  {
+   "model": "assistant-manual",
+   "prompt_version": "text-plan-v0.1",
+   "input_tokens_est": 84,
+   "output_tokens_est": 9,
+   "est": true,
+   "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"
+  }
+ ],
+ "decisions": [
+  {
+   "action": "stop",
+   "reason": "文章数 2 < 3; 来源类型 1 < 2; 已用 1/1 轮，停止并上报缺口",
+   "round": 1,
+   "scope": [],
+   "constraints": [
+    "robots/UA/授权",
+    "配额上限",
+    "账本不变量",
+    "原图不可变",
+    "人工检查点",
+    "schema 校验"
+   ]
+  }
+ ],
+ "summary": {
+  "status": "ok",
+  "rounds": 1,
+  "final_action": "stop",
+  "audit": {
+   "population": 145,
+   "guard": 1,
+   "sample": 4
+  }
+ },
+ "metrics": {
+  "articles": 2,
+  "articles_with_a": 2,
+  "total_chars": 7908,
+  "a_chars": 639,
+  "b_chars": 430,
+  "a_share": 0.0808,
+  "a_per_article": 319.5,
+  "source_types": [
+   "review"
+  ],
+  "serp_blocked_queries": 12,
+  "failed": 5,
+  "hard_failed": 0,
+  "policy_skipped": 5,
+  "blocked_url": 2,
+  "robots_denied": 0,
+  "dims": [
+   "CMF",
+   "形态",
+   "意图"
+  ]
+ },
+ "token_estimate": {
+  "input": 84,
+  "output": 9,
+  "note": "启发式估算，非 API usage"
+ },
+ "events": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2-翻斗铲车\\events.jsonl",
+ "rounds": [
+  {
+   "round": 1,
+   "plan": {
+    "batch_id": "batch-text-20261030-215610",
+    "purpose": "text_design_scan",
+    "category": "翻斗铲车",
+    "models": [
+     "福田金刚",
+     "福田金刚3",
+     "福田金刚C",
+     "沃尔沃FMX",
+     "一汽解放J6L",
+     "陕汽重卡德龙K3000"
+    ],
+    "profile_ref": null,
+    "profile_status": "missing",
+    "queries": {
+     "review": [
+      "site:360che.com 翻斗铲车 造型 设计",
+      "site:21-sun.com 翻斗铲车 造型 设计",
+      "商用车 设计 语言 家族化",
+      "驾驶室 造型 设计",
+      "翻斗铲车 外观 设计 语言",
+      "福田金刚3 造型 设计",
+      "沃尔沃FMX 造型 设计",
+      "陕汽重卡德龙K3000 造型 设计"
+     ],
+     "industry": [
+      "工程机械 造型 设计",
+      "工程车辆 外观 设计 解读",
+      "翻斗铲车 造型 设计 解读",
+      "福田金刚 造型 设计",
+      "福田金刚C 造型 设计",
+      "一汽解放J6L 造型 设计"
+     ]
+    },
+    "query_meta": {
+     "site:360che.com 翻斗铲车 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "site:21-sun.com 翻斗铲车 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "工程机械 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "商用车 设计 语言 家族化": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "工程车辆 外观 设计 解读": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "驾驶室 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "翻斗铲车 造型 设计 解读": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "翻斗铲车 外观 设计 语言": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "福田金刚 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "沃尔沃FMX",
+       "一汽解放J6L",
+       "陕汽重卡德龙K3000",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "福田金刚3 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "沃尔沃FMX",
+       "一汽解放J6L",
+       "陕汽重卡德龙K3000",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "福田金刚C 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "沃尔沃FMX",
+       "一汽解放J6L",
+       "陕汽重卡德龙K3000",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "沃尔沃FMX 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "沃尔沃FMX",
+       "FMX",
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "一汽解放J6L",
+       "陕汽重卡德龙K3000",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "一汽解放J6L 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "一汽解放J6L",
+       "J6L",
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "沃尔沃FMX",
+       "陕汽重卡德龙K3000",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "陕汽重卡德龙K3000 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "陕汽重卡德龙K3000",
+       "K3000",
+       "福田金刚",
+       "福田金刚3",
+       "福田金刚C",
+       "沃尔沃FMX",
+       "一汽解放J6L",
+       "翻斗铲车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     }
+    },
+    "quota": {
+     "review": 3,
+     "industry": 3
+    },
+    "negative_terms": [
+     "油耗",
+     "马力",
+     "配置",
+     "报价",
+     "优惠",
+     "试驾",
+     "保养",
+     "维修",
+     "参数",
+     "经销商",
+     "促销",
+     "扭矩",
+     "变速箱",
+     "发动机",
+     "裸车价",
+     "促销价",
+     "询价"
+    ],
+    "relevant_terms": [
+     "翻斗铲车",
+     "福田金刚",
+     "福田金刚3",
+     "福田金刚C",
+     "沃尔沃FMX",
+     "一汽解放J6L",
+     "陕汽重卡德龙K3000",
+     "工程机械",
+     "商用车",
+     "工程车辆",
+     "驾驶室"
+    ],
+    "skip_domains": [
+     "docin.com",
+     "baike.baidu.com",
+     "b2b.baidu.com"
+    ],
+    "serp_channel": "auto",
+    "budget": {
+     "max_queries": 16,
+     "max_fetch": 6,
+     "max_rounds": 1,
+     "per_type_quota": 3
+    },
+    "round": 1,
+    "fallback": [
+     "generic_layer",
+     "switch_sources",
+     "propose_profile"
+    ]
+   },
+   "grade": {
+    "batch_id": "batch-text-20261030-215610",
+    "docs": [
+     {
+      "title": "家族化设计语言，大众威然满足商务出行全部需求？_易车",
+      "url": "https://hao.yiche.com/wenzhang/42391751",
+      "source_type": "review",
+      "chars": 4341,
+      "a_chars": 229,
+      "a_count": 4,
+      "a_share": 0.0528,
+      "dims": [
+       "CMF",
+       "形态",
+       "意图"
+      ],
+      "source_trust": "medium",
+      "top_passages": [
+       "家族化设计语言，大众威然满足商务出行全部需求？",
+       "尺寸硕大的倒梯形进气格栅以镀铬装饰条组成，使得前脸造型更为扁平化，与前大灯融为一体，拉伸了前脸的视觉宽度。车尾部分与前脸相呼应的设计风格。",
+       "尾灯采用回旋式造型设计，中间部分以一根镀铬饰条相连，营造出贯穿式尾灯的效果。"
+      ]
+     },
+     {
+      "title": "吉利远程客车开启全新造型阶段 首款车型正式发布_中国商用汽车网",
+      "url": "http://cv.ce.cn/kcpd/qyxw/202009/10/t20200910_35714825.shtml",
+      "source_type": "review",
+      "chars": 3567,
+      "a_chars": 410,
+      "a_count": 5,
+      "a_share": 0.1149,
+      "dims": [
+       "形态",
+       "意图"
+      ],
+      "source_trust": "medium",
+      "top_passages": [
+       "经济日报-中国商用汽车网9月10日讯 日前，在吉利商用车淄博基地投产仪式上，远程客车发布全新家族设计语言，首款采用全新造型车型——新款E12正式发布。吉利商用车集团副总经理、客车事业部总经理刘国强表示，新款E12的发布标志着远程客车开启全新造型阶段，我们希望为城市风景添彩，成为城市名片的重要组成部分。",
+       "基于对客车产品的整体化思考，远程客车全新的家族化设计主要凸显了科技和人文两个核心理念。",
+       "新款E12前脸儒雅沉稳，用充满张力但不失柔和的曲线勾勒出兼具科技感与亲和力的造型。前大灯设计灵感源自于字母G，同时融入中国古代吉祥纹样，点亮时呈流水般的视觉效果。"
+      ]
+     }
+    ],
+    "metrics": {
+     "articles": 2,
+     "articles_with_a": 2,
+     "total_chars": 7908,
+     "a_chars": 639,
+     "b_chars": 430,
+     "a_share": 0.0808,
+     "a_per_article": 319.5,
+     "source_types": [
+      "review"
+     ],
+     "failed": 5,
+     "hard_failed": 0,
+     "policy_skipped": 5,
+     "blocked_url": 2,
+     "robots_denied": 0,
+     "dims": [
+      "CMF",
+      "形态",
+      "意图"
+     ]
+    },
+    "failed": [
+     {
+      "title": "ARC-FLOW设计语言(极狐汽车家族设计语言... - 百度百科",
+      "status": "source_skipped",
+      "url": "https://baike.baidu.com/item/ARC-FLOW%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80/69074814"
+     },
+     {
+      "title": "汽车 _家族化_ 的“套娃” _设计_ 值得提倡吗? - 郑谊01",
+      "status": "blocked_url",
+      "url": "https://wappass.baidu.com/static/captcha/tuxing.html?ak=572be823e2f50ea759a616c060d6b9f1&backurl=https%3A%2F%2Fmbd.baidu.com%2Fnewspage%2Fdata%2Flandingsuper%3Fid%3D1613991359290172543%26wfr%3Dspider%26for%3Dpc%26third%3Dbaijiahao%26baijiahao_id%3D1613991359290172543%26c_source%3Dkunlun%26c_score%3D0.999100&timestamp=1793368675&signature=4cfd88869e15d0657a54b7d0a053a7e9"
+     },
+     {
+      "title": "_商用车 设计 语言 家族化_ - 精选笔记",
+      "status": "blocked_url",
+      "url": "https://www.baidu.com/s?pd=note&rpf=pc&word=%E5%95%86%E7%94%A8%E8%BD%A6+%E8%AE%BE%E8%AE%A1+%E8%AF%AD%E8%A8%80+%E5%AE%B6%E6%97%8F%E5%8C%96&sa=vs_video_top_ugc"
+     },
+     {
+      "title": "_福田金刚3 造型 设计_ - 批发厂家 - 百度爱采购",
+      "status": "source_skipped",
+      "url": "https://b2b.baidu.com/cc?q=%E7%A6%8F%E7%94%B0%E9%87%91%E5%88%9A3%20%E9%80%A0%E5%9E%8B%20%E8%AE%BE%E8%AE%A1&from=b2b_factory2&srcid=5359&from_restype=&pi=baidu.b2b_factory2.title...c7530bb7000be118"
+     },
+     {
+      "title": "_福田金刚3 造型 设计_ - 商品批发价格 - 百度爱采购",
+      "status": "source_skipped",
+      "url": "https://b2b.baidu.com/ss?q=%E7%A6%8F%E7%94%B0%E9%87%91%E5%88%9A3%20%E9%80%A0%E5%9E%8B%20%E8%AE%BE%E8%AE%A1&from_restype=product&pi=baidu.b2b_straight.title...c7530bb7000be118&from=b2b_straight&srcid=5103"
+     }
+    ]
+   },
+   "serp": {
+    "site:360che.com 翻斗铲车 造型 设计": {
+     "chars": 2706,
+     "blocked": true
+    },
+    "site:21-sun.com 翻斗铲车 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "商用车 设计 语言 家族化": {
+     "chars": 47168,
+     "blocked": false
+    },
+    "驾驶室 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "翻斗铲车 外观 设计 语言": {
+     "chars": 22,
+     "blocked": true
+    },
+    "福田金刚3 造型 设计": {
+     "chars": 81175,
+     "blocked": false
+    },
+    "沃尔沃FMX 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "陕汽重卡德龙K3000 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "工程机械 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "工程车辆 外观 设计 解读": {
+     "chars": 22,
+     "blocked": true
+    },
+    "翻斗铲车 造型 设计 解读": {
+     "chars": 22,
+     "blocked": true
+    },
+    "福田金刚 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "福田金刚C 造型 设计": {
+     "chars": 22,
+     "blocked": true
+    },
+    "一汽解放J6L 造型 设计": {
+     "chars": 2635,
+     "blocked": true
+    }
+   },
+   "decision": {
+    "action": "stop",
+    "reasons": [
+     "文章数 2 < 3",
+     "来源类型 1 < 2",
+     "已用 1/1 轮，停止并上报缺口"
+    ],
+    "scope": [],
+    "constraints": [
+     "robots/UA/授权",
+     "配额上限",
+     "账本不变量",
+     "原图不可变",
+     "人工检查点",
+     "schema 校验"
+    ]
+   }
+  }
+ ],
+ "artifacts": {
+  "run_dir": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2-翻斗铲车",
+  "report": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2-翻斗铲车\\report.md",
+  "events": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2-翻斗铲车\\events.jsonl"
+ }
+}

@@ -64,6 +64,9 @@ PYTHONPATH=src python -m equiplens domain-bench \
 - **单页高产出是方差**：tcv360/sohu 曾出现 1 页 163–228/千字，样本不足不入库。
 - **A 档产出 ≠ 全部价值**：163 等门户 A 产出低，但可能产出 G 档（宏观定调）文本；降级要谨慎，保留 medium 观察。
 - **robots 与频率**：遵守 `webchannel.robots_allows` 与 1.2s 间隔，不因基准测试绕规矩。
+- **复测必须用新 run_id**：runner 的断点续跑会按 unit 状态复用旧批次，复用 run_id 会拿到旧数据（T18-roster2 踩过）。
+- **site: 定向查询不可用**：百度对 site: 查询拦截率极高；Bing RSS 只回栏目页。`source_targeting=site`
+  仅作实验开关，默认关闭；替代方向是"品牌名查询"（如"卡车之家 重卡 造型 设计"），需百度恢复后验证。
 
 ## 6. 通道降级链（2026-10-30 结论）
 

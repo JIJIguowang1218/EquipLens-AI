@@ -1,0 +1,577 @@
+{
+ "run_id": "run-roster2b-沙漠牵引车",
+ "started_at": "2026-10-30T21:58:41.110",
+ "ended_at": "2026-10-30T22:00:12.262",
+ "duration_ms": 91151.7,
+ "meta": {
+  "intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-沙漠牵引车.json",
+  "category": "沙漠牵引车",
+  "models": [
+   "陕汽重卡德龙6X6",
+   "陕汽重卡德龙",
+   "陕汽重卡德龙F3000",
+   "东风天锦",
+   "陕汽重卡德龙X3000",
+   "一汽解放JH6"
+  ],
+  "profile": null
+ },
+ "stages": [
+  {
+   "stage": "validate_intent",
+   "duration_ms": 1.3,
+   "status": "ok"
+  },
+  {
+   "stage": "plan_r1",
+   "duration_ms": 2.1,
+   "status": "ok",
+   "profile": null,
+   "profile_status": "missing"
+  },
+  {
+   "stage": "execute_r1",
+   "duration_ms": 91136.2,
+   "status": "ok",
+   "batch_id": "batch-text-20261030-215841"
+  },
+  {
+   "stage": "grade_r1",
+   "duration_ms": 4.4,
+   "status": "ok",
+   "batch_id": "batch-text-20261030-215841"
+  }
+ ],
+ "tools": [
+  {
+   "name": "runner.run_unit",
+   "args": {
+    "unit": "run-roster2b-沙漠牵引车-r1",
+    "queries": 2,
+    "quota": {
+     "review": 3,
+     "industry": 3
+    }
+   },
+   "result": {
+    "status": "degraded",
+    "attempts": 6,
+    "channel": "",
+    "saved": 2,
+    "blockers": [
+     "no_candidates: A 段 0 < 1"
+    ]
+   },
+   "duration_ms": 91135.8,
+   "status": "ok"
+  }
+ ],
+ "llm_calls": [
+  {
+   "model": "assistant-manual",
+   "prompt_version": "text-plan-v0.1",
+   "input_tokens_est": 93,
+   "output_tokens_est": 9,
+   "est": true,
+   "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"
+  }
+ ],
+ "decisions": [
+  {
+   "action": "stop",
+   "reason": "文章数 2 < 3; A 占比 0.0% < 6.0%; A 字数 0 < 300; 来源类型 1 < 2; 类目档案缺失且通用层产出不足; 已用 1/1 轮，停止并上报缺口",
+   "round": 1,
+   "scope": [],
+   "constraints": [
+    "robots/UA/授权",
+    "配额上限",
+    "账本不变量",
+    "原图不可变",
+    "人工检查点",
+    "schema 校验"
+   ]
+  }
+ ],
+ "summary": {
+  "status": "ok",
+  "rounds": 1,
+  "final_action": "stop",
+  "audit": {
+   "population": 70,
+   "guard": 0,
+   "sample": 8
+  }
+ },
+ "metrics": {
+  "articles": 2,
+  "articles_with_a": 0,
+  "total_chars": 3737,
+  "a_chars": 0,
+  "b_chars": 0,
+  "a_share": 0.0,
+  "a_per_article": 0.0,
+  "source_types": [
+   "review"
+  ],
+  "serp_blocked_queries": 0,
+  "failed": 0,
+  "hard_failed": 0,
+  "policy_skipped": 0,
+  "blocked_url": 0,
+  "robots_denied": 0,
+  "dims": []
+ },
+ "token_estimate": {
+  "input": 93,
+  "output": 9,
+  "note": "启发式估算，非 API usage"
+ },
+ "events": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2b-沙漠牵引车\\events.jsonl",
+ "rounds": [
+  {
+   "round": 1,
+   "plan": {
+    "batch_id": "batch-text-20261030-215841",
+    "purpose": "text_design_scan",
+    "category": "沙漠牵引车",
+    "models": [
+     "陕汽重卡德龙6X6",
+     "陕汽重卡德龙",
+     "陕汽重卡德龙F3000",
+     "东风天锦",
+     "陕汽重卡德龙X3000",
+     "一汽解放JH6"
+    ],
+    "profile_ref": null,
+    "profile_status": "missing",
+    "queries": {
+     "review": [
+      "site:360che.com 沙漠牵引车 造型 设计",
+      "site:21-sun.com 沙漠牵引车 造型 设计",
+      "商用车 设计 语言 家族化",
+      "驾驶室 造型 设计",
+      "沙漠牵引车 外观 设计 语言",
+      "陕汽重卡德龙 造型 设计",
+      "东风天锦 造型 设计",
+      "一汽解放JH6 造型 设计"
+     ],
+     "industry": [
+      "工程机械 造型 设计",
+      "工程车辆 外观 设计 解读",
+      "沙漠牵引车 造型 设计 解读",
+      "陕汽重卡德龙6X6 造型 设计",
+      "陕汽重卡德龙F3000 造型 设计",
+      "陕汽重卡德龙X3000 造型 设计"
+     ]
+    },
+    "query_meta": {
+     "site:360che.com 沙漠牵引车 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "site:21-sun.com 沙漠牵引车 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "工程机械 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "商用车 设计 语言 家族化": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "工程车辆 外观 设计 解读": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "驾驶室 造型 设计": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "沙漠牵引车 造型 设计 解读": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "沙漠牵引车 外观 设计 语言": {
+      "info_type": "macro",
+      "relevant_terms": [
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "陕汽重卡德龙6X6 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "陕汽重卡德龙6X6",
+       "6X6",
+       "陕汽重卡德龙",
+       "陕汽重卡德龙F3000",
+       "东风天锦",
+       "陕汽重卡德龙X3000",
+       "一汽解放JH6",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "陕汽重卡德龙 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "陕汽重卡德龙",
+       "陕汽重卡德龙6X6",
+       "陕汽重卡德龙F3000",
+       "东风天锦",
+       "陕汽重卡德龙X3000",
+       "一汽解放JH6",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "陕汽重卡德龙F3000 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "陕汽重卡德龙",
+       "陕汽重卡德龙6X6",
+       "陕汽重卡德龙F3000",
+       "东风天锦",
+       "陕汽重卡德龙X3000",
+       "一汽解放JH6",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "东风天锦 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "东风天锦",
+       "陕汽重卡德龙6X6",
+       "陕汽重卡德龙",
+       "陕汽重卡德龙F3000",
+       "陕汽重卡德龙X3000",
+       "一汽解放JH6",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "陕汽重卡德龙X3000 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "陕汽重卡德龙",
+       "陕汽重卡德龙6X6",
+       "陕汽重卡德龙F3000",
+       "东风天锦",
+       "陕汽重卡德龙X3000",
+       "一汽解放JH6",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     },
+     "一汽解放JH6 造型 设计": {
+      "info_type": "vehicle",
+      "relevant_terms": [
+       "一汽解放JH6",
+       "JH6",
+       "陕汽重卡德龙6X6",
+       "陕汽重卡德龙",
+       "陕汽重卡德龙F3000",
+       "东风天锦",
+       "陕汽重卡德龙X3000",
+       "沙漠牵引车",
+       "造型",
+       "设计语言",
+       "家族化",
+       "外观设计",
+       "工业设计",
+       "CMF",
+       "设计风格"
+      ]
+     }
+    },
+    "quota": {
+     "review": 3,
+     "industry": 3
+    },
+    "negative_terms": [
+     "油耗",
+     "马力",
+     "配置",
+     "报价",
+     "优惠",
+     "试驾",
+     "保养",
+     "维修",
+     "参数",
+     "经销商",
+     "促销",
+     "扭矩",
+     "变速箱",
+     "发动机",
+     "裸车价",
+     "促销价",
+     "询价"
+    ],
+    "relevant_terms": [
+     "沙漠牵引车",
+     "陕汽重卡德龙6X6",
+     "陕汽重卡德龙",
+     "陕汽重卡德龙F3000",
+     "东风天锦",
+     "陕汽重卡德龙X3000",
+     "一汽解放JH6",
+     "工程机械",
+     "商用车",
+     "工程车辆",
+     "驾驶室"
+    ],
+    "skip_domains": [
+     "docin.com",
+     "baike.baidu.com",
+     "b2b.baidu.com"
+    ],
+    "serp_channel": "auto",
+    "budget": {
+     "max_queries": 16,
+     "max_fetch": 6,
+     "max_rounds": 1,
+     "per_type_quota": 3
+    },
+    "round": 1,
+    "fallback": [
+     "generic_layer",
+     "switch_sources",
+     "propose_profile"
+    ]
+   },
+   "grade": {
+    "batch_id": "batch-text-20261030-215841",
+    "docs": [
+     {
+      "title": "科目四模拟考试2026_驾照科目四考试题库_安全文明驾驶_驾校C1科目四【驾考宝典】",
+      "url": "https://www.jiakaobaodian.com/mnks/kemu4/car.html",
+      "source_type": "review",
+      "chars": 899,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "medium",
+      "top_passages": []
+     },
+     {
+      "title": "【东风】_东风汽车价格_东风报价_图片_关注度高_在售_第1页-汽车之家",
+      "url": "https://www.autohome.com.cn/cars/brand-32-x-x-x-x-1.html",
+      "source_type": "review",
+      "chars": 2838,
+      "a_chars": 0,
+      "a_count": 0,
+      "a_share": 0.0,
+      "dims": [],
+      "source_trust": "low",
+      "top_passages": []
+     }
+    ],
+    "metrics": {
+     "articles": 2,
+     "articles_with_a": 0,
+     "total_chars": 3737,
+     "a_chars": 0,
+     "b_chars": 0,
+     "a_share": 0.0,
+     "a_per_article": 0.0,
+     "source_types": [
+      "review"
+     ],
+     "failed": 0,
+     "hard_failed": 0,
+     "policy_skipped": 0,
+     "blocked_url": 0,
+     "robots_denied": 0,
+     "dims": []
+    },
+    "failed": []
+   },
+   "serp": {
+    "site:360che.com 沙漠牵引车 造型 设计": {
+     "chars": 804,
+     "blocked": false
+    },
+    "site:21-sun.com 沙漠牵引车 造型 设计": {
+     "chars": 804,
+     "blocked": false
+    },
+    "商用车 设计 语言 家族化": {
+     "chars": 675,
+     "blocked": false
+    },
+    "驾驶室 造型 设计": {
+     "chars": 714,
+     "blocked": false
+    },
+    "沙漠牵引车 外观 设计 语言": {
+     "chars": 804,
+     "blocked": false
+    },
+    "陕汽重卡德龙 造型 设计": {
+     "chars": 674,
+     "blocked": false
+    },
+    "东风天锦 造型 设计": {
+     "chars": 720,
+     "blocked": false
+    },
+    "一汽解放JH6 造型 设计": {
+     "chars": 620,
+     "blocked": false
+    },
+    "工程机械 造型 设计": {
+     "chars": 649,
+     "blocked": false
+    },
+    "工程车辆 外观 设计 解读": {
+     "chars": 649,
+     "blocked": false
+    },
+    "沙漠牵引车 造型 设计 解读": {
+     "chars": 804,
+     "blocked": false
+    },
+    "陕汽重卡德龙6X6 造型 设计": {
+     "chars": 674,
+     "blocked": false
+    },
+    "陕汽重卡德龙F3000 造型 设计": {
+     "chars": 674,
+     "blocked": false
+    },
+    "陕汽重卡德龙X3000 造型 设计": {
+     "chars": 674,
+     "blocked": false
+    }
+   },
+   "decision": {
+    "action": "stop",
+    "reasons": [
+     "文章数 2 < 3",
+     "A 占比 0.0% < 6.0%",
+     "A 字数 0 < 300",
+     "来源类型 1 < 2",
+     "类目档案缺失且通用层产出不足",
+     "已用 1/1 轮，停止并上报缺口"
+    ],
+    "scope": [],
+    "constraints": [
+     "robots/UA/授权",
+     "配额上限",
+     "账本不变量",
+     "原图不可变",
+     "人工检查点",
+     "schema 校验"
+    ]
+   }
+  }
+ ],
+ "artifacts": {
+  "run_dir": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2b-沙漠牵引车",
+  "report": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2b-沙漠牵引车\\report.md",
+  "events": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\runs\\run-roster2b-沙漠牵引车\\events.jsonl"
+ }
+}

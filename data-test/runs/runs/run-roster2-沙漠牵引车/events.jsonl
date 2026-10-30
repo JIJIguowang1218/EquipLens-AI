@@ -1,0 +1,19 @@
+{"ts": "2026-10-30T21:53:12.987", "event": "run_start", "meta": {"intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-沙漠牵引车.json", "category": "沙漠牵引车", "models": ["陕汽重卡德龙6X6", "陕汽重卡德龙", "陕汽重卡德龙F3000", "东风天锦", "陕汽重卡德龙X3000", "一汽解放JH6"], "profile": null}}
+{"ts": "2026-10-30T21:53:12.987", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 93, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T21:53:12.988", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T21:53:12.989", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.1, "status": "ok"}
+{"ts": "2026-10-30T21:53:12.989", "event": "decision", "action": "ask_user", "reason": "意图存在未确认歧义，先问用户", "scope": ["intent_clarification"], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T21:53:12.989", "event": "run_end", "duration_ms": 2.0, "summary": {"status": "need_clarification", "question": "意图存在歧义，请先确认类目/含义"}, "metrics": {}}
+{"ts": "2026-10-30T21:54:47.841", "event": "run_start", "meta": {"intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-沙漠牵引车.json", "category": "沙漠牵引车", "models": ["陕汽重卡德龙6X6", "陕汽重卡德龙", "陕汽重卡德龙F3000", "东风天锦", "陕汽重卡德龙X3000", "一汽解放JH6"], "profile": null}}
+{"ts": "2026-10-30T21:54:47.841", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 93, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T21:54:47.841", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T21:54:47.842", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.3, "status": "ok"}
+{"ts": "2026-10-30T21:54:47.842", "event": "stage_start", "stage": "plan_r1", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-30T21:54:47.846", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.3, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-30T21:54:47.847", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261030-215447"}
+{"ts": "2026-10-30T21:56:09.977", "event": "tool_call", "name": "runner.run_unit", "args": {"unit": "run-roster2-沙漠牵引车-r1", "queries": 2, "quota": {"review": 3, "industry": 3}}, "result": {"status": "ok", "attempts": 5, "channel": "baidu", "saved": 2, "blockers": []}, "duration_ms": 82130.6, "status": "ok"}
+{"ts": "2026-10-30T21:56:09.977", "event": "stage_end", "stage": "execute_r1", "duration_ms": 82131.0, "status": "ok", "batch_id": "batch-text-20261030-215447"}
+{"ts": "2026-10-30T21:56:09.977", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261030-215447"}
+{"ts": "2026-10-30T21:56:09.981", "event": "stage_end", "stage": "grade_r1", "duration_ms": 3.3, "status": "ok", "batch_id": "batch-text-20261030-215447"}
+{"ts": "2026-10-30T21:56:09.981", "event": "decision", "action": "stop", "reason": "文章数 2 < 3; 来源类型 1 < 2; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T21:56:09.986", "event": "run_end", "duration_ms": 82144.7, "summary": {"status": "ok", "rounds": 1, "final_action": "stop", "audit": {"population": 145, "guard": 1, "sample": 4}}, "metrics": {"articles": 2, "articles_with_a": 2, "total_chars": 7908, "a_chars": 639, "b_chars": 430, "a_share": 0.0808, "a_per_article": 319.5, "source_types": ["review"], "serp_blocked_queries": 12, "failed": 7, "hard_failed": 1, "policy_skipped": 6, "blocked_url": 3, "robots_denied": 1, "dims": ["CMF", "形态", "意图"]}}

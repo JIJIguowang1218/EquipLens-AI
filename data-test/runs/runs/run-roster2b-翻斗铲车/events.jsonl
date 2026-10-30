@@ -1,0 +1,13 @@
+{"ts": "2026-10-30T22:01:00.974", "event": "run_start", "meta": {"intent": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\tmp\\intent-roster2-翻斗铲车.json", "category": "翻斗铲车", "models": ["福田金刚", "福田金刚3", "福田金刚C", "沃尔沃FMX", "一汽解放J6L", "陕汽重卡德龙K3000"], "profile": null}}
+{"ts": "2026-10-30T22:01:00.975", "event": "llm_call", "model": "assistant-manual", "prompt_version": "text-plan-v0.1", "input_tokens_est": 84, "output_tokens_est": 9, "est": true, "note": "确定性模板+档案生成计划；未接 LLM API，token 为估算"}
+{"ts": "2026-10-30T22:01:00.975", "event": "stage_start", "stage": "validate_intent"}
+{"ts": "2026-10-30T22:01:00.976", "event": "stage_end", "stage": "validate_intent", "duration_ms": 1.1, "status": "ok"}
+{"ts": "2026-10-30T22:01:00.976", "event": "stage_start", "stage": "plan_r1", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-30T22:01:00.978", "event": "stage_end", "stage": "plan_r1", "duration_ms": 2.0, "status": "ok", "profile": null, "profile_status": "missing"}
+{"ts": "2026-10-30T22:01:00.979", "event": "stage_start", "stage": "execute_r1", "batch_id": "batch-text-20261030-220100"}
+{"ts": "2026-10-30T22:02:45.668", "event": "tool_call", "name": "runner.run_unit", "args": {"unit": "run-roster2b-翻斗铲车-r1", "queries": 2, "quota": {"review": 3, "industry": 3}}, "result": {"status": "ok", "attempts": 5, "channel": "baidu", "saved": 3, "blockers": []}, "duration_ms": 104688.3, "status": "ok"}
+{"ts": "2026-10-30T22:02:45.668", "event": "stage_end", "stage": "execute_r1", "duration_ms": 104688.6, "status": "ok", "batch_id": "batch-text-20261030-220100"}
+{"ts": "2026-10-30T22:02:45.668", "event": "stage_start", "stage": "grade_r1", "batch_id": "batch-text-20261030-220100"}
+{"ts": "2026-10-30T22:02:45.698", "event": "stage_end", "stage": "grade_r1", "duration_ms": 30.4, "status": "ok", "batch_id": "batch-text-20261030-220100"}
+{"ts": "2026-10-30T22:02:45.699", "event": "decision", "action": "stop", "reason": "A 占比 4.9% < 6.0%; 来源类型 1 < 2; 类目档案缺失且通用层产出不足; 已用 1/1 轮，停止并上报缺口", "round": 1, "scope": [], "constraints": ["robots/UA/授权", "配额上限", "账本不变量", "原图不可变", "人工检查点", "schema 校验"]}
+{"ts": "2026-10-30T22:02:45.707", "event": "run_end", "duration_ms": 104732.2, "summary": {"status": "ok", "rounds": 1, "final_action": "stop", "audit": {"population": 242, "guard": 8, "sample": 6}}, "metrics": {"articles": 3, "articles_with_a": 2, "total_chars": 13070, "a_chars": 639, "b_chars": 430, "a_share": 0.0489, "a_per_article": 213.0, "source_types": ["review"], "serp_blocked_queries": 11, "failed": 8, "hard_failed": 0, "policy_skipped": 8, "blocked_url": 5, "robots_denied": 0, "dims": ["CMF", "形态", "意图"]}}

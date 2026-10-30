@@ -35,6 +35,8 @@ INTENT = {
 }
 
 REGISTRY = {"sources": [{"domain": "360che.com", "trust": "high"}],
+            "preferred_domains": ["360che.com"],
+            "source_targeting": "site",
             "negative_terms": ["油耗", "报价"]}
 
 
@@ -61,6 +63,9 @@ def test_profile_resolution_and_ambiguity():
                                "options": ["自卸车", "装载机"],
                                "needs_confirmation": True}]}
     assert textrun.ambiguity_unresolved(intent, "重卡", profiles) is True
+    # 明确给出车型时不再阻塞（批量运行场景）
+    assert textrun.ambiguity_unresolved({"models": ["汕德卡C9H"]},
+                                        "翻斗铲车", profiles) is False
 
 
 def test_profile_plan_and_budget():
@@ -75,6 +80,8 @@ def test_profile_plan_and_budget():
     assert len([q for qs in plan["queries"].values() for q in qs]) <= 3
     assert sum(plan["quota"].values()) <= 2
     assert any("重卡" in q for qs in plan["queries"].values() for q in qs)
+    assert any(q.startswith("site:") for qs in plan["queries"].values()
+               for q in qs), "定向查询不应被预算截断挤掉"
 
 
 def test_passage_grading():
