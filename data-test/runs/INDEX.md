@@ -20,6 +20,7 @@
 | run-smoke-runner | 随车吊 | - | 2 | 1,548 | 14.8% | 774.0 | - | - | - | - | 1 | stop | - | - |
 | run-chain2 | 汽车起重机 | 汽车起重机 | 4 | 531 | 0.6% | 132.8 | - | - | - | - | 1 | stop | - | - |
 | run-chain2b | 汽车起重机 | 汽车起重机 | 4 | 531 | 0.4% | 132.8 | - | - | - | - | 1 | stop | - | - |
+| run-roster2b-* | 4 类目 | - | 16 | 1,604 | - | - | - | - | - | - | 1 | stop | - | - |
 
 说明：
 - 硬失败 = fetch_error/fetch_failed/robots_denied/too_short；政策跳过 = blocked_url/source_skipped；
