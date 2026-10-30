@@ -1,0 +1,745 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "intent:c01-desert-tractor|沙漠牵引车｜部件：踏步、防护栏、底盘",
+ "requested": 12,
+ "profile_status": "found",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "踏步",
+  "防护栏",
+  "底盘"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：max(2, ceil(0.25×12))=3；备选不占槽"
+ },
+ "targets": [
+  {
+   "id": "c01-t01",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.72,
+   "reason": "名录命中 6x6 构型（源 163313）；可裁登车踏步（离地高度/踏板防滑）、保险杠与防护栏（防沙板/侧防护）、底盘（离地间隙与护板），三件都有环境特化直证；图库未盘，主图待抓。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [
+    "德龙6X6"
+   ],
+   "family": "陕汽德龙",
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:1"
+   ]
+  },
+  {
+   "id": "c01-t02",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": false,
+   "confidence": 0.65,
+   "reason": "档案代表车型命中；6x6 油田构型可裁大灯防护网与侧防护栏、高离地底盘、防滑踏步，提供沙尘/高温工况下的防护构型证据；型号存在性待名录回填。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [
+    "豪沃 6X6 油田牵引车"
+   ],
+   "family": "中国重汽",
+   "source_ref": "data/category_profiles.json#沙漠牵引车.representative_models",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:2"
+   ]
+  },
+  {
+   "id": "c01-t03",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": false,
+   "confidence": 0.6,
+   "reason": "档案代表车型（重汽 H6066 6x6）；可裁踏步与底盘低角度侧视，提供 6x6 沙漠底盘的登车方式与离地证据；同 c01-t02 待名录回填。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [
+    "H6066 6x6"
+   ],
+   "family": "中国重汽",
+   "source_ref": "data/category_profiles.json#沙漠牵引车.representative_models",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:3"
+   ]
+  },
+  {
+   "id": "c01-t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：解放 6x6 越野底盘牵引车。预期可裁高离地踏步、侧防护栏、底盘护板；用于判断环境特化件是否跨厂一致；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "一汽解放",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:4"
+   ]
+  },
+  {
+   "id": "c01-t05",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：东风天锦/天龙 6x6 越野底盘类。可裁侧防护与踏板、底盘离地；提供第二厂系的 6x6 环境构型对照；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "东风",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:5"
+   ]
+  },
+  {
+   "id": "c01-t06",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "方向：北奔沙漠/油田 6x6。可裁防沙侧裙、踏步、底盘护板；补充沙尘防护构型的厂系差异；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "北奔",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:6"
+   ]
+  },
+  {
+   "id": "c01-t07",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "reason": "方向：沙漠越野运输车（特车厂系）。可裁离地极高的底盘、防沙踏步；提供极端沙尘工况下的构型上限参照；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "泰安航天特车",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:7"
+   ]
+  },
+  {
+   "id": "c01-t08",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "方向：沙漠构型套件（宽基胎、防沙套件、加高进气）。可裁防护栏与踏步的套件化形态；用于区分原厂环境件与后装套件；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "沙漠构型",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "conformation_check",
+   "slots": [
+    "vehicle:8"
+   ]
+  },
+  {
+   "id": "c01-t09",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.5,
+   "reason": "平台对照（不占槽）：常规干线牵引。可裁标准登车踏步与保险杠，作'非环境特化'对照裁图；踏步在沙漠车是环境件，平台件单独成页会答非所问。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重卡",
+   "models": [
+    "德龙X3000"
+   ],
+   "family": "陕汽德龙",
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c01-t10",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.45,
+   "reason": "平台对照（不占槽）：重汽干线平台。可裁驾驶室侧踏步与侧裙，提供平台继承基准，供报告写'环境件与平台件的分界'。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重卡",
+   "models": [
+    "汕德卡"
+   ],
+   "family": "中国重汽-干线",
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c01-t11",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "备选方向：进气道防沙与大灯防护网套件。可裁防护栏与进气防护的联动关系；推荐集主图判废时按序顶上并补文本。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "沙漠牵引车",
+   "models": [],
+   "family": "防沙套件构型",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "底盘",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": []
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "踏步",
+   "candidates": [
+    "c01-t01",
+    "c01-t04"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "库空且名录未锁：需 ≥5 台可裁主图，当前 0 台已验证",
+   "borrowed_share": 0.0
+  },
+  {
+   "part": "底盘",
+   "candidates": [
+    "c01-t02",
+    "c01-t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "库空；底盘需低角度侧视主图，0 台已验证",
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 8,
+  "slots_requested": 12,
+  "by_part": {
+   "踏步": {
+    "slots": 8,
+    "croppable_verified": 0
+   },
+   "防护栏": {
+    "slots": 8,
+    "croppable_verified": 0
+   },
+   "底盘": {
+    "slots": 8,
+    "croppable_verified": 0
+   }
+  },
+  "gap_kind": [
+   "no_roster",
+   "no_image"
+  ],
+  "notes": "12 槽只填 8：6x6 环境构型中已核 3 台 + 方向级 5 条；名录 8 份全为 pending_lock，库空导致可裁台数全为 to_verify。槽 9~12 空置。"
+ },
+ "decisions": [
+  {
+   "at": "part_axis",
+   "tier": 1,
+   "action": "environment_first",
+   "reasons": [
+    "踏步/防护栏/底盘 三件在沙漠工况下形态由环境决定（防沙、防滑、离地），按纪律1走 environment 轴优先",
+    "platform 轴只保留 2 条对照（c01-t09/t10）且不占槽，避免'查常规重卡踏步'式答非所问"
+   ]
+  },
+  {
+   "at": "roster_crosscheck",
+   "tier": 3,
+   "action": "drop_road_tractors_from_slots",
+   "reasons": [
+    "8 份沙漠牵引车名录均为 pending_lock；JH6/J6G/龙H5/MAX/ZZ425 属干线公路牵引，不携带环境特化件",
+    "德龙X3000/汕德卡 降为平台对照备选，不占槽"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "tier": 2,
+   "action": "hold_direction_slots",
+   "reasons": [
+    "c01-t04~c01-t08 为方向级：models 留空、verify_by=roster_generation/conformation_check",
+    "转正动作：跑名录生成拿到 6x6 型号后改 recommended；失败则退到 c01-t09/t10 对照页并缩页（缺口已写 coverage）"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "tier": 3,
+   "action": "keep_8_slots",
+   "reasons": [
+    "slots.py 会把备选也推上槽；按语义覆盖：只保留 8 个已核/方向级目标",
+    "槽 9~12 空置，不用公路车或平台件凑数"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "defer_part_pages",
+   "reasons": [
+    "库空（0 素材），踏步/底盘 可裁台数均为 0 < 5，部件专项页不成立，本次 0 页"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "'底盘' 的检查口径是离地间隙+防护板，还是车架/悬架布置？",
+   "why": "决定底盘裁图取低角度侧视还是悬架局部，也决定是否需要平台轴对照页",
+   "blocking": false,
+   "blocking_scope": "parts"
+  },
+  {
+   "question": "8 份沙漠牵引车名录仍是 pending_lock，能否先把 3 台已核车型之外的方向级目标交检索？",
+   "why": "名录未锁，型号可能被替换；方向级占槽需人工认可后转正",
+   "blocking": false,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "是否给 '沙漠牵引车' 档补 component_vocab（踏步/防护栏/底盘 都不在现词表）？",
+   "why": "现词表只有前脸/大灯防护网/保险杠/遮阳板/后视镜/涂装，请求三件靠 PRD 附录B 与现场映射",
+   "blocking": false,
+   "blocking_scope": "parts"
+  }
+ ],
+ "backlog": [
+  {
+   "target": "沙漠牵引车 component_vocab 补录（踏步/防护栏/底盘）",
+   "why": "现档案词表无这三件，映射只能靠 PRD 附录B"
+  },
+  {
+   "target": "8 份沙漠牵引车名录锁版（pending_lock → locked）",
+   "why": "未锁导致型号可能被替换，方向级无法转正"
+  }
+ ]
+}

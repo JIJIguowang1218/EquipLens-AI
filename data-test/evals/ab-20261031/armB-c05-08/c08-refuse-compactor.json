@@ -1,0 +1,514 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/c08-refuse-compactor",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "上装",
+  "填装器",
+  "尾部装置"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：extra=max(2,ceil(0.25×12))=3；备选不占槽，转正才占"
+ },
+ "targets": [
+  {
+   "id": "t01",
+   "kind": "category",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.5,
+   "reason": "“上装”是口语总称，按请求部件落参数：填装器只存在于后装压缩式 → 口径=后装压缩（8~12t 城市收集）。能提供：side/rear 裁填装器（装填口、压缩头、翻转架）与尾部装置（翻桶机构/尾板），hero_45 裁上装与底盘的比例关系。",
+   "category": "后装压缩式垃圾车（8~12t）",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "exact",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t02",
+   "kind": "category",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "大吨位转运型：上装更长、填装器压缩腔更大、尾部可接转运箱；用于说明吨位对上装比例与尾部机构的影响。",
+   "category": "后装压缩式垃圾车（16t 转运型）",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t03",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "环卫上装头部厂商（ZBH 产品线）：填装器造型、尾部翻转机构与涂装成家族特征；提供品牌家族层的上装/填装器证据。型号为系列级推断，需名录落具体型号。",
+   "category": "后装压缩式垃圾车",
+   "models": [
+    "中联环境 ZBH 后装压缩车"
+   ],
+   "family": "中联环境",
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "第二家上装厂家族：填装器开口形状与尾部提升臂结构可对比；提供家族化证据。型号系列级推断，需名录核实。",
+   "category": "后装压缩式垃圾车",
+   "models": [
+    "福建龙马 FLM 后装压缩车"
+   ],
+   "family": "龙马",
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t05",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "第三家上装厂：中小吨位市场常见，尾部机构与上装比例可作平台对照；型号为品牌级推断，需名录核实。",
+   "category": "后装压缩式垃圾车",
+   "models": [
+    "劲旅环境 后装压缩车"
+   ],
+   "family": "劲旅",
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t06",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "侧装/前装压缩式垃圾车",
+   "models": [],
+   "reason": "结构事实：侧装压缩式用侧提升机构+侧压缩腔、前装压缩式用前装载臂，都没有后装式填装器；若口径落在这两类，“填装器”这个部件不存在，检索会得到错误页。"
+  },
+  {
+   "id": "t07",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "自卸式/勾臂式/摆臂式垃圾车",
+   "models": [],
+   "reason": "结构事实：这三类没有压缩上装、没有填装器，尾部只有举升/钩臂/摆臂机构；它们与“垃圾车”查询词高度重叠，必须在查询层排除。"
+  },
+  {
+   "id": "t08",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "餐厨垃圾车",
+   "models": [],
+   "reason": "结构事实：餐厨垃圾车是罐体+提升机构（部分带固液分离），没有后装填装器与压缩上装；不能提供请求部件证据。"
+  },
+  {
+   "id": "t09",
+   "kind": "category",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "尾部装置（翻转/提升机构）随收集方式与桶型改变：240L 标准桶、660L 大桶、地埋桶对应不同翻转臂与举升油缸。该层回答“尾部为什么这样设计”，是环境/工况轴，不是平台轴。",
+   "category": "桶装收集工况（120/240/660L 标准桶）",
+   "models": [],
+   "parts": [
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t10",
+   "kind": "category",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "上装与底盘的接口（取力、副车架、轴距）决定上装比例与尾部离地高度；提供平台层对照，说明同一上装换底盘后的比例差异。",
+   "category": "环卫底盘平台（重汽/东风/解放）",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t11",
+   "kind": "part_query",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "填装器专项页候选：需 ≥5 台车可裁装填口/压缩头/翻转架；当前库空且口径未定，不占 part 槽。查询口径=后装压缩车 填装器 压缩头。",
+   "parts": [
+    {
+     "part": "填装器",
+     "axis": "exact",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t12",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "尾部装置专项页候选：需 ≥5 台车可裁翻转臂/举升油缸/尾板；当前 0 台可核，不占 part 槽。",
+   "parts": [
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "填装器",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  },
+  {
+   "part": "尾部装置",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t09"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {
+   "上装": {
+    "croppable_vehicles": 0,
+    "note": "类目桶 + 3 家上装厂推断车型，库空"
+   },
+   "填装器": {
+    "croppable_vehicles": 0,
+    "note": "需 rear 视角，当前无图可核"
+   },
+   "尾部装置": {
+    "croppable_vehicles": 0,
+    "note": "环境层 t09 依赖桶型样本，尚未验证"
+   }
+  },
+  "notes": "0 推荐 / 12 槽空。口径先被阻断：压缩式分后装/侧装/前装，填装器只属于后装，故在 blocking 解除前不排推荐位；叠加类目未建档、workspace 无名录、图库 0 素材。确认后 t01–t05 可占 vehicle:1..5，t09 作环境层、t10 作平台层。"
+ },
+ "decisions": [
+  {
+   "at": "category_word_parsing",
+   "tier": 1,
+   "action": "resolve_polite_term_to_params",
+   "reasons": [
+    "纪律 3：“上装”是口语总称（压缩/自卸/勾臂/餐厨都叫上装）→ 落参数为“后装压缩式 + 8~12t”；填装器是否存在即口径判据"
+   ]
+  },
+  {
+   "at": "blocking_gate",
+   "tier": 1,
+   "action": "gate_on_rear_loading",
+   "reasons": [
+    "填装器只在后装压缩式存在；侧装/前装压缩式的装填口在侧/前，无此部件 → 口径未定前不放推荐位"
+   ]
+  },
+  {
+   "at": "axis_decision",
+   "tier": 2,
+   "action": "environment_for_rear_assembly",
+   "reasons": [
+    "尾部装置随收集方式/桶型改变（240L/660L/地埋桶）→ environment 优先；上装是改装厂与底盘的平台组合，走 platform"
+   ]
+  },
+  {
+   "at": "exclude_scan",
+   "action": "exclude_non_compaction_bodies",
+   "reasons": [
+    "侧装/前装压缩、自卸/勾臂/摆臂、餐厨三类均无后装填装器（结构事实）→ t06–t08 全列为 exclude，不占任何槽"
+   ]
+  },
+  {
+   "at": "slot_allocation",
+   "tier": 1,
+   "action": "defer_slots",
+   "reasons": [
+    "slots.py 结果 recommended=[]、shortfall=12：口径 blocking + 全部候选为 inference 未验证"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "“压缩式垃圾车”按后装压缩（填装器在尾部）做，还是侧装/前装压缩？吨位按 8~12t 还是 16t 转运型？",
+   "why": "填装器只在后装式存在；口径不定则三个请求部件的证据完全不同（侧装只有侧提升机构+压缩腔），这是没它不能继续的判断",
+   "blocking": true
+  },
+  {
+   "question": "上装厂优先级：中联环境/福建龙马/劲旅，先做哪两家？",
+   "why": "slots.py 同族上限 2 台；上装家族是填装器造型对比的主轴",
+   "blocking": false
+  },
+  {
+   "question": "“侧装/前装压缩、勾臂/自卸/摆臂、餐厨垃圾车均无后装填装器”可否作为排除事实？",
+   "why": "新增结构事实需人审（structural-facts 现全部 pending），当前只用于 exclude、不作推荐依据",
+   "blocking": false
+  },
+  {
+   "question": "填装器/尾部装置两个部件专项页是否保留？",
+   "why": "专项页需 ≥5 台可裁车型，当前 0 台；保留会占满 part_page_slots",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "新建“压缩式垃圾车”类目档案（aliases：压缩式垃圾车/后装压缩车/垃圾压缩车；component_vocab：上装/填装器/尾部装置/翻转机构/压缩头/推板）",
+   "why": "无档案 → 上装厂的家族词与来源提示只能临场推断，无法复核"
+  },
+  {
+   "target": "中联环境/龙马/劲旅/航天晨光 后装压缩 8–12t 名录生成",
+   "why": "3 台推断车型需名录转正；名录样本量同时决定“填装器值不值得单独一页”"
+  }
+ ]
+}

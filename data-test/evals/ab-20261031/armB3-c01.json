@@ -1,0 +1,993 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "desert-tractor-steps-guardrail-20261031",
+ "requested": 12,
+ "profile_status": "found",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "踏步",
+  "防护栏"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "max(2, ceil(0.15*12))=2 为下限；本单按 armB3 口径取 extra=3（≥下限），对应 b01 天锦 / b02 JH6 / b03 J6G 三台备选，备选不占槽"
+ },
+ "targets": [
+  {
+   "id": "v01-x3000-6x6",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:陕汽重卡/德龙6X6",
+   "category": "沙漠牵引车",
+   "models": [
+    "德龙X3000 6x6"
+   ],
+   "family": "陕汽德龙X3000",
+   "slots": [
+    "vehicle:1"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.86,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.chinatruck.org/product/truck/21165_36_1.html",
+     "title": "【陕汽重卡 德龙X3000 375马力 6X6 国五沙漠越野载货车底盘】参数|对比_卡车网",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    },
+    {
+     "url": "https://baijiahao.baidu.com/s?id=1570689637613090",
+     "title": "惊现陕汽德龙X3000 6x6沙漠越野车 这个展会的“硬菜”真不少！",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "标题即“沙漠越野载货车底盘”的 6X6 构型：可裁高位踏步（离地高度/防滑踏面）与侧防护栏（防沙板/侧防护），提供“踏步是环境件不是平台件”的第一手证据，并给出 6x6 双后桥与沙地胎的整车姿态。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "rear_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v02-h6066-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": true,
+   "source_ref": "data/category_profiles.json#profiles.沙漠牵引车.representative_models",
+   "category": "沙漠牵引车",
+   "models": [
+    "H6066 6x6"
+   ],
+   "family": "H6066",
+   "slots": [
+    "vehicle:2"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.82,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://m.360che.com/market/200615/149004.html",
+     "title": "塔里木油田里的沙漠孤鹰，H6066 6x6特种运输车了解一下",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "塔里木油田沙漠工况的特种运输车专文：整车侧视可裁踏步与侧防护，提供防沙/防尘、高离地构型证据，也是档案 representative_models 里点名的沙漠基准车型，可作 6x6 沙漠牵引的对照样本。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v03-howo-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": true,
+   "source_ref": "data/category_profiles.json#profiles.沙漠牵引车.representative_models",
+   "category": "沙漠牵引车",
+   "models": [
+    "豪沃 6x6"
+   ],
+   "family": "中国重汽豪沃",
+   "slots": [
+    "vehicle:3"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.84,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://m.360che.com/tech/160303/52370.html",
+     "title": "酷似尼古拉斯！豪沃6X6油田牵引车图解_手机卡车之家",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    },
+    {
+     "url": "https://www.yunshuren.com/article-3419.html",
+     "title": "酷似尼古拉新！HOWO 6X6油田牵引车图解",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "油田 6X6 牵引车图解（多视角）：可裁加高踏步与底盘侧防护栏，提供油田/沙漠运输工况下“防沙、防滑、离地高度”如何改变踏步与防护栏形态的对照证据。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "rear_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v04-c7h-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:中国重汽/汕德卡",
+   "category": "沙漠牵引车",
+   "models": [
+    "汕德卡 C7H 6x6"
+   ],
+   "family": "汕德卡",
+   "slots": [
+    "vehicle:4"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.75,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://product.360che.com/price/c1_s66_b1164_s3980_p184-56.73.html",
+     "title": "重汽汕德卡SITRAK C7H牵引车(6X6 6.73速比)",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "6X6 大速比（6.73）牵引车车型页：参数与外观图可确认 6x6 底盘与高位踏步、侧防护布置，提供“越野/低速大扭矩”构型下踏步与防护栏的基线证据。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v05-hongyan-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "inference",
+   "verified": true,
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:红岩杰狮 6x6",
+   "category": "沙漠牵引车",
+   "models": [
+    "红岩杰狮 6x6"
+   ],
+   "family": "上汽红岩杰狮",
+   "slots": [
+    "vehicle:5"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.7,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://product.360che.com/price/c1_s66_b11_s67_p184-56.725.html",
+     "title": "上汽红岩杰狮牵引车(6X6 6.725速比)",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "6X6 牵引车车型页（6.725 速比）：可裁驾驶室踏步与底盘侧防护，提供 6x6 越野牵引的构型证据；名录未收录该型号，靠证据索引的 6X6 车型页确认，故 grounding=inference 且 verified=true。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v06-jiefang-ca2191",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "inference",
+   "verified": true,
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:解放 CA2191P2K2T 6x6",
+   "category": "沙漠牵引车",
+   "models": [
+    "解放 CA2191P2K2T 6x6"
+   ],
+   "family": "解放越野",
+   "slots": [
+    "vehicle:6"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.68,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.17vin.com/gonggao/45173/CA2191P2K2T.html",
+     "title": "解放 CA2191P2K2T 6×6平头柴油越野汽车",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "6×6 平头柴油越野汽车公告页：可确认越野底盘、侧防护与踏步布置，提供军用/越野运输构型下防护栏与踏步的证据；名录未收录，靠公告页 E3 确认，故 verified=true。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side",
+      "front"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side",
+      "rear_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v07-beiben-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "verify_by": "conformation_check：核到 NG80 具体型号的 6x6 沙漠/油田构型详情页后转 recommended",
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:北奔 NG80 6x6",
+   "category": "沙漠牵引车",
+   "models": [
+    "北奔 NG80 6x6"
+   ],
+   "family": "北奔NG80",
+   "slots": [
+    "vehicle:7"
+   ],
+   "relevance_strength": "strong",
+   "confidence": 0.55,
+   "evidence_level": "E2",
+   "evidence": [
+    {
+     "url": "https://zh-cn.ceectrucks.com/beiben-6x6-truck_c190_2",
+     "title": "北奔6x6卡车，北奔6x6驱动卡车，北奔军用卡车供应商",
+     "grade": "E2",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "供应商 6x6 车型列表页：可裁越野构型的踏步与侧防护，提供 6x6 基线；但页面只写“北奔6x6”、标题不含 NG80，型号级证据待 conformation_check，按 E2 先占 provisional 槽。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v08-f3000",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:陕汽重卡/德龙F3000",
+   "category": "沙漠牵引车",
+   "models": [
+    "德龙F3000"
+   ],
+   "family": "陕汽德龙F3000",
+   "slots": [
+    "vehicle:8"
+   ],
+   "relevance_strength": "weak",
+   "weak_reason": "证据为 6x4 公路重卡评测，非 6x6 沙漠构型；只借陕汽德龙平台提供踏步/侧防护的未改装基线，12 台硬要求下补位",
+   "confidence": 0.45,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.360che.com/tech/091109/7967_2.html",
+     "title": "打造赚钱工具 点评陕汽德龙F3000重卡",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "德龙 F3000 重卡专文：可裁驾驶室踏步与侧防护的家族形态，提供与 X3000 6x6 沙漠车对照的“未改装基线”，用来论证沙漠构型在踏步高度/防沙板上改了什么（本车非沙漠构型）。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v09-x3000-base",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:陕汽重卡/德龙X3000",
+   "category": "沙漠牵引车",
+   "models": [
+    "德龙X3000"
+   ],
+   "family": "陕汽德龙X3000",
+   "slots": [
+    "vehicle:9"
+   ],
+   "relevance_strength": "weak",
+   "weak_reason": "6x4 公路牵引构型，非 6x6 沙漠车；仅借同平台驾驶室提供踏步/侧防护的改装前基线",
+   "confidence": 0.42,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://product.360che.com/price/c1_s66_b8_s4086_p3500-765-83.html",
+     "title": "【德龙X3000500马力牵引车】陕汽重卡德龙X30500马力牵引车多少钱|配置|图片_卡车之家",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "德龙 X3000 500 马力牵引车车型页：与 X3000 6x6 沙漠车同驾驶室/平台，可裁踏步与侧防护，提供改装前基线，用于隔离“平台继承件”与“环境特化件”。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v10-xinm3000",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "verify_by": "serp_recheck：补一条德龙新M3000 车型详情页/专文（E3）后转 recommended；转不了则退给 v09",
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:德龙新M3000",
+   "category": "沙漠牵引车",
+   "models": [
+    "德龙新M3000"
+   ],
+   "family": "陕汽德龙新M3000",
+   "slots": [
+    "vehicle:10"
+   ],
+   "relevance_strength": "weak",
+   "weak_reason": "仅有参数对比页、6x4 公路构型，无沙漠 6x6 证据；12 台硬要求下补位，优先级最低",
+   "confidence": 0.35,
+   "evidence_level": "E2",
+   "evidence": [
+    {
+     "url": "https://car.yiche.com/canshuduibi/7049-7023.html",
+     "title": "德龙新M3000和HOWO TH7参数对比-易车",
+     "grade": "E2",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "德龙新 M3000 与 HOWO TH7 参数对比页：只能确认车型存在与部分参数，踏步/侧防护形态需补详情页，暂作弱关联补位并标 verify_by。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v11-c9h",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:汕德卡（30 条，本条标题含 C9H）",
+   "category": "沙漠牵引车",
+   "models": [
+    "汕德卡 C9H"
+   ],
+   "family": "汕德卡",
+   "slots": [
+    "vehicle:11"
+   ],
+   "relevance_strength": "weak",
+   "weak_reason": "6X4 公路高端牵引，无沙漠/6x6 证据；只借重汽汕德卡平台的踏步/侧防护形态补位",
+   "confidence": 0.4,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.360che.com/tech/220426/171684.html",
+     "title": "大马力+AMT+双大屏+怀挡 图解汕德卡C9H_SITRAK C9H_牵引车_卡车之家",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "汕德卡 C9H 图解专文：可裁高顶驾驶室踏步与侧防护，提供重汽高端平台的未改装基线（6X4 公路），用于对照 C7H 6x6 沙漠/越野构型的踏步加高与防沙改动。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "v12-howo-max",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/evals/evidence-index-20261031.json#model:HOWO（3 条，本条标题含 MAX）",
+   "category": "沙漠牵引车",
+   "models": [
+    "HOWO MAX"
+   ],
+   "family": "中国重汽豪沃",
+   "slots": [
+    "vehicle:12"
+   ],
+   "relevance_strength": "weak",
+   "weak_reason": "6x4 公路牵引，非沙漠构型；仅借豪沃驾驶室族提供踏步/侧防护基线，用于对照豪沃 6x6 油田车",
+   "confidence": 0.38,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://news.lmjx.net/2022/202206/2022060718002205.shtml",
+     "title": "中国重汽HOWO MAX：一款专为年青人设计的网红酷卡-牵引车-中国重汽-工程机械动态-中国路面机械网",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "HOWO MAX 专文：可裁驾驶室踏步与侧防护，提供豪沃驾驶室族的公路基线，用来对照豪沃 6x6 油田车在踏步防滑/防护栏防沙上的改动（本车 6x4 公路）。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "b01-dongfeng-tianjin",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:东风/天锦",
+   "category": "沙漠牵引车",
+   "models": [
+    "东风天锦"
+   ],
+   "family": "东风天锦",
+   "confidence": 0.3,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.hbcljyc.com/carprod/prod8311.html",
+     "title": "东风天锦检修车|后勤保障车|程力专用汽车股份有限公司",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "备选不占槽：天锦是 6x4 公路底盘专用车，踏步为平台继承件、防护栏无防沙特化；只有在强关联 6x6 车源判废时才顶替，且需先确认越野构型。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "b02-jiefang-jh6",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:一汽解放/JH6",
+   "category": "沙漠牵引车",
+   "models": [
+    "解放 JH6"
+   ],
+   "family": "解放JH6",
+   "confidence": 0.3,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.360che.com/tech/150515/40449.html",
+     "title": "比J6贵一万多 全新一汽解放JH6广州实拍_解放JH6_牵引车_卡车之家",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "备选不占槽：JH6 是 6x4 公路牵引，构型不符沙漠 6x6，踏步/防护栏只能当公路平台基线；放在缓冲区，判废时按序顶替而不是直接占页。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "b03-jiefang-j6g",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidate:一汽解放/J6G",
+   "category": "沙漠牵引车",
+   "models": [
+    "解放 J6G"
+   ],
+   "family": "解放J6G",
+   "confidence": 0.28,
+   "evidence_level": "E3",
+   "evidence": [
+    {
+     "url": "https://www.faw.com.cn/fawcn/373694/373706/5886646/index.html",
+     "title": "20.88万元起 一汽解放J6G Pro新品荣耀上市",
+     "grade": "E3",
+     "source": "corpus",
+     "checked_at": "2026-10-31"
+    }
+   ],
+   "reason": "备选不占槽：J6G 为 6x4 公路载货/牵引构型，构型与沙漠 6x6 不符；仅作缓冲，强关联车源判废且确认越野改装后才考虑顶替。",
+   "parts": [
+    {
+     "part": "踏步",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "防护栏",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "踏步",
+   "candidates": [
+    "德龙X3000 6x6",
+    "H6066 6x6",
+    "豪沃 6x6",
+    "汕德卡 C7H 6x6",
+    "红岩杰狮 6x6",
+    "解放 CA2191P2K2T 6x6"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "库内主图与可裁性未盘点（未跑 inventory.py），page-budget 要求 ≥5 台可裁才成立；暂由整车页裁图覆盖，盘点达标后再占 part 槽"
+  },
+  {
+   "part": "防护栏",
+   "candidates": [
+    "德龙X3000 6x6",
+    "H6066 6x6",
+    "豪沃 6x6",
+    "汕德卡 C7H 6x6",
+    "解放 CA2191P2K2T 6x6",
+    "北奔 6x6"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "同上：侧防护/防沙板的可裁性需先过 gate+裁图粗判；不足 5 台可裁就不占部件页槽，避免降标准凑页"
+  }
+ ],
+ "coverage": {
+  "slots_filled": 12,
+  "slots_requested": 12,
+  "by_part": {
+   "踏步": 12,
+   "防护栏": 12
+  },
+  "notes": "12 台交满（7 强 + 5 弱）。证据索引里带 E3 的 6x6 沙漠/越野构型只有 6 台（德龙X3000 6x6、H6066、豪沃 6x6、C7H 6x6、杰狮 6x6、CA2191），第 7 台北奔 6x6 只有 E2 列表页（provisional）；后 5 台为同平台 6x4 公路基线（已标 weak）。部件专项页 2 槽因可裁性未盘暂不启用，部件先由整车页裁图覆盖。"
+ },
+ "decisions": [
+  {
+   "at": "profile_check",
+   "action": "采用 data/category_profiles.json 的“沙漠牵引车”档案（confidence 0.7 / confirmed_by=product-owner），profile_status=found",
+   "reasons": [
+    "别名油田牵引车/沙漠卡车/沙漠运输车已覆盖名录查询词",
+    "representative_models 明确点名豪沃 6X6 油田牵引车与 H6066 6x6，作为 tier2 环境轴锚点"
+   ]
+  },
+  {
+   "at": "part_axis",
+   "action": "踏步、防护栏一律走 environment 轴（强关联车），平台基线车才落 platform 轴",
+   "reasons": [
+    "踏步在沙漠车里由离地高度/防沙/防滑决定形态，属环境件；按重卡平台件处理会去查常规重卡（judging-rules 反例1）",
+    "防护栏对应侧防护/防沙板，是环境特化件，不是装饰件"
+   ]
+  },
+  {
+   "at": "roster_scan",
+   "action": "扫描 8 份 roster-沙漠牵引车-* 与批次报告，只把 6x6/越野/油田构型放进强关联位",
+   "reasons": [
+    "名录 12 候选里构型可用的仅德龙6X6/德龙X3000/汕德卡/HOWO/MAX/德龙F3000",
+    "东风天锦、JH6、J6G 为 6x4 公路构型，构型不符，降备选",
+    "H6066、C7H 6x6、杰狮 6x6、CA2191 由档案或证据索引补入，均带 E3/E2"
+   ]
+  },
+  {
+   "at": "weak_tail",
+   "action": "第 8–12 槽用同平台 6x4 公路基线补位，全部标 relevance_strength=weak + weak_reason",
+   "reasons": [
+    "12 台是硬要求，证据索引中没有更多带 E3 的 6x6 沙漠车",
+    "弱关联只提供踏步/侧防护“未改装基线”，不冒充沙漠构型；名单变长时优先退这 5 槽",
+    "6x4 公路车不进强关联位，避免构型正确率掉到 0.8 以下"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "action": "手工分配 vehicle:1–12 覆盖 slots.py 输出：脚本会把备选 b01 天锦 / b02 JH6 顶上整车槽，并把 grounding=inference 未验证的 v07 北奔、v10 新M3000 判为 held 降备选",
+   "reasons": [
+    "语义门槛由规划员持有：备选不得占槽、6x4 公路车不进整车页槽（脚本不认识构型）",
+    "同族上限 ≤2 已人工核对：陕汽德龙X3000 2、中国重汽豪沃 2、汕德卡 2，其余各 1",
+    "缓冲 3 ≥ max(2, ceil(0.15*12))=2，对应 b01–b03 三台备选"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "action": "北奔 6x6 与德龙新M3000 占槽但为 provisional（E2），分别靠 conformation_check / serp_recheck 转正",
+   "reasons": [
+    "北奔证据只到“品牌+6x6 构型”，未落 NG80 型号，不硬编型号名",
+    "新M3000 只有参数对比页，无 6x6 沙漠构型；转不了则让位给 back log 的 6x6 车源"
+   ]
+  },
+  {
+   "at": "part_pages",
+   "action": "2 个部件专项页槽暂不启用，part_pages.ready=false、vehicles_covered=0",
+   "reasons": [
+    "未跑 inventory.py，不能编图库数字；page-budget 要求 ≥5 台可裁才成立",
+    "不许降标准凑页，部件先由整车页裁图覆盖，盘点达标后再占 part 槽"
+   ]
+  },
+  {
+   "at": "exclude_6x4",
+   "action": "东风天锦、解放 JH6、解放 J6G 降为备选（b01/b02/b03，不占槽），凑满 buffer extra=3",
+   "reasons": [
+    "均为 6x4 公路构型，踏步是平台继承件、无环境特化，按纪律1不能占强关联位",
+    "备选按优先级顶替弱关联尾巴（v10 → v11 → v12 先退），转正须落账"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "是否扩展“沙漠牵引车”档案的 component_vocab，加入 踏步/蹬车踏板、防护栏/侧防护/防沙板？",
+   "why": "现有词表只有前脸、大灯防护网、保险杠、遮阳板、后视镜、涂装，不含两个请求部件；按档案词表生成查询会漏检，本次按请求词另起查询",
+   "blocking": false,
+   "blocking_scope": "parts"
+  },
+  {
+   "question": "12 台里 5 台为同平台 6x4 公路基线（weak），是否接受这批弱关联尾巴？",
+   "why": "证据索引中带 E3 的 6x6 沙漠/越野车只有 6–7 台；不接受就只剩 7 槽，需先补沙漠 6x6 名录",
+   "blocking": false,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "北奔 NG80 6x6 是否必须补到型号级证据才可用（现仅有“北奔6x6”供应商列表页，标题不含 NG80）？",
+   "why": "证据只到品牌+6x6 构型（E2），型号名取自证据索引标签；若要求型号级 E3，此槽需换车或等 conformation_check",
+   "blocking": false,
+   "blocking_scope": "branches"
+  }
+ ],
+ "backlog": [
+  {
+   "target": "北奔 NG80 6x6（型号级证据）",
+   "why": "补齐标题含 NG80 的详情页/专文（E3）后可从 provisional 转 recommended；当前只有 6x6 列表页（E2）"
+  }
+ ],
+ "next_action": [
+  {
+   "action": "补沙漠 6x6 名录（roster_generation）：油田修井机底盘、沙漠科考车、矿用宽体自卸车",
+   "why": "把 weak 尾巴替换成环境特化车源；纯方向不占槽，只作下一轮检索方向",
+   "targets": [
+    "油田修井机底盘",
+    "沙漠科考车",
+    "矿用宽体自卸车"
+   ]
+  },
+  {
+   "action": "跑 inventory.py 盘点 12 台主图，并对踏步/防护栏做可裁粗判",
+   "why": "部件专项页是否成立取决于 ≥5 台可裁；盘点后决定 part:1/part:2 是否启用"
+  },
+  {
+   "action": "扩展 category_profiles.沙漠牵引车.component_vocab（踏步/侧防护/防沙板）",
+   "why": "本次请求部件不在档案词表，靠现场扩展；落档后同类请求可直接生成查询"
+  }
+ ]
+}

@@ -1,0 +1,186 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "C2-heavy-crane|重型吊车|parts=支腿|budget=20(fixed5+vehicle12+part2)",
+ "requested": 12,
+ "allow_cross_vehicle": true,
+ "parts_requested": ["支腿"],
+ "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 2},
+ "buffer": {"requested": 12, "extra": 2, "rule": "max(2, ceil(0.15*12))=2；名录仅 12 候选且多数构型不符，按常规 15% 起算，不足时靠补名录而非降标准"},
+ "targets": [
+  {
+   "id": "c2-sany-sac16000s",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.8,
+   "family": "三一",
+   "category": "重型吊车",
+   "models": ["三一 SAC16000S"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "slots": ["vehicle:1"],
+   "reason": "名录 12 个候选里唯一同时满足两条硬门槛（≥100t 重型口径、带作业支腿）的车型：全地面底盘 1600t 级。能提供证据：H 型支腿全伸侧视（支腿箱/摆动腿/垂直腿/支腿盘四段关系）、支腿与车架连接形式、支腿盘接地与整机稳定性叙事；可裁支腿展开与半展开两种状态。",
+   "parts": [
+    {"part": "支腿", "axis": "exact", "views": ["side", "front45", "low_side"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c2-xgc88000-exclude",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.95,
+   "family": "徐工",
+   "category": "重型吊车",
+   "models": ["徐工 XGC88000"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "reason": "结构事实（非相关性判断）：履带起重机没有作业支腿，靠履带接地+超起配重稳定；XGC88000 是徐工超大型履带吊。放进支腿清单只会得到空检索并白占一个页槽。该事实在 references/structural-facts.md 记为 F1、状态 pending，已列入 needs_confirmation 追认。",
+   "images": {"in_library": 0, "need_crawl": false, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c2-sany-crawler-exclude",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.9,
+   "family": "三一",
+   "category": "重型吊车",
+   "models": ["三一 SCC2500C", "三一 SCC500C"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "reason": "SCC 系列为履带起重机，结构上没有支腿（同上 F1）。之所以单列一条，是因为名录把它们和汽车吊混在同一候选池，若不显式排除，后续按吨位筛会把它们重新捞回来。",
+   "images": {"in_library": 0, "need_crawl": false, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c2-truck-noise-exclude",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.85,
+   "family": "载货/牵引",
+   "category": "重型吊车",
+   "models": ["中国重汽 豪沃", "中国重汽 王牌", "陕汽重卡 德龙8×4", "斯堪尼亚 R770"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "reason": "结构事实：纯载货车/牵引车无起重上装，也就没有作业支腿（F2，pending）。它们是「重型吊车」口语检索带进来的污染项（配置表、报价页为主），不提供支腿证据，也不提供上装造型证据。",
+   "images": {"in_library": 0, "need_crawl": false, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c2-25-35t-group",
+   "kind": "category",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.6,
+   "family": "中小吨位汽车吊",
+   "category": "重型吊车",
+   "models": ["徐工 XCT25", "徐工 QY25K5C", "徐工 QY35K5", "三一 STC500", "中联 ZTC25", "中联 QAY25"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "reason": "名录里的 25–35t 级汽车吊/全地面：支腿构型证据其实最充分（H 型支腿、摆动腿、支腿盘、跨距与轴距比），但吨位低于「重型」口径。若口径定为 ≥100t 只能作跨吨位对照；若口径放宽到 50t 以下可整组转正（需落 decisions）。",
+   "parts": [
+    {"part": "支腿", "axis": "platform", "views": ["side", "low_side"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c2-cross-bj5311jsq",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "cross_vehicle",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.5,
+   "family": "福田",
+   "category": "随车吊",
+   "models": ["福田 BJ5311JSQ"],
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "reason": "名录里唯一的随车起重运输车（JSQ 公告型号）。能提供对照证据：支腿箱与货厢副车架一体安装、后支腿与货厢尾部争空间、支腿跨距受轴距约束（F4 观察，pending）。跨距与承力不同级，只作 cross_vehicle 备选，不占槽、不代同级承力。",
+   "parts": [
+    {"part": "支腿", "axis": "cross_vehicle", "views": ["side", "rear45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "支腿",
+   "candidates": ["c2-sany-sac16000s", "c2-25-35t-group", "c2-cross-bj5311jsq"],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.33
+  }
+ ],
+ "coverage": {
+  "slots_filled": 1,
+  "slots_requested": 12,
+  "by_part": {"支腿": 1},
+  "notes": "缺口 11 个整车槽，原因逐个可查：名录 12 个候选里 4 个是载货车/牵引车（豪沃/王牌/德龙8×4/R770，无上装无支腿）、3 个是履带吊（XGC88000/SCC2500C/SCC500C，结构上无支腿）、6 个是 25–35t 级（低于重型口径，降备选），只剩 1 台 ≥100t 且带支腿。部件专项页未成立：要求 ≥5 台车可裁支腿，当前仅 1 台推荐 + 2 组备选。库内 0 条素材（inventory.py），主图与可裁性全部 to_verify。缺口性质是「这一类目在本名录里没车」，不是「主图不合格」——补的办法是重型吊车名录生成，不是降口径凑数。"
+ },
+ "decisions": [
+  {
+   "at": "step1-profile",
+   "action": "标记 profile_missing：category_profiles.json 无「重型吊车」，只有「汽车起重机」(conf 0.6)",
+   "reasons": ["不能静默借用汽车起重机档案当本类目档案", "部件词表与来源先验暂借汽车起重机，需在报告中显式声明"]
+  },
+  {
+   "at": "step3-parameterize",
+   "action": "口语类目落参数：吨位 ≥100t + 底盘形式（汽车/全地面；履带单列为排除项）+ 上装为起重",
+   "reasons": ["不落参数时名录混进 25–35t 汽车吊与随车吊（本方名录实测）", "落参数后仅 1 台通过，说明口径必须由用户确认"]
+  },
+  {
+   "at": "step4-structural-exclude",
+   "action": "排除履带吊 XGC88000、SCC2500C/SCC500C，以及纯载货/牵引 4 台",
+   "reasons": ["F1 履带吊无支腿；F2 纯载货车无支腿（两条均 pending，需追认）", "理由是结构事实，不是相关性弱"]
+  },
+  {
+   "at": "step4-cross-vehicle-gate",
+   "action": "cross_vehicle 层只开一条（BJ5311JSQ），且只作备选不占槽",
+   "reasons": ["allow_cross_vehicle 置 true 仅表示该层允许出现在清单里作参照，未进入推荐位", "F4 观察未确认，不代同级承力"]
+  },
+  {
+   "at": "step5-slots",
+   "action": "推荐 1 台占 vehicle:1；备选 2 组不占槽；缓冲 2",
+   "reasons": ["通过硬门槛的只有 1 台", "缺口 11 槽如实上报（见 coverage.notes）", "extra=max(2, ceil(0.15×12))=2"]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "「重型吊车」的吨位门槛取 ≥100t 还是 ≥50t？底盘形式限定为汽车/全地面（排除履带）？",
+   "why": "本清单按 ≥100t + 有作业支腿处理，结果只剩 1 台；若门槛是 ≥50t，25–35t 组仍不足，但 SF/STC 系列中吨位段需重排名录；若门槛更高（≥300t），SAC16000S 之外仍需补名录。口径不同，清单结构完全不同。",
+   "blocking": false
+  },
+  {
+   "question": "structural-facts.md 的 F1（履带吊无支腿）、F2（纯载货车无支腿）仍为 pending，是否追认可作为排除依据？",
+   "why": "本清单已据此排除 7 台候选，但该表四条尚未经产品负责人确认；不追认则这些排除在报告里不能当事实陈述。",
+   "blocking": false
+  },
+  {
+   "question": "是否接受 福田 BJ5311JSQ（随车吊）作 cross_vehicle 类比证据，仅备选不占槽？",
+   "why": "随车吊支腿与货厢共用底盘（F4，pending），跨距小于同吨位汽车吊，只能看安装方式与空间让步，不能代表同级承力。",
+   "blocking": false
+  },
+  {
+   "question": "是否为「重型吊车」单独建档（吨位段/底盘形式/部件词表/来源先验）？",
+   "why": "现只有「汽车起重机」档案（conf 0.6），重型口径依赖吨位门槛而档案里没有吨位维度；不建档则下次同类请求仍要重做口径判断。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {"target": "重型吊车 名录（≥100t 汽车吊/全地面，按吨位段分层）", "why": "本名录只有 1 台通过硬门槛，缺口 11 槽靠补名录而非降口径"},
+  {"target": "重型吊车 类目档案（吨位段 + 底盘形式 + 部件词表）", "why": "category_profiles.json 无该类目，只能借用汽车起重机"},
+  {"target": "徐工/中联 ≥100t 全地面 支腿构型样本", "why": "当前仅三一一台，构型对照样本不足，无法支撑「支腿构型差异」叙事"}
+ ]
+}

@@ -1,0 +1,101 @@
+{
+ "version": "2026-10-31",
+ "purpose": "相关性评测池：A（无 skill）与 B（skill v0.2）在 3 个案例上的候选目标并集 + 陷阱项，盲标 2/1/0。",
+ "label_rules": {
+  "2": "直证：同类目/同构型，且请求部件能在其主图上裁出",
+  "1": "类比：异类目/异构型，但能提供至少一个请求部件或该环境的证据",
+  "0": "无关，或结构上不存在该部件（陷阱项）"
+ },
+ "arms": {
+  "a": "armA（无 skill，自由格式；named=具体车型/系列，direction=方向级描述）",
+  "b": "armB2（skill v0.2；named=具体车型，direction=provisional 方向级）"
+ },
+ "cases": [
+  {
+   "id": "c01",
+   "title": "沙漠牵引车｜踏步 / 防护栏 / 底盘",
+   "strata_needed": ["exact", "environment", "platform"],
+   "rows": [
+    {"id": "c01-01", "target": "豪沃 6×6 油田/沙漠牵引车（TAZ4922）", "a": "named", "b": "named", "label": 2, "stratum": "exact", "why": "6x6 同构型；踏步/防护栏/底盘三件均可裁"},
+    {"id": "c01-02", "target": "德龙 6X6（基础 6x6 沙漠/越野）", "a": null, "b": "named", "label": 2, "stratum": "exact", "why": "名录命中 6x6；三件可裁"},
+    {"id": "c01-03", "target": "德龙 X3000 6×6 沙漠越野", "a": "named", "b": null, "label": 2, "stratum": "exact", "why": "6x6 沙漠构型；注意其页面标题为“载货车底盘”"},
+    {"id": "c01-04", "target": "德龙 X3000 常规干线（6x4 平台对照）", "a": null, "b": "named", "label": 1, "stratum": "platform", "why": "6x4 公路车，只提供“非环境特化”的踏步基线"},
+    {"id": "c01-05", "target": "德龙 F3000 6×6 沙漠车", "a": "named", "b": null, "label": 2, "stratum": "exact", "why": "上代 6x6 沙漠车；图源老，分辨率待验"},
+    {"id": "c01-06", "target": "东风天锦 6×6 油田检修车", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "6x6 油田构型；上装为检修设备，主图别把上装当主体"},
+    {"id": "c01-07", "target": "北奔 NG80 6×6 / 8×8 沙漠越野", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "多轴越野构型；8x8 若找不到可退备选"},
+    {"id": "c01-08", "target": "解放 6×6 越野底盘牵引", "a": "direction", "b": "direction", "label": 2, "stratum": "exact", "why": "同构型方向；型号需名录"},
+    {"id": "c01-09", "target": "沙漠越野运输车 / 沙漠公路罐车", "a": "named", "b": "direction", "label": 1, "stratum": "environment", "why": "环境特化，但功能不是牵引；提供防沙侧裙与底盘防护证据"},
+    {"id": "c01-10", "target": "油田修井机 / 作业车 6×6 底盘", "a": "named", "b": null, "label": 1, "stratum": "environment", "why": "底盘改造与防护裙板；整车页说服力偏弱"},
+    {"id": "c01-11", "target": "中东/中亚出口“沙漠版/热带版”牵引车", "a": "direction", "b": null, "label": 1, "stratum": "environment", "why": "防沙罩/加大散热/防紫外线涂装；车系不定"},
+    {"id": "c01-12", "target": "军用越野卡车（沙漠涂装）", "a": "named", "b": null, "label": 1, "stratum": "environment", "why": "踏板与防护构型极端；离牵引叙事较远"},
+    {"id": "c01-13", "target": "沙漠构型套件（宽基胎/防沙套件/加高进气）", "a": null, "b": "direction", "label": 1, "stratum": "environment", "why": "不是整车，但能区分原厂环境件与后装套件"},
+    {"id": "c01-14", "target": "汕德卡 干线牵引基型（C9H）", "a": "named", "b": "named", "label": 1, "stratum": "platform", "why": "公路基型，用来说明“沙漠版改了哪几处”"},
+    {"id": "c01-15", "target": "解放 J7 干线牵引基型", "a": "named", "b": null, "label": 1, "stratum": "platform", "why": "第二品牌基线，避免单品牌代表全部"},
+    {"id": "c01-16", "target": "乘龙 H5V / 豪沃 V7-X 工程自卸", "a": "named", "b": null, "label": 1, "stratum": "platform", "why": "三阶踏板与高底盘，踏步可比"},
+    {"id": "c01-17", "target": "宽体矿卡 / 工程自卸底盘防护", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "底盘防护与踏板极端构型；跨车型需勾选"},
+    {"id": "c01-18", "target": "6×4 公路牵引组（天锦/JH6/J6G/龙H5/ZZ425）", "a": null, "b": "named", "label": 1, "stratum": "platform", "why": "B 标为“不满足沙漠工况，只作驾驶室平台对照”"},
+    {"id": "c01-x1", "target": "乘用车 / MPV 底盘（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "无工程构型；两臂均未提出"},
+    {"id": "c01-x2", "target": "履带起重机（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "类别错误；两臂均未提出"}
+   ]
+  },
+  {
+   "id": "c02",
+   "title": "重型吊车｜支腿",
+   "strata_needed": ["exact", "environment", "platform"],
+   "rows": [
+    {"id": "c02-01", "target": "三一 SAC16000S（全地面）", "a": "named", "b": "named", "label": 2, "stratum": "exact", "why": "千吨级全地面；支腿是核心承力件"},
+    {"id": "c02-02", "target": "徐工 XCT80 / XCT100", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "大吨位汽车吊 H 型双级支腿"},
+    {"id": "c02-03", "target": "徐工 QY50K / QY70K", "a": "named", "b": null, "label": 1, "stratum": "exact", "why": "50–70t 边界，取决于“重型”吨位门槛"},
+    {"id": "c02-04", "target": "三一 STC1000", "a": "named", "b": null, "label": 2, "stratum": "exact", "why": "100t 级，支腿跨距与垫板策略可对照"},
+    {"id": "c02-05", "target": "三一 STC800C6（80t）", "a": "named", "b": "named", "label": 1, "stratum": "exact", "why": "80t 落在“重型”门槛下沿，待吨位口径"},
+    {"id": "c02-06", "target": "中联 ZTC800 / ZTC1000", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "第三厂系，H 型单级+大跨距"},
+    {"id": "c02-07", "target": "徐工 XCA220（全地面）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "全地面 vs 汽车吊的构型族差异"},
+    {"id": "c02-08", "target": "中联 ZAT 400t 级（全地面）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "补齐全地面第三台"},
+    {"id": "c02-09", "target": "雷萨 ≥100t 汽车吊", "a": null, "b": "direction", "label": 1, "stratum": "exact", "why": "第四厂系样本；图源待验"},
+    {"id": "c02-10", "target": "利勃海尔 LTM / 特雷克斯（进口全地面）", "a": "named", "b": null, "label": 2, "stratum": "exact", "why": "支腿构型参照强；国内图源少"},
+    {"id": "c02-11", "target": "越野轮胎吊（RT）", "a": "named", "b": null, "label": 1, "stratum": "exact", "why": "另一构型族，支腿+越野底盘贴近工况"},
+    {"id": "c02-12", "target": "风电吊装用全地面起重机", "a": "named", "b": null, "label": 1, "stratum": "environment", "why": "地面承载力决定支腿构型的因果叙事"},
+    {"id": "c02-13", "target": "油田/厂区检修用汽车吊（受限空间）", "a": "named", "b": null, "label": 1, "stratum": "environment", "why": "半伸/单侧支腿的非标用法"},
+    {"id": "c02-14", "target": "通用重卡底盘（汽车吊副车架）", "a": "named", "b": null, "label": 1, "stratum": "platform", "why": "支腿反力经副车架传到底盘"},
+    {"id": "c02-15", "target": "混凝土泵车 X 型支腿", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "X 型 vs H 型最有效的构型对照"},
+    {"id": "c02-16", "target": "高空作业车 H 型支腿", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "轻量化端对照"},
+    {"id": "c02-17", "target": "随车吊支腿（3–16t）", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "小吨位短跨距；与 c03 共用样本"},
+    {"id": "c02-18", "target": "徐工 ≥100t 汽车吊（方向）", "a": null, "b": "direction", "label": 2, "stratum": "exact", "why": "与 XCT 系列同轴，方向级"},
+    {"id": "c02-19", "target": "中联 ≥100t 汽车吊（方向）", "a": null, "b": "direction", "label": 2, "stratum": "exact", "why": "与 ZTC 系列同轴"},
+    {"id": "c02-20", "target": "徐工全地面（多轴底盘，方向）", "a": null, "b": "direction", "label": 2, "stratum": "exact", "why": "轴数与支腿跨距关系"},
+    {"id": "c02-x1", "target": "XGC88000 履带吊（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "结构上无支腿；B 显式 exclude，A 列为待确认，均未进推荐"},
+    {"id": "c02-x2", "target": "德龙 8×4 载货（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "载货车无支腿；B 显式 exclude"},
+    {"id": "c02-x3", "target": "挖掘机 / 叉车（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "无支腿结构；两臂均未提出"}
+   ]
+  },
+  {
+   "id": "c08",
+   "title": "压缩式垃圾车｜上装 / 填装器 / 尾部装置",
+   "strata_needed": ["exact", "environment", "platform"],
+   "rows": [
+    {"id": "c08-01", "target": "后装压缩 大型（14–18 方 / 3 轴）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "同构型；厢体/填装器/尾部可裁"},
+    {"id": "c08-02", "target": "后装压缩 中大型（10–12 方）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "主流市政配置"},
+    {"id": "c08-03", "target": "后装压缩 中型（6–8 方）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "填装器开口与厢体高度比"},
+    {"id": "c08-04", "target": "后装压缩 小型（3–5 方 / 轻卡）", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "小型化后填装器占比变大"},
+    {"id": "c08-05", "target": "侧装压缩（6–8t）", "a": "named", "b": "direction", "label": 1, "stratum": "exact", "why": "上料方式不同，但仍在压缩式族内；是“填装器”命名反例"},
+    {"id": "c08-06", "target": "侧装压缩（10–12t）", "a": null, "b": "direction", "label": 1, "stratum": "exact", "why": "同上，大吨位侧装"},
+    {"id": "c08-07", "target": "前装压缩（12–18t）", "a": null, "b": "direction", "label": 1, "stratum": "exact", "why": "上料高度与箱体布置差异"},
+    {"id": "c08-08", "target": "分体式 / 车厢可卸式压缩（勾臂+压缩箱）", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "无固定填装器/尾部装置，证明“部件依赖构型”"},
+    {"id": "c08-09", "target": "厨余 / 湿垃圾压缩车（密封防渗）", "a": "named", "b": null, "label": 2, "stratum": "exact", "why": "仍是压缩式，尾部密封是差异叙事"},
+    {"id": "c08-10", "target": "电动压缩式垃圾车", "a": "named", "b": "direction", "label": 2, "stratum": "exact", "why": "上装不变、底盘取力变"},
+    {"id": "c08-11", "target": "低顶 / 低入口型（限高小区、地下车库）", "a": "named", "b": "direction", "label": 1, "stratum": "environment", "why": "限高断面压缩箱体与填装器"},
+    {"id": "c08-12", "target": "压缩站对接 / 高位卸料型", "a": null, "b": "direction", "label": 1, "stratum": "environment", "why": "站车对接接口证据"},
+    {"id": "c08-13", "target": "高寒地区型（-30℃ 液压/箱体防冻）", "a": "named", "b": "direction", "label": 1, "stratum": "environment", "why": "液压保温与密封件"},
+    {"id": "c08-14", "target": "进口底盘 + 国产上装", "a": null, "b": "direction", "label": 1, "stratum": "environment", "why": "底盘高度/取力接口影响填装器布置"},
+    {"id": "c08-15", "target": "20 方以上超大容积（非标箱体）", "a": null, "b": "named", "label": 1, "stratum": "exact", "why": "超长上装；样本少"},
+    {"id": "c08-16", "target": "出口 / 右舵型", "a": "named", "b": "named", "label": 1, "stratum": "environment", "why": "法规环境对上装接口的影响"},
+    {"id": "c08-17", "target": "一线城市主干道大型后装（品牌涂装体系）", "a": "named", "b": null, "label": 1, "stratum": "environment", "why": "唯一稳定的 CMF 证据"},
+    {"id": "c08-18", "target": "上装平台对照（同底盘换装第二家上装）", "a": "named", "b": null, "label": 1, "stratum": "platform", "why": "把上装设计从底盘造型里剥离"},
+    {"id": "c08-19", "target": "同类市政车（扫路/吸污/餐厨）作尾部参照", "a": "named", "b": null, "label": 1, "stratum": "cross_vehicle", "why": "翻转架在餐厨车上更外露；borrowed"},
+    {"id": "c08-x1", "target": "自卸车 / 厢式货车（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "无压缩机构与填装器；两臂均未提出"},
+    {"id": "c08-x2", "target": "洒水车 / 吸污车（陷阱）", "a": null, "b": null, "label": 0, "stratum": null, "why": "上装结构不同；A 仅列为 borrowed 参照，B 未提出"},
+    {"id": "c08-x3", "target": "餐厨垃圾车（罐式/螺旋）", "a": null, "b": null, "label": 0, "stratum": null, "why": "A 误并入“厨余压缩”行已单列；B 显式 exclude（罐式无压缩填装器）"}
+   ]
+  }
+ ]
+}

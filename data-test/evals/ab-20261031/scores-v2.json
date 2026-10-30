@@ -1,0 +1,42 @@
+{
+ "rubric": "data-test/evals/ab-20261031/RUBRIC-v2.md",
+ "baseline_A": {"six_dim_mean": 5.875, "slots_filled": 89, "slots_requested": 96,
+                "fill_rate": 0.927, "hard_errors": 1, "note": "固定基线，不重跑"},
+ "b2": {
+  "c01": {"status": "ok", "slots": 8, "rec": 3, "prov": 5, "warnings": 0,
+          "D1": 1, "D2": 1, "D3": 1, "D4": 1, "D5": 1, "D6": 1,
+          "note": "三件部件全判 environment；未核型号（X3000/汕德卡）降备选"},
+  "c02": {"status": "ok", "slots": 7, "rec": 2, "prov": 5, "warnings": 0,
+          "D1": 1, "D2": 1, "D3": 1, "D4": 1, "D5": 1, "D6": 1,
+          "note": "履带吊/载货车按 F1/F2 排除；吨位门槛进 decisions"},
+  "c03": {"status": "ok", "slots": 7, "rec": 1, "prov": 6, "warnings": 1,
+          "D1": 1, "D2": 1, "D3": 1, "D4": 1, "D5": 1, "D6": 1,
+          "note": "blocking_scope=branches 只阻断载货分支；warning 属设计取舍"},
+  "c04": {"status": "ok", "slots": 12, "rec": 0, "prov": 12, "warnings": 0,
+          "D1": 0.5, "D2": 1, "D3": 1, "D4": 1, "D5": 0.5, "D6": 1,
+          "note": "12 槽全 provisional：按臂架形式分层，但 0 台可核，接近规避判断"},
+  "c05": {"status": "ok", "slots": 12, "rec": 3, "prov": 9, "warnings": 1,
+          "D1": 1, "D2": 1, "D3": 1, "D4": 1, "D5": 1, "D6": 1,
+          "note": "3 台档案代表机型为真推荐；翻斗铲车名录按公路自卸排除；warning=blocking_scope=parts 的取舍"},
+  "c06": {"status": "ok", "slots": 12, "rec": 0, "prov": 12, "warnings": 0,
+          "D1": 0.5, "D2": 1, "D3": 1, "D4": 1, "D5": 0.5, "D6": 1,
+          "note": "无名录；12 槽全方向级，罐体 exact / 上装厂 platform 已分层，但 0 台可核"},
+  "c07": {"status": "ok", "slots": 12, "rec": 0, "prov": 12, "warnings": 0,
+          "D1": 0.5, "D2": 1, "D3": 1, "D4": 1, "D5": 0.5, "D6": 1,
+          "note": "公路自卸/刚性/铰接三族排除到位；12 槽全方向级"},
+  "c08": {"status": "ok", "slots": 12, "rec": 0, "prov": 12, "warnings": 0,
+          "D1": 0.5, "D2": 1, "D3": 1, "D4": 1, "D5": 0.5, "D6": 1,
+          "note": "填装器/尾部装置分界进确认；12 槽全方向级"}
+ },
+ "totals": {
+  "B2": {"six_dim": 44.0, "mean": 5.5, "slots_filled": 82, "slots_requested": 96,
+         "fill_rate": 0.854, "recommended_slots": 9, "provisional_slots": 73,
+         "verified_rate": 0.094, "hard_errors": 0, "schema_pass": "8/8",
+         "warnings": 2}
+ },
+ "verdict": {
+  "deliverability_gate": "PASS（fill 0.854≥0.85、硬错误 0、schema 8/8）",
+  "quality_gate": "PASS（8/8 案例 ≥5/6，无 <4/6）",
+  "caveat": "填充的 89% 是 provisional 方向级：名义填充 85%，真正确认的车型只有 9/96 槽（9.4%）。指标可被方向级占槽'撑满'，v3 需要 verified_rate 与 provisional 上限。"
+ }
+}

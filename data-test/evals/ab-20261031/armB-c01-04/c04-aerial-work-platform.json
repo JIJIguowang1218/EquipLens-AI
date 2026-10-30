@@ -1,0 +1,154 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "C4-aerial-work-platform|高空作业车|parts=臂架|budget=20(fixed5+vehicle12+part2)",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": ["臂架"],
+ "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 2},
+ "buffer": {"requested": 12, "extra": 2, "rule": "max(2, ceil(0.15*12))=2；薄类目（无档案、无名录）本应 25%=3，但当前 0 推荐槽，缓冲只在转正后生效，先记 2"},
+ "targets": [
+  {
+   "id": "c4-scissor-exclude",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.8,
+   "family": "剪叉式",
+   "category": "高空作业车",
+   "reason": "结构事实（条件式，尚未确认）：剪叉式升降平台是剪叉机构+作业平台，没有臂架，臂架证据只存在于臂架式（直臂/曲臂/车载）。所以本请求必须先按「臂架式」取车，剪叉式整体排除。该条未收录在 references/structural-facts.md、无 confirmed_by，已列入 needs_confirmation 追认，追认前只作本清单的过滤条件。",
+   "images": {"in_library": 0, "need_crawl": false, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c4-straight-boom",
+   "kind": "category",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "family": "臂架式-直臂",
+   "category": "高空作业车",
+   "reason": "直臂式（伸缩臂）是臂架形态最完整的一支：能提供 多节伸缩臂的截面比例与搭接关系、臂头/飞臂、臂架根部铰点与变幅油缸、臂架与转台的连接；侧视为最佳裁图视角，可裁整臂与 2–3 处截面。无型号落地，验证途径：先跑名录生成（直臂式高空作业平台），核到 5 台以上再进推荐位。",
+   "parts": [
+    {"part": "臂架", "axis": "exact", "views": ["side", "front45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c4-articulated-boom",
+   "kind": "category",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "family": "臂架式-曲臂",
+   "category": "高空作业车",
+   "reason": "曲臂式（折叠臂）多铰点、连杆与油缸外露，臂架截面多为矩形/多边形，造型分色常落在臂节转折处：能提供 转折段、铰点布置、飞臂与工作篮连接 三处裁图，与直臂式构成「伸缩 vs 折叠」的构型对比。无型号落地，验证途径同上（按曲臂式单独跑名录）。",
+   "parts": [
+    {"part": "臂架", "axis": "exact", "views": ["side", "front45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c4-truck-mounted-boom",
+   "kind": "category",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "family": "臂架式-车载",
+   "category": "高空作业车",
+   "reason": "车载式高空作业车（臂架架在卡车底盘上）：能与报告里的重卡类目共用驾驶室/底盘语汇，可裁 臂架与副车架、底盘支腿（若有）共存 的整车视角，正好回答「臂架与底盘的体量比例」。无型号落地，验证途径：按车载式高空作业车跑名录生成。",
+   "parts": [
+    {"part": "臂架", "axis": "exact", "views": ["side", "rear45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c4-query-boom-language",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "family": "臂架-文本口径",
+   "category": "高空作业车",
+   "reason": "文本证据口径（不占页槽，只作定调/语汇）：「高空作业车 臂架 截面 设计」「臂架式高空作业平台 臂架 造型」——取截面变化、涂装分色、臂节搭接的设计语汇，用于分析文本框而不是页槽成立判断。无档案无词表，先按通用层跑。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "臂架",
+   "candidates": ["c4-straight-boom", "c4-articulated-boom", "c4-truck-mounted-boom"],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {"臂架": 0},
+  "notes": "0 个推荐槽，两个独立原因：①data/category_profiles.json 无「高空作业车」（其 notes 明确把高空作业车列为留出类目），没有类目档案就没有词表与来源先验；②data-test 下无该类目名录（roster-*.json 只有 沙漠牵引车/翻斗铲车/轻型吊车/重型吊车），4 个候选方向全部是 inference 且离线无法核型号，按纪律 6 只能备选。缺口 12 个整车槽 + 2 个部件页槽，性质是「没车」（无名录、无型号），不是「主图不合格」——库内 0 条素材（inventory.py 返回 total_assets=0），连主图合格性都无处可盘。补齐路径：先建档案 + 跑名录生成，不降标准凑数。另：本清单按臂架式（直臂/曲臂/车载）取证，剪叉式显式排除。"
+ },
+ "decisions": [
+  {
+   "at": "step1-profile",
+   "action": "标记 profile_missing：无「高空作业车」档案，走通用层并提议建档",
+   "reasons": ["category_profiles.json 的 notes 明确写「随车吊、高空作业车、抓料机、港口牵引车、井下矿卡暂不建档」", "无档案则部件词表/来源先验只能借用通用层，报告里必须显式声明"]
+  },
+  {
+   "at": "step3-form-first",
+   "action": "臂架先判形式再排车：直臂式（伸缩臂）/曲臂式（折叠臂）/车载式三支，剪叉式排除",
+   "reasons": ["「臂架」在不同形式下形态完全不同，不先分形式就排车等于把三种结构混成一页", "剪叉式无臂架（条件式结构事实，待确认）"]
+  },
+  {
+   "at": "step4-no-recommend",
+   "action": "0 个推荐位：4 个方向全部 inference 未验证，只能备选",
+   "reasons": ["纪律 6：grounding=inference 且未验证不得进推荐位", "离线无名录、无库内素材，验证途径写进 reason 与 backlog"]
+  },
+  {
+   "at": "step5-slots",
+   "action": "0 槽占用，缓冲 2（转正后按薄类目提到 3）",
+   "reasons": ["无可验证车型", "缺口 12 槽 + 2 部件页槽如实上报（见 coverage.notes）"]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "臂架形式范围：直臂/曲臂/车载三种全收，还是限定某一形式（并给工作高度门槛，例如 ≥20m）？",
+   "why": "三种形式的臂架截面、铰点与油缸布置完全不同，混在一页会把差异讲成噪音；工作高度又决定臂节数与体量段，不定则名录生成的口径也不定。",
+   "blocking": false
+  },
+  {
+   "question": "是否确认「剪叉式无臂架」可从本清单排除（并把该条补进 structural-facts.md 的条件式事实）？",
+   "why": "本清单据此排除整族，但该事实目前未收录、无 confirmed_by；不追认则排除只能算清单内的过滤条件，不能在报告里当事实写。",
+   "blocking": false
+  },
+  {
+   "question": "是否为「高空作业车」新建类目档案（词表建议：臂架/转台/平台/底盘/支腿/工作篮）？",
+   "why": "档案缺失是本次 0 推荐位的直接原因之一；不建档则同类请求每次都要重走通用层，且无法积累来源先验。",
+   "blocking": false
+  },
+  {
+   "question": "是否接受先跑高空作业车名录生成（按形式分层），把 4 个 inference 候选转正后再排页槽？",
+   "why": "这是唯一能把 0 槽补满的合规路径；不跑则本类目无法进 20 页报告。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {"target": "高空作业车 名录（直臂/曲臂/车载分形式，含工作高度）", "why": "data-test 下无该类目 roster-*.json，无法落地型号"},
+  {"target": "高空作业车 类目档案", "why": "category_profiles.json notes 列为留出类目，部件词表与来源先验均缺"},
+  {"target": "臂架专项页（≥5 台可裁，按形式分页）", "why": "一部件一页需 5–6 个单元，当前 0 台可验证；若三种形式混排，专项页会失去对照意义"}
+ ]
+}

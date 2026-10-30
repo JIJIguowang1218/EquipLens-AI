@@ -1,0 +1,522 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "title": "EquipLens association list (L1.5)",
+ "type": "object",
+ "required": [
+  "list_version",
+  "intent_ref",
+  "page_budget",
+  "buffer",
+  "targets",
+  "decisions"
+ ],
+ "additionalProperties": false,
+ "properties": {
+  "list_version": {
+   "type": "string",
+   "const": "v0.2"
+  },
+  "intent_ref": {
+   "type": "string",
+   "minLength": 1
+  },
+  "requested": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "profile_status": {
+   "enum": [
+    "found",
+    "missing",
+    "draft"
+   ]
+  },
+  "allow_cross_vehicle": {
+   "type": "boolean",
+   "default": false
+  },
+  "parts_requested": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "minLength": 1
+   }
+  },
+  "page_budget": {
+   "type": "object",
+   "required": [
+    "total",
+    "fixed_pages",
+    "vehicle_slots",
+    "part_page_slots"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "total": {
+     "type": "integer",
+     "minimum": 3
+    },
+    "fixed_pages": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "vehicle_slots": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "part_page_slots": {
+     "type": "integer",
+     "minimum": 0
+    }
+   }
+  },
+  "buffer": {
+   "type": "object",
+   "required": [
+    "requested",
+    "extra"
+   ],
+   "additionalProperties": false,
+   "properties": {
+    "requested": {
+     "type": "integer",
+     "minimum": 1
+    },
+    "extra": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "rule": {
+     "type": "string"
+    }
+   }
+  },
+  "targets": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "kind",
+     "tier",
+     "relation",
+     "status",
+     "grounding",
+     "confidence",
+     "reason"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+     },
+     "kind": {
+      "enum": [
+       "vehicle",
+       "category",
+       "part_query",
+       "exclude"
+      ]
+     },
+     "tier": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+     },
+     "relation": {
+      "enum": [
+       "exact",
+       "environment",
+       "platform",
+       "cross_vehicle",
+       "exclude"
+      ]
+     },
+     "status": {
+      "enum": [
+       "recommended",
+       "provisional",
+       "backup",
+       "blocked"
+      ]
+     },
+     "grounding": {
+      "enum": [
+       "roster",
+       "profile",
+       "inference",
+       "serp"
+      ]
+     },
+     "verified": {
+      "type": "boolean",
+      "default": false
+     },
+     "verify_by": {
+      "type": "string",
+      "description": "provisional 目标的验证途径，如 roster_generation"
+     },
+     "borrowed": {
+      "type": "boolean",
+      "default": false
+     },
+     "confirmed_by": {
+      "type": "string"
+     },
+     "fact_status": {
+      "enum": [
+       "pending",
+       "confirmed"
+      ]
+     },
+     "relevance_strength": {
+      "enum": [
+       "strong",
+       "weak"
+      ]
+     },
+     "weak_reason": {
+      "type": "string",
+      "minLength": 4
+     },
+     "evidence_level": {
+      "enum": [
+       "E0",
+       "E1",
+       "E2",
+       "E3"
+      ]
+     },
+     "evidence": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "url",
+        "title",
+        "grade",
+        "source"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "url": {
+         "type": "string",
+         "pattern": "^https?://"
+        },
+        "title": {
+         "type": "string",
+         "minLength": 4
+        },
+        "grade": {
+         "enum": [
+          "E1",
+          "E2",
+          "E3"
+         ]
+        },
+        "source": {
+         "enum": [
+          "corpus",
+          "roster",
+          "serp",
+          "library"
+         ]
+        },
+        "checked_at": {
+         "type": "string"
+        }
+       }
+      }
+     },
+     "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     },
+     "reason": {
+      "type": "string",
+      "minLength": 8
+     },
+     "source_ref": {
+      "type": "string"
+     },
+     "category": {
+      "type": "string"
+     },
+     "models": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "family": {
+      "type": "string"
+     },
+     "slots": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "pattern": "^(vehicle|part):[0-9]+$"
+      },
+      "uniqueItems": true
+     },
+     "parts": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "part"
+       ],
+       "additionalProperties": false,
+       "properties": {
+        "part": {
+         "type": "string",
+         "minLength": 1
+        },
+        "axis": {
+         "enum": [
+          "exact",
+          "environment",
+          "platform",
+          "cross_vehicle"
+         ]
+        },
+        "views": {
+         "type": "array",
+         "items": {
+          "type": "string"
+         }
+        },
+        "croppable": {
+         "enum": [
+          "yes",
+          "no",
+          "to_verify"
+         ]
+        }
+       }
+      }
+     },
+     "images": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+       "in_library": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "need_crawl": {
+        "type": "boolean"
+       },
+       "hero_candidates": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "status": {
+        "enum": [
+         "verified",
+         "to_verify"
+        ]
+       }
+      }
+     }
+    }
+   }
+  },
+  "part_pages": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "part",
+     "vehicles_covered",
+     "ready"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "part": {
+      "type": "string",
+      "minLength": 1
+     },
+     "candidates": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "vehicles_covered": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "ready": {
+      "type": "boolean"
+     },
+     "why_not_ready": {
+      "type": "string"
+     },
+     "borrowed_share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     }
+    }
+   }
+  },
+  "coverage": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "slots_filled": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "slots_requested": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "by_part": {
+     "type": "object"
+    },
+    "gap_kind": {
+     "type": "array",
+     "items": {
+      "enum": [
+       "no_vehicle",
+       "no_image",
+       "no_roster",
+       "undefined_scope"
+      ]
+     }
+    },
+    "notes": {
+     "type": "string"
+    }
+   }
+  },
+  "decisions": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "at",
+     "action"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "at": {
+      "type": "string"
+     },
+     "tier": {
+      "type": "integer"
+     },
+     "action": {
+      "type": "string"
+     },
+     "reasons": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "needs_confirmation": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "question",
+     "why",
+     "blocking"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "question": {
+      "type": "string",
+      "minLength": 4
+     },
+     "why": {
+      "type": "string",
+      "minLength": 4
+     },
+     "blocking": {
+      "type": "boolean"
+     },
+     "blocking_scope": {
+      "enum": [
+       "all",
+       "parts",
+       "branches"
+      ],
+      "default": "all"
+     }
+    }
+   }
+  },
+  "backlog": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "target",
+     "why"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "target": {
+      "type": "string"
+     },
+     "why": {
+      "type": "string"
+     }
+    }
+   }
+  },
+  "next_action": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "action",
+     "why"
+    ],
+    "additionalProperties": false,
+    "properties": {
+     "action": {
+      "type": "string"
+     },
+     "why": {
+      "type": "string"
+     },
+     "targets": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "run_meta": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "model_id": {
+     "type": "string"
+    },
+    "prompt_version": {
+     "type": "string"
+    },
+    "evidence_index_version": {
+     "type": "string"
+    },
+    "run_at": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

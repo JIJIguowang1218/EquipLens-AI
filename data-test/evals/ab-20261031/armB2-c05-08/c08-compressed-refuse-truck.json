@@ -1,0 +1,896 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/armB2/c08-compressed-refuse-truck",
+ "requested": 12,
+ "profile_status": "missing",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "上装",
+  "填装器",
+  "尾部装置"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 2,
+  "rule": "max(2, ceil(0.15×12)) = 2；无 roster 无法证明可用车 <12，未触薄类目 25%"
+ },
+ "targets": [
+  {
+   "id": "c08-3-5-rear",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.53,
+   "category": "3–5t 小型后装压缩式垃圾车（乡镇/背街小巷）",
+   "reason": "3–5t 小型后装：上装箱体比例、填装器斗形、尾部装置与后门锁紧预计可裁，提供窄街巷收运的整车尺寸与上料高度证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-3-5后装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:1"
+   ]
+  },
+  {
+   "id": "c08-6-8-rear",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.52,
+   "category": "6–8t 中型后装压缩式垃圾车（市政主次干道）",
+   "reason": "6–8t 中型后装市政主力：上装压缩箱体、填装器与尾部装置都预计可裁，提供主流吨位的箱体比例与作业接口基线；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-6-8后装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:2"
+   ]
+  },
+  {
+   "id": "c08-10-12-rear",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.51,
+   "category": "10–12t 大型后装压缩式垃圾车（高密度城区）",
+   "reason": "10–12t 大型后装高密度城区：长箱体与双缸压缩机构改变上装比例，预计可裁长箱体、双缸填装器与尾部装置，提供大吨位后装的箱体/填装器/尾部装置证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-10-12后装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:3"
+   ]
+  },
+  {
+   "id": "c08-ev",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "category": "8–12t 电动压缩式垃圾车（静音/零排放）",
+   "reason": "8–12t 电动：电池包与电驱改变底盘高度与轴荷，上装/填装器/尾部装置仍预计可裁，提供新能源底盘与压缩上装接口的适配证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-电动",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:4"
+   ]
+  },
+  {
+   "id": "c08-14-18-rear",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.49,
+   "category": "14–18t 重型后装压缩式垃圾车（中转/长距离收运）",
+   "reason": "14–18t 重型后装中转/长距离：大容积上装与加强填装器预计可裁，提供中转站收运的装载量与尾部装置证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-14-18后装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:5"
+   ]
+  },
+  {
+   "id": "c08-6-8-side",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.48,
+   "category": "6–8t 侧装压缩式垃圾车（桶装化收集）",
+   "reason": "6–8t 侧装桶装化收集：侧上料机构与箱体侧门改变上装/填装器形态，预计可裁侧上料机构、侧门与填装器，提供侧装与后装的构型对照证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-6-8侧装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:6"
+   ]
+  },
+  {
+   "id": "c08-front",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.46,
+   "category": "12–18t 前装压缩式垃圾车（大型容器/中转站对接）",
+   "reason": "12–18t 前装：前置提桶/大容器对接机构与高位填装器预计可裁，提供前装与后装在上料高度和箱体布置上的差异证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-前装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:7"
+   ]
+  },
+  {
+   "id": "c08-10-12-side",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "category": "10–12t 侧装压缩式垃圾车（城区桶装线）",
+   "reason": "10–12t 侧装城区桶装线：长箱体与双侧/单侧上料机构预计可裁，提供大吨位侧装的收运效率与箱体布置证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-10-12侧装",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:8"
+   ]
+  },
+  {
+   "id": "c08-lowroof",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.44,
+   "category": "低顶/低入口型压缩式垃圾车（地下车库/限高小区）",
+   "reason": "低顶/低入口：限高断面压低箱体与填装器，尾部装置操作高度改变，预计可裁低顶箱体、填装器与尾部装置，提供受限空间收运的尺寸压缩叙事；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-低顶",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:9"
+   ]
+  },
+  {
+   "id": "c08-docking",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.44,
+   "category": "压缩站对接/高位卸料型压缩式垃圾车（转运）",
+   "reason": "压缩站对接/高位卸料：尾部装置与箱体后门对接机构预计可裁，提供站车对接工况的卸料接口证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-对接",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:10"
+   ]
+  },
+  {
+   "id": "c08-cold",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.43,
+   "category": "高寒地区型压缩式垃圾车（-30℃ 液压/箱体防冻）",
+   "reason": "高寒地区：液压保温、箱体防冻与密封件改变尾部装置细节，预计可裁尾部装置与箱体密封件，提供极寒工况对压缩机构的影响证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-寒区",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:11"
+   ]
+  },
+  {
+   "id": "c08-import-chassis",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.42,
+   "category": "高端进口底盘压缩式垃圾车（欧系底盘 + 国产上装）",
+   "reason": "欧系底盘 + 国产上装：底盘高度与取力接口改变填装器/尾部装置布置，预计可裁填装器接口与尾部装置，提供底盘平台对上装接口的影响证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-进口底盘",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:12"
+   ]
+  },
+  {
+   "id": "c08-20plus",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "category": "20 方以上超大容积压缩式垃圾车（非标箱体）",
+   "reason": "20 方以上非标箱体：超长上装与加强压缩机构预计可裁，提供大容积收运的体量证据；备选。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-20plus",
+   "verify_by": "roster_generation",
+   "slots": []
+  },
+  {
+   "id": "c08-export",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.34,
+   "category": "出口/右舵型压缩式垃圾车（海外市政收运）",
+   "reason": "出口/右舵：右舵驾驶室、法规防护与海外上装接口预计可裁，提供法规环境对造型的影响证据；备选。",
+   "models": [],
+   "parts": [
+    {
+     "part": "上装",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "填装器",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "尾部装置",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "垃圾车-出口",
+   "verify_by": "roster_generation",
+   "slots": []
+  },
+  {
+   "id": "c08-ex-kitchen",
+   "kind": "exclude",
+   "tier": 1,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "餐厨垃圾车（罐式/螺旋输送）",
+   "reason": "餐厨垃圾车用罐体加螺旋/推板输送，上装是罐式而非压缩箱体，且没有压缩填装器与尾部压缩装置；并入会污染上装/填装器/尾部装置的裁图口径，餐厨属相邻类目。",
+   "fact_status": "pending",
+   "models": [],
+   "parts": [],
+   "confirmed_by": "类目定义：餐厨垃圾车为罐式/螺旋输送，无压缩上装（待人工确认）"
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "填装器",
+   "candidates": [
+    "c08-3-5-rear",
+    "c08-6-8-rear",
+    "c08-10-12-rear",
+    "c08-14-18-rear",
+    "c08-6-8-side",
+    "c08-front"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "inventory.py：total_assets=0；填装器需 rear/side 视角判斗形与刮板，≥5 台可裁才成页，当前无图可判。"
+  },
+  {
+   "part": "尾部装置",
+   "candidates": [
+    "c08-3-5-rear",
+    "c08-6-8-rear",
+    "c08-10-12-rear",
+    "c08-docking",
+    "c08-ev",
+    "c08-cold"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "同上；尾部装置需 rear/hero_45 判后门、锁紧与卸料机构，当前无图可判。"
+  }
+ ],
+ "coverage": {
+  "slots_filled": 12,
+  "slots_requested": 12,
+  "by_part": {
+   "上装": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   },
+   "填装器": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   },
+   "尾部装置": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   }
+  },
+  "gap_kind": [
+   "no_roster",
+   "no_image"
+  ],
+  "notes": "类目档案缺失（profile_status=missing）；无 roster，inventory.py total_assets=0。12 槽全为方向级 provisional；“上装”按压缩箱体+压缩机构计，不含填装器/尾部装置，避免三部件重复。证据缺口 no_roster/no_image，槽位无缺口。"
+ },
+ "decisions": [
+  {
+   "at": "profile_check",
+   "action": "fallback_general_layer",
+   "reasons": [
+    "category_profiles.json 无“压缩式垃圾车”条目 → profile_status=missing",
+    "不编造代表机型；12 槽走方向级 provisional，并在 backlog 提议建档"
+   ]
+  },
+  {
+   "at": "axis_judgement",
+   "action": "assign_axes",
+   "reasons": [
+    "上装：压缩箱体+压缩机构是类目定义件 → exact（口径不含填装器/尾部，避免重复计数）",
+    "填装器：斗形/刮板随上料方式与物料变化 → environment",
+    "尾部装置：后门/锁紧/卸料机构由后装或对接工况决定 → environment"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "action": "accept_script_allocation",
+   "reasons": [
+    "slots.py 分配 12 槽、2 备选、同族≤2 通过；无阻断候选被推上槽"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "action": "hold_for_roster",
+   "reasons": [
+    "12 个方向级目标无名录：models=[]、verify_by=roster_generation，可占槽",
+    "转正动作 = roster 生成→落机型→库内盘点；失败时退到 20 方以上/出口两个备选，再不够则报 no_roster 缺口"
+   ]
+  },
+  {
+   "at": "exclude",
+   "action": "block_kitchen_waste",
+   "reasons": [
+    "餐厨垃圾车无压缩填装器与尾部压缩装置，结构上不能提供这两个部件证据；事实待人工确认"
+   ]
+  },
+  {
+   "at": "part_pages",
+   "action": "propose_two_pages_pending_images",
+   "reasons": [
+    "填装器与尾部装置各可支撑一页跨车型对比，但需 ≥5 台可裁；库空 → ready=false"
+   ]
+  },
+  {
+   "at": "coverage",
+   "action": "report_evidence_gap",
+   "reasons": [
+    "槽位满 12，但无名录、无库内素材：no_roster/no_image 是证据缺口，不是车辆数缺口"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "上装口径：是否指压缩箱体+压缩机构（不含填装器/尾部装置，避免与另两个部件重复计数）？",
+   "why": "“上装”是统称，口径不清会导致裁图重复或漏项。",
+   "blocking": false
+  },
+  {
+   "question": "上料方式：以后装为主，侧装/前装作构型对照？",
+   "why": "填装器与尾部装置随上料方式改变，决定裁图与专项页。",
+   "blocking": false
+  },
+  {
+   "question": "吨位分段 3–5t / 6–8t / 10–12t / 14–18t 是否符合本期覆盖？",
+   "why": "12 槽按吨位×上料方式分；段数变化会改槽位。",
+   "blocking": false
+  },
+  {
+   "question": "排除“餐厨垃圾车（罐式）”是否认可？",
+   "why": "餐厨车无压缩填装器与尾部压缩装置，属相邻类目；若误排请指出。",
+   "blocking": false
+  },
+  {
+   "question": "部件专项页：填装器/尾部装置各 1 页？",
+   "why": "需 ≥5 台可裁；库空未验证。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "压缩式垃圾车类目建档（后装/侧装/前装边界与词表）",
+   "why": "profile_status=missing，上装/填装器/尾部装置的轴与检索词缺数据依据"
+  },
+  {
+   "target": "餐厨垃圾车 相邻类目下一轮评估",
+   "why": "已作排除项；若报告需覆盖湿垃圾收运，应另立类目而非并入压缩式"
+  }
+ ]
+}

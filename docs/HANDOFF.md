@@ -2,29 +2,41 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | 2026-10-30 |
-| 当前阶段 | **文本检索线（R2 后半）策略验证轮完成，L3 评测基准已建**。图像检索三轮类目测试已验收（T13–T15），判向已收口（v0.2.5）。文本线进展：T16 语料采集（原始）→ T17 重爬+设计分析筛选（10 篇/42,743 字，**可用设计分析仅 6.3%**，核心正例=09 的"京剧脸谱式设计→J6→J7 家族化延续"）→ T18-pre（LLM 查询规划：文章命中率 40%→100%）→ T18-broad（多车型放宽暴露来源污染/歧义/误拦）→ T18-blind（编排器首跑 + 留出类目盲测，runlog/strategy/passage/textrun 全落地）→ T18-budget（修复三个隐藏预算帽）→ T18-budget-curve（离线 q3≈6 篇 A 2,068 字，边际由高产出源决定）→ **T18-eval（L3 评测集 v1：7 篇标注，关键词假阳性率 43%）**。**部件类型学属下游分析整合模块，不在当前检索阶段**。运行台账 `data-test/runs/INDEX.md`。**🔴 待产品负责人审核：①L3 评测集 v1（`data-test/evals/l3-relevance-v1.json`）— 7 篇逐篇标注 + 判定理由，可抽查可复核 ②确定性闸门实现方案（四级判定 A_cat/A_comp/A_gen/C + 类目闸 + 主题类型排除 + 具体性要求）③文本 LLM provider/key/预算**；**10-30 新增：T18-roster 全名录 39 车型筛选测试完成（V 3.2%/P 12.9%/G 9.2%/C 74.8%）——指向具体车型的好文本极稀缺，产品负责人定调 VLM 看图为主、文本换岗为语汇/定调/事实辅助（意见 #21）** |
+| 更新日期 | **2026-10-31** |
+| 当前阶段 | **检索模块（文本线 + 图片线）可跑，进入"整体测试"前夜；L1.5 关联清单模块已从"skill 判断"降级为"schema + 证据 + 校验"（10-31 决定）；VLM 后置。** 今日完成：`l3gate` 接线（双轨指标+离线回放）、关联清单 schema/证据层、skill 四轮 A/B 后降级、`imagesearch` 通道修复（360 可用 + 相关性/构型护栏）、`gate.check_exterior` 整车主图判定、23 车型实图核对（**合格待测**）。 |
 | 用途 | 新会话/新成员从此接续，不必重读全部讨论历史 |
 
-## 0.0 当前状态快照（2026-10-30，新会话先读这里）
+## 0.0 当前状态快照（2026-10-31，新会话先读这里）
 
-**阶段**：检索模块（文本线）技术侧已完成，进入"整体测试"前夜；**VLM 分析线后置**（等整体测试后再议）。
+**阶段**：文本检索 + 图片检索都可跑；关联清单（L1.5）已定为"模型自由判断 + 证据强制 + 校验兜底"，**skill 不再承载判断**（细节见 `docs/association-skill-archive.md`）。下一步是整体测试（闸门→runner→audit→报告），VLM 仍后置。
 
-**已完成工具链（全部有测试与台账）**：
+**今日（10-31）完成**：
 
-| 层 | 组件 | 状态 |
+| 件 | 状态 | 关键数字 / 文件 |
 |---|---|---|
-| L1 计划 | `textrun.build_plan`：query_meta 分层（vehicle/component/macro）、预算按类型轮转截断、明确车型不再歧义阻塞 | ✅ 10-30 |
-| L2 执行 | `corpus.collect_corpus`：按查询给 relevant_terms；`site:` 定向为实验开关、默认关闭 | ✅ |
-| L3 质检 | `passage`（配置行/主题/ABC）+ **`l3gate`**（对象锚定+主题排除+具体性）；假阳性 40.4%→**6.9%**、召回 85.7% | ✅ 10-30 |
-| L4 控制 | **`runner`**：有限重试/退避、降级链 auto→延迟百度→Bing、契约验收、断点续跑；`strategy` | ✅ 10-30 |
-| L6 评估 | **`audit`**（误杀分层抽样+Wilson 上界）、**`domainbench`**（域名基准/发现）、`evals/`、`runs/INDEX.md` | ✅ 10-30 |
+| L3 闸门接入 `text-run` grade | ✅ | 双轨指标；离线回放 6,806 段，过闸 3.6%，A 字 4,028→1,810（保留 44.9%） |
+| 关联清单 schema + 证据层 | ✅ | `skills/association/`（schema + `check_list` + `evidence_check`）；recommended 必须 E3，12 台硬要求 |
+| skill 四轮 A/B | ✅ | v1 B 5/96 → v2 82/96（但 89% 是方向）→ 相关性打平（100% vs 100%，直证 19/18，层覆盖 9/6）→ 证据 11/12 vs 11/12 |
+| **skill 降级** | ✅ | `SKILL.md` v1.0-downgraded：六条纪律转为可选 checklist；保留 schema/证据/校验/评测集 |
+| 图片通道修复 | ✅ | 百度 `antiFlag`/验证页、Bing 污染；新增 **360 图片**通道；`_relevant` 护栏（非车词/型号代码/构型/品牌）；查询阶梯 |
+| 门卫接入 + 外观判定 | ✅ | `gate.check_exterior()`（门卫 + 视角∈hero_45/side/front/rear）；105 判定→70 张（detail 19 / interior 3 / 门卫 13） |
+| 实图核对 | ✅ **合格待测** | 23 车型、70 张图、22 个有图；产品负责人目测"没什么问题"，**未逐条打分**（`data-test/ab-images/review.html`） |
+| 运行元数据 | ✅ | schema `run_meta`（model_id / prompt_version / evidence_index_version / run_at） |
 
-**关键实测**：T18-roster 39 车型（V 3.2%/P 12.9%/G 9.2%/C 74.8%）；domain-bench 发现 www.yoojia.com 入库 high（复测 71.8/千字）；run-chain2/2b 实盘链路通（含自动抽检包）。
+其余层状态（10-30 已就绪，见 §0.1 与 §1）：L1 `build_plan`（query_meta 分层/预算轮转）、L2 `corpus`（按查询给词、site 开关默认关）、L4 `runner`（重试/降级链/断点）、L6 `audit` + `domainbench`。
 
-**下一步**：①把 `l3gate` 接入 `text-run` 的 grade 阶段；②整体测试（闸门→runner→audit→报告全链路）；③按结果再议 VLM 启动。
+**关键结论**：判断质量打平，**证据基础设施（E3 索引）与图片通道/门卫才是质量来源**；skill 的价值只剩 schema + 校验 + 可追溯。
 
-**待产品负责人决策（3 项，见 §3.1）**：文本爬取启动时机、关联分析层级策略、关联 skill 形态。
+**下一步（按序）**：
+
+1. **整体测试（T19）**：闸门→runner→audit→报告全链路，带"闸门阈值扫掠"（放行率 × 精确率），主指标用"过闸 A 字/千字 + 页槽填充"；
+2. **补证据索引**：扩到 39 车型（每型号 1 次 SERP），并跑"无证据"案例（压缩式垃圾车）验证"缺证据会不会编"；
+3. **实图命中率**：当前记"合格待测"，需要逐条判定时填 `data-test/ab-images/verdicts.csv` 重跑 `scripts/image_ab_score.py`；
+4. **VLM 启动**仍等整体测试结果（D7）。
+
+**待产品负责人拍板**：P1–P3（文本爬取时机 / 关联分析层级 / skill 形态，见 §3.1）；主图是否强制 2 视角、分辨率下限 R、备选是否跑文本（设计稿 §9）。
+
+**当日档案索引**：`docs/association-skill-archive.md`（skill 全过程）、`docs/association-evidence-ab-plan.md`（证据层与 A/B v3 规划）、`data-test/evals/ab-20261031/`（A/B 数据与评分：`EVIDENCE-AB.md`、`RELEVANCE.md`、`IMAGE-AB.md`、`scores*.json`）、`data-test/ab-images/review.html`（实图核对页）。
 
 ## 0. 部署形态（2026-10-17 讨论）
 
@@ -44,7 +56,7 @@
 | L5 结构化沉淀 | Facts/Descriptions 抽取 | 是 | 未实现，随 M4/下游 |
 | L6 评估 | 策略 A/B、指标与回归 | 部分 | 运行台账 + 评测集 v1 + audit + domain-bench 已建 |
 
-**当前研究层：L3**（段落级类目相关性/主题类型判定）。`intent.json` 与 `plan.json` 分开建 schema；L1 决定"问什么、去哪类源、问多少、排除什么"，L2 按计划确定性执行，L4 决定"是否再查/停止"。L2 已稳，暂不重做；每轮测试须写明：研究层、对照变量、验收指标。
+**当前研究层：L3 已收口（闸门接线、双轨指标、离线回放），进入 L1–L6 整体测试**。`intent.json` 与 `plan.json` 分开建 schema；L1 决定"问什么、去哪类源、问多少、排除什么"，L2 按计划确定性执行，L4 决定"是否再查/停止"。L2 已稳，暂不重做；每轮测试须写明：研究层、对照变量、验收指标。
 
 **自由度原则（2026-10-23）**：写死不变量（robots/配额/账本/检查点/schema），内容知识放数据（来源注册表/类目档案/词表），判断放模型（意图/查询/选源/段落/停止）。长尾类目不枚举：通用层 + 类目档案叠加，新类目走"侦察 → LLM 提议 → 人工确认 → 缓存"；缺档案时用通用层兜底并标记 `profile_missing`。**禁止再往代码里加类目/站点特判**（现有 `BRANDS`/`VEHICLE_WORDS`/`SYNONYMS`/`BLOCK_URL_RE` 列为技术债，逐步迁到数据）。
 
@@ -92,6 +104,7 @@
 | **误杀抽样检测（audit）** | `src/equiplens/audit.py`、`tests/test_audit.py`、`data-test/evals/audit/` | 2026-10-30 完成：C 档按"域×长度"分层抽样 + 强语汇/型号护栏队列 + 加权漏杀率估计（含 Wilson 95% 上界）；T18-roster 四批实测 C 档 6,076 段，抽样 23 条全判 C（估计漏杀 0%，95% 上界 14.3%），护栏 166 条抽查 12 条 0 命中；text-run 收尾自动生成 audit-sheet.json/md（run-chain2b 验证） |
 | **确定性闸门 v1（L3）** | `src/equiplens/l3gate.py`、`tests/test_l3gate.py`、`data-test/evals/l3-gate-v1.{md,json}`、CLI `gate-batch` | 2026-10-30 完成：对象锚定 + 主题类型排除 + 具体性要求（部件/形态证据）；T18-roster 265 段金标评估：**精确率 93.1% / 召回 85.7% / 假阳性 6.9%**（关键词基线 40.4%）；实盘批次通过 5/750 |
 | **域名基准与发现通道（domain-bench）** | `src/equiplens/domainbench.py`、`tests/test_domainbench.py`、`data-test/evals/domain-bench-20261030*/` | 2026-10-30 完成：同查询跨站点对照（A/千字、抓取成功率、robots），产出排行榜+升降级建议；首跑 18 域名/24 页发现 **www.yoojia.com（89.5 A/千字）并入库 high**；复测 26 域名/42 页（yoojia 定向 71.8/千字）确认；提案门槛改为新增需 ≥2 页/≥5K 正文、降级需 ≥3 页/≥15K |
+| **闸门接入 text-run grade（10-31）** | `passage.gate_passages`/`grade_batch(gate_l3=)`、`textrun` 双轨指标、`strategy` 按过闸后判低信度、`scripts/replay_gate.py`、`data-test/evals/gate-replay-20261031.md` | 2026-10-31 完成：**基线 A 与过闸 A 同批并列**（`a_chars` / `gated_a_chars`、保留率、段通过率、拒绝理由分布），控制层改用 `gated_*`，无闸门指标的离线调用保持原口径；离线回放 4 批 6,806 段 → 过闸 248 段（3.6%），A 4,028→1,810 字（保留 44.9%）；吊车两类保留仅 20%（关键词 A 多为营销/参数）、沙漠牵引车 66%；textrun 13/13 |
 
 ## 2. 关键结论（30 秒版）
 
@@ -121,7 +134,9 @@
    - ~~T18-eval L3 评测集 v1~~ ✅（假阳性 43%）；10-30 产品负责人逐篇裁决（意见 #20）：指向性标准=对象锚定
    - ~~T18-roster 全名录大规模文本筛选~~ ✅（10-30：39 车型/265 段判定，V 3.2%/P 12.9%/G 9.2%；A 档假阳性 40.4% 复现）
    - ~~确定性闸门~~ ✅（10-30：`l3gate.py` 对象锚定+主题排除+具体性；假阳性 6.9%、召回 85.7%；CLI `gate-batch`）
-   - **下一步（10-30）**：①`l3gate` 接入 `text-run` 的 grade 阶段 ②整体测试（闸门→runner→audit→报告）③按结果再议 VLM
+   - ~~`l3gate` 接入 `text-run` 的 grade 阶段~~ ✅（10-31：双轨指标 + 离线回放 6,806 段/过闸 3.6%/A 字保留 44.9%；`scripts/replay_gate.py`）
+   - ~~关联分析与清单推荐模块设计~~ ✅（10-31：设计稿 v0.2 → skill v0.1 → 四轮 A/B → **降级为 schema+证据+校验**，全过程见 `docs/association-skill-archive.md`）
+   - **下一步（10-31）**：①整体测试（闸门→runner→audit→报告全链路，带阈值扫掠，主指标=过闸 A 字/千字 + 页槽填充）②补证据索引到 39 车型 + 跑"无证据"案例 ③实图命中率（合格待测）④按结果再议 VLM
    - 信源定向：选 B（放弃 query 级 site 定向，保留域名信任加权）
    - 关联分析（10-30 新需求，见 §3.1 P2/P3）：缺口评估 → 关联提案（带依据/置信度/注意事项）→ 用户确认 → 检索
    - → T18 部件专项（12 部件 × 3 车型）→ T19 主题趋势 → T20 跨类目——仍只验证检索策略，不建类型学
@@ -152,6 +167,48 @@
 5. **交互层**（文本线核心能力之后）：选车确认包 + 意见 #15/#16 改进项一体建造；
 6. **判向定位**（已收口）：嵌入式元数据；
 7. 搁置事项：D10/D11 维持暂按推荐；data-export/import；M5 配额数值。
+
+### 3.2 待设计：关联分析与检索清单推荐（2026-10-31 产品负责人提出）
+
+**问题**：用户给定"车型类别 + 部件要求"后，先要产出一份**要检索的清单**（命中哪些车型/哪些相邻车型/哪些部件线索）。难点在于不是每个车型都有充足样本。
+
+**已给的判断（原话要点）**：
+- 沙漠牵引车本质是较常规的卡车头，其**踏步、防护栏、底盘**才是因沙漠环境而设计的部件；
+- 所以沙漠牵引车样本不足时，**沙漠环境用车、牵引车、卡车头都应进入考虑**（可能都要：沙漠用车给特种设计参照，卡车头给基型参照，牵引车检索结果未必合适）；
+- **部件级需求可以不限车型**（例："踏步的构型"可跨车型取），但这依赖分析，**规则系统覆盖不了各种情况**（尤其特殊情况）。
+
+**暂定结论**：这是一个**独立的小模块**（关联分析 → 推荐清单），进检索之前跑，与 T18 的 `textrun`（检索执行）解耦。设计要点待讨论：关联维度（环境/用途/构型/部件/平台）、清单排序与配额、LLM 提议 + 人工确认的形态、清单 schema 与落账。与 P2（关联分析层级：L1–L3 默认纳入、L4 逐条确认）同一个问题域，讨论定稿后回写本节与 §3.1。
+
+**2026-10-31 产品负责人补充的硬约束（页数预算 + 版式，决定模块形态）**：
+- 报告约 **20 页**；**一车一页**（1~2 张主图 + 3~4 个部件裁图 + 分析文本框，排布紧凑），整车页 **10~14 个**；
+- 部件补充是**一种部件集中放一页**（图上+文本框为一个单元，可排 5~6 个），整车分析做完后才需要，**是否单独成页需用户确认**；
+- **"证据"= 图片，不是文本**：部件图全部从主图裁出，不需要多视角；文本可由分析模块生成（网上专业分析少、宣传多），**文本不是门槛**、只作定调/语汇加分；
+- 由此两档判据：整车页＝≥1 张合格主图＋1 张备用、请求部件 ≥3 个可裁；专项页＝该部件在 ≥5 台车主图上可裁；
+- 清单要**超量推荐**（推荐 N + 备选 2~3），爬完展示超出、自动定稿正确数量、超出作备选（转正才占页槽）；
+- 仍有效的两条默认：**放宽上限=基型平台（跨车型部件需用户勾选）**；覆盖度判据已从"文本段数"改为图片口径（见设计稿 §3.3）。
+
+**设计稿**：`docs/roster-expansion-design.md`（**v0.2**，2026-10-31）——部位在 intent 与 `build_plan` 之间（L1.5），含页槽模型、四轴阶梯、惰性放闸（触发=主图/可裁不足，不再是文本）、页槽排序与备选转正、最小代码改动清单；待确认参数 = 主图是否强制 2 视角 / 分辨率下限 R / 备选是否跑文本 / extra 基数 / 专项页 K。
+
+**skill 已落地（2026-10-31）**：`skills/association/`（SKILL.md + schema + 3 脚本 + references + evals），校验脚本 `check_list.py`/`slots.py`/`inventory.py`，回归 `tests/test_association.py` 10/10；样例清单 `data-test/evals/sample-association-list-desert.json`（9 推荐 + 3 备选 + 2 排除，缺口如实报）。**预注册 A/B 判据**：`skills/association/evals/cases-20261031.json`（3 个输入 + rubric），用于"无 skill vs 有 skill"对照。
+
+**A/B 首轮结果（2026-10-31，8 例）**：`data-test/evals/ab-20261031/REPORT.md`。判断质量两臂打平（6.00 vs 5.88，未达预注册的 +0.5）；合规性 B 好（硬错误 0 vs 1，schema 8/8 过）；**可用性 B 差得多（页槽填充 5/96 = 5% vs A 89/96 = 93%）**。根因：`inference 未验证不得进推荐` 这条纪律对**没有档案/名录的冷启动类目**是死结——这类目全部候选都是 inference，于是推荐位恒为 0，而这正是模块的核心场景。
+
+**skill v0.2（2026-10-31 修订）**：新增 `status=provisional`（方向级可占槽，必填 `verify_by`；未验证的**具体型号名**仍不得占槽）；schema 补 `profile_status`/`gap_kind`/`blocking_scope`/`why_not_ready`/`confirmed_by`/`fact_status`；`check_list` 改为"方向可占槽、型号不可"，阻断支持部分范围；判据升级为 `RUBRIC-v2.md`（`fill_rate ≥0.85` + 硬错误 =0 + schema 8/8 为主指标，六维降为质量门槛）。
+
+**v0.2 复跑（B2，同日，8 例）**：`data-test/evals/ab-20261031/scores-v2.json`。**fill_rate 82/96 = 85.4%（v1 为 5.2%）**、硬错误 0、schema 8/8、六维 5.50（A 5.875）。结论：**过交付门槛，但是"名义填充"——82 槽里 73 槽是 provisional，真正确认到车型的只有 9 槽（9.4%）**。下一步不是继续改 skill 文本，而是**补名录**（`roster_generation` 把 provisional 转 recommended）；v0.3 判据拟加 `verified_rate`（单例 ≥0.25、均值 ≥0.3）与 provisional 占比上限 0.6。
+
+**相关性评测（2026-10-31，3 案例 65 条）**：`data-test/evals/ab-20261031/RELEVANCE.md`（+ `.html` 并排色块版）、池子 `relevance-pool.json`、脚本 `scripts/relevance_ab.py`。指标：车型精确率 **A 100% vs B 100%**；直证（label=2）**A 19 / B 18**；陷阱项被提出 **0 / 0**；层覆盖 **A 9/9 vs B 6/9**。结论：**skill 提升的是合规与可审计，不是"选得更准"**；B 因 `allow_cross_vehicle=false` 把平台/跨车型层压进 backlog，覆盖反而更差。评测池待产品负责人抽查（天锦是否 6×6、北奔 8×8、"厨余"是否算压缩式、80t 吨位门槛）后冻结为 v1。
+
+**证据层与 A/B v3（2026-10-31）**：`docs/association-evidence-ab-plan.md`、`data-test/evals/ab-20261031/EVIDENCE-AB.md`。清单步骤原来**不检索**，车型无出处；v0.3 起每条占槽目标必须带 `evidence`（E3=标题含型号的详情页；provisional 至少 E1+verify_by），**12 台硬要求、弱关联尾巴标 weak**。沙案例实测：A 与 B 均 12 台、**证据有效 11/12（92%）**、强/弱 7/5、陷阱 0/0——**证据索引把两臂都拉高，skill 分差被抹平**；差异只剩标注方式（B 把北奔降 provisional、纯方向进 next_action）。结论：**证据基础设施 > skill 纪律**；skill 增量是 schema+校验+标注，不是选车。下一步：扩索引到 39 车型、跑"无证据"案例（垃圾车）验证 A 会不会编。
+
+**图片检索通道修复（2026-10-31，实图核对时暴露）**：`imagesearch.py` 原来**静默返回无关图**——百度 acjson 返回 `antiFlag:Forbid spider access`、HTML 跳安全验证；Bing async/html 返回壁纸/梅西类无关内容；二者都被当成"成功"。修法（模块内，非脚本绕行）：①新增 **360 图片**通道（本环境唯一返回相关结果）；②`_relevant()` 相关性护栏 v2：非车词（战争/壁纸/漫画/车模/模型…）直接拒、型号代码（NG80/CA2191/X3000…）优先、**构型词必须一致**（6x6 不能是 6x2）、品牌必须出现；③通道状态 `ok/empty/blocked:X` 如实回传；④查询阶梯（型号+工程车 → 型号）。⑤`gate.py` 门卫（CLIP）此前**未接入抓图脚本**，且 `uform` 未安装→已安装并接入；⑥新增 `gate.check_exterior()`：整车主图 = 门卫放行 + 视角 ∈ {hero_45, side, front, rear}（部件特写/内饰不得当主图，但部件页仍可用 `check()` 保留特写）。实测 105 判定 → 70 张保留（detail 19 / interior 3 / 门卫拦 13）；北奔 NG80 改为真实 6x6 军卡图，解放"战争"污染消失。局限：门卫只判"单台工程车"，**不能判"是不是这一型号"**——型号身份仍靠标题+构型+人工复核。
+
+**全过程档案（skill 从任务书到被毙）**：`docs/association-skill-archive.md`——时间线、四轮 A/B 与实图核对的目的/设计/数据、产品负责人评审意见、三次同类错误复盘、降级清单与执行记录。已按此执行降级（SKILL v1.0-downgraded）。
+
+**2026-10-31 决策（实图核对后）**：
+1. **视角交给交互**：不再用 CLIP 视角分数做排序/取舍（我原提的"hero_45 优先排序"撤销）；模块只记录 `view`/`score` 并在审核页展示，由人选主图。理由是 T12 已证 CLIP 判向边界不稳，不宜当决策依据。
+2. **skill 降级**：预注册的 fallback 触发（图上 A 略好、B 仅多标签）→ 六条纪律从"硬规则"降为 `references/` 里的 checklist；保留 **schema + evidence 必填 + check_list 校验 + 评测集**。判断交还模型，**来源可追溯不变**（E3 门槛、URL/标题逐字校验、run 记录模型 id/时间/证据索引版本）。
+3. **模型策略**：当前关联规划由大模型承担（强逻辑 + 长尾知识），**暂不做小模型替换**；但契约做成模型无关（schema/证据/校验/评测集），待有空再用同一评测集做小模型 A/B。成本判断：单案例规划 token 量很小，省钱空间在检索/抓图，不在规划模型。
 
 **主线决策（2026-10-14）**：产品负责人选择**提前启动检索模块**——R0–R6 为主线，M4 VLM 打标延后。
 
@@ -203,7 +260,7 @@
 1. **先读**：§0.0 状态快照 → `docs/module-map.md` → `docs/agent-loop-mechanisms.md` → `docs/domain-bench-runbook.md`。
 2. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；
    测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench}.py`。
-3. **跑测试**（跳过 `test_probe`，需模型权重）：
+3. **跑测试**（全部可离线；`test_probe` 实测 13/13，权重已就绪）：
    `for f in tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
 4. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
    `PYTHONPATH=src python -m equiplens text-run scripts/intent-chain2.json --data-dir data-test --run-root data-test/runs --run-id <new-id>`

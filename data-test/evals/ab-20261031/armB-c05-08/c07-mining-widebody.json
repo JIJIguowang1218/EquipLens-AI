@@ -1,0 +1,516 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/c07-mining-widebody-dump",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "货厢",
+  "举升油缸",
+  "驾驶室防护"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：extra=max(2,ceil(0.25×12))=3；备选不占槽，转正才占"
+ },
+ "targets": [
+  {
+   "id": "t01",
+   "kind": "category",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.5,
+   "reason": "非公路宽体 6x4、70t 级是本类目默认口径（“宽体”即非公路矿用自卸构型）。能提供：hero_45/side 裁货厢侧板与尾板、前顶举升油缸布置、驾驶室 ROPS/FOPS 与落石防护；三个请求部件可同页覆盖。",
+   "category": "矿用宽体自卸车（非公路 6x4，70t 级）",
+   "models": [],
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "environment",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "举升油缸",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "驾驶室防护",
+     "axis": "environment",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t02",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "宽体矿卡主力厂商的 70t 级平台。能提供：side 货厢与举升油缸、hero_45 驾驶室防护裁图；型号为记忆推断、未查名录，按纪律 6 只作备选。",
+   "category": "矿用宽体自卸车",
+   "models": [
+    "同力重工 TL875"
+   ],
+   "family": "同力重工",
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "举升油缸",
+     "axis": "exact",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "驾驶室防护",
+     "axis": "exact",
+     "views": [
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t03",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "第二家宽体矿卡主力平台（80t 级区间）。能提供：货厢尾板/侧板、举升油缸与驾驶室防护的侧视与 45° 裁图；型号为记忆推断，需名录核实。",
+   "category": "矿用宽体自卸车",
+   "models": [
+    "临工重机 MT86"
+   ],
+   "family": "临工重机",
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "驾驶室防护",
+     "axis": "exact",
+     "views": [
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "第三家品牌覆盖（档案未列）。能提供：货厢与举升油缸的侧视裁图、驾驶室防护构型；型号为记忆推断，需名录核实后才可进槽。",
+   "category": "矿用宽体自卸车",
+   "models": [
+    "徐工 XDM80"
+   ],
+   "family": "徐工",
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "exact",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "举升油缸",
+     "axis": "exact",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "驾驶室防护",
+     "axis": "exact",
+     "views": [
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t05",
+   "kind": "category",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "井下工况把驾驶室做成低矮封闭 ROPS/FOPS、货厢加耐磨衬板并压低整车高度——这一层直接回答“驾驶室防护为什么这么设计”；查询口径=井下矿卡/低矮矿用卡车。",
+   "category": "井下矿用卡车（低矮型）",
+   "models": [],
+   "parts": [
+    {
+     "part": "驾驶室防护",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "货厢",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t06",
+   "kind": "category",
+   "tier": 3,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "铰接转向与摆动车架是为软基、湿地、井巷工况设计，货厢与举升油缸布置随之改变；作环境层对照，不作为同级构型（吨位与传动形式不同）。",
+   "category": "铰接式自卸车（ADT，软基/湿地）",
+   "models": [],
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "environment",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "举升油缸",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t07",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "confidence": 0.35,
+   "reason": "名录可查（candidates 命中），但构型是 6x4 31t 级公路自卸：吨位与工况与宽体矿卡不符，只作货厢/举升油缸的平台对照，不占槽；它提供的是公路自卸的货厢比例与举升机构，用来反证宽体矿卡为什么要加强货厢与前顶举升。",
+   "verified": true,
+   "source_ref": "data-test/roster-翻斗铲车-20261018-171251.json#candidates",
+   "category": "自卸车（公路 6x4）",
+   "models": [
+    "福田金刚"
+   ],
+   "family": "福田",
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "platform",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "举升油缸",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t08",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "矿用洒水车/抑尘车",
+   "models": [],
+   "reason": "结构事实：矿用洒水车/抑尘车与宽体矿卡常共用底盘，但上装是水罐，没有货厢、没有货厢举升油缸；“矿用”一词会把它们带进结果，必须在查询层排除。"
+  },
+  {
+   "id": "t09",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "挖掘机/装载机",
+   "models": [],
+   "reason": "结构事实：挖掘机、装载机没有货厢，也没有货厢举升油缸；与“矿用”查询词重叠但属不同机种，进清单只会得到裁不出请求部件的空页。"
+  },
+  {
+   "id": "t10",
+   "kind": "part_query",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "货厢专项页候选：需 ≥5 台车可裁侧板/尾板/耐磨衬板；当前库空且无名录，不占 part 槽。查询口径=宽体矿卡 货厢 耐磨 尾板。",
+   "parts": [
+    {
+     "part": "货厢",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t11",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "驾驶室防护专项页候选：需 ≥5 台车可裁 ROPS/FOPS、落石护网、防护梁；当前 0 台可核，不占 part 槽。",
+   "parts": [
+    {
+     "part": "驾驶室防护",
+     "axis": "environment",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "货厢",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05",
+    "t07"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  },
+  {
+   "part": "驾驶室防护",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {
+   "货厢": {
+    "croppable_vehicles": 0,
+    "note": "4 台推断车型 + 1 台名录公路自卸（构型不符），库空"
+   },
+   "举升油缸": {
+    "croppable_vehicles": 0,
+    "note": "需 side 视角，当前无图可核"
+   },
+   "驾驶室防护": {
+    "croppable_vehicles": 0,
+    "note": "环境层目标 t05/t06 均未验证"
+   }
+  },
+  "notes": "0 推荐 / 12 槽空。原因：①类目未建档（自卸车档案 0.75 只覆盖公路自卸，其代表车型虎6G/豪沃V7-X 不能代表宽体矿卡）；②workspace 名录里唯一相邻的是“翻斗铲车”12 台公路自卸，构型/吨位不符（t07 只作平台对照）；③图库 0 素材，全部 to_verify。补名录后 t01–t04 可占 vehicle:1..4，t05–t06 补环境层。"
+ },
+ "decisions": [
+  {
+   "at": "profile_missing",
+   "tier": 1,
+   "action": "adjacent_profile_as_reference_only",
+   "reasons": [
+    "无“矿用宽体自卸车”档案；自卸车档案（0.75）的 component_vocab 只含货厢，代表车型为公路自卸，仅作平台参照，不得当本类目档案使用"
+   ]
+  },
+  {
+   "at": "axis_decision",
+   "tier": 2,
+   "action": "environment_first_for_cab_protection",
+   "reasons": [
+    "驾驶室防护因落石/翻车/低矮井巷工况而设计（ROPS/FOPS、护网、防护梁）→ environment 优先；货厢也带耐磨/防砸的环境属性；举升油缸是功能件，走 exact、布置差异记构型"
+   ]
+  },
+  {
+   "at": "roster_check",
+   "action": "demote_roster_hits",
+   "reasons": [
+    "翻斗铲车 12 台（福田金刚/金刚3/金刚C/FMX/J6L/德龙K3000/X5000E）全为 6x4 公路自卸，吨位与工况不符 → t07 只作 platform 备选，不占槽"
+   ]
+  },
+  {
+   "at": "slot_allocation",
+   "tier": 1,
+   "action": "override_allocator_demote_roster_hit",
+   "reasons": [
+    "slots.py（thin=true）实际返回 recommended=[t07]、shortfall=11：福田金刚是唯一 roster+verified 的 eligible，分配器不做构型判断",
+    "6x4 31t 公路自卸与“非公路 70t 级宽体”构型/吨位不符（C1 先例：6x4 公路车不得占推荐位）→ 按纪律 5 降为备选，槽位空置并如实报缺口"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "hold_part_pages",
+   "reasons": [
+    "货厢/驾驶室防护专项页各需 ≥5 台可裁车型，当前可核 0 台 → ready=false"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "吨位级与构型：默认非公路 6x4 70t 级宽体，是否还要 90t 级或铰接式（ADT）？",
+   "why": "吨位决定货厢尺寸与举升缸规格，混级会拉低构型正确率；ADT 属不同构型，只能作环境层",
+   "blocking": false
+  },
+  {
+   "question": "公路自卸（t07，名录可查）是否保留作平台对照？",
+   "why": "它是 workspace 里唯一有名录依据的相邻车型，但构型不符；保留则只作备选、不占槽",
+   "blocking": false
+  },
+  {
+   "question": "“矿用洒水车/抑尘车无货厢与货厢举升油缸”可否作为排除事实？",
+   "why": "新增结构事实需人审（structural-facts 现全部 pending），当前只用于 exclude",
+   "blocking": false
+  },
+  {
+   "question": "货厢/驾驶室防护两个部件专项页是否保留？",
+   "why": "专项页需 ≥5 台可裁车型，当前 0 台；保留会占满 part_page_slots",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "新建“矿用宽体自卸车”类目档案（aliases：宽体矿卡/非公路自卸/矿用自卸；component_vocab：货厢/举升油缸/驾驶室防护/ROPS/前悬挂）",
+   "why": "现无档案，货厢以外的部件词与来源提示全靠推断；自卸车档案不能替代"
+  },
+  {
+   "target": "同力/临工/徐工/三一/北方股份 宽体矿卡名录生成",
+   "why": "4 台推断车型需名录转正，否则永远进不了推荐位"
+  }
+ ]
+}

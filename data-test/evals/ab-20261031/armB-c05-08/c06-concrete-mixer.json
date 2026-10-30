@@ -1,0 +1,454 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/c06-concrete-mixer",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "罐体",
+  "进料斗",
+  "卸料槽"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：extra=max(2,ceil(0.25×12))=3；备选不占槽，转正才占"
+ },
+ "targets": [
+  {
+   "id": "t01",
+   "kind": "category",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.55,
+   "reason": "本类目未建档（profile_missing），走通用层。罐体+进料斗+卸料槽是搅拌运输车的定义性部件（无罐体即非搅拌车）。能提供：hero_45/side 裁罐体锥度与螺旋线走向、rear 裁进料斗斗口与卸料槽回转/锁紧机构。查询口径=混凝土搅拌运输车 6x4 12方。",
+   "category": "混凝土搅拌运输车（6x4，12m³ 级）",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "exact",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "exact",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t02",
+   "kind": "category",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "8x4 大方量构型：罐体更长、卸料槽加长/双级，用于说明方量与尾部机构的关系；与 6x4 同属搅拌运输车，作构型对照。",
+   "category": "混凝土搅拌运输车（8x4，16m³ 大方量）",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "platform",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t03",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "上装厂产品线（ZLJ）的罐体涂装、螺旋线走向与斗口造型成家族特征；提供品牌家族层的罐体/进出料机构证据。型号为系列级推断，需名录落具体型号。",
+   "category": "混凝土搅拌运输车",
+   "models": [
+    "中联重科 ZLJ 搅拌运输车"
+   ],
+   "family": "中联重科",
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "第二家上装厂家族：罐体与前脸涂装联动、尾部卸料槽锁紧结构可对比；提供家族化证据。型号系列级推断，需名录核实。",
+   "category": "混凝土搅拌运输车",
+   "models": [
+    "三一 SY 搅拌运输车"
+   ],
+   "family": "三一",
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "platform",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t05",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "以搅拌上装见长的第三家：罐体比例与副车架布置可作为平台对照；型号系列级推断，需名录核实。",
+   "category": "混凝土搅拌运输车",
+   "models": [
+    "华菱星马 搅拌运输车"
+   ],
+   "family": "华菱星马",
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t06",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "干混砂浆运输车",
+   "models": [],
+   "reason": "结构事实：干混砂浆运输车是粉料罐（气力/绞龙卸料），没有搅拌螺旋、没有进料斗与卸料槽；“罐体”外形接近但功能不同，不能提供请求部件证据。"
+  },
+  {
+   "id": "t07",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "自卸车/载货车",
+   "models": [],
+   "reason": "结构事实：自卸车与载货车没有罐体、没有进料斗、没有卸料槽；混进清单会直接拉低构型正确率。"
+  },
+  {
+   "id": "t08",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "搅拌站/搅拌楼",
+   "models": [],
+   "reason": "搅拌站是固定式设备，没有整车外观与主图，不能占整车页；检索词含“搅拌”时必被带出，须在查询层按“车/运输车”排除。"
+  },
+  {
+   "id": "t09",
+   "kind": "part_query",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "罐体专项页候选：需 ≥5 台车可裁罐体锥度/螺旋线/涂装分色；当前库空且无名录，不占 part 槽。查询口径=搅拌车 罐体 螺旋线 涂装。",
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t10",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "尾部进出料机构专项页候选（进料斗+卸料槽合排）：需 ≥5 台车 rear/side 可裁；当前 0 台可核，不占 part 槽。",
+   "parts": [
+    {
+     "part": "进料斗",
+     "axis": "exact",
+     "views": [
+      "rear"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "exact",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "罐体",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  },
+  {
+   "part": "进料斗/卸料槽",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {
+   "罐体": {
+    "croppable_vehicles": 0,
+    "note": "5 台候选全为未验证推断/类目桶，库空"
+   },
+   "进料斗": {
+    "croppable_vehicles": 0,
+    "note": "需 rear 视角，当前无图可核"
+   },
+   "卸料槽": {
+    "croppable_vehicles": 0,
+    "note": "需 rear/side，当前无图可核"
+   }
+  },
+  "notes": "0 推荐 / 12 槽空。不是口径歧义，而是数据缺口：类目未建档（profile_missing）+ workspace 无名录（roster-* 只有沙漠牵引车/吊车/翻斗铲车）+ 图库 0 素材。t01–t05 均为 inference，按纪律 6 不得占槽；建档并跑一轮名录后，t01–t05 可依次占 vehicle:1..5，环境层本类目不适用（见 decisions）。"
+ },
+ "decisions": [
+  {
+   "at": "profile_missing",
+   "tier": 1,
+   "action": "generic_layer_and_propose_profile",
+   "reasons": [
+    "data/category_profiles.json 无“混凝土搅拌车/搅拌运输车”→ 走通用层，并在 backlog 提议建档（别名/部件词/代表车型）"
+   ]
+  },
+  {
+   "at": "axis_decision",
+   "action": "no_environment_layer",
+   "reasons": [
+    "罐体/进料斗/卸料槽的形态由方量、上装厂与底盘轴数决定，不由环境工况驱动（不同于沙漠车踏步）→ 不设 environment 层，改走“上装厂+方量”平台轴（t02–t05）"
+   ]
+  },
+  {
+   "at": "roster_check",
+   "action": "no_roster_available",
+   "reasons": [
+    "workspace 名录不含搅拌车；inventory.py 对 t01–t05 全部返回 matched=[]、hero_candidates=0、to_verify → 无可验证目标，推荐位为 0"
+   ]
+  },
+  {
+   "at": "slot_allocation",
+   "tier": 1,
+   "action": "defer_slots",
+   "reasons": [
+    "slots.py 结果 recommended=[]、shortfall=12：所有候选 grounding=inference 且未验证，被 held 挡在推荐位外"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "hold_part_pages",
+   "reasons": [
+    "罐体、尾部进出料两个专项页各需 ≥5 台可裁车型，当前 0 台 → ready=false"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "口径：默认 6x4 12m³（城市商砼）是否够用，还是要同时覆盖 8x4 16m³ 大方量？",
+   "why": "方量决定罐体长度、卸料槽级数与副车架布置；混排会让页内对比失真",
+   "blocking": false
+  },
+  {
+   "question": "上装品牌优先级：中联/三一/华菱星马 先做哪两家？",
+   "why": "slots.py 同族上限 2 台，先定家族可少跑一轮名录",
+   "blocking": false
+  },
+  {
+   "question": "“干混砂浆运输车、自卸/载货车、搅拌站都不能提供罐体+进料斗+卸料槽证据”可否作为排除事实？",
+   "why": "新增结构事实需人审（structural-facts 现全部 pending），当前只用于 exclude、不作推荐依据",
+   "blocking": false
+  },
+  {
+   "question": "罐体与尾部进出料两个部件专项页是否保留？",
+   "why": "专项页需 ≥5 台可裁车型，当前 0；保留会占掉 part_page_slots 2",
+   "blocking": false
+  },
+  {
+   "question": "是否同意先按 t01–t05 跑名录生成，再回填 verified 与 slots？",
+   "why": "库空且清单未定稿前不联网检索；名录是这些候选转正的唯一验证途径",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "新建“混凝土搅拌车”类目档案（aliases：搅拌车/混凝土搅拌运输车/罐车；component_vocab：罐体/进料斗/卸料槽/搅拌螺旋/副车架/操纵台）",
+   "why": "profile_missing 导致部件词表与来源提示都要临场推断，无法复核"
+  },
+  {
+   "target": "中联/三一/华菱星马/福田雷萨 6x4 12方 名录生成",
+   "why": "上装厂家族样本是平台轴能不能成立的前提"
+  }
+ ]
+}

@@ -1,0 +1,891 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/armB2/c06-concrete-mixer",
+ "requested": 12,
+ "profile_status": "missing",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "罐体",
+  "进料斗",
+  "卸料槽"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 2,
+  "rule": "max(2, ceil(0.15×12)) = 2；无 roster 无法证明可用车 <12，未触薄类目 25%"
+ },
+ "targets": [
+  {
+   "id": "c06-8x4-12-16",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.53,
+   "category": "8x4 12–16 方混凝土搅拌运输车（商砼站/大型工地）",
+   "reason": "8x4 12–16 方商砼站主力构型：罐体（方量/螺旋叶片/进出料口）、进料斗高度与卸料槽回转半径都预计可裁，提供大方量上装与 8x4 底盘匹配的基线证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-8x4",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:1"
+   ]
+  },
+  {
+   "id": "c06-6x4-8-10",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.52,
+   "category": "6x4 8–10 方混凝土搅拌运输车（市政/中型工地）",
+   "reason": "6x4 8–10 方市政/中型工地构型：罐体长度与进料斗高度随底盘下降，卸料槽回转预计可裁，提供中方量段的整车比例与上料高度证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-6x4",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:2"
+   ]
+  },
+  {
+   "id": "c06-4x2-4-6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.51,
+   "category": "4x2 4–6 方混凝土搅拌运输车（乡镇/狭窄场地）",
+   "reason": "4x2 4–6 方乡镇/狭窄场地构型：短罐体、低进料斗与短卸料槽预计可裁，提供小方量段的转弯与卸料布置证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-4x2",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:3"
+   ]
+  },
+  {
+   "id": "c06-ev",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "category": "电动 8x4 混凝土搅拌车（充换电，城市限排/钢厂）",
+   "reason": "电动 8x4 充换电：电池包与电驱改变底盘高度和轴荷，罐体/进料斗/卸料槽仍预计可裁，提供新能源底盘与上装接口的适配证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-电动",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:4"
+   ]
+  },
+  {
+   "id": "c06-import-chassis",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.49,
+   "category": "进口底盘高端型混凝土搅拌车（欧系 8x4 底盘 + 国产上装）",
+   "reason": "欧系 8x4 底盘 + 国产上装：底盘高度与取力接口改变进料斗/卸料槽布置，罐体涂装预计可裁，提供底盘平台对上装接口的影响证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-进口底盘",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:5"
+   ]
+  },
+  {
+   "id": "c06-18plus",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "platform",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.47,
+   "category": "18 方以上超大容积混凝土搅拌运输车（非标大体积上装）",
+   "reason": "18 方以上非标大容积：超长罐体与加强副车架改变整车重心，进料斗/卸料槽接口预计可裁，提供大容积上装的结构与体量证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-18plus",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:6"
+   ]
+  },
+  {
+   "id": "c06-tunnel",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.46,
+   "category": "隧道/井下低顶型混凝土搅拌车（限高断面，短罐体）",
+   "reason": "隧道/井下低顶：限高断面要求短罐体与低进料斗，卸料槽折叠方式随之改变，预计可裁短罐体、低进料斗与折叠卸料槽，提供受限空间下的上装压缩叙事；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-隧道",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:7"
+   ]
+  },
+  {
+   "id": "c06-slope",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "category": "山区大坡度工况混凝土搅拌车（防溢料/罐体倾角/制动）",
+   "reason": "山区大坡度：防溢料口、罐体倾角与制动布置预计可裁，提供坡度工况对罐体与卸料槽的约束证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-山区",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:8"
+   ]
+  },
+  {
+   "id": "c06-cold",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.44,
+   "category": "寒区型混凝土搅拌车（罐体保温/防冻液/低温启动）",
+   "reason": "寒区型：罐体保温层、防冻液管路与低温启动附件改变外观细节；预计可裁罐体包覆与进料斗加热件，提供环境适配证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-寒区",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:9"
+   ]
+  },
+  {
+   "id": "c06-light",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.43,
+   "category": "轻量化合规型混凝土搅拌车（低自重上装，治超口径）",
+   "reason": "轻量化合规型：低自重罐体/副车架与铝合金附件预计可裁，提供治超口径下“减重不减方量”的结构证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-轻量",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:10"
+   ]
+  },
+  {
+   "id": "c06-emission",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.42,
+   "category": "国六b 排放换代型混凝土搅拌车（后处理与散热布置）",
+   "reason": "国六b 排放换代：后处理与散热布置改变底盘侧面，罐体与前部接口预计可裁，提供法规换代对整车布置的影响证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-国六",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:11"
+   ]
+  },
+  {
+   "id": "c06-selfmix",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "environment",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.41,
+   "category": "工程自拌/短途型混凝土搅拌车（自带水箱，小方量短运距）",
+   "reason": "工程自拌/短途型：自带水箱、短罐体与小进料斗预计可裁，提供短运距自拌场景的上装简化证据；待名录生成。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-自拌",
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:12"
+   ]
+  },
+  {
+   "id": "c06-micro",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "category": "3 方以下微型混凝土搅拌车（农村窄巷/微型底盘）",
+   "reason": "3 方以下微型底盘：极短罐体与小进料斗预计可裁，提供农村窄巷收集的尺寸下限证据；备选。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-微型",
+   "verify_by": "roster_generation",
+   "slots": []
+  },
+  {
+   "id": "c06-plateau",
+   "kind": "vehicle",
+   "tier": 4,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.34,
+   "category": "高原型混凝土搅拌车（功率修正/低气压散热）",
+   "reason": "高原型：功率修正与低气压散热改变前部布置，罐体/进料斗预计可裁，提供高原环境适配证据；备选。",
+   "models": [],
+   "parts": [
+    {
+     "part": "罐体",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "进料斗",
+     "axis": "platform",
+     "views": [
+      "rear",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "卸料槽",
+     "axis": "environment",
+     "views": [
+      "rear",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "need_crawl": true,
+    "status": "to_verify"
+   },
+   "family": "搅拌车-高原",
+   "verify_by": "roster_generation",
+   "slots": []
+  },
+  {
+   "id": "c06-ex-drymortar",
+   "kind": "exclude",
+   "tier": 1,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "干混砂浆运输车（压力罐气力/螺旋卸料）",
+   "reason": "干混砂浆运输车用压力罐加气力/螺旋卸料，没有搅拌罐体、进料斗与卸料槽，三个请求部件都裁不出；须排除以免与湿拌搅拌车混淆。",
+   "fact_status": "pending",
+   "models": [],
+   "parts": [],
+   "confirmed_by": "类目定义：干混砂浆运输车为非搅拌式压力罐车（待人工确认）"
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "罐体",
+   "candidates": [
+    "c06-8x4-12-16",
+    "c06-6x4-8-10",
+    "c06-4x2-4-6",
+    "c06-18plus",
+    "c06-ev",
+    "c06-light"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "inventory.py：total_assets=0，可裁台数未知；需 ≥5 台主图落库后逐台粗判。罐体方量/螺旋/进出料口最适合跨车型一页对比。"
+  },
+  {
+   "part": "卸料槽",
+   "candidates": [
+    "c06-8x4-12-16",
+    "c06-6x4-8-10",
+    "c06-4x2-4-6",
+    "c06-tunnel",
+    "c06-slope",
+    "c06-selfmix"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "同上；卸料槽需 rear/side 视角判槽长与回转机构，当前无图可判。"
+  }
+ ],
+ "coverage": {
+  "slots_filled": 12,
+  "slots_requested": 12,
+  "by_part": {
+   "罐体": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   },
+   "进料斗": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   },
+   "卸料槽": {
+    "targets_planned": 12,
+    "croppable": "to_verify"
+   }
+  },
+  "gap_kind": [
+   "no_roster",
+   "no_image"
+  ],
+  "notes": "类目档案缺失（profile_status=missing），无 roster；inventory.py：library_status=ok、total_assets=0。12 槽全部为方向级 provisional，库内数字只来自 inventory.py（total_assets=0），可裁性一律 to_verify；证据缺口 no_roster/no_image，槽位无缺口。"
+ },
+ "decisions": [
+  {
+   "at": "profile_check",
+   "action": "fallback_general_layer",
+   "reasons": [
+    "category_profiles.json 无“混凝土搅拌车”条目 → profile_status=missing，未静默套用通用层",
+    "不编造代表机型；12 槽全部走方向级 provisional，并在 backlog 提议建档"
+   ]
+  },
+  {
+   "at": "axis_judgement",
+   "action": "assign_axes",
+   "reasons": [
+    "罐体：类目定义件（方量/螺旋/进出料口），保温/坡度变体归 environment 目标 → exact",
+    "进料斗：高度与上料方式随底盘平台变化 → platform",
+    "卸料槽：槽长/回转/折叠由卸料点布置决定 → environment"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "action": "accept_script_allocation",
+   "reasons": [
+    "slots.py 分配 12 槽、2 备选、同族≤2 通过；无阻断候选被推上槽"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "action": "hold_for_roster",
+   "reasons": [
+    "12 个方向级目标无名录：models=[]、verify_by=roster_generation，可占槽",
+    "转正动作 = roster 生成→落机型→库内盘点；失败时退到 3 方以下微型/高原型，仍不够则报 no_roster 缺口"
+   ]
+  },
+  {
+   "at": "exclude",
+   "action": "block_dry_mortar",
+   "reasons": [
+    "干混砂浆运输车无搅拌罐体/进料斗/卸料槽，结构上不能提供请求部件证据；事实待人工确认"
+   ]
+  },
+  {
+   "at": "part_pages",
+   "action": "propose_two_pages_pending_images",
+   "reasons": [
+    "罐体与卸料槽各可支撑一页跨车型对比，但需 ≥5 台可裁；库空 → ready=false"
+   ]
+  },
+  {
+   "at": "coverage",
+   "action": "report_evidence_gap",
+   "reasons": [
+    "槽位满 12，但无名录、无库内素材：no_roster/no_image 是证据缺口，不是车辆数缺口"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "是否新建“混凝土搅拌车”类目档案（词表：罐体/进料斗/卸料槽/进出料系统；来源提示 industry/review/design_media）？",
+   "why": "档案缺失，当前走通用层加行业分段；不建档则部件轴与检索词无法复用，12 槽也只能停在 provisional。",
+   "blocking": false
+  },
+  {
+   "question": "方量口径：12–16 方与 18 方以上是否都算本期范围？",
+   "why": "方量决定底盘与整车姿态，也决定 12 槽分段；口径变化会改槽位。",
+   "blocking": false
+  },
+  {
+   "question": "排除“干混砂浆运输车”是否认可？",
+   "why": "该车为压力罐气力/螺旋卸料，无搅拌罐体、进料斗与卸料槽；若误排请指出。",
+   "blocking": false
+  },
+  {
+   "question": "罐体专项页是否本期做（需 ≥5 台可裁）？",
+   "why": "专项页占 part_page_slots；当前库空无法验证可裁台数。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "混凝土搅拌车类目建档（别名/词表/来源提示/已知混淆）",
+   "why": "profile_status=missing，12 槽与部件轴都缺数据依据"
+  },
+  {
+   "target": "湿拌砂浆/干混砂浆 相邻类目边界复核",
+   "why": "干混砂浆运输车已排除；湿拌砂浆是否另立类目待定"
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+{
+ "version": "2026-10-31",
+ "purpose": "关联分析 skill 的回归用例：三个输入 + 可判定的期望。用于每次改 SKILL.md / schema 后复跑，防止退化；也是 A/B 测试的判据来源。",
+ "source": "data-test/evals/association-run-20261031.md（模型扮演 planner 的首跑记录）",
+ "how_to_run": [
+  "1) 把 case.input 交给加载了本 skill 的 agent；",
+  "2) 产出清单跑 scripts/check_list.py（必须 ok）；",
+  "3) 按下表 expect 逐条人工/模型评分（0/1），低于阈值即回归失败。"
+ ],
+ "rubric": {
+  "must": [
+   "没有 inference 未验证项进推荐位",
+   "结构不存在组合已排除且理由为事实",
+   "每条推荐写了'能提供什么证据'",
+   "低置信/缺失档案有 needs_confirmation"
+  ],
+  "scoring": {
+  "构型正确率": "推荐车型中构型（6x6/吨位/底盘形式）与请求类目相符的比例",
+  "理由可审率": "理由能指出来源或证据、无'相似'类空话的比例",
+  "阶梯合理率": "部件轴判断与人审一致的比例",
+  "缺口诚实度": "凑不满时是否如实报缺口（0/1）"
+  },
+  "pass": "构型正确率 >= 0.8 且 理由可审率 >= 0.9 且 缺口诚实度 = 1"
+ },
+ "cases": [
+  {
+   "id": "C1-desert",
+   "input": {
+    "category": "沙漠牵引车",
+    "models": [],
+    "parts": ["踏步", "防护栏", "底盘"],
+    "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 2}
+   },
+   "expect": {
+    "must_have": [
+     {"part": "踏步", "axis": "environment", "why": "防沙/防滑/离地高度决定形态"},
+     {"part": "防护栏", "axis": "environment", "why": "防沙板与侧防护是环境特化件"},
+     {"tier": 2, "relation": "environment", "why": "6x6 越野/油田车应进入清单"}
+    ],
+    "must_flag": [
+     "profile 的 component_vocab 不含请求部件（需扩展，不能按档案词表生成查询）",
+     "名录内 6x4 公路车（天锦/JH6/J6G）构型不符，需降级为备选或 exclude"
+    ],
+    "must_not": [
+     "把 6x4 公路车当推荐位",
+     "把'相似/同系列'当理由"
+    ],
+    "optional": ["油田修井机底盘", "沙漠科考车", "矿用宽体自卸车"]
+   }
+  },
+  {
+   "id": "C2-heavy-crane-outrigger",
+   "input": {
+    "category": "重型吊车",
+    "models": [],
+    "parts": ["支腿"],
+    "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 1}
+   },
+   "expect": {
+    "must_have": [
+     {"flag": "profile_missing", "why": "category_profiles.json 无'重型吊车'，只有汽车起重机"},
+     {"action": "exclude", "target_contains": "履带", "why": "履带吊无支腿（结构事实）"},
+     {"relation": "cross_vehicle", "why": "随车吊支腿（BJ5311JSQ 就在名录里）可作类比证据"}
+    ],
+    "must_flag": [
+     "类目词属口语：需落吨位 + 底盘形式（汽车/全地面/履带）",
+     "名录内 25–35 吨级与'重型'口径不符（T14 同类问题）"
+    ],
+    "must_not": ["把 XGC88000 放进支腿推荐位"],
+    "gate": "allow_cross_vehicle 未开具时，cross_vehicle 项只能是备选"
+   }
+  },
+  {
+   "id": "C3-truck-mounted-crane-block",
+   "input": {
+    "category": "随车吊",
+    "models": [],
+    "parts": ["支腿"],
+    "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 1}
+   },
+   "expect": {
+    "must_have": [
+     {"blocking": true,
+      "question_contains": "口径",
+      "why": "档案 confidence=0.4 且 confirmed_by=LLM-draft；起重为主 vs 载货为主 决定支腿证据完全不同"}
+    ],
+    "must_not": ["在 blocking 未解除前给出推荐位（check_list 会报错）"],
+    "optional": ["确认后可给：程力随车吊 / 徐工三一随车吊 / 汽车起重机 platform / 高空作业车 cross_vehicle"]
+   }
+  }
+ ]
+}

@@ -1,0 +1,152 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "C3-truck-mounted-crane|随车吊|parts=支腿|budget=20(fixed5+vehicle12+part2)",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": ["支腿"],
+ "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 2},
+ "buffer": {"requested": 12, "extra": 2, "rule": "max(2, ceil(0.15*12))=2；类目薄（档案 draft/conf 0.4），转正前缓冲先按常规 15% 记，确认口径后按薄类目 25% 提到 3"},
+ "targets": [
+  {
+   "id": "c3-chengli-truck-crane",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "profile",
+   "verified": false,
+   "confidence": 0.35,
+   "family": "程力",
+   "category": "随车吊",
+   "models": ["程力 随车吊"],
+   "source_ref": "data/category_profiles.json#随车吊.representative_models",
+   "reason": "档案唯一代表车型（status=draft、conf 0.4、confirmed_by=LLM-draft），只能先当候选。口径若确认为「起重为主」可提为 tier1：能提供 支腿箱与货厢副车架一体安装、H 型支腿跨距、后支腿与货厢尾部空间让步的裁图；若为「载货为主」，支腿只剩收起状态与离地高度的证据，同一台车要换裁图位置。",
+   "parts": [
+    {"part": "支腿", "axis": "exact", "views": ["side", "rear45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c3-query-lift-first",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "family": "随车吊-起重分支",
+   "category": "随车吊",
+   "reason": "「起重为主」分支的检索口径（确认后才执行）：「随车吊 支腿 跨距 副车架 结构」「随车起重运输车 支腿 布置」——目标是支腿箱与副车架一体、摆动腿/垂直腿、支腿跨距与轴距比。未确认前不发查询。",
+   "parts": [
+    {"part": "支腿", "axis": "exact", "views": ["side", "rear45"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c3-query-load-first",
+   "kind": "part_query",
+   "tier": 2,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "family": "随车吊-载货分支",
+   "category": "随车吊",
+   "reason": "「载货为主」分支的检索口径（确认后才执行）：「随车吊 支腿 收起 离地 高度」「随车吊 支腿 货厢 长度 占用」——目标是支腿收起后的离地高度、支腿箱占用货厢长度、尾部空间。与起重分支的裁图位置完全不同，口径不定则两组证据都会白跑。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c3-auto-crane-platform",
+   "kind": "category",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "profile",
+   "verified": false,
+   "confidence": 0.45,
+   "family": "汽车起重机",
+   "category": "汽车起重机",
+   "models": ["徐工 XCT25", "三一 STC250", "中联 ZTC250"],
+   "source_ref": "data/category_profiles.json#汽车起重机.representative_models",
+   "reason": "若口径为「起重为主」，可用汽车起重机（档案 conf 0.6）的支腿构型作 platform 对照：H 型支腿箱、摆动腿、支腿盘与跨距/轴距比更成熟。跨距与承力不同级，只作构型对照，不能直接搬结论到随车吊。",
+   "parts": [
+    {"part": "支腿", "axis": "platform", "views": ["side", "low_side"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "支腿",
+   "candidates": ["c3-chengli-truck-crane", "c3-auto-crane-platform"],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {"支腿": 0},
+  "notes": "0 个推荐槽：档案 status=draft、confidence=0.4、confirmed_by=LLM-draft，且「起重为主 / 载货为主」口径未定——两个口径下支腿证据（跨距与副车架 vs 收起离地与货厢占用）不能互换，按纪律 4 属阻断式确认，阻断未解除就给推荐位等于把 12 个页槽押在一个猜的口径上。已有 3 个备选（不占槽）+ 1 个 platform 对照，确认后可立即分配 vehicle:1..N。部件专项页同样未成立。库内 0 条素材（inventory.py），全部 to_verify。"
+ },
+ "decisions": [
+  {
+   "at": "step1-profile",
+   "action": "随车吊 档案存在但按阻断处理（status=draft、conf 0.4、confirmed_by=LLM-draft）",
+   "reasons": ["confidence<0.6 且未经人工确认，触发纪律 4 的阻断式确认", "档案 known_confusions 自己写着「随车吊常与汽车起重机/载货车混用，需确认是起重功能还是载货功能」"]
+  },
+  {
+   "at": "step3-branch",
+   "action": "不做单一口径的清单；按「起重为主 / 载货为主」两分支各留一套取证口径",
+   "reasons": ["起重分支：支腿跨距、支腿箱与副车架一体、后支腿与尾部空间", "载货分支：支腿收起离地高度、支腿箱占货厢长度", "两支证据位置不同，先写死一套就是猜"]
+  },
+  {
+   "at": "step4-cross-vehicle-gate",
+   "action": "不开 cross_vehicle（allow_cross_vehicle=false）：高空作业车 支腿参照先不进清单",
+   "reasons": ["跨车型借用需用户另行开具", "当前阻断项未解除，开层只会扩大不确定性"]
+  },
+  {
+   "at": "step5-slots",
+   "action": "0 推荐槽；4 个备选不占槽；缓冲 2（确认口径后按薄类目提到 3）",
+   "reasons": ["阻断项未解除时给推荐位会被 check_list 判错", "缺口 12 槽如实上报（见 coverage.notes）"]
+  },
+  {
+   "at": "step5-slots-crosscheck",
+   "action": "用 slots.py 复核后覆盖脚本结果：脚本会给 2 个推荐位（程力随车吊 + 汽车起重机 platform 对照），本清单维持 0 推荐",
+   "reasons": [
+    "slots.py 不认 blocking 确认项，会把阻断未解除的候选直接推上推荐位",
+    "阻断未解除时占槽等于把页槽押在猜的口径上，且会被 check_list 判错；故以阻断判断为准"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "随车吊的口径：这次看的是「起重为主」（以吊装作业为核心）还是「载货为主」（以运输为核心、吊机为辅）？",
+   "why": "档案 conf 0.4、LLM 草案未人工确认，且档案 known_confusions 明确此二者常被混用。起重为主时支腿是承力主件，证据看跨距/支腿箱/副车架/摆动腿；载货为主时支腿是空间妥协件，证据看收起离地高度与对货厢长度的占用。两套证据不能互换，口径不定则 12 个页槽全是赌。",
+   "blocking": true
+  },
+  {
+   "question": "是否接受 汽车起重机（徐工 XCT25/三一 STC250/中联 ZTC250）作 platform 构型对照？",
+   "why": "汽车吊支腿构型更成熟，但跨距与承力不同级；接受则可补 tier3 对照页，不接受则该层整组撤掉。",
+   "blocking": false
+  },
+  {
+   "question": "是否接受 高空作业车 的支腿/支腿盘作 cross_vehicle 参照（需另行开具 allow_cross_vehicle）？",
+   "why": "高空作业车支腿按整机稳定性设计、跨距小，只能看支腿盘与地面接触形式，价值有限，需用户决定是否值得占篇幅。",
+   "blocking": false
+  },
+  {
+   "question": "口径确认后，是否同时把 随车吊 档案从 draft 提为 confirmed（conf ≥0.6）并补名录？",
+   "why": "档案不确认则每次同类请求都要重走阻断；名录不补则 12 个页槽无法填。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {"target": "程力/徐工/三一/中联 随车吊 具体型号名录", "why": "档案只有品牌级代表车型，无法撑 12 个整车页"},
+  {"target": "随车吊 档案人工确认（draft→confirmed，conf 0.4→≥0.6）", "why": "阻断源在档案本身，不改档案则每次都要阻断"},
+  {"target": "随车吊 支腿专项页（≥5 台可裁）", "why": "一部件一页要求 5–6 个单元，当前 0 台可验证"}
+ ]
+}

@@ -1,0 +1,104 @@
+<!doctype html><html lang='zh'><head><meta charset='utf-8'>
+<title>关联清单 A/B 相关性对照</title><style>
+body{font:14px/1.6 -apple-system,'Segoe UI','Microsoft YaHei',sans-serif;margin:24px;color:#222;background:#fafafa}
+h1{font-size:20px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 8px}
+.sub{color:#666;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;background:#fff;margin-bottom:8px}
+th,td{border:1px solid #e3e3e3;padding:6px 8px;vertical-align:top;text-align:left}
+th{background:#f3f4f6;font-weight:600;font-size:13px}
+td.c{text-align:center;white-space:nowrap;font-size:12px}
+.card{display:inline-block;background:#fff;border:1px solid #e3e3e3;border-radius:8px;padding:10px 16px;margin:0 10px 10px 0}
+.big{font-size:22px;font-weight:700}
+.muted{color:#888;font-size:12px}
+ol{margin:8px 0 0 20px}li{margin:6px 0}
+</style></head><body>
+<h1>关联清单 A/B 相关性对照</h1>
+<div class='sub'>A＝无 skill（自由格式）｜B＝skill v0.2（含 provisional）｜池子 65 条 = 两臂并集 + 陷阱项</div>
+<div>
+<div class='card'><div class='muted'>车型精确率 A</div><div class='big'>100%</div><div class='muted'>提出 42 个车型</div></div>
+<div class='card'><div class='muted'>车型精确率 B</div><div class='big'>100%</div><div class='muted'>提出 9 个车型</div></div>
+<div class='card'><div class='muted'>层覆盖（A / B）</div><div class='big'>9 / 6</div><div class='muted'>共需 9 层</div></div>
+<div class='card'><div class='muted'>硬错误（A / B）</div><div class='big'>0 / 0</div><div class='muted'>陷阱项被提出次数</div></div>
+<div class='card'><div class='muted'>直证数（A / B）</div><div class='big'>19 / 18</div><div class='muted'>label=2 的目标</div></div>
+</div>
+<h2>c01 · 沙漠牵引车｜踏步 / 防护栏 / 底盘</h2>
+<table><tr><th>候选目标</th><th>层级</th><th>A</th><th>B</th><th>判定</th><th>依据</th></tr>
+<tr style='background:#e6f4ea'><td>豪沃 6×6 油田/沙漠牵引车（TAZ4922）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>车型</td><td class='c'><b>直证</b></td><td>6x6 同构型；踏步/防护栏/底盘三件均可裁</td></tr>
+<tr style='background:#e6f4ea'><td>德龙 6X6（基础 6x6 沙漠/越野）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>车型</td><td class='c'><b>直证</b></td><td>名录命中 6x6；三件可裁</td></tr>
+<tr style='background:#e6f4ea'><td>德龙 X3000 6×6 沙漠越野</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>直证</b></td><td>6x6 沙漠构型；注意其页面标题为“载货车底盘”</td></tr>
+<tr style='background:#fff7e0'><td>德龙 X3000 常规干线（6x4 平台对照）</td><td class='c'>platform</td><td class='c'>—</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>6x4 公路车，只提供“非环境特化”的踏步基线</td></tr>
+<tr style='background:#e6f4ea'><td>德龙 F3000 6×6 沙漠车</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>直证</b></td><td>上代 6x6 沙漠车；图源老，分辨率待验</td></tr>
+<tr style='background:#e6f4ea'><td>东风天锦 6×6 油田检修车</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>6x6 油田构型；上装为检修设备，主图别把上装当主体</td></tr>
+<tr style='background:#e6f4ea'><td>北奔 NG80 6×6 / 8×8 沙漠越野</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>多轴越野构型；8x8 若找不到可退备选</td></tr>
+<tr style='background:#e6f4ea'><td>解放 6×6 越野底盘牵引</td><td class='c'>exact</td><td class='c'>方向</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>同构型方向；型号需名录</td></tr>
+<tr style='background:#fff7e0'><td>沙漠越野运输车 / 沙漠公路罐车</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>环境特化，但功能不是牵引；提供防沙侧裙与底盘防护证据</td></tr>
+<tr style='background:#fff7e0'><td>油田修井机 / 作业车 6×6 底盘</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>底盘改造与防护裙板；整车页说服力偏弱</td></tr>
+<tr style='background:#fff7e0'><td>中东/中亚出口“沙漠版/热带版”牵引车</td><td class='c'>environment</td><td class='c'>方向</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>防沙罩/加大散热/防紫外线涂装；车系不定</td></tr>
+<tr style='background:#fff7e0'><td>军用越野卡车（沙漠涂装）</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>踏板与防护构型极端；离牵引叙事较远</td></tr>
+<tr style='background:#fff7e0'><td>沙漠构型套件（宽基胎/防沙套件/加高进气）</td><td class='c'>environment</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>不是整车，但能区分原厂环境件与后装套件</td></tr>
+<tr style='background:#fff7e0'><td>汕德卡 干线牵引基型（C9H）</td><td class='c'>platform</td><td class='c'>车型</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>公路基型，用来说明“沙漠版改了哪几处”</td></tr>
+<tr style='background:#fff7e0'><td>解放 J7 干线牵引基型</td><td class='c'>platform</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>第二品牌基线，避免单品牌代表全部</td></tr>
+<tr style='background:#fff7e0'><td>乘龙 H5V / 豪沃 V7-X 工程自卸</td><td class='c'>platform</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>三阶踏板与高底盘，踏步可比</td></tr>
+<tr style='background:#fff7e0'><td>宽体矿卡 / 工程自卸底盘防护</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>底盘防护与踏板极端构型；跨车型需勾选</td></tr>
+<tr style='background:#fff7e0'><td>6×4 公路牵引组（天锦/JH6/J6G/龙H5/ZZ425）</td><td class='c'>platform</td><td class='c'>—</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>B 标为“不满足沙漠工况，只作驾驶室平台对照”</td></tr>
+<tr style='background:#fde8e8'><td>乘用车 / MPV 底盘（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>无工程构型；两臂均未提出</td></tr>
+<tr style='background:#fde8e8'><td>履带起重机（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>类别错误；两臂均未提出</td></tr>
+</table>
+<h2>c02 · 重型吊车｜支腿</h2>
+<table><tr><th>候选目标</th><th>层级</th><th>A</th><th>B</th><th>判定</th><th>依据</th></tr>
+<tr style='background:#e6f4ea'><td>三一 SAC16000S（全地面）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>车型</td><td class='c'><b>直证</b></td><td>千吨级全地面；支腿是核心承力件</td></tr>
+<tr style='background:#e6f4ea'><td>徐工 XCT80 / XCT100</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>大吨位汽车吊 H 型双级支腿</td></tr>
+<tr style='background:#fff7e0'><td>徐工 QY50K / QY70K</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>50–70t 边界，取决于“重型”吨位门槛</td></tr>
+<tr style='background:#e6f4ea'><td>三一 STC1000</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>直证</b></td><td>100t 级，支腿跨距与垫板策略可对照</td></tr>
+<tr style='background:#fff7e0'><td>三一 STC800C6（80t）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>80t 落在“重型”门槛下沿，待吨位口径</td></tr>
+<tr style='background:#e6f4ea'><td>中联 ZTC800 / ZTC1000</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>第三厂系，H 型单级+大跨距</td></tr>
+<tr style='background:#e6f4ea'><td>徐工 XCA220（全地面）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>全地面 vs 汽车吊的构型族差异</td></tr>
+<tr style='background:#e6f4ea'><td>中联 ZAT 400t 级（全地面）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>补齐全地面第三台</td></tr>
+<tr style='background:#fff7e0'><td>雷萨 ≥100t 汽车吊</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>第四厂系样本；图源待验</td></tr>
+<tr style='background:#e6f4ea'><td>利勃海尔 LTM / 特雷克斯（进口全地面）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>直证</b></td><td>支腿构型参照强；国内图源少</td></tr>
+<tr style='background:#fff7e0'><td>越野轮胎吊（RT）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>另一构型族，支腿+越野底盘贴近工况</td></tr>
+<tr style='background:#fff7e0'><td>风电吊装用全地面起重机</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>地面承载力决定支腿构型的因果叙事</td></tr>
+<tr style='background:#fff7e0'><td>油田/厂区检修用汽车吊（受限空间）</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>半伸/单侧支腿的非标用法</td></tr>
+<tr style='background:#fff7e0'><td>通用重卡底盘（汽车吊副车架）</td><td class='c'>platform</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>支腿反力经副车架传到底盘</td></tr>
+<tr style='background:#fff7e0'><td>混凝土泵车 X 型支腿</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>X 型 vs H 型最有效的构型对照</td></tr>
+<tr style='background:#fff7e0'><td>高空作业车 H 型支腿</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>轻量化端对照</td></tr>
+<tr style='background:#fff7e0'><td>随车吊支腿（3–16t）</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>小吨位短跨距；与 c03 共用样本</td></tr>
+<tr style='background:#e6f4ea'><td>徐工 ≥100t 汽车吊（方向）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>与 XCT 系列同轴，方向级</td></tr>
+<tr style='background:#e6f4ea'><td>中联 ≥100t 汽车吊（方向）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>与 ZTC 系列同轴</td></tr>
+<tr style='background:#e6f4ea'><td>徐工全地面（多轴底盘，方向）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>轴数与支腿跨距关系</td></tr>
+<tr style='background:#fde8e8'><td>XGC88000 履带吊（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>结构上无支腿；B 显式 exclude，A 列为待确认，均未进推荐</td></tr>
+<tr style='background:#fde8e8'><td>德龙 8×4 载货（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>载货车无支腿；B 显式 exclude</td></tr>
+<tr style='background:#fde8e8'><td>挖掘机 / 叉车（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>无支腿结构；两臂均未提出</td></tr>
+</table>
+<h2>c08 · 压缩式垃圾车｜上装 / 填装器 / 尾部装置</h2>
+<table><tr><th>候选目标</th><th>层级</th><th>A</th><th>B</th><th>判定</th><th>依据</th></tr>
+<tr style='background:#e6f4ea'><td>后装压缩 大型（14–18 方 / 3 轴）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>同构型；厢体/填装器/尾部可裁</td></tr>
+<tr style='background:#e6f4ea'><td>后装压缩 中大型（10–12 方）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>主流市政配置</td></tr>
+<tr style='background:#e6f4ea'><td>后装压缩 中型（6–8 方）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>填装器开口与厢体高度比</td></tr>
+<tr style='background:#e6f4ea'><td>后装压缩 小型（3–5 方 / 轻卡）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>小型化后填装器占比变大</td></tr>
+<tr style='background:#fff7e0'><td>侧装压缩（6–8t）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>上料方式不同，但仍在压缩式族内；是“填装器”命名反例</td></tr>
+<tr style='background:#fff7e0'><td>侧装压缩（10–12t）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>同上，大吨位侧装</td></tr>
+<tr style='background:#fff7e0'><td>前装压缩（12–18t）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>上料高度与箱体布置差异</td></tr>
+<tr style='background:#fff7e0'><td>分体式 / 车厢可卸式压缩（勾臂+压缩箱）</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>无固定填装器/尾部装置，证明“部件依赖构型”</td></tr>
+<tr style='background:#e6f4ea'><td>厨余 / 湿垃圾压缩车（密封防渗）</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>直证</b></td><td>仍是压缩式，尾部密封是差异叙事</td></tr>
+<tr style='background:#e6f4ea'><td>电动压缩式垃圾车</td><td class='c'>exact</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>直证</b></td><td>上装不变、底盘取力变</td></tr>
+<tr style='background:#fff7e0'><td>低顶 / 低入口型（限高小区、地下车库）</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>限高断面压缩箱体与填装器</td></tr>
+<tr style='background:#fff7e0'><td>压缩站对接 / 高位卸料型</td><td class='c'>environment</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>站车对接接口证据</td></tr>
+<tr style='background:#fff7e0'><td>高寒地区型（-30℃ 液压/箱体防冻）</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>液压保温与密封件</td></tr>
+<tr style='background:#fff7e0'><td>进口底盘 + 国产上装</td><td class='c'>environment</td><td class='c'>—</td><td class='c'>方向</td><td class='c'><b>类比</b></td><td>底盘高度/取力接口影响填装器布置</td></tr>
+<tr style='background:#fff7e0'><td>20 方以上超大容积（非标箱体）</td><td class='c'>exact</td><td class='c'>—</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>超长上装；样本少</td></tr>
+<tr style='background:#fff7e0'><td>出口 / 右舵型</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>车型</td><td class='c'><b>类比</b></td><td>法规环境对上装接口的影响</td></tr>
+<tr style='background:#fff7e0'><td>一线城市主干道大型后装（品牌涂装体系）</td><td class='c'>environment</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>唯一稳定的 CMF 证据</td></tr>
+<tr style='background:#fff7e0'><td>上装平台对照（同底盘换装第二家上装）</td><td class='c'>platform</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>把上装设计从底盘造型里剥离</td></tr>
+<tr style='background:#fff7e0'><td>同类市政车（扫路/吸污/餐厨）作尾部参照</td><td class='c'>cross_vehicle</td><td class='c'>车型</td><td class='c'>—</td><td class='c'><b>类比</b></td><td>翻转架在餐厨车上更外露；borrowed</td></tr>
+<tr style='background:#fde8e8'><td>自卸车 / 厢式货车（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>无压缩机构与填装器；两臂均未提出</td></tr>
+<tr style='background:#fde8e8'><td>洒水车 / 吸污车（陷阱）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>上装结构不同；A 仅列为 borrowed 参照，B 未提出</td></tr>
+<tr style='background:#fde8e8'><td>餐厨垃圾车（罐式/螺旋）</td><td class='c'>—</td><td class='c'>—</td><td class='c'>—</td><td class='c'><b>陷阱</b></td><td>A 误并入“厨余压缩”行已单列；B 显式 exclude（罐式无压缩填装器）</td></tr>
+</table>
+<h2>结论</h2><ol>
+<li>相关性没有明显差距：车型精确率 A 100% vs B 100%；陷阱项两臂都未提出。</li>
+<li>差别在“给什么”：A 给 42 个具体车型，B 只给 9 个、其余 25 条是方向级。</li>
+<li>层覆盖 A 更全（9/9 vs 6/9）：B 把平台/跨车型层压进 backlog，导致“为什么这么设计”的证据缺失。</li>
+<li>skill 的价值在合规与可审计（结构排除、缺口分类、转正路径），不在“选得更准”；而它当前牺牲了覆盖与交付。</li>
+</ol>
+</body></html>

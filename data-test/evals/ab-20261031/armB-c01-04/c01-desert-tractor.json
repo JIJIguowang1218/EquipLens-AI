@@ -1,0 +1,275 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "C1-desert|沙漠牵引车|parts=踏步,防护栏,底盘|budget=20(fixed5+vehicle12+part2)",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": ["踏步", "防护栏", "底盘"],
+ "page_budget": {"total": 20, "fixed_pages": 5, "vehicle_slots": 12, "part_page_slots": 2},
+ "buffer": {"requested": 12, "extra": 2, "rule": "max(2, ceil(0.15*12))=2；类目非薄（档案 conf 0.7 且 product-owner 已确认）"},
+ "targets": [
+  {
+   "id": "c1-shacman-delon-6x6",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.9,
+   "family": "陕汽重卡",
+   "category": "沙漠牵引车",
+   "models": ["陕汽重卡 德龙6X6"],
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "slots": ["vehicle:1"],
+   "reason": "名录 12 个候选中提及最多（7 次）且型号本身即 6×6 沙漠越野构型，与请求类目同驱动形式。能提供证据：整车 hero45/侧视可裁——①踏步：高位踏板+扶手，看离地高度与防沙踏板面；②防护栏：侧防护/防沙板与车身间隙、护网开孔；③底盘：分动箱与传动轴暴露、离地间隙、底部护板。",
+   "parts": [
+    {"part": "踏步", "axis": "environment", "views": ["front45", "side"], "croppable": "to_verify"},
+    {"part": "防护栏", "axis": "environment", "views": ["side", "front45"], "croppable": "to_verify"},
+    {"part": "底盘", "axis": "environment", "views": ["side", "low_front"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-shacman-x3000-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.75,
+   "family": "陕汽重卡",
+   "category": "沙漠牵引车",
+   "models": ["陕汽重卡 德龙X3000 6X6 沙漠越野（载货车底盘）"],
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "slots": ["vehicle:2"],
+   "reason": "名录中唯一带 6X6 沙漠越野字样的 X3000，属沙漠工况底盘而非公路牵引。能提供证据：驾驶室与防沙件与牵引车型共平台，可裁踏步（高位踏板）、侧防护栏（防沙板构型）、底盘（加高离地+护板、6×6 分动箱）；不提供鞍座/牵引销视角，故列 tier2 而非 tier1。",
+   "parts": [
+    {"part": "踏步", "axis": "environment", "views": ["front45", "side"], "croppable": "to_verify"},
+    {"part": "防护栏", "axis": "environment", "views": ["side"], "croppable": "to_verify"},
+    {"part": "底盘", "axis": "environment", "views": ["side", "low_front"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-sinotruk-howo-6x6",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": true,
+   "confidence": 0.8,
+   "family": "中国重汽",
+   "category": "沙漠牵引车",
+   "models": ["中国重汽 豪沃 6X6 油田牵引车"],
+   "source_ref": "data/category_profiles.json#沙漠牵引车.representative_models",
+   "slots": ["vehicle:3"],
+   "reason": "档案 representative_models 明列 6×6 油田牵引车（conf 0.7、product-owner 确认），油田/沙漠工况同环境轴。能提供证据：白色高反光涂装下的防沙踏板、侧防护栏与底盘护板的完整整车视角，可与陕汽样本做环境件一致性对照。",
+   "parts": [
+    {"part": "踏步", "axis": "environment", "views": ["front45", "side"], "croppable": "to_verify"},
+    {"part": "防护栏", "axis": "environment", "views": ["side"], "croppable": "to_verify"},
+    {"part": "底盘", "axis": "environment", "views": ["side", "low_front"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-sinotruk-h6066",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": true,
+   "confidence": 0.7,
+   "family": "中国重汽",
+   "category": "沙漠牵引车",
+   "models": ["H6066 6x6"],
+   "source_ref": "data/category_profiles.json#沙漠牵引车.representative_models",
+   "slots": ["vehicle:4"],
+   "reason": "档案列出的 H6066 6×6（同一 6×6 平台的出口构型）。能提供证据：与豪沃 6×6 同平台但踏步/防护栏形态可能不同，正好用来分离哪些是环境件、哪些是平台继承件；可裁侧视踏步与防护栏近距图。",
+   "parts": [
+    {"part": "踏步", "axis": "environment", "views": ["side"], "croppable": "to_verify"},
+    {"part": "防护栏", "axis": "environment", "views": ["side", "front45"], "croppable": "to_verify"},
+    {"part": "底盘", "axis": "environment", "views": ["side"], "croppable": "to_verify"}
+   ],
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-sitrak-c7h-6x6",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "family": "中国重汽",
+   "category": "沙漠牵引车",
+   "models": ["中国重汽 汕德卡 C7H 6×6（油田/全驱版本，待核）"],
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json#candidates",
+   "reason": "名录只泛提汕德卡 1 次，未落到 6×6 型号；若确有 C7H 6×6 油田版，可提供驾驶室平台化下的踏步/防护栏位置对照。验证途径：名录生成 + 官网配置页核驱动形式，核到即转正。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-shacman-f3000",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": false,
+   "confidence": 0.55,
+   "family": "陕汽重卡",
+   "category": "沙漠牵引车",
+   "models": ["陕汽重卡 德龙F3000"],
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "reason": "名录提及 4 次但未见 6×6 型号，需先确认是否存在 F3000 沙漠/油田 6×6；否则只能作驾驶室平台参照，不提供环境件证据。验证途径：360che 车型库按驱动形式筛 6×6。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-road-6x4-group",
+   "kind": "category",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.6,
+   "family": "公路牵引",
+   "category": "沙漠牵引车",
+   "models": ["东风 天锦", "一汽解放 JH6", "一汽解放 J6G", "东风 龙H5", "中国重汽 ZZ425"],
+   "source_ref": "data-test/roster-沙漠牵引车-20261017-163313.json",
+   "reason": "名录中的 6×4 公路牵引：驱动形式与踏步离地高度、防护栏（无防沙板、低位踏板）都不满足沙漠工况，只能作驾驶室平台对照，不进推荐位。口径若接受公路车作背景样本，可按最低优先级转正并落 decisions。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-oilfield-workover-chassis",
+   "kind": "category",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "family": "油田专用车",
+   "category": "沙漠牵引车",
+   "reason": "方向推断：油田修井机/作业机 6×6 底盘与沙漠牵引车共用环境件（加高踏步、防沙护栏、底盘护板），且踏步多为三级高位踏板——是本请求最直接的形态证据来源。无型号落地，验证途径：名录生成（油田专用车 6×6 底盘）。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-desert-research-truck",
+   "kind": "category",
+   "tier": 3,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "family": "越野卡车",
+   "category": "沙漠牵引车",
+   "reason": "方向推断：沙漠科考/勘探车，环境件逻辑一致（防沙滤、加高踏步、外置防护栏），可作为'环境轴'的极端样本。无型号落地，验证途径：名录生成 + 越野改装案例限定。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  },
+  {
+   "id": "c1-mining-widebody",
+   "kind": "category",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "family": "矿用车辆",
+   "category": "沙漠牵引车",
+   "reason": "方向推断：矿用宽体自卸车的踏步与护板同样按恶劣路面设计，可提供'踏步作为环境件'的第二类样本；其底盘结构与公路牵引差异大，只作对照。验证途径：名录生成（矿用宽体自卸车）。",
+   "images": {"in_library": 0, "need_crawl": true, "hero_candidates": 0, "status": "to_verify"}
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "踏步",
+   "candidates": ["c1-shacman-delon-6x6", "c1-shacman-x3000-6x6", "c1-sinotruk-howo-6x6", "c1-sinotruk-h6066"],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0
+  },
+  {
+   "part": "防护栏",
+   "candidates": ["c1-shacman-delon-6x6", "c1-sinotruk-howo-6x6", "c1-sinotruk-h6066"],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 4,
+  "slots_requested": 12,
+  "by_part": {"踏步": 4, "防护栏": 4, "底盘": 4},
+  "notes": "缺口 8 个整车槽，原因分三类：①构型不符——名录 12 个候选里 5 台是 6×4 公路牵引（天锦/JH6/J6G/龙H5/ZZ425），踏步与底盘证据不成立，已降备选不计槽；②型号未落——汕德卡/德龙F3000 只有泛品牌或未核 6×6；③无型号——油田修井机底盘/沙漠科考车/矿用宽体三个环境轴方向只能 inference+备选。部件专项页两槽均未成立：合格要求 ≥5 台车可裁，目前推荐仅 4 台且库内 0 条素材（inventory.py 返回 total_assets=0、to_verify），可裁数无法预盘。未降标准凑数。"
+ },
+ "decisions": [
+  {
+   "at": "step3-axis",
+   "action": "踏步/防护栏/底盘 三个请求部件一律判 environment 轴（不看平台轴）",
+   "reasons": [
+    "档案 component_vocab 为 前脸/大灯防护网/保险杠/遮阳板/后视镜/涂装，不含这三个请求词，不能按档案词表生成查询",
+    "三件形态都随沙漠工况改变：踏步抬高级数与防沙踏板面、防护栏兼防沙板与护网、底盘加高离地+护板+分动箱暴露",
+    "平台轴会把 6×4 公路车的低位踏板带进清单，直接答非所问"
+   ]
+  },
+  {
+   "at": "step4-parameterize",
+   "action": "类目落到 6×6 全驱 + 沙漠/油田工况；6×4 公路车降备选",
+   "reasons": [
+    "名录里 天锦/JH6/J6G/龙H5/ZZ425 为 6×4 公路构型",
+    "构型不符会污染踏步离地高度与防护栏构型两组证据"
+   ]
+  },
+  {
+   "at": "step4-cross-vehicle-gate",
+   "action": "不开 cross_vehicle 层：本案例的环境证据不需要跨车型借用",
+   "reasons": ["三件均为环境件，本类目内已有 4 个可落地样本", "默认不开闸，避免把平台件混进环境件"]
+  },
+  {
+   "at": "step5-slots",
+   "action": "推荐 4 台占 vehicle:1..4；备选 6 项不占槽；缓冲 2",
+   "reasons": ["6×6 且能落到型号的样本只有 4 台", "缺口 8 槽如实上报（见 coverage.notes）", "extra=max(2, ceil(0.15×12))=2"]
+  },
+  {
+   "at": "step5-slots-crosscheck",
+   "action": "用 slots.py 复核后覆盖脚本结果：脚本会给出 5 个推荐位，第 5 位是 6×4 公路组（并因同族上限 2 挤掉德龙F3000），本清单只给 4 槽",
+   "reasons": [
+    "slots.py 只按 tier/verified/confidence 排序与同族去重，不认「6×4 构型不符」这个语义门槛",
+    "照脚本出清单会把 6×4 公路车放进推荐位，直接违反本案例的构型判断；故槽位以模型判断为准，脚本仅用于复核缓冲与去重"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "请求的 踏步/防护栏/底盘 不在 沙漠牵引车 档案 component_vocab 中，是否把这三个词扩进档案词表？",
+   "why": "按现有词表只能生成 前脸/大灯防护网/保险杠 一类查询，请求部件会整组漏检；缺档案扩展则查询词表与实际证据需求错位。",
+   "blocking": false
+  },
+  {
+   "question": "「沙漠牵引车」口径是否只收 6×6 全驱，还是也接受 6×4 公路牵引作背景样本？",
+   "why": "决定 5 台 6×4 公路车（天锦/JH6/J6G/龙H5/ZZ425）留在备选还是转正，也决定 8 个缺口槽是否需要补。",
+   "blocking": false
+  },
+  {
+   "question": "是否接受用 德龙X3000 6×6 沙漠越野（载货车底盘）作为牵引车的环境件证据？",
+   "why": "它与牵引车共用驾驶室与防沙件，但不提供鞍座/牵引销视角；接受与否决定第 2 槽是否保留。",
+   "blocking": false
+  },
+  {
+   "question": "是否接受先对 油田修井机底盘 / 沙漠科考车 / 矿用宽体 三个方向跑名录生成，再补缺口槽？",
+   "why": "三者均无型号落地，按纪律只能 inference+备选，不进推荐位；不跑名录生成则 8 槽补不满。",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {"target": "油田修井机/作业机 6×6 底盘 名录", "why": "环境轴最直接的踏步与防沙护栏证据来源，目前无型号"},
+  {"target": "沙漠科考/勘探越野卡车 名录", "why": "环境轴极端样本，目前无型号"},
+  {"target": "沙漠牵引车 档案词表扩展（踏步/防护栏/底盘）", "why": "现有 component_vocab 与请求部件不重叠"}
+ ]
+}

@@ -1,0 +1,455 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "ab-20261031/c05-wheel-loader",
+ "requested": 12,
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "铲斗",
+  "动臂"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：extra=max(2,ceil(0.25×12))=3；备选不占槽，转正才占"
+ },
+ "targets": [
+  {
+   "id": "t01",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "profile",
+   "confidence": 0.55,
+   "reason": "档案代表车型（5t 级轮式装载机）。能提供：hero_45 裁斗刃、斗底耐磨板与斗型比例，side 裁动臂、举升油缸与铰点，用于说明 Z 型连杆举升构型与斗容级差。型号出处=档案代表车型（product-owner 2026-10-23）；主图与可裁性待库内确认。",
+   "verified": true,
+   "source_ref": "data/category_profiles.json#profiles.装载机.representative_models",
+   "category": "装载机",
+   "models": [
+    "柳工 856H"
+   ],
+   "family": "柳工",
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "动臂",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t02",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "profile",
+   "confidence": 0.55,
+   "reason": "档案代表车型（5t 级）。能提供：hero_45 与 side 的铲斗斗型、动臂截面裁图，可对比临工家族涂装与动臂布置；与 t01 不同品牌家族，避免页内单品牌。",
+   "verified": true,
+   "source_ref": "data/category_profiles.json#profiles.装载机.representative_models",
+   "category": "装载机",
+   "models": [
+    "临工 L956F"
+   ],
+   "family": "临工",
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "动臂",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t03",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "profile",
+   "confidence": 0.55,
+   "reason": "档案代表车型（5t 级，性价比市场）。能提供：hero_45 铲斗、side 动臂与举升油缸裁图，补第三家品牌家族；档案未给构型细节，进槽前需核吨位级与轮式构型。",
+   "verified": true,
+   "source_ref": "data/category_profiles.json#profiles.装载机.representative_models",
+   "category": "装载机",
+   "models": [
+    "龙工 855N"
+   ],
+   "family": "龙工",
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "动臂",
+     "axis": "exact",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t04",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.5,
+   "reason": "5t 级销量主力平台，补徐工品牌覆盖（档案未列）。能提供：hero_45 铲斗、side 动臂与举升油缸裁图。型号来自记忆推断、未查名录，按纪律 6 只作备选。",
+   "category": "装载机",
+   "models": [
+    "徐工 ZL50GN"
+   ],
+   "family": "徐工",
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "动臂",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t05",
+   "kind": "category",
+   "tier": 2,
+   "relation": "environment",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.45,
+   "reason": "铲斗与动臂因工况而改形：井下/矿用版用加强耐磨斗、动臂与油缸加防护、驾驶室压低。该层回答“这台车的铲斗/动臂为什么长这样”；查询口径=井下装载机/矿用装载机/低矮型，需名录落车型。",
+   "category": "井下/矿用装载机",
+   "models": [],
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "environment",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "动臂",
+     "axis": "environment",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t06",
+   "kind": "category",
+   "tier": 3,
+   "relation": "platform",
+   "status": "backup",
+   "grounding": "inference",
+   "confidence": 0.4,
+   "reason": "履带底盘版本（湿地/矿山/隧道）与轮式共用工作装置，但举升路径与接地不同。能提供：side 动臂举升构型、hero_45 铲斗容量级对照，作平台层证据，不作环境证据。",
+   "category": "履带式装载机",
+   "models": [],
+   "parts": [
+    {
+     "part": "动臂",
+     "axis": "platform",
+     "views": [
+      "side"
+     ],
+     "croppable": "to_verify"
+    },
+    {
+     "part": "铲斗",
+     "axis": "platform",
+     "views": [
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t07",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "自卸车/翻斗车",
+   "models": [],
+   "reason": "结构事实：自卸车（含 workspace 唯一近邻名录“翻斗铲车”的 12 台，如福田金刚、德龙K3000、沃尔沃FMX）只有货厢与举升，没有铲斗、没有动臂；排进页槽只会得到永远裁不出请求部件的空页。此条只作排除，不作推荐依据（事实待人工确认）。"
+  },
+  {
+   "id": "t08",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.9,
+   "category": "推土机",
+   "models": [],
+   "reason": "结构事实：推土机的工作装置是推土铲与松土器，没有铲斗与动臂；与装载机同属土方机械、检索词高度重叠（铲车/铲运），必须在查询层排除。"
+  },
+  {
+   "id": "t09",
+   "kind": "part_query",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "铲斗专项页候选（一部件一页、5~6 个单元）：需 ≥5 台车的主图能裁出斗刃/斗型；当前库空且无名录，先作候选、不占 part 槽。查询口径=装载机 铲斗 特写/斗型/斗齿。",
+   "parts": [
+    {
+     "part": "铲斗",
+     "axis": "exact",
+     "views": [
+      "hero_45",
+      "side"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  },
+  {
+   "id": "t10",
+   "kind": "part_query",
+   "tier": 1,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "动臂专项页候选：需 ≥5 台车 side/hero_45 可裁动臂、举升油缸与铰点；当前 0 台可核，不占 part 槽。",
+   "parts": [
+    {
+     "part": "动臂",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "status": "to_verify"
+   }
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "铲斗",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  },
+  {
+   "part": "动臂",
+   "candidates": [
+    "t01",
+    "t02",
+    "t03",
+    "t04",
+    "t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 0,
+  "slots_requested": 12,
+  "by_part": {
+   "铲斗": {
+    "croppable_vehicles": 0,
+    "note": "3 台档案车型 + 1 台推断车型，均未验图，未达专项页 5 台门槛"
+   },
+   "动臂": {
+    "croppable_vehicles": 0,
+    "note": "同上；动臂需 side 视角，单张 hero_45 常裁不全"
+   }
+  },
+  "notes": "0 推荐 / 12 槽空。原因三条：①装载机档案 confidence=0.55（<0.6）按纪律 4 阻断，代表车型只能进备选（slots.py 会给出 t01–t03 三槽，但那是分配器不认识 blocking 的结果，不作定稿）；②workspace 无装载机名录，唯一近邻名录“翻斗铲车”12 台全是自卸车构型（无铲斗/动臂）；③图库 0 素材，inventory.py 对所有候选返回 to_verify。补档案+名录后 t01–t04 可直接占 vehicle:1..4，t05–t06 补环境/平台层。"
+ },
+ "decisions": [
+  {
+   "at": "profile_gate",
+   "tier": 1,
+   "action": "hold_for_low_confidence",
+   "reasons": [
+    "装载机档案 confidence=0.55 < 0.6：按纪律 4 阻断式确认，3 台代表车型只作备选、不占槽"
+   ]
+  },
+  {
+   "at": "roster_check",
+   "action": "reject_roster_hits",
+   "reasons": [
+    "workspace 唯一近邻名录=翻斗铲车 12 台，逐台核为自卸车构型（福田金刚/金刚3/金刚C/FMX/J6L/德龙K3000/X5000E），无铲斗、无动臂 → 全部不占槽，收进 exclude t07"
+   ]
+  },
+  {
+   "at": "axis_decision",
+   "tier": 2,
+   "action": "environment_before_platform",
+   "reasons": [
+    "铲斗形态随物料与工况改变（土方/矿料/垃圾/粮食斗型不同）→ 先开 environment 层 t05，履带平台层 t06 排后"
+   ]
+  },
+  {
+   "at": "slot_allocation",
+   "tier": 1,
+   "action": "override_allocator_hold_slots",
+   "reasons": [
+    "slots.py（thin=true）实际返回 recommended=[t01,t02,t03]、held=5（t04/t05/t06/t09/t10）、shortfall=9：分配器只按 grounding/verified 排序，不认识 blocking",
+    "档案 0.55 的低置信阻断未解除，按纪律 4 不把这 3 槽当定稿 → 三台代表车型停在备选，vehicle 槽全部空置；blocking 解除后可直占 vehicle:1..3"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "hold_part_pages",
+   "reasons": [
+    "铲斗/动臂专项页各需 ≥5 台可裁车型，当前可核 0 台 → ready=false，不占 part 槽"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "装载机口径与档案置信：按轮式 5t 级（ZL50 级）做，还是井下/履带/滑移变体？是否接受柳工 856H / 临工 L956F / 龙工 855N 三台代表车型作为首批页槽？",
+   "why": "档案 confidence=0.55<0.6，纪律 4 要求阻断式确认；口径不同则铲斗/动臂的构型证据完全不同（井下低矮型 vs 通用土方型）",
+   "blocking": true
+  },
+  {
+   "question": "“自卸车/翻斗车无铲斗+动臂、推土机无铲斗+动臂”可否作为结构排除事实？",
+   "why": "structural-facts.md 的 F1–F4 全为 pending；新增排除事实同样需人审后生效，当前只用于 exclude、不作推荐依据",
+   "blocking": false
+  },
+  {
+   "question": "铲斗/动臂两个部件专项页是否保留（各 1 页）？",
+   "why": "专项页需 ≥5 台可裁车型，当前可核 0 台；保留即占 part_page_slots 2，整车页降到 10~12 的区间下沿",
+   "blocking": false
+  },
+  {
+   "question": "补名录的查询口径是否按 t01–t06（品牌+5t 级+轮式/井下/履带）执行？",
+   "why": "名录生成是这些 inference 候选转正的唯一验证途径，先定口径可省一轮检索",
+   "blocking": false
+  }
+ ],
+ "backlog": [
+  {
+   "target": "装载机类目档案补强（轮式/井下/履带/滑移变体 + 5t 级代表车型）",
+   "why": "档案 0.55 与“铲车/铲运机”别名混用是本次无法定稿的根因"
+  },
+  {
+   "target": "徐工/山工/斗山 5t 级装载机名录生成",
+   "why": "档案只给 3 个品牌，环境层/平台层缺车型可落"
+  }
+ ]
+}

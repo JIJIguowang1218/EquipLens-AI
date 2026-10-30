@@ -1,0 +1,536 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "intent:c02-heavy-crane|重型吊车｜部件：支腿",
+ "requested": 12,
+ "profile_status": "found",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "支腿"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：max(2, ceil(0.25×12))=3；备选不占槽"
+ },
+ "targets": [
+  {
+   "id": "c02-t01",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.75,
+   "reason": "名录命中全地面构型（源 163651）；预期可裁 side/hero_45 的支腿全伸与半伸、支腿盘（多级伸缩、H 型），提供超大吨位承力构型证据；构型与吨位待核。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [
+    "SAC16000S"
+   ],
+   "family": "三一",
+   "source_ref": "data-test/roster-重型吊车-20261018-163651.json",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:1"
+   ]
+  },
+  {
+   "id": "c02-t02",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.7,
+   "reason": "名录命中大吨位汽车吊构型（源 163559，误落在'轻型吊车'文件）；可裁前后支腿伸出与支腿盘落地，提供汽车吊支腿纵向布置证据；吨位待核。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [
+    "STC1300C8"
+   ],
+   "family": "三一",
+   "source_ref": "data-test/roster-轻型吊车-20261018-163559.json",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:2"
+   ]
+  },
+  {
+   "id": "c02-t03",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "方向：徐工 ≥100t 汽车吊。预期可裁 H 型支腿、支腿盘与侧向跨距；提供主流厂系的大吨位支腿布置；models 留空，待名录生成+吨位确认。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "徐工",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:3"
+   ]
+  },
+  {
+   "id": "c02-t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：徐工全地面（多轴底盘）。可裁多轴底盘上的支腿与支腿盘，提供轴数与支腿跨距的关系证据；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "徐工",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:4"
+   ]
+  },
+  {
+   "id": "c02-t05",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：中联 ≥100t 汽车吊。可裁支腿全伸侧视与支腿盘；提供第三厂系的支腿构型对照；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "中联",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:5"
+   ]
+  },
+  {
+   "id": "c02-t06",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "方向：中联全地面。可裁支腿与配重组合，提供配重与支腿共同承力的叙事；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "中联",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:6"
+   ]
+  },
+  {
+   "id": "c02-t07",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "方向：雷萨 ≥100t 汽车吊。可裁支腿与支腿盘；补充第四厂系样本，避免支腿页全是一家的兄弟车型；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "雷萨",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:7"
+   ]
+  },
+  {
+   "id": "c02-t08",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.5,
+   "reason": "备选：80t 汽车吊（名录命中）。若'重型'门槛落到 80t 即转正占槽；可裁支腿全伸侧视与支腿盘。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [
+    "STC800C6"
+   ],
+   "family": "三一-80t",
+   "source_ref": "data-test/roster-轻型吊车-20261018-163559.json",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c02-t09",
+   "kind": "part_query",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "部件查询（不占槽）：汽车吊 H 型支腿（支腿梁/油缸/支腿盘）。用于补齐支腿型式的跨厂样本裁图。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "支腿部件",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c02-t10",
+   "kind": "part_query",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "部件查询（不占槽）：全地面支腿盘与支腿油缸。提供支腿落地承力细节裁图，供部件专项页评估。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "重型吊车",
+   "models": [],
+   "family": "支腿部件",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c02-t11",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.9,
+   "reason": "结构事实 F1：履带起重机无支腿，靠履带+超起配重稳定。名录里出现（源 163651/163542），不得进支腿清单，否则该槽检索永远为空。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "履带起重机",
+   "models": [
+    "XGC88000"
+   ],
+   "family": "履带",
+   "source_ref": "data-test/roster-重型吊车-20261018-163542.json",
+   "confirmed_by": "structural-facts.md F1（待人工确认）",
+   "fact_status": "pending",
+   "slots": []
+  },
+  {
+   "id": "c02-t12",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "roster",
+   "verified": true,
+   "confidence": 0.85,
+   "reason": "结构事实 F2：载货车（无起重装置）无支腿。名录里出现（源 163542），属'重型吊车'口径污染，排除而非降权。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "载货车",
+   "models": [
+    "德龙8×4"
+   ],
+   "family": "载货",
+   "source_ref": "data-test/roster-重型吊车-20261018-163542.json",
+   "confirmed_by": "structural-facts.md F2（待人工确认）",
+   "fact_status": "pending",
+   "slots": []
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "支腿",
+   "candidates": [
+    "c02-t01",
+    "c02-t02",
+    "c02-t03"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "库空；支腿需 side/hero_45 主图且要求 ≥5 台可裁，当前 0 台已验证",
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 7,
+  "slots_requested": 12,
+  "by_part": {
+   "支腿": {
+    "slots": 7,
+    "croppable_verified": 0
+   }
+  },
+  "gap_kind": [
+   "no_roster",
+   "undefined_scope"
+  ],
+  "notes": "12 槽只填 7：≥100t 且名录可核 2 台 + 4 厂系方向 5 条。'重型'吨位门槛未定（100t/80t）且名录混入 25t 级/履带/载货车，槽 8~12 空置。"
+ },
+ "decisions": [
+  {
+   "at": "caliber",
+   "tier": 1,
+   "action": "pin_parameters",
+   "reasons": [
+    "'重型吊车'先落参数：≥100t + 汽车/全地面底盘；履带底盘另按 F1 排除",
+    "名录按原词检索混入 25t 级、随车吊底盘与发动机代号（MC07/HW12/WD615），口径不落是主因"
+   ]
+  },
+  {
+   "at": "structural_exclude",
+   "tier": 4,
+   "action": "exclude_crawler_and_truck",
+   "reasons": [
+    "XGC88000 属履带起重机（F1 pending），SCC2500C/SCC500C 同类一并降为口径外",
+    "德龙8×4 属载货车（F2 pending），两条事实均只作排除，不反向当推荐依据"
+   ]
+  },
+  {
+   "at": "roster_crosscheck",
+   "tier": 3,
+   "action": "keep_2_roster_models",
+   "reasons": [
+    "≥100t 且名录可核的只剩 2 台，且跨文件（STC1300C8 落在'轻型吊车'文件）说明名录未锁",
+    "25t/35t/50t/55t 级（QY25K5、XCT25、ZTC250A、STC500、FTC55X5 等）按'轻型'口径外，不占槽"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "tier": 2,
+   "action": "hold_direction_slots",
+   "reasons": [
+    "c02-t03~c02-t07 为厂系×底盘形式方向，models 留空、verify_by=roster_generation",
+    "转正：名录生成 + 吨位确认；失败则退 c02-t08(80t) 或缩页，缺口已记 coverage"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "tier": 3,
+   "action": "keep_7_slots",
+   "reasons": [
+    "槽 8~12 没有 ≥100t 的合格候选，空置不凑数",
+    "跨车型（随车吊支腿）对照未开：allow_cross_vehicle=false，留 backlog 待用户勾选"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "defer_part_pages",
+   "reasons": [
+    "库空，支腿可裁台数 0 < 5，部件专项页 0 页"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "'重型'的吨位门槛取 ≥100t 还是 ≥80t？",
+   "why": "决定 c02-t08（80t，名录已核）是否转正占槽，也决定名录里 55~80t 级是否算口径内",
+   "blocking": false,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "是否确认 structural-facts F1（履带吊无支腿）可用于排除？",
+   "why": "F1 当前 pending；名录里 XGC88000/SCC2500C/SCC500C 都是履带吊，若不排除会占掉支腿页槽",
+   "blocking": false,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "'重型吊车'是否包含履带吊（用户口径）？若包含，则支腿证据对这类车不成立，需拆分专题。",
+   "why": "行业口语里履带吊也算重型吊车，与支腿请求直接冲突",
+   "blocking": false,
+   "blocking_scope": "parts"
+  }
+ ],
+ "backlog": [
+  {
+   "target": "同吨位汽车吊支腿跨车型对照（allow_cross_vehicle）",
+   "why": "用户未勾选接受类比证据，本次不占槽；打开后可与随车吊支腿页互证"
+  },
+  {
+   "target": "'重型吊车'名录重跑（加吨位与底盘形式约束词）",
+   "why": "现名录 2 份均 pending_lock，且混入 25t 级、随车吊底盘、发动机代号"
+  }
+ ]
+}

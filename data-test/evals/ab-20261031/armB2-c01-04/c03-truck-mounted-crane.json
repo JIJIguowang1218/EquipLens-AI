@@ -1,0 +1,499 @@
+{
+ "list_version": "v0.2",
+ "intent_ref": "intent:c03-truck-mounted-crane|随车吊｜部件：支腿",
+ "requested": 12,
+ "profile_status": "draft",
+ "allow_cross_vehicle": false,
+ "parts_requested": [
+  "支腿"
+ ],
+ "page_budget": {
+  "total": 20,
+  "fixed_pages": 5,
+  "vehicle_slots": 12,
+  "part_page_slots": 2
+ },
+ "buffer": {
+  "requested": 12,
+  "extra": 3,
+  "rule": "薄类目 25%：max(2, ceil(0.25×12))=3；备选不占槽"
+ },
+ "targets": [
+  {
+   "id": "c03-t01",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "recommended",
+   "grounding": "profile",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "档案代表车型（厂系级）：支腿与货厢共用底盘，可裁 side 支腿全伸/半伸与 rear 支腿盘，提供起重-载货共用底盘的支腿证据；具体型号待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [
+    "程力 随车吊"
+   ],
+   "family": "程力",
+   "source_ref": "data/category_profiles.json#随车吊（status=draft）",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": [
+    "vehicle:1"
+   ]
+  },
+  {
+   "id": "c03-t02",
+   "kind": "vehicle",
+   "tier": 1,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：三一直臂随车吊。可裁 H 型支腿跨距与支腿盘；提供大厂随车吊支腿构型；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "三一",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:2"
+   ]
+  },
+  {
+   "id": "c03-t03",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：徐工随车吊。可裁支腿与转台连接处；提供第二厂系支腿布置对照；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "徐工",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:3"
+   ]
+  },
+  {
+   "id": "c03-t04",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "方向：中联随车吊。可裁支腿全伸与货厢侧板的关系；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "中联",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:4"
+   ]
+  },
+  {
+   "id": "c03-t05",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.5,
+   "reason": "方向：折臂式随车吊（≤8t）。折臂上装通常配窄跨距支腿，可裁支腿与折臂根部；提供小吨位支腿的下限样本；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "折臂构型",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:5"
+   ]
+  },
+  {
+   "id": "c03-t06",
+   "kind": "vehicle",
+   "tier": 2,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.45,
+   "reason": "方向：直臂大吨位随车吊（≥12t）。可裁加长支腿梁与支腿盘；提供随车吊支腿跨距上限样本，用于和汽车吊比跨度；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "直臂-大吨位",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:6"
+   ]
+  },
+  {
+   "id": "c03-t07",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "exact",
+   "status": "provisional",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "reason": "方向：随州专用车集群（楚胜/骏通等改装厂）。可裁支腿型式与底盘改装接口；提供改装厂与主机厂的构型差异；models 留空，待名录生成。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "随州集群",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": [
+    "vehicle:7"
+   ]
+  },
+  {
+   "id": "c03-t08",
+   "kind": "part_query",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.4,
+   "reason": "部件查询（不占槽）：随车吊 H 型支腿（支腿梁/油缸/支腿盘）。用于补齐支腿落地与跨距的细节裁图。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "支腿部件",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c03-t09",
+   "kind": "part_query",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "reason": "部件查询（不占槽）：Palfinger/Hiab 折臂上装的支腿模块。提供上装厂与整厂在支腿布置上的差异样本。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "上装部件",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "slots": []
+  },
+  {
+   "id": "c03-t10",
+   "kind": "vehicle",
+   "tier": 3,
+   "relation": "exact",
+   "status": "backup",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.35,
+   "reason": "备选方向：8x4 底盘大跨距随车吊。可裁加长支腿梁；推荐集主图判废时顶上。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "随车吊",
+   "models": [],
+   "family": "8x4底盘",
+   "parts": [
+    {
+     "part": "支腿",
+     "axis": "exact",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "croppable": "to_verify"
+    }
+   ],
+   "verify_by": "roster_generation",
+   "slots": []
+  },
+  {
+   "id": "c03-t11",
+   "kind": "exclude",
+   "tier": 4,
+   "relation": "exclude",
+   "status": "blocked",
+   "grounding": "inference",
+   "verified": false,
+   "confidence": 0.8,
+   "reason": "结构事实 F2：纯载货车（无起重装置）无支腿。随车吊常与载货车混写（档案 known_confusions），检索时按 F2 排除，避免支腿页搜到无支腿车厢。",
+   "images": {
+    "in_library": 0,
+    "need_crawl": true,
+    "hero_candidates": 0,
+    "status": "to_verify"
+   },
+   "category": "载货车",
+   "models": [],
+   "family": "载货",
+   "confirmed_by": "structural-facts.md F2（待人工确认）",
+   "fact_status": "pending",
+   "slots": []
+  }
+ ],
+ "part_pages": [
+  {
+   "part": "支腿",
+   "candidates": [
+    "c03-t01",
+    "c03-t02",
+    "c03-t05"
+   ],
+   "vehicles_covered": 0,
+   "ready": false,
+   "why_not_ready": "库空且无名录；支腿专项页需 ≥5 台可裁，当前 0 台已验证",
+   "borrowed_share": 0.0
+  }
+ ],
+ "coverage": {
+  "slots_filled": 7,
+  "slots_requested": 12,
+  "by_part": {
+   "支腿": {
+    "slots": 7,
+    "croppable_verified": 0
+   }
+  },
+  "gap_kind": [
+   "no_roster",
+   "no_image"
+  ],
+  "notes": "12 槽只填 7：档案 draft(0.4) 只有厂系级代表车型 + 6 条方向级；随车吊无名录、库空，槽 8~12 空置。"
+ },
+ "decisions": [
+  {
+   "at": "profile_block",
+   "action": "limit_block_scope",
+   "reasons": [
+    "档案 status=draft、confidence=0.4、confirmed_by=LLM-draft → 按纪律4必须阻断式确认",
+    "blocking_scope=branches：只阻断'载货为主/纯载货底盘'分支，支腿属起重分支，证据照常推进"
+   ]
+  },
+  {
+   "at": "part_axis",
+   "tier": 1,
+   "action": "exact_axis",
+   "reasons": [
+    "支腿是随车吊的必备作业件，走 exact 轴",
+    "跨车型（同吨位汽车吊支腿）对照需用户勾选 cross_vehicle，本次 allow_cross_vehicle=false，只留 backlog"
+   ]
+  },
+  {
+   "at": "roster_absent",
+   "action": "no_roster_use_directions",
+   "reasons": [
+    "data-test 无随车吊名录（只有沙漠牵引车/重型吊车/轻型吊车/翻斗铲车）",
+    "档案代表车型只有厂系级'程力 随车吊'，其余按方向级占槽，verify_by=roster_generation"
+   ]
+  },
+  {
+   "at": "provisional_slots",
+   "tier": 2,
+   "action": "hold_direction_slots",
+   "reasons": [
+    "c03-t02~c03-t07 为厂系×吊臂构型方向，models 留空",
+    "转正：名录生成拿到型号；失败则退 c03-t10 或缩页，缺口已记 coverage"
+   ]
+  },
+  {
+   "at": "slots_crosscheck",
+   "action": "keep_7_slots",
+   "reasons": [
+    "槽 8~12 无可核随车吊候选，空置不凑数（薄类目）"
+   ]
+  },
+  {
+   "at": "part_page",
+   "action": "defer_part_pages",
+   "reasons": [
+    "库空，支腿可裁台数 0 < 5，部件专项页 0 页"
+   ]
+  }
+ ],
+ "needs_confirmation": [
+  {
+   "question": "这次随车吊按'起重为主'还是'载货为主'做？",
+   "why": "档案 confidence=0.4 且为 LLM 草案；若按载货为主，货厢/底盘叙事要重写，支腿证据只作辅助",
+   "blocking": true,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "是否接受'同吨位汽车吊支腿'作为跨车型类比证据（需打开 allow_cross_vehicle）？",
+   "why": "structural-facts F4 提示随车吊支腿跨度通常小于同吨位汽车吊，但 F4 仍 pending，不能当同级承力结论",
+   "blocking": false,
+   "blocking_scope": "branches"
+  },
+  {
+   "question": "是否给'随车吊'档转正（0.4 → 人工确认）并补 representative_models 到型号级？",
+   "why": "现档案只有厂系级代表车型，导致 7 个槽里 6 个只能标方向级 provisional",
+   "blocking": false,
+   "blocking_scope": "parts"
+  }
+ ],
+ "backlog": [
+  {
+   "target": "随车吊名录生成（含 起重为主/载货为主 两种口径）",
+   "why": "无名录是本清单最大的缺口，7 个槽里 6 个只能标方向级"
+  },
+  {
+   "target": "同吨位汽车吊支腿对照（F4 跨车型参照）",
+   "why": "需用户勾选 cross_vehicle；F4 仍 pending，不能当同级承力结论"
+  }
+ ]
+}
