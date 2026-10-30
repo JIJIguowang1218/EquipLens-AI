@@ -180,9 +180,9 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
     raw = dict(plan)
     plan = build_plan(queries=raw["queries"], quota=raw.get("quota"),
                       batch_id=raw.get("batch_id"))
-    for k in ("relevant_terms", "negative_terms", "source_trust", "purpose",
-              "profile_ref", "profile_status", "budget", "round", "fallback",
-              "skip_domains", "serp_channel"):
+    for k in ("relevant_terms", "query_meta", "negative_terms", "source_trust",
+              "purpose", "profile_ref", "profile_status", "budget", "round",
+              "fallback", "skip_domains", "serp_channel"):
         if k in raw:
             plan[k] = raw[k]
     outdir = Path(data_dir) / "corpus" / plan["batch_id"]
@@ -227,9 +227,11 @@ def collect_corpus(plan: dict, data_dir: Path) -> dict:
                 for st_, q in all_queries:
                     if st_ != st or got >= quota:
                         continue
+                    q_terms = (plan.get("query_meta", {}).get(q) or {}).get(
+                        "relevant_terms") or plan.get("relevant_terms")
                     for a in pick_anchors(
                             serp_md.get(q, ""), max(4, (quota - got) * 3), seen,
-                            relevant_terms=plan.get("relevant_terms")):
+                            relevant_terms=q_terms):
                         seen.add(a["url"])
                         real = resolve_redirect(a["url"])
                         rec = {"source_type": st, "query": q,

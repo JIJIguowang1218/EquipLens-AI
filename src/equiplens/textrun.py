@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import json
+import re
 import time
 from pathlib import Path
 
@@ -83,38 +84,69 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
     neg = list(dict.fromkeys(registry.get("negative_terms", [])))
 
     queries: dict[str, list[str]] = {}
+    query_meta: dict[str, dict] = {}
+    aliases = list((profile or {}).get("aliases") or ([] if not category else [category]))
+    comp_vocab = list((profile or {}).get("component_vocab") or [])
+    design_words = ["造型", "设计语言", "家族化", "外观设计", "工业设计", "CMF",
+                    "设计风格"]
 
-    def add(q: str, st: str = "industry") -> None:
+    def _terms(info_type: str, extra: list[str] | None = None) -> list[str]:
+        """按查询的信息类型给 relevant_terms——车型查询用车型词，
+        类目/定调查询用类目词+设计语汇（T18-roster：全局车型名过滤会误杀
+        类目级查询，导致 G 档归零）。"""
+        base = {
+            "vehicle": [*models, category or "", *aliases[:2]],
+            "component": [category or "", *comp_vocab, *aliases[:2]],
+            "macro": [*aliases[:2], category or "", *design_words],
+        }[info_type]
+        return list(dict.fromkeys([*(extra or []), *base, *design_words]))
+
+    def add(q: str, st: str = "industry", info_type: str = "macro",
+            extra_terms: list[str] | None = None) -> None:
         q = q.strip()
         if not q:
             return
         bucket = queries.setdefault(st, [])
         if q not in bucket:
             bucket.append(q)
+        query_meta.setdefault(q, {"info_type": info_type,
+                                  "relevant_terms": _terms(info_type, extra_terms)})
 
     # 1) 档案层：有档案时优先具体查询（预算截断时先保住类目相关）
     if profile:
         for alias in (profile.get("aliases") or [])[:2]:
-            add(f"{alias} 造型 设计 语言", "industry")
+            add(f"{alias} 造型 设计 语言", "industry", "macro")
         for model in models:
-            add(f"{model} 外观 造型 设计 解读", "review")
+            add(f"{model} 外观 造型 设计 解读", "review", "vehicle",
+                extra_terms=[model, *re.findall(r"[A-Za-z0-9\-]{2,}", model)])
         for comp in (profile.get("component_vocab") or [])[:4]:
-            add(f"{category} {comp} 设计", "review")
+            add(f"{category} {comp} 设计", "review", "component")
         for term in (profile.get("market_terms") or [])[:2]:
-            add(f"{term} 造型 设计 趋势", "industry")
+            add(f"{term} 造型 设计 趋势", "industry", "macro",
+                extra_terms=[term])
+    # 1b) 信源定向：优先域站内查询（域名来自数据文件 registry.preferred_domains）
+    for domain in (registry.get("preferred_domains") or [])[:2]:
+        if category:
+            add(f"site:{domain} {category} 造型 设计", "review", "macro")
     # 2) 通用层/宽搜轮：宽搜轮只跑“不同的”查询，避免重复上一轮
     if wide:
         for q in ["工程机械 工业设计", "特种车辆 外观 设计 解读",
                   "商用车 CMF 色彩 材质 趋势", "作业车 造型 设计"]:
-            add(q, "industry")
+            add(q, "industry", "macro")
         if category:
-            add(f"{category} 驾驶室 设计", "review")
-            add(f"{category} 工业设计 研究", "academic")
-        add("专用车 造型 设计", "review")
-        add("工程机械 造型设计 研究", "academic")
+            add(f"{category} 驾驶室 设计", "review", "component")
+            add(f"{category} 工业设计 研究", "academic", "macro")
+        add("专用车 造型 设计", "review", "macro")
+        add("工程机械 造型设计 研究", "academic", "macro")
     else:
         for i, q in enumerate(strategy.generic_queries(category, models)):
-            add(q, "industry" if i % 2 == 0 else "review")
+            st = "industry" if i % 2 == 0 else "review"
+            hit = next((m for m in models if m and m in q), None)
+            if hit:  # 通用层里的车型查询仍按 vehicle 给词
+                add(q, st, "vehicle",
+                    extra_terms=[hit, *re.findall(r"[A-Za-z0-9\-]{2,}", hit)])
+            else:
+                add(q, st, "macro")
 
     # 3) 预算：查询数上限
     flat = [(st, q) for st, qs in queries.items() for q in qs]
@@ -148,6 +180,8 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
         if s.get("trust") == "exclude"
         or s.get("design_yield") in ("none", "preview_only")]
 
+    kept_meta = {q: m for q, m in query_meta.items()
+                 if any(q in qs for qs in queries.values())}
     plan = {
         "batch_id": f"batch-text-{time.strftime('%Y%m%d-%H%M%S')}{suffix}",
         "purpose": intent.get("task_type", "text_design_scan"),
@@ -156,6 +190,7 @@ def build_plan(intent: dict, *, profile_name: str | None, profile: dict | None,
         "profile_ref": profile_name,
         "profile_status": (profile.get("status") or "found") if profile else "missing",
         "queries": queries,
+        "query_meta": kept_meta,
         "quota": quota,
         "negative_terms": neg,
         "relevant_terms": relevant,

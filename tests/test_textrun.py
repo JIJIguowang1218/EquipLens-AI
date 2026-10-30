@@ -178,12 +178,43 @@ def test_budget_binding():
     assert plan["budget"]["per_type_quota"] == 6
 
 
+def test_config_line_filter():
+    """报价配置行必须判 C（T18-roster：'高顶'误命中维度词导致 B 档穿透）。"""
+    cfg = "2022款 2.0T柴油商运版长轴高顶厢货2座D20TCIF1"
+    assert passage.score_passage(cfg, "medium")["label"] == "C", cfg
+    ok = "前脸采用V字形格栅，线条硬朗，镀铬饰条贯穿，营造出强烈的力量感与家族化识别。"
+    assert passage.score_passage(ok, "high")["label"] in ("A", "B")
+
+
+def test_query_meta_groups():
+    """查询分层：车型查询与类目查询的 relevant_terms 必须不同。"""
+    profiles = textrun.load_profiles()
+    name, prof = textrun.resolve_profile("重卡", profiles)
+    plan = textrun.build_plan(
+        {"task_type": "text_design_scan", "category": "重卡",
+         "models": ["汕德卡C9H"], "target_content": "design_analysis",
+         "budget": {"max_queries": 20, "max_fetch": 12, "max_rounds": 2}},
+        profile_name=name, profile=prof, registry=REGISTRY)
+    metas = plan["query_meta"]
+    assert metas, metas
+    vehicle = [q for q, m in metas.items() if m["info_type"] == "vehicle"]
+    assert vehicle and "汕德卡C9H" in vehicle[0], vehicle
+    macro = [q for q, m in metas.items() if m["info_type"] == "macro"]
+    assert macro, metas
+    m_terms = metas[macro[0]]["relevant_terms"]
+    assert any(w in t for t in m_terms for w in ("造型", "设计语言", "工业设计")), m_terms
+    v_terms = metas[vehicle[0]]["relevant_terms"]
+    assert "汕德卡C9H" in v_terms, v_terms
+
+
 if __name__ == "__main__":
     check("intent/plan schema 与预算", test_schema_validation)
     check("类目档案解析与歧义", test_profile_resolution_and_ambiguity)
     check("有档案计划与预算帽", test_profile_plan_and_budget)
     check("预算上限真正生效（max_fetch/per_type）", test_budget_binding)
     check("段落清洗与 A/C 分级", test_passage_grading)
+    check("报价配置行判 C", test_config_line_filter)
+    check("查询分层 query_meta", test_query_meta_groups)
     check("批次评估汇总", test_grade_batch)
     check("低信度逃生口决策", test_strategy_escape_hatch)
     check("运行日志事件与摘要", test_runlog_trace)

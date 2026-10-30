@@ -43,6 +43,10 @@ IMG_RE = re.compile(r"^!\[[^\]]*\]\([^)]*\)\s*$")
 LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]+\)")
 BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 LOW_TITLE_RE = re.compile(r"有限公司|销售|报价|价格|促销|厂家|批发|多少钱|询价")
+# 汽车之家/太平洋等报价配置行：T18-roster 实测 '高顶' 命中比例/姿态维度词，
+# 使 "2022款 2.0T柴油商运版长轴高顶厢货2座" 穿透成 B 档候选（60+ 条噪声）。
+CONFIG_LINE_RE = re.compile(
+    r"\d{4}款.{0,40}(座|厢货|明窗|长轴|短轴|商运版|商旅版|专业版|定制版|高顶)")
 
 
 def _domain(url: str) -> str:
@@ -106,6 +110,8 @@ def score_passage(text: str, source_trust: str = "medium") -> dict:
         label = "B"
     else:
         label = "C"
+    if CONFIG_LINE_RE.search(text):
+        label = "C"  # 报价配置行：参数堆砌，不是设计描述
     return {"label": label, "score": score, "strong": strong, "weak": weak,
             "negative": neg, "dims": dims, "numeric_ratio": round(numeric_ratio, 3),
             "source_trust": source_trust, "chars": len(text)}
