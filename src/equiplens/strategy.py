@@ -53,8 +53,12 @@ def assess(metrics: dict, *, profile_status: str = "found",
         return Decision("ask_user", ["意图存在未确认歧义，先问用户"],
                         scope=["intent_clarification"])
     articles = int(metrics.get("articles", 0))
-    a_share = float(metrics.get("a_share", 0.0))
-    a_chars = int(metrics.get("a_chars", 0))
+    # 有闸门指标时以"过闸后可用"为准（L3 接线后 textrun 会带 gated_* 键）；
+    # 无闸门指标的离线调用保持原口径，向后兼容。
+    gated = "gated_a_chars" in metrics or "gated_a_share" in metrics
+    a_share = float(metrics.get("gated_a_share", metrics.get("a_share", 0.0)))
+    a_chars = int(metrics.get("gated_a_chars", metrics.get("a_chars", 0)))
+    label = "闸门后" if gated else "A"
     source_types = metrics.get("source_types", []) or []
     failed = int(metrics.get("hard_failed", metrics.get("failed", 0)))
     saved = articles
@@ -63,9 +67,9 @@ def assess(metrics: dict, *, profile_status: str = "found",
     if articles < t["min_articles"]:
         reasons.append(f"文章数 {articles} < {t['min_articles']}")
     if a_share < t["min_a_share"]:
-        reasons.append(f"A 占比 {a_share:.1%} < {t['min_a_share']:.1%}")
+        reasons.append(f"{label} 占比 {a_share:.1%} < {t['min_a_share']:.1%}")
     if a_chars < t["min_a_chars_for_ok"]:
-        reasons.append(f"A 字数 {a_chars} < {t['min_a_chars_for_ok']}")
+        reasons.append(f"{label} 字数 {a_chars} < {t['min_a_chars_for_ok']}")
     if len(source_types) < t["min_source_types"]:
         reasons.append(f"来源类型 {len(source_types)} < {t['min_source_types']}")
     if failure_rate > t["max_failure_rate"]:

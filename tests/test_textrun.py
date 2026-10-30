@@ -214,6 +214,77 @@ def test_query_meta_groups():
     assert "汕德卡C9H" in v_terms, v_terms
 
 
+def _tmp_batch(docs: dict[str, str]) -> Path:
+    """建一个最小批次目录：{文件名: 正文} → batch-x/index.json。"""
+    batch = Path(tempfile.mkdtemp()) / "batch-x"
+    batch.mkdir(parents=True)
+    index = []
+    for i, (name, body) in enumerate(docs.items(), 1):
+        (batch / name).write_text(
+            f"---\nurl: https://www.360che.com/{i}\ntitle: {name}\n---\n\n{body}",
+            encoding="utf-8")
+        index.append({"url": f"https://www.360che.com/{i}", "title": name,
+                      "source_type": "review", "status": "saved",
+                      "file": name, "chars": len(body), "query": "q"})
+    (batch / "index.json").write_text(json.dumps(
+        {"batch_id": "batch-x", "index": index}, ensure_ascii=False), encoding="utf-8")
+    return batch
+
+
+def test_gate_wiring():
+    """闸门接线：同批次同时给基线 A 与过闸 A，拒绝理由可审计。"""
+    batch = _tmp_batch({
+        "001-good.md": "前脸采用V字形格栅，线条硬朗，镀铬饰条贯穿，"
+                       "营造出强烈的力量感与家族化识别。\n",
+        "002-competition.md": "本次设计大赛参赛作品以硬朗线条和曲面造型为主，"
+                              "外观设计感突出，组队报名参加复赛。\n",
+    })
+    try:
+        rep = passage.grade_batch(batch, REGISTRY, gate_l3=True)
+        m = rep["metrics"]
+        assert m["a_chars"] > 0, m
+        assert m["gate_candidate_count"] >= 2, m
+        assert m["gated_a_chars"] < m["a_chars"], m  # 竞赛稿应被闸门拦下
+        assert "topic_type" in m["gate_reject_reasons"], m["gate_reject_reasons"]
+        assert m["gated_keep_rate"] < 1, m
+        good = next(d for d in rep["docs"] if d["title"].endswith("good.md"))
+        assert good["gated_a_chars"] > 0, good
+        bad = next(d for d in rep["docs"] if d["title"].endswith("competition.md"))
+        assert bad["gated_a_chars"] == 0, bad
+        # 基线口径不被闸门改动：不传 gate_l3 时指标里没有闸门字段
+        base = passage.grade_batch(batch, REGISTRY)
+        assert "gated_a_chars" not in base["metrics"], base["metrics"]
+        assert base["metrics"]["a_chars"] == m["a_chars"], (base["metrics"], m)
+    finally:
+        shutil.rmtree(batch.parent, ignore_errors=True)
+
+
+def test_strategy_prefers_gated():
+    """接线后控制层按"过闸后可用"判低信度，而非关键词 A。"""
+    inflated = {"articles": 5, "a_share": 0.12, "a_chars": 500,
+                "gated_a_share": 0.004, "gated_a_chars": 22,
+                "source_types": ["industry", "review"], "failed": 0}
+    d = strategy.assess(inflated, round_no=1, max_rounds=2)
+    assert d["action"] == "replan", d
+    assert any("闸门后" in r for r in d["reasons"]), d["reasons"]
+
+
+def test_merge_metrics_gate():
+    """多轮合并：闸门字段逐轮累加，拒绝理由聚合。"""
+    rounds = [{"grade": {"docs": [{"a_count": 1, "source_type": "review", "dims": ["形态"]}],
+                         "metrics": {
+        "total_chars": 1000, "a_chars": 200, "b_chars": 0, "failed": 0,
+        "hard_failed": 0, "policy_skipped": 0, "blocked_url": 0, "robots_denied": 0,
+        "gate_candidate_count": 50, "gate_pass_count": 4, "gate_pass_chars": 300,
+        "gated_a_count": 2, "gated_a_chars": 120,
+        "gate_reject_reasons": {"topic_type": 3}}}, "serp": {}}]
+    m = textrun._merge_metrics(rounds)
+    assert m["gated_a_chars"] == 120, m
+    assert m["gate_pass_rate"] == 0.08, m
+    assert m["gated_keep_rate"] == 0.6, m
+    assert m["gate_reject_reasons"] == {"topic_type": 3}, m
+
+
 if __name__ == "__main__":
     check("intent/plan schema 与预算", test_schema_validation)
     check("类目档案解析与歧义", test_profile_resolution_and_ambiguity)
@@ -224,6 +295,9 @@ if __name__ == "__main__":
     check("查询分层 query_meta", test_query_meta_groups)
     check("批次评估汇总", test_grade_batch)
     check("低信度逃生口决策", test_strategy_escape_hatch)
+    check("闸门接线：双轨指标与拒绝理由", test_gate_wiring)
+    check("闸门后指标驱动逃生口", test_strategy_prefers_gated)
+    check("多轮合并闸门指标", test_merge_metrics_gate)
     check("运行日志事件与摘要", test_runlog_trace)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:

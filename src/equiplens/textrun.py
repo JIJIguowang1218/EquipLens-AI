@@ -222,6 +222,17 @@ def _merge_metrics(rounds: list[dict]) -> dict:
     total = sum(r["grade"]["metrics"]["total_chars"] for r in rounds)
     a = sum(r["grade"]["metrics"]["a_chars"] for r in rounds)
     failed = sum(r["grade"]["metrics"]["failed"] for r in rounds)
+
+    def _g(key: str) -> int:
+        return sum(int(r["grade"]["metrics"].get(key, 0)) for r in rounds)
+
+    gated_a = _g("gated_a_chars")
+    gate_cand = _g("gate_candidate_count")
+    gate_pass = _g("gate_pass_count")
+    rejects: dict[str, int] = {}
+    for r in rounds:
+        for reason, n in (r["grade"]["metrics"].get("gate_reject_reasons") or {}).items():
+            rejects[reason] = rejects.get(reason, 0) + n
     return {
         "articles": len(docs),
         "articles_with_a": sum(1 for d in docs if d["a_count"] > 0),
@@ -230,6 +241,15 @@ def _merge_metrics(rounds: list[dict]) -> dict:
         "b_chars": sum(r["grade"]["metrics"]["b_chars"] for r in rounds),
         "a_share": round(a / total, 4) if total else 0.0,
         "a_per_article": round(a / len(docs), 1) if docs else 0.0,
+        "gate_candidate_count": gate_cand,
+        "gate_pass_count": gate_pass,
+        "gate_pass_chars": _g("gate_pass_chars"),
+        "gate_pass_rate": round(gate_pass / gate_cand, 4) if gate_cand else 0.0,
+        "gated_a_count": _g("gated_a_count"),
+        "gated_a_chars": gated_a,
+        "gated_a_share": round(gated_a / total, 4) if total else 0.0,
+        "gated_keep_rate": round(gated_a / a, 4) if a else 0.0,
+        "gate_reject_reasons": dict(sorted(rejects.items(), key=lambda kv: -kv[1])),
         "source_types": sorted({d["source_type"] for d in docs}),
         "serp_blocked_queries": sum(
             sum(1 for v in r.get("serp", {}).values() if v.get("blocked"))
@@ -251,6 +271,11 @@ def _write_report(run_dir: Path, summary: dict) -> Path:
              f"- 文章 {m['articles']} / 有 A 段 {m['articles_with_a']} / "
              f"A {m['a_chars']} 字（{m['a_share']*100:.1f}%）/ 单篇 {m['a_per_article']} 字",
              f"- 维度 {', '.join(m['dims']) or '无'} / 来源类型 {', '.join(m['source_types'])}",
+             f"- **闸门后**：段通过 {m.get('gate_pass_count', 0)}/"
+             f"{m.get('gate_candidate_count', 0)}（{m.get('gate_pass_rate', 0)*100:.1f}%）· "
+             f"过闸 A 字 {m.get('gated_a_chars', 0)}（保留关键词 A 的 "
+             f"{m.get('gated_keep_rate', 0)*100:.1f}%，占正文 "
+             f"{m.get('gated_a_share', 0)*100:.1f}%）",
              f"- 失败 {m['failed']}（blocked_url {m['blocked_url']} / robots {m['robots_denied']}）", ""]
     for r in summary.get("rounds", []):
         lines += [f"## 第 {r['round']} 轮 · {r['plan']['batch_id']}",
@@ -262,7 +287,9 @@ def _write_report(run_dir: Path, summary: dict) -> Path:
         if blocked_q:
             lines.append(f"- SERP 被拦 {blocked_q}/{len(serp)} 查询（百度验证/空结果）")
         for d in r["grade"]["docs"][:8]:
-            lines.append(f"  - [{d['source_trust']}] {d['title'][:44]} · A {d['a_chars']} 字")
+            lines.append(f"  - [{d['source_trust']}] {d['title'][:44]} · A {d['a_chars']} 字"
+                         + (f" → 闸门 {d.get('gated_a_chars', 0)} 字"
+                            if "gated_a_chars" in d else ""))
         lines.append("")
     path = run_dir / "report.md"
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -325,7 +352,8 @@ def run(intent_path: str | Path, data_dir: str | Path, *,
             res = runner.run_unit(
                 runner.Unit(unit_id=f"{log.run_id}-r{rno}", plan=plan),
                 collect=lambda p: corpus.collect_corpus(p, data_dir),
-                grade=lambda outdir: passage.grade_batch(Path(outdir), registry),
+                grade=lambda outdir: passage.grade_batch(Path(outdir), registry,
+                                                         gate_l3=True),
                 data_dir=data_dir, state_root=log.dir / "units")
             log.tool("runner.run_unit",
                      args={"unit": f"{log.run_id}-r{rno}",
@@ -350,7 +378,7 @@ def run(intent_path: str | Path, data_dir: str | Path, *,
                                         "reasons": res.blockers}})
             break
         with log.stage(f"grade_r{rno}", batch_id=plan["batch_id"]):
-            grade = passage.grade_batch(Path(rep["outdir"]), registry)
+            grade = passage.grade_batch(Path(rep["outdir"]), registry, gate_l3=True)
         (log.dir / f"grade-r{rno}.json").write_text(
             json.dumps(grade, ensure_ascii=False, indent=1), encoding="utf-8")
         dec = strategy.assess(grade["metrics"],

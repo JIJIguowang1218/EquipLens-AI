@@ -12,6 +12,7 @@
 | `roster_aggregate.py` | 三类占比聚合与报告 |
 | `build_roster_review.py` / `build_l3_review.py` | 审核包 HTML 生成 |
 | `eval_l3gate.py` | 确定性闸门在 265 段金标上的评估 |
+| `replay_gate.py` | 离线回放：同批语料"关键词基线 vs 过闸"对照（`data-test/evals/gate-replay-*.md`） |
 | `domain-bench-queries*.json` | 域名基准查询集（两轮） |
 | `compare_domain_bench.py` | 两轮域名基准对比 |
 | `check_yoojia.py` | yoojia 定向复测 |

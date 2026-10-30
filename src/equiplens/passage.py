@@ -138,17 +138,60 @@ def grade_text(text: str, source_trust: str = "medium") -> dict:
     }
 
 
+def gate_passages(g: dict, title: str = "", url: str = "") -> dict:
+    """对 grade_text 的输出逐段过 L3 确定性闸门，打双轨标记。
+
+    基线（关键词 A/B/C）不被覆盖：闸门结果只追加 gate_pass/gate_reasons，
+    便于同一批次同时报"关键词口径"与"闸门口径"，做 A/B 对照。
+    """
+    # 延迟导入：l3gate 模块级 import passage，避免循环依赖
+    from . import l3gate
+
+    passed, rejects = [], {}
+    for p in g["passages"]:
+        v = l3gate.evaluate(p["text"], title=title, url=url)
+        p["gate_pass"] = v["pass"]
+        p["gate_reasons"] = v["reasons"]
+        if v["pass"]:
+            passed.append(p)
+        else:
+            for r in v["reasons"]:
+                rejects[r] = rejects.get(r, 0) + 1
+    a_pass = [p for p in passed if p["label"] == "A"]
+    total = len(g["passages"])
+    return {
+        "gate_pass_count": len(passed),
+        "gate_candidate_count": total,
+        "gate_pass_chars": sum(p["chars"] for p in passed),
+        "gate_pass_rate": round(len(passed) / total, 4) if total else 0.0,
+        "gated_a_count": len(a_pass),
+        "gated_a_chars": sum(p["chars"] for p in a_pass),
+        "gated_a_share": round(sum(p["chars"] for p in a_pass) / g["total_chars"], 4)
+        if g["total_chars"] else 0.0,
+        "gate_rejects": rejects,
+    }
+
+
 def _split_doc(path: Path) -> str:
     text = path.read_text(encoding="utf-8")
     m = re.match(r"^---\n(.*?)\n---\n\n(.*)$", text, re.S)
     return m.group(2) if m else text
 
 
-def grade_batch(batch_dir: Path, registry: dict | None = None) -> dict:
+def grade_batch(batch_dir: Path, registry: dict | None = None, *,
+                gate_l3: bool = False) -> dict:
+    """默认只跑关键词基线；gate_l3=True 时对每段追加确定性闸门判定。
+
+    双轨口径：a_chars 为关键词 A（基线），gated_a_chars 为"关键词 A 且过闸门"。
+    这样同一批次可同时对外报基线与闸门数字，不影响既有回归。
+    """
     batch_dir = Path(batch_dir)
     idx = json.loads((batch_dir / "index.json").read_text(encoding="utf-8"))
     docs = []
     totals = {"total_chars": 0, "a_chars": 0, "b_chars": 0, "a_count": 0}
+    gtotals = {"gate_candidate_count": 0, "gate_pass_count": 0,
+               "gate_pass_chars": 0, "gated_a_count": 0, "gated_a_chars": 0}
+    grejects: dict[str, int] = {}
     for r in idx["index"]:
         if r["status"] != "saved":
             continue
@@ -156,15 +199,33 @@ def grade_batch(batch_dir: Path, registry: dict | None = None) -> dict:
         if LOW_TITLE_RE.search(r.get("title", "")):
             trust = "low"  # 经销商/报价/厂家页：即使域名未知也降权
         g = grade_text(_split_doc(batch_dir / r["file"]), trust)
+        gate = gate_passages(g, r.get("title", ""), r.get("url", "")) if gate_l3 else None
+        top = [p for p in g["passages"] if p["label"] == "A"
+               and (gate is None or p.get("gate_pass"))]
         doc = {"title": r["title"], "url": r["url"], "source_type": r["source_type"],
                "chars": g["total_chars"], "a_chars": g["a_chars"],
                "a_count": g["a_count"], "a_share": g["a_share"],
                "dims": g["dims"], "source_trust": trust,
-               "top_passages": [p["text"][:200] for p in g["passages"]
-                                if p["label"] == "A"][:3]}
+               "top_passages": [p["text"][:200] for p in top][:3]}
+        if gate:
+            doc.update(gate)
+            for k in gtotals:
+                gtotals[k] += gate[k]
+            for reason, n in gate["gate_rejects"].items():
+                grejects[reason] = grejects.get(reason, 0) + n
         docs.append(doc)
         for k in totals:
             totals[k] += g[k]
+    if gate_l3:
+        totals.update(gtotals)
+        totals["gated_a_share"] = (round(gtotals["gated_a_chars"] / totals["total_chars"], 4)
+                                   if totals["total_chars"] else 0.0)
+        totals["gate_pass_rate"] = (
+            round(gtotals["gate_pass_count"] / gtotals["gate_candidate_count"], 4)
+            if gtotals["gate_candidate_count"] else 0.0)
+        totals["gated_keep_rate"] = (
+            round(gtotals["gated_a_chars"] / totals["a_chars"], 4)
+            if totals["a_chars"] else 0.0)
     failed = [r for r in idx["index"] if r["status"] != "saved"]
     hard_statuses = ("fetch_error", "fetch_failed", "robots_denied", "too_short")
     hard_failed = sum(1 for r in failed
@@ -188,6 +249,19 @@ def grade_batch(batch_dir: Path, registry: dict | None = None) -> dict:
         "robots_denied": sum(1 for r in failed if r["status"] == "robots_denied"),
         "dims": sorted({d for doc in docs for d in doc["dims"]}),
     }
+    if gate_l3:
+        metrics.update({
+            "gate_candidate_count": gtotals["gate_candidate_count"],
+            "gate_pass_count": gtotals["gate_pass_count"],
+            "gate_pass_chars": gtotals["gate_pass_chars"],
+            "gate_pass_rate": totals["gate_pass_rate"],
+            "gated_a_count": gtotals["gated_a_count"],
+            "gated_a_chars": gtotals["gated_a_chars"],
+            "gated_a_share": totals["gated_a_share"],
+            "gated_keep_rate": totals["gated_keep_rate"],
+            "gate_reject_reasons": dict(sorted(grejects.items(),
+                                               key=lambda kv: -kv[1])),
+        })
     return {"batch_id": idx.get("batch_id"), "docs": docs, "metrics": metrics,
             "failed": [{"title": r["title"], "status": r["status"], "url": r["url"]}
                        for r in failed]}
@@ -202,6 +276,11 @@ def format_report(report: dict, top: int = 5) -> str:
              f"- 失败 {m['failed']}（硬失败 {m.get('hard_failed', 0)} / "
              f"政策跳过 {m.get('policy_skipped', 0)} / blocked_url {m['blocked_url']} / "
              f"robots {m['robots_denied']}）"]
+    if m.get("gate_candidate_count"):
+        lines.append(f"- 闸门：段通过 {m['gate_pass_count']}/{m['gate_candidate_count']}"
+                     f"（{m['gate_pass_rate']*100:.1f}%）· 过闸 A 字 "
+                     f"{m['gated_a_chars']}（占正文 {m['gated_a_share']*100:.1f}%，"
+                     f"保留关键词 A 的 {m['gated_keep_rate']*100:.1f}%）")
     for d in report["docs"][:top]:
         lines.append(f"  - [{d['source_trust']}] {d['title'][:40]} · A {d['a_chars']} 字")
     return "\n".join(lines)
