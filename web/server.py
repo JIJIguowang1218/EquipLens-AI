@@ -112,6 +112,7 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
         try:
             data = analysis.analyze(provider, f"{v['brand']} {model}", img, slots or SLOTS,
                                     list(ledger.used), vocab, tax, view_tag="hero")
+            data["requested_parts"] = slots
             data["vehicle"] = {"brand": v["brand"], "model": model,
                                "category": v.get("category", "")}
             pages_dir = out / "pages"
@@ -434,15 +435,24 @@ def api_run(payload: dict):
     vehicles = payload.get("vehicles") or []
     if not vehicles:
         raise HTTPException(400, "没有选择车型")
+    ALIAS = {"前脸": "front_face", "前脸整体": "front_face",
+             "进气格栅": "grille", "格栅": "grille", "中网": "grille",
+             "保险杠": "bumper", "前杠": "bumper",
+             "侧防护栏": "side_guard", "防护栏": "side_guard",
+             "前轮轮拱": "wheel_arch", "轮拱": "wheel_arch", "轮眉": "wheel_arch",
+             "登车踏步": "step", "踏步": "step", "踏板": "step",
+             "大灯": "headlamp", "前大灯": "headlamp", "后视镜": "mirror"}
     raw_parts = payload.get("parts") or SLOTS
-    slots = []
+    slots, seen = [], set()
     for s in raw_parts:
-        s = str(s).strip()
-        if not s:
+        label = str(s).strip()
+        if not label or label in seen:
             continue
-        if s not in slots:
-            slots.append(s)
-    slots = slots[:8] or SLOTS
+        seen.add(label)
+        slots.append({"id": f"p{len(slots)+1}", "label": label,
+                      "slot": ALIAS.get(label)})
+    slots = slots[:8] or [{"id": f"p{i+1}", "label": x, "slot": x} for i, x in enumerate(SLOTS)]
+    server_slots = [x["slot"] or x["label"] for x in slots]
     with LOCK:
         run_id = uuid.uuid4().hex[:8]
         JOBS[run_id] = {"id": run_id, "status": "queued", "progress": [],

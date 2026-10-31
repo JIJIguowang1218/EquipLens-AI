@@ -183,7 +183,7 @@ def main() -> int:
     parts = []
     for p in data.get("parts", []):
         bbox = p.get("bbox") or [400, 400, 600, 600]
-        parts.append({"slot": p["slot"], "label": SLOT_CN.get(p["slot"], p["slot"]),
+        parts.append({"slot": p["slot"], "label": p.get("label") or SLOT_CN.get(p["slot"], p["slot"]),
                       "term": p.get("term") or "", "bbox": bbox})
 
     import os

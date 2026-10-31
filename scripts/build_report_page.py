@@ -533,7 +533,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
                            "w": bw, "h": img_h, "src": f"crops/{crops[slot]}", "idx": i + 1})
             blocks.append({"id": f"txt{i}", "kind": "text", "x": x, "y": y0 + img_h + 10,
                            "w": bw, "h": TEXT_H, "idx": i + 1,
-                           "term": p.get("term") or SLOT_CN.get(slot, slot),
+                           "term": p.get("term") or p.get("label") or SLOT_CN.get(slot, slot),
                            "fam": FAMILY_CN.get(p.get("part_family"), ""),
                            "form": p.get("form") or "",
                            "cmf": " · ".join(v for v in [(cmf.get("material_class") or ""),

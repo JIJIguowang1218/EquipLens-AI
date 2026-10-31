@@ -42,8 +42,9 @@ PROMPT_HEAD = """对象：{vehicle}
    gesture 一句≤30字；character_lines 2–3 条各≤30字，写清从哪到哪；
    proportion 一句（估读比例标"估"）；cmf 一句；judgement 一句≤30字；
    style_tags 恰好3个：{{"tag","cluster","evidence"}}，evidence ≤20字且必须指向图上图形。
-2) parts —— {slots}
-   slot, term（来自名词表）, aliases[], part_family（主体构成定族：连续板面=sheet_metal /
+2) parts —— 分析这些部位（每项必须回写 id）：{slots}
+   id（回写请求方给的 [p1]…）, slot, term（词表槽位来自名词表，否则用行业通称）,
+   aliases[], part_family（主体构成定族：连续板面=sheet_metal /
    杆件型材=frame_profile / 铸锻实体=cast_forged / 独立功能件=function_attachment）,
    family_reason, visible（full/partial/not_visible）, bbox[4]（0-1000 或 null）,
    form, cmf{{material_class,finish}}, intent（≤1句，因果最多两级）。
@@ -135,14 +136,21 @@ def validate_analysis(data: dict, used, vocab: dict, tax: dict,
     if any(not isinstance(p, dict) for p in parts):
         errs.append("parts 含非对象元素")
         parts = [p for p in parts if isinstance(p, dict)]
-    slots = [p.get("slot") for p in parts]
-    missing = [s for s in required_slots if s not in slots]
-    if missing and not parts:
-        errs.append(f"缺部件 {', '.join(missing)}")
+    req = _normalize_slots(required_slots)
+    seen = set()
+    for p in parts:
+        pid = p.get("id") or p.get("slot") or p.get("label")
+        for item in req:
+            if pid in (item["id"], item["label"], item.get("slot")):
+                seen.add(item["id"])
+                p["label"] = item["label"]
+                p["slot"] = item.get("slot") or item["label"]
+                break
+    missing = [x["label"] for x in req if x["id"] not in seen]
+    if missing:
+        errs.append(f"缺部位 {', '.join(missing)}")
     for p in parts:
         slot, vis = p.get("slot"), p.get("visible")
-        if slot not in required_slots and slot not in set(required_slots):
-            pass
         if vis not in VISIBLE_RANK:
             errs.append(f"{slot} visible={vis!r} 非法")
             continue
@@ -151,8 +159,9 @@ def validate_analysis(data: dict, used, vocab: dict, tax: dict,
                 if p.get(f):
                     errs.append(f"{slot} 标为 not_visible 却填了 {f}")
             continue
-        if slot in tax and p.get("term") not in tax[slot]:
-            errs.append(f"{slot} 的 term {p.get('term')!r} 不在名词表")
+        canon = p.get("slot")
+        if canon in tax and p.get("term") and p["term"] not in tax[canon]:
+            p["term_off_taxonomy"] = p["term"]
         if not p.get("part_family"):
             errs.append(f"{slot} 缺 part_family")
         bbox = p.get("bbox")
@@ -261,28 +270,41 @@ class MockProvider:
 
 # ---------------------------------------------------------------- 主流程
 
+def _normalize_slots(slots) -> list[dict]:
+    """把请求项统一成 {id,label,slot}；字符串视为 label，非词表键则 slot=None。"""
+    out = []
+    for i, x in enumerate(slots, 1):
+        if isinstance(x, dict):
+            label = x.get("label") or x.get("slot") or f"部位{i}"
+            out.append({"id": x.get("id") or f"p{i}", "label": label,
+                        "slot": x.get("slot")})
+        else:
+            out.append({"id": f"p{i}", "label": str(x), "slot": None})
+    return out
+
+
 def build_prompt(vehicle: str, used: list[str], slots: list[str],
                  vocab: dict | None = None, tax_when: dict | None = None) -> str:
     vocab = vocab or load_vocab()
     tax_when = tax_when or taxonomy_with_when()
     vocab_txt = json.dumps(vocab, ensure_ascii=False)
     term_lines = []
-    for s in slots:
-        info = tax_when.get(s)
+    for i, item in enumerate(_normalize_slots(slots), 1):
+        label, canon = item["label"], item.get("slot")
+        info = tax_when.get(canon) if canon else None
         if info:
             names = "；".join(f"{t['name']}（{t['when']}）" for t in info.get("terms", []))
-            term_lines.append(f"- {s} {info.get('label', '')}: {names}")
+            term_lines.append(f"- [{item['id']}] {label}（词表槽位 {canon}）: {names}")
         else:
             term_lines.append(
-                f"- {s}（自定义部位，不在词表）：按同一四槽结构描述；"
-                f"term 用行业通称（如\"后视镜总成\"），没有公认叫法就写 null 并在 unplaced 里说明；"
-                f"不要因为不在词表就跳过这个部位")
+                f"- [{item['id']}] {label}（不在词表）：按同一四槽结构自行判定类型并描述；"
+                f"term 写行业通称，没有公认叫法就写 null；不要因为不在词表就跳过")
     return PROMPT_HEAD.format(
         vehicle=vehicle,
         used="、".join(used) if used else "（无）",
         vocab=vocab_txt,
         terms="\n".join(term_lines),
-        slots="、".join(slots),
+        slots="、".join(f"{x['id']}={x['label']}" for x in _normalize_slots(slots)),
     )
 
 
