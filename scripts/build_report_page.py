@@ -239,7 +239,7 @@ display:flex;justify-content:space-between}
 /* ---- body ---- */
 main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px;overflow:hidden}
 .left{display:flex;flex-direction:column;gap:20px;height:668px}
-.hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;flex:0 0 auto;
+.hero{position:relative;background:transparent;border:0;overflow:hidden;flex:0 0 auto;
 align-self:flex-start;width:540px;height:430px;display:flex;align-items:center;justify-content:center}
 .hero img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;display:block}
 .mark{position:absolute;border:1px solid var(--accent);background:rgba(255,255,255,.06)}
@@ -257,28 +257,19 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;height:100%;min-height:0;overflow:hidden}
-.card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:176px minmax(0,1fr);
-overflow:hidden;min-height:0}
-.card .shot{position:relative;overflow:hidden;background:#efece5;display:flex;align-items:center;justify-content:center;padding:8px}
-.card .shot img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;display:block;border:1px solid rgba(0,0,0,.10);background:#fff}
-.card .shot.empty{display:flex;align-items:center;justify-content:center;background:#f4f2ec;border-bottom:1px solid var(--line)}
-.card .na{font-size:11px;color:#a9a59b;letter-spacing:.1em}
-.card .no{position:absolute;top:8px;left:8px;font-size:9px;letter-spacing:.12em;
-background:var(--ink);color:#fff;padding:2px 6px;font-family:Consolas,monospace}
-.card .body{padding:8px 11px;background:var(--block);display:flex;flex-direction:column;gap:3px;
-overflow:hidden;min-height:0}
-.card h3{font-size:12.5px;font-weight:700;letter-spacing:.01em;line-height:1.25}
-.card .fam{font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.card p{font-size:11px;line-height:1.4;color:#2b2e33;
+.mosaic{display:flex;gap:13px;height:100%;min-height:0;overflow:hidden}
+.mcol{display:flex;flex-direction:column;gap:13px;min-height:0;height:100%;
+justify-content:space-between}
+.cell{display:flex;flex-direction:column;min-height:0}
+.cell img{width:100%;display:block;object-fit:cover}
+.mtext{background:var(--block);padding:9px 11px;overflow:hidden;flex:0 0 auto;
+display:flex;flex-direction:column;gap:2px;justify-content:flex-start}
+.mt-term{font-size:12px;font-weight:700;line-height:1.25}
+.mt-fam{font-size:8.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.mt-form{font-size:10.5px;line-height:1.35;color:#2b2e33;
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .cmf{font-size:10px;color:var(--graphite);line-height:1.35}
-.chips{display:flex;flex-direction:column;gap:9px;background:var(--block);padding:14px 16px}
-.chips.wide{grid-column:span 2}
-.chip{display:flex;align-items:center;gap:10px}
-.chip .sw{width:34px;height:22px;border-radius:2px;border:1px solid rgba(0,0,0,.08)}
-.chip .v{font-family:Consolas,monospace;font-size:11px;color:var(--ink)}
-.chip .p{font-family:Consolas,monospace;font-size:11px;color:var(--muted);margin-left:auto}
+.mt-cmf{font-size:9.5px;line-height:1.3;color:var(--graphite);
+display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 /* ---- footer ---- */
 footer{position:absolute;left:48px;right:48px;bottom:20px;height:32px;display:flex;
 justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);
@@ -294,72 +285,88 @@ def esc(s) -> str:
     return escape(str(s)) if s is not None else ""
 
 
+
+def layout_columns(aspects: list[float], W: float, H: float,
+                   gap: float = 13, min_text: float = 56) -> dict | None:
+    """列式拼贴：按宽高比把图堆进若干列，列内剩余高度均分给文本块。"""
+    n = len(aspects)
+    if n == 0:
+        return None
+    for cols in (3, 2, 4):
+        col_w = (W - gap * (cols - 1)) / cols
+        col_h = [0.0] * cols
+        assign: list[list[int]] = [[] for _ in range(cols)]
+        for i, a in enumerate(aspects):
+            j = min(range(cols), key=lambda k: col_h[k])
+            assign[j].append(i)
+            col_h[j] += col_w / a + gap
+        ok = True
+        plan = []
+        for j, items in enumerate(assign):
+            if not items:
+                plan.append(None); continue
+            img_sum = sum(col_w / aspects[i] for i in items)
+            raw = (H - img_sum - gap * (len(items) - 1)) / len(items)
+            if raw < min_text:
+                ok = False
+                break
+            text_h = raw  # 文本块吸收该列剩余高度，保证整列填满
+            extra = (H - img_sum - gap * (len(items) - 1)) - text_h * len(items)
+            plan.append({"items": items, "img_sum": img_sum, "text_h": text_h,
+                         "extra": max(0.0, extra)})
+        if ok:
+            return {"cols": cols, "col_w": col_w, "plan": plan}
+    return None
+
+
 def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[dict],
                page: int, total: int, brand_rule: str, hero_box=None,
-               hero_size=None) -> str:
+               hero_size=None, crop_sizes=None) -> str:
     u = data.get("unit", {})
     v = data.get("vehicle", {})
     tags = u.get("style_tags", [])
     accent = accent_of(palette)
 
-    hw, hh = 540, 430
-    if hero_size:
-        k = min(hw / hero_size[0], hh / hero_size[1])
-        disp_w, disp_h = hero_size[0] * k, hero_size[1] * k
-    else:
-        disp_w, disp_h = hw, hh
-    off_x, off_y = (hw - disp_w) / 2, (hh - disp_h) / 2
 
-    marks = ""
-    hero_src = (data.get("assets") or {}).get("hero")
-    parts_vis = [x for x in data.get("parts", [])
-                 if x.get("bbox") and x.get("visible") != "not_visible"
-                 and not x.get("skip") and (x.get("src") or hero_src) == hero_src]
-    for i, p in enumerate(parts_vis, 1):
-        x1, y1, x2, y2 = p["bbox"]
-        if hero_box and hero_size:
-            W, H = hero_size
-            bx1, by1, bx2, by2 = hero_box
-            bw, bh = max(1, bx2 - bx1), max(1, by2 - by1)
-            x1 = (x1 / 1000 * W - bx1) / bw * 1000
-            y1 = (y1 / 1000 * H - by1) / bh * 1000
-            x2 = (x2 / 1000 * W - bx1) / bw * 1000
-            y2 = (y2 / 1000 * H - by1) / bh * 1000
-            x1, x2 = max(0, min(1000, x1)), max(0, min(1000, x2))
-            y1, y2 = max(0, min(1000, y1)), max(0, min(1000, y2))
-        mx1 = off_x + x1 / 1000 * disp_w
-        my1 = off_y + y1 / 1000 * disp_h
-        mx2 = off_x + x2 / 1000 * disp_w
-        my2 = off_y + y2 / 1000 * disp_h
-        marks += (f'<div class="mark" style="left:{mx1:.1f}px;top:{my1:.1f}px;'
-                  f'width:{mx2-mx1:.1f}px;height:{my2-my1:.1f}px"><b>{i:02d}</b></div>')
-
-    cards = ""
     order = [p for p in data.get("parts", [])
              if p.get("visible") != "not_visible" and not p.get("skip")]
-    for i, p in enumerate(order, 1):
-        slot = p["slot"]
-        img = crops.get(slot)
-        shot = (f'<div class="shot"><img src="crops/{esc(img)}" alt="">'
-                f'<span class="no">{i:02d} / {esc(slot.upper())}</span></div>') if img else \
-               (f'<div class="shot empty"><span class="no">{i:02d} / {esc(slot.upper())}</span>'
-                f'<span class="na">该视角不可判读</span></div>')
-        cmf = p.get("cmf") or {}
-        cards += f"""
-        <article class="card">{shot}
-          <div class="body">
-            <h3>{esc(p.get('term') or SLOT_CN.get(slot, slot))}</h3>
-            <div class="fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
-            <p>{esc(p.get('form') or '')}</p>
-            <div class="cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
-          </div>
-        </article>"""
+    order = [p for p in order if crops.get(p["slot"])]
 
-    chips_span = " wide" if (len(order) + 1) % 2 else ""
-    chips = "".join(
-        f'<div class="chip"><span class="sw" style="background:{c["hex"]}"></span>'
-        f'<span class="v">{c["hex"]}</span>'
-        f'<span class="p">{c["pct"]*100:.0f}%</span></div>' for c in palette)
+    sizes = crop_sizes or {}
+    aspects = []
+    for p in order:
+        w, h = sizes.get(p["slot"], (4, 3))
+        aspects.append(max(0.2, w / max(1, h)))
+
+    W_GRID, H_GRID, GAP = 912, 668, 13
+    plan = layout_columns(aspects, W_GRID, H_GRID, gap=GAP, min_text=56)
+    if not plan:
+        plan = {"cols": len(order), "col_w": (W_GRID - GAP * (len(order) - 1)) / max(1, len(order)),
+                "plan": [{"items": [i], "img_sum": 0, "text_h": 80} for i in range(len(order))]}
+
+    cols_html = ""
+    for col in plan["plan"]:
+        if not col:
+            continue
+        cells = ""
+        for i in col["items"]:
+            p = order[i]
+            slot = p["slot"]
+            cmf = p.get("cmf") or {}
+            img_h = plan["col_w"] / aspects[i]
+            cells += f"""
+          <div class="cell">
+            <img src="crops/{esc(crops[slot])}" style="height:{img_h:.1f}px">
+            <div class="mtext" style="height:{col['text_h']:.1f}px">
+              <div class="mt-term">{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
+              <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
+              <div class="mt-form">{esc(p.get('form') or '')}</div>
+              <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
+            </div>
+          </div>"""
+        cols_html += f'<div class="mcol" style="width:{plan["col_w"]:.1f}px">{cells}</div>'
+
+    mosaic = cols_html
 
     barbits = "".join(
         f'<i style="width:{c["pct"]*100:.2f}%;background:{c["hex"]}"></i>' for c in palette)
@@ -387,7 +394,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
 
   <main>
     <div class="left">
-      <div class="hero"><img src="{esc(hero_rel)}" alt="">{marks}</div>
+      <div class="hero"><img src="{esc(hero_rel)}" alt=""></div>
       <div class="textblock">
         <div class="eyebrow">Front Face / 前脸</div>
         <div class="lead">{esc(u.get('gesture'))}</div>
@@ -395,14 +402,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
         <div class="meta">{esc(u.get('proportion'))}　{esc(u.get('judgement'))}</div>
       </div>
     </div>
-    <div class="grid">
-      {cards}
-      <div class="chips{chips_span}">
-        <div class="eyebrow">Color / 色彩构成</div>
-        {chips}
-        <div class="meta" style="margin-top:auto">{esc(u.get('cmf'))}</div>
-      </div>
-    </div>
+    <div class="mosaic">{mosaic}</div>
   </main>
 
   <footer>
@@ -451,6 +451,12 @@ def main() -> int:
     outdir.mkdir(parents=True, exist_ok=True)
     cropdir = outdir / "crops"
     crops = crop_parts(hero_abs, data, cropdir, slug, data_root=ROOT / args.data_dir)
+    crop_sizes = {}
+    for _slot, _fn in crops.items():
+        try:
+            crop_sizes[_slot] = Image.open(cropdir / _fn).size
+        except Exception:
+            crop_sizes[_slot] = (4, 3)
 
     hero_view, hero_box, hero_bg = trim_hero(hero_abs, outdir, slug)
     palette = color_composition(hero_view, bg=hero_bg)
@@ -463,7 +469,7 @@ def main() -> int:
 
     html = build_html(data, str(hero_rel).replace("\\", "/"), crops, palette,
                       args.page, args.total, args.brand_rule, hero_box,
-                      Image.open(hero_abs).size)
+                      Image.open(hero_abs).size, crop_sizes)
     out = outdir / f"{slug}.html"
     out.write_text(html, encoding="utf-8")
     print(f"[ok] {out}  crops={len(crops)}  palette={[c['hex'] for c in palette]}")
