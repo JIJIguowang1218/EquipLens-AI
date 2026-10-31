@@ -452,6 +452,26 @@ async function startRun(){
 }
 
 function step4(){
+  const job = state.job || {};
+  if(job.status !== 'done'){
+    const raw = job.progress || [];
+    const byModel = new Map();
+    raw.forEach(p=>{ if(p.model!=='-') byModel.set(p.model, p); });
+    const prog = [...byModel.values()];
+    const doneMsg = raw.filter(p=>p.model==='-').slice(-1)[0]?.msg || '';
+    app.innerHTML = `<section class="step">
+      <div class="phead2"><h2>分析</h2>
+        <span class="hint">每台车一次调用，完成后逐台裁框</span></div>
+      <div class="plist">
+        ${prog.length?prog.map(p=>`<div class="prow">
+          <i class="pdot ${p.state}"></i><span class="pname">${esc(p.model)}</span>
+          <span class="pmsg">${esc(p.msg||'')}</span></div>`).join(''):
+          `<div class="prow"><i class="pdot run"></i><span class="pname">准备中…</span></div>`}
+      </div>
+      ${doneMsg?`<p class="hint" style="margin-top:14px">${esc(doneMsg)}</p>`:''}
+    </section>`;
+    return;
+  }
   const pages = state.job?.pages || [];
   if(!pages.length){ app.innerHTML = '<section class="step"><div class="phead2"><h2>分析</h2></div><p class="hint">没有可编辑的页面</p></section>'; return; }
   const i = Math.min(state.cropIdx||0, pages.length-1);
