@@ -212,6 +212,7 @@ class ApiProvider:
 
     def call(self, image: Path, prompt: str) -> str:
         b64 = base64.b64encode(image.read_bytes()).decode()
+        mime = "image/png" if image.suffix.lower() == ".png" else "image/jpeg"
         payload = {
             "model": self.model,
             "reasoning_effort": "low",
@@ -220,7 +221,7 @@ class ApiProvider:
                 {"role": "system", "content": SYSTEM},
                 {"role": "user", "content": [
                     {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}},
+                    {"type": "image_url", "image_url": {"url": f"data:{mime};base64,{b64}"}},
                 ]},
             ],
         }
@@ -335,7 +336,7 @@ SUPP_HEAD = """对象：{vehicle}（补证视角，只补这几个部位：{slot
 {terms}
 
 只输出 parts 块：{{"parts": [{{"slot","term","aliases","part_family","family_reason",
-"visible","bbox","form","cmf":{{"material_class","finish"}},"intent"}}]}}
+"visible"（只能取 full / partial / not_visible）,"bbox","form","cmf":{{"material_class","finish"}},"intent"}}]}}
 part_family 按主体构成定族：连续板面=sheet_metal / 杆件型材=frame_profile /
 铸锻实体=cast_forged / 独立功能件=function_attachment。
 看不清 = not_visible，且 term/form/cmf/intent 一律 null，不许补。
@@ -354,19 +355,25 @@ def build_supp_prompt(vehicle: str, slots: list[str],
 
 
 def analyze_supp(provider, vehicle: str, image: Path, slots: list[str],
-                 vocab: dict, tax: dict) -> dict:
-    """补证视角：只回 parts，失败返回空 parts 并记 errors。"""
+                 vocab: dict, tax: dict, max_retry: int = 1) -> dict:
+    """补证视角：只回 parts；失败带原因重试一次，仍失败则只回通过校验的部分。"""
     prompt = build_supp_prompt(vehicle, slots)
-    raw = provider.call(image, prompt)
-    try:
-        data = parse_json(raw)
-    except ValueError as e:
-        return {"parts": [], "_errors": [str(e)]}
-    errs = validate_analysis(data, [], vocab, tax, required_slots=slots,
-                             require_unit=False)
-    if errs:
-        return {"parts": data.get("parts", []), "_errors": errs}
-    return {"parts": data.get("parts", [])}
+    errors: list[str] = []
+    for _ in range(max_retry + 1):
+        p = prompt if not errors else (
+            prompt + "\n\n上一次输出有下列问题，请修正：\n- " + "\n- ".join(errors))
+        raw = provider.call(image, p)
+        try:
+            data = parse_json(raw)
+        except ValueError as e:
+            errors = [str(e)]
+            continue
+        normalize_analysis(data)
+        errors = validate_analysis(data, [], vocab, tax, required_slots=slots,
+                                   require_unit=False)
+        if not errors:
+            return {"parts": data.get("parts", [])}
+    return {"parts": [], "_errors": errors}
 
 
 # ---------------------------------------------------------------- 渲染辅助

@@ -25,7 +25,7 @@ from equiplens import analysis  # noqa: E402
 
 SLOTS = ["grille", "bumper", "side_guard", "wheel_arch", "step"]
 HERO_VIEWS = ("hero_lf", "hero_rf", "hero_45")
-SIDE_VIEWS = ("side_l", "side", "front")
+SIDE_VIEWS = ("side_l", "side")
 
 
 def pick_assets(conn, model: str) -> tuple[dict, list[dict]]:
@@ -86,9 +86,11 @@ def main() -> int:
             ov = overrides.get(model, {})
             if ov.get("hero"):
                 hero = dict(hero, file_path=ov["hero"])
-            if ov.get("side"):
-                side = dict(side or {"view_angle": "side"},
-                            file_path=ov["side"], view_angle=ov.get("side_view", "side"))
+            if "side" in ov:
+                side = (dict(side or {"view_angle": "side"},
+                             file_path=ov["side"],
+                             view_angle=ov.get("side_view", "side"))
+                        if ov["side"] else None)
             used = list(ledger.used)
             data = analysis.analyze(provider, f"{v['brand']} {model}", data_root / hero["file_path"],
                                     SLOTS, used, vocab, tax, view_tag=hero["view_angle"])
