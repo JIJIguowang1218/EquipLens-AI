@@ -1,0 +1,144 @@
+{
+  "version": "0.1",
+  "updated": "2026-10-31",
+  "source": "PRD 附录 B（部件标注词表 v0）+ 2026-10-31 分析模块讨论",
+  "family_rule": "主体构成定族：连续板面=sheet_metal；杆件/型材框架=frame_profile；铸锻/机加实体=cast_forged；独立功能件=function_attachment。装配关系只写进 form，不参与分族。",
+  "term_rule": "term 必须命中本表；形态细节写进 form，不得自造构型名。命中不了则 term=null，并把该条进 unplaced，附 suggested_term。",
+  "regions": {
+    "front_face": {
+      "label": "前脸整体",
+      "members": ["grille", "headlamp", "bumper", "brand_zone"],
+      "writes": ["gesture", "character_lines", "proportion", "cmf", "judgement", "style_tags"]
+    },
+    "side": {
+      "label": "侧面整体",
+      "members": ["wheel_arch", "step", "side_guard", "mirror"],
+      "writes": ["gesture", "character_lines", "proportion", "cmf", "judgement", "style_tags"]
+    },
+    "rear": {
+      "label": "后围整体",
+      "members": ["paint_scheme"],
+      "writes": ["gesture", "character_lines", "proportion", "cmf", "judgement", "style_tags"]
+    },
+    "roof": {
+      "label": "顶盖与导流",
+      "members": ["sun_visor"],
+      "writes": ["gesture", "character_lines", "proportion", "cmf", "judgement"]
+    }
+  },
+  "parts": {
+    "grille": {
+      "label": "进气格栅",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "横置多层格栅", "aliases": ["多横幅格栅", "横条格栅"], "when": "两层以上横向饰条或横筋"},
+        {"name": "冲孔网板格栅", "aliases": ["冲孔面板", "网板面罩"], "when": "大面积冲孔金属板，孔形非六边非菱形"},
+        {"name": "蜂窝网格式格栅", "aliases": ["六边形网格"], "when": "规则六边形孔阵"},
+        {"name": "参数化菱网格栅", "aliases": ["菱形阵列"], "when": "菱形/钻石孔阵，排布带阵列规律"},
+        {"name": "竖向直瀑格栅", "aliases": ["竖条格栅"], "when": "以竖向饰条为主，横向分隔弱"},
+        {"name": "一体式面罩", "aliases": ["封闭前脸", "无格栅面罩"], "when": "格栅与面罩同一面，无分件痕迹"}
+      ]
+    },
+    "bumper": {
+      "label": "保险杠",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "整体式保险杠", "aliases": ["一体式前包围"], "when": "单一连续件，无横向分缝"},
+        {"name": "分体式保险杠", "aliases": ["上下分体"], "when": "上下两段之间有可见分缝"},
+        {"name": "三段式保险杠", "aliases": ["左中右三段"], "when": "左中右三段拼装"},
+        {"name": "包角式保险杠", "aliases": ["带包角"], "when": "两端向内包住灯组外缘"},
+        {"name": "钢制防撞杠", "aliases": ["工程车防撞杠"], "when": "管材或型钢外露，非漆面覆盖件", "family": "frame_profile"}
+      ]
+    },
+    "side_guard": {
+      "label": "侧防护栏",
+      "default_family": "frame_profile",
+      "terms": [
+        {"name": "管式侧防护栏", "aliases": ["圆管护栏"], "when": "圆管主体 + 竖支腿"},
+        {"name": "型钢侧防护栏", "aliases": ["方钢护栏"], "when": "方管或角钢主体"},
+        {"name": "铝合金侧防护栏", "aliases": ["铝型材护栏"], "when": "铝挤压型材，表面亮银"},
+        {"name": "集成式侧裙", "aliases": ["侧裙带防护"], "when": "无独立杆件，防护功能并入侧裙", "family": "sheet_metal"}
+      ]
+    },
+    "wheel_arch": {
+      "label": "翼子板与轮拱",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "一体式同色轮拱", "aliases": ["齐平轮眉"], "when": "与车身同色同曲面，无独立包边"},
+        {"name": "分体式轮眉", "aliases": ["外挂轮眉", "黑色包边"], "when": "独立装配件，多为黑色塑料"},
+        {"name": "圆弧轮拱", "aliases": ["半圆开口"], "when": "拱缘为连续圆弧"},
+        {"name": "方形轮拱", "aliases": ["折角轮拱"], "when": "拱缘带直边折角，工程车常见"},
+        {"name": "带导流槽轮眉", "aliases": ["导流轮眉"], "when": "轮眉上有导流造型或凹槽"}
+      ]
+    },
+    "step": {
+      "label": "登车踏步",
+      "default_family": "function_attachment",
+      "terms": [
+        {"name": "单级固定踏板", "aliases": ["一级踏板"], "when": "仅一级"},
+        {"name": "两级固定踏板", "aliases": ["两级踏步"], "when": "两级，层间可见"},
+        {"name": "三级踏步", "aliases": ["三级踏板"], "when": "三级及以上"},
+        {"name": "折叠式踏板", "aliases": ["可翻转踏板"], "when": "可见铰接或翻转结构"},
+        {"name": "集成式侧裙踏步", "aliases": ["侧裙踏步"], "when": "与侧裙一体，板面连续", "family": "sheet_metal"},
+        {"name": "电动隐藏踏板", "aliases": ["隐藏式踏板"], "when": "收折于侧裙内，可见滑轨或驱动"}
+      ]
+    },
+    "headlamp": {
+      "label": "大灯与灯罩防护",
+      "default_family": "function_attachment",
+      "terms": [
+        {"name": "一体式大灯组", "aliases": ["单灯组"], "when": "远近光与日行在同一灯腔"},
+        {"name": "分体式大灯", "aliases": ["主灯+日行分离"], "when": "主灯与日行灯为独立灯腔"},
+        {"name": "竖向排列灯组", "aliases": ["竖置灯组"], "when": "灯组纵向堆叠"},
+        {"name": "异形灯组", "aliases": ["签名灯组"], "when": "有 L/U/回环等识别签名"},
+        {"name": "外露灯罩防护", "aliases": ["灯罩护网"], "when": "工程车加护网或护框"}
+      ]
+    },
+    "mirror": {
+      "label": "后视镜总成",
+      "default_family": "function_attachment",
+      "terms": [
+        {"name": "杆式后视镜", "aliases": ["长杆外伸"], "when": "长杆外伸支撑"},
+        {"name": "门装式后视镜", "aliases": ["贴门安装"], "when": "镜臂短，贴门布置"},
+        {"name": "一体式镜壳", "aliases": ["整体镜壳"], "when": "镜壳与支臂同体"},
+        {"name": "主镜广角镜组合", "aliases": ["分体镜组"], "when": "主镜与广角/盲区镜分体"}
+      ]
+    },
+    "sun_visor": {
+      "label": "外部遮阳板",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "整体式遮阳板", "aliases": ["一体遮阳板"], "when": "单件横贯车顶前缘"},
+        {"name": "分体式遮阳板", "aliases": ["左右分体"], "when": "左右两件或中间断开"},
+        {"name": "带导流遮阳板", "aliases": ["导流遮阳板"], "when": "板面带导流造型，与导流罩连续"}
+      ]
+    },
+    "under_guard": {
+      "label": "下护板",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "整体式下护板", "aliases": ["一体下护板"], "when": "单件覆盖车头下部"},
+        {"name": "分块式下护板", "aliases": ["分段护板"], "when": "多块拼装，有分缝"},
+        {"name": "钢制护板", "aliases": ["金属护板"], "when": "外露金属，工程防护取向", "family": "cast_forged"}
+      ]
+    },
+    "brand_zone": {
+      "label": "品牌标识区",
+      "default_family": "function_attachment",
+      "terms": [
+        {"name": "圆形车标居中", "aliases": ["居中圆标"], "when": "单一圆形标居中"},
+        {"name": "车标字标组合", "aliases": ["标+字"], "when": "图形标与文字标同现"},
+        {"name": "发光标识", "aliases": ["背光标识"], "when": "有灯带或背光轮廓"}
+      ]
+    },
+    "paint_scheme": {
+      "label": "涂装与分色",
+      "default_family": "sheet_metal",
+      "terms": [
+        {"name": "单色涂装", "aliases": ["纯色漆"], "when": "车身单一颜色"},
+        {"name": "双色分色", "aliases": ["分色涂装"], "when": "两种颜色以腰线或裙线分界"},
+        {"name": "拉花贴花", "aliases": ["贴纸"], "when": "有图案贴饰"}
+      ]
+    }
+  }
+}
