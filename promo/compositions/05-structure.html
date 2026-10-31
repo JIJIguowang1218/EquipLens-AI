@@ -21,7 +21,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
 .f .v{font-size:30px;font-weight:600;margin-top:4px;line-height:1.25}
 .cap{position:absolute;left:96px;bottom:64px;font-size:22px;color:#6E6E73}
 </style></head><body>
-<div id="root" data-composition-id="structure" data-start="0" data-duration="17" data-width="1920" data-height="1080">
+<div id="root" data-composition-id="structure" data-start="0" data-duration="13" data-width="1920" data-height="1080">
   <div class="grid"></div>
   <div class="kicker" id="k">04　结构化</div>
   <div class="head" id="h">每个部位，四个字段</div>
@@ -46,22 +46,41 @@ html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
 <script src="assets/vendor/gsap.min.js"></script><script>
 window.__timelines = window.__timelines || {};
 const tl = gsap.timeline({ paused: true });
-tl.fromTo("#k",{opacity:0},{opacity:1,duration:.4},.2);
-tl.fromTo("#h",{opacity:0,y:12},{opacity:1,y:0,duration:.6,ease:"power3.out"},.3);
-tl.fromTo("#shot",{opacity:0,scale:1.05},{opacity:1,scale:1,duration:.9,ease:"expo.out"},.5);
-tl.fromTo(".bx",{opacity:0},{opacity:.55,duration:.4,stagger:.08},1.2);
+tl.fromTo("#k",{opacity:0},{opacity:1,duration:.3},.1);
+tl.fromTo("#h",{opacity:0,y:12},{opacity:1,y:0,duration:.45,ease:"power3.out"},.2);
+tl.fromTo("#shot",{opacity:0,scale:1.04},{opacity:1,scale:1,duration:.6,ease:"expo.out"},.3);
+tl.fromTo(".bx",{opacity:0},{opacity:.55,duration:.3,stagger:.06},.5);
 
-const field = (id, txt) => { const el=document.getElementById(id); el.textContent=txt; gsap.fromTo(el,{opacity:0,y:8},{opacity:1,y:0,duration:.35}); };
+// 第一拍：五个部位快闪一圈（0.8-3.0）
 PARTS.forEach((p,i)=>{
-  const t = 2.2 + i*2.9;
   tl.call(()=>{
     document.querySelectorAll('.bx').forEach((b,j)=>b.classList.toggle('on', j===i));
-    document.getElementById('pname').textContent = p.cn;
-    document.getElementById('who').textContent = String(i+1).padStart(2,'0') + ' / 05　框选部位';
-    field('v1', p.term); field('v2', p.fam); field('v3', p.form); field('v4', p.cmf);
-  },[],t);
-  tl.to("#shot",{scale:1.0,duration:.01},t);
+    const n=document.getElementById('pname'); n.textContent=p.cn;
+    gsap.fromTo(n,{opacity:.2,y:6},{opacity:1,y:0,duration:.18});
+    document.getElementById('who').textContent = String(i+1).padStart(2,'0')+' / 05　快速过一遍';
+  },[],0.8+i*0.42);
 });
-tl.fromTo("#cap",{opacity:0},{opacity:1,duration:.5},16.2);
+tl.call(()=>{document.querySelectorAll('.bx').forEach(b=>b.classList.add('on'));},[],3.1);
+tl.to(".bx",{opacity:1,duration:.2},3.1);
+
+// 第二拍：四个小标题推进（3.3-5.0）
+const heads=['TERM 构型','FAMILY 族','FORM 形态','CMF'];
+tl.call(()=>{document.getElementById('who').textContent='四个字段';},[],3.3);
+tl.fromTo(".f .k",{opacity:0,x:40,color:'#F2F1EE'},{opacity:1,x:0,duration:.35,stagger:.28,ease:"power3.out"},3.4);
+tl.fromTo(".f .k",{fontSize:22},{fontSize:14,duration:.4,stagger:.28},4.2);
+
+// 第三拍：逐部位填字段（5.2 起，每 1.45s）
+PARTS.forEach((p,i)=>{
+  const t=5.2+i*1.45;
+  tl.call(()=>{
+    document.querySelectorAll('.bx').forEach((b,j)=>b.classList.toggle('on', j===i));
+    document.getElementById('pname').textContent=p.cn;
+    document.getElementById('who').textContent=String(i+1).padStart(2,'0')+' / 05　框选部位';
+    const set=(id,v)=>{const el=document.getElementById(id);el.textContent=v;gsap.fromTo(el,{opacity:0,y:6},{opacity:1,y:0,duration:.22});};
+    set('v1',p.term); set('v2',p.fam); set('v3',p.form); set('v4',p.cmf);
+  },[],t);
+});
+tl.fromTo("#cap",{opacity:0},{opacity:1,duration:.4},12.2);
+tl.timeScale(1.15);
 window.__timelines["structure"] = tl; tl.seek(0);
 </script></body></html>
