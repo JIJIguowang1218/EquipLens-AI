@@ -343,6 +343,9 @@ def layout_split(aspects: list[float], W: float, H: float, img_ratio: float = 0.
 
 
 
+_LAST_BLOCKS: list = []
+
+
 JS_EDITOR = """<script>
 (function(){
   const canvas = document.getElementById('canvas');
@@ -538,6 +541,9 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
                 if k in ov:
                     blk[k] = float(ov[k])
 
+    global _LAST_BLOCKS
+    _LAST_BLOCKS = blocks
+
     blocks_html = ""
     for blk in blocks:
         style = (f"left:{blk['x']:.1f}px;top:{blk['y']:.1f}px;"
@@ -614,6 +620,7 @@ def main() -> int:
     ap.add_argument("--brand-rule", default="")
     ap.add_argument("--boxes", help="编辑器导出的裁框 JSON（覆盖 bbox）")
     ap.add_argument("--layout", help="编辑器保存的版式 JSON（覆盖块位置）")
+    ap.add_argument("--dump-blocks", action="store_true", help="导出块坐标与内容 JSON（供 PPT 导出）")
     args = ap.parse_args()
 
     src = ROOT / args.analysis
@@ -664,6 +671,17 @@ def main() -> int:
                       args.page, args.total, args.brand_rule, hero_box,
                       Image.open(hero_abs).size, crop_sizes,
                       (ROOT / args.layout) if args.layout else None)
+    if args.dump_blocks:
+        payload = {"slug": slug, "page": args.page, "total": args.total,
+                   "brand_rule": args.brand_rule,
+                   "vehicle": data.get("vehicle", {}),
+                   "unit": data.get("unit", {}),
+                   "palette": palette,
+                   "blocks": [dict(b, src=str((outdir / b["src"]).resolve())
+                                   if b.get("src") else None) for b in _LAST_BLOCKS]}
+        (outdir / f"{slug}-blocks.json").write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
     out = outdir / f"{slug}.html"
     out.write_text(html, encoding="utf-8")
     print(f"[ok] {out}  crops={len(crops)}  palette={[c['hex'] for c in palette]}")
