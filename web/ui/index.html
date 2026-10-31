@@ -94,6 +94,31 @@ h1 em{font-style:normal;color:var(--muted)}
 .btn.ghost:hover{box-shadow:0 10px 24px rgba(0,0,0,.08)}
 .actions{display:flex;gap:12px;margin-top:34px;align-items:center}
 .hint{font-size:13px;color:var(--muted)}
+/* ---------- step2 list ---------- */
+.phead2{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+.phead2 h2{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.clist{border-top:1px solid var(--line)}
+.crow{display:grid;grid-template-columns:28px 200px 88px 1fr 44px;gap:14px;align-items:center;
+  padding:16px 4px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s}
+.crow:hover{background:#fafafa}
+.crow .pick i{display:block;width:18px;height:18px;border-radius:50%;border:1.5px solid #c7c7cc;
+  transition:.2s var(--ease)}
+.crow.on .pick i{background:var(--ink);border-color:var(--ink)}
+.crow .who{font-size:15px}
+.crow .who b{font-weight:600}
+.crow .rel{font-size:12px;color:var(--muted)}
+.crow .why{font-size:13px;color:#3a3a3c;line-height:1.45}
+.crow .why .ev{display:block;color:#a1a1a6;font-size:11.5px;margin-top:2px}
+.crow .cnt{font-size:12px;color:#a1a1a6;text-align:right}
+.skel{display:flex;flex-direction:column;gap:14px;padding:20px 0}
+.srow{display:flex;gap:14px;align-items:center}
+.srow i{width:18px;height:18px;border-radius:50%;background:#eee}
+.srow span{height:14px;flex:1;background:linear-gradient(90deg,#f2f2f2,#e8e8e8,#f2f2f2);
+  background-size:200% 100%;animation:shine 1.4s infinite;border-radius:6px}
+@keyframes shine{from{background-position:200% 0}to{background-position:-200% 0}}
+.err{padding:16px 0;color:#b3261e;font-size:14px}
+.link{background:none;border:0;color:var(--accent);cursor:pointer;font-size:14px;margin-left:8px}
+
 /* ---------- vehicles ---------- */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:28px}
 .vcard{
@@ -144,8 +169,9 @@ const PARTS = [
   ["front_face","前脸整体"],["grille","进气格栅"],["bumper","保险杠"],
   ["side_guard","侧防护栏"],["wheel_arch","前轮轮拱"],["step","登车踏步"]
 ];
-const state = {step:1, category:null, parts:[],
-               count:3, catalog:null, selected:[], heroes:{}, runId:null, job:null};
+const state = {step:1, category:null, parts:[], count:3, catalog:null,
+         selected:[], selMeta:[], cand:null, candJob:null,
+         heroes:{}, runId:null, job:null};
 const app = document.getElementById('app');
 const dots = document.getElementById('dots');
 const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -252,7 +278,7 @@ function step1(){
 
   document.getElementById('minus').onclick = ()=>{ state.count=Math.max(1,state.count-1); render(); };
   document.getElementById('plus').onclick = ()=>{ state.count=Math.min(20,state.count+1); render(); };
-  document.getElementById('next').onclick = ()=>{ state.step=2; render(); };
+  document.getElementById('next').onclick = ()=>{ state.step=2; startCandidates(); };
 }
 
 const PART_ALIAS = {
@@ -283,43 +309,83 @@ function paintPicked(){
   el.innerHTML = state.parts.length
     ? `已选　${state.parts.map(k=>`<a data-rm="${esc(k)}">${esc(partName(k))}</a>`).join('、')}`
     : '<span style="color:#a1a1a6">尚未选择部位</span>';
+  const nx = document.getElementById('next');
+  if(nx) nx.disabled = !(state.category && state.parts.length);
 }
 
-/* ---------------- 2 清单 ---------------- */
+/* ---------------- 2 清单（实时检索） ---------------- */
+async function startCandidates(){
+  state.cand = {status:'running', stage:'正在检索…', candidates:[]};
+  render();
+  const r = await fetch('/api/candidates',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({category: state.category, parts: state.parts})});
+  state.candJob = (await r.json()).job_id;
+  pollCandidates();
+}
+
+async function pollCandidates(){
+  const r = await fetch('/api/candidates/'+state.candJob);
+  state.cand = await r.json();
+  if(state.step===2) render();
+  if(state.cand.status==='running') setTimeout(pollCandidates, 1500);
+}
+
 function step2(){
-  const list = matchVehicles();
+  const c = state.cand || {status:'running', stage:'正在检索…', candidates:[]};
+  const rows = (c.candidates||[]).map(x=>{
+    const id = x.brand+' '+x.model;
+    return `<div class="crow ${state.selected.includes(id)?'on':''}" data-id="${esc(id)}"
+                 data-brand="${esc(x.brand)}" data-model="${esc(x.model)}">
+      <div class="pick"><i></i></div>
+      <div class="who"><b>${esc(x.brand)}</b> ${esc(x.model)}</div>
+      <div class="rel">${esc(x.relation||'')}</div>
+      <div class="why">${esc(x.reason||'')}
+        ${x.evidence?`<span class="ev">来源：${esc(x.evidence.slice(0,42))}</span>`:''}</div>
+      <div class="cnt">${x.mentions||0}</div>
+    </div>`;
+  }).join('');
+
   app.innerHTML = `<section class="step">
-    <div class="eyebrow">Step 02 · 候选清单</div>
-    <h1>${esc(state.category)} <em>· ${list.length} 台可选</em></h1>
-    <p class="sub">按库内素材数量排序。勾选接下来要分析的车型，至少 ${state.count} 台。</p>
-    <div class="grid" id="vs">
-      ${list.map(v=>`<div class="vcard ${state.selected.includes(v.model_name)?'on':''}"
-         data-m="${esc(v.model_name)}">
-        <div class="n">${v.assets} 张素材</div>
-        <div class="t">${esc(v.brand)} ${esc(v.model_name)}</div>
-        <div class="m">${esc(v.category)}</div>
-      </div>`).join('')}
+    <div class="phead2"><h2>候选清单</h2>
+      <span class="hint">${c.status==='running'? (c.stage||'检索中') :
+        `检索到 ${c.candidates.length} 台 · 来自 ${c.articles||0} 篇文章`}</span>
     </div>
+    ${c.status==='running' ? `<div class="skel">
+        ${[0,1,2,3,4].map(()=>`<div class="srow"><i></i><span></span></div>`).join('')}
+      </div>` : ''}
+    ${c.status==='fail' ? `<div class="err">${esc(c.error||'检索失败')}
+        <button class="link" id="retry">重试</button></div>` : ''}
+    ${rows? `<div class="clist">${rows}</div>` : ''}
     <div class="actions">
       <button class="btn ghost" id="back">上一步</button>
       <button class="btn" id="next" ${state.selected.length?'':'disabled'}>
         下一步 · 确认素材（已选 ${state.selected.length}）</button>
     </div>
   </section>`;
-  document.getElementById('vs').onclick = e=>{
-    const el = e.target.closest('[data-m]'); if(!el) return;
-    const m = el.dataset.m;
-    state.selected = state.selected.includes(m)
-      ? state.selected.filter(x=>x!==m) : [...state.selected, m];
+
+  if(document.getElementById('retry')) document.getElementById('retry').onclick = startCandidates;
+  document.getElementById('back').onclick = ()=>{ state.step=1; render(); };
+  const nx = document.getElementById('next');
+  if(nx) nx.onclick = ()=>{ state.step=3; loadHeroes(); };
+  const cl = document.querySelector('.clist');
+  if(cl) cl.onclick = e=>{
+    const row = e.target.closest('[data-id]'); if(!row) return;
+    const id = row.dataset.id;
+    if(state.selected.includes(id)){
+      state.selected = state.selected.filter(x=>x!==id);
+      state.selMeta = state.selMeta.filter(x=>x.id!==id);
+    } else {
+      state.selected.push(id);
+      state.selMeta.push({id, brand:row.dataset.brand, model:row.dataset.model});
+    }
     render();
   };
-  document.getElementById('back').onclick = ()=>{ state.step=1; render(); };
-  document.getElementById('next').onclick = ()=>{ state.step=3; loadHeroes(); };
 }
 
 /* ---------------- 3 素材 ---------------- */
 async function loadHeroes(){
-  for(const m of state.selected){
+  for(const s0 of state.selMeta){
+    const m = s0.id;
     if(state.heroes[m]) continue;
     const r = await fetch('/api/heroes?model='+encodeURIComponent(m));
     const d = await r.json();
@@ -330,13 +396,13 @@ async function loadHeroes(){
 
 function step3(){
   app.innerHTML = `<section class="step">
-    <div class="eyebrow">Step 03 · 素材确认</div>
-    <h1>每台车，<em>确认一张主图</em></h1>
-    <p class="sub">点击图片可换下一张候选；系统已按"整车、可辨识"筛过。</p>
+    <div class="phead2"><h2>素材确认</h2>
+      <span class="hint">点图片换一张；系统已按"整车、可辨识"筛过</span></div>
     <div class="grid" id="hs">
-      ${state.selected.map((m,i)=>{
+      ${state.selMeta.map((s0,i)=>{
+        const m = s0.id;
         const c = (state.heroes[m]||[])[0];
-        const src = c ? '/'+c.file_path : '';
+        const src = c ? (c.file_path ? '/'+c.file_path : c.url) : '';
         return `<div class="vcard">
           <div class="n">${i+1}</div><div class="t">${esc(m)}</div>
           <div class="m">${c?esc(c.view_angle):'无素材'}</div>
@@ -361,11 +427,11 @@ function step3(){
 
 /* ---------------- 4 分析 ---------------- */
 async function startRun(){
-  const vehicles = state.selected.map(m=>{
-    const v = state.catalog.vehicles.find(x=>x.model_name===m);
-    const hero = (state.heroes[m]||[])[0];
-    return {model_name:m, brand:v.brand, category:v.category, hero:hero.file_path};
-  });
+  const vehicles = state.selMeta.map(s0=>{
+    const hero = (state.heroes[s0.id]||[])[0];
+    return {model_name: s0.model, brand: s0.brand, category: state.category,
+            hero: hero ? (hero.file_path || hero.url) : null};
+  }).filter(v=>v.hero);
   const r = await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({vehicles, parts: state.parts.filter(k=>k!=='front_face')})});
   const d = await r.json();
@@ -379,9 +445,8 @@ function step4(){
   const prog = [...byModel.values()];
   const doneMsg = raw.filter(p=>p.model==='-').slice(-1)[0]?.msg || '';
   app.innerHTML = `<section class="step">
-    <div class="eyebrow">Step 04 · 分析中</div>
-    <h1>正在读图，<em>并写下判断</em></h1>
-    <p class="sub">每台车一次调用，完成后立刻出现在下面。</p>
+    <div class="phead2"><h2>分析</h2>
+      <span class="hint">每台车一次调用，完成后立刻出现</span></div>
     <div class="plist" id="pl">
       ${prog.length?prog.map(p=>`<div class="prow">
         <i class="pdot ${p.state}"></i><span class="pname">${esc(p.model)}</span>
@@ -413,9 +478,8 @@ async function poll(){
 /* ---------------- 5 导出 ---------------- */
 function step5(){
   app.innerHTML = `<section class="step">
-    <div class="eyebrow">Step 05 · 导出</div>
-    <h1>拿走去讲，<em>每个字都能改</em></h1>
-    <p class="sub">PPT 里是真实的文本框、图片和形状，不是整页截图。</p>
+    <div class="phead2"><h2>导出</h2>
+      <span class="hint">PPT 里是真实文本框、图片和形状，不是整页截图</span></div>
     <div class="actions">
       <button class="btn" id="exp">生成 PPTX</button>
       <span class="hint" id="msg"></span>

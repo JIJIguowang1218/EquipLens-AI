@@ -95,7 +95,18 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
     for i, v in enumerate(vehicles, 1):
         model = v["model_name"]
         emit(job, model, "run", f"正在分析 {model}（{i}/{total}）")
-        img = DATA / v["hero"]
+        hero = v["hero"]
+        if str(hero).startswith("http"):
+            import urllib.request as _u
+            dl = out / f"{i:02d}-hero.jpg"
+            try:
+                _u.urlretrieve(hero, dl)
+                img = dl
+            except Exception:
+                emit(job, model, "fail", "主图下载失败")
+                continue
+        else:
+            img = DATA / hero
         try:
             data = analysis.analyze(provider, f"{v['brand']} {model}", img, slots or SLOTS,
                                     list(ledger.used), vocab, tax, view_tag="hero")
@@ -155,9 +166,139 @@ def api_catalog():
     return catalog()
 
 
+CAND: dict[str, dict] = {}
+
+
+def _reason_fallback(c: dict, category: str = "") -> dict:
+    srcs = c.get("sources") or []
+    title = (srcs[0].get("title") or "") if srcs else ""
+    rel = "同类目"
+    for kw, tag in (("沙漠", "环境特化"), ("越野", "环境特化"), ("6x6", "同平台"),
+                    ("6X6", "同平台"), ("底盘", "同平台")):
+        if kw in title:
+            rel = tag
+            break
+    reason = (f"《{title[:16]}…》提到该型号" if title else
+              f"{c.get('mentions',0)} 篇文章提及")
+    return {"relation": rel, "reason": reason[:40], "evidence": title}
+
+
+def _reasons_llm(category: str, parts: list[str], cands: list[dict]) -> list[dict]:
+    """一次模型调用，为候选清单写关联理由（必须能由来源标题或车型本身看出）。"""
+    NL = chr(10)
+    cfg = analysis.load_config()
+    lines = []
+    for i, c in enumerate(cands, 1):
+        srcs = (c.get("sources") or [])[:2]
+        titles = " / ".join((s.get("title") or "")[:40] for s in srcs) or "（无标题）"
+        lines.append(f"{i}. {c.get('brand','')} {c.get('model','')}｜提及 {c.get('mentions',0)} 次｜来源标题：{titles}")
+    prompt = NL.join([
+        f"类目：{category}；关注部位：{'、'.join(parts) or '前脸'}",
+        "下面是检索到的候选车型与来源标题。为每个候选写一条「关联理由」，",
+        "必须能从来源标题或车型本身看出来，不要编造事实。",
+        "relation 只能取：同类目 / 邻近类目 / 同平台 / 环境特化。",
+        "reason 不超过 28 字，说清为什么该进这份清单。",
+        '只输出 JSON 数组：[{"i":1,"relation":"同类目","reason":"..."}]',
+        "",
+        NL.join(lines),
+    ])
+    payload = {"model": cfg.get("LLM_MODEL") or cfg["LLM_VISION_MODEL"],
+               "reasoning_effort": "low", "max_tokens": 3000,
+               "messages": [{"role": "user", "content": prompt}]}
+    import urllib.request
+    req = urllib.request.Request(cfg["LLM_BASE_URL"].rstrip("/") + "/chat/completions",
+                                 data=json.dumps(payload).encode(),
+                                 headers={"Authorization": f"Bearer {cfg['LLM_API_KEY']}",
+                                          "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        raw = json.load(r)["choices"][0]["message"]["content"] or ""
+    import re as _re
+    m = _re.search(r"\[.*\]", raw, _re.S)
+    out = []
+    if m:
+        try:
+            for item in json.loads(m.group(0)):
+                out.append({"relation": item.get("relation", "同类目"),
+                            "reason": (item.get("reason") or "")[:40]})
+        except Exception:
+            out = []
+    while len(out) < len(cands):
+        out.append(_reason_fallback(cands[len(out)], category))
+    return out
+
+
+def _gen_candidates(job_id: str, category: str, parts: list[str]):
+    job = CAND[job_id]
+    try:
+        from equiplens import roster
+        job["stage"] = "检索中（真实网页搜索，约 30–60 秒）"
+        res = roster.generate_roster(category, DATA, max_articles=6, top_n=12)
+        cands = res.get("candidates") or []
+        if not cands:
+            job.update(status="fail", error="没有检索到候选，可能被拦截，请重试")
+            return
+        job["stage"] = "生成关联理由"
+        reasons = None
+        for attempt in (1, 2):
+            try:
+                reasons = _reasons_llm(category, parts, cands)
+                break
+            except Exception as e:  # noqa: BLE001
+                job["reason_error"] = str(e)[:160]
+                time.sleep(1)
+        if not reasons:
+            reasons = [_reason_fallback(c, category) for c in cands]
+        items = []
+        for c, r in zip(cands, reasons):
+            srcs = c.get("sources") or []
+            items.append({"brand": c.get("brand", ""), "model": c.get("model", ""),
+                          "mentions": c.get("mentions", 0),
+                          "relation": r.get("relation", "同类目"),
+                          "reason": r.get("reason", ""),
+                          "evidence": (srcs[0].get("title", "") if srcs else ""),
+                          "evidence_url": (srcs[0].get("url", "") if srcs else ""),
+                          "n_sources": len(srcs)})
+        job.update(status="done", candidates=items, articles=len(res.get("articles") or []))
+    except Exception as e:  # noqa: BLE001
+        job.update(status="fail", error=str(e)[:200])
+
+
+@app.post("/api/candidates")
+def api_candidates(payload: dict):
+    category = (payload.get("category") or "").strip()
+    if not category:
+        raise HTTPException(400, "缺类目")
+    job_id = uuid.uuid4().hex[:8]
+    CAND[job_id] = {"status": "running", "stage": "排队", "candidates": [],
+                    "category": category}
+    threading.Thread(target=_gen_candidates, args=(job_id, category, payload.get("parts") or []),
+                     daemon=True).start()
+    return {"job_id": job_id}
+
+
+@app.get("/api/candidates/{job_id}")
+def api_candidates_status(job_id: str):
+    job = CAND.get(job_id)
+    if not job:
+        raise HTTPException(404, "任务不存在")
+    return job
+
+
 @app.get("/api/heroes")
 def api_heroes(model: str):
-    return {"model": model, "candidates": hero_candidates(model)}
+    """先查库内素材；没有就实时搜图（真实网页图片搜索）。"""
+    cands = hero_candidates(model)
+    if cands:
+        return {"model": model, "source": "library", "candidates": cands}
+    try:
+        from equiplens import imagesearch
+        res, status = imagesearch.search_model_images(model, limit=6)
+        out = [{"url": r.get("url"), "file_path": None, "view_angle": "web",
+                "width": r.get("width") or 0, "height": r.get("height") or 0,
+                "title": (r.get("title") or "")[:60]} for r in res if r.get("url")]
+        return {"model": model, "source": "web", "status": status, "candidates": out}
+    except Exception as e:  # noqa: BLE001
+        return {"model": model, "source": "web", "error": str(e)[:120], "candidates": []}
 
 
 @app.post("/api/run")
