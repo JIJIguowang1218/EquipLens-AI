@@ -23,7 +23,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from equiplens import analysis  # noqa: E402
+from equiplens import analysis, gate, imagesearch  # noqa: E402
 
 DATA = ROOT / "data-test"
 RUNS = ROOT / "data" / "web-runs"
@@ -96,7 +96,9 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
         model = v["model_name"]
         emit(job, model, "run", f"正在分析 {model}（{i}/{total}）")
         hero = v["hero"]
-        if str(hero).startswith("http"):
+        if str(hero).startswith("/files/"):
+            img = RUNS / hero.split("/files/", 1)[1]
+        elif str(hero).startswith("http"):
             import urllib.request as _u
             dl = out / f"{i:02d}-hero.jpg"
             try:
@@ -112,7 +114,12 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
                                     list(ledger.used), vocab, tax, view_tag="hero")
             data["vehicle"] = {"brand": v["brand"], "model": model,
                                "category": v.get("category", "")}
-            data["assets"] = {"hero": v["hero"], "side": None}
+            pages_dir = out / "pages"
+            pages_dir.mkdir(parents=True, exist_ok=True)
+            import shutil as _sh
+            hero_copy = pages_dir / f"hero-{i}.jpg"
+            _sh.copy(img, hero_copy)
+            data["assets"] = {"hero": hero_copy.name, "side": None}
             tags = [t["tag"] for t in (data.get("unit") or {}).get("style_tags", [])]
             if tags:
                 ledger.take(tags)
@@ -124,6 +131,7 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
                             "--out", str(out / "pages"),
                             "--page", str(i), "--total", str(total),
                             "--brand-rule", v.get("category", ""),
+                            "--data-dir", str(pages_dir.relative_to(ROOT)),
                             "--dump-blocks"],
                            check=True, capture_output=True, env={**dict(__import__("os").environ),
                                                                  "PYTHONPATH": str(ROOT / "src")})
@@ -295,12 +303,39 @@ def _harvest(job_id: str, category: str, parts: list[str]):
             job["stage"] = f"爬取主图 {i}/{len(cands)} · {item['brand']} {item['model']}"
             job["progress"] = i
             try:
-                shots, st = imagesearch.search_model_images(item["model"], limit=5)
-                imgs = [{"url": x.get("url"), "title": (x.get("title") or "")[:50],
-                         "w": x.get("width") or 0, "h": x.get("height") or 0}
-                        for x in shots if x.get("url")]
-                imgs.sort(key=lambda x: -(x["w"] * x["h"]))
-                item["images"] = imgs[:4]
+                shots, st = imagesearch.search_model_images(item["model"], limit=8)
+                imgs, gated = [], 0
+                idir = RUNS / f"harvest-{job_id}" / "imgs"
+                idir.mkdir(parents=True, exist_ok=True)
+                import requests as _rq
+                for h in shots:
+                    if len(imgs) >= 3:
+                        break
+                    ref = {"360": "https://image.so.com/",
+                           "baidu": "https://image.baidu.com/",
+                           "bing": "https://cn.bing.com/"}.get(h.get("channel"), "https://image.so.com/")
+                    try:
+                        rz = _rq.get(h["url"], headers={"User-Agent": imagesearch.UA,
+                                                        "Referer": ref}, timeout=12)
+                        if rz.status_code != 200 or len(rz.content) < 8000:
+                            continue
+                        g = gate.check_exterior(rz.content)
+                        if not g.get("exterior"):
+                            gated += 1
+                            continue
+                        ext = ".png" if h["url"].lower().split("?")[0].endswith(".png") else ".jpg"
+                        name = f"c{i}-{len(imgs)}{ext}"
+                        (idir / name).write_bytes(rz.content)
+                        imgs.append({"url": f"/files/harvest-{job_id}/imgs/{name}",
+                                     "view": g.get("view"), "margin": g.get("margin"),
+                                     "title": (h.get("title") or "")[:50],
+                                     "channel": h.get("channel")})
+                    except Exception:  # noqa: BLE001
+                        continue
+                rank = {"front": 0, "hero_45": 1, "side": 2, "rear": 3}
+                imgs.sort(key=lambda x: (rank.get(x.get("view"), 9), -(x.get("margin") or 0)))
+                item["images"] = imgs
+                item["gated_out"] = gated
                 item["status"] = "ok" if imgs else "noimg"
                 item["channel"] = st
             except Exception as e:  # noqa: BLE001
