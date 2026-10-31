@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>UI 组镜头</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
+.stage{position:absolute;inset:0;background:radial-gradient(1300px 760px at 50% 42%,#161618 0%,#0B0B0C 64%)}
+.grid{position:absolute;inset:0;opacity:.45;background-image:linear-gradient(#1C1C1F 1px,transparent 1px),linear-gradient(90deg,#1C1C1F 1px,transparent 1px);background-size:96px 96px}
+.win{position:absolute;left:240px;top:56px;width:1440px;height:900px;overflow:hidden;border:1px solid #2C2C31;border-radius:2px;
+  box-shadow:0 80px 200px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.03) inset;background:#fff;will-change:transform,filter}
+.win img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.label{position:absolute;left:240px;bottom:42px;font-size:24px;letter-spacing:.22em;color:#75757A}
+.label b{color:#F2F1EE;font-weight:600;letter-spacing:.18em}
+.idx{position:absolute;right:240px;bottom:30px;font-size:64px;font-weight:800;color:#2A2A2F;letter-spacing:-.02em}
+.vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.25),transparent 18%,transparent 82%,rgba(0,0,0,.35))}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="uimontage" data-start="0" data-duration="30" data-width="1920" data-height="1080">
+  <div class="stage"></div><div class="grid"></div>
+
+  <div class="win" id="w1"><img src="assets/ui/ui-01-start.png"></div>
+  <div class="win" id="w2"><img src="assets/ui/ui-02-search.png"></div>
+  <div class="win" id="w3"><img src="assets/ui/ui-03-assets.png"></div>
+  <div class="win" id="w4"><img src="assets/ui/ui-05-crop.png"></div>
+  <div class="win" id="w5"><img src="assets/ui/ui-06-result.png"></div>
+  <div class="win" id="w6"><img src="assets/ui/ui-07-settings.png"></div>
+
+  <div class="vig"></div>
+  <div class="label" id="lab">01　<b>立项</b></div>
+  <div class="idx" id="idx">01</div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+const LABEL = ["01　立项","02　检索","03　素材确认","04　逐台裁框","05　结果","06　设置"];
+const NUM = ["01","02","03","04","05","06"];
+const setLab = (i) => {
+  document.getElementById('lab').innerHTML = LABEL[i].replace(/(\d\d)　(.*)/, '$1　<b>$2</b>');
+  document.getElementById('idx').textContent = NUM[i];
+};
+
+// 初始全部隐藏
+["#w1","#w2","#w3","#w4","#w5","#w6"].forEach(s => gsap.set(s, {opacity: 0}));
+
+// ---- 1 立项：从下方弹起（过冲 + 轻微旋转）----
+setLab(0);
+tl.set("#w1", {opacity: 1}, 0);
+tl.fromTo("#w1",
+  {y: 900, rotation: -3, scale: .92, opacity: 0},
+  {y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.15, ease: "back.out(1.25)"}, 0.1);
+
+// ---- 2 检索：右侧甩入（带运动模糊）----
+tl.to("#w1", {x: -260, scale: .9, opacity: 0, filter: "blur(6px)", duration: .55, ease: "power3.in"}, 3.5);
+tl.call(() => setLab(1), [], 3.6);
+tl.set("#w2", {opacity: 1}, 3.6);
+tl.fromTo("#w2",
+  {x: 1500, rotation: 5, scale: .95, opacity: 0, filter: "blur(10px)"},
+  {x: 0, rotation: 0, scale: 1, opacity: 1, filter: "blur(0px)", duration: .95, ease: "expo.out"}, 3.6);
+
+// ---- 3 素材：下方整块翻起 + 卡片区域推近 ----
+tl.to("#w2", {y: -520, scale: .86, opacity: 0, duration: .55, ease: "power3.in"}, 7.2);
+tl.call(() => setLab(2), [], 7.3);
+tl.set("#w3", {opacity: 1}, 7.35);
+tl.fromTo("#w3",
+  {y: 620, rotationX: 18, scale: .9, opacity: 0},
+  {y: 0, rotationX: 0, scale: 1, opacity: 1, duration: .95, ease: "expo.out"}, 7.35);
+tl.to("#w3", {scale: 1.08, y: -30, duration: 2.2, ease: "power2.inOut"}, 8.6);
+
+// ---- 4 裁框：急推（crash zoom）+ 撞停微震 ----
+tl.to("#w3", {opacity: 0, scale: 1.2, duration: .35, ease: "power4.in"}, 11.4);
+tl.call(() => setLab(3), [], 11.5);
+tl.set("#w4", {opacity: 1}, 11.55);
+tl.fromTo("#w4",
+  {scale: 2.4, x: -380, y: -140, opacity: 0},
+  {scale: 1, x: 0, y: 0, opacity: 1, duration: .42, ease: "power4.out"}, 11.55);
+tl.fromTo("#w4", {x: 0}, {x: 6, duration: .06, yoyo: true, repeat: 5, ease: "none"}, 11.97);
+tl.to("#w4", {scale: 1.06, y: -20, duration: 2.0, ease: "power2.inOut"}, 12.4);
+
+// ---- 5 结果：三层错位叠放后归位 ----
+tl.to("#w4", {opacity: 0, y: -260, duration: .45, ease: "power3.in"}, 15.2);
+tl.call(() => setLab(4), [], 15.3);
+tl.set("#w5", {opacity: 1}, 15.35);
+tl.fromTo("#w5",
+  {y: 120, scale: .86, rotation: -1.6, opacity: 0},
+  {y: 0, scale: 1, rotation: 0, opacity: 1, duration: .8, ease: "back.out(1.1)"}, 15.35);
+tl.fromTo("#w5",
+  {boxShadow: "0 0 0 rgba(0,0,0,0)"},
+  {boxShadow: "0 80px 200px rgba(0,0,0,.7)", duration: .6}, 15.35);
+tl.to("#w5", {scale: 1.18, x: -180, y: -110, duration: 2.6, ease: "power2.inOut"}, 16.6);
+
+// ---- 6 设置：从右下角旋入 ----
+tl.to("#w5", {opacity: 0, scale: 1.05, filter: "blur(8px)", duration: .5, ease: "power3.in"}, 20.4);
+tl.call(() => setLab(5), [], 20.5);
+tl.set("#w6", {opacity: 1}, 20.55);
+tl.fromTo("#w6",
+  {x: 900, y: 700, rotation: 8, scale: .8, opacity: 0},
+  {x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: .9, ease: "expo.out"}, 20.55);
+tl.to("#w6", {scale: 1.05, duration: 2.2, ease: "power2.inOut"}, 21.8);
+
+// ---- 收束：全部压暗出画 ----
+tl.to("#w6", {scale: .96, opacity: 0, filter: "blur(10px)", duration: .7, ease: "power2.in"}, 27.2);
+tl.to(["#lab","#idx"], {opacity: 0, duration: .5}, 27.2);
+
+window.__timelines["uimontage"] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>
