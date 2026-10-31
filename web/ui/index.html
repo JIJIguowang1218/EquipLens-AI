@@ -56,6 +56,19 @@ h1 em{font-style:normal;color:var(--muted)}
 .chip:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .chip small{opacity:.55;margin-left:6px;font-size:12px}
+.field{
+  width:100%;height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--line);
+  background:#fff;font-size:16px;color:var(--ink);outline:none;transition:.25s var(--ease);
+  font-family:inherit;
+}
+.field:focus{border-color:var(--ink);box-shadow:0 0 0 4px rgba(0,0,0,.05)}
+.field::placeholder{color:#a1a1a6}
+.inputrow{display:flex;gap:10px}
+.btn.small{height:52px;padding:0 22px;font-size:14px;border-radius:14px;white-space:nowrap;flex:none}
+.hint2{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:18px}
+.quick{font-size:12.5px;color:var(--muted);margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.quick a{color:var(--accent);cursor:pointer;text-decoration:none}
+.quick a:hover{text-decoration:underline}
 .row{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px}
 .stepper{display:flex;align-items:center;gap:0;background:#fff;border:1px solid var(--line);
   border-radius:999px;overflow:hidden}
@@ -126,7 +139,7 @@ const PARTS = [
   ["front_face","前脸整体"],["grille","进气格栅"],["bumper","保险杠"],
   ["side_guard","侧防护栏"],["wheel_arch","前轮轮拱"],["step","登车踏步"]
 ];
-const state = {step:1, category:null, parts:["front_face","grille","bumper","side_guard","wheel_arch","step"],
+const state = {step:1, category:null, parts:[],
                count:3, catalog:null, selected:[], heroes:{}, runId:null, job:null};
 const app = document.getElementById('app');
 const dots = document.getElementById('dots');
@@ -139,6 +152,12 @@ function paintDots(){
 async function boot(){
   const r = await fetch('/api/catalog'); state.catalog = await r.json();
   render();
+}
+
+function matchVehicles(){
+  const exact = state.catalog.vehicles.filter(v=>v.category===state.category);
+  return exact.length ? exact
+    : state.catalog.vehicles.filter(v=>(v.category||'').includes(state.category||''));
 }
 
 function render(){
@@ -154,22 +173,45 @@ function render(){
 /* ---------------- 1 立项 ---------------- */
 function step1(){
   const cats = state.catalog.categories;
+  const match = cats.filter(c=>c.category.includes(state.category||''))
+                    .slice(0,6);
   app.innerHTML = `<section class="step">
     <div class="eyebrow">Step 01 · 立项</div>
     <h1>先定看什么，<em>再谈怎么排</em>。</h1>
-    <p class="sub">选一个设备类别、勾选要分析的部位，剩下的交给系统：检索、分析、排版、导出。</p>
+    <p class="sub">输入设备类别与分析部位，剩下的交给系统：检索、分析、排版、导出。</p>
+
     <div class="row" style="margin-top:44px;display:block">
       <div class="card">
         <div class="label">设备类别</div>
-        <div class="chips" id="cats">
-          ${cats.map(c=>`<div class="chip ${state.category===c.category?'on':''}"
-             data-c="${esc(c.category)}">${esc(c.category)}<small>${c.n}</small></div>`).join('')}
+        <input id="cat" class="field" list="catlist" autocomplete="off"
+               placeholder="如：矿用自卸车 / 随车吊 / 翻斗铲车"
+               value="${esc(state.category||'')}">
+        <datalist id="catlist">
+          ${cats.map(c=>`<option value="${esc(c.category)}">${c.n} 台</option>`).join('')}
+        </datalist>
+        <div class="hint2" id="cathint">
+          ${state.category ? (match.length? `匹配 ${match.reduce((a,b)=>a+b.n,0)} 台`
+                                          : '库里暂无该类目，可先按通用层继续') : '输入后自动匹配库内车型'}
         </div>
+
         <div class="label" style="margin-top:26px">分析部位</div>
-        <div class="chips" id="parts">
-          ${PARTS.map(([k,n])=>`<div class="chip ${state.parts.includes(k)?'on':''}"
-             data-p="${k}">${n}</div>`).join('')}
+        <div class="inputrow">
+          <input id="part" class="field" list="partlist" autocomplete="off"
+                 placeholder="如：前脸、保险杠、踏步（可继续添加）">
+          <button class="btn small" id="addpart">添加</button>
         </div>
+        <datalist id="partlist">
+          ${PARTS.map(([k,n])=>`<option value="${n}"></option>`).join('')}
+        </datalist>
+        <div class="chips" id="picked" style="margin-top:12px">
+          ${state.parts.map(k=>`<span class="chip on" data-rm="${k}">${partName(k)} ×</span>`).join('')}
+        </div>
+        <div class="quick" id="quick">
+          常用：${PARTS.map(([k,n])=>`<a data-add="${k}">${n}</a>`).join('')}
+          <a data-add="all">全部</a>
+        </div>
+        <div class="hint2" id="parthint"></div>
+
         <div class="label" style="margin-top:26px">车型数量</div>
         <div style="display:flex;align-items:center;gap:16px">
           <div class="stepper">
@@ -179,29 +221,79 @@ function step1(){
         </div>
       </div>
     </div>
+
     <div class="actions">
-      <button class="btn" id="next" ${state.category?'':'disabled'}>下一步 · 生成候选清单</button>
-      <span class="hint" id="t1"></span>
+      <button class="btn" id="next" ${state.category&&state.parts.length?'':'disabled'}>
+        下一步 · 生成候选清单</button>
     </div>
   </section>`;
-  document.getElementById('cats').onclick = e=>{
-    const el = e.target.closest('[data-c]'); if(!el) return;
-    state.category = el.dataset.c; render();
+
+  const cat = document.getElementById('cat');
+  cat.oninput = ()=>{ state.category = cat.value.trim(); refresh(); };
+  cat.onchange = ()=>{ state.category = cat.value.trim(); render(); };
+
+  function refresh(){
+    const m = cats.filter(c=>c.category.includes(state.category||''));
+    const hit = state.category ? matchVehicles().length : 0;
+    document.getElementById('cathint').textContent =
+      state.category ? (hit? `匹配 ${hit} 台` : '库里暂无该类目，将按通用层继续')
+                     : '输入后自动匹配库内车型';
+    document.getElementById('next').disabled = !(state.category && state.parts.length);
+  }
+
+  document.getElementById('addpart').onclick = ()=>{
+    const el = document.getElementById('part');
+    addPart(el.value); el.value=''; el.focus();
   };
-  document.getElementById('parts').onclick = e=>{
-    const el = e.target.closest('[data-p]'); if(!el) return;
-    const k = el.dataset.p;
-    state.parts = state.parts.includes(k) ? state.parts.filter(x=>x!==k) : [...state.parts,k];
+  document.getElementById('part').onkeydown = e=>{
+    if(e.key==='Enter'){ e.preventDefault(); document.getElementById('addpart').click(); }
+  };
+  document.getElementById('quick').onclick = e=>{
+    const a = e.target.closest('[data-add]'); if(!a) return;
+    const k = a.dataset.add;
+    if(k==='all') state.parts = PARTS.map(p=>p[0]);
+    else if(!state.parts.includes(k)) state.parts.push(k);
+    state.parts = PARTS.map(p=>p[0]).filter(x=>state.parts.includes(x));
     render();
+  };
+  document.getElementById('picked').onclick = e=>{
+    const el = e.target.closest('[data-rm]'); if(!el) return;
+    state.parts = state.parts.filter(x=>x!==el.dataset.rm); render();
   };
   document.getElementById('minus').onclick = ()=>{ state.count=Math.max(1,state.count-1); render(); };
   document.getElementById('plus').onclick = ()=>{ state.count=Math.min(20,state.count+1); render(); };
   document.getElementById('next').onclick = ()=>{ state.step=2; render(); };
 }
 
+const PART_ALIAS = {
+  '前脸':'front_face','前脸整体':'front_face','脸部':'front_face',
+  '格栅':'grille','进气格栅':'grille','中网':'grille',
+  '保险杠':'bumper','前杠':'bumper','包围':'bumper',
+  '防护栏':'side_guard','侧防护栏':'side_guard','侧防护':'side_guard',
+  '轮拱':'wheel_arch','轮眉':'wheel_arch','前轮轮拱':'wheel_arch','翼子板':'wheel_arch',
+  '踏步':'step','登车踏步':'step','踏板':'step','脚蹬':'step'
+};
+function partName(k){ return (PARTS.find(p=>p[0]===k)||[k,k])[1]; }
+function addPart(raw){
+  const toks = String(raw).split(/[、,，\s\/]+/).filter(Boolean);
+  const hint = document.getElementById('parthint');
+  const unknown = [];
+  toks.forEach(t=>{
+    const key = PART_ALIAS[t] || (PARTS.find(p=>p[1]===t)||[])[0];
+    if(key) { if(!state.parts.includes(key)) state.parts.push(key); }
+    else unknown.push(t);
+  });
+  state.parts = PARTS.map(p=>p[0]).filter(k=>state.parts.includes(k));
+  render();
+  if(unknown.length){
+    const h = document.getElementById('parthint');
+    if(h) h.textContent = `未识别：${unknown.join('、')}（本期支持：${PARTS.map(p=>p[1]).join('、')}）`;
+  }
+}
+
 /* ---------------- 2 清单 ---------------- */
 function step2(){
-  const list = state.catalog.vehicles.filter(v=>v.category===state.category);
+  const list = matchVehicles();
   app.innerHTML = `<section class="step">
     <div class="eyebrow">Step 02 · 候选清单</div>
     <h1>${esc(state.category)} <em>· ${list.length} 台可选</em></h1>
@@ -281,7 +373,7 @@ async function startRun(){
     return {model_name:m, brand:v.brand, category:v.category, hero:hero.file_path};
   });
   const r = await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({vehicles})});
+    body:JSON.stringify({vehicles, parts: state.parts.filter(k=>k!=='front_face')})});
   const d = await r.json();
   state.runId = d.run_id; state.step = 4; render(); poll();
 }

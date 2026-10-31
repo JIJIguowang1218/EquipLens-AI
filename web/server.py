@@ -80,7 +80,7 @@ def emit(job: dict, model: str, state: str, msg: str = ""):
                             "t": time.strftime("%H:%M:%S")})
 
 
-def run_pipeline(run_id: str, vehicles: list[dict]):
+def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = None):
     job = JOBS[run_id]
     out = RUNS / run_id
     out.mkdir(parents=True, exist_ok=True)
@@ -97,7 +97,7 @@ def run_pipeline(run_id: str, vehicles: list[dict]):
         emit(job, model, "run", f"正在分析 {model}（{i}/{total}）")
         img = DATA / v["hero"]
         try:
-            data = analysis.analyze(provider, f"{v['brand']} {model}", img, SLOTS,
+            data = analysis.analyze(provider, f"{v['brand']} {model}", img, slots or SLOTS,
                                     list(ledger.used), vocab, tax, view_tag="hero")
             data["vehicle"] = {"brand": v["brand"], "model": model,
                                "category": v.get("category", "")}
@@ -165,11 +165,13 @@ def api_run(payload: dict):
     vehicles = payload.get("vehicles") or []
     if not vehicles:
         raise HTTPException(400, "没有选择车型")
+    slots = [s for s in (payload.get("parts") or SLOTS) if s in SLOTS] or SLOTS
     with LOCK:
         run_id = uuid.uuid4().hex[:8]
         JOBS[run_id] = {"id": run_id, "status": "queued", "progress": [],
                         "pages": [], "vehicles": vehicles}
-        threading.Thread(target=run_pipeline, args=(run_id, vehicles), daemon=True).start()
+        threading.Thread(target=run_pipeline, args=(run_id, vehicles, slots),
+                         daemon=True).start()
     return {"run_id": run_id}
 
 
