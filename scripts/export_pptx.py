@@ -17,6 +17,7 @@ from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, MSO_AUTO_SIZE, PP_ALIGN
+from pptx.oxml.ns import qn
 from pptx.util import Emu, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,7 +28,24 @@ MUTED = RGBColor(0x8B, 0x8F, 0x96)
 BLOCK_BG = RGBColor(0xEF, 0xEC, 0xE5)
 PAPER = RGBColor(0xFA, 0xF9, 0xF6)
 LINE = RGBColor(0xD9, 0xD6, 0xCF)
-FONT = "微软雅黑"
+FONT = "Microsoft YaHei"
+FONT_EA = "Microsoft YaHei"
+
+
+def set_run_font(run, size: float, color, bold: bool = False):
+    """同时设置拉丁与东亚字体，避免中文回落到宋体。"""
+    f = run.font
+    f.size = Pt(size)
+    f.bold = bold
+    f.color.rgb = color
+    f.name = FONT
+    rPr = run._r.get_or_add_rPr()
+    for tag in ("a:ea", "a:cs"):
+        el = rPr.find(qn(tag))
+        if el is None:
+            el = rPr.makeelement(qn(tag), {})
+            rPr.append(el)
+        el.set("typeface", FONT_EA)
 
 
 def E(px: float) -> Emu:
@@ -66,8 +84,7 @@ def add_text(slide, x, y, w, h, text, size, color=INK, bold=False,
     p.alignment = align
     p.line_spacing = spacing
     r = p.add_run(); r.text = text
-    r.font.size = Pt(size); r.font.bold = bold
-    r.font.color.rgb = color; r.font.name = FONT
+    set_run_font(r, size, color, bold)
     return tb
 
 
@@ -115,7 +132,7 @@ def build_slide(prs, data: dict, tmp: Path):
         tf.vertical_anchor = MSO_ANCHOR.MIDDLE
         p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
         r = p.add_run(); r.text = tag
-        r.font.size = Pt(9); r.font.color.rgb = INK; r.font.name = FONT
+        set_run_font(r, 9, INK)
         tx -= w + 8
 
     # 色彩构成条
@@ -146,8 +163,7 @@ def build_slide(prs, data: dict, tmp: Path):
                 tf.vertical_anchor = MSO_ANCHOR.MIDDLE
                 p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
                 r = p.add_run(); r.text = f"{b['idx']:02d}"
-                r.font.size = Pt(6); r.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
-                r.font.name = FONT
+                set_run_font(r, 6, RGBColor(0xFF, 0xFF, 0xFF))
         else:
             sh = add_rect(slide, b["x"], b["y"], b["w"], b["h"], fill=BLOCK_BG)
             tf = sh.text_frame
@@ -185,8 +201,7 @@ def build_slide(prs, data: dict, tmp: Path):
                 p.line_spacing = ls
                 p.space_after = Pt(1)
                 r = p.add_run(); r.text = text
-                r.font.size = Pt(size); r.font.bold = bold
-                r.font.color.rgb = color; r.font.name = FONT
+                set_run_font(r, size, color, bold)
 
     # ---- 下栏 ----
     add_rect(slide, 48, 848, 1504, 1, fill=LINE)
@@ -195,6 +210,22 @@ def build_slide(prs, data: dict, tmp: Path):
              f"{data.get('brand_rule', '')}", 7.5, GRAPHITE)
     add_text(slide, 1452, 858, 100, 20, f"{int(data.get('page', 1)):02d} / "
              f"{int(data.get('total', 10)):02d}", 7, MUTED, align=PP_ALIGN.RIGHT)
+
+
+def patch_theme_fonts(path: Path):
+    """把主题里的东亚字体改成无衬线，保证用户新建的文本框也不再回落宋体。"""
+    import shutil, zipfile
+    tmp = path.with_suffix(".tmp.pptx")
+    with zipfile.ZipFile(path) as zin, zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as zout:
+        for item in zin.infolist():
+            data = zin.read(item.filename)
+            if item.filename.startswith("ppt/theme/theme") and item.filename.endswith(".xml"):
+                txt = data.decode("utf-8")
+                txt = txt.replace('<a:ea typeface=""', '<a:ea typeface="Microsoft YaHei"')
+                txt = txt.replace('<a:ea typeface="宋体"', '<a:ea typeface="Microsoft YaHei"')
+                data = txt.encode("utf-8")
+            zout.writestr(item, data)
+    shutil.move(tmp, path)
 
 
 def main() -> int:
@@ -220,6 +251,7 @@ def main() -> int:
 
     out = ROOT / args.out
     prs.save(out)
+    patch_theme_fonts(out)
     print(f"[ok] {out}  slides={len(prs.slides)}  size={out.stat().st_size/1024:.0f}KB")
     return 0
 
