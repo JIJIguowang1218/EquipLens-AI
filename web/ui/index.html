@@ -140,12 +140,12 @@ h1 em{font-style:normal;color:var(--muted)}
   border:0;background:#fff;color:#8e8e93;font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .vcard .x:hover{color:#ff3b30}
 .vcard .thumb{border-radius:12px;object-fit:cover;background:#eee}
-.vcard .thumb.broken{background:#f2f2f4;color:#a1a1a6;font-size:12px;height:120px}
+.vcard .thumb.broken{background:#f2f2f4;color:#a1a1a6;font-size:12px;height:150px}
 .vcard .thumb.empty{display:flex;align-items:center;justify-content:center;color:#a1a1a6;font-size:12px}
 .vcard .evi{font-size:11.5px;color:#a1a1a6;margin-top:8px;line-height:1.4}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:28px}
 .vcard{
-  background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;
+  background:#fff;border:1px solid var(--line);border-radius:0;padding:16px;
   cursor:pointer;transition:.35s var(--ease);position:relative;overflow:hidden;
 }
 .vcard:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
@@ -153,7 +153,7 @@ h1 em{font-style:normal;color:var(--muted)}
 .vcard .t{font-weight:600;font-size:16px}
 .vcard .m{color:var(--muted);font-size:13px;margin-top:3px}
 .vcard .n{position:absolute;right:14px;top:14px;font-size:12px;color:var(--muted)}
-.vcard .thumb{width:100%;height:120px;object-fit:cover;border-radius:12px;background:#eee;margin-top:12px}
+.vcard .thumb{width:100%;height:150px;object-fit:contain;border-radius:0;background:#f5f5f7;margin-top:12px}
 /* ---------- progress ---------- */
 .plist{margin-top:26px;display:flex;flex-direction:column;gap:2px}
 .prow{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--line)}
@@ -255,7 +255,7 @@ function step1(){
         <div class="picked-line" id="picked"></div>
         <div class="hint2" id="parthint"></div>
 
-        <div class="label" style="margin-top:26px">车型数量</div>
+        <div class="label" style="margin-top:26px">车型数量（将多推荐 3 台备选）</div>
         <div style="display:flex;align-items:center;gap:16px">
           <div class="stepper">
             <button id="minus">−</button><b id="cnt">${state.count}</b><button id="plus">+</button>
@@ -342,7 +342,7 @@ async function startHarvest(){
   state.harvest = {status:'running', stage:'准备中', candidates:[], progress:0, articles:0};
   render();
   const r = await fetch('/api/harvest',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({category: state.category, parts: state.parts})});
+    body:JSON.stringify({category: state.category, parts: state.parts, count: state.count})});
   state.harvestJob = (await r.json()).job_id;
   pollHarvest();
 }
@@ -452,47 +452,41 @@ async function startRun(){
 }
 
 function step4(){
-  const raw = state.job?.progress || [];
-  const byModel = new Map();
-  raw.forEach(p=>{ if(p.model!=='-') byModel.set(p.model, p); });
-  const prog = [...byModel.values()];
-  const doneMsg = raw.filter(p=>p.model==='-').slice(-1)[0]?.msg || '';
+  const pages = state.job?.pages || [];
+  if(!pages.length){ app.innerHTML = '<section class="step"><div class="phead2"><h2>分析</h2></div><p class="hint">没有可编辑的页面</p></section>'; return; }
+  const i = Math.min(state.cropIdx||0, pages.length-1);
+  const pg = pages[i];
+  const src = `/files/${state.runId}/${pg.editor}?run_id=${state.runId}&slug=${encodeURIComponent(pg.model)}`;
   app.innerHTML = `<section class="step">
-    <div class="phead2"><h2>分析</h2>
-      <span class="hint">每台车一次调用，完成后立刻出现</span></div>
-    <div class="plist" id="pl">
-      ${prog.length?prog.map(p=>`<div class="prow">
-        <i class="pdot ${p.state}"></i><span class="pname">${esc(p.model)}</span>
-        <span class="pmsg">${esc(p.msg||'')}</span></div>`).join(''):
-        `<div class="prow"><i class="pdot run"></i><span class="pname">准备中…</span></div>`}
-    </div>
-    ${doneMsg?`<p class="hint" style="margin-top:14px">${esc(doneMsg)}</p>`:''}
-    <div class="gallery" id="gal">
-      ${(state.job?.pages||[]).map(p=>`<div class="frame">
-        <iframe src="/files/${state.runId}/${p.file}" scrolling="no"></iframe></div>`).join('')}
+    <div class="phead2"><h2>逐台确认裁框</h2>
+      <span class="hint">${i+1} / ${pages.length} · ${esc(pg.brand)} ${esc(pg.model)} · 拖框后点右侧「保存裁框」</span></div>
+    <div class="frame" style="aspect-ratio:auto;height:calc(100vh - 300px)">
+      <iframe src="${src}" style="width:100%;height:100%;transform:none"></iframe>
     </div>
     <div class="actions">
-      <button class="btn" id="next" ${state.job?.status==='done'?'':'disabled'}>
-        下一步 · 导出 PPT</button>
+      <button class="btn ghost" id="prev" ${i===0?'disabled':''}>上一台</button>
+      <button class="btn" id="next">${i===pages.length-1?'完成 · 生成页面':'下一台'}</button>
     </div>
   </section>`;
-  const nx = document.getElementById('next');
-  if(nx) nx.onclick = ()=>{ state.step=5; render(); };
-}
-
-async function poll(){
-  const r = await fetch('/api/run/'+state.runId);
-  state.job = await r.json();
-  if(state.step===4) render();
-  if(state.job.status!=='done') setTimeout(poll, 1200);
-  else render();
+  document.getElementById('prev').onclick = ()=>{ state.cropIdx=Math.max(0,i-1); render(); };
+  document.getElementById('next').onclick = async ()=>{
+    if(i < pages.length-1){ state.cropIdx=i+1; render(); return; }
+    const btn = document.getElementById('next'); btn.disabled = true; btn.textContent='生成中…';
+    const r = await fetch('/api/finalize/'+state.runId,{method:'POST'});
+    state.built = (await r.json()).built || [];
+    state.step = 5; render();
+  };
 }
 
 /* ---------------- 5 导出 ---------------- */
 function step5(){
+  const built = state.built || [];
   app.innerHTML = `<section class="step">
-    <div class="phead2"><h2>导出</h2>
-      <span class="hint">PPT 里是真实文本框、图片和形状，不是整页截图</span></div>
+    <div class="phead2"><h2>排版完成</h2>
+      <span class="hint">${built.length} 页 · 可直接进页内「编辑布局」微调</span></div>
+    <div class="gallery">
+      ${built.map(p=>`<div class="frame"><iframe src="/files/${state.runId}/${p.file}" scrolling="no"></iframe></div>`).join('')}
+    </div>
     <div class="actions">
       <button class="btn" id="exp">生成 PPTX</button>
       <span class="hint" id="msg"></span>

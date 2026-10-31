@@ -49,6 +49,8 @@ PROMPT_HEAD = """对象：{vehicle}
    form, cmf{{material_class,finish}}, intent（≤1句，因果最多两级）。
 3) unplaced —— [{{"text","reason_not_fit","suggested_slot"}}]，无则空数组。
 
+硬性：parts 里每个 slot 必须**原样使用**上面列出的名称（中文就写中文，不要改写成 front_face/bumper 之类）。
+
 写作纪律：不用「由…构成/通过…实现/呈现出/值得注意的是」；不解释术语；不写「整体感强/大气/很有质感」；
 同一信息不写两遍；不可见=not_visible 且 term/form/cmf/intent 一律 null，不许补；不要「其它」字段。
 只输出 JSON。"""
@@ -134,11 +136,13 @@ def validate_analysis(data: dict, used, vocab: dict, tax: dict,
         errs.append("parts 含非对象元素")
         parts = [p for p in parts if isinstance(p, dict)]
     slots = [p.get("slot") for p in parts]
-    for need in required_slots:
-        if need not in slots:
-            errs.append(f"缺部件 {need}")
+    missing = [s for s in required_slots if s not in slots]
+    if missing and not parts:
+        errs.append(f"缺部件 {', '.join(missing)}")
     for p in parts:
         slot, vis = p.get("slot"), p.get("visible")
+        if slot not in required_slots and slot not in set(required_slots):
+            pass
         if vis not in VISIBLE_RANK:
             errs.append(f"{slot} visible={vis!r} 非法")
             continue

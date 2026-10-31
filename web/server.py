@@ -126,24 +126,22 @@ def run_pipeline(run_id: str, vehicles: list[dict], slots: list[str] | None = No
             (out / f"{i:02d}-{model}.json").write_text(
                 json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "build_report_page.py"),
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "build_crop_editor.py"),
                             "--analysis", str(out / f"{i:02d}-{model}.json"),
-                            "--out", str(out / "pages"),
-                            "--page", str(i), "--total", str(total),
-                            "--brand-rule", v.get("category", ""),
-                            "--data-dir", str(pages_dir.relative_to(ROOT)),
-                            "--dump-blocks"],
-                           check=True, capture_output=True, env={**dict(__import__("os").environ),
-                                                                 "PYTHONPATH": str(ROOT / "src")})
+                            "--out", str(pages_dir),
+                            "--data-dir", str(pages_dir.relative_to(ROOT))],
+                           check=True, capture_output=True,
+                           env={**dict(__import__("os").environ),
+                                "PYTHONPATH": str(ROOT / "src")})
             page = out / "pages" / f"{model}.html"
             if page.exists():
                 import re as _re
                 txt = page.read_text(encoding="utf-8")
                 txt = _re.sub(r"(?:\.\./)+data-test/", "/", txt)
                 page.write_text(txt, encoding="utf-8")
-            job["pages"].append({"model": model, "brand": v["brand"],
-                                 "file": f"pages/{model}.html",
-                                 "json": f"{i:02d}-{model}.json"})
+            job["pages"].append({"model": model, "brand": v["brand"], "idx": i,
+                                 "editor": f"pages/{model}-crop-editor.html",
+                                 "json": f"{i:02d}-{model}.json", "built": False})
             emit(job, model, "ok", "完成")
         except Exception as e:  # noqa: BLE001
             emit(job, model, "fail", str(e)[:160])
@@ -284,13 +282,14 @@ def _gen_candidates(job_id: str, category: str, parts: list[str]):
         job.update(status="fail", error=str(e)[:200])
 
 
-def _harvest(job_id: str, category: str, parts: list[str]):
+def _harvest(job_id: str, category: str, parts: list[str], count: int = 3):
     """一步到位：检索候选 → 写关联理由 → 现场爬图（走 imagesearch 管线）。"""
     job = HARVEST[job_id]
     try:
         from equiplens import roster, imagesearch
         job["stage"] = "检索候选车型（浏览器抓取中）"
-        res = roster.generate_roster(category, DATA, max_articles=6, top_n=10)
+        top_n = max(3, int(count) + 3)
+        res = roster.generate_roster(category, DATA, max_articles=6, top_n=top_n)
         cands = res.get("candidates") or []
         job["articles"] = len(res.get("articles") or [])
         if not cands:
@@ -378,7 +377,8 @@ def api_harvest(payload: dict):
     job_id = uuid.uuid4().hex[:8]
     HARVEST[job_id] = {"status": "running", "stage": "准备中", "candidates": [],
                        "category": category, "progress": 0, "articles": 0}
-    threading.Thread(target=_harvest, args=(job_id, category, payload.get("parts") or []),
+    threading.Thread(target=_harvest, args=(job_id, category, payload.get("parts") or [],
+                                           int(payload.get("count") or 3)),
                      daemon=True).start()
     return {"job_id": job_id}
 
@@ -450,6 +450,56 @@ def api_run(payload: dict):
         threading.Thread(target=run_pipeline, args=(run_id, vehicles, slots),
                          daemon=True).start()
     return {"run_id": run_id}
+
+
+@app.post("/api/boxes")
+def api_save_boxes(payload: dict):
+    run_id, slug = payload.get("run_id"), payload.get("slug")
+    parts = payload.get("parts")
+    if not run_id or not slug or not isinstance(parts, list):
+        raise HTTPException(400, "参数不全")
+    bdir = RUNS / run_id / "boxes"
+    bdir.mkdir(parents=True, exist_ok=True)
+    (bdir / f"{slug}.json").write_text(
+        json.dumps({"slug": slug, "parts": parts}, ensure_ascii=False, indent=2),
+        encoding="utf-8")
+    return {"ok": True}
+
+
+@app.post("/api/finalize/{run_id}")
+def api_finalize(run_id: str):
+    job = JOBS.get(run_id)
+    if not job:
+        raise HTTPException(404, "任务不存在")
+    out = RUNS / run_id
+    pages_dir = out / "pages"
+    total = len(job["pages"])
+    built = []
+    for k, pg in enumerate(job["pages"], 1):
+        boxes = out / "boxes" / f"{pg['model']}.json"
+        cmd = [sys.executable, str(ROOT / "scripts" / "build_report_page.py"),
+               "--analysis", str(out / pg["json"]),
+               "--out", str(pages_dir),
+               "--page", str(k), "--total", str(total),
+               "--data-dir", str(pages_dir.relative_to(ROOT)),
+               "--dump-blocks"]
+        if boxes.exists():
+            cmd += ["--boxes", str(boxes)]
+        try:
+            subprocess.run(cmd, check=True, capture_output=True,
+                           env={**dict(__import__("os").environ),
+                                "PYTHONPATH": str(ROOT / "src")})
+            html = pages_dir / f"{pg['model']}.html"
+            if html.exists():
+                import re as _re
+                txt = html.read_text(encoding="utf-8")
+                txt = _re.sub(r"(?:\.\./)+data-test/", "/", txt)
+                html.write_text(txt, encoding="utf-8")
+            pg["built"] = True
+            built.append({"model": pg["model"], "file": f"pages/{pg['model']}.html"})
+        except subprocess.CalledProcessError:
+            pass
+    return {"built": built}
 
 
 @app.get("/api/run/{run_id}")

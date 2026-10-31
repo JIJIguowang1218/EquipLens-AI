@@ -69,7 +69,7 @@ button.ghost{background:#232833;color:#c9d1d9}
     <h1>部件裁框 · __TITLE__</h1>
     <div class="hint">拖动框移动，拖四角缩放。<b>框内只留该部件本身</b>。全部调完再排版。</div>
     <ul id="list"></ul>
-    <div class="row"><button id="copy">复制 JSON</button>
+    <div class="row"><button id="copy">保存裁框</button>
       <button class="ghost" id="reset">复位</button></div>
     <textarea id="out" readonly></textarea>
   </aside>
@@ -148,9 +148,20 @@ window.addEventListener('pointermove',e=>{
 });
 window.addEventListener('pointerup',()=>{drag=null;});
 document.getElementById('copy').onclick=async()=>{
-  await navigator.clipboard.writeText(out.value);
-  document.getElementById('copy').textContent='已复制';
-  setTimeout(()=>document.getElementById('copy').textContent='复制 JSON',1200);
+  const q=new URLSearchParams(location.search);
+  const run=q.get('run_id'), slug=q.get('slug');
+  const btn=document.getElementById('copy');
+  if(run && slug){
+    try{
+      const r=await fetch('/api/boxes',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({run_id:run, slug:slug, parts: JSON.parse(out.value).parts})});
+      btn.textContent = r.ok ? '已保存' : '保存失败';
+    }catch(e){ btn.textContent='保存失败'; }
+  }else{
+    await navigator.clipboard.writeText(out.value);
+    btn.textContent='已复制';
+  }
+  setTimeout(()=>btn.textContent='保存裁框',1200);
 };
 document.getElementById('reset').onclick=()=>{PARTS.forEach((p,i)=>p.bbox=INIT[i].bbox.slice());draw();};
 img.onload=draw;
