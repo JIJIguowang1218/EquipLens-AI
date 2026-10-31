@@ -212,8 +212,8 @@ border-radius:999px;line-height:1}
 display:flex;justify-content:space-between}
 /* ---- body ---- */
 main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px}
-.left{display:grid;grid-template-rows:430px 218px;gap:20px}
-.hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;align-self:start;justify-self:center}
+.left{display:flex;flex-direction:column;gap:20px;height:668px}
+.hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;flex:0 0 auto;align-self:flex-start;justify-self:center;margin:0 auto}
 .hero img{width:100%;height:100%;object-fit:contain}
 .mark{position:absolute;border:1px solid var(--accent);background:rgba(255,255,255,.06)}
 .mark b{position:absolute;top:-9px;left:-9px;width:18px;height:18px;background:var(--accent);
@@ -223,13 +223,13 @@ font-family:Consolas,monospace}
 overflow:hidden}
 .eyebrow{font-size:9px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;
 font-family:Bahnschrift,"Arial Narrow",sans-serif}
-.lead{font-size:15px;line-height:1.65;font-weight:600}
-.lines{list-style:none;font-size:12.5px;line-height:1.55;color:#2b2e33;display:flex;
-flex-direction:column;gap:3px}
+.lead{font-size:17px;line-height:1.7;font-weight:600}
+.lines{list-style:none;font-size:13.5px;line-height:1.85;color:#2b2e33;display:flex;
+flex-direction:column;gap:7px}
 .lines li{padding-left:14px;position:relative}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
-.meta{font-size:11.5px;color:var(--graphite);line-height:1.5}
+.meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:16px}
 .card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:130px 1fr;
 overflow:hidden}
