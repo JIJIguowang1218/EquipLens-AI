@@ -4,7 +4,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent
-FULL = ROOT / "assets" / "vo-human" / "full-spliced.wav"
+FULL = ROOT / "assets" / "vo-human" / "full.wav"
 CUT = ROOT / "assets" / "vo-human" / "cut"
 CUT.mkdir(exist_ok=True)
 lines = json.loads((ROOT / "assets" / "vo-human" / "lines.json").read_text())
