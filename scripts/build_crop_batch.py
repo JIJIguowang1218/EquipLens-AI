@@ -113,43 +113,46 @@ justify-content:center;flex-direction:column;gap:12px;z-index:20}
 </div>
 <script>
 const DATA = __DATA__;
-let idx = 0, sel = 0;
+let idx = 0, sel = 0, dragging = null;
 const done = new Set();
 const panelsEl = document.getElementById('panels');
 const list = document.getElementById('list'), chips = document.getElementById('chips');
 const out = document.getElementById('out'), panel = document.getElementById('panel');
 const cur = () => DATA[idx];
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const pct = b => ({l:b[0]/10, t:b[1]/10, w:(b[2]-b[0])/10, h:(b[3]-b[1])/10});
 
-function pct(b){return {l:b[0]/10,t:b[1]/10,w:(b[2]-b[0])/10,h:(b[3]-b[1])/10};}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-
-function draw(){
+/* 只在换车 / 跳过 / 跨图落地时重建 */
+function buildPanels(){
   const d = cur();
   panelsEl.className = 'panels g' + (d.imgs.length >= 3 ? 2 : 1);
   panelsEl.innerHTML = '';
   d.imgs.forEach((im,k)=>{
-    const p = document.createElement('div');
-    p.className = 'panel'; p.dataset.k = k;
-    p.innerHTML = `<div class="phead">图${k+1} · ${im.view}</div>
+    const el = document.createElement('div');
+    el.className='panel'; el.dataset.k=k;
+    el.innerHTML = `<div class="phead">图${k+1} · ${im.view}</div>
       <div class="stage" data-k="${k}"><img src="${im.src}" alt=""></div>`;
-    const st = p.querySelector('.stage');
+    const st = el.querySelector('.stage');
     d.parts.forEach((part,i)=>{
       if(part.skip || part.src !== im.src || !part.bbox) return;
       const b = pct(part.bbox);
-      const el = document.createElement('div');
-      el.className = 'box'+(i===sel?' sel':'');
-      el.style.cssText = `left:${b.l}%;top:${b.t}%;width:${b.w}%;height:${b.h}%`;
-      el.dataset.i = i; el.dataset.k = k;
-      el.innerHTML = `<span class="lab">${i+1} · ${part.label}</span>`+
-        ['nw','ne','sw','se'].map(c=>`<span class="h ${c}" data-k="${c}"></span>`).join('');
-      st.appendChild(el);
+      const bx = document.createElement('div');
+      bx.className='box'+(i===sel?' sel':'');
+      bx.style.cssText=`left:${b.l}%;top:${b.t}%;width:${b.w}%;height:${b.h}%`;
+      bx.dataset.i=i;
+      bx.innerHTML=`<span class="lab">${i+1} · ${part.label}</span>`+
+        ['nw','ne','sw','se'].map(c=>`<span class="h ${c}" data-c="${c}"></span>`).join('');
+      st.appendChild(bx);
     });
-    panelsEl.appendChild(p);
+    panelsEl.appendChild(el);
   });
-  renderList(); renderChips(); dump();
+  syncList(); syncChips(); dump();
 }
+function boxEl(i){ return panelsEl.querySelector(`.box[data-i="${i}"]`); }
+function place(el,b){ el.style.left=b.l+'%'; el.style.top=b.t+'%';
+  el.style.width=b.w+'%'; el.style.height=b.h+'%'; }
 
-function renderList(){
+function syncList(){
   list.innerHTML='';
   cur().parts.forEach((p,i)=>{
     const li=document.createElement('li');
@@ -160,111 +163,115 @@ function renderList(){
       <span class="badge">${p.skip?'跳过':'图'+n}</span>
       <span class="act" data-skip="${i}">${p.skip?'恢复':'跳过'}</span>`;
     li.onclick=(e)=>{
-      if(e.target.dataset.skip!==undefined){ p.skip=!p.skip; draw(); return; }
-      sel=i; draw();
+      if(e.target.dataset.skip!==undefined){ p.skip=!p.skip; buildPanels(); return; }
+      sel=i;
+      document.querySelectorAll('.box').forEach(b=>b.classList.toggle('sel', +b.dataset.i===i));
+      syncList();
     };
     list.appendChild(li);
   });
 }
-
-function renderChips(){
+function syncChips(){
   chips.innerHTML='';
   DATA.forEach((d,i)=>{
     const c=document.createElement('div');
     c.className='chip'+(i===idx?' cur':'')+(done.has(i)?' done':'');
     c.textContent=done.has(i)?'✓':(i+1); c.title=d.title;
-    c.onclick=()=>{idx=i;sel=0;render();};
+    c.onclick=()=>{ idx=i; sel=0; render(); };
     chips.appendChild(c);
   });
   document.getElementById('vname').textContent=`${idx+1} / ${DATA.length} · ${cur().title}`;
   document.getElementById('prev').disabled = idx===0;
 }
-
 function dump(){
-  out.value=JSON.stringify({slug:cur().slug,parts:cur().parts.map(p=>
-    ({slot:p.slot,bbox:p.skip?null:p.bbox,src:p.skip?null:p.src,skip:!!p.skip}))},null,1);
+  out.value=JSON.stringify({slug:cur().slug, parts:cur().parts.map(p=>({
+    slot:p.slot, bbox:p.skip?null:p.bbox, src:p.skip?null:p.src, skip:!!p.skip}))},null,1);
 }
 
-let drag=null;
-panelsEl.addEventListener('pointerdown',e=>{
-  const handle=e.target.closest('.h'), box=e.target.closest('.box');
-  if(!box) return;
-  const stage=e.target.closest('.stage');
-  sel=+box.dataset.i; draw();
-  const el=panelsEl.querySelector(`.box[data-i="${sel}"]`);
-  drag={i:sel,k:+stage.dataset.k,handle:handle?handle.dataset.k:null,
-        sx:e.clientX,sy:e.clientY,orig:cur().parts[sel].bbox.slice(),
-        r:stage.getBoundingClientRect()};
-  if(el) el.setPointerCapture(e.pointerId);
+/* ---- 拖动：只动当前这个框 ---- */
+panelsEl.addEventListener('pointerdown', e=>{
+  const bx = e.target.closest('.box');
+  if(!bx) return;
   e.preventDefault();
+  const i = +bx.dataset.i;
+  sel = i;
+  document.querySelectorAll('.box').forEach(b=>b.classList.toggle('sel', b===bx));
+  syncList();
+  const handle = e.target.closest('.h');
+  const stage = bx.closest('.stage');
+  const r = stage.getBoundingClientRect();
+  dragging = {i, el:bx, k:+stage.dataset.k, c:handle?handle.dataset.c:null,
+              sx:e.clientX, sy:e.clientY, r, orig:cur().parts[i].bbox.slice()};
+  bx.setPointerCapture?.(e.pointerId);
 });
-window.addEventListener('pointermove',e=>{
-  if(!drag) return;
-  const dx=(e.clientX-drag.sx)/drag.r.width*1000, dy=(e.clientY-drag.sy)/drag.r.height*1000;
-  let [x1,y1,x2,y2]=drag.orig;
-  if(!drag.handle){x1+=dx;x2+=dx;y1+=dy;y2+=dy;}
+window.addEventListener('pointermove', e=>{
+  if(!dragging) return;
+  const d = dragging;
+  const dx = (e.clientX-d.sx)/d.r.width*1000, dy = (e.clientY-d.sy)/d.r.height*1000;
+  let [x1,y1,x2,y2] = d.orig;
+  if(!d.c){ x1+=dx; x2+=dx; y1+=dy; y2+=dy; }
   else{
-    if(drag.handle.includes('w')) x1=Math.min(x2-15,x1+dx);
-    if(drag.handle.includes('e')) x2=Math.max(x1+15,x2+dx);
-    if(drag.handle.includes('n')) y1=Math.min(y2-10,y1+dy);
-    if(drag.handle.includes('s')) y2=Math.max(y1+10,y2+dy);
+    if(d.c.includes('w')) x1 = Math.min(x2-15, x1+dx);
+    if(d.c.includes('e')) x2 = Math.max(x1+15, x2+dx);
+    if(d.c.includes('n')) y1 = Math.min(y2-10, y1+dy);
+    if(d.c.includes('s')) y2 = Math.max(y1+10, y2+dy);
   }
-  const p=cur().parts[drag.i];
-  p.bbox=[x1,y1,x2,y2].map(v=>Math.round(clamp(v,0,1000)));
-  const el=panelsEl.querySelector(`.box[data-i="${drag.i}"]`);
-  if(el){ const b=pct(p.bbox);
-    el.style.cssText=`left:${b.l}%;top:${b.t}%;width:${b.w}%;height:${b.h}%`; }
+  const p = cur().parts[d.i];
+  p.bbox = [x1,y1,x2,y2].map(v=>Math.round(clamp(v,0,1000)));
+  place(d.el, pct(p.bbox));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('drop'));
-  if(!drag.handle){
-    const t=document.elementFromPoint(e.clientX,e.clientY)?.closest('.panel');
-    if(t && +t.dataset.k!==drag.k) t.classList.add('drop');
+  if(!d.c){
+    const t = document.elementFromPoint(e.clientX,e.clientY)?.closest('.panel');
+    if(t && +t.dataset.k !== d.k) t.classList.add('drop');
   }
   dump();
 });
-window.addEventListener('pointerup',e=>{
-  if(!drag) return;
-  if(!drag.handle){
-    const t=document.elementFromPoint(e.clientX,e.clientY)?.closest('.panel');
-    if(t && +t.dataset.k!==drag.k){
-      const k=+t.dataset.k, d=cur(), p=d.parts[drag.i];
-      const st=t.querySelector('.stage').getBoundingClientRect();
-      const w=p.bbox[2]-p.bbox[0], h=p.bbox[3]-p.bbox[1];
-      const cx=(e.clientX-st.left)/st.width*1000, cy=(e.clientY-st.top)/st.height*1000;
-      p.src=d.imgs[k].src;
-      p.bbox=[Math.round(clamp(cx-w/2,0,1000-w)),Math.round(clamp(cy-h/2,0,1000-h)),
-              Math.round(clamp(cx+w/2,w,1000)),Math.round(clamp(cy+h/2,h,1000))];
-      drag=null; draw(); return;
+window.addEventListener('pointerup', e=>{
+  if(!dragging) return;
+  const d = dragging; dragging = null;
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('drop'));
+  if(!d.c){
+    const t = document.elementFromPoint(e.clientX,e.clientY)?.closest('.panel');
+    if(t && +t.dataset.k !== d.k){
+      const k = +t.dataset.k, p = cur().parts[d.i];
+      const st = t.querySelector('.stage').getBoundingClientRect();
+      const w = p.bbox[2]-p.bbox[0], h = p.bbox[3]-p.bbox[1];
+      const cx = (e.clientX-st.left)/st.width*1000, cy = (e.clientY-st.top)/st.height*1000;
+      p.src = cur().imgs[k].src;
+      p.bbox = [Math.round(clamp(cx-w/2,0,1000-w)), Math.round(clamp(cy-h/2,0,1000-h)),
+                Math.round(clamp(cx+w/2,w,1000)), Math.round(clamp(cy+h/2,h,1000))];
+      buildPanels();
+      return;
     }
   }
-  drag=null;
-  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('drop'));
+  dump();
 });
 
 const SERVER='http://127.0.0.1:8766/save';
-function setStatus(t){document.getElementById('status').textContent=t;}
+function setStatus(t){ document.getElementById('status').textContent=t; }
 async function persist(){
-  const d=cur();
-  const payload={slug:d.slug,parts:d.parts.map(p=>({slot:p.slot,bbox:p.skip?null:p.bbox,
-    src:p.skip?null:p.src,skip:!!p.skip}))};
+  const d = cur();
+  const payload={slug:d.slug, parts:d.parts.map(p=>({slot:p.slot,
+    bbox:p.skip?null:p.bbox, src:p.skip?null:p.src, skip:!!p.skip}))};
   try{
-    const r=await fetch(SERVER,{method:'POST',headers:{'Content-Type':'application/json'},
+    const r = await fetch(SERVER,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)});
     if(r.ok){ setStatus('已保存'); return; }
   }catch(e){}
   setStatus('保存失败，请点复制');
 }
-function render(){ sel=0; draw(); }
+function render(){ sel=0; buildPanels(); }
 document.getElementById('ok').onclick=()=>{
   persist(); done.add(idx);
-  if(idx<DATA.length-1){ idx++; render(); }
-  else{ renderChips(); document.getElementById('psum').textContent=
+  if(idx < DATA.length-1){ idx++; render(); }
+  else{ syncChips(); document.getElementById('psum').textContent=
     `已确认 ${done.size} / ${DATA.length} 台`; panel.classList.add('on'); }
 };
-document.getElementById('prev').onclick=()=>{if(idx>0){idx--;render();}};
+document.getElementById('prev').onclick=()=>{ if(idx>0){ idx--; render(); } };
 document.getElementById('copy').onclick=async()=>{
   await navigator.clipboard.writeText(out.value); setStatus('已复制');
 };
-document.getElementById('again').onclick=()=>{panel.classList.remove('on');idx=0;render();};
+document.getElementById('again').onclick=()=>{ panel.classList.remove('on'); idx=0; render(); };
 render();
 </script></body></html>"""
 
