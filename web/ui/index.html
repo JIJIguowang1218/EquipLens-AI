@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 竞品设计分析</title>
+<style>
+:root{
+  --ink:#1d1d1f; --muted:#6e6e73; --line:rgba(0,0,0,.08);
+  --bg:#ffffff; --bg2:#f5f5f7; --accent:#0071e3;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC",
+       "Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+/* ---------- nav ---------- */
+nav{
+  position:sticky; top:0; z-index:50; height:52px;
+  display:flex; align-items:center; gap:14px; padding:0 28px;
+  background:rgba(255,255,255,.72); backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line);
+}
+.logo{width:26px;height:26px;color:var(--ink);flex:none}
+.brand{font-size:15px;font-weight:600;letter-spacing:.02em}
+.brand span{color:var(--muted);font-weight:400;margin-left:8px;font-size:13px}
+.navdots{margin-left:auto;display:flex;gap:8px}
+.dot{width:7px;height:7px;border-radius:50%;background:#d2d2d7;transition:.4s var(--ease)}
+.dot.on{background:var(--ink);width:22px;border-radius:4px}
+/* ---------- layout ---------- */
+main{max-width:1180px;margin:0 auto;padding:58px 28px 140px}
+.step{animation:rise .55s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(34px,4.4vw,56px);line-height:1.06;letter-spacing:-.015em;font-weight:700}
+h1 em{font-style:normal;color:var(--muted)}
+.sub{margin-top:16px;font-size:19px;color:var(--muted);max-width:640px;line-height:1.5}
+.eyebrow{font-size:12px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;
+  margin-bottom:14px}
+/* ---------- cards ---------- */
+.card{
+  background:var(--bg2); border-radius:22px; padding:26px 26px 22px;
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.card:hover{transform:translateY(-2px);box-shadow:0 18px 50px rgba(0,0,0,.07)}
+.label{font-size:13px;color:var(--muted);margin-bottom:10px;letter-spacing:.02em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:9px 16px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  font-size:14px;cursor:pointer;transition:.25s var(--ease);user-select:none;
+}
+.chip:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip small{opacity:.55;margin-left:6px;font-size:12px}
+.row{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px}
+.stepper{display:flex;align-items:center;gap:0;background:#fff;border:1px solid var(--line);
+  border-radius:999px;overflow:hidden}
+.stepper button{width:44px;height:44px;border:0;background:#fff;font-size:20px;cursor:pointer;
+  color:var(--ink);transition:.2s}
+.stepper button:hover{background:#f0f0f2}
+.stepper b{min-width:64px;text-align:center;font-size:17px;font-weight:600}
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  height:48px;padding:0 26px;border-radius:999px;border:0;cursor:pointer;
+  background:var(--accent);color:#fff;font-size:15px;font-weight:600;
+  transition:.3s var(--ease);letter-spacing:.01em;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,113,227,.28)}
+.btn:disabled{background:#d2d2d7;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{box-shadow:0 10px 24px rgba(0,0,0,.08)}
+.actions{display:flex;gap:12px;margin-top:34px;align-items:center}
+.hint{font-size:13px;color:var(--muted)}
+/* ---------- vehicles ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:28px}
+.vcard{
+  background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;
+  cursor:pointer;transition:.35s var(--ease);position:relative;overflow:hidden;
+}
+.vcard:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
+.vcard.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--ink) inset}
+.vcard .t{font-weight:600;font-size:16px}
+.vcard .m{color:var(--muted);font-size:13px;margin-top:3px}
+.vcard .n{position:absolute;right:14px;top:14px;font-size:12px;color:var(--muted)}
+.vcard .thumb{width:100%;height:120px;object-fit:cover;border-radius:12px;background:#eee;margin-top:12px}
+/* ---------- progress ---------- */
+.plist{margin-top:26px;display:flex;flex-direction:column;gap:2px}
+.prow{display:flex;align-items:center;gap:14px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.pdot{width:9px;height:9px;border-radius:50%;background:#d2d2d7;flex:none;transition:.3s}
+.pdot.run{background:var(--accent);animation:pulse 1.2s infinite}
+.pdot.ok{background:#34c759}
+.pdot.fail{background:#ff3b30}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.45}}
+.pname{font-weight:500}
+.pmsg{color:var(--muted);font-size:13px;margin-left:auto}
+/* ---------- results ---------- */
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
+.frame{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  aspect-ratio:16/9;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.frame iframe{width:1600px;height:900px;border:0;transform:scale(.36);transform-origin:top left}
+@media(max-width:900px){.gallery{grid-template-columns:1fr}.frame iframe{transform:scale(.52)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+       stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="21" cy="21" r="12.6"/>
+    <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+    <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+  </svg>
+  <div class="brand">EquipLens<span>竞品设计分析</span></div>
+  <div class="navdots" id="dots"></div>
+</nav>
+
+<main id="app"></main>
+
+<script>
+const PARTS = [
+  ["front_face","前脸整体"],["grille","进气格栅"],["bumper","保险杠"],
+  ["side_guard","侧防护栏"],["wheel_arch","前轮轮拱"],["step","登车踏步"]
+];
+const state = {step:1, category:null, parts:["front_face","grille","bumper","side_guard","wheel_arch","step"],
+               count:3, catalog:null, selected:[], heroes:{}, runId:null, job:null};
+const app = document.getElementById('app');
+const dots = document.getElementById('dots');
+const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function paintDots(){
+  dots.innerHTML = [1,2,3,4,5].map(i=>`<i class="dot ${i===state.step?'on':''}"></i>`).join('');
+}
+
+async function boot(){
+  const r = await fetch('/api/catalog'); state.catalog = await r.json();
+  render();
+}
+
+function render(){
+  paintDots();
+  if(state.step===1) step1();
+  else if(state.step===2) step2();
+  else if(state.step===3) step3();
+  else if(state.step===4) step4();
+  else step5();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------------- 1 立项 ---------------- */
+function step1(){
+  const cats = state.catalog.categories;
+  app.innerHTML = `<section class="step">
+    <div class="eyebrow">Step 01 · 立项</div>
+    <h1>先定看什么，<em>再谈怎么排</em>。</h1>
+    <p class="sub">选一个设备类别、勾选要分析的部位，剩下的交给系统：检索、分析、排版、导出。</p>
+    <div class="row" style="margin-top:44px;display:block">
+      <div class="card">
+        <div class="label">设备类别</div>
+        <div class="chips" id="cats">
+          ${cats.map(c=>`<div class="chip ${state.category===c.category?'on':''}"
+             data-c="${esc(c.category)}">${esc(c.category)}<small>${c.n}</small></div>`).join('')}
+        </div>
+        <div class="label" style="margin-top:26px">分析部位</div>
+        <div class="chips" id="parts">
+          ${PARTS.map(([k,n])=>`<div class="chip ${state.parts.includes(k)?'on':''}"
+             data-p="${k}">${n}</div>`).join('')}
+        </div>
+        <div class="label" style="margin-top:26px">车型数量</div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <div class="stepper">
+            <button id="minus">−</button><b id="cnt">${state.count}</b><button id="plus">+</button>
+          </div>
+          <span class="hint">每台车一页，建议 3–10 台</span>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="next" ${state.category?'':'disabled'}>下一步 · 生成候选清单</button>
+      <span class="hint" id="t1"></span>
+    </div>
+  </section>`;
+  document.getElementById('cats').onclick = e=>{
+    const el = e.target.closest('[data-c]'); if(!el) return;
+    state.category = el.dataset.c; render();
+  };
+  document.getElementById('parts').onclick = e=>{
+    const el = e.target.closest('[data-p]'); if(!el) return;
+    const k = el.dataset.p;
+    state.parts = state.parts.includes(k) ? state.parts.filter(x=>x!==k) : [...state.parts,k];
+    render();
+  };
+  document.getElementById('minus').onclick = ()=>{ state.count=Math.max(1,state.count-1); render(); };
+  document.getElementById('plus').onclick = ()=>{ state.count=Math.min(20,state.count+1); render(); };
+  document.getElementById('next').onclick = ()=>{ state.step=2; render(); };
+}
+
+/* ---------------- 2 清单 ---------------- */
+function step2(){
+  const list = state.catalog.vehicles.filter(v=>v.category===state.category);
+  app.innerHTML = `<section class="step">
+    <div class="eyebrow">Step 02 · 候选清单</div>
+    <h1>${esc(state.category)} <em>· ${list.length} 台可选</em></h1>
+    <p class="sub">按库内素材数量排序。勾选接下来要分析的车型，至少 ${state.count} 台。</p>
+    <div class="grid" id="vs">
+      ${list.map(v=>`<div class="vcard ${state.selected.includes(v.model_name)?'on':''}"
+         data-m="${esc(v.model_name)}">
+        <div class="n">${v.assets} 张素材</div>
+        <div class="t">${esc(v.brand)} ${esc(v.model_name)}</div>
+        <div class="m">${esc(v.category)}</div>
+      </div>`).join('')}
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="back">上一步</button>
+      <button class="btn" id="next" ${state.selected.length?'':'disabled'}>
+        下一步 · 确认素材（已选 ${state.selected.length}）</button>
+    </div>
+  </section>`;
+  document.getElementById('vs').onclick = e=>{
+    const el = e.target.closest('[data-m]'); if(!el) return;
+    const m = el.dataset.m;
+    state.selected = state.selected.includes(m)
+      ? state.selected.filter(x=>x!==m) : [...state.selected, m];
+    render();
+  };
+  document.getElementById('back').onclick = ()=>{ state.step=1; render(); };
+  document.getElementById('next').onclick = ()=>{ state.step=3; loadHeroes(); };
+}
+
+/* ---------------- 3 素材 ---------------- */
+async function loadHeroes(){
+  for(const m of state.selected){
+    if(state.heroes[m]) continue;
+    const r = await fetch('/api/heroes?model='+encodeURIComponent(m));
+    const d = await r.json();
+    state.heroes[m] = d.candidates;
+  }
+  render();
+}
+
+function step3(){
+  app.innerHTML = `<section class="step">
+    <div class="eyebrow">Step 03 · 素材确认</div>
+    <h1>每台车，<em>确认一张主图</em></h1>
+    <p class="sub">点击图片可换下一张候选；系统已按"整车、可辨识"筛过。</p>
+    <div class="grid" id="hs">
+      ${state.selected.map((m,i)=>{
+        const c = (state.heroes[m]||[])[0];
+        const src = c ? '/'+c.file_path : '';
+        return `<div class="vcard">
+          <div class="n">${i+1}</div><div class="t">${esc(m)}</div>
+          <div class="m">${c?esc(c.view_angle):'无素材'}</div>
+          ${src?`<img class="thumb" src="${esc(src)}" data-m="${esc(m)}">`:
+                 `<div class="thumb"></div>`}
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="actions">
+      <button class="btn ghost" id="back">上一步</button>
+      <button class="btn" id="next">开始分析 · ${state.selected.length} 台</button>
+    </div>
+  </section>`;
+  document.getElementById('hs').onclick = e=>{
+    const img = e.target.closest('[data-m]'); if(!img) return;
+    const m = img.dataset.m, arr = state.heroes[m]||[];
+    if(arr.length){ arr.push(arr.shift()); render(); }
+  };
+  document.getElementById('back').onclick = ()=>{ state.step=2; render(); };
+  document.getElementById('next').onclick = startRun;
+}
+
+/* ---------------- 4 分析 ---------------- */
+async function startRun(){
+  const vehicles = state.selected.map(m=>{
+    const v = state.catalog.vehicles.find(x=>x.model_name===m);
+    const hero = (state.heroes[m]||[])[0];
+    return {model_name:m, brand:v.brand, category:v.category, hero:hero.file_path};
+  });
+  const r = await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({vehicles})});
+  const d = await r.json();
+  state.runId = d.run_id; state.step = 4; render(); poll();
+}
+
+function step4(){
+  const raw = state.job?.progress || [];
+  const byModel = new Map();
+  raw.forEach(p=>{ if(p.model!=='-') byModel.set(p.model, p); });
+  const prog = [...byModel.values()];
+  const doneMsg = raw.filter(p=>p.model==='-').slice(-1)[0]?.msg || '';
+  app.innerHTML = `<section class="step">
+    <div class="eyebrow">Step 04 · 分析中</div>
+    <h1>正在读图，<em>并写下判断</em></h1>
+    <p class="sub">每台车一次调用，完成后立刻出现在下面。</p>
+    <div class="plist" id="pl">
+      ${prog.length?prog.map(p=>`<div class="prow">
+        <i class="pdot ${p.state}"></i><span class="pname">${esc(p.model)}</span>
+        <span class="pmsg">${esc(p.msg||'')}</span></div>`).join(''):
+        `<div class="prow"><i class="pdot run"></i><span class="pname">准备中…</span></div>`}
+    </div>
+    ${doneMsg?`<p class="hint" style="margin-top:14px">${esc(doneMsg)}</p>`:''}
+    <div class="gallery" id="gal">
+      ${(state.job?.pages||[]).map(p=>`<div class="frame">
+        <iframe src="/files/${state.runId}/${p.file}" scrolling="no"></iframe></div>`).join('')}
+    </div>
+    <div class="actions">
+      <button class="btn" id="next" ${state.job?.status==='done'?'':'disabled'}>
+        下一步 · 导出 PPT</button>
+    </div>
+  </section>`;
+  const nx = document.getElementById('next');
+  if(nx) nx.onclick = ()=>{ state.step=5; render(); };
+}
+
+async function poll(){
+  const r = await fetch('/api/run/'+state.runId);
+  state.job = await r.json();
+  if(state.step===4) render();
+  if(state.job.status!=='done') setTimeout(poll, 1200);
+  else render();
+}
+
+/* ---------------- 5 导出 ---------------- */
+function step5(){
+  app.innerHTML = `<section class="step">
+    <div class="eyebrow">Step 05 · 导出</div>
+    <h1>拿走去讲，<em>每个字都能改</em></h1>
+    <p class="sub">PPT 里是真实的文本框、图片和形状，不是整页截图。</p>
+    <div class="actions">
+      <button class="btn" id="exp">生成 PPTX</button>
+      <span class="hint" id="msg"></span>
+    </div>
+  </section>`;
+  document.getElementById('exp').onclick = async ()=>{
+    const msg = document.getElementById('msg');
+    msg.textContent = '正在生成…';
+    const r = await fetch('/api/export/'+state.runId,{method:'POST'});
+    const d = await r.json();
+    if(!r.ok){ msg.textContent = '失败：'+(d.detail||''); return; }
+    msg.innerHTML = `<a class="btn ghost" href="${d.file}" download style="margin-left:8px">
+      下载 ${esc(d.name)}</a>`;
+  };
+}
+
+boot();
+</script>
+</body></html>
