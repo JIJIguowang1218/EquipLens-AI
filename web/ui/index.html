@@ -498,6 +498,18 @@ function step4(){
   };
 }
 
+async function poll(){
+  const r = await fetch('/api/run/'+state.runId);
+  state.job = await r.json();
+  if(state.job.status !== 'done'){
+    if(state.step===4) render();
+    setTimeout(poll, 1200);
+    return;
+  }
+  if(state.cropIdx === undefined) state.cropIdx = 0;
+  render();
+}
+
 /* ---------------- 5 导出 ---------------- */
 function step5(){
   const built = state.built || [];
