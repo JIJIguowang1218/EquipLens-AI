@@ -1,0 +1,43 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>06 交付</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
+.stage{position:absolute;inset:0;background:radial-gradient(1300px 760px at 50% 42%,#161618 0%,#0B0B0C 64%)}
+.grid{position:absolute;inset:0;opacity:.45;background-image:linear-gradient(#1C1C1F 1px,transparent 1px),linear-gradient(90deg,#1C1C1F 1px,transparent 1px);background-size:96px 96px}
+.win{position:absolute;left:240px;top:56px;width:1440px;height:900px;overflow:hidden;border:1px solid #2C2C31;box-shadow:0 80px 200px rgba(0,0,0,.7);background:#fff}
+.win img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.label{position:absolute;left:240px;bottom:40px;font-size:24px;letter-spacing:.22em;color:#75757A}
+.label b{color:#F2F1EE}
+.idx{position:absolute;right:240px;bottom:26px;font-size:64px;font-weight:800;color:#2A2A2F}
+</style></head><body>
+<div id="root" data-composition-id="uideliver" data-start="0" data-duration="14" data-width="1920" data-height="1080">
+  <div class="stage"></div><div class="grid"></div>
+  <div class="win" id="d1"><img src="assets/ui/ui-03-assets.png"></div>
+  <div class="win" id="d2"><img src="assets/ui/ui-05-crop.png"></div>
+  <div class="win" id="d3"><img src="assets/ui/ui-06-result.png"></div>
+  <div class="label" id="dl">01　<b>素材确认</b></div>
+  <div class="idx" id="di">01</div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script><script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+["#d1","#d2","#d3"].forEach(s=>gsap.set(s,{opacity:0}));
+tl.set("#d1",{opacity:1},0);
+tl.fromTo("#d1",{y:760,rotation:-2,scale:.94,opacity:0},{y:0,rotation:0,scale:1,opacity:1,duration:1.0,ease:"back.out(1.2)"},.1);
+tl.to("#d1",{scale:1.08,y:-24,duration:2.6,ease:"power2.inOut"},1.2);
+tl.to("#d1",{x:-900,scale:.9,opacity:0,filter:"blur(6px)",duration:.5,ease:"power3.in"},4.2);
+tl.call(()=>{document.getElementById('dl').innerHTML='02　<b>逐台裁框</b>';document.getElementById('di').textContent='02';},[],4.3);
+tl.set("#d2",{opacity:1},4.3);
+tl.fromTo("#d2",{scale:2.2,x:-320,y:-120,opacity:0},{scale:1,x:0,y:0,opacity:1,duration:.42,ease:"power4.out"},4.3);
+tl.fromTo("#d2",{x:0},{x:5,duration:.05,yoyo:true,repeat:5},4.72);
+tl.to("#d2",{scale:1.06,y:-18,duration:2.0,ease:"power2.inOut"},5.1);
+tl.to("#d2",{opacity:0,y:-240,duration:.45,ease:"power3.in"},7.4);
+tl.call(()=>{document.getElementById('dl').innerHTML='03　<b>成品与导出</b>';document.getElementById('di').textContent='03';},[],7.5);
+tl.set("#d3",{opacity:1},7.5);
+tl.fromTo("#d3",{y:140,scale:.9,rotation:-1.2,opacity:0},{y:0,scale:1,rotation:0,opacity:1,duration:.8,ease:"back.out(1.1)"},7.5);
+tl.to("#d3",{scale:1.14,x:-120,y:-70,duration:2.4,ease:"power2.inOut"},8.6);
+tl.to(["#d3","#dl","#di"],{opacity:0,duration:.6},12.9);
+window.__timelines["uideliver"] = tl; tl.seek(0);
+</script></body></html>

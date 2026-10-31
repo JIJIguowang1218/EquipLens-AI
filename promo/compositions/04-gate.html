@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>04 门卫</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
+.grid{position:absolute;inset:0;opacity:.4;background-image:linear-gradient(#1B1B1E 1px,transparent 1px),linear-gradient(90deg,#1B1B1E 1px,transparent 1px);background-size:96px 96px}
+.kicker{position:absolute;left:96px;top:64px;font-size:22px;letter-spacing:.2em;color:#6E6E73}
+.head{position:absolute;left:96px;top:104px;font-size:44px;font-weight:700}
+.wall{position:absolute;left:96px;top:210px;width:1200px;display:grid;grid-template-columns:repeat(4,282px);gap:18px}
+.cell{position:relative;width:282px;height:186px;background:#111114;border:1px solid #222226;overflow:hidden}
+.cell img{width:100%;height:100%;object-fit:cover;filter:saturate(.6) brightness(.8)}
+.cell .bar{position:absolute;left:0;bottom:0;height:3px;background:#F2F1EE;width:0}
+.cell .tag{position:absolute;left:8px;top:8px;font-size:12px;letter-spacing:.1em;color:#9A9A9F}
+.panel{position:absolute;right:96px;top:210px;width:520px}
+.row{display:flex;align-items:center;gap:14px;height:64px;border-bottom:1px solid #1E1E22;opacity:0}
+.row .n{font-size:22px;color:#8A8A8F;width:38px}
+.row .t{font-size:22px;color:#8A8A8F;flex:1}
+.row .s{font-size:20px;color:#F2F1EE;font-variant-numeric:tabular-nums}
+.row.bad .t,.row.bad .n{color:#4A4A50;text-decoration:line-through}
+.cap{position:absolute;left:96px;bottom:80px;font-size:30px;color:#8A8A8F}
+.cap b{color:#F2F1EE}
+</style></head><body>
+<div id="root" data-composition-id="gate" data-start="0" data-duration="17" data-width="1920" data-height="1080">
+  <div class="grid"></div>
+  <div class="kicker" id="g-k">03　图片门卫</div>
+  <div class="head" id="g-h">搜来的图，大部分不能用</div>
+  <div class="wall" id="g-wall">
+    <div class="cell"><img src="assets/gate/g00.jpg"><div class="tag">front</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g01.jpg"><div class="tag">rear</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g02.jpg"><div class="tag">detail</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g03.jpg"><div class="tag">front</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g04.jpg"><div class="tag">logo</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g05.jpg"><div class="tag">multi</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g06.jpg"><div class="tag">front</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g07.jpg"><div class="tag">side</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g08.jpg"><div class="tag">detail</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g09.jpg"><div class="tag">multi</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g10.jpg"><div class="tag">front</div><div class="bar"></div></div>
+    <div class="cell"><img src="assets/gate/g11.jpg"><div class="tag">logo</div><div class="bar"></div></div>
+  </div>
+  <div class="panel" id="g-panel">    <div class="row "><div class="n">✓</div><div class="t">车型一致</div><div class="s">pass</div></div>
+    <div class="row "><div class="n">✓</div><div class="t">类别为商用车</div><div class="s">pass</div></div>
+    <div class="row "><div class="n">✓</div><div class="t">视角可用</div><div class="s">pass</div></div>
+    <div class="row "><div class="n">✓</div><div class="t">尺寸足够</div><div class="s">pass</div></div>
+    <div class="row bad"><div class="n">×</div><div class="t">非二手广告</div><div class="s">drop</div></div>
+    <div class="row bad"><div class="n">×</div><div class="t">非特写</div><div class="s">drop</div></div></div>
+  <div class="cap" id="g-cap">类别 · 型号 · 视角　三道校验后只留 <b>4</b> 张</div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script><script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#g-k",{opacity:0},{opacity:1,duration:.4},.2);
+tl.fromTo("#g-h",{opacity:0,y:12},{opacity:1,y:0,duration:.6,ease:"power3.out"},.3);
+tl.fromTo(".cell",{opacity:0,y:34,scale:.96},{opacity:1,y:0,scale:1,duration:.5,stagger:.06,ease:"power3.out"},1.2);
+tl.fromTo(".cell .bar",{width:0},{width:(i)=>["100%","62%","35%","100%","20%","48%","100%","70%","30%","55%","100%","40%"][i],duration:.5,stagger:.05,ease:"power2.out"},5.2);
+tl.fromTo(".row",{opacity:0,x:24},{opacity:1,x:0,duration:.4,stagger:.08,ease:"power3.out"},5.6);
+tl.to(".cell:nth-child(2),.cell:nth-child(3),.cell:nth-child(5),.cell:nth-child(6),.cell:nth-child(8),.cell:nth-child(9),.cell:nth-child(11),.cell:nth-child(12)",{opacity:.14,filter:"blur(3px)",duration:.5,stagger:.04},9.4);
+tl.to(".row.bad",{opacity:.45,duration:.4,stagger:.05},9.6);
+tl.to(".cell:nth-child(1),.cell:nth-child(4),.cell:nth-child(7),.cell:nth-child(10)",{scale:1.08,borderColor:"#F2F1EE",duration:.6,stagger:.06,ease:"power2.out"},11.4);
+tl.fromTo("#g-cap",{opacity:0,y:10},{opacity:1,y:0,duration:.5},12.6);
+window.__timelines["gate"] = tl; tl.seek(0);
+</script></body></html>

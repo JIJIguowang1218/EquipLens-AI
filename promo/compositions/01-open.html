@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>01 开场</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.35) brightness(.42) contrast(1.15)}
+.veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,12,.92) 0%,rgba(11,11,12,.55) 55%,rgba(11,11,12,.85) 100%)}
+.k{position:absolute;left:120px;top:150px;font-size:22px;letter-spacing:.24em;color:#8A8A8F}
+.big{position:absolute;left:112px;top:250px;font-size:150px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.sub{position:absolute;left:120px;top:430px;font-size:40px;color:#B9B9BE;font-weight:400}
+.big2{position:absolute;left:112px;top:250px;font-size:150px;font-weight:900;letter-spacing:-.03em;line-height:1;opacity:0}
+.sub2{position:absolute;left:120px;top:430px;font-size:40px;color:#B9B9BE;opacity:0}
+.line{position:absolute;left:120px;top:560px;height:2px;width:0;background:#F2F1EE}
+</style></head><body>
+<div id="root" data-composition-id="open" data-start="0" data-duration="13" data-width="1920" data-height="1080">
+  <div class="bg" id="o-bg">
+    <img id="o-i1" src="assets/gate/desk0.5.jpg">
+    <img id="o-i2" src="assets/gate/desk2.5.jpg" style="opacity:0">
+    <img id="o-i3" src="assets/gate/desk4.2.jpg" style="opacity:0">
+  </div>
+  <div class="veil"></div>
+  <div class="k" id="o-k">一份重卡竞品分析</div>
+  <div class="big" id="o-b1">两周</div>
+  <div class="sub" id="o-s1">搜图 · 截图 · 比比例 · 拼 PPT</div>
+  <div class="big2" id="o-b2">十分钟</div>
+  <div class="sub2" id="o-s2">一个类目，换成一份能编辑的分析报告</div>
+  <div class="line" id="o-l"></div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script><script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#o-i1",{scale:1.08},{scale:1.02,duration:13,ease:"none"},0);
+tl.fromTo("#o-i2",{opacity:0,scale:1.04},{opacity:1,scale:1.02,duration:1.2},4.2);
+tl.fromTo("#o-i3",{opacity:0,scale:1.04},{opacity:1,scale:1.02,duration:1.2},7.4);
+tl.fromTo("#o-k",{opacity:0,y:10},{opacity:1,y:0,duration:.6},.4);
+tl.fromTo("#o-b1",{opacity:0,y:26},{opacity:1,y:0,duration:.7,ease:"expo.out"},.6);
+tl.fromTo("#o-s1",{opacity:0},{opacity:1,duration:.6},1.1);
+tl.fromTo("#o-b1",{opacity:1},{opacity:0,duration:.5},5.6);
+tl.fromTo("#o-s1",{opacity:1},{opacity:0,duration:.5},5.6);
+tl.fromTo("#o-b2",{opacity:0,y:26},{opacity:1,y:0,duration:.7,ease:"expo.out"},6.1);
+tl.fromTo("#o-s2",{opacity:0},{opacity:1,duration:.6},6.6);
+tl.fromTo("#o-l",{width:0},{width:760,duration:.9,ease:"power2.out"},7.1);
+tl.to(["#o-k","#o-b2","#o-s2","#o-l"],{opacity:0,duration:.6},11.9);
+window.__timelines["open"] = tl; tl.seek(0);
+</script></body></html>

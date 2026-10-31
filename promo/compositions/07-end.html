@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>07 落版</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE;display:flex;align-items:center;justify-content:center}
+.wrap{text-align:center}
+.logo{width:132px;height:132px;margin:0 auto 34px;color:#F2F1EE}
+.name{font-size:76px;font-weight:800;letter-spacing:.02em}
+.claim{margin-top:18px;font-size:32px;color:#8A8A8F}
+.url{margin-top:44px;font-size:22px;letter-spacing:.2em;color:#4E4E54}
+</style></head><body>
+<div id="root" data-composition-id="end" data-start="0" data-duration="5" data-width="1920" data-height="1080">
+  <div class="wrap">
+    <svg class="logo" id="e-logo" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="21" cy="21" r="12.6"/>
+      <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+      <path d="M30.3 30.3 41 41" stroke-width="3.1"/>
+    </svg>
+    <div class="name" id="e-name">EquipLens</div>
+    <div class="claim" id="e-claim">把竞品分析，做成十分钟</div>
+    <div class="url" id="e-url">github.com/&lt;repo&gt;</div>
+  </div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script><script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+tl.fromTo("#e-logo",{opacity:0,scale:.7,rotation:-8},{opacity:1,scale:1,rotation:0,duration:.7,ease:"back.out(1.6)"},.1);
+tl.fromTo("#e-name",{opacity:0,y:16},{opacity:1,y:0,duration:.6,ease:"power3.out"},.6);
+tl.fromTo("#e-claim",{opacity:0},{opacity:1,duration:.6},1.1);
+tl.fromTo("#e-url",{opacity:0},{opacity:1,duration:.6},1.6);
+window.__timelines["end"] = tl; tl.seek(0);
+</script></body></html>

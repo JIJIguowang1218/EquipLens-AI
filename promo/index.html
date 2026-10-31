@@ -1,30 +1,19 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=1920, height=1080">
-<title>EquipLens 解说片</title>
-<style>
-  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #FAF9F6; }
-  #root { position: relative; width: 100%; height: 100%; }
-  .scene { position: absolute; inset: 0; }
-</style>
+<head><meta charset="utf-8"><title>EquipLens 解说片</title>
+<style>html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:relative;width:100%;height:100%}.scene{position:absolute;inset:0}</style>
 </head>
 <body>
-  <div id="root" data-composition-id="main" data-start="0" data-duration="44"
-       data-width="1920" data-height="1080">
-    <div class="scene" id="s2" data-composition-id="retrieval"
-         data-composition-src="compositions/02-retrieval.html"
-         data-start="0" data-duration="20" data-track-index="1"
-         data-width="1920" data-height="1080"></div>
-    <div class="scene" id="s3" data-composition-id="association"
-         data-composition-src="compositions/03-association.html"
-         data-start="20" data-duration="24" data-track-index="1"
-         data-width="1920" data-height="1080"></div>
-  </div>
-  <script src="assets/vendor/gsap.min.js"></script>
-  <script>
-    window.__timelines["main"] = gsap.timeline({ paused: true });
-  </script>
-</body>
-</html>
+<div id="root" data-composition-id="main" data-start="0" data-duration="110" data-width="1920" data-height="1080">
+  <div class="scene" id="s1" data-composition-id="open" data-composition-src="compositions/01-open.html" data-start="0" data-duration="13" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s2" data-composition-id="retrieval" data-composition-src="compositions/02-retrieval.html" data-start="13" data-duration="20" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s3" data-composition-id="association" data-composition-src="compositions/03-association.html" data-start="33" data-duration="24" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s4" data-composition-id="gate" data-composition-src="compositions/04-gate.html" data-start="57" data-duration="17" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s5" data-composition-id="structure" data-composition-src="compositions/05-structure.html" data-start="74" data-duration="17" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s6" data-composition-id="uideliver" data-composition-src="compositions/06-ui.html" data-start="91" data-duration="14" data-track-index="1" data-width="1920" data-height="1080"></div>
+  <div class="scene" id="s7" data-composition-id="end" data-composition-src="compositions/07-end.html" data-start="105" data-duration="5" data-track-index="1" data-width="1920" data-height="1080"></div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>window.__timelines["main"] = gsap.timeline({ paused: true });</script>
+</body></html>
