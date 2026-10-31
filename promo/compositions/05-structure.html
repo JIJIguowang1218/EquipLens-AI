@@ -4,48 +4,64 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
 #root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
-.grid{position:absolute;inset:0;opacity:.35;background-image:linear-gradient(#18181B 1px,transparent 1px),linear-gradient(90deg,#18181B 1px,transparent 1px);background-size:96px 96px}
+.grid{position:absolute;inset:0;opacity:.3;background-image:linear-gradient(#18181B 1px,transparent 1px),linear-gradient(90deg,#18181B 1px,transparent 1px);background-size:96px 96px}
 .kicker{position:absolute;left:96px;top:64px;font-size:22px;letter-spacing:.2em;color:#6E6E73}
-.head{position:absolute;left:96px;top:104px;font-size:44px;font-weight:700}
-.shot{position:absolute;left:96px;top:190px;width:900px;height:600px;overflow:hidden;border:1px solid #222226}
-.shot img{width:100%;height:100%;object-fit:cover;filter:saturate(.55) brightness(.85)}
-.bx{position:absolute;border:1.5px solid #F2F1EE;opacity:0;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
-.bx .lb{position:absolute;left:0;top:-26px;font-size:16px;letter-spacing:.06em;color:#0B0B0C;background:#F2F1EE;padding:2px 8px;white-space:nowrap}
-.panel{position:absolute;left:1060px;top:190px;width:760px}
-.plabel{font-size:18px;letter-spacing:.16em;color:#6E6E73;margin-bottom:26px}
-.field{border-bottom:1px solid #1E1E22;padding:18px 0;opacity:0}
-.field .k{font-size:16px;letter-spacing:.12em;color:#6E6E73}
-.field .v{font-size:34px;font-weight:600;margin-top:6px}
-.cap{position:absolute;left:96px;bottom:64px;font-size:24px;color:#6E6E73}
+.head{position:absolute;left:96px;top:104px;font-size:40px;font-weight:700}
+.shot{position:absolute;left:96px;top:186px;width:900px;height:600px;overflow:hidden;border:1px solid #222226}
+.shot img{width:100%;height:100%;object-fit:cover;filter:saturate(.5) brightness(.85);transition:none}
+.bx{position:absolute;border:1.5px solid #6A6A70;opacity:.55}
+.bx.on{border-color:#F2F1EE;opacity:1;box-shadow:0 0 0 9999px rgba(11,11,12,.45)}
+.bx .lb{position:absolute;left:0;top:-24px;font-size:15px;color:#0B0B0C;background:#8A8A8F;padding:2px 8px;white-space:nowrap}
+.bx.on .lb{background:#F2F1EE}
+.panel{position:absolute;left:1060px;top:186px;width:760px}
+.who{font-size:16px;letter-spacing:.14em;color:#6E6E73}
+.name{font-size:44px;font-weight:800;margin-top:8px}
+.f{margin-top:26px;border-top:1px solid #1E1E22;padding-top:14px}
+.f .k{font-size:14px;letter-spacing:.12em;color:#6E6E73}
+.f .v{font-size:30px;font-weight:600;margin-top:4px;line-height:1.25}
+.cap{position:absolute;left:96px;bottom:64px;font-size:22px;color:#6E6E73}
 </style></head><body>
 <div id="root" data-composition-id="structure" data-start="0" data-duration="17" data-width="1920" data-height="1080">
   <div class="grid"></div>
-  <div class="kicker" id="s-k">04　结构化</div>
-  <div class="head" id="s-h">你选的部位，逐个框出来</div>
-  <div class="shot" id="s-shot"><img src="assets/gate/s-hero.jpg">
+  <div class="kicker" id="k">04　结构化</div>
+  <div class="head" id="h">每个部位，四个字段</div>
+  <div class="shot" id="shot"><img id="img" src="assets/gate/s-hero.jpg">
     <div class="bx" id="bx0" style="left:96px;top:241px;width:273px;height:143px"><span class="lb">进气格栅</span></div>
     <div class="bx" id="bx1" style="left:97px;top:352px;width:338px;height:107px"><span class="lb">保险杠</span></div>
     <div class="bx" id="bx2" style="left:612px;top:305px;width:144px;height:72px"><span class="lb">侧防护栏</span></div>
     <div class="bx" id="bx3" style="left:480px;top:332px;width:161px;height:119px"><span class="lb">前轮拱</span></div>
     <div class="bx" id="bx4" style="left:409px;top:366px;width:116px;height:103px"><span class="lb">登车踏步</span></div>
-                          </div>
-  <div class="panel">
-    <div class="plabel" id="s-pl">前脸 · 倒梯形前脸</div>
-    <div class="field" id="f1"><div class="k">构型 TERM</div><div class="v">倒梯形前脸</div></div>
-    <div class="field" id="f2"><div class="k">族 FAMILY</div><div class="v">钣金覆盖件</div></div>
-    <div class="field" id="f3"><div class="k">形态 FORM</div><div class="v">顶边平直，两侧内收</div></div>
-    <div class="field" id="f4"><div class="k">CMF</div><div class="v">白色漆面 · 塑料</div></div>
   </div>
-  <div class="cap" id="s-cap">每个框里只留部件本身，框不对可以拖</div>
+  <div class="panel">
+    <div class="who" id="who">01 / 05　框选部位</div>
+    <div class="name" id="pname">进气格栅</div>
+    <div class="f"><div class="k">构型 TERM</div><div class="v" id="v1">—</div></div>
+    <div class="f"><div class="k">族 FAMILY</div><div class="v" id="v2">—</div></div>
+    <div class="f"><div class="k">形态 FORM</div><div class="v" id="v3">—</div></div>
+    <div class="f"><div class="k">CMF</div><div class="v" id="v4">—</div></div>
+  </div>
+  <div class="cap" id="cap">框不对可以拖，每个字段都能改</div>
 </div>
+<script>const PARTS = [{"slot": "grille", "cn": "进气格栅", "bbox": [107, 402, 410, 640], "term": "横置多层格栅", "fam": "钣金覆盖件", "form": "横向黑色饰条七层，左右收窄。", "cmf": "塑料"}, {"slot": "bumper", "cn": "保险杠", "bbox": [108, 587, 484, 766], "term": "整体式保险杠", "fam": "钣金覆盖件", "form": "白色漆面，下沿内收，两端包住灯组下缘。", "cmf": "塑料"}, {"slot": "side_guard", "cn": "侧防护栏", "bbox": [680, 509, 840, 629], "term": "管式侧防护栏", "fam": "型材框架件", "form": "银色圆管沿底盘侧缘水平布置。", "cmf": "金属"}, {"slot": "wheel_arch", "cn": "前轮拱", "bbox": [533, 553, 712, 751], "term": "一体式同色轮拱", "fam": "钣金覆盖件", "form": "连续圆弧拱缘，与白漆面平顺过渡。", "cmf": "塑料"}, {"slot": "step", "cn": "登车踏步", "bbox": [454, 610, 583, 782], "term": "两级固定踏板", "fam": "铸锻机加件", "form": "两级黑色踏板，层间可见。", "cmf": "金属"}];</script>
 <script src="assets/vendor/gsap.min.js"></script><script>
 window.__timelines = window.__timelines || {};
 const tl = gsap.timeline({ paused: true });
-tl.fromTo("#s-k",{opacity:0},{opacity:1,duration:.4},.2);
-tl.fromTo("#s-h",{opacity:0,y:12},{opacity:1,y:0,duration:.6,ease:"power3.out"},.3);
-tl.fromTo("#s-shot",{opacity:0,scale:1.06},{opacity:1,scale:1,duration:1.0,ease:"expo.out"},.6);
-tl.fromTo(".bx",{opacity:0,scale:.94},{opacity:1,scale:1,duration:.45,stagger:.55,ease:"power3.out"},2.2);
-tl.fromTo(".field",{opacity:0,x:20},{opacity:1,x:0,duration:.5,stagger:.6,ease:"power3.out"},5.4);
-tl.fromTo("#s-cap",{opacity:0},{opacity:1,duration:.6},12.4);
+tl.fromTo("#k",{opacity:0},{opacity:1,duration:.4},.2);
+tl.fromTo("#h",{opacity:0,y:12},{opacity:1,y:0,duration:.6,ease:"power3.out"},.3);
+tl.fromTo("#shot",{opacity:0,scale:1.05},{opacity:1,scale:1,duration:.9,ease:"expo.out"},.5);
+tl.fromTo(".bx",{opacity:0},{opacity:.55,duration:.4,stagger:.08},1.2);
+
+const field = (id, txt) => { const el=document.getElementById(id); el.textContent=txt; gsap.fromTo(el,{opacity:0,y:8},{opacity:1,y:0,duration:.35}); };
+PARTS.forEach((p,i)=>{
+  const t = 2.2 + i*2.9;
+  tl.call(()=>{
+    document.querySelectorAll('.bx').forEach((b,j)=>b.classList.toggle('on', j===i));
+    document.getElementById('pname').textContent = p.cn;
+    document.getElementById('who').textContent = String(i+1).padStart(2,'0') + ' / 05　框选部位';
+    field('v1', p.term); field('v2', p.fam); field('v3', p.form); field('v4', p.cmf);
+  },[],t);
+  tl.to("#shot",{scale:1.0,duration:.01},t);
+});
+tl.fromTo("#cap",{opacity:0},{opacity:1,duration:.5},16.2);
 window.__timelines["structure"] = tl; tl.seek(0);
 </script></body></html>

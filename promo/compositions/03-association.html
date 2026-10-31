@@ -1,108 +1,93 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>03 关联推荐</title>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>03 关联</title>
 <style>
 @font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
-#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
-.kicker{position:absolute;left:96px;top:64px;font-size:22px;letter-spacing:.18em;color:#9A9EA4}
-.head{position:absolute;left:96px;top:104px;font-size:34px;color:#A8A8AD;max-width:1400px}
-.head b{color:#F2F1EE}
-svg.wires{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none}
-.wire{fill:none;stroke:#2E2E33;stroke-width:1.6}
-.wire.hot{stroke:#FFFFFF;stroke-width:2.4}
-.node{position:absolute;transform:translate(-50%,-50%)}
-.q{background:#F2F1EE;color:#0B0B0C;padding:16px 26px;font-size:28px;font-weight:600;white-space:nowrap}
-.art{width:360px;background:#111114;border:1px solid #232327;padding:16px 18px}
-.art .t{font-size:18px;line-height:1.45;color:#4E5157;height:52px;overflow:hidden}
-.art .m{font-size:14px;color:#A6A29A;margin-top:8px}
-.car{background:#111114;border:1px solid #2A2A2E;padding:14px 20px;display:flex;align-items:baseline;gap:14px;min-width:360px}
-.car .b{font-size:27px;font-weight:600;white-space:nowrap}
-.car .b small{font-size:15px;font-weight:400;color:#6E6E73;margin-left:6px}
-.car .tag{font-size:15px;color:#FFFFFF;border:1px solid #3A3A3E;padding:3px 9px;white-space:nowrap}
-.car .c{font-size:14px;color:#6E6E73;margin-left:auto}
-.car.big{border-color:#F2F1EE}
-.concl{position:absolute;left:96px;bottom:64px;background:#111114;border:1px solid #232327;
-  padding:22px 28px;display:flex;align-items:center;gap:20px}
-.concl .k{font-size:14px;letter-spacing:.1em;color:#6E6E73}
-.concl .v{font-size:34px;font-weight:600}
-.concl .r{font-size:16px;color:#B9B9BE}
-</style>
-</head>
-<body>
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE;perspective:1400px}
+.grid{position:absolute;inset:0;opacity:.28;background-image:linear-gradient(#17171A 1px,transparent 1px),linear-gradient(90deg,#17171A 1px,transparent 1px);background-size:96px 96px}
+.world{position:absolute;inset:0;transform-style:preserve-3d}
+.kicker{position:absolute;left:96px;top:64px;font-size:22px;letter-spacing:.2em;color:#6E6E73}
+.q{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:120px;font-weight:900;letter-spacing:-.02em;white-space:nowrap}
+.strip{position:absolute;left:50%;top:50%;width:1200px;margin-left:-600px;height:76px;background:#101013;border-left:3px solid #33333A;
+  padding:0 22px;display:flex;align-items:center;font-size:24px;color:#9A9AA0;white-space:nowrap;overflow:hidden}
+.strip em{font-style:normal;color:#F2F1EE;font-weight:700}
+.card{position:absolute;left:50%;top:50%;width:1100px;margin-left:-550px;height:260px;background:#F2F1EE;color:#0B0B0C;
+  padding:34px 40px;opacity:0}
+.card .nm{font-size:52px;font-weight:800;letter-spacing:-.01em}
+.card .rel{display:inline-block;margin-left:16px;font-size:20px;border:1.5px solid #0B0B0C;padding:4px 12px;vertical-align:middle}
+.card .ev{margin-top:16px;font-size:24px;color:#4A4A50;line-height:1.45}
+.card .n{position:absolute;right:34px;top:30px;font-size:16px;letter-spacing:.18em;color:#7A7A80}
+.q3{position:absolute;left:96px;bottom:120px;display:flex;gap:28px;font-size:20px;color:#6E6E73}
+.q3 span{padding:8px 14px;border:1px solid #26262B}
+.q3 span.on{color:#0B0B0C;background:#F2F1EE;border-color:#F2F1EE}
+</style></head><body>
 <div id="root" data-composition-id="association" data-start="0" data-duration="24" data-width="1920" data-height="1080">
-  <div class="kicker" id="a-kicker">02　关联推荐</div>
-  <div class="head" id="a-head">每台车要回答三个问题：<b>什么关系 · 依据在哪 · 那篇怎么说的</b></div>
+  <div class="grid"></div>
+  <div class="world" id="w">
+    <div class="q" id="q">沙漠牵引车</div>
+    <div class="strip" id="t1" style="top:46%">【陕汽德龙6x6 <em>沙漠</em> 越野车】2026 新款报价</div>
+    <div class="strip" id="t2" style="top:54%">陕汽重卡 德龙X3000 375马力 6X6 沙漠越野载货车底盘</div>
+    <div class="strip" id="t3" style="top:62%"><em>沙漠牵引车</em> 交付阿联酋，法士特变速箱成亮点</div>
+    <div class="strip" id="t4" style="top:70%">穿越沙漠的卡车 · 东风天锦</div>
+    <div class="strip" id="t5" style="top:78%">一汽解放 JH6 牵引车 前脸实拍</div>
 
-  <svg class="wires" id="a-wires">
-<path class="wire art" d="M 380 600 C 490.0 600, 490.0 270, 600 270" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire art" d="M 380 600 C 490.0 600, 490.0 415, 600 415" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire art" d="M 380 600 C 490.0 600, 490.0 560, 600 560" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire art" d="M 380 600 C 490.0 600, 490.0 705, 600 705" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire art" d="M 380 600 C 490.0 600, 490.0 850, 600 850" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car keep" d="M 960 270 C 1165.0 270, 1165.0 230, 1370 230" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car" d="M 960 415 C 1165.0 415, 1165.0 355, 1370 355" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car" d="M 960 560 C 1165.0 560, 1165.0 480, 1370 480" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car" d="M 960 705 C 1165.0 705, 1165.0 605, 1370 605" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car" d="M 960 850 C 1165.0 850, 1165.0 730, 1370 730" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-<path class="wire car" d="M 960 415 C 1165.0 415, 1165.0 855, 1370 855" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-  </svg>
-
-  <div class="node q" id="n-q" style="left:300px;top:600px">沙漠牵引车</div>
-  <div class="node art" id="a0" style="left:780px;top:270px"><div class="t">【陕汽德龙6x6 _沙漠_ 越野车】2026新款陕汽德龙6x6沙漠越</div><div class="m">文章 1</div></div>
-  <div class="node art" id="a1" style="left:780px;top:415px"><div class="t">陕汽重卡 德龙X3000 375马力 6X6 沙漠越野载货车底盘</div><div class="m">文章 2</div></div>
-  <div class="node art" id="a2" style="left:780px;top:560px"><div class="t">_沙漠牵引车_ 交付阿联酋,法士特变速箱成亮点</div><div class="m">文章 3</div></div>
-  <div class="node art" id="a3" style="left:780px;top:705px"><div class="t">穿越 _沙漠_ 的卡车 - 智能分身实时回复</div><div class="m">文章 4</div></div>
-  <div class="node art" id="a4" style="left:780px;top:850px"><div class="t">【 _陕汽德龙6x6沙漠_ 越野车】2026新款陕汽德龙6x6沙漠越</div><div class="m">文章 5</div></div>
-  <div class="node car big" id="k0" style="left:1560px;top:230px"><div class="b">陕汽重卡<small>德龙6X6</small></div><div class="tag">环境特化</div><div class="c">7 篇</div></div>
-  <div class="node car" id="k1" style="left:1560px;top:355px"><div class="b">陕汽重卡<small>德龙</small></div><div class="tag">邻近类目</div><div class="c">5 篇</div></div>
-  <div class="node car" id="k2" style="left:1560px;top:480px"><div class="b">中国重汽<small>豪沃4</small></div><div class="tag">同类目</div><div class="c">3 篇</div></div>
-  <div class="node car" id="k3" style="left:1560px;top:605px"><div class="b">东风<small>天锦</small></div><div class="tag">环境特化</div><div class="c">3 篇</div></div>
-  <div class="node car" id="k4" style="left:1560px;top:730px"><div class="b">陕汽重卡<small>德龙X3000</small></div><div class="tag">邻近类目</div><div class="c">3 篇</div></div>
-  <div class="node car" id="k5" style="left:1560px;top:855px"><div class="b">一汽解放<small>JH6</small></div><div class="tag">同类目</div><div class="c">2 篇</div></div>
-
-  <div class="concl" id="a-concl">
-    <div><div class="k">结论</div><div class="v" id="a-cv">陕汽重卡 德龙6X6</div></div>
-    <div class="r" id="a-cr">标题为6X6沙漠越野车，属沙漠环境特化</div>
+    <div class="card" id="c1"><div class="n">01 / 04</div><div class="nm">德龙 6X6<span class="rel">环境特化</span></div>
+      <div class="ev">依据：标题为 6X6 沙漠越野车，属沙漠环境特化　·　7 篇文章提及</div></div>
+    <div class="card" id="c2"><div class="n">02 / 04</div><div class="nm">德龙 X3000<span class="rel">邻近类目</span></div>
+      <div class="ev">依据：标题为 6X6 沙漠越野载货车底盘　·　3 篇提及</div></div>
+    <div class="card" id="c3"><div class="n">03 / 04</div><div class="nm">豪沃 4<span class="rel">同类目</span></div>
+      <div class="ev">依据：标题明确写「沙漠牵引车交付阿联酋」　·　3 篇提及</div></div>
+    <div class="card" id="c4"><div class="n">04 / 04</div><div class="nm">JH6<span class="rel">同类目</span></div>
+      <div class="ev">依据：JH6 为牵引车，可对照前脸等部位　·　2 篇提及</div></div>
   </div>
+  <div class="kicker" id="k">02　关联推荐</div>
+  <div class="q3" id="q3"><span id="q31">① 什么关系</span><span id="q32">② 依据在哪篇</span><span id="q33">③ 那篇怎么说的</span></div>
 </div>
-<script src="assets/vendor/gsap.min.js"></script>
-<script>
+<script src="assets/vendor/gsap.min.js"></script><script>
 window.__timelines = window.__timelines || {};
 const tl = gsap.timeline({ paused: true });
+gsap.set([".strip",".card"],{opacity:0});
 
-tl.fromTo("#a-kicker", { opacity: 0 }, { opacity: 1, duration: .4 }, 0.2);
-tl.fromTo("#a-head", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 0.3);
+tl.fromTo("#k",{opacity:0},{opacity:1,duration:.4},.2);
+tl.fromTo("#q",{opacity:0,scale:.9},{opacity:1,scale:1,duration:.7,ease:"expo.out"},.3);
+tl.to("#q",{scale:1.04,duration:2.4,ease:"none"},1.2);
 
-// 检索词
-tl.fromTo("#n-q", { opacity: 0, scale: .9 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(1.6)" }, 1.2);
-tl.fromTo("#n-q", { opacity: .85 }, { opacity: 1, duration: .3 }, 1.2);
+// 条带从纵深飞过
+tl.set(".strip",{z:-600,rotateX:8},.8);
+tl.to("#t1",{opacity:1,z:-120,y:-120,duration:.7,ease:"power3.out"},1.6);
+tl.to("#t2",{opacity:1,z:-120,y:-40,duration:.7,ease:"power3.out"},1.75);
+tl.to("#t3",{opacity:1,z:-120,y:40,duration:.7,ease:"power3.out"},1.9);
+tl.to("#t4",{opacity:1,z:-120,y:120,duration:.7,ease:"power3.out"},2.05);
+tl.to("#t5",{opacity:1,z:-120,y:200,duration:.7,ease:"power3.out"},2.2);
 
-// 文章节点
-tl.fromTo(".node.art", { opacity: 0, x: -18 }, { opacity: 1, x: 0, duration: .42, stagger: .16, ease: "power3.out" }, 2.2);
-tl.fromTo(".wire.art", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .5, stagger: .16, ease: "none" }, 2.5);
+// 相机推近条带堆
+tl.to("#w",{z:520,y:-40,duration:2.2,ease:"power2.inOut"},3.2);
+tl.to(["#q"],{opacity:0,duration:.5},3.2);
 
-// 车型节点
-tl.fromTo(".node.car", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: .42, stagger: .14, ease: "power3.out" }, 6.4);
-tl.fromTo(".wire.car", { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: .5, stagger: .14, ease: "none" }, 6.7);
+// 第 1 张卡：条带收成一条线 → 卡片盖章
+tl.to(".strip",{opacity:0,y:0,scaleX:.2,duration:.5,ease:"power3.in"},6.0);
+tl.set("#c1",{opacity:1,z:-260,rotateX:12,y:-40},6.3);
+tl.to("#c1",{z:0,rotateX:0,y:0,duration:.6,ease:"power4.out"},6.3);
+tl.fromTo("#c1",{scale:1.06},{scale:1,duration:.25,ease:"power2.out"},6.9);
+tl.to("#w",{x:6,duration:.05,yoyo:true,repeat:5,ease:"none"},6.92);
+tl.to("#q31",{color:"#0B0B0C",backgroundColor:"#F2F1EE",borderColor:"#F2F1EE",duration:.3},7.0);
+tl.to("#q32",{color:"#0B0B0C",backgroundColor:"#F2F1EE",borderColor:"#F2F1EE",duration:.3},7.9);
+tl.to("#q33",{color:"#0B0B0C",backgroundColor:"#F2F1EE",borderColor:"#F2F1EE",duration:.3},8.8);
 
-// 关系标签
-tl.fromTo(".car .tag", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .3, stagger: .08 }, 11.4);
+// 卡片向下堆叠：2、3、4
+const stack=[[10.0,"#c2",-300],[12.6,"#c3",-600],[15.0,"#c4",-900]];
+stack.forEach(([t,sel,y],i)=>{
+  tl.to(["#c1","#c2","#c3"].slice(0,i+1),{y:y-260+260,duration:.5,ease:"power2.inOut"},t-.3);
+  tl.to([".card"].slice(0,i+1),{y:(j)=>("+=" + 0),duration:.001},t-.3);
+  tl.set(sel,{opacity:1,z:-320,rotateX:10},t);
+  tl.to(sel,{z:0,rotateX:0,duration:.55,ease:"power4.out"},t);
+  tl.fromTo(sel,{scale:1.05},{scale:1,duration:.2},t+.5);
+  tl.to("#w",{x:5,duration:.04,yoyo:true,repeat:4},t+.52);
+});
 
-// 收束：只留最强的一条链
-tl.to(".node.car:not(.big)", { opacity: .18, duration: .5 }, 16.4);
-tl.to(".node.art:not(.keep)", { opacity: .18, duration: .5 }, 16.4);
-tl.to(".wire.car", { opacity: .18, duration: .5 }, 16.4);
-tl.to(".wire.car.keep", { opacity: 1, stroke: "#FFFFFF", duration: .5 }, 16.4);
-tl.to(".node.car.big", { scale: 1.04, duration: .5, ease: "power2.out" }, 16.4);
-
-tl.fromTo("#a-concl", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 17.4);
-
-window.__timelines["association"] = tl;
-tl.seek(0);
-</script>
-</body>
-</html>
+// 收束：相机拉远，只看第一条（最强链）
+tl.to("#w",{scale:.94,duration:1.2,ease:"power2.inOut"},18.6);
+tl.to(["#c2","#c3","#c4"],{opacity:.18,duration:.5},19.0);
+tl.to("#c1",{scale:1.03,duration:.8,ease:"power2.out"},19.2);
+window.__timelines["association"] = tl; tl.seek(0);
+</script></body></html>
