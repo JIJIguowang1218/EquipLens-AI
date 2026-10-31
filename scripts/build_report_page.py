@@ -199,16 +199,16 @@ header{height:96px;display:flex;justify-content:space-between;align-items:flex-s
 border-bottom:1px solid var(--line);position:relative}
 header:after{content:"";position:absolute;left:0;bottom:-1px;width:100%;height:3px;
 background:linear-gradient(90deg,var(--accent) 0 120px,transparent 120px)}
-.title-cn{font-size:26px;font-weight:700;letter-spacing:.06em;line-height:1.1}
-.title-en{margin-top:6px;font-family:Bahnschrift,"Arial Narrow",sans-serif;font-size:11px;
-letter-spacing:.34em;color:var(--muted);text-transform:uppercase}
+.title-cn{font-size:31px;font-weight:700;letter-spacing:.05em;line-height:1.05}
+.title-en{margin-top:7px;font-family:Bahnschrift,"Arial Narrow",sans-serif;font-size:12.5px;
+letter-spacing:.26em;color:var(--muted);text-transform:uppercase}
 .tools{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
 .tags{display:flex;gap:8px}
-.tag{font-size:13px;letter-spacing:.12em;padding:5px 14px;border:1px solid var(--ink);
+.tag{font-size:15px;letter-spacing:.1em;padding:7px 17px;border:1px solid var(--ink);
 border-radius:999px;line-height:1}
-.bar{display:flex;width:300px;height:12px;border-radius:2px;overflow:hidden}
+.bar{display:flex;width:300px;height:13px;border-radius:2px;overflow:hidden}
 .bar i{display:block;height:100%}
-.bar-cap{font-size:9px;letter-spacing:.18em;color:var(--muted);margin-top:5px;width:300px;
+.bar-cap{font-size:10.5px;letter-spacing:.16em;color:var(--muted);margin-top:6px;width:300px;
 display:flex;justify-content:space-between}
 /* ---- body ---- */
 main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px}
@@ -385,6 +385,7 @@ def main() -> int:
     ap.add_argument("--total", type=int, default=10)
     ap.add_argument("--data-dir", default="data-test")
     ap.add_argument("--brand-rule", default="")
+    ap.add_argument("--boxes", help="编辑器导出的裁框 JSON（覆盖 bbox）")
     args = ap.parse_args()
 
     src = ROOT / args.analysis
@@ -393,6 +394,14 @@ def main() -> int:
     if not hero_rel_db:
         raise SystemExit("缺 assets.hero")
     hero_abs = ROOT / args.data_dir / hero_rel_db
+
+    if args.boxes:
+        edited = json.loads((ROOT / args.boxes).read_text(encoding="utf-8"))
+        by_slot = {x["slot"]: x.get("bbox") for x in edited.get("parts", [])}
+        for p in data.get("parts", []):
+            if p.get("slot") in by_slot and by_slot[p["slot"]]:
+                p["bbox"] = by_slot[p["slot"]]
+                p["visible"] = "full" if p.get("visible") == "not_visible" else p.get("visible")
 
     slug = re.sub(r"\s+", "-", (data.get("vehicle") or {}).get("model", src.stem))
     outdir = ROOT / args.out
