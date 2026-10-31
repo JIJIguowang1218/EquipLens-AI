@@ -365,6 +365,8 @@ def _harvest(job_id: str, category: str, parts: list[str], count: int = 3):
                 item["error"] = str(e)[:80]
             items.append(item)
             job["candidates"] = items
+        (RUNS / f"harvest-{job_id}" / "result.json").write_text(
+            json.dumps(job, ensure_ascii=False, indent=2), encoding="utf-8")
         job.update(status="done", stage="完成")
     except Exception as e:  # noqa: BLE001
         job.update(status="fail", error=str(e)[:200])

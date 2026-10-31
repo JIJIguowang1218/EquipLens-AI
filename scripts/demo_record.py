@@ -69,8 +69,8 @@ def main() -> int:
 
         step("分析")
         pg.click("#next")
-        pg.wait_for_selector(".frame iframe", timeout=900_000)
-        pg.wait_for_timeout(2500)
+        pg.wait_for_selector("text=逐台确认裁框", timeout=900_000)
+        pg.wait_for_timeout(3000)
 
         step("逐台确认裁框")
         while True:
@@ -81,7 +81,7 @@ def main() -> int:
             pg.wait_for_timeout(1500)
         pg.wait_for_timeout(1200)
         pg.click("#next")                                # 完成 · 生成页面
-        pg.wait_for_selector("#nextp", timeout=300_000)
+        pg.wait_for_function("() => !!document.querySelector('#nextp')", timeout=300_000)
         pg.wait_for_timeout(2500)
 
         step("翻页预览")
