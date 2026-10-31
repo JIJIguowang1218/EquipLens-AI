@@ -9,9 +9,9 @@ cfg = {c["i"]: c for c in json.loads((VO / "vo.json").read_text(encoding="utf-8"
 TEXT = {c["i"]: c["text"] for c in cfg.values()}
 
 # 段落 → 行号
-SECTIONS = [(0, 10, [1, 2]), (10, 22, [3, 4]), (22, 30, [5]), (30, 44, [6, 7, 8, 9]),
-            (44, 54, [10, 11, 12]), (54, 67, [13, 14, 15]), (75, 89, [16, 17, 18]),
-            (95, 104, [19])]
+SECTIONS = [(6, 16, [1, 2]), (16, 28, [3, 4]), (28, 36, [5]), (36, 50, [6, 7, 8, 9]),
+            (50, 60, [10, 11, 12]), (60, 73, [13, 14, 15]), (81, 95, [16, 17, 18]),
+            (101, 110, [19])]
 
 def dur(i):
     with wave.open(str(VO / f"{i:02d}.wav"), "rb") as w:
@@ -39,7 +39,7 @@ for n, c in enumerate(plan, 1):
 # 音轨
 with wave.open(str(VO / "01.wav"), "rb") as w:
     SR = w.getframerate()
-out = np.zeros(int(104 * SR), dtype=np.float32)
+out = np.zeros(int(110 * SR), dtype=np.float32)
 for c in plan:
     with wave.open(str(VO / f"{c['i']:02d}.wav"), "rb") as w:
         d = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(np.float32) / 32768.0

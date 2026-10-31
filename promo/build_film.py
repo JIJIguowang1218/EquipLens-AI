@@ -7,6 +7,7 @@ OUT = ROOT.parent / "tmp" / "parts"
 OUT.mkdir(parents=True, exist_ok=True)
 
 SEGS = [
+    ("00-logo", 6.0, 6.0),
     ("01-open", 13.0, 10.0),
     ("02-retrieval", 20.0, 12.0),
     ("03-evidence", 8.0, 8.0),
