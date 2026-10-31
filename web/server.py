@@ -176,6 +176,18 @@ def api_catalog():
 
 CAND: dict[str, dict] = {}
 HARVEST: dict[str, dict] = {}
+CATEGORY_LABELS = {
+    "truck": "a photo of a heavy commercial truck or construction vehicle",
+    "car": "a photo of a passenger car, SUV or pickup truck",
+}
+
+
+def _title_conflict(model: str, title: str) -> bool:
+    import re as _re
+    pat = r"[A-Za-z]{1,4}\d{2,5}"
+    a = {m.upper() for m in _re.findall(pat, model)}
+    b = {m.upper() for m in _re.findall(pat, title)}
+    return bool(a and b and not (a & b))
 
 
 def _reason_fallback(c: dict, category: str = "") -> dict:
@@ -321,6 +333,16 @@ def _harvest(job_id: str, category: str, parts: list[str]):
                             continue
                         g = gate.check_exterior(rz.content)
                         if not g.get("exterior"):
+                            gated += 1
+                            continue
+                        # 类别门卫：乘用车/SUV/皮卡 直接丢
+                        cat_scores = gate.classify_labels(
+                            rz.content, CATEGORY_LABELS) or {}
+                        if cat_scores and max(cat_scores, key=cat_scores.get) == "car":
+                            gated += 1
+                            continue
+                        # 标题一致性：标题里的型号代码与目标冲突则丢
+                        if _title_conflict(item["model"], h.get("title") or ""):
                             gated += 1
                             continue
                         ext = ".png" if h["url"].lower().split("?")[0].endswith(".png") else ".jpg"

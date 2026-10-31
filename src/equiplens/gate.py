@@ -80,11 +80,33 @@ def _get_gate():
 
     _gate_cache = {
         "ip": ip, "ie": ie, "np": np, "Image": Image,
+        "text_emb": text_emb,
         "keep": [text_emb(t) for t in KEEP_LABELS],
         "drop": [text_emb(t) for t in DROP_LABELS],
         "scene": {name: text_emb(t) for name, t in SCENE_LABELS.items()},
     }
     return _gate_cache
+
+
+_label_cache: dict[tuple, dict] = {}
+
+
+def classify_labels(data: bytes, labels: dict[str, str]) -> dict:
+    """任意标签的零样本打分（复用缓存模型；文本嵌入按标签集缓存）。"""
+    g = _get_gate()
+    np, Image = g["np"], g["Image"]
+    key = tuple(sorted(labels.items()))
+    embs = _label_cache.get(key)
+    if embs is None:
+        embs = {k: g["text_emb"](t) for k, t in labels.items()}
+        _label_cache[key] = embs
+    try:
+        img = g["ip"](Image.open(io.BytesIO(data)))
+        emb = np.asarray(g["ie"].encode(img, return_features=False)).ravel()
+        emb = emb / (np.linalg.norm(emb) + 1e-9)
+    except Exception:  # noqa: BLE001
+        return {}
+    return {k: round(float(emb @ v), 4) for k, v in embs.items()}
 
 
 def classify_view(data: bytes) -> dict:
