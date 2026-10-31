@@ -139,15 +139,25 @@ def trim_hero(src: Path, outdir: Path, slug: str):
 
 # ---------------------------------------------------------------- 裁图
 
-def crop_parts(src: Path, data: dict, outdir: Path, slug: str) -> dict[str, str]:
-    im = Image.open(src).convert("RGB")
-    w, h = im.size
+def crop_parts(src: Path, data: dict, outdir: Path, slug: str,
+               data_root: Path | None = None) -> dict[str, str]:
     outdir.mkdir(parents=True, exist_ok=True)
+    cache: dict[str, Image.Image] = {}
     paths: dict[str, str] = {}
     for p in data.get("parts", []):
         bbox = p.get("bbox")
-        if p.get("visible") == "not_visible" or not bbox:
+        if p.get("skip") or p.get("visible") == "not_visible" or not bbox:
             continue
+        src_p = src
+        if data_root and p.get("src"):
+            cand = data_root / p["src"]
+            if cand.exists():
+                src_p = cand
+        key = str(src_p)
+        if key not in cache:
+            cache[key] = Image.open(src_p).convert("RGB")
+        im = cache[key]
+        w, h = im.size
         x1, y1, x2, y2 = [max(0, min(1000, v)) for v in bbox]
         if x2 - x1 < 20 or y2 - y1 < 20:
             continue
@@ -247,6 +257,7 @@ overflow:hidden}
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card .cmf{font-size:10.5px;color:var(--graphite)}
 .chips{display:flex;flex-direction:column;gap:9px;background:var(--block);padding:14px 16px}
+.chips.wide{grid-column:span 2}
 .chip{display:flex;align-items:center;gap:10px}
 .chip .sw{width:34px;height:22px;border-radius:2px;border:1px solid rgba(0,0,0,.08)}
 .chip .v{font-family:Consolas,monospace;font-size:11px;color:var(--ink)}
@@ -275,8 +286,10 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
     accent = accent_of(palette)
 
     marks = ""
+    hero_src = (data.get("assets") or {}).get("hero")
     parts_vis = [x for x in data.get("parts", [])
-                 if x.get("bbox") and x.get("visible") != "not_visible"]
+                 if x.get("bbox") and x.get("visible") != "not_visible"
+                 and not x.get("skip") and (x.get("src") or hero_src) == hero_src]
     for i, p in enumerate(parts_vis, 1):
         x1, y1, x2, y2 = p["bbox"]
         if hero_box and hero_size:
@@ -293,7 +306,8 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
                   f'width:{(x2-x1)/10:.2f}%;height:{(y2-y1)/10:.2f}%"><b>{i:02d}</b></div>')
 
     cards = ""
-    order = [p for p in data.get("parts", []) if p.get("visible") != "not_visible"]
+    order = [p for p in data.get("parts", [])
+             if p.get("visible") != "not_visible" and not p.get("skip")]
     for i, p in enumerate(order, 1):
         slot = p["slot"]
         img = crops.get(slot)
@@ -312,6 +326,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
           </div>
         </article>"""
 
+    chips_span = " wide" if (len(order) + 1) % 2 else ""
     chips = "".join(
         f'<div class="chip"><span class="sw" style="background:{c["hex"]}"></span>'
         f'<span class="v">{c["hex"]}</span>'
@@ -362,7 +377,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
     </div>
     <div class="grid">
       {cards}
-      <div class="chips">
+      <div class="chips{chips_span}">
         <div class="eyebrow">Color / 色彩构成</div>
         {chips}
         <div class="meta" style="margin-top:auto">{esc(u.get('cmf'))}</div>
@@ -397,17 +412,25 @@ def main() -> int:
 
     if args.boxes:
         edited = json.loads((ROOT / args.boxes).read_text(encoding="utf-8"))
-        by_slot = {x["slot"]: x.get("bbox") for x in edited.get("parts", [])}
+        by_slot = {x["slot"]: x for x in edited.get("parts", [])}
         for p in data.get("parts", []):
-            if p.get("slot") in by_slot and by_slot[p["slot"]]:
-                p["bbox"] = by_slot[p["slot"]]
-                p["visible"] = "full" if p.get("visible") == "not_visible" else p.get("visible")
+            b = by_slot.get(p.get("slot"))
+            if not b:
+                continue
+            if b.get("skip"):
+                p["skip"] = True
+                continue
+            if b.get("bbox"):
+                p["bbox"] = b["bbox"]
+                p["visible"] = "full"
+            if b.get("src"):
+                p["src"] = b["src"]
 
     slug = re.sub(r"\s+", "-", (data.get("vehicle") or {}).get("model", src.stem))
     outdir = ROOT / args.out
     outdir.mkdir(parents=True, exist_ok=True)
     cropdir = outdir / "crops"
-    crops = crop_parts(hero_abs, data, cropdir, slug)
+    crops = crop_parts(hero_abs, data, cropdir, slug, data_root=ROOT / args.data_dir)
 
     hero_view, hero_box, hero_bg = trim_hero(hero_abs, outdir, slug)
     palette = color_composition(hero_view, bg=hero_bg)
