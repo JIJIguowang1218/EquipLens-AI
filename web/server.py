@@ -165,7 +165,15 @@ def api_run(payload: dict):
     vehicles = payload.get("vehicles") or []
     if not vehicles:
         raise HTTPException(400, "没有选择车型")
-    slots = [s for s in (payload.get("parts") or SLOTS) if s in SLOTS] or SLOTS
+    raw_parts = payload.get("parts") or SLOTS
+    slots = []
+    for s in raw_parts:
+        s = str(s).strip()
+        if not s:
+            continue
+        if s not in slots:
+            slots.append(s)
+    slots = slots[:8] or SLOTS
     with LOCK:
         run_id = uuid.uuid4().hex[:8]
         JOBS[run_id] = {"id": run_id, "status": "queued", "progress": [],

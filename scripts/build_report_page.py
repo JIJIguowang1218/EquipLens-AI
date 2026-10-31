@@ -482,7 +482,10 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
 
     from itertools import combinations
     best = None
-    for k in range(1, n):
+    if n <= 1:
+        band1, band2 = list(range(n)), []
+        best = (0, band1, band2)
+    for k in (range(1, n) if n > 1 else []):
         for a in combinations(range(n), k):
             band1 = list(a)
             band2 = [i for i in range(n) if i not in band1]
@@ -497,7 +500,10 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
             loss += 0.35 * abs(len(band1) - len(band2))
             if best is None or loss < best[0]:
                 best = (loss, band1, band2)
-    _, band1, band2 = best
+    if best:
+        _, band1, band2 = best
+    else:
+        band1, band2 = list(range(n)), []
 
     lines = "".join(f"<li>{esc(x)}</li>" for x in (u.get("character_lines") or [])[:3])
 
@@ -515,6 +521,8 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
                "h": H_GRID - 442}]
 
     def add_band(band, y0):
+        if not band:
+            return
         bw = (W_GRID - GAP * (len(band) - 1)) / len(band)
         for k, i in enumerate(band):
             p = order[i]

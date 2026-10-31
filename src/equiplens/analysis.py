@@ -264,9 +264,15 @@ def build_prompt(vehicle: str, used: list[str], slots: list[str],
     vocab_txt = json.dumps(vocab, ensure_ascii=False)
     term_lines = []
     for s in slots:
-        info = tax_when.get(s, {})
-        names = "；".join(f"{t['name']}（{t['when']}）" for t in info.get("terms", []))
-        term_lines.append(f"- {s} {info.get('label', '')}: {names}")
+        info = tax_when.get(s)
+        if info:
+            names = "；".join(f"{t['name']}（{t['when']}）" for t in info.get("terms", []))
+            term_lines.append(f"- {s} {info.get('label', '')}: {names}")
+        else:
+            term_lines.append(
+                f"- {s}（自定义部位，不在词表）：按同一四槽结构描述；"
+                f"term 用行业通称（如\"后视镜总成\"），没有公认叫法就写 null 并在 unplaced 里说明；"
+                f"不要因为不在词表就跳过这个部位")
     return PROMPT_HEAD.format(
         vehicle=vehicle,
         used="、".join(used) if used else "（无）",

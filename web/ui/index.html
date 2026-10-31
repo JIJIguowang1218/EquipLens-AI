@@ -55,6 +55,7 @@ h1 em{font-style:normal;color:var(--muted)}
 }
 .chip:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.custom{background:#fff;color:var(--ink);border:1px dashed var(--ink)}
 .chip small{opacity:.55;margin-left:6px;font-size:12px}
 .field{
   width:100%;height:52px;padding:0 18px;border-radius:14px;border:1px solid var(--line);
@@ -204,7 +205,8 @@ function step1(){
           ${PARTS.map(([k,n])=>`<option value="${n}"></option>`).join('')}
         </datalist>
         <div class="chips" id="picked" style="margin-top:12px">
-          ${state.parts.map(k=>`<span class="chip on" data-rm="${k}">${partName(k)} ×</span>`).join('')}
+          ${state.parts.map(k=>`<span class="chip on${isKnown(k)?'':' custom'}" data-rm="${k}">`
+            + `${esc(partName(k))}${isKnown(k)?'':' · 自定义'} ×</span>`).join('')}
         </div>
         <div class="quick" id="quick">
           常用：${PARTS.map(([k,n])=>`<a data-add="${k}">${n}</a>`).join('')}
@@ -273,21 +275,22 @@ const PART_ALIAS = {
   '轮拱':'wheel_arch','轮眉':'wheel_arch','前轮轮拱':'wheel_arch','翼子板':'wheel_arch',
   '踏步':'step','登车踏步':'step','踏板':'step','脚蹬':'step'
 };
-function partName(k){ return (PARTS.find(p=>p[0]===k)||[k,k])[1]; }
+function partName(k){ return (PARTS.find(p=>p[0]===k)||[null,k])[1]; }
+function isKnown(k){ return PARTS.some(p=>p[0]===k); }
 function addPart(raw){
   const toks = String(raw).split(/[、,，\s\/]+/).filter(Boolean);
-  const hint = document.getElementById('parthint');
-  const unknown = [];
+  let custom = 0;
   toks.forEach(t=>{
-    const key = PART_ALIAS[t] || (PARTS.find(p=>p[1]===t)||[])[0];
-    if(key) { if(!state.parts.includes(key)) state.parts.push(key); }
-    else unknown.push(t);
+    const key = PART_ALIAS[t] || (PARTS.find(p=>p[1]===t)||[])[0] || t;
+    if(!isKnown(key)) custom++;
+    if(!state.parts.includes(key)) state.parts.push(key);
   });
-  state.parts = PARTS.map(p=>p[0]).filter(k=>state.parts.includes(k));
+  state.parts = [...PARTS.map(p=>p[0]).filter(k=>state.parts.includes(k)),
+                 ...state.parts.filter(k=>!isKnown(k))];
   render();
-  if(unknown.length){
+  if(custom){
     const h = document.getElementById('parthint');
-    if(h) h.textContent = `未识别：${unknown.join('、')}（本期支持：${PARTS.map(p=>p[1]).join('、')}）`;
+    if(h) h.textContent = '自定义部位会照常分析，但不参与跨车对比';
   }
 }
 
