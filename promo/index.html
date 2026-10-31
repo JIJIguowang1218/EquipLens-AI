@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>EquipLens 解说片</title>
+<style>
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #FAF9F6; }
+  #root { position: relative; width: 100%; height: 100%; }
+  .scene { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+  <div id="root" data-composition-id="main" data-start="0" data-duration="44"
+       data-width="1920" data-height="1080">
+    <div class="scene" id="s2" data-composition-id="retrieval"
+         data-composition-src="compositions/02-retrieval.html"
+         data-start="0" data-duration="20" data-track-index="1"
+         data-width="1920" data-height="1080"></div>
+    <div class="scene" id="s3" data-composition-id="association"
+         data-composition-src="compositions/03-association.html"
+         data-start="20" data-duration="24" data-track-index="1"
+         data-width="1920" data-height="1080"></div>
+  </div>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    window.__timelines["main"] = gsap.timeline({ paused: true });
+  </script>
+</body>
+</html>

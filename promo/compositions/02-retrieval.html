@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>02 检索</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#FAF9F6}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#111214}
+.kicker{position:absolute;left:96px;top:72px;font-size:24px;letter-spacing:.2em;color:#9A9EA4}
+.head{position:absolute;left:96px;top:112px;font-size:48px;font-weight:600;letter-spacing:-.01em}
+.hint{position:absolute;right:96px;top:120px;font-size:24px;color:#9A9EA4}
+.wall{position:absolute;left:96px;top:230px;width:1180px;display:grid;
+  grid-template-columns:repeat(3,368px);gap:24px}
+.card{height:150px;padding:18px 20px;background:#fff;border:1px solid #E7E4DD;
+  overflow:hidden;position:relative}
+.card .t{font-size:22px;line-height:1.42;color:#6B6E73;font-weight:400}
+.card em{font-style:normal;color:#6B6E73}
+.card em.on{color:#C2410C;font-weight:700}
+.card.dim{opacity:.18}
+.card.lit{border-color:#E7E4DD}
+.scan{position:absolute;top:210px;height:790px;width:3px;background:#C2410C;opacity:0;
+  box-shadow:0 0 70px 26px rgba(194,65,12,.08)}
+.panel{position:absolute;left:1330px;top:230px;width:494px}
+.plabel{font-size:20px;letter-spacing:.12em;color:#9A9EA4;margin-bottom:26px}
+.row{position:relative;height:104px;border-bottom:1px solid #E7E4DD;display:flex;
+  align-items:center;gap:14px}
+.row .name{width:210px;font-size:26px;font-weight:600;white-space:nowrap;overflow:hidden}
+.row .name small{display:block;font-size:16px;font-weight:400;color:#9A9EA4;margin-top:2px}
+.row .track{flex:1;height:12px;background:#EDEAE3;position:relative}
+.row .fill{position:absolute;inset:0;background:#111214;transform-origin:left center;
+  transform:scaleX(0)}
+.row .n{width:44px;text-align:right;font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.caption{position:absolute;left:96px;bottom:78px;font-size:36px;color:#3A3D42}
+.caption b{color:#C2410C;font-weight:700}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="retrieval" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+  <div class="kicker" id="r-kicker">01　检索</div>
+  <div class="head" id="r-head">搜到的，是一堆文字</div>
+  <div class="hint" id="r-hint">19 篇文章</div>
+
+  <div class="wall" id="r-wall">
+      <div class="card lit" id="c0" style="grid-column:1;grid-row:1"><div class="t">【陕汽<em class="on">德龙</em>6x6 _沙漠_ 越野车】2026新款陕汽<em class="on">德龙</em>6x6沙漠越野车报价及图片大全_卡车之家</div></div>
+      <div class="card lit" id="c1" style="grid-column:2;grid-row:1"><div class="t">【图】陕汽重卡 <em class="on">德龙X3000</em> 550马力 6X6牵引车_实拍图片_408672_卡车之家</div></div>
+      <div class="card lit" id="c2" style="grid-column:3;grid-row:1"><div class="t">惊现陕汽<em class="on">德龙X3000</em> 6x6沙漠越野车 这个展会的“硬菜”真不少!</div></div>
+      <div class="card lit" id="c3" style="grid-column:1;grid-row:2"><div class="t">【图】陕汽重卡 <em class="on">德龙X3000</em> 550马力 6X6牵引车_实拍图片_408671_卡车之家</div></div>
+      <div class="card lit" id="c4" style="grid-column:2;grid-row:2"><div class="t">陕汽重卡 <em class="on">德龙X3000</em> 375马力 6X6 沙漠越野载货车底盘</div></div>
+      <div class="card lit" id="c5" style="grid-column:3;grid-row:2"><div class="t">2<em class="on">德龙</em>.#二手自卸车 #自卸工程车 #土方</div></div>
+      <div class="card lit" id="c6" style="grid-column:1;grid-row:3"><div class="t">绍兴供应陕汽<em class="on">德龙</em>后八轮矿山工程车340380马力</div></div>
+      <div class="card lit" id="c7" style="grid-column:2;grid-row:3"><div class="t">贵州安顺出售100台无户后八轮工程车 二手<em class="on">德龙</em>自卸车 车况好价格不高</div></div>
+      <div class="card lit" id="c8" style="grid-column:3;grid-row:3"><div class="t">_<em class="on">沙漠牵引车</em>_ 交付阿联酋,法士特变速箱成亮点</div></div>
+      <div class="card lit" id="c9" style="grid-column:1;grid-row:4"><div class="t">重汽优质<em class="on">豪沃</em>欧二标准371马力6×4自卸车/HOWO双桥车价格</div></div>
+      <div class="card lit" id="c10" style="grid-column:2;grid-row:4"><div class="t">二手工程车<em class="on">豪沃</em>前四后八-娄底冷水江货车</div></div>
+      <div class="card lit" id="c11" style="grid-column:3;grid-row:4"><div class="t"><em class="on">豪沃</em>四桥工程车自卸车直销|新闻资讯 商用车网</div></div>
+      <div class="card" id="c12" style="grid-column:1;grid-row:5"><div class="t">穿越 _沙漠_ 的卡车 - 智能分身实时回复</div></div>
+      <div class="card lit" id="c13" style="grid-column:2;grid-row:5"><div class="t">冷藏车-东风<em class="on">天锦</em>冷藏车 - 工程车 - 泉州58同城</div></div>
+  </div>
+
+  <div class="panel" id="r-panel">
+    <div class="plabel" id="r-plabel">被提及的车型</div>
+      <div class="row" id="row0"><div class="name">陕汽重卡<small>德龙6X6</small></div><div class="track"><div class="fill" style="transform:scaleX(1.0)"></div></div><div class="n" data-n="7">7</div></div>
+      <div class="row" id="row1"><div class="name">陕汽重卡<small>德龙</small></div><div class="track"><div class="fill" style="transform:scaleX(0.714)"></div></div><div class="n" data-n="5">5</div></div>
+      <div class="row" id="row2"><div class="name">中国重汽<small>豪沃4</small></div><div class="track"><div class="fill" style="transform:scaleX(0.429)"></div></div><div class="n" data-n="3">3</div></div>
+      <div class="row" id="row3"><div class="name">东风<small>天锦</small></div><div class="track"><div class="fill" style="transform:scaleX(0.429)"></div></div><div class="n" data-n="3">3</div></div>
+      <div class="row" id="row4"><div class="name">陕汽重卡<small>德龙X3000</small></div><div class="track"><div class="fill" style="transform:scaleX(0.429)"></div></div><div class="n" data-n="3">3</div></div>
+      <div class="row" id="row5"><div class="name">一汽解放<small>JH6</small></div><div class="track"><div class="fill" style="transform:scaleX(0.286)"></div></div><div class="n" data-n="2">2</div></div>
+  </div>
+
+  <div class="scan" id="r-scan"></div>
+  <div class="caption" id="r-caption">从文字里，先找出 <b>6</b> 台候选</div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+tl.fromTo("#r-kicker", { opacity: 0 }, { opacity: 1, duration: .4 }, 0.2);
+tl.fromTo("#r-head", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .55, ease: "power3.out" }, 0.3);
+
+tl.fromTo("#r-wall .card",
+  { opacity: 0, y: 26 },
+  { opacity: 1, y: 0, duration: .5, ease: "power3.out", stagger: .07 }, 1.0);
+
+tl.fromTo("#r-scan", { x: 0, opacity: 0 }, { opacity: 1, duration: .25, ease: "none" }, 4.2);
+tl.to("#r-scan", { x: 1180, duration: 3.6, ease: "none" }, 4.2);
+tl.to("#r-scan", { opacity: 0, duration: .3 }, 7.8);
+tl.to("#r-wall .card.lit", { borderColor: "#C2410C", duration: .3, stagger: .05 }, 4.5);
+tl.fromTo("#r-wall em.on",
+  { color: "#6B6E73", fontWeight: 400 },
+  { color: "#C2410C", fontWeight: 700, duration: .3, stagger: .05, ease: "none" }, 4.5);
+
+tl.to("#r-wall .card:not(.lit)", { opacity: .16, duration: .6, stagger: .015 }, 8.4);
+tl.fromTo("#r-panel .row", { opacity: 0, x: 30 },
+  { opacity: 1, x: 0, duration: .45, stagger: .12, ease: "power3.out" }, 8.6);
+
+tl.fromTo("#r-panel .fill",
+  { scaleX: 0 },
+  { scaleX: 1, duration: .8, stagger: .1, ease: "power2.out" }, 10.2);
+
+document.querySelectorAll("#r-panel .n").forEach((el, i) => {
+  const target = Number(el.dataset.n);
+  const o = { v: 0 };
+  tl.to(o, { v: target, duration: .8, ease: "power2.out",
+    onUpdate: () => { el.textContent = Math.round(o.v); } }, 10.2 + i * 0.1);
+});
+
+tl.fromTo("#r-caption", { opacity: 0, y: 14 },
+  { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, 16.2);
+
+window.__timelines["retrieval"] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>
