@@ -501,17 +501,23 @@ function step4(){
 /* ---------------- 5 导出 ---------------- */
 function step5(){
   const built = state.built || [];
+  const i = Math.min(state.pageIdx||0, Math.max(0,built.length-1));
+  const cur = built[i];
   app.innerHTML = `<section class="step">
     <div class="phead2"><h2>排版完成</h2>
-      <span class="hint">${built.length} 页 · 可直接进页内「编辑布局」微调</span></div>
-    <div class="gallery">
-      ${built.map(p=>`<div class="frame"><iframe src="/files/${state.runId}/${p.file}" scrolling="no"></iframe></div>`).join('')}
-    </div>
+      <span class="hint">${built.length? `${i+1} / ${built.length}` : '无页面'} · 页内可点右下角「编辑布局」微调</span></div>
+    ${cur? `<div class="frame" style="aspect-ratio:auto;height:calc(100vh - 330px)">
+      <iframe src="/files/${state.runId}/${cur.file}" style="width:100%;height:100%;transform:none"></iframe>
+    </div>` : '<p class="hint">没有生成页面</p>'}
     <div class="actions">
-      <button class="btn" id="exp">生成 PPTX</button>
+      <button class="btn ghost" id="prev" ${i<=0?'disabled':''}>上一页</button>
+      <button class="btn ghost" id="nextp" ${i>=built.length-1?'disabled':''}>下一页</button>
+      <button class="btn" id="exp" style="margin-left:auto">生成 PPTX</button>
       <span class="hint" id="msg"></span>
     </div>
   </section>`;
+  document.getElementById('prev').onclick = ()=>{ state.pageIdx=Math.max(0,i-1); render(); };
+  document.getElementById('nextp').onclick = ()=>{ state.pageIdx=Math.min(built.length-1,i+1); render(); };
   document.getElementById('exp').onclick = async ()=>{
     const msg = document.getElementById('msg');
     msg.textContent = '正在生成…';
