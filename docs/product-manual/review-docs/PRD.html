@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>产品需求文档 · EquipLens-AI</title>
+<style>
+@font-face{font-family:"EquipSerif";src:url("../assets/fonts/EquipSerif-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSerif";src:url("../assets/fonts/EquipSerif-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSans";src:url("../assets/fonts/EquipSans-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSans";src:url("../assets/fonts/EquipSans-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("../assets/fonts/EquipMono-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("../assets/fonts/EquipMono-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+:root{
+  --paper:#F5F2EA; --ink:#141518; --ink2:#2C2E31; --muted:#74797C;
+  --orange:#DF4A1B; --line:#D8D2C6; --line2:#B9B2A5; --night:#0E1012;
+  --serif:"EquipSerif","Songti SC","SimSun",serif;
+  --sans:"EquipSans","Microsoft YaHei","PingFang SC",sans-serif;
+  --mono:"EquipMono","Arial Narrow",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{size:A4;margin:18mm 17mm 18mm}
+@page:first{margin:0}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;-webkit-font-smoothing:antialiased}
+body{padding:0}
+.cover{width:210mm;height:297mm;display:grid;grid-template-columns:1fr 55mm;overflow:hidden;background:var(--paper);page-break-after:always;break-after:page}
+.cover-main{padding:22mm 16mm 18mm 18mm;display:flex;flex-direction:column;min-width:0}
+.cover-rail{background:var(--night);color:rgba(255,255,255,.66);padding:18mm 10mm;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--mono);font-size:7.5pt;letter-spacing:.15em;line-height:1.8}
+.cover-rail .rot{writing-mode:vertical-rl;text-orientation:mixed;font-size:8pt;letter-spacing:.2em;color:rgba(255,255,255,.5)}
+.cover-top{font-family:var(--mono);font-size:8pt;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.cover-kicker{font-family:var(--mono);font-size:8.5pt;letter-spacing:.18em;color:var(--orange);text-transform:uppercase;margin-top:38mm}
+.cover h1{font-family:var(--serif);font-size:44pt;line-height:1.2;font-weight:600;letter-spacing:.01em;margin-top:7mm;max-width:135mm}
+.cover-sub{font-size:12.5pt;line-height:1.8;color:var(--ink2);margin-top:8mm;max-width:130mm}
+.cover-meta{display:grid;grid-template-columns:1fr 1fr;gap:7mm 9mm;margin-top:auto;border-top:2px solid var(--ink);padding-top:6mm}
+.cover-meta span{display:block;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.cover-meta b{display:block;font-size:11pt;font-weight:600;margin-top:1mm}
+.cover-foot{border-top:1px solid var(--line);padding-top:4mm;margin-top:6mm;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);display:flex;justify-content:space-between;gap:8mm}
+.toc{page-break-after:always;break-after:page;padding-top:4mm}
+.toc-head{display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:4mm;font-family:var(--mono);font-size:7.5pt;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.toc h2{font-family:var(--serif);font-size:28pt;line-height:1.25;margin:10mm 0 4mm;font-weight:600}
+.toc-sub{font-size:10.5pt;color:var(--muted);line-height:1.8;max-width:140mm}
+.toc-list{columns:2;column-gap:12mm;margin-top:12mm;list-style:none}
+.toc-list li{break-inside:avoid;border-bottom:1px solid var(--line);padding:2.6mm 0;font-size:9.5pt;line-height:1.55;display:flex;gap:4mm}
+.toc-list li i{font-style:normal;font-family:var(--mono);font-size:7.5pt;color:var(--orange);min-width:7mm}
+.toc-note{margin-top:12mm;border-left:3px solid var(--orange);padding-left:4mm;font-size:9pt;line-height:1.8;color:var(--muted);max-width:150mm}
+.toc-focus{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink);margin-top:12mm}
+.toc-focus .tf{padding:4mm 5mm 0 0;border-right:1px solid var(--line)}
+.toc-focus .tf+.tf{padding-left:5mm}
+.toc-focus .tf:last-child{border-right:0;padding-right:0}
+.toc-focus span{font-family:var(--mono);font-size:6.6pt;letter-spacing:.1em;color:var(--orange)}
+.toc-focus b{display:block;font-family:var(--serif);font-size:13pt;line-height:1.4;margin-top:1mm}
+.toc-meta{display:grid;grid-template-columns:1fr 1fr;gap:7mm 12mm;margin-top:16mm;border-top:2px solid var(--ink);padding-top:6mm;max-width:165mm}
+.toc-meta span{display:block;font-family:var(--mono);font-size:6.8pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.toc-meta b{display:block;font-size:10pt;font-weight:600;margin-top:1mm}
+.doc{padding-top:0}
+.doc h2{font-family:var(--serif);font-size:21pt;line-height:1.35;font-weight:600;border-top:2px solid var(--ink);padding-top:4mm;margin:10mm 0 5mm;page-break-after:avoid;break-after:avoid}
+.doc h2:first-of-type{margin-top:0}
+.doc h3{font-family:var(--sans);font-size:12.5pt;line-height:1.55;font-weight:600;margin:7mm 0 2mm;color:var(--ink)}
+.doc h4{font-family:var(--sans);font-size:10.5pt;font-weight:600;margin:5mm 0 1.5mm}
+.doc p{margin:0 0 2.6mm;text-align:justify;color:var(--ink2);orphans:3;widows:3}
+.doc strong{color:var(--ink);font-weight:600}
+.doc em{font-style:normal;color:var(--orange)}
+.doc ul,.doc ol{margin:1mm 0 3mm 6mm;padding-left:0}
+.doc li{margin:1mm 0;line-height:1.7;color:var(--ink2);orphans:2;widows:2}
+.doc blockquote{margin:3mm 0 4mm;border-left:3px solid var(--orange);padding:1mm 0 1mm 4mm;color:var(--ink2);font-size:9.5pt;line-height:1.75}
+.doc hr{border:0;border-top:1px solid var(--line);margin:5mm 0}
+.doc table{width:100%;border-collapse:collapse;margin:3mm 0 5mm;font-size:8.2pt;line-height:1.55;page-break-inside:auto}
+.doc th{font-family:var(--mono);font-size:6.9pt;line-height:1.45;letter-spacing:.05em;text-align:left;color:var(--muted);text-transform:uppercase;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:2mm 1.8mm;background:rgba(20,21,24,.025);white-space:nowrap}
+.doc td{border-bottom:1px solid var(--line);padding:2mm 1.8mm;vertical-align:top}
+.doc tr{page-break-inside:avoid}
+.doc code{font-family:var(--mono);font-size:8pt;background:rgba(20,21,24,.055);padding:.4mm 1.2mm;border-radius:1px}
+
+.flowline{display:grid;grid-template-columns:repeat(5,1fr);background:var(--night);color:#E8E4DA;margin:3mm 0 5mm;padding:4mm 4mm 3mm}
+.flowline .fl{padding:0 3mm;border-right:1px solid rgba(255,255,255,.18)}
+.flowline .fl:first-child{padding-left:0}
+.flowline .fl:last-child{border-right:0;padding-right:0}
+.flowline span{display:block;font-family:var(--mono);font-size:6.8pt;letter-spacing:.08em;color:var(--orange)}
+.flowline b{display:block;font-size:10pt;font-weight:600;margin-top:1mm}
+.flowline em{display:block;font-style:normal;font-family:var(--mono);font-size:7.2pt;color:rgba(255,255,255,.55);margin-top:1mm}
+
+.doc-end{margin-top:14mm;border-top:2px solid var(--ink);padding-top:4mm;display:flex;justify-content:space-between;gap:10mm;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.doc .page-break{break-before:page;page-break-before:always;height:0}
+.doc table:last-of-type{page-break-inside:avoid}
+.doc pre{background:var(--night);color:#E4EAEF;padding:4mm 4.5mm;margin:3mm 0 5mm;font-family:var(--mono);font-size:8.4pt;line-height:1.7;white-space:pre-wrap;page-break-inside:avoid;overflow:hidden}
+.doc pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.doc a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(223,74,27,.3)}
+.doc .section-note{font-family:var(--mono);font-size:7pt;color:var(--muted);letter-spacing:.08em;margin-top:-2mm;margin-bottom:3mm}
+</style></head><body>
+
+<section class="cover">
+  <div class="cover-main">
+    <div class="cover-top">EquipLens-AI / Review Document / 2026</div>
+    <div class="cover-kicker">PRODUCT REQUIREMENTS DOCUMENT</div>
+    <h1>产品需求文档</h1>
+    <div class="cover-sub">工程车辆外观部件 · 设计前期竞品分析报告工具</div>
+    <div class="cover-meta">
+      <div><span>Document</span><b>PRD</b></div>
+      <div><span>Version</span><b>v1.0</b></div>
+      <div><span>Status</span><b>对外评审版</b></div>
+      <div><span>Date</span><b>2026.10</b></div>
+    </div>
+    <div class="cover-foot"><span>Scope · 产品定位、目标、功能需求、MVP 范围与关键假设</span><span>EQUIPLENS-AI</span></div>
+  </div>
+  <div class="cover-rail">
+    <div>PRODUCT<br>DOSSIER</div>
+    <div class="rot">DESIGN INTELLIGENCE FOR OFF-HIGHWAY VEHICLES</div>
+    <div>VOL. 01<br>2026</div>
+  </div>
+</section>
+
+
+<section class="toc">
+  <div class="toc-head"><span>EquipLens-AI / PRD</span><span>v1.0 · 对外评审版</span></div>
+  <h2>文档结构</h2>
+  <p class="toc-sub">工程车辆外观部件 · 设计前期竞品分析报告工具。本册用于对外评审，按章节独立分页，便于逐节阅读与批注。</p>
+  <ol class="toc-list"><li><i>01</i><span>产品概述</span></li><li><i>02</i><span>术语表</span></li><li><i>03</i><span>用户画像与典型场景</span></li><li><i>04</i><span>核心业务流程</span></li><li><i>05</i><span>功能需求</span></li><li><i>06</i><span>非功能需求</span></li><li><i>07</i><span>MVP 范围</span></li><li><i>08</i><span>路线图</span></li><li><i>09</i><span>关键假设与边界</span></li><li><i>10</i><span>附录 A：报告页面类型参考</span></li><li><i>11</i><span>附录 B：部件标注词表（可扩展）</span></li></ol>
+  <div class="toc-note">阅读顺序：先看文档结构与关键假设，再看流程、功能与数据模型。术语与指标口径以产品说明书和本册正文为准。</div>
+  <div class="toc-focus"><div class="tf"><span>FOCUS 01</span><b>产品为谁解决什么问题</b></div><div class="tf"><span>FOCUS 02</span><b>MVP 的边界与验收</b></div><div class="tf"><span>FOCUS 03</span><b>哪些关键假设已锁定</b></div></div>
+  <div class="toc-meta">
+    <div><span>Document</span><b>PRD / v1.0</b></div>
+    <div><span>Status</span><b>对外评审版</b></div>
+    <div><span>Scope</span><b>产品定位、目标、功能需求、MVP 范围与关键假设</b></div>
+    <div><span>Companion</span><b>EquipLens-AI 产品说明书（16:9）</b></div>
+  </div>
+</section>
+
+<main class="doc"><h2>1. 产品概述</h2>
+<h3>1.1 产品定位</h3>
+<p>EquipLens-AI 是面向工程机械（重卡、装载机、起重机、矿用车辆等）<strong>外观部件设计前期分析</strong>的 AI 辅助工具。它利用大模型的<strong>多模态图像识别、检索与筛选、工具调用</strong>能力，协助工业设计师在项目启动阶段快速产出<strong>可编辑的前期分析报告（PPTX 为主，PDF 为辅）</strong>，用于向合作企业客户（国企为主，如中国重汽、徐工、三一等）汇报交流前期看法，<strong>确认设计风格与设计边界；报告不包含第一轮设计方案</strong>。</p>
+<h3>1.2 背景与痛点</h3>
+<p>前期分析报告（竞品造型分析、品牌定位等）目前高度依赖人工：</p>
+<ol>
+<li><strong>素材检索与整理成本极高</strong>：竞品图片来源零散（甲方提供、展会拍摄、网络收集），无分类、背景杂乱、质量参差，人工检索、筛选、归类、标注耗时数天；</li>
+<li><strong>分析专业门槛高</strong>：色彩比例分析、特征线条提取、部件级造型描述需要专业训练，质量依赖个人经验；</li>
+<li><strong>排版与格式化占用创意时间</strong>：一车一页的版式重复劳动量大；</li>
+<li><strong>知识难以沉淀</strong>：竞品素材与分析结论散落在历史报告文件中，无法复用。</li>
+</ol>
+<h3>1.3 目标用户</h3>
+<table>
+<thead>
+<tr>
+<th>用户</th>
+<th>使用场景</th>
+<th>核心诉求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工业设计师（主要用户）</td>
+<td>外观部件迭代项目的设计前期</td>
+<td>快速得到可编辑、专业可信的分析报告初稿，把时间留给判断与创意</td>
+</tr>
+<tr>
+<td>设计管理 / 前期调研人员</td>
+<td>对客户汇报前的资料准备</td>
+<td>竞品覆盖全面、结构规范、能快速调整</td>
+</tr>
+<tr>
+<td>企业客户（阅读者，间接用户）</td>
+<td>汇报会上评审前期分析</td>
+<td>观点清晰、图文专业、可讨论确认</td>
+</tr>
+</tbody>
+</table>
+<h3>1.4 产品目标与成功指标</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>效率</td>
+<td>一份 10–15 个竞品的前期分析报告制作时间，由人工约 3–5 天压缩至 ≤ 1 天</td>
+</tr>
+<tr>
+<td>可用率</td>
+<td>AI 生成单车分析页的"直接采用率" ≥ 60%（即人工修改量 ≤ 40%）</td>
+</tr>
+<tr>
+<td>质量</td>
+<td>部件类别标注准确率 ≥ 85%；描述文本设计师评分 ≥ 4/5</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>单份报告 AI 调用成本可测量、可复现；通过评测找到质量 / 成本甜点组合</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>2. 术语表</h2>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>竞品分析单车页</td>
+<td>报告中"一车一页"（重点车型可两页）的竞品分析版面，本产品 MVP 的核心产出物</td>
+</tr>
+<tr>
+<td>色彩比例条</td>
+<td>单车页顶部按占比横向展示车身主色（2–4 色）的色条</td>
+</tr>
+<tr>
+<td>特征线条提取</td>
+<td>在去饱和底图上以品牌色矢量线描出造型主特征线的可视化分析手法</td>
+</tr>
+<tr>
+<td>部件标注</td>
+<td>对指定部件的特写裁图 + <code>#部件类别</code> 标签 + 1–3 行专业描述（形态/材质/工艺/姿态）</td>
+</tr>
+<tr>
+<td>风格关键词</td>
+<td>概括该车型造型风格的三词组（如 ·刚直·硬朗·沉稳），置于单车页右上角</td>
+</tr>
+<tr>
+<td>品牌家族</td>
+<td>同一汽车品牌下的车型分组，报告竞品分析章节按品牌家族顺序组织</td>
+</tr>
+<tr>
+<td>局部设计分析</td>
+<td>针对指定部件（如登车踏步、翼子板）跨设备集中对比的章节</td>
+</tr>
+<tr>
+<td>情绪版（Moodboard）</td>
+<td>品牌定位章节中以情绪关键词 + 意象图片网格表达定位方向的版面</td>
+</tr>
+<tr>
+<td>素材池</td>
+<td>项目内经过整理（分类、去重、质检）的竞品图片集合</td>
+</tr>
+<tr>
+<td>竞品清单</td>
+<td>纳入分析的竞品型号列表（品牌、型号、素材可用性）</td>
+</tr>
+<tr>
+<td>页面规划策略</td>
+<td>应用给出的整体页面安排：竞品数量、每车页数、章节构成、页序</td>
+</tr>
+<tr>
+<td>页面模型（Page IR）</td>
+<td>每一页的结构化 JSON 描述（版式、槽位、素材、文案、样式、来源），是页面的唯一事实源；PPTX/PDF 是其渲染产物</td>
+</tr>
+<tr>
+<td>母版</td>
+<td>报告的版式模板，由团队自行设计，提供多套供用户选择</td>
+</tr>
+<tr>
+<td>检查点</td>
+<td>流程中必须人工确认方可继续的环节</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. 用户画像与典型场景</h2>
+<p><strong>用户画像</strong>：工业设计师，熟练使用 PowerPoint/WPS 与 3D/平面设计软件，每周启动 1–2 个前期分析任务，习惯在报告初稿上反复修改后再汇报。</p>
+<p><strong>典型场景</strong>：某工程机械企业启动新一轮外观部件迭代，需要向客户（国企）汇报前期分析以对齐设计风格与边界。设计师在工具中创建项目 → 导入甲方提供的零散竞品图片并自动整理 → 确认竞品清单与页面规划 → 系统逐车生成分析页 → 设计师逐页审阅并用自然语言指令修改 → 导出可编辑 PPTX，在 Office 中做最后的微调后交付汇报。</p>
+<hr />
+<h2>4. 核心业务流程</h2>
+<pre><code>① 创建项目：设备类型 / 目标客户 / 关注部件范围
+② 素材导入：上传零散竞品图片 → 自动整理为竞品素材池（FR-1）
+   （P1.5 起支持联网竞品检索补充素材与资料）
+③ 规划确认【检查点一】：应用给出竞品清单 + 页面规划策略
+   （每车页数、章节构成、品牌家族页序）→ 用户增删与调整
+④ 报告制作：逐车图像分析（FR-2）→ 内容生成 → 页面渲染（FR-5）
+⑤ 审阅迭代【检查点二，循环】：页面缩略图选择 + 自然语言修改指令
+   → 基于页面模型定向修改 → 重渲染预览（FR-6）
+⑥ 输出：导出可编辑 PPTX + PDF 只读交付
+</code></pre>
+<p>流程原则：<strong>检查点强制人工确认</strong>；所有生成内容可溯源（图片文件名 / 检索来源）；用户可随时导出已确认的部分。</p>
+<hr />
+<h2>5. 功能需求</h2>
+<h3>5.0 模块总览</h3>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>名称</th>
+<th>概述</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FR-1</td>
+<td>素材检索与整理</td>
+<td>散图自动整理（P0）；联网竞品检索（P1）；素材池管理（P1）</td>
+<td>P0/P1</td>
+</tr>
+<tr>
+<td>FR-2</td>
+<td>图像分析引擎</td>
+<td>视图分类、色彩分析、部件标注、风格关键词</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>FR-3</td>
+<td>特征线条提取</td>
+<td>独立技术验证专项，单独实验</td>
+<td>专项（P1）</td>
+</tr>
+<tr>
+<td>FR-4</td>
+<td>报告规划</td>
+<td>竞品清单与页面规划策略生成、人工确认</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>FR-5</td>
+<td>报告生成与渲染</td>
+<td>页面模型、模板渲染、PPTX/PDF 导出</td>
+<td>P0</td>
+</tr>
+<tr>
+<td>FR-6</td>
+<td>交互式编辑</td>
+<td>页面选择 + 自然语言修改，基于页面模型</td>
+<td>P0（基础）</td>
+</tr>
+<tr>
+<td>FR-7</td>
+<td>项目与素材库管理</td>
+<td>项目列表、素材复用、导出历史</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>FR-8</td>
+<td>模板管理</td>
+<td>多母版选择</td>
+<td>P1（MVP 内置一套）</td>
+</tr>
+</tbody>
+</table>
+<h3>FR-1 素材检索与整理</h3>
+<blockquote>
+<p>定位：本产品的重点模块。用户与甲方提供的图片特征为<strong>无分类、背景杂乱（展会 / 现场拍摄）、质量参差</strong>；人工检索与整理素材是最耗时的环节，本模块即为解决该环节而设。架构上作为<strong>独立 Agent</strong> 设计（可独立演示与复用），对外提供清晰的服务接口。</p>
+</blockquote>
+<p><strong>FR-1.1 散图自动整理（P0）</strong>
+- 批量上传零散图片后自动完成：品牌 / 型号识别（基于可见 Logo、铭牌、外观特征）、视图类型分类（正面 3/4、正侧、尾部、局部特写等）、质量评估（分辨率、模糊、过曝、遮挡、背景杂乱度）、相同设备多角度聚类；
+- 输出结构化竞品素材池，每张图片带标签与质量分，支持用户逐张确认与人工改标；
+- 无法识别型号的图片归入"待确认"分组，不强行猜测。</p>
+<p><strong>FR-1.2 联网竞品检索（P1，MVP 后第一优先）</strong>
+- 输入设备类型 / 品牌范围，检索竞品型号清单、基本资料与图片；
+- 对检索结果执行与 FR-1.1 相同的质量筛选与归类，并入素材池；
+- 记录来源 URL，保证可溯源；来源与合规边界按 NFR-7 执行：公开页面、robots、来源记录、不训练。</p>
+<p><strong>FR-1.3 素材池管理（P1）</strong>
+- 素材池浏览、筛选、改标、重命名；项目间素材复用（依赖 FR-7）。</p>
+<p><strong>验收要点（目标值，以评测集校准）</strong>：有可见 Logo/铭牌时品牌识别准确率 ≥ 90%；视图分类准确率 ≥ 85%；模糊 / 严重遮挡图片自动标记率 ≥ 90%；同设备聚类准确率 ≥ 80%。</p>
+<h3>FR-2 图像分析引擎</h3>
+<p>对素材池中每台竞品设备执行结构化分析，输出进入页面模型：</p>
+<ul>
+<li><strong>FR-2.1 视图分类与主图选择（P0）</strong>：为每台设备选出正面 3/4 主图、侧面图等关键视图；</li>
+<li><strong>FR-2.2 色彩比例分析（P0）</strong>：提取车身主体区域主色 2–4 色及占比，生成色彩比例条数据；</li>
+<li><strong>FR-2.3 部件标注（P0）</strong>：按附录 B 部件词表逐类输出：部件特写裁图 + 类别标签 + 1–3 行专业描述（形态 / 材质 / 工艺 / 姿态）；词表支持扩展与项目级自定义；</li>
+<li><strong>FR-2.4 风格关键词（P0）</strong>：生成三词风格关键词组。</li>
+</ul>
+<p><strong>验收要点（目标值，以评测集校准）</strong>：主色与人工取样一致率 ≥ 90%、占比误差 ≤ 10%；部件类别命中 ≥ 85%；裁图可用率（准确框住目标部件）≥ 90%；描述设计师评分 ≥ 4/5；风格关键词采纳率 ≥ 60%。</p>
+<h3>FR-3 特征线条提取（技术验证专项）</h3>
+<ul>
+<li>独立模块、独立实验推进，<strong>不预设降级方案</strong>；目标为：原图 → 去饱和底图 + 品牌色矢量特征线叠加；</li>
+<li>技术路线（候选：边缘检测 / 分割辅助 / VLM 引导矢量描线 / 生成式方案）经多轮实验与设计师评审后确定；</li>
+<li>在达标前，单车页版式<strong>预留线条图槽</strong>，支持人工放置线稿；达标标准与技术结论以实验报告形式归档 <code>docs/</code>。</li>
+</ul>
+<h3>FR-4 报告规划（P0）</h3>
+<ul>
+<li>基于素材池生成竞品清单（品牌、型号、素材可用性）与<strong>页面规划策略</strong>：竞品数量与取舍建议、每车页数（1/2 页）、章节构成、按品牌家族的页序；</li>
+<li>以可视化方式呈现【检查点一】，支持用户增删竞品、调整页数与顺序后锁定规划。</li>
+</ul>
+<p><strong>验收要点</strong>：规划策略在素材池变化时可增量重算；用户调整后生成过程严格遵循锁定后的规划。</p>
+<h3>FR-5 报告生成与渲染（P0）</h3>
+<ul>
+<li><strong>FR-5.1 页面模型（Page IR，P0）</strong>：每页生成为结构化 JSON（版式类型、槽位、图片对象、文案、样式、来源引用），作为页面唯一事实源；PPTX / PDF 均由其确定性渲染而来；</li>
+<li><strong>FR-5.2 模板渲染引擎（P0）</strong>：Page IR → 可编辑 PPTX（python-pptx 路线）；支持品牌主题（页眉下划线色、Logo、字体随品牌 / 客户变化）；</li>
+<li><strong>FR-5.3 封面（P0，简版）</strong>：自动生成封面（客户 Logo、标题、主视觉）；</li>
+<li><strong>FR-5.4 章节类型扩展（P1/P2）</strong>：局部设计分析、品牌设计分析、品牌定位情绪版（见路线图）。</li>
+</ul>
+<p><strong>验收要点</strong>：导出 PPTX 中文本、图片、形状均为原生可编辑对象（Office 与 WPS 双验证），禁止整页贴图；版式与母版设计稿关键元素位置一致。</p>
+<h3>FR-6 交互式编辑（P0 基础 / P1 增强）</h3>
+<ul>
+<li>交互范式：页面缩略图列表 → 选中页面 → 自然语言修改指令 → 应用基于<strong>页面模型</strong>做结构化修改 → 重渲染预览。AI 通过页面模型即知页面结构，<strong>无需以视觉方式重读页面</strong>；视觉仅用于可选的成稿质检；</li>
+<li>基础指令类型（P0）：修改文案、替换图片（从素材池选）、增删部件标注、修改风格关键词、整页重写；</li>
+<li>增强能力（P1）：文本框直接编辑、拖拽换图、批量指令、跨页指令（如"所有页把'厚重'改为'敦实'"）、修改历史与撤销。</li>
+</ul>
+<p><strong>验收要点</strong>：指令定位到正确页面的准确率 ≥ 95%；基础指令类型全覆盖；单页修改后重渲染 ≤ 30 秒（MVP 目标）；支持撤销上一次修改。</p>
+<h3>FR-7 项目与素材库管理（P1）</h3>
+<p>项目列表与状态、导出历史版本留存、素材跨项目复用。</p>
+<h3>FR-8 模板管理（P1）</h3>
+<ul>
+<li>母版由团队自行设计，提供<strong>多套</strong>供用户按项目 / 客户选择；</li>
+<li>MVP 内置一套母版跑通链路；母版设计规范与源文件纳入项目交付物。</li>
+</ul>
+<hr />
+<h2>6. 非功能需求</h2>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>类别</th>
+<th>要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NFR-1</td>
+<td>模型与部署</td>
+<td><strong>国产大模型优先</strong>：视觉（Qwen-VL / GLM-4.5V / 豆包 vision 等）、文本（DeepSeek / Qwen / GLM 等）；云端 API 在线调用，无私有化部署要求；模型经网关层（如 LiteLLM）统一接入，可切换、可回退</td>
+</tr>
+<tr>
+<td>NFR-2</td>
+<td>成本</td>
+<td>所有模型调用计量留痕；支持单份报告成本报表；以评测数据选择模型与参数的甜点组合</td>
+</tr>
+<tr>
+<td>NFR-3</td>
+<td>性能</td>
+<td>单车页"分析 + 生成" 20–40 秒（MVP 目标，评测校准）；单页重渲染 ≤ 30 秒；10–15 台完整报告 ≤ 1 个工作日</td>
+</tr>
+<tr>
+<td>NFR-4</td>
+<td>可编辑性</td>
+<td>导出 PPTX 中文本、图片、形状必须为原生可编辑对象，禁止整页贴图</td>
+</tr>
+<tr>
+<td>NFR-5</td>
+<td>可观测</td>
+<td>生成链路全量 Tracing：检索命中、模型调用、耗时、成本、页面模型版本</td>
+</tr>
+<tr>
+<td>NFR-6</td>
+<td>可溯源</td>
+<td>页面图片与关键结论保留来源（上传文件名 / 检索 URL），可在界面查看</td>
+</tr>
+<tr>
+<td>NFR-7</td>
+<td>数据合规</td>
+<td>用户素材仅用于本项目分析输出，不用于模型训练；API 密钥经环境变量管理，严禁入库</td>
+</tr>
+<tr>
+<td>NFR-8</td>
+<td>评测</td>
+<td>对 FR-1 散图整理、FR-2 图像分析、FR-5 内容质量建立评测集与指标；任何 Prompt / 模型 / 流程变更须通过评测方可合入</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>7. MVP 范围</h2>
+<h3>7.1 MVP 包含（In）</h3>
+<ol>
+<li>项目创建（设备类型 / 目标客户 / 关注部件范围）；</li>
+<li>散图上传与自动整理（FR-1.1）；</li>
+<li>竞品清单与页面规划确认（FR-4，检查点一）；</li>
+<li>单车分析页自动生成：色彩比例条 + 部件标注 + 风格关键词 + 页眉页脚（FR-2 + FR-5）；</li>
+<li>封面（简版，FR-5.3）；</li>
+<li>页面选择 + 自然语言编辑（FR-6 基础，检查点二循环）；</li>
+<li>导出可编辑 PPTX 与 PDF 预览；</li>
+<li>基础成本计量与调用观测（NFR-2 / NFR-5 简版）。</li>
+</ol>
+<h3>7.2 MVP 明确不包含（Out，列入后续版本）</h3>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>后续安排</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>联网竞品检索（FR-1.2）</td>
+<td>MVP 后第一优先（P1.5）</td>
+</tr>
+<tr>
+<td>特征线条自动提取（FR-3）</td>
+<td>独立专项并行实验；版式预留图槽支持人工放置线稿</td>
+</tr>
+<tr>
+<td>局部设计分析、品牌设计分析、品牌定位情绪版章节</td>
+<td>P2</td>
+</tr>
+<tr>
+<td>多母版选择（FR-8）</td>
+<td>P1，MVP 内置一套</td>
+</tr>
+<tr>
+<td>素材跨项目复用、多人协作、账号体系</td>
+<td>P1 / P3；MVP 为单用户使用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>8. 路线图</h2>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>目标</th>
+<th>关键产出</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 需求与设计</td>
+<td>确定需求与技术方案</td>
+<td>PRD（本文档）、交互说明、数据模型、评测框架</td>
+<td>已完成</td>
+</tr>
+<tr>
+<td>P1 MVP</td>
+<td>MVP 范围端到端跑通</td>
+<td>可演示系统 + 首份 AI 生成完整报告</td>
+<td>进行中：检索、清单、闸门链路已跑通，进入整体联调</td>
+</tr>
+<tr>
+<td>P1.5 检索与特征线</td>
+<td>FR-1.2 上线；FR-3 专项出阶段性结论</td>
+<td>检索 Agent 独立演示、特征线条实验报告</td>
+<td>进行中：检索通道已跑通，待整体测试</td>
+</tr>
+<tr>
+<td>P2 完整章节</td>
+<td>局部设计分析、情绪版、多母版</td>
+<td>全章节类型支持</td>
+<td>规划中</td>
+</tr>
+<tr>
+<td>P3 打磨</td>
+<td>成本甜点调优、指标提升、素材复用</td>
+<td>评测报告 v2、成本报告</td>
+<td>规划中</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>9. 关键假设与边界</h2>
+<p>本版对外评审按以下口径执行；它们是产品边界，不是待办项。</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>口径</th>
+<th>影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>人工制作 10–15 个竞品报告的基线为 <strong>3–5 天</strong>；产品目标为 ≤1 天</td>
+<td>校准 1.4 效率指标</td>
+</tr>
+<tr>
+<td>2</td>
+<td>检索只使用公开页面与客户提供素材；遵守 robots、记录来源、不用于训练</td>
+<td>FR-1.2、NFR-7</td>
+</tr>
+<tr>
+<td>3</td>
+<td>特征线条提取作为独立专项；MVP 版式预留图槽，支持人工放置线稿</td>
+<td>FR-3、FR-6</td>
+</tr>
+<tr>
+<td>4</td>
+<td>MVP 内置一套母版；多母版在 P1 扩展，母版规范随项目交付</td>
+<td>FR-8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>产品期采用云端 API 在线调用，不做私有化部署；开发/演示期单机运行</td>
+<td>NFR-1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>单份报告成本可计量；模型与参数通过评测选择质量/成本甜点</td>
+<td>NFR-2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>PDF 是只读交付格式，与 PPTX 并列；不是“仅预览”</td>
+<td>FR-5、交互说明</td>
+</tr>
+<tr>
+<td>8</td>
+<td>特征线条达标前，图槽只支持人工放置线稿；不自动生成假线条</td>
+<td>FR-3、FR-5</td>
+</tr>
+</tbody>
+</table>
+<h2>附录 A：报告页面类型参考</h2>
+<p>依据真实样例报告《早期卡车分析》（21 页）解剖：</p>
+<table>
+<thead>
+<tr>
+<th>页型</th>
+<th>样例占比</th>
+<th>内容构成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>封面</td>
+<td>1 页</td>
+<td>客户 Logo、报告标题（中英双语）、主视觉大图</td>
+</tr>
+<tr>
+<td>竞品分析·单车页</td>
+<td>13 页</td>
+<td>页眉（标题 + 品牌色下划线 + 风格关键词）、色彩比例条、特征线条槽（达标前人工放置）、部件标注网格、页脚（型号 + 品牌 Logo）</td>
+</tr>
+<tr>
+<td>局部设计分析</td>
+<td>2 页</td>
+<td>指定部件跨设备对比：设备图 + 分部件结构化文字卡</td>
+</tr>
+<tr>
+<td>品牌设计分析</td>
+<td>2 页</td>
+<td>客户品牌产品图矩阵 + 风格描述段落 + 关键词标签组</td>
+</tr>
+<tr>
+<td>品牌定位（情绪版）</td>
+<td>1 页</td>
+<td>色彩比例条 + 情绪关键词意象图网格（信赖 / 力量 / 专业 / 可靠等）</td>
+</tr>
+</tbody>
+</table>
+<p>版式关键规律：页眉下划线与叠加线条颜色<strong>跟随品牌主色</strong>；单车页部件类别高度固定（见附录 B）；竞品分析按<strong>品牌家族</strong>排序。</p>
+<h2>附录 B：部件标注词表（可扩展）</h2>
+<p>保险杠与防护栏 / 大灯与灯罩防护 / 进气格栅（含冷却模块进风口）/ 登车踏步 / 翼子板与轮拱 / 后视镜总成 / 外部遮阳板 / 下护板 / 可视液位窗 / 示宽杆 / 品牌标识区 / 涂装与分色 / 其他</p>
+<blockquote>
+<p>词表以项目级配置维护，支持设计师自定义扩展；VLM 部件标注（FR-2.3）以本词表为输出约束。</p>
+</blockquote><div class="doc-end"><span>End of document / EquipLens-AI</span><span>v1.0 · 2026.10</span></div></main>
+</body></html>

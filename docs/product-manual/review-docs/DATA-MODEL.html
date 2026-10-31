@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>数据模型规范 · EquipLens-AI</title>
+<style>
+@font-face{font-family:"EquipSerif";src:url("../assets/fonts/EquipSerif-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSerif";src:url("../assets/fonts/EquipSerif-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSans";src:url("../assets/fonts/EquipSans-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSans";src:url("../assets/fonts/EquipSans-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("../assets/fonts/EquipMono-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("../assets/fonts/EquipMono-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+:root{
+  --paper:#F5F2EA; --ink:#141518; --ink2:#2C2E31; --muted:#74797C;
+  --orange:#DF4A1B; --line:#D8D2C6; --line2:#B9B2A5; --night:#0E1012;
+  --serif:"EquipSerif","Songti SC","SimSun",serif;
+  --sans:"EquipSans","Microsoft YaHei","PingFang SC",sans-serif;
+  --mono:"EquipMono","Arial Narrow",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+@page{size:A4;margin:18mm 17mm 18mm}
+@page:first{margin:0}
+html,body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:10.5pt;line-height:1.75;-webkit-font-smoothing:antialiased}
+body{padding:0}
+.cover{width:210mm;height:297mm;display:grid;grid-template-columns:1fr 55mm;overflow:hidden;background:var(--paper);page-break-after:always;break-after:page}
+.cover-main{padding:22mm 16mm 18mm 18mm;display:flex;flex-direction:column;min-width:0}
+.cover-rail{background:var(--night);color:rgba(255,255,255,.66);padding:18mm 10mm;display:flex;flex-direction:column;justify-content:space-between;font-family:var(--mono);font-size:7.5pt;letter-spacing:.15em;line-height:1.8}
+.cover-rail .rot{writing-mode:vertical-rl;text-orientation:mixed;font-size:8pt;letter-spacing:.2em;color:rgba(255,255,255,.5)}
+.cover-top{font-family:var(--mono);font-size:8pt;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.cover-kicker{font-family:var(--mono);font-size:8.5pt;letter-spacing:.18em;color:var(--orange);text-transform:uppercase;margin-top:38mm}
+.cover h1{font-family:var(--serif);font-size:44pt;line-height:1.2;font-weight:600;letter-spacing:.01em;margin-top:7mm;max-width:135mm}
+.cover-sub{font-size:12.5pt;line-height:1.8;color:var(--ink2);margin-top:8mm;max-width:130mm}
+.cover-meta{display:grid;grid-template-columns:1fr 1fr;gap:7mm 9mm;margin-top:auto;border-top:2px solid var(--ink);padding-top:6mm}
+.cover-meta span{display:block;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.cover-meta b{display:block;font-size:11pt;font-weight:600;margin-top:1mm}
+.cover-foot{border-top:1px solid var(--line);padding-top:4mm;margin-top:6mm;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);display:flex;justify-content:space-between;gap:8mm}
+.toc{page-break-after:always;break-after:page;padding-top:4mm}
+.toc-head{display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:4mm;font-family:var(--mono);font-size:7.5pt;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.toc h2{font-family:var(--serif);font-size:28pt;line-height:1.25;margin:10mm 0 4mm;font-weight:600}
+.toc-sub{font-size:10.5pt;color:var(--muted);line-height:1.8;max-width:140mm}
+.toc-list{columns:2;column-gap:12mm;margin-top:12mm;list-style:none}
+.toc-list li{break-inside:avoid;border-bottom:1px solid var(--line);padding:2.6mm 0;font-size:9.5pt;line-height:1.55;display:flex;gap:4mm}
+.toc-list li i{font-style:normal;font-family:var(--mono);font-size:7.5pt;color:var(--orange);min-width:7mm}
+.toc-note{margin-top:12mm;border-left:3px solid var(--orange);padding-left:4mm;font-size:9pt;line-height:1.8;color:var(--muted);max-width:150mm}
+.toc-focus{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink);margin-top:12mm}
+.toc-focus .tf{padding:4mm 5mm 0 0;border-right:1px solid var(--line)}
+.toc-focus .tf+.tf{padding-left:5mm}
+.toc-focus .tf:last-child{border-right:0;padding-right:0}
+.toc-focus span{font-family:var(--mono);font-size:6.6pt;letter-spacing:.1em;color:var(--orange)}
+.toc-focus b{display:block;font-family:var(--serif);font-size:13pt;line-height:1.4;margin-top:1mm}
+.toc-meta{display:grid;grid-template-columns:1fr 1fr;gap:7mm 12mm;margin-top:16mm;border-top:2px solid var(--ink);padding-top:6mm;max-width:165mm}
+.toc-meta span{display:block;font-family:var(--mono);font-size:6.8pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.toc-meta b{display:block;font-size:10pt;font-weight:600;margin-top:1mm}
+.doc{padding-top:0}
+.doc h2{font-family:var(--serif);font-size:21pt;line-height:1.35;font-weight:600;border-top:2px solid var(--ink);padding-top:4mm;margin:10mm 0 5mm;page-break-after:avoid;break-after:avoid}
+.doc h2:first-of-type{margin-top:0}
+.doc h3{font-family:var(--sans);font-size:12.5pt;line-height:1.55;font-weight:600;margin:7mm 0 2mm;color:var(--ink)}
+.doc h4{font-family:var(--sans);font-size:10.5pt;font-weight:600;margin:5mm 0 1.5mm}
+.doc p{margin:0 0 2.6mm;text-align:justify;color:var(--ink2);orphans:3;widows:3}
+.doc strong{color:var(--ink);font-weight:600}
+.doc em{font-style:normal;color:var(--orange)}
+.doc ul,.doc ol{margin:1mm 0 3mm 6mm;padding-left:0}
+.doc li{margin:1mm 0;line-height:1.7;color:var(--ink2);orphans:2;widows:2}
+.doc blockquote{margin:3mm 0 4mm;border-left:3px solid var(--orange);padding:1mm 0 1mm 4mm;color:var(--ink2);font-size:9.5pt;line-height:1.75}
+.doc hr{border:0;border-top:1px solid var(--line);margin:5mm 0}
+.doc table{width:100%;border-collapse:collapse;margin:3mm 0 5mm;font-size:8.2pt;line-height:1.55;page-break-inside:auto}
+.doc th{font-family:var(--mono);font-size:6.9pt;line-height:1.45;letter-spacing:.05em;text-align:left;color:var(--muted);text-transform:uppercase;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--ink);padding:2mm 1.8mm;background:rgba(20,21,24,.025);white-space:nowrap}
+.doc td{border-bottom:1px solid var(--line);padding:2mm 1.8mm;vertical-align:top}
+.doc tr{page-break-inside:avoid}
+.doc code{font-family:var(--mono);font-size:8pt;background:rgba(20,21,24,.055);padding:.4mm 1.2mm;border-radius:1px}
+
+.flowline{display:grid;grid-template-columns:repeat(5,1fr);background:var(--night);color:#E8E4DA;margin:3mm 0 5mm;padding:4mm 4mm 3mm}
+.flowline .fl{padding:0 3mm;border-right:1px solid rgba(255,255,255,.18)}
+.flowline .fl:first-child{padding-left:0}
+.flowline .fl:last-child{border-right:0;padding-right:0}
+.flowline span{display:block;font-family:var(--mono);font-size:6.8pt;letter-spacing:.08em;color:var(--orange)}
+.flowline b{display:block;font-size:10pt;font-weight:600;margin-top:1mm}
+.flowline em{display:block;font-style:normal;font-family:var(--mono);font-size:7.2pt;color:rgba(255,255,255,.55);margin-top:1mm}
+
+.doc-end{margin-top:14mm;border-top:2px solid var(--ink);padding-top:4mm;display:flex;justify-content:space-between;gap:10mm;font-family:var(--mono);font-size:7pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.doc .page-break{break-before:page;page-break-before:always;height:0}
+.doc table:last-of-type{page-break-inside:avoid}
+.doc pre{background:var(--night);color:#E4EAEF;padding:4mm 4.5mm;margin:3mm 0 5mm;font-family:var(--mono);font-size:8.4pt;line-height:1.7;white-space:pre-wrap;page-break-inside:avoid;overflow:hidden}
+.doc pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.doc a{color:var(--orange);text-decoration:none;border-bottom:1px solid rgba(223,74,27,.3)}
+.doc .section-note{font-family:var(--mono);font-size:7pt;color:var(--muted);letter-spacing:.08em;margin-top:-2mm;margin-bottom:3mm}
+</style></head><body>
+
+<section class="cover">
+  <div class="cover-main">
+    <div class="cover-top">EquipLens-AI / Review Document / 2026</div>
+    <div class="cover-kicker">DATA MODEL SPECIFICATION</div>
+    <h1>数据模型规范</h1>
+    <div class="cover-sub">单车素材、证据、描述与确认记录的存储结构</div>
+    <div class="cover-meta">
+      <div><span>Document</span><b>DATA MODEL</b></div>
+      <div><span>Version</span><b>v1.0</b></div>
+      <div><span>Status</span><b>对外评审版</b></div>
+      <div><span>Date</span><b>2026.10</b></div>
+    </div>
+    <div class="cover-foot"><span>Scope · 单车素材主数据、四层树、不变量与派生查询</span><span>EQUIPLENS-AI</span></div>
+  </div>
+  <div class="cover-rail">
+    <div>PRODUCT<br>DOSSIER</div>
+    <div class="rot">DESIGN INTELLIGENCE FOR OFF-HIGHWAY VEHICLES</div>
+    <div>VOL. 01<br>2026</div>
+  </div>
+</section>
+
+
+<section class="toc">
+  <div class="toc-head"><span>EquipLens-AI / DATA MODEL</span><span>v1.0 · 对外评审版</span></div>
+  <h2>文档结构</h2>
+  <p class="toc-sub">单车素材、证据、描述与确认记录的存储结构。本册用于对外评审，按章节独立分页，便于逐节阅读与批注。</p>
+  <ol class="toc-list"><li><i>01</i><span>决策记录（本轮讨论锁定项）</span></li><li><i>02</i><span>实体与从属关系</span></li><li><i>03</i><span>表定义</span></li><li><i>04</i><span>枚举取值表</span></li><li><i>05</i><span>文件目录约定</span></li><li><i>06</i><span>派生状态定义（只查不存，D3/D9）</span></li><li><i>07</i><span>MVP 激活范围</span></li><li><i>08</i><span>测试分层与状态</span></li><li><i>09</i><span>修订记录</span></li></ol>
+  <div class="toc-note">阅读顺序：先看文档结构与关键假设，再看流程、功能与数据模型。术语与指标口径以产品说明书和本册正文为准。</div>
+  <div class="toc-focus"><div class="tf"><span>FOCUS 01</span><b>四层单车树</b></div><div class="tf"><span>FOCUS 02</span><b>三条不变量</b></div><div class="tf"><span>FOCUS 03</span><b>派生状态与查询</b></div></div>
+  <div class="toc-meta">
+    <div><span>Document</span><b>DATA MODEL / v1.0</b></div>
+    <div><span>Status</span><b>对外评审版</b></div>
+    <div><span>Scope</span><b>单车素材主数据、四层树、不变量与派生查询</b></div>
+    <div><span>Companion</span><b>EquipLens-AI 产品说明书（16:9）</b></div>
+  </div>
+</section>
+
+<main class="doc"><h2>1. 决策记录（本轮讨论锁定项）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>决策</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>四层单车树：Vehicle / Facts / Descriptions / Asset 树；<strong>原图不可变，只从原图裁</strong>（不从裁图再裁），裁图记 bbox</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>外源特写不"拒收"，按证据分级延迟归号；库中只存<strong>证据类型+绑定状态</strong>，T1–T4 档位为展示层派生概念</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>完备度 L0–L3 分级；<strong>缺失是一等状态</strong>；完备度为派生查询，不存储</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>描述三轴：节点（整体/部位）× 类型（结构事实/设计特征/设计意图）× 范围（品牌家族/本型号）</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>同图多源合并：一个 Asset 挂 N 条来源；授权挂在来源上</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D6</td>
+<td>批量确认：确认记录含机器原值/操作ID/方式，<strong>只增不改</strong>；仅高置信结构标签可批量</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>视角单枚举（朝向并入）；新增 <code>ortho_sheet</code>（三视图图版）与 <code>interior</code>/<code>scene</code>（范围外·归档）取值</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D8</td>
+<td>工作区/正式库<strong>逻辑分离</strong>：同库，机器字段可覆盖，确认记录只增不改，"正式"=按状态过滤的视图</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D9</td>
+<td>冗余收窄 S1–S5：分析实体并入描述档案；完备度/T档/槽位状态不存储；朝向并入枚举；两库物理分离降级为逻辑分离</td>
+<td>已确认</td>
+</tr>
+<tr>
+<td>D10</td>
+<td><strong>变体链接</strong>：人工确认为同图变体的素材建 variant_group 分组（共享 UUID，可撤销、落账），全部保留不合并；检索归组展示，报告引用提示同源</td>
+<td>已确认（v1.0）</td>
+</tr>
+<tr>
+<td>D11</td>
+<td><strong>自由标签提名池</strong>：用户随手标签进 vocab <code>pending</code> 状态（可用可搜、标记未受控），人工提升转 <code>active</code>；退役为 <code>retired</code>；词表操作一律落账</td>
+<td>已确认（v1.0）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>设计律（三条不变量，全库强制）：</strong></p>
+<ol>
+<li><strong>可推导状态不存储</strong>：完备度、T 档、槽位状态一律查询即得，库中只存实体、原始素材、机器标注原值、确认记录、证据；</li>
+<li><strong>确认记录只增不改</strong>：<code>confirm_log</code> 表禁止 UPDATE/DELETE（触发器强制）；机器字段允许覆盖，机器原值保留在确认记录中，撤销=恢复机器原值；</li>
+<li><strong>原图不可变</strong>：<code>source_image</code> 类素材文件一经写入不可覆盖；派生裁图必须记录 <code>parent_asset_id + crop_bbox</code>。</li>
+</ol>
+<h2>2. 实体与从属关系</h2>
+<pre><code>Vehicle（车型实体，对应名录一个型号）
+├─ hero_asset_id ──────────┐（主图指针，逻辑指向某 Asset）
+├─ Facts 事实档案（1:N）     │
+├─ Descriptions 描述档案(1:N)│
+└─ Asset 素材树             │
+   ├─ SourceImage 原图 ◄────┘
+   │   └─ Crop 裁图（parent_asset_id + crop_bbox）
+   └─ Source 来源记录（1:N，同图多源，授权挂在来源上）
+ConfirmLog 确认记录（跨实体，只增不改）
+Vocab 词表（附录 B 部位词表，可扩展）
+</code></pre>
+<ul>
+<li><strong>Vehicle 与 Asset 分离</strong>：车型实体先于素材存在（来自名录），素材通过"对号"挂到车上。对号 = Asset 上的 <code>binding_status + binding_evidence</code>；</li>
+<li><strong>Facts 与身份字段分工</strong>（落表细化）：品牌/型号/类别/年款是车辆身份，直接做 Vehicle 列（可查询、可唯一约束）；吨位/功率等<strong>参数类事实</strong>进 Facts 表（键值式 + 来源）。分界规则：带数字单位的参数来自文档 → Facts；图上观察到的形态陈述 → Descriptions；</li>
+<li><strong>Descriptions 即分析输出</strong>（S1 收窄）：MVP 单车层面不设独立"分析结果"实体，三轴描述档案就是分析整合模块的落库产物。</li>
+</ul>
+<h2>3. 表定义</h2>
+<p>主键统一为 UUID（TEXT）；时间统一 ISO8601 文本。<code>R</code>=必填，<code>O</code>=可空。</p>
+<h3>3.1 vehicles 车型实体</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>TEXT</td>
+<td>PK</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td>brand</td>
+<td>TEXT</td>
+<td>R</td>
+<td>品牌</td>
+</tr>
+<tr>
+<td>model_name</td>
+<td>TEXT</td>
+<td>R</td>
+<td>型号</td>
+</tr>
+<tr>
+<td>category</td>
+<td>TEXT</td>
+<td>O</td>
+<td>设备类别（重卡/装载机/起重机/矿卡…；受控词表由类目档案维护）</td>
+</tr>
+<tr>
+<td>generation</td>
+<td>TEXT</td>
+<td>O</td>
+<td>世代/年款（来源名录或用户；空不算错）</td>
+</tr>
+<tr>
+<td>list_status</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>candidate</code> 名录候选 / <code>locked</code> 闭集锁定</td>
+</tr>
+<tr>
+<td>hero_asset_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>主图指针；<strong>逻辑引用不设外键</strong>（避免建表循环），由访问层 <code>set_hero()</code> 校验</td>
+</tr>
+<tr>
+<td>project_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>项目归属；项目实体由数据管线管理</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TEXT</td>
+<td>R</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>UNIQUE(brand, model_name, generation)。</p>
+<h3>3.2 assets 素材</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>TEXT</td>
+<td>PK</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td>vehicle_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>FK→vehicles；与 binding_status 联动（见下）</td>
+</tr>
+<tr>
+<td>binding_status</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>unbound</code> 待归号池 / <code>provisional</code> 疑似待确认 / <code>confirmed</code> 已对号</td>
+</tr>
+<tr>
+<td>binding_evidence</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>none</code> / <code>self_derived</code> 内生裁图自证 / <code>region_match</code> 区域匹配 / <code>co_occurrence_labeled</code> 同源+型号标注 / <code>co_occurrence_only</code> 同源共现 / <code>human</code> 人工判定</td>
+</tr>
+<tr>
+<td>kind</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>source_image</code> / <code>crop</code></td>
+</tr>
+<tr>
+<td>parent_asset_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>FK→assets；<strong>crop 必填，原图必须为空</strong></td>
+</tr>
+<tr>
+<td>crop_bbox</td>
+<td>TEXT</td>
+<td>O</td>
+<td>JSON <code>{"x":..,"y":..,"w":..,"h":..}</code>；同上联动</td>
+</tr>
+<tr>
+<td>file_path</td>
+<td>TEXT</td>
+<td>R</td>
+<td>相对 data/ 的路径（见 §5）</td>
+</tr>
+<tr>
+<td>view_angle</td>
+<td>TEXT</td>
+<td>R</td>
+<td>视角枚举（§4.1，11 值）</td>
+</tr>
+<tr>
+<td>asset_nature</td>
+<td>TEXT</td>
+<td>R</td>
+<td>素材性质枚举（§4.2）</td>
+</tr>
+<tr>
+<td>part_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>FK→vocab；仅裁图/特写挂部位，原图=整车不挂</td>
+</tr>
+<tr>
+<td>width/height</td>
+<td>INTEGER</td>
+<td>O</td>
+<td>像素</td>
+</tr>
+<tr>
+<td>quality_flags</td>
+<td>TEXT</td>
+<td>O</td>
+<td>JSON 数组，取值见 §4.3</td>
+</tr>
+<tr>
+<td>hash_sha256</td>
+<td>TEXT</td>
+<td>R</td>
+<td>文件哈希，判重与完整性</td>
+</tr>
+<tr>
+<td>phash</td>
+<td>TEXT</td>
+<td>O</td>
+<td>感知哈希，近似判重/区域匹配（P1.5 启用）</td>
+</tr>
+<tr>
+<td>confirm_status</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>machine_tagged</code> / <code>confirmed</code> / <code>rejected</code></td>
+</tr>
+<tr>
+<td>variant_group</td>
+<td>TEXT</td>
+<td>O</td>
+<td><strong>v0.2</strong>：变体分组 UUID（D10），同组互为同图变体</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>TEXT</td>
+<td>O</td>
+<td></td>
+</tr>
+<tr>
+<td>created_at / updated_at</td>
+<td>TEXT</td>
+<td>R</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>表级 CHECK（不变量的强制执行点）：</p>
+<ul>
+<li><code>(kind='crop') = (parent_asset_id IS NOT NULL AND crop_bbox IS NOT NULL)</code>；</li>
+<li><code>(vehicle_id IS NULL) = (binding_status='unbound')</code>；</li>
+<li><code>binding_status='unbound' ⇔ binding_evidence='none'</code>；</li>
+<li>原图不允许有 parent（并入第一条）。</li>
+</ul>
+<h3>3.3 sources 来源记录</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>TEXT</td>
+<td>PK</td>
+<td></td>
+</tr>
+<tr>
+<td>asset_id</td>
+<td>TEXT</td>
+<td>R</td>
+<td>FK→assets，级联删除</td>
+</tr>
+<tr>
+<td>url</td>
+<td>TEXT</td>
+<td>O</td>
+<td>网络/系统来源；自摄可空</td>
+</tr>
+<tr>
+<td>platform</td>
+<td>TEXT</td>
+<td>O</td>
+<td>官网/经销商/新闻/甲方邮件/展会…</td>
+</tr>
+<tr>
+<td>retrieved_at</td>
+<td>TEXT</td>
+<td>O</td>
+<td></td>
+</tr>
+<tr>
+<td>license</td>
+<td>TEXT</td>
+<td>R</td>
+<td>授权枚举（§4.4），<strong>挂在来源上</strong>（D5）</td>
+</tr>
+<tr>
+<td>is_primary</td>
+<td>INTEGER</td>
+<td>R</td>
+<td>0/1，展示取主来源</td>
+</tr>
+<tr>
+<td>note</td>
+<td>TEXT</td>
+<td>O</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>3.4 facts 参数事实</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>TEXT</td>
+<td>PK</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td>vehicle_id</td>
+<td>TEXT</td>
+<td>R</td>
+<td>FK→vehicles</td>
+</tr>
+<tr>
+<td>field_key</td>
+<td>TEXT</td>
+<td>R</td>
+<td>参数键，起步清单见 §4.5，可扩展</td>
+</tr>
+<tr>
+<td>value</td>
+<td>TEXT</td>
+<td>R</td>
+<td>值</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>TEXT</td>
+<td>O</td>
+<td>单位</td>
+</tr>
+<tr>
+<td>source_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>FK→sources（参数出处）</td>
+</tr>
+<tr>
+<td>confirm_status</td>
+<td>TEXT</td>
+<td>R</td>
+<td>同 §3.2</td>
+</tr>
+<tr>
+<td>created_at / updated_at</td>
+<td>TEXT</td>
+<td>R</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>3.5 descriptions 描述档案（= 分析输出，三轴 D4）</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>TEXT</td>
+<td>PK</td>
+<td>UUID</td>
+</tr>
+<tr>
+<td>vehicle_id</td>
+<td>TEXT</td>
+<td>R</td>
+<td>FK→vehicles</td>
+</tr>
+<tr>
+<td>node_type</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>whole</code> 整体 / <code>part</code> 部位</td>
+</tr>
+<tr>
+<td>part_id</td>
+<td>TEXT</td>
+<td>O</td>
+<td>FK→vocab；<strong>node_type='part' 时必填，'whole' 时必须为空</strong>（CHECK）</td>
+</tr>
+<tr>
+<td>axis_type</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>structure</code> 结构事实 / <code>design_feature</code> 设计特征 / <code>intent</code> 设计意图</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>family</code> 品牌家族 / <code>model</code> 本型号</td>
+</tr>
+<tr>
+<td>body</td>
+<td>TEXT</td>
+<td>R</td>
+<td>描述正文（一句一事）</td>
+</tr>
+<tr>
+<td>evidence_asset_ids</td>
+<td>TEXT</td>
+<td>R</td>
+<td>JSON 数组，<strong>≥1 条</strong>：支撑本描述的素材（NFR-6 文字溯源）</td>
+</tr>
+<tr>
+<td>source_ids</td>
+<td>TEXT</td>
+<td>O</td>
+<td>JSON 数组，引用的文档来源</td>
+</tr>
+<tr>
+<td>confirm_status</td>
+<td>TEXT</td>
+<td>R</td>
+<td>同 §3.2</td>
+</tr>
+<tr>
+<td>version</td>
+<td>INTEGER</td>
+<td>R</td>
+<td>默认 1，飞轮期启用</td>
+</tr>
+<tr>
+<td>created_at / updated_at</td>
+<td>TEXT</td>
+<td>R</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>3.6 confirm_log 确认记录（只增不改）</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id / op_id</td>
+<td>TEXT</td>
+<td>R</td>
+<td>op_id：同一次批量操作共用</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>TEXT</td>
+<td>R</td>
+<td>vehicle/asset/source/fact/description</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>TEXT</td>
+<td>R</td>
+<td></td>
+</tr>
+<tr>
+<td>field</td>
+<td>TEXT</td>
+<td>R</td>
+<td>被确认/修改的字段名</td>
+</tr>
+<tr>
+<td>machine_value</td>
+<td>TEXT</td>
+<td>R</td>
+<td>机器原值（JSON 文本），<strong>撤销依据</strong></td>
+</tr>
+<tr>
+<td>confirmed_value</td>
+<td>TEXT</td>
+<td>R</td>
+<td>确认后的值（JSON 文本）</td>
+</tr>
+<tr>
+<td>method</td>
+<td>TEXT</td>
+<td>R</td>
+<td><code>single</code> / <code>batch</code> / <code>auto</code>（T1 自证批量抽查路径）</td>
+</tr>
+<tr>
+<td>confirmed_at / confirmed_by</td>
+<td>TEXT</td>
+<td>R</td>
+<td>confirmed_by 默认 <code>user</code></td>
+</tr>
+</tbody>
+</table>
+<p>触发器强制：UPDATE/DELETE 一律 ABORT。确认动作由访问层 <code>confirm()</code> 完成：写一条日志 + 更新目标字段；<code>undo()</code> 恢复 machine_value。</p>
+<h3>3.7 vocab 词表（辅助配置表）</h3>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>部位 slug（bumper/headlamp/grille/step/fender/mirror/sunvisor/skirt/fluid_window/width_pole/brand_zone/paint/other）</td>
+</tr>
+<tr>
+<td>type</td>
+<td>仅 <code>part</code>（后续可扩）</td>
+</tr>
+<tr>
+<td>term</td>
+<td>中文词（附录 B v0 全量预填）</td>
+</tr>
+<tr>
+<td>status</td>
+<td><code>pending</code>（<strong>v0.2 提名池</strong>，D11）/ <code>active</code> / <code>retired</code>（词表可退役不可删）；流转全部落账</td>
+</tr>
+</tbody>
+</table>
+<h2>4. 枚举取值表</h2>
+<h3>4.1 view_angle 视角（单枚举，D7）</h3>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>中文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>untagged</td>
+<td>未打标</td>
+<td><strong>v0.1.1 占位</strong>：M1 导入后、M4 打标前的过渡状态；不参与完备度统计与视角筛选</td>
+</tr>
+</tbody>
+</table>
+<p><strong>左右定义（v0.2.3，产品负责人约定）</strong>：前 = 车头方向；<strong>左右 = 驾驶员视角</strong>（驾驶位坐姿向前时的左手/右手侧）。一切视角标签、排版一致性、对比分析均以此为准；机器判定左右不可靠时必须用 hero_45/side 未定态，禁止瞎猜。</p>
+<p><strong>方向待定态是过渡态，不是终态（v0.2.4，意见 #11）</strong>：人眼定向是一眼的事，机器亦可学会（判向探针/VLM）；接受入库的素材必须方向明确——hero_45/side 状态仅允许存在于"未确认"阶段，确认动作应先定向（探针自动+人工修正，或人工下拉直接定）。</p>
+<p><strong>粗类即合法终态，左右细分按需（v0.2.5，意见 #13）</strong>：v0.2.4 的"终态必须定向"<strong>收窄适用范围</strong>——分析任务的视角粒度由部件需求推导（FR-4 报告规划给出）：绝大多数分析（整车造型、前脸、色彩、特征线底图）只需粗类 hero_45/side/front/rear，<strong>粗类即可作为车辆级流程的确认终态</strong>；左右细分（hero_lf/rf、side_l/r）仅在两类场景必须——①单边不对称部件的部件级分析（如单边登车梯的矿卡，T8 词表已提名）②排版对镜像有要求时；此时机器<strong>不猜测，把左右候选并陈</strong>由人一眼定（T12 实证：CLIP 细分左右 51–61%、实盘 54%，合并粗类 79% 且按质心排序选主图 top-3 命中 26/26 台）。hero_lf/rf 仍为 FR-3 特征线页的首选主图视角（有则优先，无则粗类 hero_45 + 人工在选主图时定向）。
+| hero_lf / hero_rf | 左前/右前 3/4 主视角 | 主视角图；特征线页（FR-3）必须 hero_lf/hero_rf |
+| hero_45 | 3/4 前视角·方向未定 | <strong>v0.2.3</strong>：机器判为 3/4 前但左右未定时的诚实态，人工/VLM 定向后升级 hero_lf/rf |
+| side | 正侧·方向未定 | <strong>v0.2.3</strong>：同上，升级 side_l/r；对 L1 完备度已算数（左右不影响 L1） |
+| front / rear | 正前 / 正后 | |
+| side_l / side_r | 左侧 / 右侧 | |
+| ortho_sheet | 三视图图版 | <strong>v0.1 补记</strong>：宣传册单图含多个正交视，经裁图拆分为 front/side/rear |
+| detail | 局部特写 | 外源特写与内生裁图均用此值，性质由 kind 区分 |
+| interior | 内饰 | <strong>范围外·归档</strong>：只路由不分析；P2 情绪版意象图候选 |
+| scene | 场景图 | 同上，另可作封面/主视觉候选 |
+| nameplate | 铭牌/Logo 特写 | 闭集对号最强证据 |</p>
+<h3>4.2 asset_nature 素材性质</h3>
+<p><code>untagged</code> 未打标（v0.1.1 占位，语义同 §4.1） / <code>render</code> 官方渲染（比例可能失真，不可当实拍用） / <code>official_photo</code> 官方宣传照 / <code>real_photo</code> 实拍 / <code>report_screenshot</code> 旧报告截图</p>
+<h3>4.3 quality_flags 质量标记</h3>
+<p><code>blur</code> 模糊 / <code>overexposed</code> 过曝 / <code>occluded</code> 遮挡 / <code>cluttered</code> 背景杂乱 / <code>watermarked</code> 有水印（水印大图排版不可用，确认时人工把关） / <code>multi_vehicle</code> 多车排列（<strong>v0.2.2</strong>：门卫场景分类标记，主体被遮挡、可裁切救回，人工快筛）</p>
+<h3>4.4 license 授权（挂来源，D5）</h3>
+<p><code>client_provided</code> 甲方授权 / <code>self_captured</code> 自摄 / <code>web_official</code> 网络-官方渠道 / <code>web_third_party</code> 网络-第三方（需授权确认）。报告只允许引用授权通过的来源。</p>
+<h3>4.5 facts.field_key 起步清单</h3>
+<p><code>curb_weight</code> 整备质量 / <code>engine_power</code> 额定功率 / <code>cab_type</code> 驾驶室形式 / <code>axle_config</code> 驱动形式 / <code>overall_dimensions</code> 外廓尺寸 / <code>payload</code> 载重或吨位级——可扩展，不入枚举强约束。</p>
+<h2>5. 文件目录约定</h2>
+<pre><code>data/
+├── equiplens.db                     # SQLite
+└── assets/&lt;vehicle_id | _pool&gt;/
+    ├── originals/&lt;asset_id&gt;.&lt;ext&gt;   # 原图，写入后不可覆盖
+    └── crops/&lt;asset_id&gt;.&lt;ext&gt;       # 裁图，由访问层从原图派生
+</code></pre>
+<ul>
+<li><strong>v0.1.1</strong>：未对号素材存于 <code>_pool</code>（待归号池暂存区）；对号后<strong>不强制迁移文件</strong>，归属以数据库记录为准——目录是整理手段，不是事实来源；</li>
+<li>file_path 存相对 data/ 的 POSIX 风格路径，跨目录迁移不碎；</li>
+<li>原图不可变由访问层 <code>save_original()</code> 强制：目标文件已存在即拒绝；</li>
+<li>镜像翻转等修图只发生在排版渲染阶段，永不改原图文件。</li>
+</ul>
+<h2>6. 派生状态定义（只查不存，D3/D9）</h2>
+<table>
+<thead>
+<tr>
+<th>派生量</th>
+<th>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>L0</strong></td>
+<td>无 confirmed 主视角（hero_lf/hero_rf）或正侧（side_l/side_r）素材</td>
+</tr>
+<tr>
+<td><strong>L1</strong></td>
+<td>有 confirmed hero（任一）<strong>或</strong> confirmed 正侧（任一）</td>
+</tr>
+<tr>
+<td><strong>L2</strong></td>
+<td>L1 且 有 confirmed front/rear 且 confirmed 带部位裁图 ≥2（其中 ≥1 属前脸组：bumper/headlamp/grille）</td>
+</tr>
+<tr>
+<td><strong>L3</strong></td>
+<td>L2 且 front、rear、side、interior 齐 且 confirmed 裁图 ≥4</td>
+</tr>
+<tr>
+<td>完备度计算基数</td>
+<td><code>binding_status='confirmed' AND confirm_status='confirmed'</code> 的素材；provisional/unbound 不计</td>
+</tr>
+<tr>
+<td>槽位状态</td>
+<td>有·已确认 / 有·待确认 / 缺失——按部位查询 confirmed/provisional 裁图得出</td>
+</tr>
+<tr>
+<td>待归号池</td>
+<td><code>binding_status='unbound'</code> 的素材集合（即 PRD FR-1.1"待确认"分组）</td>
+</tr>
+</tbody>
+</table>
+<h2>7. MVP 激活范围</h2>
+<ul>
+<li>binding_evidence 当前仅激活 <code>self_derived</code>（内生裁图）与 <code>human</code>（人工对号）；<code>region_match</code>、<code>co_occurrence_*</code> 随 P1.5 联网检索启用——枚举现在收全，避免将来改约束；</li>
+<li>批量确认（method=batch）当前仅用于视角/质量/对号等高置信结构标签；描述永远逐条；</li>
+<li>word 词表扩展入口：vocab 表 <code>status</code> 字段，退役不删除。</li>
+</ul>
+<h2>8. 测试分层与状态</h2>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>依赖</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一档</td>
+<td>schema 合法性（含负例）、不变量（触发器/CHECK/访问层）、往返一致、派生查询正确性</td>
+<td>全合成数据，零模型调用</td>
+<td>已完成</td>
+</tr>
+<tr>
+<td>第二档</td>
+<td>拟真校验：真实图片 + 人工标注标准答案</td>
+<td>3–5 张真实图片 + 人工标注</td>
+<td>计划（后续复核）</td>
+</tr>
+</tbody>
+</table>
+<div class="page-break"></div>
+
+<h2>9. 修订记录</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>修改</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.0</td>
+<td>对外评审版：统一版本号；清理待确认标记；对齐项目数据管线与数据飞轮口径</td>
+</tr>
+<tr>
+<td>v0.2.5</td>
+<td>意见 #13：粗类即合法终态，左右细分按需；hero_45/side 可作为车辆级确认终态</td>
+</tr>
+<tr>
+<td>v0.2.4</td>
+<td>意见 #11：方向待定态定性为过渡态；接受入库前视角不得停留在 hero_45/side</td>
+</tr>
+<tr>
+<td>v0.2.3</td>
+<td>左右=驾驶员视角；增加 hero_45/side 方向未定态；禁止用查询词声称充当视角判定</td>
+</tr>
+<tr>
+<td>v0.2.2</td>
+<td>quality_flags 增加 multi_vehicle，多车排列图放行待人工快筛/裁切</td>
+</tr>
+<tr>
+<td>v0.2.1</td>
+<td>vehicles/sources 补 updated_at；sources 增加 batch_id，支持整批审核与归档</td>
+</tr>
+<tr>
+<td>v0.2</td>
+<td>assets 增加 variant_group；vocab 增加 pending 提名池；confirm_log 支持 vocab</td>
+</tr>
+<tr>
+<td>v0.1.1</td>
+<td>增加 untagged 占位值；目录约定增加 _pool 暂存区</td>
+</tr>
+<tr>
+<td>v0.1</td>
+<td>初版：六表 + vocab、三不变量、派生规则、ortho_sheet 枚举值</td>
+</tr>
+</tbody>
+</table><div class="doc-end"><span>End of document / EquipLens-AI</span><span>v1.0 · 2026.10</span></div></main>
+</body></html>

@@ -1,9 +1,9 @@
-# 数据模型规范：单车素材管理（v0.1）
+# 数据模型规范：单车素材管理（v1.0）
 
 | 文档属性 | 内容 |
 |---|---|
-| 文档版本 | v0.1（按 2026-10-10 讨论定稿，待产品负责人逐字段复核） |
-| 范围 | **单车素材管理**：一辆车的图片、来源、事实、描述、确认记录的存储形式与从属关系。项目级管理与数据飞轮为后续范围 |
+| 文档版本 | v1.0（对外评审版，基于 v0.2.5） |
+| 范围 | **单车素材主数据**：一辆车的图片、来源、事实、描述、确认记录的存储形式与从属关系。项目级数据管线、运行台账与数据飞轮见产品说明书 07.2 / 07.4 |
 | 部署前提 | 单机本地：SQLite（结构化数据）+ 文件系统（图片）。不引入数据库服务 |
 | 关联文档 | docs/HANDOFF.md；docs/architecture-discussion.md（§2 统一 schema、§4 沉淀路线）；docs/PRD.md（附录 B 词表、NFR-6/7） |
 | 配套产物 | schemas/equip-data.schema.json（机读校验）；db/schema.sql（建表）；src/equiplens/（数据访问层）；tests/test_data_layer.py（第一档测试） |
@@ -15,7 +15,7 @@
 | # | 决策 | 状态 |
 |---|---|---|
 | D1 | 四层单车树：Vehicle / Facts / Descriptions / Asset 树；**原图不可变，只从原图裁**（不从裁图再裁），裁图记 bbox | 已确认 |
-| D2 | 外源特写不"拒收"，按证据分级延迟归号；库中只存**证据类型+绑定状态**，T1–T4 档位为展示层派生概念 | 已确认（技术路径暂定） |
+| D2 | 外源特写不"拒收"，按证据分级延迟归号；库中只存**证据类型+绑定状态**，T1–T4 档位为展示层派生概念 | 已确认 |
 | D3 | 完备度 L0–L3 分级；**缺失是一等状态**；完备度为派生查询，不存储 | 已确认 |
 | D4 | 描述三轴：节点（整体/部位）× 类型（结构事实/设计特征/设计意图）× 范围（品牌家族/本型号） | 已确认 |
 | D5 | 同图多源合并：一个 Asset 挂 N 条来源；授权挂在来源上 | 已确认 |
@@ -23,8 +23,8 @@
 | D7 | 视角单枚举（朝向并入）；新增 `ortho_sheet`（三视图图版）与 `interior`/`scene`（范围外·归档）取值 | 已确认 |
 | D8 | 工作区/正式库**逻辑分离**：同库，机器字段可覆盖，确认记录只增不改，"正式"=按状态过滤的视图 | 已确认 |
 | D9 | 冗余收窄 S1–S5：分析实体并入描述档案；完备度/T档/槽位状态不存储；朝向并入枚举；两库物理分离降级为逻辑分离 | 已确认 |
-| D10 | **变体链接**：人工确认为同图变体的素材建 variant_group 分组（共享 UUID，可撤销、落账），全部保留不合并；检索归组展示，报告引用提示同源 | 暂按推荐执行，**待产品负责人确认** |
-| D11 | **自由标签提名池**：用户随手标签进 vocab `pending` 状态（可用可搜、标记未受控），人工提升转 `active`；退役为 `retired`；词表操作一律落账 | 暂按推荐执行，**待产品负责人确认** |
+| D10 | **变体链接**：人工确认为同图变体的素材建 variant_group 分组（共享 UUID，可撤销、落账），全部保留不合并；检索归组展示，报告引用提示同源 | 已确认（v1.0） |
+| D11 | **自由标签提名池**：用户随手标签进 vocab `pending` 状态（可用可搜、标记未受控），人工提升转 `active`；退役为 `retired`；词表操作一律落账 | 已确认（v1.0） |
 
 **设计律（三条不变量，全库强制）：**
 
@@ -62,11 +62,11 @@ Vocab 词表（附录 B 部位词表，可扩展）
 | id | TEXT | PK | UUID |
 | brand | TEXT | R | 品牌 |
 | model_name | TEXT | R | 型号 |
-| category | TEXT | O | 设备类别（重卡/装载机/起重机/矿卡…，受控词表待项目期定稿） |
+| category | TEXT | O | 设备类别（重卡/装载机/起重机/矿卡…；受控词表由类目档案维护） |
 | generation | TEXT | O | 世代/年款（来源名录或用户；空不算错） |
 | list_status | TEXT | R | `candidate` 名录候选 / `locked` 闭集锁定 |
 | hero_asset_id | TEXT | O | 主图指针；**逻辑引用不设外键**（避免建表循环），由访问层 `set_hero()` 校验 |
-| project_id | TEXT | O | 预留，项目实体随项目模块定稿 |
+| project_id | TEXT | O | 项目归属；项目实体由数据管线管理 |
 | created_at | TEXT | R | |
 
 UNIQUE(brand, model_name, generation)。
@@ -96,6 +96,7 @@ UNIQUE(brand, model_name, generation)。
 | created_at / updated_at | TEXT | R | |
 
 表级 CHECK（不变量的强制执行点）：
+
 - `(kind='crop') = (parent_asset_id IS NOT NULL AND crop_bbox IS NOT NULL)`；
 - `(vehicle_id IS NULL) = (binding_status='unbound')`；
 - `binding_status='unbound' ⇔ binding_evidence='none'`；
@@ -118,7 +119,8 @@ UNIQUE(brand, model_name, generation)。
 
 | 字段 | 类型 | 约束 | 说明 |
 |---|---|---|---|
-| id / vehicle_id | | R | FK→vehicles |
+| id | TEXT | PK | UUID |
+| vehicle_id | TEXT | R | FK→vehicles |
 | field_key | TEXT | R | 参数键，起步清单见 §4.5，可扩展 |
 | value | TEXT | R | 值 |
 | unit | TEXT | O | 单位 |
@@ -130,7 +132,8 @@ UNIQUE(brand, model_name, generation)。
 
 | 字段 | 类型 | 约束 | 说明 |
 |---|---|---|---|
-| id / vehicle_id | | R | FK→vehicles |
+| id | TEXT | PK | UUID |
+| vehicle_id | TEXT | R | FK→vehicles |
 | node_type | TEXT | R | `whole` 整体 / `part` 部位 |
 | part_id | TEXT | O | FK→vocab；**node_type='part' 时必填，'whole' 时必须为空**（CHECK） |
 | axis_type | TEXT | R | `structure` 结构事实 / `design_feature` 设计特征 / `intent` 设计意图 |
@@ -197,7 +200,7 @@ UNIQUE(brand, model_name, generation)。
 `blur` 模糊 / `overexposed` 过曝 / `occluded` 遮挡 / `cluttered` 背景杂乱 / `watermarked` 有水印（水印大图排版不可用，确认时人工把关） / `multi_vehicle` 多车排列（**v0.2.2**：门卫场景分类标记，主体被遮挡、可裁切救回，人工快筛）
 
 ### 4.4 license 授权（挂来源，D5）
-`client_provided` 甲方授权 / `self_captured` 自摄 / `web_official` 网络-官方渠道 / `web_third_party` 网络-第三方（待确认）。报告只允许引用授权通过的来源。
+`client_provided` 甲方授权 / `self_captured` 自摄 / `web_official` 网络-官方渠道 / `web_third_party` 网络-第三方（需授权确认）。报告只允许引用授权通过的来源。
 
 ### 4.5 facts.field_key 起步清单
 `curb_weight` 整备质量 / `engine_power` 额定功率 / `cab_type` 驾驶室形式 / `axle_config` 驱动形式 / `overall_dimensions` 外廓尺寸 / `payload` 载重或吨位级——可扩展，不入枚举强约束。
@@ -239,18 +242,21 @@ data/
 
 | 层 | 内容 | 依赖 | 状态 |
 |---|---|---|---|
-| 第一档 | schema 合法性（含负例）、不变量（触发器/CHECK/访问层）、往返一致、派生查询正确性 | 全合成数据，零模型调用 | **本次执行，见测试报告** |
-| 第二档 | 拟真校验：真实图片 + 人工标注标准答案 | 产品负责人提供 3–5 张图 + 标注（约 0.5–1 小时） | 待素材 |
+| 第一档 | schema 合法性（含负例）、不变量（触发器/CHECK/访问层）、往返一致、派生查询正确性 | 全合成数据，零模型调用 | 已完成 |
+| 第二档 | 拟真校验：真实图片 + 人工标注标准答案 | 3–5 张真实图片 + 人工标注 | 计划（后续复核） |
+
+<div class="page-break"></div>
 
 ## 9. 修订记录
 
 | 版本 | 修改 |
 |---|---|
-| v0.1 | 初版：按 2026-10-10 讨论定稿六表+vocab、三不变量、派生规则；补记 ortho_sheet 枚举值（宣传册三视图图版经裁图拆分） |
-| v0.1.1 | M1 开发修订：view_angle / asset_nature 增加 `untagged` 占位值（导入后未打标的过渡态，不参与完备度统计）；目录约定增加 `_pool` 暂存区，对号后不强制迁移文件 |
-| v0.2 | M3 开发修订：assets 增加 `variant_group`（D10 变体链接）；vocab 状态增加 `pending`（D11 提名池）并补 `updated_at` 列；confirm_log 对象类型增加 `vocab`（词表流转落账）；配套旧库无损迁移机制（init_db 自动增量迁移） |
-| v0.2.1 | M3.1/R0 修订：vehicles 与 sources 补 `updated_at` 列（确认机制统一要求，迁移自动补齐）；sources 增加 `batch_id`（D14 检索批次号，人工导入来源为空，支持整批审核与归档） |
-| v0.2.2 | R1.5 修订：quality_flags 增加 `multi_vehicle`（门卫场景分类标记，多车排列图放行待人工快筛/裁切，不丢弃） |
-| v0.2.4 | 意见 #11：方向待定态定性为**过渡态**——终态必须定向（探针自动定向+人工修正）；接受入库前视角不得停留在 hero_45/side |
-| v0.2.5 | 意见 #13：**粗类即合法终态，左右细分按需**——视角必要粒度由分析任务推导（FR-4）；hero_45/side 可作为车辆级确认终态，左右细分仅限单边部件/排版镜像需求（候选并陈人定向）；依据=T12 实验数据（细分 54% vs 粗类排序选主图 top-3 100%） |
-| v0.2.3 | T7 审核意见 #8 修订：明确**左右=驾驶员视角**约定；view_angle 增加 `hero_45`/`side`（方向未定态——机器判向不可靠时的诚实状态，升级路径 hero_45→hero_lf/rf、side→side_l/r）；**禁止查询词声称充当视角判定**，视角以视觉判定+人工终审为准 |
+| v1.0 | 对外评审版：统一版本号；清理待确认标记；对齐项目数据管线与数据飞轮口径 |
+| v0.2.5 | 意见 #13：粗类即合法终态，左右细分按需；hero_45/side 可作为车辆级确认终态 |
+| v0.2.4 | 意见 #11：方向待定态定性为过渡态；接受入库前视角不得停留在 hero_45/side |
+| v0.2.3 | 左右=驾驶员视角；增加 hero_45/side 方向未定态；禁止用查询词声称充当视角判定 |
+| v0.2.2 | quality_flags 增加 multi_vehicle，多车排列图放行待人工快筛/裁切 |
+| v0.2.1 | vehicles/sources 补 updated_at；sources 增加 batch_id，支持整批审核与归档 |
+| v0.2 | assets 增加 variant_group；vocab 增加 pending 提名池；confirm_log 支持 vocab |
+| v0.1.1 | 增加 untagged 占位值；目录约定增加 _pool 暂存区 |
+| v0.1 | 初版：六表 + vocab、三不变量、派生规则、ortho_sheet 枚举值 |

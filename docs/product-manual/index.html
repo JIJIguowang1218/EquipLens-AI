@@ -1,0 +1,2421 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens-AI 产品说明书</title>
+<style>
+/* ============================================================
+   EquipLens-AI · Product Dossier
+   A4 / print-first / 210 × 297 mm
+   ============================================================ */
+@font-face{font-family:"EquipSans";src:url("assets/fonts/EquipSans-400.ttf");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSans";src:url("assets/fonts/EquipSans-600.ttf");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSerif";src:url("assets/fonts/EquipSerif-400.ttf");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipSerif";src:url("assets/fonts/EquipSerif-600.ttf");font-weight:600;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("assets/fonts/EquipMono-400.ttf");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"EquipMono";src:url("assets/fonts/EquipMono-600.ttf");font-weight:600;font-style:normal;font-display:block}
+:root{
+  --paper:#F5F2EA;
+  --paper-2:#ECE7DB;
+  --paper-3:#E3DDCF;
+  --ink:#141518;
+  --ink-2:#2C3034;
+  --muted:#74797C;
+  --line:rgba(20,21,24,.14);
+  --line-2:rgba(20,21,24,.30);
+  --orange:#DF4A1B;
+  --orange-2:#B93A12;
+  --orange-soft:#F3D6C8;
+  --steel:#5D6B73;
+  --night:#0E1012;
+  --white:#FBF9F3;
+  --serif:"EquipSerif","Songti SC","SimSun",serif;
+  --sans:"EquipSans","Microsoft YaHei","PingFang SC",sans-serif;
+  --mono:"EquipMono","EquipSans","Arial Narrow","Consolas",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#CFCBC2;}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:geometricPrecision;
+}
+@page{size:A4;margin:0}
+.sheet{
+  position:relative;
+  width:210mm;height:297mm;
+  background:var(--paper);
+  overflow:hidden;
+  page-break-after:always;
+  break-after:page;
+}
+.sheet:last-child{page-break-after:auto;break-after:auto}
+@media screen{
+  body{padding:18px 0 40px}
+  .sheet{margin:0 auto 18px;box-shadow:0 10px 36px rgba(0,0,0,.22)}
+}
+@media print{
+  html,body{background:#fff}
+  body{padding:0}
+  .sheet{margin:0;box-shadow:none}
+}
+
+/* ---------- running head / foot ---------- */
+.sheet-head{
+  position:absolute;left:18mm;right:18mm;top:10mm;
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:2.4mm;border-bottom:.25mm solid var(--line);
+  font-family:var(--mono);font-size:6.6pt;letter-spacing:.16em;
+  color:var(--muted);text-transform:uppercase;
+}
+.sheet-head b{font-weight:600;color:var(--ink)}
+.sheet-foot{
+  position:absolute;left:18mm;right:18mm;bottom:8mm;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  font-family:var(--mono);font-size:6.4pt;letter-spacing:.14em;
+  color:var(--muted);text-transform:uppercase;
+}
+.sheet-foot .pg{font-size:8pt;color:var(--ink);letter-spacing:.04em}
+.sheet-body{
+  position:absolute;left:18mm;right:18mm;top:22mm;bottom:17mm;
+  display:flex;flex-direction:column;
+}
+
+/* ---------- type ---------- */
+.kicker{
+  font-family:var(--mono);font-size:6.8pt;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--orange);font-weight:600;
+}
+.kicker.dim{color:var(--muted)}
+h1,h2,h3{font-weight:600;letter-spacing:-.01em}
+.chapter-title{
+  font-family:var(--serif);font-size:29pt;line-height:1.22;
+  letter-spacing:.01em;font-weight:600;
+}
+.page-title{
+  font-family:var(--serif);font-size:22pt;line-height:1.3;
+  letter-spacing:.01em;font-weight:600;
+}
+.subtitle{font-family:var(--serif);font-size:13pt;line-height:1.6;color:var(--ink-2);font-weight:500}
+.lede{font-size:9.6pt;line-height:1.9;color:var(--ink-2)}
+.body{font-size:9.1pt;line-height:1.88;color:var(--ink-2)}
+.body p+p{margin-top:2.2mm}
+.small{font-size:7.8pt;line-height:1.75;color:var(--ink-2)}
+.caption{font-size:7pt;line-height:1.6;color:var(--muted)}
+.mono{font-family:var(--mono);letter-spacing:.06em}
+.orange{color:var(--orange)}
+.serif{font-family:var(--serif)}
+b,strong{font-weight:600;color:var(--ink)}
+a{color:inherit;text-decoration:none}
+
+/* ---------- layout helpers ---------- */
+.row{display:flex}
+.between{justify-content:space-between}
+.aic{align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7mm}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm}
+.stack{display:flex;flex-direction:column}
+.grow{flex:1}
+.mt1{margin-top:2mm}.mt2{margin-top:4mm}.mt3{margin-top:6mm}.mt4{margin-top:9mm}.mt5{margin-top:12mm}
+.rule{height:.25mm;background:var(--line)}
+.rule-dark{height:.4mm;background:var(--ink)}
+.center{text-align:center}
+.right{text-align:right}
+
+/* ---------- chapter opener ---------- */
+.chapter-head{
+  display:grid;grid-template-columns:34mm 1fr;gap:7mm;
+  align-items:start;padding-bottom:6mm;border-bottom:.4mm solid var(--ink);
+}
+.chapter-num{
+  font-family:var(--mono);font-size:64pt;line-height:.86;
+  color:var(--orange);font-weight:600;letter-spacing:-.04em;
+}
+.chapter-meta .kicker{margin-bottom:2.5mm}
+.chapter-meta .chapter-title{margin-bottom:3mm}
+.chapter-meta .lede{max-width:128mm}
+
+/* ---------- cover ---------- */
+.cover{background:var(--night);color:var(--white)}
+.cover .cover-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:12mm 12mm;
+  opacity:.6;
+}
+.cover .left{
+  position:absolute;left:18mm;top:16mm;bottom:14mm;width:96mm;
+  display:flex;flex-direction:column;z-index:3;
+}
+.cover .logo{display:flex;align-items:center;gap:3mm}
+.cover .logo svg{width:8mm;height:8mm}
+.cover .logo .word{font-family:var(--mono);font-size:9pt;letter-spacing:.2em}
+.cover .logo .word span{color:rgba(255,255,255,.55)}
+.cover .eyebrow{
+  margin-top:34mm;font-family:var(--mono);font-size:6.8pt;
+  letter-spacing:.26em;color:rgba(255,255,255,.62);text-transform:uppercase;
+}
+.cover h1{
+  margin-top:4mm;font-family:var(--mono);font-size:44pt;line-height:.92;
+  letter-spacing:-.02em;font-weight:600;color:var(--white);
+}
+.cover h1 .ai{color:var(--orange)}
+.cover .cn{
+  margin-top:7mm;font-family:var(--serif);font-size:20.5pt;line-height:1.55;
+  letter-spacing:.03em;color:var(--white);font-weight:500;
+}
+.cover .desc{
+  margin-top:5mm;width:82mm;font-size:8.4pt;line-height:1.85;
+  color:rgba(255,255,255,.66);
+}
+.cover .meta{
+  margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:3mm 6mm;
+  font-family:var(--mono);font-size:6.4pt;letter-spacing:.14em;
+  color:rgba(255,255,255,.52);text-transform:uppercase;
+}
+.cover .meta b{display:block;color:var(--white);font-weight:500;font-size:7.4pt;letter-spacing:.08em;margin-top:1.2mm}
+.cover .plate-col{
+  position:absolute;right:0;top:0;width:88mm;height:297mm;z-index:2;
+  border-left:.5mm solid var(--orange);
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:10mm 10mm;
+}
+.cover .plate{
+  position:absolute;right:8mm;top:56mm;width:72mm;
+}
+.cover .plate .cap{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:5.6pt;letter-spacing:.16em;
+  color:rgba(255,255,255,.58);text-transform:uppercase;margin-bottom:2mm;
+}
+.cover .frame{
+  position:relative;height:108mm;overflow:hidden;
+  border:.25mm solid rgba(255,255,255,.34);
+}
+.cover .frame img{
+  width:100%;height:100%;object-fit:cover;object-position:32% 56%;
+  filter:grayscale(1) contrast(1.06) brightness(.86);
+}
+.cover .frame:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(14,16,18,.55),transparent 42%);
+}
+.cover .frame .idx{
+  position:absolute;left:2mm;top:2mm;z-index:2;
+  font-family:var(--mono);font-size:5.4pt;letter-spacing:.12em;
+  color:#fff;background:var(--orange);padding:1mm 1.5mm;
+}
+.cover .frame .cross{position:absolute;width:3mm;height:3mm;z-index:2;opacity:.85}
+.cover .frame .cross:before,.cover .frame .cross:after{content:"";position:absolute;background:#fff}
+.cover .frame .cross:before{width:100%;height:.22mm;top:50%}
+.cover .frame .cross:after{height:100%;width:.22mm;left:50%}
+.cover .frame .x1{left:2mm;top:2mm}.cover .frame .x2{right:2mm;top:2mm}
+.cover .frame .x3{left:2mm;bottom:2mm}.cover .frame .x4{right:2mm;bottom:2mm}
+.cover .plate .info{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-top:2.4mm;font-family:var(--mono);font-size:5.5pt;
+  letter-spacing:.1em;color:rgba(255,255,255,.62);line-height:1.7;
+}
+.cover .plate .info b{display:block;color:#fff;font-weight:400;font-size:6.1pt;letter-spacing:.06em}
+.cover .detail{
+  position:absolute;right:8mm;top:186mm;width:72mm;height:42mm;overflow:hidden;
+  border:.25mm solid rgba(255,255,255,.26);
+}
+.cover .detail img{
+  width:100%;height:100%;object-fit:cover;object-position:36% 63%;
+  transform:scale(2.15);filter:grayscale(1) contrast(1.12) brightness(.8);
+}
+.cover .detail .lbl{
+  position:absolute;left:0;bottom:0;background:rgba(14,16,18,.86);
+  font-family:var(--mono);font-size:5.2pt;letter-spacing:.14em;
+  color:rgba(255,255,255,.8);padding:1.2mm 1.8mm;
+}
+.cover .swatches{
+  position:absolute;right:8mm;top:236mm;width:72mm;
+}
+.cover .swatches .cap{
+  display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:5.4pt;letter-spacing:.14em;color:rgba(255,255,255,.55);
+  text-transform:uppercase;margin-bottom:1.8mm;
+}
+.cover .swatches .bars{display:flex;height:5mm}
+.cover .swatches .bars i{display:block;height:100%}
+.cover .swatches .hex{display:flex;margin-top:1.4mm;font-family:var(--mono);font-size:4.9pt;color:rgba(255,255,255,.5)}
+.cover .side-label{
+  position:absolute;right:2.6mm;top:16mm;z-index:5;
+  writing-mode:vertical-rl;font-family:var(--mono);font-size:5.8pt;
+  letter-spacing:.34em;color:rgba(255,255,255,.6);text-transform:uppercase;
+}
+.cover .edition{
+  position:absolute;right:18mm;bottom:12mm;z-index:5;text-align:right;
+  font-family:var(--mono);color:rgba(255,255,255,.6);
+}
+.cover .edition .v{font-size:22pt;line-height:1;color:var(--white);letter-spacing:-.02em}
+.cover .edition .l{font-size:6pt;letter-spacing:.2em;margin-top:1.6mm;text-transform:uppercase}
+
+/* ---------- contents ---------- */
+.toc-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:.4mm solid var(--ink);padding-bottom:4mm}
+.toc-head h2{font-family:var(--serif);font-size:24pt;line-height:1.2}
+.toc-head .note{font-family:var(--mono);font-size:6.4pt;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;text-align:right;line-height:1.8}
+.toc{list-style:none;margin-top:2mm}
+.toc li{
+  display:grid;grid-template-columns:10mm 1fr 68mm 10mm;gap:3mm;
+  align-items:baseline;padding:2.6mm 0;border-bottom:.22mm solid var(--line);
+}
+.toc .n{font-family:var(--mono);font-size:8pt;color:var(--orange);letter-spacing:.06em}
+.toc .t{font-family:var(--serif);font-size:12.5pt;font-weight:600}
+.toc .d{font-size:7.2pt;color:var(--muted);line-height:1.55}
+.toc .p{font-family:var(--mono);font-size:8pt;text-align:right;color:var(--ink)}
+.doc-meta{
+  margin-top:6mm;border:.25mm solid var(--line);padding:5mm 6mm;
+  display:grid;grid-template-columns:1fr 1fr;gap:4mm 8mm;
+  background:rgba(255,255,255,.28);
+}
+.doc-meta dt{font-family:var(--mono);font-size:6pt;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:1mm}
+.doc-meta dd{font-size:7.8pt;line-height:1.5}
+.reading{margin-top:5mm;display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.reading .r{border-top:.35mm solid var(--orange);padding-top:2.5mm}
+.reading .r b{display:block;font-size:8.2pt;margin-bottom:1.2mm}
+.reading .r span{font-size:7pt;line-height:1.6;color:var(--muted)}
+.glance{
+  margin-top:auto;background:var(--night);color:var(--white);
+  padding:6mm 7mm;display:grid;grid-template-columns:1fr 62mm;gap:8mm;align-items:center;
+}
+.glance .q{font-family:var(--serif);font-size:13.5pt;line-height:1.7;font-weight:500}
+.glance .q em{font-style:normal;color:var(--orange)}
+.glance .stats{display:grid;grid-template-columns:1fr 1fr;gap:3mm 5mm}
+.glance .st b{display:block;font-family:var(--mono);font-size:19pt;line-height:1;font-weight:600;color:var(--white)}
+.glance .st span{display:block;font-family:var(--mono);font-size:5.4pt;letter-spacing:.14em;color:rgba(255,255,255,.55);margin-top:1.4mm;text-transform:uppercase}
+.glance .st b i{font-style:normal;font-size:9pt;color:var(--orange);margin-left:.6mm}
+
+/* ---------- generic content blocks ---------- */
+.pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:.25mm solid var(--line);border-left:.25mm solid var(--line)}
+.pain{
+  border-right:.25mm solid var(--line);border-bottom:.25mm solid var(--line);
+  padding:4.4mm 5.5mm 4.2mm;min-height:38mm;position:relative;
+}
+.pain .no{font-family:var(--mono);font-size:7pt;color:var(--orange);letter-spacing:.12em}
+.pain h3{font-size:11.5pt;margin-top:2mm;font-family:var(--serif);font-weight:600}
+.pain p{font-size:8.2pt;line-height:1.8;color:var(--ink-2);margin-top:2mm}
+.pain .tag{
+  position:absolute;right:5mm;top:5mm;font-family:var(--mono);
+  font-size:5.8pt;letter-spacing:.1em;color:var(--orange);
+  border:.22mm solid var(--orange);padding:1mm 1.6mm;
+}
+.pull{
+  margin-top:5mm;padding:4.5mm 0 0 6mm;border-top:.4mm solid var(--ink);
+  border-left:.8mm solid var(--orange);display:grid;grid-template-columns:1fr 62mm;gap:8mm;
+}
+.pull blockquote{font-family:var(--serif);font-size:14.5pt;line-height:1.7;font-weight:600}
+.pull .note{font-size:7.4pt;line-height:1.7;color:var(--muted);align-self:end}
+.pipeline{
+  margin-top:5mm;border-top:.4mm solid var(--ink);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+}
+.pipeline .pipe-head{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;padding:2.2mm 0 2.4mm}
+.pipeline .pipe-head b{font-size:8.2pt;letter-spacing:.02em}
+.pipeline .pipe-head span{font-family:var(--mono);font-size:5.8pt;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.pipeline .pl{padding:0 4mm 0 0;border-right:.22mm solid var(--line);position:relative}
+.pipeline .pl+.pl{padding-left:4mm}
+.pipeline .pl:last-child{border-right:0;padding-right:0}
+.pipeline .pn{font-family:var(--mono);font-size:5.8pt;letter-spacing:.14em;color:var(--orange)}
+.pipeline h4{font-family:var(--serif);font-size:16pt;line-height:1;margin-top:1.6mm;font-weight:600}
+.pipeline p{font-size:7.2pt;line-height:1.6;color:var(--muted);margin-top:1.4mm;min-height:8mm}
+.pipeline .ai{
+  display:inline-block;margin-top:.8mm;font-family:var(--mono);font-size:5.4pt;
+  letter-spacing:.1em;color:var(--orange);border:.22mm solid var(--orange);padding:.9mm 1.4mm;
+}
+
+/* ============================================================
+   shared components for inner pages
+   ============================================================ */
+.page-intro{padding-bottom:4mm;border-bottom:.4mm solid var(--ink)}
+.page-intro .kicker{margin-bottom:2mm}
+.page-intro .page-title{max-width:166mm}
+.page-intro .lede{margin-top:3mm;max-width:152mm}
+.page-intro .intro-meta{font-family:var(--mono);font-size:6pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-top:2.5mm}
+
+.box{border:.25mm solid var(--line);background:rgba(255,255,255,.3);padding:5mm}
+.box-soft{background:var(--paper-2);border:0}
+.box-dark{background:var(--night);color:var(--white);border:0;padding:4.2mm 4.6mm;display:flex;flex-direction:column}
+.box-dark .kicker{color:var(--orange);font-size:5.8pt;letter-spacing:.1em}
+.box-dark h3,.box-dark h4,.box-dark b{color:var(--white)}
+.box-dark p,.box-dark li{color:rgba(255,255,255,.72)}
+.box-dark .dim{color:rgba(255,255,255,.45)}
+
+.tagline{font-family:var(--mono);font-size:6pt;letter-spacing:.16em;color:var(--orange);text-transform:uppercase}
+.badge{display:inline-block;font-family:var(--mono);font-size:5.6pt;letter-spacing:.1em;padding:1mm 1.8mm;border:.22mm solid var(--line-2);color:var(--ink-2);text-transform:uppercase;white-space:nowrap}
+.badge-orange{border-color:var(--orange);color:var(--orange)}
+.badge-solid{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.badge-soft{background:var(--paper-3);border-color:transparent}
+.hair{border-top:.22mm solid var(--line)}
+.hair-dark{border-top:.4mm solid var(--ink)}
+
+/* layer rows */
+.layer{display:grid;grid-template-columns:9mm 1fr 38mm;gap:4mm;padding:3.9mm 0;border-bottom:.22mm solid var(--line);align-items:start}
+.layer:first-child{border-top:.22mm solid var(--line)}
+.layer .ln{font-family:var(--mono);font-size:8pt;color:var(--orange);letter-spacing:.06em}
+.layer h3{font-family:var(--serif);font-size:12pt;margin-bottom:1.1mm;line-height:1.3}
+.layer p{font-size:7.8pt;line-height:1.68;color:var(--ink-2)}
+.layer .lo{font-family:var(--mono);font-size:5.8pt;line-height:1.65;color:var(--muted);text-align:right;letter-spacing:.06em}
+
+/* formula */
+.formula{display:flex;align-items:center;justify-content:center;gap:4.5mm;font-family:var(--serif);font-size:11.2pt;font-weight:600;padding:4mm 5mm;background:var(--paper-2);border-left:.8mm solid var(--orange)}
+.formula .op{color:var(--orange);font-family:var(--mono);font-size:14pt;font-weight:400}
+.formula small{display:block;font-family:var(--sans);font-size:6.6pt;line-height:1.6;color:var(--muted);font-weight:400;margin-top:1mm}
+
+/* do / don't */
+.do-dont{display:grid;grid-template-columns:1fr 1fr;border:.25mm solid var(--line)}
+.do-dont>div{padding:4.4mm 5mm}
+.do-dont>div+div{border-left:.25mm solid var(--line)}
+.do-dont h4{font-family:var(--mono);font-size:6.8pt;letter-spacing:.14em;color:var(--orange);margin-bottom:2mm;text-transform:uppercase}
+.do-dont ul{list-style:none}
+.do-dont li{font-size:7.9pt;line-height:1.6;padding-left:3.6mm;position:relative;margin-bottom:1.5mm;color:var(--ink-2)}
+.do-dont li:before{content:"";position:absolute;left:0;top:1.7mm;width:1.9mm;height:.25mm;background:var(--ink)}
+.do-dont .dont li:before{background:var(--muted)}
+
+/* data table */
+.dtable{width:100%;border-collapse:collapse;font-size:7.6pt}
+.dtable th{font-family:var(--mono);font-size:5.6pt;letter-spacing:.12em;color:var(--muted);text-align:left;font-weight:400;padding:0 2mm 2mm 0;border-bottom:.3mm solid var(--ink);text-transform:uppercase}
+.dtable td{padding:2.1mm 2mm 2.1mm 0;border-bottom:.2mm solid var(--line);vertical-align:top;line-height:1.55}
+.dtable td:last-child,.dtable th:last-child{padding-right:0;text-align:right}
+.dtable .em{font-weight:600}
+.dtable .dim{color:var(--muted)}
+.dtable .up{font-family:var(--mono);font-size:6pt;letter-spacing:.08em;color:var(--orange)}
+.dtable.left td:last-child,.dtable.left th:last-child{text-align:left}
+
+/* figure */
+.figure img{width:100%;display:block}
+.figcap{display:flex;justify-content:space-between;gap:6mm;font-size:6.8pt;line-height:1.6;color:var(--muted);border-top:.22mm solid var(--line);padding-top:2mm;margin-top:2mm}
+.figcap b{color:var(--ink);font-weight:600}
+
+/* stats */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:.4mm solid var(--ink);border-bottom:.22mm solid var(--line)}
+.stat{padding:4mm 4mm 4mm 0;border-right:.22mm solid var(--line)}
+.stat:last-child{border-right:0;padding-right:0}
+.stat b{display:block;font-family:var(--mono);font-size:23pt;line-height:.95;font-weight:600;letter-spacing:-.02em}
+.stat b i{font-style:normal;font-size:9pt;color:var(--orange)}
+.stat span{display:block;font-size:6.9pt;line-height:1.5;color:var(--muted);margin-top:1.6mm}
+.stat em{display:block;font-family:var(--mono);font-size:5.5pt;letter-spacing:.1em;color:var(--orange);margin-top:1.2mm;font-style:normal}
+
+/* dark strip */
+.dark-strip{background:var(--night);color:var(--white);padding:5mm 6mm}
+.dark-strip h3,.dark-strip h4{color:var(--white)}
+.dark-strip p,.dark-strip li{color:rgba(255,255,255,.7)}
+.dark-strip .tagline{color:var(--orange)}
+
+/* five-step rail */
+.flow-rail{display:grid;grid-template-columns:repeat(5,1fr);position:relative;margin-top:4mm}
+.flow-rail:before{content:"";position:absolute;left:6%;right:6%;top:4.6mm;height:.3mm;background:var(--line-2)}
+.flow-node{position:relative;text-align:center;padding-top:0}
+.flow-node i{
+  display:flex;width:9.2mm;height:9.2mm;border-radius:50%;background:var(--paper);
+  border:.35mm solid var(--ink);align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:7pt;font-style:normal;margin:0 auto;position:relative;z-index:2;
+}
+.flow-node.on i{background:var(--orange);border-color:var(--orange);color:#fff}
+.flow-node b{display:block;font-size:8.2pt;margin-top:2mm;font-weight:600}
+.flow-node span{display:block;font-family:var(--mono);font-size:5.8pt;letter-spacing:.08em;color:var(--muted);margin-top:.8mm}
+
+/* generic flow cards */
+.flow-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:4mm;margin-top:3.5mm}
+.fcard{border-top:.3mm solid var(--line);padding-top:2.6mm}
+.fcard .fn{font-family:var(--mono);font-size:5.8pt;letter-spacing:.12em;color:var(--orange)}
+.fcard h4{font-size:8.6pt;margin-top:1.2mm;font-weight:600}
+.fcard p{font-size:6.9pt;line-height:1.6;color:var(--muted);margin-top:1mm;min-height:17mm}
+.fcard .out{font-family:var(--mono);font-size:5.5pt;letter-spacing:.06em;color:var(--ink-2);border-top:.2mm solid var(--line);padding-top:1.4mm;margin-top:1.2mm}
+.fcard .chk{display:inline-block;margin-top:1.4mm;font-family:var(--mono);font-size:5.2pt;letter-spacing:.08em;color:var(--orange);border:.22mm solid var(--orange);padding:.7mm 1.2mm}
+
+/* architecture */
+.arch{border-top:.4mm solid var(--ink);border-bottom:.22mm solid var(--line)}
+.arch-row{display:grid;grid-template-columns:24mm 1fr;gap:4mm;padding:3.2mm 0;border-bottom:.2mm solid var(--line);align-items:start}
+.arch-row:last-child{border-bottom:0}
+.arch-row .al{font-family:var(--mono);font-size:6.2pt;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;line-height:1.6}
+.arch-row .al b{display:block;color:var(--ink);font-size:7.4pt;letter-spacing:.04em;font-weight:600}
+.arch-row .ac{display:flex;flex-wrap:wrap;gap:1.6mm}
+.chip{font-size:6.9pt;line-height:1.4;padding:1.3mm 2mm;background:rgba(255,255,255,.45);border:.2mm solid var(--line)}
+.chip.hot{background:var(--orange);border-color:var(--orange);color:#fff}
+.chip.dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.ghost{background:transparent;border-style:dashed;color:var(--muted)}
+
+/* JSON */
+.json{font-family:var(--mono);font-size:6.1pt;line-height:1.68;background:var(--night);color:#E4EAEF;padding:3.8mm 4mm;white-space:pre;overflow:hidden}
+.json .k{color:#A9CBE8}
+.json .s{color:#F0C08C}
+.json .c{color:#8A97A2}
+.json .n{color:#E3B7DC}
+
+/* anatomy */
+.anatomy{position:relative;border:.25mm solid var(--line);background:#fff;padding:5mm 6mm}
+.anatomy img{display:block;width:100%;border:.2mm solid var(--line)}
+.marker{
+  position:absolute;width:5.2mm;height:5.2mm;border-radius:50%;
+  background:var(--orange);color:#fff;font-family:var(--mono);font-size:6.4pt;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1.2mm rgba(245,242,234,.75);z-index:4;
+}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:0 7mm;margin-top:3mm}
+.legend .li{display:grid;grid-template-columns:5mm 1fr;gap:2.4mm;padding:1.8mm 0;border-bottom:.2mm solid var(--line);align-items:start}
+.legend .ln{font-family:var(--mono);font-size:6.4pt;color:var(--orange);padding-top:.2mm}
+.legend b{display:block;font-size:7.8pt;font-weight:600}
+.legend span{display:block;font-size:6.6pt;line-height:1.55;color:var(--muted);margin-top:.5mm}
+
+/* persona */
+.persona{background:var(--night);color:var(--white);padding:6mm}
+.persona .avatar{width:14mm;height:14mm;border-radius:50%;border:.35mm solid var(--orange);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16pt;color:var(--orange)}
+.persona h3{color:#fff;font-family:var(--serif);font-size:15pt;margin-top:3mm}
+.persona .role{font-family:var(--mono);font-size:6pt;letter-spacing:.12em;color:rgba(255,255,255,.55);margin-top:1mm}
+.persona blockquote{font-family:var(--serif);font-size:11pt;line-height:1.7;color:#fff;margin-top:5mm;padding-left:4mm;border-left:.6mm solid var(--orange)}
+.persona .pmeta{display:grid;grid-template-columns:1fr 1fr;gap:3mm 5mm;margin-top:5mm}
+.persona .pmeta dt{font-family:var(--mono);font-size:5.4pt;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase}
+.persona .pmeta dd{font-size:7pt;line-height:1.55;color:rgba(255,255,255,.8);margin-top:.8mm}
+
+/* numbered list */
+.nlist{list-style:none;counter-reset:n}
+.nlist li{counter-increment:n;display:grid;grid-template-columns:7mm 1fr;gap:2.4mm;padding:2.6mm 0;border-bottom:.2mm solid var(--line)}
+.nlist li:before{content:counter(n,decimal-leading-zero);font-family:var(--mono);font-size:6.4pt;color:var(--orange);padding-top:.4mm}
+.nlist b{display:block;font-size:8.2pt;font-weight:600;margin-bottom:.6mm}
+.nlist span{display:block;font-size:7.2pt;line-height:1.6;color:var(--muted)}
+
+/* ladder */
+.ladder{display:flex;gap:0;border:.25mm solid var(--line);margin-top:3mm}
+.ladder .lz{flex:1;padding:3.4mm 3mm;border-right:.2mm solid var(--line);position:relative}
+.ladder .lz:last-child{border-right:0}
+.ladder .lz.on{background:var(--ink);color:#fff}
+.ladder .lz.on .ll{color:var(--orange)}
+.ladder .ll{font-family:var(--mono);font-size:6pt;letter-spacing:.1em;color:var(--muted)}
+.ladder b{display:block;font-size:8.2pt;margin-top:1mm}
+.ladder p{font-size:6.4pt;line-height:1.55;color:var(--muted);margin-top:.8mm}
+.ladder .lz.on p{color:rgba(255,255,255,.65)}
+
+/* roadmap */
+.roadmap{border-top:.4mm solid var(--ink);margin-top:3mm}
+.rm-row{display:grid;grid-template-columns:24mm 30mm 1fr;gap:4mm;padding:3.6mm 0;border-bottom:.2mm solid var(--line);align-items:start}
+.rm-row .rp{font-family:var(--mono);font-size:9pt;color:var(--orange);letter-spacing:.04em}
+.rm-row .rs{font-family:var(--mono);font-size:5.6pt;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;padding-top:.8mm}
+.rm-row .rs b{display:block;color:var(--ink);font-size:6.4pt;letter-spacing:.04em;margin-bottom:.8mm}
+.rm-row h4{font-size:9.6pt;font-family:var(--serif);margin-bottom:1mm}
+.rm-row p{font-size:7.2pt;line-height:1.6;color:var(--muted)}
+.rm-row .tagset{display:flex;flex-wrap:wrap;gap:1.2mm;margin-top:1.4mm}
+
+/* risk table */
+.risk-table{width:100%;border-collapse:collapse;font-size:7.2pt}
+.risk-table th{font-family:var(--mono);font-size:5.6pt;letter-spacing:.1em;color:var(--muted);font-weight:400;text-align:left;padding:0 2.4mm 2mm 0;border-bottom:.35mm solid var(--ink);text-transform:uppercase}
+.risk-table td{padding:2.8mm 2.4mm 2.8mm 0;border-bottom:.2mm solid var(--line);vertical-align:top;line-height:1.6}
+.risk-table td:first-child{font-weight:600;color:var(--ink)}
+.risk-table td:nth-child(2){color:var(--ink-2)}
+.risk-table td:nth-child(3){color:var(--muted)}
+.risk-table td:last-child{padding-right:0;text-align:right;white-space:nowrap}
+
+/* value cards */
+.value-cards{display:grid;grid-template-columns:repeat(3,1fr);border-top:.4mm solid var(--ink);border-bottom:.22mm solid var(--line)}
+.value-cards .vc{padding:4mm 5mm 4mm 0;border-right:.22mm solid var(--line)}
+.value-cards .vc+.vc{padding-left:5mm}
+.value-cards .vc:last-child{border-right:0;padding-right:0}
+.value-cards .vn{font-family:var(--mono);font-size:27pt;line-height:.95;font-weight:600;letter-spacing:-.02em}
+.value-cards .vn i{font-style:normal;font-size:10pt;color:var(--orange);letter-spacing:0}
+.value-cards h4{font-size:8.6pt;margin-top:2.2mm;font-weight:600}
+.value-cards p{font-size:6.9pt;line-height:1.6;color:var(--muted);margin-top:1mm}
+.value-cards .vt{font-family:var(--mono);font-size:5.2pt;letter-spacing:.12em;color:var(--orange);margin-top:1.6mm;text-transform:uppercase}
+
+/* pick dots */
+.pick{display:inline-block;width:3.4mm;height:3.4mm;border-radius:50%;border:.25mm solid var(--line-2);vertical-align:middle}
+.pick.on{background:var(--ink);border-color:var(--ink)}
+.pick.half{border-color:var(--orange);background:linear-gradient(90deg,var(--orange) 50%,transparent 50%)}
+
+/* ui mock */
+.uimock{border:.25mm solid var(--line);background:#fff;padding:4mm 4.2mm}
+.uimock .lbl{font-family:var(--mono);font-size:5.4pt;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.uimock .inp{border-bottom:.25mm solid var(--line);padding:1.8mm 0 1.4mm;font-size:9.2pt;font-weight:600;margin-bottom:3mm}
+.uimock .inp:last-child{margin-bottom:0}
+.uimock .chips{display:flex;flex-wrap:wrap;gap:1.2mm;margin-top:1.4mm;margin-bottom:3mm}
+.uimock .chip2{font-size:6.6pt;padding:1mm 1.8mm;border:.22mm solid var(--ink);border-radius:999px}
+.uimock .chip2.on{background:var(--ink);color:#fff}
+.uimock .foot{display:flex;justify-content:space-between;align-items:center;border-top:.2mm solid var(--line);padding-top:2mm;margin-top:1mm;font-family:var(--mono);font-size:5.4pt;color:var(--muted);letter-spacing:.08em}
+
+/* baskets */
+.baskets{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6mm}
+.basket{border:.25mm solid var(--line);background:rgba(255,255,255,.4);padding:2.8mm}
+.basket .bh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:.22mm solid var(--line);padding-bottom:1.6mm}
+.basket .bh b{font-size:8pt}
+.basket .bh span{font-family:var(--mono);font-size:6.4pt;color:var(--orange)}
+.basket .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:1.4mm;margin-top:2mm}
+.basket .thumbs img{width:100%;height:17mm;object-fit:cover;display:block;filter:saturate(.9)}
+.basket .empty{height:17mm;border:.2mm dashed var(--line-2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:5.2pt;color:var(--muted);letter-spacing:.08em}
+.basket.warn{border-color:var(--orange)}
+
+/* funnel */
+.funnel .frow{display:grid;grid-template-columns:26mm 1fr 10mm;gap:2.4mm;align-items:center;padding:1.6mm 0}
+.funnel .fl{font-size:6.8pt;color:var(--ink-2)}
+.funnel .fbar{height:3.6mm;background:var(--paper-3);position:relative}
+.funnel .fbar i{display:block;height:100%;background:var(--orange)}
+.funnel .fbar i.dim{background:var(--steel);opacity:.55}
+.funnel .fv{font-family:var(--mono);font-size:7pt;text-align:right}
+
+/* checklist */
+.checklist{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm}
+.check{display:grid;grid-template-columns:4.5mm 1fr;gap:2mm;padding:2.2mm 0;border-bottom:.2mm solid var(--line)}
+.check i{display:flex;width:4.5mm;height:4.5mm;border:.25mm solid var(--orange);color:var(--orange);align-items:center;justify-content:center;font-style:normal;font-size:6.4pt;font-family:var(--mono)}
+.check b{display:block;font-size:7.4pt}
+.check span{display:block;font-size:6.4pt;line-height:1.5;color:var(--muted);margin-top:.4mm}
+
+/* export rows */
+.exports{display:grid;grid-template-columns:1fr;gap:0;border-top:.3mm solid var(--ink)}
+.exrow{display:grid;grid-template-columns:23mm 1fr auto;gap:3mm;align-items:center;padding:2.6mm 0;border-bottom:.2mm solid var(--line)}
+.exrow b{font-family:var(--mono);font-size:7pt;letter-spacing:.06em}
+.exrow span{font-size:6.6pt;color:var(--muted);line-height:1.45}
+.exrow em{font-family:var(--mono);font-size:5.4pt;letter-spacing:.08em;color:var(--orange);font-style:normal}
+
+/* dark chapter opener */
+.dark-opener{background:var(--night);color:var(--white)}
+.dark-opener .bg-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:14mm 14mm;
+}
+.dark-opener .ghost-num{
+  position:absolute;right:-6mm;top:20mm;font-family:var(--mono);
+  font-size:170pt;line-height:.8;color:rgba(255,255,255,.035);z-index:0;
+}
+.opener-top{position:absolute;left:18mm;right:18mm;top:13mm;z-index:2;display:flex;justify-content:space-between;align-items:center;border-bottom:.25mm solid rgba(255,255,255,.2);padding-bottom:3mm}
+.opener-top .lg{display:flex;align-items:center;gap:3mm;font-family:var(--mono);font-size:7.2pt;letter-spacing:.18em}
+.opener-top .lg svg{width:6.5mm;height:6.5mm}
+.opener-top .rt{font-family:var(--mono);font-size:6.2pt;letter-spacing:.16em;color:rgba(255,255,255,.48);text-transform:uppercase}
+.opener-body{position:absolute;left:18mm;top:55mm;width:156mm;z-index:2}
+.opener-body .kicker{color:var(--orange)}
+.opener-title{font-family:var(--serif);font-size:32pt;line-height:1.38;font-weight:600;letter-spacing:.01em;margin-top:4mm;color:#fff}
+.opener-title .dim{color:rgba(255,255,255,.38)}
+.opener-lede{font-size:8.8pt;line-height:1.9;color:rgba(255,255,255,.58);margin-top:6mm;width:120mm}
+.opener-roles{position:absolute;left:18mm;right:18mm;bottom:28mm;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);border-top:.4mm solid rgba(255,255,255,.24)}
+.opener-split{position:absolute;left:18mm;right:18mm;top:146mm;z-index:2;display:grid;grid-template-columns:1.55fr .85fr;border-top:.3mm solid rgba(255,255,255,.2);border-bottom:.3mm solid rgba(255,255,255,.2);padding:5mm 0}
+.opener-split .ai{border-right:.2mm solid rgba(255,255,255,.16);padding-right:9mm}
+.opener-split .tag{font-family:var(--mono);font-size:5.8pt;letter-spacing:.16em;color:var(--orange);text-transform:uppercase}
+.opener-split .role-row{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin-top:3mm}
+.opener-split .role b{display:block;font-family:var(--serif);font-size:13pt;color:#fff;font-weight:600}
+.opener-split .role span{display:block;font-size:6.2pt;line-height:1.55;color:rgba(255,255,255,.5);margin-top:.8mm}
+.opener-split .human{padding-left:9mm}
+.opener-split .acts{font-family:var(--serif);font-size:19pt;line-height:1.5;color:#fff;margin-top:2mm}
+.opener-split .human p{font-size:6.6pt;line-height:1.6;color:rgba(255,255,255,.45);margin-top:1.4mm}
+.opener-close{position:absolute;left:18mm;right:18mm;bottom:26mm;z-index:2;display:flex;justify-content:space-between;align-items:baseline;border-top:.2mm solid rgba(255,255,255,.14);padding-top:3mm}
+.opener-note{position:absolute;left:18mm;top:202mm;z-index:2;width:104mm;border-top:.2mm solid rgba(255,255,255,.18);padding-top:3.4mm}
+.opener-note .tag{font-family:var(--mono);font-size:5.6pt;letter-spacing:.16em;color:var(--orange);text-transform:uppercase}
+.opener-note p{font-size:8pt;line-height:1.9;color:rgba(255,255,255,.55);margin-top:2mm}
+.opener-close b{font-family:var(--serif);font-size:14pt;color:#fff;font-weight:500;letter-spacing:.02em}
+.opener-close span{font-family:var(--mono);font-size:5.6pt;letter-spacing:.16em;color:rgba(255,255,255,.32);text-transform:uppercase}
+.opener-role{padding:4mm 4mm 0 0;border-right:.2mm solid rgba(255,255,255,.14)}
+.opener-role+.opener-role{padding-left:4mm}
+.opener-role:last-child{border-right:0;padding-right:0}
+.opener-role .no{font-family:var(--mono);font-size:6pt;letter-spacing:.12em;color:var(--orange)}
+.opener-role b{display:block;font-family:var(--serif);font-size:13pt;color:#fff;margin-top:1.4mm;font-weight:600}
+.opener-role span{display:block;font-size:6.8pt;line-height:1.6;color:rgba(255,255,255,.52);margin-top:1mm}
+.opener-foot{position:absolute;left:18mm;right:18mm;bottom:12mm;z-index:2;display:flex;justify-content:space-between;font-family:var(--mono);font-size:5.8pt;letter-spacing:.12em;color:rgba(255,255,255,.35);text-transform:uppercase}
+
+/* workstations */
+.workstations{display:grid;grid-template-columns:repeat(4,1fr);border-top:.4mm solid var(--ink)}
+.ws{padding:3.4mm 4mm 3.4mm 0;border-right:.22mm solid var(--line);position:relative}
+.ws+.ws{padding-left:4mm}
+.ws:last-child{border-right:0;padding-right:0}
+.ws-h{display:flex;justify-content:space-between;align-items:center}
+.ws-no{font-family:var(--mono);font-size:6.6pt;letter-spacing:.1em;color:var(--orange)}
+.ws h4{font-family:var(--serif);font-size:13pt;margin-top:1.6mm;font-weight:600}
+.ws p{font-size:7pt;line-height:1.6;color:var(--muted);margin-top:1mm;min-height:15mm}
+.ws-io{border-top:.2mm solid var(--line);padding-top:1.4mm;font-family:var(--mono);font-size:5.2pt;line-height:1.7;color:var(--ink-2);letter-spacing:.02em}
+.ws-io span{display:block}
+.ws-io b{color:var(--orange);font-weight:400}
+
+/* value pillars */
+.pillars{display:grid;grid-template-columns:1fr 1fr;border-top:.4mm solid var(--ink);border-left:.22mm solid var(--line)}
+.pillar{padding:4mm 5mm;border-right:.22mm solid var(--line);border-bottom:.22mm solid var(--line);min-height:39mm}
+.pillar .vn{font-family:var(--mono);font-size:26pt;line-height:.95;font-weight:600;letter-spacing:-.02em}
+.pillar .vn i{font-style:normal;font-size:9pt;color:var(--orange);letter-spacing:0}
+.pillar h4{font-size:8.8pt;margin-top:2mm}
+.pillar p{font-size:6.8pt;line-height:1.6;color:var(--muted);margin-top:1mm}
+.pillar .vt{font-family:var(--mono);font-size:5pt;letter-spacing:.1em;color:var(--orange);margin-top:1.4mm}
+
+/* redlines */
+.redlines{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--night);color:#fff}
+.redline{padding:3.4mm 4mm;border-right:.2mm solid rgba(255,255,255,.14)}
+.redline:last-child{border-right:0}
+.redline .x{font-family:var(--mono);font-size:12pt;color:var(--orange);line-height:1}
+.redline b{display:block;font-size:7.4pt;color:#fff;margin-top:1.4mm}
+.redline span{display:block;font-size:6.2pt;line-height:1.5;color:rgba(255,255,255,.52);margin-top:.6mm}
+
+/* chain */
+.chain{border-left:.4mm solid var(--ink);margin-left:2mm}
+.chain .c{position:relative;display:grid;grid-template-columns:12mm 1fr 38mm;gap:3mm;padding:2.4mm 0 2.4mm 5mm;border-bottom:.2mm solid var(--line);align-items:start}
+.chain .c:last-child{border-bottom:0}
+.chain .c:before{content:"";position:absolute;left:-1.45mm;top:4.1mm;width:2.4mm;height:2.4mm;background:var(--paper);border:.3mm solid var(--orange);border-radius:50%}
+.chain .lc{font-family:var(--mono);font-size:6.2pt;letter-spacing:.06em;color:var(--orange);padding-top:.4mm}
+.chain b{display:block;font-size:8.4pt;font-weight:600}
+.chain p{font-size:6.8pt;line-height:1.55;color:var(--muted);margin-top:.6mm}
+.chain .art{font-family:var(--mono);font-size:5.4pt;line-height:1.6;color:var(--muted);text-align:right;letter-spacing:.02em}
+
+/* contract */
+.contract{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4mm;align-items:start}
+.contract .ct{border-top:.4mm solid var(--ink);padding-top:2.4mm}
+.contract h4{font-family:var(--serif);font-size:11pt;margin-top:.6mm}
+.contract .cp{font-size:6.4pt;line-height:1.55;color:var(--muted);margin-top:.6mm;min-height:9mm}
+.contract .json{height:52mm;margin-top:1.6mm}
+.contract .co{border:.25mm solid var(--line);background:var(--paper-2);padding:2.6mm;margin-top:1.6mm}
+.contract .co b{display:block;font-family:var(--mono);font-size:6pt;letter-spacing:.1em;color:var(--orange)}
+.contract .co span{display:block;font-size:6.4pt;line-height:1.55;color:var(--muted);margin-top:.8mm}
+.contract .arrow{font-family:var(--mono);color:var(--orange);font-size:10pt;text-align:center;padding-top:14mm}
+
+/* loop */
+.loop{display:grid;grid-template-columns:repeat(4,1fr);border-top:.4mm solid var(--ink)}
+.loop .lz2{padding:3mm 4mm 3mm 0;border-right:.22mm solid var(--line)}
+.loop .lz2+.lz2{padding-left:4mm}
+.loop .lz2:last-child{border-right:0;padding-right:0}
+.loop .no{font-family:var(--mono);font-size:6.4pt;color:var(--orange)}
+.loop b{display:block;font-size:8pt;margin-top:1mm}
+.loop p{font-size:6.4pt;line-height:1.55;color:var(--muted);margin-top:.6mm}
+
+/* metric cards */
+.metrics3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.metric{border-top:.4mm solid var(--ink);padding-top:2.2mm}
+.metric .tagline{margin-bottom:1.2mm}
+.metric b{display:block;font-family:var(--mono);font-size:18pt;line-height:1;font-weight:600}
+.metric span{display:block;font-size:6.4pt;line-height:1.5;color:var(--muted);margin-top:1mm}
+
+/* gate bars */
+.gate-bars{margin-top:4mm;border-top:.2mm solid rgba(255,255,255,.18);padding-top:3mm}
+.gb-row{display:grid;grid-template-columns:26mm 1fr 14mm;gap:2.2mm;align-items:center;margin-top:2mm}
+.gb-row span{font-size:6.2pt;color:rgba(255,255,255,.55)}
+.gb{height:3.2mm;background:rgba(255,255,255,.12)}
+.gb i{display:block;height:100%;background:var(--orange)}
+.gb-row b{font-family:var(--mono);font-size:6.6pt;color:#fff;text-align:right;font-weight:400}
+
+/* case */
+.case-input{background:var(--night);color:#fff;padding:4.6mm 5mm}
+.case-row{display:flex;justify-content:space-between;gap:4mm;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.14)}
+.case-row span{font-family:var(--mono);font-size:5.6pt;letter-spacing:.1em;color:rgba(255,255,255,.45);text-transform:uppercase}
+.case-row b{font-size:7.6pt;color:#fff;text-align:right;font-weight:500;line-height:1.5}
+.case-flow{display:grid;grid-template-columns:repeat(5,1fr);border-top:.4mm solid var(--ink);border-bottom:.22mm solid var(--line)}
+.case-step{padding:3mm 4mm 3mm 0;border-right:.22mm solid var(--line)}
+.case-step+.case-step{padding-left:4mm}
+.case-step:last-child{border-right:0;padding-right:0}
+.case-step .no{font-family:var(--mono);font-size:6pt;letter-spacing:.1em;color:var(--orange)}
+.case-step b{display:block;font-size:8.2pt;margin-top:1mm}
+.case-step p{font-size:6.4pt;line-height:1.55;color:var(--muted);margin-top:.8mm}
+.case-step .tag{display:inline-block;margin-top:1.4mm;font-family:var(--mono);font-size:5.2pt;letter-spacing:.08em;color:var(--orange);border:.2mm solid var(--orange);padding:.6mm 1mm}
+
+/* scenarios */
+.scenario{border-top:.4mm solid var(--ink);padding-top:2.6mm}
+.scenario .sn{font-family:var(--mono);font-size:6.4pt;letter-spacing:.1em;color:var(--orange)}
+.scenario h4{font-family:var(--serif);font-size:12.5pt;margin-top:1.4mm}
+.scenario p{font-size:7pt;line-height:1.65;color:var(--muted);margin-top:1.2mm;min-height:19mm}
+.scenario .sm{display:grid;grid-template-columns:1fr 1fr;gap:2mm;border-top:.2mm solid var(--line);padding-top:1.6mm;margin-top:1.2mm}
+.scenario .sm span{font-size:6.2pt;line-height:1.5;color:var(--ink-2)}
+.scenario .sm b{display:block;font-family:var(--mono);font-size:5.2pt;letter-spacing:.1em;color:var(--muted);margin-bottom:.5mm;font-weight:400}
+
+/* closing */
+.closing{background:var(--night);color:var(--white)}
+.closing .bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:14mm 14mm}
+.closing .wrap{position:absolute;left:18mm;right:18mm;top:16mm;bottom:14mm;z-index:2;display:flex;flex-direction:column}
+.closing .top{display:flex;justify-content:space-between;align-items:center;border-bottom:.25mm solid rgba(255,255,255,.2);padding-bottom:3mm}
+.closing .top .lg{display:flex;align-items:center;gap:3mm;font-family:var(--mono);font-size:7.2pt;letter-spacing:.18em}
+.closing .top .lg svg{width:6.5mm;height:6.5mm}
+.closing .top .rt{font-family:var(--mono);font-size:6pt;letter-spacing:.16em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.closing .main{margin-top:38mm;max-width:160mm}
+.closing .kicker{color:var(--orange)}
+.closing .big{font-family:var(--serif);font-size:36pt;line-height:1.45;font-weight:600;margin-top:4mm}
+.closing .big em{font-style:normal;color:var(--orange)}
+.closing .sub{font-size:8.8pt;line-height:1.9;color:rgba(255,255,255,.5);margin-top:6mm;max-width:120mm}
+.closing .three{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:16mm;border-top:.3mm solid rgba(255,255,255,.2)}
+.closing .three>div{padding:4mm 5mm 0 0;border-right:.2mm solid rgba(255,255,255,.14)}
+.closing .three>div+div{padding-left:5mm}
+.closing .three>div:last-child{border-right:0}
+.closing .three .n{font-family:var(--mono);font-size:6pt;letter-spacing:.14em;color:var(--orange)}
+.closing .three b{display:block;font-family:var(--serif);font-size:12pt;color:#fff;margin-top:1.4mm;font-weight:600}
+.closing .three span{display:block;font-size:6.4pt;line-height:1.6;color:rgba(255,255,255,.45);margin-top:.8mm}
+.closing .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;border-top:.2mm solid rgba(255,255,255,.14);padding-top:3mm;font-family:var(--mono);font-size:5.8pt;letter-spacing:.1em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.closing .foot b{display:block;font-family:var(--sans);font-size:7pt;color:rgba(255,255,255,.72);letter-spacing:.02em;margin-top:1mm;text-transform:none}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================ 01 COVER -->
+<section class="sheet cover">
+  <div class="cover-grid"></div>
+  <div class="left">
+    <div class="logo">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#FBF9F3" stroke-width="2.4" stroke-linecap="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke="#DF4A1B" stroke-width="3.2"/>
+      </svg>
+      <div class="word">EQUIPLENS<span>-AI</span></div>
+    </div>
+
+    <div class="eyebrow">Product Dossier · 2026</div>
+    <h1>EQUIP<br>LENS<span class="ai">.</span></h1>
+    <div class="cn">工程车辆外观部件<br>设计前期分析报告工具</div>
+    <p class="desc">让 AI 承担资料检索、图像分析与报告初稿制作；<br>让设计师回到判断与创意。</p>
+
+    <div class="meta">
+      <div>Document<b>产品说明书</b></div>
+      <div>Version<b>v1.0 / 2026.10</b></div>
+      <div>Format<b>A4 · 23 Pages</b></div>
+      <div>Status<b>内部资料</b></div>
+    </div>
+  </div>
+
+  <div class="plate-col">
+    <div class="plate">
+      <div class="cap"><span>Plate 01 / Reference</span><span>Public Web</span></div>
+      <div class="frame">
+        <img src="assets/hero-galaxy.jpg" alt="">
+        <span class="idx">HERO / 3-4 VIEW</span>
+        <i class="cross x1"></i><i class="cross x2"></i><i class="cross x3"></i><i class="cross x4"></i>
+      </div>
+      <div class="info">
+        <div><b>FOTON AUMAN 银河</b>6×4 牵引车 / 2025</div>
+        <div style="text-align:right"><b>CMF / 4 COLORS</b>BODY / GRILLE / TRIM</div>
+      </div>
+    </div>
+
+    <div class="detail">
+      <img src="assets/hero-galaxy.jpg" alt="">
+      <span class="lbl">DETAIL / FRONT GRILLE</span>
+    </div>
+
+    <div class="swatches">
+      <div class="cap"><span>Color Composition</span><span>4 / Area</span></div>
+      <div class="bars">
+        <i style="width:52.7%;background:#EBEEED"></i><i style="width:19.1%;background:#282928"></i>
+        <i style="width:15.5%;background:#4A4D4E"></i><i style="width:12.7%;background:#ACA89B"></i>
+      </div>
+      <div class="hex">
+        <span style="width:52.7%">#EBEEED</span><span style="width:19.1%">#282928</span>
+        <span style="width:15.5%">#4A4D4E</span><span style="width:12.7%">#ACA89B</span>
+      </div>
+    </div>
+  </div>
+  <div class="side-label">Product Dossier · Vol.01</div>
+
+  <div class="edition">
+    <div class="v">01</div>
+    <div class="l">Design Intelligence for<br>Off-highway Vehicles</div>
+  </div>
+</section>
+
+<!-- ============================================================ 02 CONTENTS -->
+<section class="sheet">
+  <div class="sheet-body">
+    <div class="toc-head">
+      <div>
+        <div class="kicker">Contents / 阅读导引</div>
+        <h2 class="mt1">一份说明书，七个问题</h2>
+      </div>
+      <div class="note">EquipLens-AI · Product Dossier<br>Version 1.0 · 2026.10</div>
+    </div>
+
+    <ul class="toc">
+      <li><span class="n">01</span><span class="t">产品概述</span><span class="d">为什么做、解决什么问题、产品边界在哪里</span><span class="p">03</span></li>
+      <li><span class="n">02</span><span class="t">目标用户</span><span class="d">谁在用、在什么时刻用、他们的真实工作流</span><span class="p">05</span></li>
+      <li><span class="n">03</span><span class="t">核心功能</span><span class="d">五步流程、两次确认，从散图到可编辑报告</span><span class="p">07</span></li>
+      <li><span class="n">04</span><span class="t">AI 的角色与价值</span><span class="d">四个工位、人机分工、价值口径与能力边界</span><span class="p">12</span></li>
+      <li><span class="n">05</span><span class="t">技术实现思路</span><span class="d">分层架构、证据链、数据契约与确定性渲染</span><span class="p">15</span></li>
+      <li><span class="n">06</span><span class="t">应用场景示例</span><span class="d">沙漠牵引车、竞品对标、部件专项与适用边界</span><span class="p">19</span></li>
+      <li><span class="n">07</span><span class="t">落地路径</span><span class="d">当前进度、路线图、风险与质量承诺</span><span class="p">21</span></li>
+    </ul>
+
+    <div class="doc-meta">
+      <div><dt>Document</dt><dd>EquipLens-AI 产品说明书</dd></div>
+      <div><dt>Version / Date</dt><dd>v1.0 · 2026 年 10 月</dd></div>
+      <div><dt>Audience</dt><dd>设计团队、产品与研发、合作客户</dd></div>
+      <div><dt>Scope</dt><dd>产品定位、功能、AI 价值、技术思路、场景</dd></div>
+      <div><dt>Related</dt><dd>PRD v1.0 / 架构研讨稿 / 交互说明</dd></div>
+      <div><dt>Note</dt><dd>文中指标区分“目标”“实测”“验收”三种口径</dd></div>
+    </div>
+
+    <div class="reading">
+      <div class="r"><b>5 分钟版</b><span>读 01、03、06：是什么、能做什么、用在哪。</span></div>
+      <div class="r"><b>完整版</b><span>按 01–07 顺序：适合评审、立项与对外介绍。</span></div>
+      <div class="r"><b>技术版</b><span>直读 04、05：AI 分工、证据链与数据契约。</span></div>
+    </div>
+
+    <div class="mt3" style="max-width:132mm;border-top:.22mm solid var(--line);padding-top:3mm">
+      <div class="tagline">About / 关于这份说明书</div>
+      <p class="small" style="margin-top:1mm">这不是一份功能清单，而是一份产品主张：AI 应该接管前期分析中可标准化的劳动，把判断与创意留给设计师。全书按“是什么 → 给谁 → 做什么 → AI 凭什么 → 怎么实现 → 用在哪 → 怎么落地”展开。</p>
+    </div>
+
+    <div class="glance">
+      <div class="q">“看什么设备、看哪些部件，<br><em>十分钟</em>拿回一份可编辑报告。”</div>
+      <div class="stats">
+        <div class="st"><b>5</b><span>Steps / 五步流程</span></div>
+        <div class="st"><b>2</b><span>Checks / 人工确认点</span></div>
+        <div class="st"><b>1</b><span>Page / 一车一页</span></div>
+        <div class="st"><b>100<i>%</i></b><span>Editable / 元素可编辑</span></div>
+      </div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.5mm">
+      <span>阅读提示：本说明书描述产品设计意图与当前实现，不替代 PRD 与接口规范。</span>
+      <span class="mono">02 / 23</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 03 CH01 -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>01 / 产品概述</span></div>
+  <div class="sheet-body">
+    <div class="chapter-head">
+      <div class="chapter-num">01</div>
+      <div class="chapter-meta">
+        <div class="kicker">Chapter 01 · Product Overview</div>
+        <h1 class="chapter-title">一份前期分析报告，<br>正在消耗设计师<br>最不该被消耗的时间。</h1>
+        <p class="lede">竞品图片散落、标准难查、版式重复；<br>真正用于判断与创意的时间，被挤到项目边缘。</p>
+      </div>
+    </div>
+
+    <div class="pain-grid mt3">
+      <div class="pain">
+        <div class="no">PAIN 01</div><span class="tag">最耗时</span>
+        <h3>找图，整图</h3>
+        <p>图片来源零散：甲方提供、展会拍摄、网络收集。无分类、背景杂乱、质量参差；去重、质检、归类全靠人眼。</p>
+      </div>
+      <div class="pain">
+        <div class="no">PAIN 02</div><span class="tag">最依赖经验</span>
+        <h3>读图，写分析</h3>
+        <p>造型语言、覆盖件分块与分缝、CMF、特征线，需要专业训练；不同设计师的口径与用词难以统一。</p>
+      </div>
+      <div class="pain">
+        <div class="no">PAIN 03</div><span class="tag">最机械</span>
+        <h3>排版，返工</h3>
+        <p>一车一页的版式高度重复；改一个字、换一张图，就可能牵动整页。格式劳动吞掉了本该用于推敲的时间。</p>
+      </div>
+      <div class="pain">
+        <div class="no">PAIN 04</div><span class="tag">最可惜</span>
+        <h3>结论，留不下来</h3>
+        <p>分析结论散落在历史 PPT 与个人电脑里；下一个项目启动，竞品素材与判断又从零开始。</p>
+      </div>
+    </div>
+
+    <div class="pull">
+      <blockquote>“报告不是‘写’出来的，<br>是‘找、看、排’三条流水线叠出来的。”</blockquote>
+      <div class="note">AI 应该接管其中可标准化、可验证的部分；把定调、取舍与拍板留给设计师。<br><br>这也是 EquipLens 的产品起点：不是做一个更会聊天的 AI，而是重做这条流水线。</div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipe-head"><b>三条流水线，三种接管方式</b><span>AI 接管可标准化环节 / 人保留判断</span></div>
+      <div class="pl">
+        <div class="pn">01 / FIND</div>
+        <h4>找</h4>
+        <p>检索、去重、质检、归类，形成素材池。</p>
+        <span class="ai">AI 接管</span>
+      </div>
+      <div class="pl">
+        <div class="pn">02 / SEE</div>
+        <h4>看</h4>
+        <p>认出部件，写形态、CMF 与设计意图，生成结构化分析。</p>
+        <span class="ai">AI 起草 · 人校准</span>
+      </div>
+      <div class="pl">
+        <div class="pn">03 / COMPOSE</div>
+        <h4>排</h4>
+        <p>页面模型 + 母版，确定性渲染为可编辑版面。</p>
+        <span class="ai">系统执行</span>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">03 / 23</span></div>
+</section>
+
+<!-- ============================================================ 04 POSITIONING -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>01 / 产品概述</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">01.2 / Positioning</div>
+      <h2 class="page-title">把前期分析，<br>做成一条可复用的生产线。</h2>
+      <p class="lede">EquipLens 不生产“更多内容”。它把散落素材变成一份可确认、可编辑、可追溯的报告初稿，<br>让设计师从搬运工回到判断者。</p>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:1.3fr .7fr;gap:6mm">
+      <div>
+        <div class="layer">
+          <div class="ln">01</div>
+          <div><h3>素材层</h3><p>把零散照片变成带标签、带质量分、可检索的资产：车型、视角、部件、来源。</p></div>
+          <div class="lo">ASSET POOL<br>标签 / 质量分 / 来源</div>
+        </div>
+        <div class="layer">
+          <div class="ln">02</div>
+          <div><h3>分析层</h3><p>一台车一份结构化分析：风格关键词、色彩比例、部件形态与 CMF、设计意图。</p></div>
+          <div class="lo">ANALYSIS.JSON<br>结构 / 设计 / 意图</div>
+        </div>
+        <div class="layer">
+          <div class="ln">03</div>
+          <div><h3>报告层</h3><p>页面模型 + 母版，确定性渲染成可编辑 PPTX、PDF 与网页翻页册。</p></div>
+          <div class="lo">PAGE IR<br>PPTX / PDF / HTML</div>
+        </div>
+      </div>
+
+      <div class="box-dark">
+        <div class="kicker">Three Nots / 三个不是</div>
+        <div style="margin-top:2.5mm">
+          <div style="padding:2.4mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <b style="font-size:8.2pt">不是通用 AI PPT</b>
+            <p style="font-size:6.8pt;line-height:1.62;margin-top:.8mm">它不理解覆盖件分缝、CMF 与品牌家族，只会把文字塞进模板。</p>
+          </div>
+          <div style="padding:2.4mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <b style="font-size:8.2pt">不是图库</b>
+            <p style="font-size:6.8pt;line-height:1.62;margin-top:.8mm">图片只是原料；可讨论、可修改的分析页才是产品。</p>
+          </div>
+          <div style="padding:2.4mm 0">
+            <b style="font-size:8.2pt">不是造型生成器</b>
+            <p style="font-size:6.8pt;line-height:1.62;margin-top:.8mm">报告不包含第一轮设计方案，只对齐风格与设计边界。</p>
+          </div>
+        </div>
+        <div class="dim" style="font-family:var(--mono);font-size:5.2pt;letter-spacing:.08em;line-height:1.7;margin-top:auto;border-top:.2mm solid rgba(255,255,255,.16);padding-top:2.2mm">
+          BOUNDARY / 输出是“可讨论的初稿”，不是“定稿”。
+        </div>
+      </div>
+    </div>
+
+    <div class="formula mt2">
+      <span>素材资产化</span><span class="op">×</span><span>结构化分析</span><span class="op">×</span><span>确定性排版</span><span class="op">=</span><span style="color:var(--orange)">可交付的前期报告</span>
+    </div>
+
+    <div class="do-dont mt3">
+      <div>
+        <h4>Do / 做</h4>
+        <ul>
+          <li>竞品与部件级的外观分析：形态、CMF、分块分缝</li>
+          <li>品牌家族顺序、每车页数与章节规划</li>
+          <li>文字、图片、形状均可编辑的版面</li>
+          <li>每个结论可回到图片与来源</li>
+        </ul>
+      </div>
+      <div class="dont">
+        <h4>Don't / 不做</h4>
+        <ul>
+          <li>不产出第一轮造型方案，不替代设计师判断</li>
+          <li>不把“缺证据的猜测”写进报告</li>
+          <li>不导出整页贴图，不锁死版式</li>
+          <li>不把客户素材用于模型训练</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">When to start / 什么时候该用它</div>
+      <div class="grid3 mt2">
+        <div><b style="font-size:8.2pt">一周内要一版初稿</b><p class="small" style="margin-top:1mm">竞品 10–15 台，素材散落在多个文件夹与聊天记录里。</p></div>
+        <div><b style="font-size:8.2pt">要跟客户对齐风格边界</b><p class="small" style="margin-top:1mm">需要把“像什么、为什么像”讲清楚，而不是只放图。</p></div>
+        <div><b style="font-size:8.2pt">报告还要继续改</b><p class="small" style="margin-top:1mm">汇报前会反复调整措辞、换图、增删部件。</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">04 / 23</span></div>
+</section>
+
+<!-- ============================================================ 05 PERSONA -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>02 / 目标用户</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">02.1 / Who &amp; When</div>
+      <h2 class="page-title">用户不是“想用 AI”，<br>而是“明天要交报告”。</h2>
+      <p class="lede">他们不缺一个聊天窗口。他们缺的是一版能改的初稿、一套能说服客户的版式，以及能在评审会上回答“这张图从哪来”的底气。</p>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:.82fr 1.18fr;gap:7mm">
+      <div class="persona">
+        <div class="avatar">林</div>
+        <h3>林工</h3>
+        <div class="role">工业设计师 / 工程机械造型</div>
+        <blockquote>“先给我一版能改的，<br>别让我从空白页开始。”</blockquote>
+        <div class="pmeta">
+          <div><dt>经验</dt><dd>5 年，重卡外观部件</dd></div>
+          <div><dt>节奏</dt><dd>每周 1–2 个前期任务</dd></div>
+          <div><dt>工具</dt><dd>PowerPoint / WPS / PS</dd></div>
+          <div><dt>交付</dt><dd>向国企客户汇报</dd></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="tagline">Jobs to be done / 他要完成的任务</div>
+        <ul class="nlist mt1">
+          <li><div><b>看清竞品在同类部件上的做法</b><span>新车型立项，需要快速形成可讨论的风格边界，而不是一堆散图。</span></div></li>
+          <li><div><b>把可用的图找出来、归好类</b><span>素材只有零散照片时，别在找图、去重、辨型号上耗掉两天。</span></div></li>
+          <li><div><b>拿到一份能当场修改的 PPT</b><span>版式专业、来源可信；客户提出“换个说法”时，不用整页重做。</span></div></li>
+        </ul>
+
+        <div class="tagline mt3">Others at the table / 还有谁在桌边</div>
+        <table class="dtable mt1">
+          <tr><th>角色</th><th>在什么时候出现</th><th>真正关心</th></tr>
+          <tr><td class="em">设计管理</td><td>评审与排期</td><td>覆盖是否全面、结论是否站得住</td></tr>
+          <tr><td class="em">售前 / 方案</td><td>给甲方出调研报告</td><td>版式是否像“人做的”、能否直接讲</td></tr>
+          <tr><td class="em">企业客户</td><td>汇报会</td><td>观点清晰、图文专业、可讨论确认</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="value-cards mt3">
+      <div class="vc">
+        <div class="vn">1<i>天</i></div>
+        <h4>报告制作：从 3–5 天到 1 天以内</h4>
+        <p>找图、分析、排版并行推进；先拿到初稿，再把时间花在判断上。</p>
+        <div class="vt">Target / 目标</div>
+      </div>
+      <div class="vc">
+        <div class="vn">100<i>%</i></div>
+        <h4>文本、图片、形状均可编辑</h4>
+        <p>导出的 PPTX 不是整页贴图；在 Office / WPS 里继续改，版式不散。</p>
+        <div class="vt">Acceptance / 验收</div>
+      </div>
+      <div class="vc">
+        <div class="vn">0<i>条</i></div>
+        <h4>没有来源的结论</h4>
+        <p>每个车型、每张图、每条判断都能回到证据；缺证据就标出来。</p>
+        <div class="vt">Principle / 原则</div>
+      </div>
+    </div>
+
+    <div class="dark-strip mt4">
+      <div class="grid2" style="grid-template-columns:1.35fr .65fr;gap:7mm;align-items:end">
+        <div class="serif" style="font-size:14pt;line-height:1.7;font-weight:600;color:#fff">报告的第一读者不是设计师，<br>而是客户。<span class="orange">版式与证据</span>，比文采更重要。</div>
+        <div class="small" style="color:rgba(255,255,255,.55);line-height:1.7">所以 EquipLens 把“版式专业、来源可信”当作和内容生成同等重要的产品指标；客户在汇报会上追问的那一句，系统要能答。</div>
+      </div>
+    </div>
+
+    <div class="caption mt2" style="display:flex;justify-content:space-between">
+      <span>用户画像依据 PRD v1.0 §3 与项目访谈整理；姓名为化名，不代表真实个人信息。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">05 / 23</span></div>
+</section>
+
+<!-- ============================================================ 06 JOURNEY -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>02 / 目标用户</span></div>
+  <div class="sheet-body" style="justify-content:space-between">
+    <div class="page-intro">
+      <div class="kicker">02.2 / Where the time goes</div>
+      <h2 class="page-title">痛点在“收图”和“排版”，<br>不在“想创意”。</h2>
+      <p class="lede">把一次前期分析摊开，最长的两块不是判断，而是判断前后的搬运。AI 应该站在搬运发生的位置，而不是再开一个聊天窗口。</p>
+    </div>
+
+    <svg class="mt2" viewBox="0 0 680 268" style="width:100%;height:auto;display:block" font-family="EquipSans">
+      <defs>
+        <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#DF4A1B" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#DF4A1B" stop-opacity=".02"/>
+        </linearGradient>
+      </defs>
+      <rect x="215" y="30" width="160" height="170" fill="#DF4A1B" opacity=".055"/>
+      <line x1="215" y1="30" x2="215" y2="200" stroke="#DF4A1B" stroke-width=".5" stroke-dasharray="2 2" opacity=".55"/>
+      <line x1="375" y1="30" x2="375" y2="200" stroke="#DF4A1B" stroke-width=".5" stroke-dasharray="2 2" opacity=".55"/>
+      <text x="295" y="20" text-anchor="middle" font-size="7.4" letter-spacing="1.4" fill="#DF4A1B">AI 介入区</text>
+
+      <g stroke="#141518" stroke-opacity=".12" stroke-width=".5">
+        <line x1="34" y1="40" x2="660" y2="40"/>
+        <line x1="34" y1="72" x2="660" y2="72"/>
+        <line x1="34" y1="104" x2="660" y2="104"/>
+        <line x1="34" y1="136" x2="660" y2="136"/>
+        <line x1="34" y1="168" x2="660" y2="168"/>
+      </g>
+      <line x1="34" y1="200" x2="660" y2="200" stroke="#141518" stroke-width="1"/>
+
+      <g font-size="6.4" fill="#74797C" text-anchor="end">
+        <text x="26" y="42">5</text><text x="26" y="74">4</text><text x="26" y="106">3</text>
+        <text x="26" y="138">2</text><text x="26" y="170">1</text>
+      </g>
+      <text x="34" y="14" font-size="6.4" fill="#74797C" letter-spacing="1">相对工时 / 精力投入（示意）</text>
+
+      <path d="M80,98 C110,98 140,72 170,72 C200,72 230,40 260,40 C290,40 320,59 350,59 C380,59 410,46 440,46 C470,46 500,98 530,98 C560,98 590,123 620,123 L620,200 L80,200 Z" fill="url(#area)"/>
+      <path d="M80,98 C110,98 140,72 170,72 C200,72 230,40 260,40 C290,40 320,59 350,59 C380,59 410,46 440,46 C470,46 500,98 530,98 C560,98 590,123 620,123" fill="none" stroke="#DF4A1B" stroke-width="1.8" stroke-linecap="round"/>
+
+      <g fill="#F5F2EA" stroke="#DF4A1B" stroke-width="1.4">
+        <circle cx="80" cy="98" r="3"/><circle cx="170" cy="72" r="3"/>
+        <circle cx="260" cy="40" r="3" fill="#DF4A1B"/><circle cx="350" cy="59" r="3"/>
+        <circle cx="440" cy="46" r="3" fill="#DF4A1B"/><circle cx="530" cy="98" r="3"/>
+        <circle cx="620" cy="123" r="3"/>
+      </g>
+
+      <g font-size="8.2" fill="#2C3034" text-anchor="middle">
+        <text x="80" y="218">接需求</text><text x="170" y="218">找竞品</text><text x="260" y="218">收图整图</text>
+        <text x="350" y="218">读图分析</text><text x="440" y="218">排版</text><text x="530" y="218">内部评审</text>
+        <text x="620" y="218">汇报返工</text>
+      </g>
+      <g font-size="6.6" fill="#DF4A1B" text-anchor="middle" font-family="EquipMono">
+        <text x="260" y="230">2–3 天</text><text x="440" y="230">1–2 天</text>
+      </g>
+
+      <g font-size="6" fill="#74797C" text-anchor="middle">
+        <text x="260" y="244">去重 / 质检 / 归类</text>
+        <text x="440" y="244">一车一页 / 反复返工</text>
+      </g>
+
+      <g transform="translate(492,6)">
+        <circle cx="3" cy="-2" r="2.6" fill="#F5F2EA" stroke="#DF4A1B" stroke-width="1.2"/>
+        <text x="9" y="1" font-size="6.2" fill="#74797C">单点投入</text>
+        <rect x="52" y="-7" width="9" height="7" fill="#DF4A1B" opacity=".12"/>
+        <text x="65" y="1" font-size="6.2" fill="#74797C">可接管区间</text>
+      </g>
+    </svg>
+
+    <div class="grid3 mt2">
+      <div class="box box-soft">
+        <div class="tagline">Find / 找 + 整</div>
+        <h4 style="font-size:9.6pt;margin-top:1.2mm">从散图到可用素材池</h4>
+        <p class="small mt1">检索、去重、质检、归类一次完成；缺主图的车型直接标红，不拿相似车顶替。</p>
+        <span class="badge badge-orange" style="margin-top:2mm">目标：小时级</span>
+      </div>
+      <div class="box box-soft">
+        <div class="tagline">See / 看 + 写</div>
+        <h4 style="font-size:9.6pt;margin-top:1.2mm">从空白页到可改初稿</h4>
+        <p class="small mt1">VLM 识别部件，生成形态、CMF 与意图描述；设计师改词、改判断，而不是从零写。</p>
+        <span class="badge badge-orange" style="margin-top:2mm">目标：20–40 秒 / 车</span>
+      </div>
+      <div class="box box-soft">
+        <div class="tagline">Compose / 排 + 改</div>
+        <h4 style="font-size:9.6pt;margin-top:1.2mm">改内容，不动版式</h4>
+        <p class="small mt1">页面模型承载结构，模板负责版式；换图、改字、增删部件只改对应槽位。</p>
+        <span class="badge badge-orange" style="margin-top:2mm">目标：单页 ≤ 30 秒</span>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">From pain to product / 从痛点到产品动作</div>
+      <table class="dtable mt1" style="margin-top:2mm">
+        <tr><th style="width:34mm">痛点</th><th>产品动作</th><th style="width:38mm">对应能力</th></tr>
+        <tr><td class="em">找图、整图</td><td>自动检索 + 门卫筛选 + 三篮子归组；缺主图阻断</td><td class="dim">素材获取 / M3</td></tr>
+        <tr><td class="em">读图、写分析</td><td>VLM 识别部件，输出形态、CMF、意图与风格词</td><td class="dim">图像分析 / M4</td></tr>
+        <tr><td class="em">排版、返工</td><td>页面模型 + 母版渲染；改内容只重渲染该页</td><td class="dim">版式与导出 / M5–M6</td></tr>
+        <tr><td class="em">结论留不下来</td><td>结构化分析 JSON 与运行台账；项目结束即沉淀</td><td class="dim">数据层 / P2</td></tr>
+      </table>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>曲线为定性示意，依据项目复盘与用户画像整理；工时占比待基线测量后校准。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">06 / 23</span></div>
+</section>
+
+<!-- ============================================================ 07 FLOW -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>03 / 核心功能</span></div>
+  <div class="sheet-body">
+    <div class="chapter-head">
+      <div class="chapter-num">03</div>
+      <div class="chapter-meta">
+        <div class="kicker">Chapter 03 · Core Workflow</div>
+        <h1 class="chapter-title">五步，两次确认，<br>一条可回退的流水线。</h1>
+        <p class="lede">从一句“看看竞品”到一份可编辑报告，中间只有五个动作。AI 在关节处提议，人在检查点拍板。</p>
+      </div>
+    </div>
+
+    <div class="flow-rail">
+      <div class="flow-node"><i>01</i><b>立项</b><span>1 s</span></div>
+      <div class="flow-node"><i>02</i><b>清单确认</b><span>10–30 s</span></div>
+      <div class="flow-node"><i>03</i><b>素材确认</b><span>30–90 s</span></div>
+      <div class="flow-node"><i>04</i><b>分析审校</b><span>20–40 s / 车</span></div>
+      <div class="flow-node"><i>05</i><b>生成导出</b><span>3 s</span></div>
+    </div>
+
+    <div class="flow-cards">
+      <div class="fcard">
+        <div class="fn">S0 / INTENT</div>
+        <h4>立项</h4>
+        <p>设备类别、关注部件、目标数量。先把“看什么”变成结构化 intent，再开跑。</p>
+        <div class="out">OUT / intent.json</div>
+      </div>
+      <div class="fcard">
+        <div class="fn">S1 / ROSTER</div>
+        <h4>清单确认</h4>
+        <p>推荐 + 方向级 + 备选，每条带证据；勾选后锁定为闭集。</p>
+        <div class="out">OUT / association-list.json</div>
+        <span class="chk">◆ 检查点 01</span>
+      </div>
+      <div class="fcard">
+        <div class="fn">S2 / ASSETS</div>
+        <h4>素材确认</h4>
+        <p>自动检索或用户上传；整车 / 部件 / 其他三篮子；缺主图阻断。</p>
+        <div class="out">OUT / vehicle assets</div>
+        <span class="chk">◆ 人工确认</span>
+      </div>
+      <div class="fcard">
+        <div class="fn">S3 / ANALYSIS</div>
+        <h4>分析审校</h4>
+        <p>VLM 逐台分析；页面即成品，可改文字、裁框与版式。</p>
+        <div class="out">OUT / analysis.json → page.ir</div>
+        <span class="chk">◆ 检查点 02（循环）</span>
+      </div>
+      <div class="fcard">
+        <div class="fn">S4 / EXPORT</div>
+        <h4>生成导出</h4>
+        <p>一键导出可编辑 PPTX、只读 PDF 或网页翻页册。</p>
+        <div class="out">OUT / deck.pptx / deck.pdf</div>
+      </div>
+    </div>
+
+    <div class="mt2" style="display:flex;gap:4mm;align-items:center;border-top:.22mm solid var(--line);border-bottom:.22mm solid var(--line);padding:2.4mm 0">
+      <span class="badge badge-orange">修改</span>
+      <span class="small">自然语言指令 → 只重渲染相关页，不牵动其他页</span>
+      <span class="badge badge-orange" style="margin-left:auto">回退</span>
+      <span class="small">任意步骤可改；下游标“需重算”，不静默丢失</span>
+    </div>
+
+    <div class="grid3 mt3">
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">01 / Object</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">结构化对象为核</b>
+        <p class="small" style="margin-top:1mm">对话只负责澄清与纠偏；确认发生在清单、图片、页面这些对象上。</p>
+      </div>
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">02 / Reversible</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">永远可回退</b>
+        <p class="small" style="margin-top:1mm">五步任意回改；已确认内容不被静默覆盖，变更影响范围可见。</p>
+      </div>
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">03 / Isolated</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">失败隔离</b>
+        <p class="small" style="margin-top:1mm">单台失败不阻断整批；标红、可跳过、可重试，其余照常推进。</p>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div class="tagline">Why not a chat / 为什么不是聊天框</div>
+        <div class="mono" style="font-size:6pt;letter-spacing:.12em;color:var(--muted)">对话是壳，结构化对象是核</div>
+      </div>
+      <div class="grid3 mt2">
+        <div><span class="badge">聊天框</span><b style="display:block;font-size:9pt;margin-top:1.4mm">结论飘在对话里</b><p class="small" style="margin-top:.8mm">改一句要翻十屏，结论无法回滚，也无法定位到具体页面。</p><span class="badge badge-orange" style="margin-top:1.4mm">→ 落在结构化对象上</span></div>
+        <div><span class="badge">一条龙</span><b style="display:block;font-size:9pt;margin-top:1.4mm">错了只能从头再来</b><p class="small" style="margin-top:.8mm">中间没有确认点，越往后返工成本越高。</p><span class="badge badge-orange" style="margin-top:1.4mm">→ 两次检查点 + 可回退</span></div>
+        <div><span class="badge">黑盒</span><b style="display:block;font-size:9pt;margin-top:1.4mm">不知道为什么</b><p class="small" style="margin-top:.8mm">客户问“这张图哪来的”，只能凭记忆回答。</p><span class="badge badge-orange" style="margin-top:1.4mm">→ 证据与来源随页保留</span></div>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>时长为 MVP 目标值，取自交互说明 v0.1；实际以项目素材规模与模型响应为准。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">07 / 23</span></div>
+</section>
+
+<!-- ============================================================ 08 ROSTER -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>03 / 核心功能</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">03.1 / Define the scope</div>
+      <h2 class="page-title">先确认看什么，<br>再让 AI 去找。</h2>
+      <p class="lede">立项不是填一张表单，而是把“模糊的需求”变成一份可勾选的竞品清单。清单错了，后面全错。</p>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Roster / 推荐清单（示例）</div>
+      <table class="dtable mt1" style="margin-top:2mm">
+        <tr><th style="width:52mm">车型</th><th>关联理由</th><th style="width:22mm">证据</th><th style="width:12mm">选择</th></tr>
+        <tr><td class="em">福田欧曼 银河</td><td>同类目 · 6×4 牵引车，平头驾驶室</td><td class="dim">E3</td><td><span class="pick on"></span></td></tr>
+        <tr><td class="em">一汽解放 JH6</td><td>同类目 · 宽体平头，格栅与大灯齐平</td><td class="dim">E3</td><td><span class="pick on"></span></td></tr>
+        <tr><td class="em">中国重汽 汕德卡 C7H</td><td>同类目 · 欧系方正构型，横向线条主导</td><td class="dim">E3</td><td><span class="pick on"></span></td></tr>
+        <tr><td class="em">陕汽 德龙 X6000</td><td>同类目 · 大面罩、参数化格栅</td><td class="dim">E3</td><td><span class="pick on"></span></td></tr>
+        <tr><td class="em">北奔 NG80</td><td>同平台 · 6×6，沙漠/越野工况参照</td><td class="dim">E1</td><td><span class="pick"></span></td></tr>
+        <tr><td class="em">沙漠环境用车（方向级）</td><td>环境特化 · 待补具体车型</td><td class="dim">E1</td><td><span class="pick half"></span></td></tr>
+      </table>
+      <div class="caption" style="display:flex;justify-content:space-between;margin-top:1.8mm">
+        <span>示例数据，非真实项目结论；推荐位默认勾选，方向级需用户确认后才占页槽。</span>
+        <span class="mono">9 推荐 + 3 备选 / 12 页槽</span>
+      </div>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:.85fr 1.15fr;gap:6mm">
+      <div class="uimock">
+        <div class="lbl">设备类别</div>
+        <div class="inp">沙漠牵引车 <span class="badge badge-soft" style="margin-left:2mm">profile_missing</span></div>
+        <div class="lbl">关注部件</div>
+        <div class="chips"><span class="chip2 on">登车踏步</span><span class="chip2 on">侧防护栏</span><span class="chip2 on">底盘</span><span class="chip2">+ 自定义</span></div>
+        <div class="lbl">目标车型数</div>
+        <div class="inp" style="margin-bottom:2mm">12 <span style="font-family:var(--mono);font-size:5.6pt;color:var(--muted);font-weight:400">PAGES / 10–14 整车页</span></div>
+        <div class="foot"><span>INTENT / 结构化输入</span><span>下一步 →</span></div>
+      </div>
+
+      <div class="box-dark" style="padding-left:6mm;border-left:.4mm solid var(--orange)">
+        <div class="kicker">Principle / 宁可缺，不许编</div>
+        <div style="margin-top:3mm">
+          <div style="display:grid;grid-template-columns:6mm 1fr;gap:2mm;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <span class="mono" style="font-size:6.4pt;color:var(--orange)">E3</span>
+            <div><b style="font-size:7.8pt">推荐位必须有 E3</b><p style="font-size:6.6pt;line-height:1.55;margin-top:.5mm">标题含型号的详情页；能点开、能看到出处。</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:6mm 1fr;gap:2mm;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <span class="mono" style="font-size:6.4pt;color:var(--orange)">E1</span>
+            <div><b style="font-size:7.8pt">方向可以占位，型号不行</b><p style="font-size:6.6pt;line-height:1.55;margin-top:.5mm">方向级必须写 verify_by；未验证的具体型号不得占槽。</p></div>
+          </div>
+          <div style="display:grid;grid-template-columns:6mm 1fr;gap:2mm;padding:2.2mm 0">
+            <span class="mono" style="font-size:6.4pt;color:var(--orange)">0</span>
+            <div><b style="font-size:7.8pt">证据为空 → 标红、不可勾选</b><p style="font-size:6.6pt;line-height:1.55;margin-top:.5mm">宁可少一台，也不让报告里出现“查无此车”。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">How the list is built / 清单如何生成</div>
+      <div class="grid3 mt2">
+        <div style="border-right:.22mm solid var(--line);padding-right:4mm">
+          <div class="mono" style="font-size:14pt;color:var(--orange)">01</div>
+          <b style="display:block;font-size:8.6pt;margin-top:1mm">读意图</b>
+          <p class="small" style="margin-top:.8mm">类目、部件、页数预算；歧义先问人，不硬猜。</p>
+        </div>
+        <div style="border-right:.22mm solid var(--line);padding:0 4mm">
+          <div class="mono" style="font-size:14pt;color:var(--orange)">02</div>
+          <b style="display:block;font-size:8.6pt;margin-top:1mm">四轴扩展</b>
+          <p class="small" style="margin-top:.8mm">同类目 / 邻近类目 / 同平台 / 环境特化；部件级需求可跨车型取。</p>
+        </div>
+        <div style="padding-left:4mm">
+          <div class="mono" style="font-size:14pt;color:var(--orange)">03</div>
+          <b style="display:block;font-size:8.6pt;margin-top:1mm">证据与页槽</b>
+          <p class="small" style="margin-top:.8mm">E3 优先；方向级标 provisional；超量自动转备选。</p>
+        </div>
+      </div>
+      <div class="mt2" style="display:flex;align-items:center;gap:3mm;background:var(--paper-2);padding:2.2mm 3mm">
+        <span class="mono" style="font-size:5.6pt;letter-spacing:.1em;color:var(--orange)">OUTPUT</span>
+        <span class="small">9 推荐 + 3 备选 → 锁定 12 页槽；缺口如实报，不拿“待定”凑数。</span>
+      </div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>清单同时承担“页数预算”函数：推荐 N + 备选 2–3；超出页槽的车型自动转备选，转正才占页。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">08 / 23</span></div>
+</section>
+
+<!-- ============================================================ 09 ASSETS -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>03 / 核心功能</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">03.2 / Assets</div>
+      <h2 class="page-title">素材不是越多越好，<br>是每台车都要有一张能用的主图。</h2>
+      <p class="lede">前期分析最常见的失败不是“没图”，而是“图很多，但没有一张能当主图”。EquipLens 先做减法，再做分析。</p>
+    </div>
+
+    <div class="baskets mt3">
+      <div class="basket">
+        <div class="bh"><b>整车 / HERO</b><span>24</span></div>
+        <div class="thumbs">
+          <img src="assets/hero-galaxy.jpg" alt="">
+          <img src="assets/hero-jh6.jpg" alt="">
+          <div class="empty">+ 拖入</div><div class="empty">+ 检索</div>
+        </div>
+      </div>
+      <div class="basket">
+        <div class="bh"><b>部件 / DETAIL</b><span>31</span></div>
+        <div class="thumbs">
+          <img src="assets/crop-grille.jpg" alt="">
+          <img src="assets/crop-bumper.jpg" alt="">
+          <img src="assets/crop-step.jpg" alt="">
+          <div class="empty">+ 拖入</div>
+        </div>
+      </div>
+      <div class="basket warn">
+        <div class="bh"><b>其他 / OTHER</b><span>08</span></div>
+        <div class="thumbs">
+          <div class="empty" style="grid-column:1/-1">内饰 / 局部特写 / 无法归组</div>
+          <div class="empty">待确认</div><div class="empty">丢弃</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:1fr .9fr;gap:7mm">
+      <div>
+        <div class="tagline">Gate / 门卫与三篮子</div>
+        <ul class="nlist mt1">
+          <li><div><b>先判“是不是一台工程车”</b><span>CLIP 门卫拦住内饰、局部特写、壁纸与无关图；整车主图还要过视角判定。</span></div></li>
+          <li><div><b>再判“能不能当主图”</b><span>部件特写不得冒充整车；分辨率、遮挡、背景杂乱度进入质量分。</span></div></li>
+          <li><div><b>最后才归组与识别</b><span>同设备多角度聚类 + 型号候选；无法归组进“未归组”托盘，不丢、不硬猜。</span></div></li>
+        </ul>
+      </div>
+      <div>
+        <div class="tagline">One batch / 单批实测</div>
+        <div class="funnel mt1">
+          <div class="frow"><span class="fl">候选判定</span><div class="fbar"><i style="width:100%"></i></div><span class="fv">105</span></div>
+          <div class="frow"><span class="fl">门卫 + 视角</span><div class="fbar"><i style="width:66.7%"></i></div><span class="fv">70</span></div>
+          <div class="frow"><span class="fl">车型有图</span><div class="fbar"><i style="width:21%"></i></div><span class="fv">22</span></div>
+          <div class="frow"><span class="fl">缺主图（标红）</span><div class="fbar"><i class="dim" style="width:3%"></i></div><span class="fv">3</span></div>
+        </div>
+        <div class="caption mt1">23 车型 / 70 张保留图（detail 19 · interior 3 · 门卫拦 13），其中 22 台有图。单批实测，随素材变化。</div>
+      </div>
+    </div>
+
+    <div class="dark-strip mt3" style="display:flex;align-items:center;gap:5mm">
+      <span class="badge" style="border-color:var(--orange);color:var(--orange)">RULE</span>
+      <div style="font-family:var(--serif);font-size:12.5pt;line-height:1.6;color:#fff">缺主图 = 阻断该车，<span class="orange">不用相似车型顶替</span>。</div>
+      <div class="small" style="margin-left:auto;max-width:62mm;color:rgba(255,255,255,.55)">顶替会让整页分析建立在错误对象上；宁可少一页，也不让客户在汇报会上发现“这不是这台车”。</div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">Failure modes / 三类失败，三种兜底</div>
+      <div class="grid3 mt2">
+        <div><b style="font-size:8.6pt">没图</b><p class="small" style="margin-top:.8mm">标红阻断该车，不用相似车型顶替；缺几台就少几页。</p></div>
+        <div><b style="font-size:8.6pt">图不对</b><p class="small" style="margin-top:.8mm">门卫先拦；人工改标后重新入池，错误不进入分析。</p></div>
+        <div><b style="font-size:8.6pt">归不了组</b><p class="small" style="margin-top:.8mm">进“未归组”托盘，不丢、不硬猜；可手动指派或留待补采。</p></div>
+      </div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>素材来源：自动检索（受 robots / 配额约束）与用户上传双通道；来源字段进入资产记录。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">09 / 23</span></div>
+</section>
+
+
+<!-- ============================================================ 10 REPORT PAGE -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>03 / 核心功能</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">03.3 / The page</div>
+      <h2 class="page-title">一车一页，<br>把分析变成可读的版面。</h2>
+      <p class="lede">这是系统的真实输出：不是截图拼贴，而是一页由结构化数据渲染出来的 16:9 分析页。每一个字、每一张图都能改。</p>
+    </div>
+
+    <div class="anatomy mt3">
+      <img src="assets/report-page.jpg" alt="EquipLens 单车分析页示例">
+      <span class="marker" style="left:98.5%;top:7%">1</span>
+      <span class="marker" style="left:98.5%;top:17%">2</span>
+      <span class="marker" style="left:1.5%;top:42%">3</span>
+      <span class="marker" style="left:1.5%;top:76%">4</span>
+      <span class="marker" style="left:98.5%;top:52%">5</span>
+      <span class="marker" style="left:1.5%;top:93%">6</span>
+      <span class="marker" style="left:98.5%;top:93%">7</span>
+      <span class="marker" style="left:1.5%;top:12%">8</span>
+    </div>
+    <div class="figcap">
+      <span><b>真实生成页</b> · 未手工排版 · 素材来自公开网络，仅作示例；车型与结论不代表真实项目。</span>
+      <span class="mono">1600 × 900 / 16:9</span>
+    </div>
+
+    <div class="legend">
+      <div class="li"><span class="ln">01</span><div><b>风格关键词</b><span>三词概括造型气质；改词不重排版。</span></div></div>
+      <div class="li"><span class="ln">02</span><div><b>色彩比例条</b><span>车身主体区域主色 2–4 色与占比。</span></div></div>
+      <div class="li"><span class="ln">03</span><div><b>整车主图</b><span>每车至少 1 张可用主图；缺图即阻断。</span></div></div>
+      <div class="li"><span class="ln">04</span><div><b>前脸分析</b><span>一句判断 + 3 条证据；可整段重写。</span></div></div>
+      <div class="li"><span class="ln">05</span><div><b>部件裁图 + 卡</b><span>5 个部件；名称 / 族属 / 形态 / CMF。</span></div></div>
+      <div class="li"><span class="ln">06</span><div><b>页脚信息</b><span>品牌 + 车型 + 品类；来源可追溯。</span></div></div>
+      <div class="li"><span class="ln">07</span><div><b>页码</b><span>与目录、实际页序一致；导出自动更新。</span></div></div>
+      <div class="li"><span class="ln">08</span><div><b>品牌色线</b><span>页眉下划线跟随品牌主色；模板变量。</span></div></div>
+    </div>
+
+    <div class="grid3 mt3" style="border-top:.4mm solid var(--ink);padding-top:2.6mm">
+      <div><div class="tagline">Grid</div><p class="small" style="margin-top:1mm">左 1/3 主图 + 前脸分析；右 2/3 五个部件“图 + 卡”两行排布。</p></div>
+      <div><div class="tagline">Data</div><p class="small" style="margin-top:1mm">所有可见元素来自 <span class="mono">analysis.json</span> 与 <span class="mono">page.ir</span>，没有手工贴图。</p></div>
+      <div><div class="tagline">Editable</div><p class="small" style="margin-top:1mm">文本、图片、形状均为原生对象；改内容只重渲染该页。</p></div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>示例车型：福田欧曼银河；页面由 build_report_page.py 生成，截图未做人工修图。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">10 / 23</span></div>
+</section>
+
+<!-- ============================================================ 11 EDIT / EXPORT -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>03 / 核心功能</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">03.4 / Last mile</div>
+      <h2 class="page-title">最后一公里：<br>改得动，才叫交付。</h2>
+      <p class="lede">AI 生成的初稿只是起点。设计师需要在成品上直接改——改文字、换图、调框、拖版式，而不是回到空白页。</p>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:1.02fr .98fr;gap:6mm">
+      <div>
+        <div class="figure" style="border:.25mm solid var(--line)">
+          <img src="assets/crop-editor.jpg" alt="裁框编辑器">
+        </div>
+        <div class="figcap" style="margin-top:1.6mm">
+          <span><b>裁框编辑器</b> · 在原图上调整部件框；右侧实时输出页面模型。</span>
+          <span class="mono">CROP / EDIT</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="tagline">Three levels / 三类可改</div>
+        <ul class="nlist mt1">
+          <li><div><b>裁框</b><span>点部件图，在原图上拖框；跨图也能调，只影响该部件。</span></div></li>
+          <li><div><b>文字</b><span>点开就改；也可让 AI 只重写这一段，不动其他页。</span></div></li>
+          <li><div><b>版式</b><span>拖块、缩放、吸附对齐；文本自动缩字号，不溢出。</span></div></li>
+        </ul>
+
+        <div class="box-dark mt2">
+          <div class="kicker">Natural language / 一句话修改</div>
+          <div class="serif" style="font-size:10.5pt;line-height:1.7;color:#fff;margin-top:2mm">“把第 3 页的‘厚重’改成‘敦实’，只改这一页。”</div>
+          <p class="small" style="color:rgba(255,255,255,.5);margin-top:1.4mm">指令定位到页 → 改页面模型 → 只重渲染该页；其他页不动。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Export / 三种交付格式</div>
+      <div class="exports mt1">
+        <div class="exrow"><b>PPTX</b><span>可编辑主交付：文本、图片、形状均为原生对象；Office / WPS 双验证。</span><em>EDITABLE</em></div>
+        <div class="exrow"><b>PDF</b><span>只读交付：汇报、存档、打印；版式固定，不随环境变化。</span><em>FIXED</em></div>
+        <div class="exrow"><b>HTML</b><span>网页翻页册：预览与分享；免安装，适合远程评审。</span><em>SHARE</em></div>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Before export / 导出前检查</div>
+      <div class="checklist mt1">
+        <div class="check"><i>1</i><div><b>原生可编辑</b><span>没有整页贴图；每个文本框、图片、形状都能选中。</span></div></div>
+        <div class="check"><i>2</i><div><b>双端不散版</b><span>Office 与 WPS 打开后，版式与母版关键元素位置一致。</span></div></div>
+        <div class="check"><i>3</i><div><b>目录页码一致</b><span>目录、页脚、实际页序三者对齐。</span></div></div>
+        <div class="check"><i>4</i><div><b>工程可回退</b><span>导出前保留工程与版本；失败可重试，不丢已确认内容。</span></div></div>
+      </div>
+    </div>
+
+    <div class="dark-strip mt3">
+      <div style="display:flex;gap:5mm;align-items:center">
+        <span class="badge" style="border-color:var(--orange);color:var(--orange)">PAGE IR</span>
+        <div class="small" style="color:rgba(255,255,255,.72);line-height:1.7">AI 不需要“看”页面。它通过页面模型知道每个槽位；修改只改结构，再由渲染器重绘。视觉只用于可选的成稿质检。</div>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>导出验收：文本、图片、形状均为原生可编辑对象；禁止整页贴图（PRD NFR-4）。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">11 / 23</span></div>
+</section>
+
+
+<!-- ============================================================ 12 CH04 OPENER -->
+<section class="sheet dark-opener">
+  <div class="bg-grid"></div>
+  <div class="ghost-num">04</div>
+  <div class="opener-top">
+    <div class="lg">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#FBF9F3" stroke-width="2.4" stroke-linecap="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke="#DF4A1B" stroke-width="3.2"/>
+      </svg>
+      EQUIPLENS-AI
+    </div>
+    <div class="rt">Chapter 04 / AI's Role &amp; Value</div>
+  </div>
+
+  <div class="opener-body">
+    <div class="kicker">04 / Human + AI</div>
+    <h1 class="opener-title">AI 不替设计师做决定。<br><span class="dim">它把决定之前的</span>工作做完。</h1>
+    <p class="opener-lede">不是“更会聊天”，而是四个职责清晰的工位：检索、分析、规划、版式。每个工位都留下可确认、可修改、可追溯的产物。</p>
+  </div>
+
+  <div class="opener-split">
+    <div class="ai">
+      <div class="tag">AI / 四个工位</div>
+      <div class="role-row">
+        <div class="role"><b>检索员</b><span>找得到，也说得清出处</span></div>
+        <div class="role"><b>分析员</b><span>看得见形态，也写得出意图</span></div>
+        <div class="role"><b>规划员</b><span>知道 20 页里放什么</span></div>
+        <div class="role"><b>版式员</b><span>把结构变成版面</span></div>
+      </div>
+    </div>
+    <div class="human">
+      <div class="tag">Human / 三个动作</div>
+      <div class="acts">定调 · 取舍 · 拍板</div>
+      <p>对结果负责。AI 可以提议，但不能替人承担判断。</p>
+    </div>
+  </div>
+
+  <div class="opener-note">
+    <div class="tag">Handoff / 四次交接</div>
+    <p>四个工位之间不是“传递文件”，而是四次可检查的交接：清单、素材、页面、成稿。每次交接都留下一个可回看的产物。</p>
+  </div>
+
+  <div class="opener-close"><b>让设计师回到判断与创意。</b><span>The whole point</span></div>
+
+  <div class="opener-foot"><span>v1.0 / 2026.10</span><span>12 / 23</span></div>
+</section>
+
+<!-- ============================================================ 13 WORKSTATIONS -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>04 / AI 的角色与价值</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">04.1 / Division of labour</div>
+      <h2 class="page-title">四个工位，<br>一条人机交接线。</h2>
+      <p class="lede">AI 不是一个万能助手，而是四个职责清晰的工位。每个工位有输入、输出和验收标准；人只在两个检查点出现。</p>
+    </div>
+
+    <div class="workstations mt3">
+      <div class="ws">
+        <div class="ws-h"><span class="ws-no">01</span><span class="badge badge-orange">AI</span></div>
+        <h4>检索员</h4>
+        <p>从类目到候选清单；每条目标带 E3 证据，缺证据标红不硬猜。</p>
+        <div class="ws-io"><span><b>IN</b> 类目 / 部件 / 页数预算</span><span><b>OUT</b> 清单 + 证据</span></div>
+      </div>
+      <div class="ws">
+        <div class="ws-h"><span class="ws-no">02</span><span class="badge badge-orange">AI</span></div>
+        <h4>分析员</h4>
+        <p>看图，输出部件形态、CMF、设计意图与三词风格；可重试、可标 needs_review。</p>
+        <div class="ws-io"><span><b>IN</b> 每车图集</span><span><b>OUT</b> analysis.json</span></div>
+      </div>
+      <div class="ws">
+        <div class="ws-h"><span class="ws-no">03</span><span class="badge badge-orange">AI</span></div>
+        <h4>规划员</h4>
+        <p>决定页型、每车页数、品牌家族页序与图槽分配；按页数预算收敛。</p>
+        <div class="ws-io"><span><b>IN</b> 素材 + 预算</span><span><b>OUT</b> page plan</span></div>
+      </div>
+      <div class="ws">
+        <div class="ws-h"><span class="ws-no">04</span><span class="badge">SYSTEM</span></div>
+        <h4>版式员</h4>
+        <p>把 page.ir 填进母版，渲染为可编辑 PPTX / PDF；不做内容判断。</p>
+        <div class="ws-io"><span><b>IN</b> page.ir + 母版</span><span><b>OUT</b> deck.pptx</span></div>
+      </div>
+    </div>
+
+    <div class="mt2" style="display:flex;align-items:center;gap:4mm;background:var(--paper-2);padding:2.8mm 4mm">
+      <span class="badge badge-solid">HUMAN</span>
+      <span class="small"><b>人负责：</b>定调 · 取舍 · 拍板</span>
+      <span class="badge" style="margin-left:auto">AI 负责：提议 · 执行 · 自检</span>
+    </div>
+
+    <div class="grid2 mt3" style="gap:4mm">
+      <div class="box">
+        <div class="tagline">Checkpoint 01</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">清单确认</b>
+        <p class="small" style="margin-top:1mm">选车、增删、调序；锁定为闭集。没证据的车型不能进。</p>
+      </div>
+      <div class="box">
+        <div class="tagline">Checkpoint 02</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">成稿审校</b>
+        <p class="small" style="margin-top:1mm">改字、换图、调版式；确认后才允许导出。</p>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <div class="tagline">Autonomy / 自主度</div>
+        <div class="mono" style="font-size:5.8pt;letter-spacing:.1em;color:var(--muted)">当前：内容判断 L2，确定性任务 L3</div>
+      </div>
+      <div class="ladder">
+        <div class="lz"><div class="ll">L0</div><b>手动</b><p>人做全部</p></div>
+        <div class="lz"><div class="ll">L1</div><b>建议</b><p>AI 给候选，人执行</p></div>
+        <div class="lz on"><div class="ll">L2</div><b>代做 + 确认</b><p>清单 / 分析 / 成稿</p></div>
+        <div class="lz"><div class="ll">L3</div><b>自动</b><p>渲染 / 质检 / 导出</p></div>
+      </div>
+      <div class="caption" style="margin-top:1.6mm">不追求“全自动报告”。越接近判断，越需要人；越接近确定性渲染，越可以无人值守。</div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Decision rights / 谁来决定</div>
+      <table class="dtable left mt1" style="margin-top:2mm">
+        <tr><th style="width:26mm">产物</th><th>AI</th><th>人</th><th>系统</th></tr>
+        <tr><td class="em">竞品清单</td><td>提议 + 证据</td><td>勾选 / 增删 / 锁定</td><td>写入闭集</td></tr>
+        <tr><td class="em">单车分析</td><td>起草判断与措辞</td><td>校准、改词、拍板</td><td>落库，标 needs_review</td></tr>
+        <tr><td class="em">页面版式</td><td>生成与填充 Page IR</td><td>裁框、改字、调版式</td><td>渲染、导出</td></tr>
+        <tr><td class="em">质量与合规</td><td>闸门与自检</td><td>抽检、确认来源</td><td>记录 run ledger</td></tr>
+      </table>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>分工依据：L0–L6 分层与 workflow / agent 混合架构（架构研讨稿 v0.2）。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">13 / 23</span></div>
+</section>
+
+<!-- ============================================================ 14 VALUE -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>04 / AI 的角色与价值</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">04.2 / What it is worth</div>
+      <h2 class="page-title">价值不在“生成”，<br>在“可确认、可修改、可追溯”。</h2>
+      <p class="lede">如果 AI 只是生成一段文字，它很快会被替代；真正难的是让这段文字进入一条可确认、可修改、可追溯的生产线。</p>
+    </div>
+
+    <div class="pillars mt3">
+      <div class="pillar">
+        <div class="vn">1<i>天</i></div>
+        <h4>报告制作：从 3–5 天到 1 天以内</h4>
+        <p>找图、分析、排版并行推进；先拿到初稿，再把时间花在判断上。</p>
+        <div class="vt">TARGET / 目标</div>
+      </div>
+      <div class="pillar">
+        <div class="vn">20–40<i>秒</i></div>
+        <h4>单台车的分析 + 页面生成</h4>
+        <p>逐台分析、失败隔离；10 台车的整批时间进入分钟级。</p>
+        <div class="vt">MVP TARGET / 目标</div>
+      </div>
+      <div class="pillar">
+        <div class="vn">93.1<i>%</i></div>
+        <h4>检索闸门精确率</h4>
+        <p>离线评测 265 段金标；关键词基线假阳性 40.4% → 闸门 6.9%。</p>
+        <div class="vt">MEASURED / 实测</div>
+      </div>
+      <div class="pillar">
+        <div class="vn">100<i>%</i></div>
+        <h4>PPTX 文本、图片、形状可编辑</h4>
+        <p>禁止整页贴图；Office / WPS 双端验证；目录与页码一致。</p>
+        <div class="vt">ACCEPTANCE / 验收</div>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Metrics / 三种口径，不混着说</div>
+      <table class="dtable left mt1" style="margin-top:2mm">
+        <tr><th style="width:18mm">口径</th><th>数字</th></tr>
+        <tr><td class="em">目标</td><td>3–5 天 → ≤1 天；20–40 秒 / 车；直接采用率 ≥60%；单次 ≤¥5（10 台车）</td></tr>
+        <tr><td class="em">实测</td><td>闸门精确率 93.1% / 召回 85.7% / 假阳性 6.9%；回放 A 字保留 44.9%；图片门卫 105 → 70</td></tr>
+        <tr><td class="em">验收</td><td>元素 100% 可编辑；目录页码一致；来源可追溯；单页重渲染 ≤30 秒</td></tr>
+      </table>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Red lines / AI 不做什么</div>
+      <div class="redlines mt1">
+        <div class="redline"><div class="x">×</div><b>不编造</b><span>没有证据的车型与结论，不写进报告。</span></div>
+        <div class="redline"><div class="x">×</div><b>不替代判断</b><span>不替设计师定调、取舍、拍板。</span></div>
+        <div class="redline"><div class="x">×</div><b>不训练客户素材</b><span>素材仅用于本项目分析输出。</span></div>
+        <div class="redline"><div class="x">×</div><b>不产出整页贴图</b><span>导出的每个元素都要能改。</span></div>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:4mm;display:grid;grid-template-columns:1.35fr .65fr;gap:8mm;align-items:end">
+      <div class="serif" style="font-size:16pt;line-height:1.7">一条好的 AI 生产线，<br>不是让人少做，<br><span class="orange">而是让人只做值得做的部分。</span></div>
+      <div class="small">衡量它，只看三件事：报告是否更快交付、设计师是否更少返工、结论是否经得起追问。</div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>实测数字来自 2026-10-31 检索线离线评测与单批图片门卫记录；样本有限，随评测集扩充修订。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">14 / 23</span></div>
+</section>
+
+
+<!-- ============================================================ 15 ARCHITECTURE -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>05 / 技术实现思路</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">05.1 / Architecture</div>
+      <h2 class="page-title">把不确定性关在关节里，<br>把确定性写进管线。</h2>
+      <p class="lede">AI 编排不是一个黑盒 Agent，而是五层结构。能写死的写死，能交给数据的交给数据，只有需要判断的才交给模型。</p>
+    </div>
+
+    <div class="arch mt3">
+      <div class="arch-row">
+        <div class="al"><b>体验层</b>UI / WORKBENCH</div>
+        <div class="ac">
+          <span class="chip">五步工作台</span><span class="chip">页面即成品</span><span class="chip">自然语言修改</span><span class="chip">导出中心</span><span class="chip">运行台账</span>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="al"><b>编排层</b>L0–L6 / ORCHESTRATION</div>
+        <div class="ac" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.6mm">
+          <span class="chip dark">L0 任务书</span><span class="chip hot">L1 意图与规划</span><span class="chip hot">L1.5 关联清单</span><span class="chip">L2 检索执行</span><span class="chip hot">L3 质检闸门</span><span class="chip">L4 迭代控制</span><span class="chip">L5 结构化沉淀</span><span class="chip">L6 评估</span>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="al"><b>能力层</b>CAPABILITIES</div>
+        <div class="ac">
+          <span class="chip">VLM 图像分析</span><span class="chip">文本检索</span><span class="chip">图片检索 + 门卫</span><span class="chip">证据索引</span><span class="chip">版式引擎</span><span class="chip">PPTX / PDF 渲染</span>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="al"><b>数据层</b>DATA / ASSETS</div>
+        <div class="ac">
+          <span class="chip">素材资产库</span><span class="chip">analysis.json</span><span class="chip">Page IR</span><span class="chip">运行台账</span><span class="chip">评测集</span>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="al"><b>基础设施</b>INFRA</div>
+        <div class="ac">
+          <span class="chip ghost">FastAPI + SSE</span><span class="chip ghost">SQLite + 文件系统</span><span class="chip ghost">模型网关</span><span class="chip ghost">本地 / 云端</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid3 mt3">
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">01 / Fixed</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">写死不变量</b>
+        <p class="small" style="margin-top:1mm">robots、配额、账本、检查点、schema。这些不给模型自由度。</p>
+      </div>
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">02 / Data</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">知识放数据</b>
+        <p class="small" style="margin-top:1mm">来源注册表、类目档案、部件词表、母版；新类目不改代码。</p>
+      </div>
+      <div style="border-top:.4mm solid var(--ink);padding-top:2.4mm">
+        <div class="tagline">03 / Model</div>
+        <b style="display:block;font-size:9pt;margin-top:1mm">判断放模型</b>
+        <p class="small" style="margin-top:1mm">意图、查询、选源、段落判定、停止；关节处允许自主，但输出过校验。</p>
+      </div>
+    </div>
+
+    <div class="mt3" style="display:flex;flex-wrap:wrap;gap:1.6mm">
+      <span class="badge">国产模型优先</span><span class="badge">LiteLLM 网关</span><span class="badge">python-pptx</span><span class="badge">FastAPI + SSE</span><span class="badge">SQLite + 文件系统</span><span class="badge">4C8G 单机可跑</span><span class="badge">产品期云端</span>
+    </div>
+
+    <div class="grid3 mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div><div class="tagline">Dev / 开发期</div><b style="display:block;font-size:8.8pt;margin-top:1mm">单机跑通</b><p class="small" style="margin-top:.8mm">4C8G 可跑，SQLite + 文件系统；start.bat 起服务，不依赖 GPU。</p></div>
+      <div><div class="tagline">Prod / 产品期</div><b style="display:block;font-size:8.8pt;margin-top:1mm">云端部署</b><p class="small" style="margin-top:.8mm">用户只请求网页，零下载；素材与密钥留在服务端。</p></div>
+      <div><div class="tagline">Model / 模型</div><b style="display:block;font-size:8.8pt;margin-top:1mm">分层调用</b><p class="small" style="margin-top:.8mm">高频廉价判断可自托管；低频高价值 VLM 走云 API，可切换、可回退。</p></div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>当前形态是 workflow agent：固定骨架 + 关节处模型判断 + 确定性护栏（架构研讨稿 v0.2 / 模块清单）。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">15 / 23</span></div>
+</section>
+
+<!-- ============================================================ 16 EVIDENCE -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>05 / 技术实现思路</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">05.2 / Evidence chain</div>
+      <h2 class="page-title">质量不来自“更会写”，<br>来自“证据够不够”。</h2>
+      <p class="lede">检索不是把搜索结果丢给模型，而是一条带闸门、带证据、可回放的链路。每一段进入报告的文字，都要先证明自己值得留下。</p>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:1.15fr .85fr;gap:7mm">
+      <div class="chain">
+        <div class="c"><div class="lc">L1</div><div><b>意图与规划</b><p>类目、部件、页数预算；歧义先问人。</p></div><div class="art">intent.json<br>plan.json</div></div>
+        <div class="c"><div class="lc">L1.5</div><div><b>关联清单</b><p>四轴扩展 + 证据校验；方向级可占位，型号不可。</p></div><div class="art">association-list<br>E3 / E1</div></div>
+        <div class="c"><div class="lc">L2</div><div><b>检索执行</b><p>SERP、抓取、robots、配额、去重；按计划确定性执行。</p></div><div class="art">corpus<br>run events</div></div>
+        <div class="c"><div class="lc">L3</div><div><b>质检闸门</b><p>对象锚定 + 主题排除 + 具体性；V/P/G/C 四档。</p></div><div class="art">gated passages<br>reject reasons</div></div>
+        <div class="c"><div class="lc">L4</div><div><b>迭代控制</b><p>换词、降级、停止、问人；缺口驱动下一轮。</p></div><div class="art">replan<br>stop / ask</div></div>
+        <div class="c"><div class="lc">L5</div><div><b>结构化沉淀</b><p>Facts / Descriptions 抽取，进入分析 schema。</p></div><div class="art">analysis.json<br>source refs</div></div>
+      </div>
+
+      <div class="box-dark">
+        <div class="kicker">Gate v1 / 离线回放</div>
+        <div style="margin-top:3mm">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <span class="small" style="color:rgba(255,255,255,.6)">6,806 段 → 过闸</span>
+            <b class="mono" style="font-size:15pt;color:#fff">248 <i style="font-style:normal;font-size:7pt;color:var(--orange)">3.6%</i></b>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <span class="small" style="color:rgba(255,255,255,.6)">A 字保留</span>
+            <b class="mono" style="font-size:15pt;color:#fff">44.9<i style="font-style:normal;font-size:7pt;color:var(--orange)">%</i></b>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:2.2mm 0;border-bottom:.2mm solid rgba(255,255,255,.16)">
+            <span class="small" style="color:rgba(255,255,255,.6)">关键词假阳性</span>
+            <b class="mono" style="font-size:15pt;color:#fff">40.4<i style="font-style:normal;font-size:7pt;color:var(--orange)">% → 6.9%</i></b>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:2.2mm 0">
+            <span class="small" style="color:rgba(255,255,255,.6)">精确率 / 召回</span>
+            <b class="mono" style="font-size:12pt;color:#fff">93.1 / 85.7</b>
+          </div>
+        </div>
+        <div class="gate-bars">
+          <div class="gb-row"><span>关键词基线</span><div class="gb"><i style="width:100%"></i></div><b>40.4%</b></div>
+          <div class="gb-row"><span>闸门 v1</span><div class="gb"><i style="width:17%"></i></div><b>6.9%</b></div>
+        </div>
+        <p class="small" style="color:rgba(255,255,255,.4);margin-top:2.4mm">265 段金标；4 批离线回放；阈值按“过闸 A 字/千字 + 页槽填充”扫掠。</p>
+      </div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Evidence grades / 证据等级</div>
+      <div class="grid3 mt1" style="margin-top:2mm">
+        <div style="border-left:.6mm solid var(--orange);padding-left:3mm"><b class="mono" style="color:var(--orange)">E3</b><p class="small" style="margin-top:.6mm">标题含型号的详情页；可点开、可逐字校验。推荐位必须 E3。</p></div>
+        <div style="border-left:.6mm solid var(--steel);padding-left:3mm"><b class="mono" style="color:var(--steel)">E1</b><p class="small" style="margin-top:.6mm">方向级线索；可占位，但必须写 verify_by，不能冒充具体车型。</p></div>
+        <div style="border-left:.6mm solid var(--muted);padding-left:3mm"><b class="mono" style="color:var(--muted)">0</b><p class="small" style="margin-top:.6mm">无证据；标红、不可勾选，宁可少一台也不编。</p></div>
+      </div>
+    </div>
+
+    <div class="grid2 mt3" style="gap:4mm">
+      <div class="box-soft">
+        <div class="tagline">Not now / 暂不做</div>
+        <b style="display:block;font-size:8.8pt;margin-top:1mm">一次性全量 RAG 建库</b>
+        <p class="small" style="margin-top:.8mm">没有现成语料；从零加工质量未知；存了也未必适配具体场景。</p>
+      </div>
+      <div class="box-soft">
+        <div class="tagline">Instead / 现在做</div>
+        <b style="display:block;font-size:8.8pt;margin-top:1mm">进化式沉淀</b>
+        <p class="small" style="margin-top:.8mm">每次项目按统一 schema 结构化入库；先继承平台共性，再叠加变体差异。</p>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>数据来自 docs/HANDOFF.md 与 data-test/evals/；样本有限，指标随评测集扩充修订。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">16 / 23</span></div>
+</section>
+
+<!-- ============================================================ 17 CONTRACT -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>05 / 技术实现思路</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">05.3 / Data contract</div>
+      <h2 class="page-title">一份结构化分析，<br>四次复用。</h2>
+      <p class="lede">分析 JSON 不是中间文件，而是全系统的公共合同：检索按它找缺口，分析按它填内容，排版按它渲染，知识库按它沉淀。</p>
+    </div>
+
+    <div class="contract mt3">
+      <div class="ct">
+        <div class="tagline">01 / Analysis</div>
+        <h4>analysis.json</h4>
+        <div class="cp">一台车的结构化分析：三维度 + 部件 + 来源。</div>
+        <div class="json"><span class="c">// 结构 / 设计 / 意图</span>
+{
+  <span class="k">"unit"</span>: {
+    <span class="k">"gesture"</span>: <span class="s">"方正、横向拉伸"</span>,
+    <span class="k">"style_tags"</span>: [<span class="s">"稳重"</span>,<span class="s">"硬朗"</span>],
+    <span class="k">"proportion"</span>: <span class="s">"高宽比 1.2:1"</span>
+  },
+  <span class="k">"parts"</span>: [{
+    <span class="k">"slot"</span>: <span class="s">"grille"</span>,
+    <span class="k">"bbox"</span>: [<span class="n">430,390,800,490</span>],
+    <span class="k">"form"</span>: <span class="s">"倒梯形，横向多层"</span>,
+    <span class="k">"cmf"</span>: <span class="s">"plastic / matte"</span>
+  }]
+}</div>
+      </div>
+      <div class="ct">
+        <div class="tagline">02 / Page IR</div>
+        <h4>page.ir.json</h4>
+        <div class="cp">页面唯一事实源：版式、槽位、素材、文案、样式、来源。</div>
+        <div class="json">{
+  <span class="k">"page"</span>: <span class="n">3</span>,
+  <span class="k">"layout"</span>: <span class="s">"vehicle_16x9"</span>,
+  <span class="k">"slots"</span>: {
+    <span class="k">"hero"</span>: {<span class="k">"asset"</span>: <span class="s">"hero.jpg"</span>},
+    <span class="k">"part_01"</span>: {
+      <span class="k">"analysis"</span>: <span class="s">"grille"</span>,
+      <span class="k">"box"</span>: [<span class="n">560,0,450,220</span>]
+    }
+  },
+  <span class="k">"source"</span>: <span class="s">"upload / 2026-10"</span>
+}</div>
+      </div>
+      <div class="ct">
+        <div class="tagline">03 / Render</div>
+        <h4>三种产物</h4>
+        <div class="cp">同一份 IR，确定性渲染；不是让模型直接“写 PPT”。</div>
+        <div class="co"><b>PPTX</b><span>文本 / 图片 / 形状原生可编辑；主交付。</span></div>
+        <div class="co"><b>PDF</b><span>只读交付；版式固定。</span></div>
+        <div class="co"><b>HTML</b><span>翻页册；预览与分享。</span></div>
+      </div>
+    </div>
+
+    <div class="grid3 mt3" style="border-top:.4mm solid var(--ink);padding-top:2.6mm">
+      <div><div class="tagline">结构信息</div><b style="display:block;font-size:8.4pt;margin-top:1mm">形态 / 构型 / 参数</b><p class="small" style="margin-top:.6mm">客观事实：分块分缝、比例、尺寸关系。</p></div>
+      <div><div class="tagline">设计信息</div><b style="display:block;font-size:8.4pt;margin-top:1mm">CMF / 姿态 / 特征线</b><p class="small" style="margin-top:.6mm">可被设计师直接讨论与修改的视觉语言。</p></div>
+      <div><div class="tagline">设计意图</div><b style="display:block;font-size:8.4pt;margin-top:1mm">为什么这样设计</b><p class="small" style="margin-top:.6mm">给用户什么价值；报告里最不可替代的一段。</p></div>
+    </div>
+
+    <div class="mt3" style="display:flex;align-items:center;gap:3mm">
+      <span class="badge badge-solid">ONE SOURCE</span>
+      <span class="small">AI 只写内容与结构；版式由模板与渲染器决定。改一句话，不需要重排整页。</span>
+    </div>
+
+    <div class="grid4 mt3" style="border-top:.4mm solid var(--ink);padding-top:2.6mm;gap:5mm">
+      <div><div class="tagline">Reuse 01</div><p class="small" style="margin-top:.8mm">检索：按 schema 找缺口，驱动补采。</p></div>
+      <div><div class="tagline">Reuse 02</div><p class="small" style="margin-top:.8mm">分析：按槽位填内容，失败只重试单点。</p></div>
+      <div><div class="tagline">Reuse 03</div><p class="small" style="margin-top:.8mm">排版：同一 JSON 渲染三种格式。</p></div>
+      <div><div class="tagline">Reuse 04</div><p class="small" style="margin-top:.8mm">知识库：项目结束即沉淀。</p></div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>Schema 见 schemas/ 与 docs/data-model-spec.md；字段以项目级配置扩展。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">17 / 23</span></div>
+</section>
+
+<!-- ============================================================ 18 EVAL -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>05 / 技术实现思路</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">05.4 / Eval &amp; observability</div>
+      <h2 class="page-title">评测优先：<br>先定义“好”，再让模型跑。</h2>
+      <p class="lede">Prompt、模型、流程的任何变更，都必须先过评测；否则“感觉更好”会变成不可回滚的债务。</p>
+    </div>
+
+    <div class="loop mt3">
+      <div class="lz2"><div class="no">01</div><b>定义 rubric</b><p>人工金标 + 评分维度；先写清楚什么算“好”。</p></div>
+      <div class="lz2"><div class="no">02</div><b>跑评测集</b><p>固定输入、固定模型版本、固定 prompt，可复现。</p></div>
+      <div class="lz2"><div class="no">03</div><b>对比基线</b><p>精确率、召回、采纳率、成本；不只看单项。</p></div>
+      <div class="lz2"><div class="no">04</div><b>合入或回滚</b><p>不达阈值不合入；回滚有据可查。</p></div>
+    </div>
+
+    <div class="metrics3 mt3">
+      <div class="metric"><div class="tagline">Retrieval</div><b>93.1<i style="font-style:normal;font-size:8pt;color:var(--orange)">%</i></b><span>闸门精确率；召回 85.7%，假阳性 6.9%。</span></div>
+      <div class="metric"><div class="tagline">Analysis</div><b>≥4<i style="font-style:normal;font-size:8pt;color:var(--orange)">/5</i></b><span>描述设计师评分目标；部件命中 ≥85%。</span></div>
+      <div class="metric"><div class="tagline">Report</div><b>≥60<i style="font-style:normal;font-size:8pt;color:var(--orange)">%</i></b><span>单车页直接采用率目标；单页重渲染 ≤30 秒。</span></div>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Observability / 每次生成都能回放</div>
+      <table class="dtable left mt1" style="margin-top:2mm">
+        <tr><th style="width:50mm">记录</th><th>用途</th></tr>
+        <tr><td class="em">run_id</td><td>复现一次检索 / 生成；断点续跑与审计的锚点。</td></tr>
+        <tr><td class="em">model_id + prompt_version</td><td>定位“哪次变更导致指标变化”；Prompt 与代码同仓。</td></tr>
+        <tr><td class="em">evidence_index_version</td><td>证据可回溯；清单里的每条目标都能对到版本。</td></tr>
+        <tr><td class="em">cost + latency</td><td>单份报告成本与性能；模型 / 参数甜点组合的依据。</td></tr>
+      </table>
+    </div>
+
+    <div class="mt3" style="display:flex;flex-wrap:wrap;gap:1.6mm">
+      <span class="badge">国产模型优先</span><span class="badge">LiteLLM 统一网关</span><span class="badge">python-pptx</span><span class="badge">FastAPI + SSE</span><span class="badge">SQLite + 文件系统</span><span class="badge">单机 4C8G</span><span class="badge">产品期云端</span>
+    </div>
+
+    <div class="mt3">
+      <div class="tagline">Known failure modes / 已知失效与对策</div>
+      <table class="dtable left mt1" style="margin-top:2mm">
+        <tr><th style="width:36mm">失效</th><th>表现</th><th>对策</th></tr>
+        <tr><td class="em">关键词假阳性</td><td>营销稿、参数页被当成设计分析</td><td>确定性闸门 + 对象锚定</td></tr>
+        <tr><td class="em">车型身份错配</td><td>图对了，但不是这一型号</td><td>标题 + 构型 + 人工复核</td></tr>
+        <tr><td class="em">部件裁图偏位</td><td>框到轮子、背景或相邻部件</td><td>裁框编辑器 + 人工确认</td></tr>
+        <tr><td class="em">长尾类目缺证据</td><td>清单填不满，或只能给方向</td><td>关联扩展 + provisional + 如实报缺口</td></tr>
+      </table>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>评测口径见 PRD NFR-8 与 docs/test-log.md；单次样本有限，指标随评测集扩充修订。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">18 / 23</span></div>
+</section>
+
+
+<!-- ============================================================ 19 CASE -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>06 / 应用场景示例</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">06.1 / Case</div>
+      <h2 class="page-title">案例：当样本只有 3 台，<br>怎么凑齐 12 页？</h2>
+      <p class="lede">沙漠牵引车是一个典型的长尾类目：公开素材少、型号边界模糊。系统要做的不是硬凑，而是把“相关的车”和“相关的部件”分层找出来。</p>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:.82fr 1.18fr;gap:6mm">
+      <div class="case-input">
+        <div class="kicker">Case / 沙漠牵引车</div>
+        <div class="case-row"><span>Category</span><b>沙漠牵引车</b></div>
+        <div class="case-row"><span>Parts</span><b>登车踏步 / 侧防护栏 / 底盘</b></div>
+        <div class="case-row"><span>Budget</span><b>12 页 / 10–14 整车页</b></div>
+        <div class="case-row"><span>Constraint</span><b>公开素材少；类目边界模糊</b></div>
+        <p class="small" style="color:rgba(255,255,255,.5);margin-top:3mm;line-height:1.7">“沙漠牵引车”本质是较常规的卡车头；真正因沙漠环境而设计的是踏步、防护栏与底盘。因此不能只按车型名硬搜。</p>
+      </div>
+
+      <div>
+        <div style="display:grid;grid-template-columns:20mm 1fr;gap:3mm;padding:0 0 3mm;border-bottom:.22mm solid var(--line)">
+          <div class="tagline">Challenge</div>
+          <div><b style="font-size:8.4pt">三个约束</b><p class="small" style="margin-top:.8mm">只有 3 台有可用主图；具体型号证据不足；部件需要跨车型取参照。</p></div>
+        </div>
+        <div style="display:grid;grid-template-columns:20mm 1fr;gap:3mm;padding:3mm 0;border-bottom:.22mm solid var(--line)">
+          <div class="tagline">Approach</div>
+          <div><b style="font-size:8.4pt">四轴扩展，不硬猜</b><p class="small" style="margin-top:.8mm">同类目 / 邻近类目 / 同平台 / 环境特化；每条占槽目标带 E3 证据，方向级写 verify_by。</p></div>
+        </div>
+        <div style="display:grid;grid-template-columns:20mm 1fr;gap:3mm;padding:3mm 0">
+          <div class="tagline">Result</div>
+          <div><b style="font-size:8.4pt">9 推荐 + 3 备选</b><p class="small" style="margin-top:.8mm">锁定 12 页槽；缺口如实报，超出转备选；不拿“待定”凑页数。</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-flow mt3">
+      <div class="case-step"><div class="no">01 / INTENT</div><b>立项</b><p>类别 + 部件 + 页数预算；歧义先问人。</p><span class="tag">1 min</span></div>
+      <div class="case-step"><div class="no">02 / EXPAND</div><b>关联扩展</b><p>沙漠用车 / 牵引车 / 卡车头分层进入候选。</p><span class="tag">四轴</span></div>
+      <div class="case-step"><div class="no">03 / ROSTER</div><b>清单</b><p>9 推荐 + 3 备选；E3 证据 11/12。</p><span class="tag">2 min</span></div>
+      <div class="case-step"><div class="no">04 / ASSETS</div><b>素材</b><p>三篮子归组；缺主图直接标红阻断。</p><span class="tag">缺图 1 台</span></div>
+      <div class="case-step"><div class="no">05 / OUTPUT</div><b>输出</b><p>12 页分析；逐页审校后导出 PPTX。</p><span class="tag">12 页</span></div>
+    </div>
+
+    <div class="stat-grid mt3">
+      <div class="stat"><b>12<i>页</i></b><span>锁定页槽，缺口如实报</span><em>OUTPUT</em></div>
+      <div class="stat"><b>5<i>个</i></b><span>部件 × 每车一页</span><em>PARTS</em></div>
+      <div class="stat"><b>2<i>次</i></b><span>清单 / 成稿人工确认</span><em>CHECKPOINTS</em></div>
+      <div class="stat"><b>0<i>条</i></b><span>无来源结论进入报告</span><em>EVIDENCE</em></div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">What changed / 这条流水线改变了什么</div>
+      <div class="grid3 mt2">
+        <div><span class="badge">BEFORE</span><b style="display:block;font-size:8.4pt;margin-top:1.2mm">凭经验列 5 台</b><p class="small" style="margin-top:.6mm">能想到谁就查谁，长尾类目容易漏。</p><span class="badge badge-orange" style="margin-top:1.4mm">AFTER 四轴扩展 + E3</span></div>
+        <div><span class="badge">BEFORE</span><b style="display:block;font-size:8.4pt;margin-top:1.2mm">全网翻找素材</b><p class="small" style="margin-top:.6mm">图很多，但不知道哪张能当主图。</p><span class="badge badge-orange" style="margin-top:1.4mm">AFTER 门卫 + 三篮子</span></div>
+        <div><span class="badge">BEFORE</span><b style="display:block;font-size:8.4pt;margin-top:1.2mm">从空白 PPT 开始</b><p class="small" style="margin-top:.6mm">排版占掉一半时间，改一句牵动整页。</p><span class="badge badge-orange" style="margin-top:1.4mm">AFTER 12 页可编辑初稿</span></div>
+      </div>
+      <div class="mt2" style="display:flex;justify-content:space-between;align-items:baseline;border-top:.22mm solid var(--line);padding-top:2.4mm">
+        <div class="serif" style="font-size:14pt;font-weight:600">不是把 12 页填满，而是让每一页都有依据。</div>
+        <div class="mono" style="font-size:5.8pt;letter-spacing:.1em;color:var(--muted)">CASE / DESERT TRACTOR</div>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>案例依据 docs/roster-expansion-design.md 与 2026-10-31 关联清单 A/B 样例；数字为示例口径。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">19 / 23</span></div>
+</section>
+
+<!-- ============================================================ 20 SCENARIOS -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>06 / 应用场景示例</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">06.2 / More scenarios</div>
+      <h2 class="page-title">三种典型场景，<br>一条共同逻辑。</h2>
+      <p class="lede">不是所有前期分析都叫“竞品对标”。同一套素材、分析与版式能力，可以服务三种不同的交付任务。</p>
+    </div>
+
+    <div class="grid3 mt3">
+      <div class="scenario">
+        <div class="sn">01 / BENCHMARK</div>
+        <h4>竞品对标汇报</h4>
+        <p>10–15 台竞品，按品牌家族组织；一车一页，向客户对齐风格与设计边界。</p>
+        <div class="sm"><span><b>输入</b>10–15 台 / 5 部件</span><span><b>输出</b>约 20 页 PPTX</span></div>
+        <div class="sm"><span><b>价值</b>3–5 天 → 1 天</span><span><b>检查点</b>清单 / 成稿</span></div>
+      </div>
+      <div class="scenario">
+        <div class="sn">02 / COMPONENT</div>
+        <h4>部件专项</h4>
+        <p>只盯一个部件（如登车踏步），跨 6–8 台车集中对比；一页 5–6 个单元。</p>
+        <div class="sm"><span><b>输入</b>6–8 台 / 1 部件</span><span><b>输出</b>1–2 页专项</span></div>
+        <div class="sm"><span><b>价值</b>跨车型取参照</span><span><b>检查点</b>可裁性确认</span></div>
+      </div>
+      <div class="scenario">
+        <div class="sn">03 / REUSE</div>
+        <h4>历史项目复用</h4>
+        <p>旧报告、旧素材按统一 schema 沉淀；下一个项目从已有资产开始，而不是从零。</p>
+        <div class="sm"><span><b>输入</b>历史项目</span><span><b>输出</b>可检索资产</span></div>
+        <div class="sm"><span><b>价值</b>越用越厚</span><span><b>阶段</b>P2 / 规划中</span></div>
+      </div>
+    </div>
+
+    <div class="mt4">
+      <div class="tagline">Fit / 什么时候适合用</div>
+      <table class="dtable left mt1" style="margin-top:2mm">
+        <tr><th style="width:44mm">任务</th><th>素材条件</th><th>预期收益</th></tr>
+        <tr><td class="em">新车立项对标</td><td>10 台以上可用主图，部件 3–5 个</td><td>高：一版可编辑初稿 + 完整清单</td></tr>
+        <tr><td class="em">单部件专项</td><td>≥5 台车可裁出同一部件</td><td>高：跨车型集中对比</td></tr>
+        <tr><td class="em">趋势 / 品牌基因</td><td>需要外部资料与主观判断</td><td>中：P2 章节能力</td></tr>
+        <tr><td class="em">1–2 台车的小比较</td><td>样本过少，结论不稳</td><td>低：先补素材，或直接用通用工具</td></tr>
+      </table>
+    </div>
+
+    <div class="grid2 mt3" style="grid-template-columns:1fr 1fr;gap:6mm">
+      <div class="box-soft">
+        <div class="tagline">Not a fit / 不适合</div>
+        <ul class="do-dont" style="display:block;border:0;list-style:none;padding-left:0">
+          <li style="font-size:7.2pt;line-height:1.6;margin-top:1mm">需要原创造型方案，而不是竞品分析。</li>
+          <li style="font-size:7.2pt;line-height:1.6;margin-top:1mm">素材只有 1–2 张，且无法补采。</li>
+          <li style="font-size:7.2pt;line-height:1.6;margin-top:1mm">客户要求完全手工定制、不接受模板版式。</li>
+        </ul>
+      </div>
+      <div class="box-soft">
+        <div class="tagline">Common logic / 共同逻辑</div>
+        <p class="small" style="margin-top:1mm">先把“看什么”变成清单，再把“图”变成证据，最后把“证据”变成可编辑页面。场景在变，流水线不变。</p>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">From scenario to configuration / 从场景到配置</div>
+      <div class="grid3 mt2">
+        <div><div class="mono" style="font-size:6pt;color:var(--orange)">01 / BENCHMARK</div><b style="display:block;font-size:8.4pt;margin-top:1mm">20 页 · 10–14 整车页</b><p class="small" style="margin-top:.6mm">封面 / 目录 / 单车页 / 封底；一套品牌母版。</p></div>
+        <div><div class="mono" style="font-size:6pt;color:var(--orange)">02 / COMPONENT</div><b style="display:block;font-size:8.4pt;margin-top:1mm">1–2 页 · 5–6 单元</b><p class="small" style="margin-top:.6mm">只做局部设计分析；同一部件跨车型排布。</p></div>
+        <div><div class="mono" style="font-size:6pt;color:var(--orange)">03 / REUSE</div><b style="display:block;font-size:8.4pt;margin-top:1mm">不预设页数</b><p class="small" style="margin-top:.6mm">先检索历史资产，再决定是否需要新分析。</p></div>
+      </div>
+    </div>
+
+    <div class="grow"></div>
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm">
+      <span>场景划分依据 PRD 与用户访谈；页数与时长是目标口径，实际随素材与客户要求变化。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">20 / 23</span></div>
+</section>
+
+
+<!-- ============================================================ 21 ROADMAP -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>07 / 落地路径</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">07.1 / Roadmap</div>
+      <h2 class="page-title">从能跑，到好用，<br>再到可规模化。</h2>
+      <p class="lede">当前处在 P1 MVP：五步壳、单车分析、版式与导出已能跑通；检索线已跑通，正在做整体测试。</p>
+    </div>
+
+    <div class="roadmap mt3">
+      <div class="rm-row">
+        <div class="rp">P0</div>
+        <div class="rs"><b>已完成</b><span>2026.10</span></div>
+        <div><h4>需求与设计</h4><p>PRD v1.0、数据模型、交互说明、评测集 v1、检索线分层设计。</p><div class="tagset"><span class="badge badge-solid">DONE</span><span class="badge">PRD</span><span class="badge">数据模型</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rp">P1</div>
+        <div class="rs"><b>进行中</b><span>当前</span></div>
+        <div><h4>MVP 端到端</h4><p>五步工作台、3 台车端到端、裁框 / 改字 / 版式、PPTX 导出、单机 start.bat。</p><div class="tagset"><span class="badge badge-orange">IN PROGRESS</span><span class="badge">Web 壳</span><span class="badge">PPTX</span><span class="badge">3 台演示</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rp">P1.5</div>
+        <div class="rs"><b>下一步</b><span>检索增强</span></div>
+        <div><h4>检索与证据</h4><p>39 车型证据索引、图片通道稳定、特征线专项、整体测试与阈值扫掠。</p><div class="tagset"><span class="badge badge-orange">NEXT</span><span class="badge">E3 索引</span><span class="badge">特征线</span><span class="badge">整体测试</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rp">P2</div>
+        <div class="rs"><b>规划中</b><span>完整章节</span></div>
+        <div><h4>更多页型</h4><p>局部设计分析、品牌设计分析、情绪版、多母版、项目与素材库。</p><div class="tagset"><span class="badge">PLANNED</span><span class="badge">专项页</span><span class="badge">情绪版</span><span class="badge">多母版</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rp">P3</div>
+        <div class="rs"><b>规划中</b><span>规模化</span></div>
+        <div><h4>成本与协作</h4><p>成本甜点调优、素材跨项目复用、多人协作、评测体系 v2。</p><div class="tagset"><span class="badge">PLANNED</span><span class="badge">成本</span><span class="badge">复用</span><span class="badge">协作</span></div></div>
+      </div>
+    </div>
+
+    <div class="grid2 mt3" style="gap:5mm">
+      <div class="box-soft">
+        <div class="tagline">Demo now / 现在能演示</div>
+        <ul style="list-style:none;margin-top:1.6mm">
+          <li class="small" style="padding:1mm 0"><b>✓</b> 立项 → 清单 → 素材 → 分析 → 导出（3 台）</li>
+          <li class="small" style="padding:1mm 0"><b>✓</b> 单车分析页：三词 + 色彩条 + 5 个部件</li>
+          <li class="small" style="padding:1mm 0"><b>✓</b> 裁框、改字、调版式；PPTX 可编辑导出</li>
+        </ul>
+      </div>
+      <div class="box-soft">
+        <div class="tagline">Still building / 还在补</div>
+        <ul style="list-style:none;margin-top:1.6mm">
+          <li class="small" style="padding:1mm 0"><b>○</b> 自动检索稳定性与 39 车型证据索引</li>
+          <li class="small" style="padding:1mm 0"><b>○</b> 特征线自动提取（专项实验）</li>
+          <li class="small" style="padding:1mm 0"><b>○</b> 多母版、账号体系、多人协作</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">Next 3 / 接下来三件事</div>
+      <div class="grid3 mt2">
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">01</div><b style="display:block;font-size:8.4pt;margin-top:.8mm">整体测试</b><p class="small" style="margin-top:.6mm">闸门 → runner → audit → 报告全链路；阈值扫掠，主指标=过闸 A 字/千字 + 页槽填充。</p></div>
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">02</div><b style="display:block;font-size:8.4pt;margin-top:.8mm">补证据索引</b><p class="small" style="margin-top:.6mm">扩到 39 车型；跑“无证据”案例，验证缺证据时会不会编。</p></div>
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">03</div><b style="display:block;font-size:8.4pt;margin-top:.8mm">实图复核</b><p class="small" style="margin-top:.6mm">23 车型 / 70 张图逐条判定；再决定 VLM 是否启动。</p></div>
+      </div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>路线图依据 PRD §8 与 docs/HANDOFF.md；阶段顺序稳定，时间随开发进度滚动。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">21 / 23</span></div>
+</section>
+
+<!-- ============================================================ 22 RISKS -->
+<section class="sheet">
+  <div class="sheet-head"><span><b>EQUIPLENS-AI</b> / 产品说明书</span><span>07 / 落地路径</span></div>
+  <div class="sheet-body">
+    <div class="page-intro">
+      <div class="kicker">07.2 / Risks &amp; commitments</div>
+      <h2 class="page-title">把边界说清楚，<br>比把能力说大更重要。</h2>
+      <p class="lede">AI 产品最容易犯的错，是把“演示可行”说成“生产可用”。这一页列出已知风险、当前对策与状态。</p>
+    </div>
+
+    <div class="mt3">
+      <table class="risk-table">
+        <tr><th style="width:34mm">风险</th><th style="width:44mm">表现</th><th>当前对策</th><th style="width:18mm">状态</th></tr>
+        <tr><td>模型幻觉与证据缺失</td><td>编车型、编结论、把宣传稿当分析</td><td>强制证据 + 确定性闸门 + 两个人工检查点；缺证据标红。</td><td><span class="badge badge-solid">已建</span></td></tr>
+        <tr><td>图片版权与数据合规</td><td>来源不明、素材外泄</td><td>robots / 来源记录 / 不训练 / 密钥不入库。</td><td><span class="badge badge-solid">已建</span></td></tr>
+        <tr><td>版式审美与品牌适配</td><td>模板不像客户品牌，改版成本高</td><td>母版由设计师定义；Page IR 与样式分离；改内容不重排版。</td><td><span class="badge badge-orange">进行中</span></td></tr>
+        <tr><td>长尾类目素材不足</td><td>清单填不满、页数不够</td><td>四轴扩展 + provisional 占位 + 如实报缺口；不拿相似车顶替。</td><td><span class="badge badge-orange">进行中</span></td></tr>
+        <tr><td>模型 API 依赖</td><td>超时、限流、涨价、供应中断</td><td>LiteLLM 网关多供应商、降级链、可切换 / 可回退。</td><td><span class="badge badge-solid">已建</span></td></tr>
+      </table>
+    </div>
+
+    <div class="redlines mt3" style="grid-template-columns:repeat(4,1fr)">
+      <div class="redline"><div class="x">✓</div><b>可溯源</b><span>每个结论回到图片 / URL。</span></div>
+      <div class="redline"><div class="x">✓</div><b>可编辑</b><span>文本 / 图片 / 形状原生。</span></div>
+      <div class="redline"><div class="x">✓</div><b>可回退</b><span>任意步骤可改，不丢已确认。</span></div>
+      <div class="redline"><div class="x">✓</div><b>不编造</b><span>缺证据就标红，不写进报告。</span></div>
+    </div>
+
+    <div class="box-soft mt3">
+      <div class="tagline">Compliance / 数据边界</div>
+      <p class="small" style="margin-top:1mm">用户素材仅用于本项目分析输出，不用于模型训练；API 密钥经环境变量管理，严禁入库；联网检索遵守 robots 与配额；来源 URL 随页面保留，支持客户审计。</p>
+    </div>
+
+    <div class="mt4" style="border-top:.4mm solid var(--ink);padding-top:3mm">
+      <div class="tagline">Three questions / 评审会上的三个追问</div>
+      <div class="grid3 mt2">
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">Q1</div><b style="display:block;font-size:8.6pt;margin-top:.8mm">“这张图哪来的？”</b><p class="small" style="margin-top:.6mm">来源字段 + 页脚；可回到 URL 或上传文件名。</p></div>
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">Q2</div><b style="display:block;font-size:8.6pt;margin-top:.8mm">“为什么是这台车？”</b><p class="small" style="margin-top:.6mm">清单证据 E3 / E1；关联理由可展开逐条看。</p></div>
+        <div><div class="mono" style="font-size:7pt;color:var(--orange)">Q3</div><b style="display:block;font-size:8.6pt;margin-top:.8mm">“能不能改？”</b><p class="small" style="margin-top:.6mm">PPTX 原生对象；改字换图不重排版。</p></div>
+      </div>
+    </div>
+
+    <div class="caption" style="display:flex;justify-content:space-between;border-top:.22mm solid var(--line);padding-top:2.2mm;margin-top:auto">
+      <span>风险清单随整体测试更新；状态含义：已建 = 有实现与测试；进行中 = 有方案、待补齐。</span>
+    </div>
+  </div>
+  <div class="sheet-foot"><span>v1.0 / 2026.10</span><span class="pg">22 / 23</span></div>
+</section>
+
+<!-- ============================================================ 23 CLOSING -->
+<section class="sheet closing">
+  <div class="bg-grid"></div>
+  <div class="wrap">
+    <div class="top">
+      <div class="lg">
+        <svg viewBox="0 0 48 48" fill="none" stroke="#FBF9F3" stroke-width="2.4" stroke-linecap="round">
+          <circle cx="21" cy="21" r="12.6"/>
+          <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+          <path d="M30.3 30.3 41 41" stroke="#DF4A1B" stroke-width="3.2"/>
+        </svg>
+        EQUIPLENS-AI
+      </div>
+      <div class="rt">07 / The Point</div>
+    </div>
+
+    <div class="main">
+      <div class="kicker">The Point / 全部主张</div>
+      <div class="big">让设计师回到<br><em>判断与创意</em>。</div>
+      <p class="sub">AI 接管资料检索、图像分析与报告初稿制作；设计师保留定调、取舍与拍板。报告仍然是人做的，只是重复劳动不再由人做。</p>
+    </div>
+
+    <div class="three">
+      <div><div class="n">01 / PIPELINE</div><b>一条流水线</b><span>散图 → 清单 → 分析 → 可编辑报告</span></div>
+      <div><div class="n">02 / WORKSTATIONS</div><b>四个工位</b><span>检索员 / 分析员 / 规划员 / 版式员</span></div>
+      <div><div class="n">03 / CHECKPOINTS</div><b>两个检查点</b><span>清单确认 / 成稿审校</span></div>
+    </div>
+
+    <div style="margin-top:18mm;padding-top:4mm;border-top:.3mm solid rgba(255,255,255,.2);max-width:150mm">
+      <div class="serif" style="font-size:17pt;line-height:1.7;color:rgba(255,255,255,.88)">工具的价值，是让人把时间<br>花在<span class="orange">只有人能做好的事情</span>上。</div>
+      <div class="mono" style="font-size:5.6pt;letter-spacing:.16em;color:rgba(255,255,255,.3);margin-top:3mm">A TOOL SHOULD GIVE TIME BACK, NOT TAKE IT.</div>
+    </div>
+
+    <div class="foot">
+      <div>EquipLens-AI · Product Dossier v1.0<b>工程车辆外观部件设计前期分析报告工具</b></div>
+      <div style="text-align:right">2026.10 · A4 / 23 Pages<b>github.com/JIJIguowang1218/EquipLens-AI</b></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
