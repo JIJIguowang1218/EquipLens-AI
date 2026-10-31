@@ -518,7 +518,7 @@ function step5(){
   app.innerHTML = `<section class="step">
     <div class="phead2"><h2>排版完成</h2>
       <span class="hint">${built.length? `${i+1} / ${built.length}` : '无页面'} · 页内可点右下角「编辑布局」微调</span></div>
-    ${cur? `<div class="frame" style="aspect-ratio:auto;height:calc(100vh - 330px)">
+    ${cur? `<div class="frame">
       <iframe src="/files/${state.runId}/${cur.file}" scrolling="no"></iframe>
     </div>` : '<p class="hint">没有生成页面</p>'}
     <div class="actions">
