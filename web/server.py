@@ -455,6 +455,12 @@ def api_run(payload: dict):
     server_slots = [x["slot"] or x["label"] for x in slots]
     with LOCK:
         run_id = uuid.uuid4().hex[:8]
+        (RUNS / run_id).mkdir(parents=True, exist_ok=True)
+        (RUNS / run_id / "meta.json").write_text(json.dumps({
+            "id": run_id, "category": payload.get("category", ""),
+            "parts": payload.get("parts") or [], "count": payload.get("count"),
+            "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "vehicles": vehicles}, ensure_ascii=False, indent=2), encoding="utf-8")
         JOBS[run_id] = {"id": run_id, "status": "queued", "progress": [],
                         "pages": [], "vehicles": vehicles}
         threading.Thread(target=run_pipeline, args=(run_id, vehicles, slots),
@@ -512,12 +518,76 @@ def api_finalize(run_id: str):
     return {"built": built}
 
 
+def _load_run_from_disk(run_id: str) -> dict | None:
+    d = RUNS / run_id
+    if not d.exists():
+        return None
+    meta = {}
+    mp = d / "meta.json"
+    if mp.exists():
+        meta = json.loads(mp.read_text(encoding="utf-8"))
+    pages = []
+    for f in sorted((d).glob("0*.json")):
+        model = f.stem.split("-", 1)[1] if "-" in f.stem else f.stem
+        html = d / "pages" / f"{model}.html"
+        editor = d / "pages" / f"{model}-crop-editor.html"
+        pages.append({"model": model, "brand": "", "idx": len(pages) + 1,
+                      "json": f.name,
+                      "editor": f"pages/{model}-crop-editor.html" if editor.exists() else None,
+                      "built": html.exists(),
+                      "file": f"pages/{model}.html" if html.exists() else None})
+    pptx = list(d.glob("*.pptx"))
+    return {"id": run_id, "status": "done", "progress": [], "pages": pages,
+            "meta": meta, "pptx": f"/files/{run_id}/{pptx[0].name}" if pptx else None}
+
+
+@app.delete("/api/run/{run_id}")
+def api_delete_run(run_id: str):
+    d = RUNS / run_id
+    if not d.exists():
+        raise HTTPException(404, "任务不存在")
+    import shutil
+    shutil.rmtree(d, ignore_errors=True)
+    JOBS.pop(run_id, None)
+    return {"ok": True}
+
+
+@app.get("/api/history")
+def api_history():
+    out = []
+    for d in sorted((p for p in RUNS.iterdir() if p.is_dir() and not p.name.startswith("harvest-")),
+                    key=lambda p: p.stat().st_mtime, reverse=True):
+        mp = d / "meta.json"
+        meta = json.loads(mp.read_text(encoding="utf-8")) if mp.exists() else {}
+        if not meta.get("category"):
+            for f in sorted(d.glob("0*.json")):
+                try:
+                    j = json.loads(f.read_text(encoding="utf-8"))
+                    cat = (j.get("vehicle") or {}).get("category")
+                    if cat:
+                        meta["category"] = cat
+                        break
+                except Exception:
+                    pass
+        pages = [f for f in (d / "pages").glob("*.html")
+                 if not f.name.endswith("-crop-editor.html")] if (d / "pages").exists() else []
+        out.append({"id": d.name, "category": meta.get("category", ""),
+                    "parts": meta.get("parts", []),
+                    "created_at": meta.get("created_at")
+                    or time.strftime("%Y-%m-%d %H:%M", time.localtime(d.stat().st_mtime)),
+                    "pages": len(pages), "has_pptx": bool(list(d.glob("*.pptx"))) })
+    return {"items": out[:30]}
+
+
 @app.get("/api/run/{run_id}")
 def api_status(run_id: str):
     job = JOBS.get(run_id)
-    if not job:
+    if job:
+        return job
+    disk = _load_run_from_disk(run_id)
+    if not disk:
         raise HTTPException(404, "任务不存在")
-    return job
+    return disk
 
 
 @app.post("/api/export/{run_id}")

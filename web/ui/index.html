@@ -33,7 +33,38 @@ nav{
 .dot{width:7px;height:7px;border-radius:50%;background:#d2d2d7;transition:.4s var(--ease)}
 .dot.on{background:var(--ink);width:22px;border-radius:4px}
 /* ---------- layout ---------- */
-main{max-width:1180px;margin:0 auto;padding:58px 28px 140px}
+.app{display:flex;min-height:100vh}
+.side{width:248px;flex:none;border-right:1px solid var(--line);background:#fbfbfd;
+  padding:18px 14px;display:flex;flex-direction:column;gap:10px;position:sticky;top:0;height:100vh}
+.brandrow{display:flex;align-items:center;gap:10px;padding:4px 8px 10px;font-weight:600;font-size:15px}
+.brandrow .logo{width:24px;height:24px}
+.newbtn{height:40px;border-radius:10px;border:0;background:var(--ink);color:#fff;font-size:14px;
+  font-weight:600;cursor:pointer;transition:.2s var(--ease)}
+.newbtn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.sidelabel{font-size:11px;letter-spacing:.08em;color:var(--muted);margin:14px 8px 4px}
+.hist{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.hitem2{padding:9px 10px;border-radius:9px;cursor:pointer;transition:background .15s}
+.hitem2:hover{background:#f0f0f3}
+.hitem2.on{background:#e9e9ee}
+.hitem2 b{display:block;font-size:13.5px;font-weight:500;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hitem2 span{font-size:11.5px;color:var(--muted)}
+.hitem2{position:relative}
+.hdel{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-style:normal;
+  color:#c7c7cc;font-size:15px;opacity:0;transition:.15s;cursor:pointer}
+.hitem2:hover .hdel{opacity:1}
+.hdel:hover{color:#ff3b30}
+.hgroup{font-size:11px;color:#a1a1a6;padding:10px 10px 4px}
+.hempty{font-size:12.5px;color:#a1a1a6;padding:8px}
+.sidefoot{font-size:11px;color:#a1a1a6;padding:8px}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:56px;display:flex;align-items:center;gap:14px;padding:0 28px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(255,255,255,.8);
+  backdrop-filter:blur(18px);z-index:20}
+.crumbs{font-size:13px;color:var(--muted)}
+.crumbs b{color:var(--ink);font-weight:500}
+.dots{margin-left:auto;display:flex;gap:6px}
+main{max-width:1080px;margin:0 auto;padding:38px 32px 120px;width:100%}
 .step{animation:rise .5s var(--ease) both}
 body.no-anim .step{animation:none}
 @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
@@ -174,18 +205,30 @@ h1 em{font-style:normal;color:var(--muted)}
 </head>
 <body>
 
-<nav>
-  <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
-       stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="21" cy="21" r="12.6"/>
-    <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
-    <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
-  </svg>
-  <div class="brand">EquipLens<span>竞品设计分析</span></div>
-  <div class="navdots" id="dots"></div>
-</nav>
-
-<main id="app"></main>
+<div class="app">
+  <aside class="side">
+    <div class="brandrow">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+      </svg>
+      <span>EquipLens</span>
+    </div>
+    <button class="newbtn" id="newbtn">＋ 新建分析</button>
+    <div class="sidelabel">历史</div>
+    <div class="hist" id="hist"><div class="hempty">加载中…</div></div>
+    <div class="sidefoot">本地运行 · v0.1</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="dots" id="dots"></div>
+    </div>
+    <div id="app"></div>
+  </main>
+</div>
 
 <script>
 const PARTS = [
@@ -194,18 +237,99 @@ const PARTS = [
 ];
 const state = {step:1, category:null, parts:[], count:3, catalog:null,
          selected:[], selMeta:[], cand:null, candJob:null,
-         harvest:null, harvestJob:null, excluded:new Set(), runId:null, job:null};
+         harvest:null, harvestJob:null, excluded:new Set(), runId:null, job:null,
+         view:'new', detail:null, detailRunId:null, detailIdx:0};
 const app = document.getElementById('app');
 const dots = document.getElementById('dots');
 const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-function paintDots(){
-  dots.innerHTML = [1,2,3,4,5].map(i=>`<i class="dot ${i===state.step?'on':''}"></i>`).join('');
+function paintDots(hide){
+  dots.innerHTML = hide ? '' : [1,2,3,4,5].map(i=>`<i class="dot ${i===state.step?'on':''}"></i>`).join('');
 }
+
+async function loadHistory(){
+  const el = document.getElementById('hist');
+  try{
+    const r = await fetch('/api/history');
+    const d = await r.json();
+    if(!d.items.length){ el.innerHTML = '<div class="hempty">还没有分析记录</div>'; return; }
+    const day = t0 => {
+      const today = new Date().toISOString().slice(0,10);
+      const d0 = (t0||'').slice(0,10);
+      return d0===today ? '今天' : '更早';
+    };
+    let cur = '';
+    const rows = d.items.map(it=>{
+      const g = day(it.created_at);
+      const head = g!==cur ? (cur=g, `<div class="hgroup">${g}</div>`) : '';
+      return head + `<div class="hitem2 ${it.id===state.detailRunId?'on':''}"
+        data-run="${esc(it.id)}">
+        <b>${esc(it.category||'未命名')}</b>
+        <span>${esc((it.created_at||'').slice(5))} · ${it.pages} 页</span>
+        <i class="hdel" data-del="${esc(it.id)}" title="删除">×</i></div>`;
+    }).join('');
+    el.innerHTML = rows;
+    el.onclick = async e=>{
+      const del = e.target.closest('[data-del]');
+      if(del){
+        e.stopPropagation();
+        if(!confirm('删除这条记录？')) return;
+        await fetch('/api/run/'+del.dataset.del,{method:'DELETE'});
+        if(state.detailRunId===del.dataset.del){ state.view='new'; state.step=1; render(); }
+        loadHistory(); return;
+      }
+      const x = e.target.closest('[data-run]'); if(!x) return;
+      openRun(x.dataset.run);
+    };
+  }catch(err){ el.innerHTML = '<div class="hempty">历史加载失败</div>'; }
+}
+
+async function openRun(id){
+  const r = await fetch('/api/run/'+id);
+  if(!r.ok){ return; }
+  state.detail = await r.json();
+  state.detailRunId = id; state.detailIdx = 0; state.view = 'detail';
+  render(); loadHistory();
+}
+
+function renderDetail(){
+  const d = state.detail || {};
+  const pages = (d.pages||[]).filter(p=>p.built && p.file);
+  const meta = d.meta || {};
+  paintDots(true);
+  document.getElementById('crumbs').innerHTML =
+    `<b>${esc(meta.category||'分析结果')}</b>　${esc(meta.created_at||'')}` +
+    (meta.parts && meta.parts.length? `　·　${meta.parts.length} 个部位` : '');
+  if(!pages.length){
+    app.innerHTML = `<section class="step"><div class="phead2"><h2>这次分析还没有生成页面</h2></div>
+      <p class="hint">回到「新建分析」重新跑一遍，或在历史里选择其它记录。</p></section>`;
+    return;
+  }
+  const i = Math.min(state.detailIdx||0, pages.length-1);
+  app.innerHTML = `<section class="step">
+    <div class="phead2"><h2>结果</h2>
+      <span class="hint">${i+1} / ${pages.length} · 页内右下角可「编辑布局」</span></div>
+    <div class="frame"><iframe src="/files/${state.detailRunId}/${pages[i].file}" scrolling="no"></iframe></div>
+    <div class="actions">
+      <button class="btn ghost" id="prev" ${i<=0?'disabled':''}>上一页</button>
+      <button class="btn ghost" id="nextp" ${i>=pages.length-1?'disabled':''}>下一页</button>
+      ${d.pptx? `<a class="btn" href="${d.pptx}" download style="margin-left:auto">下载 PPTX</a>` : ''}
+    </div>
+  </section>`;
+  document.getElementById('prev').onclick = ()=>{ state.detailIdx=Math.max(0,i-1); render(); };
+  document.getElementById('nextp').onclick = ()=>{ state.detailIdx=Math.min(pages.length-1,i+1); render(); };
+}
+
+document.getElementById('newbtn').onclick = ()=>{
+  state.view='new'; state.step=1; state.detail=null; state.detailRunId=null;
+  state.harvest=null; state.job=null; state.built=null; state.cropIdx=undefined;
+  document.getElementById('crumbs').innerHTML = '<b>新建分析</b>';
+  render(); loadHistory();
+};
 
 async function boot(){
   const r = await fetch('/api/catalog'); state.catalog = await r.json();
-  render();
+  render(); loadHistory();
 }
 
 function matchVehicles(){
@@ -215,16 +339,33 @@ function matchVehicles(){
 }
 
 let lastStep = 0;
+function fitFrames(){
+  document.querySelectorAll('.frame').forEach(f=>{
+    const w = f.clientWidth;
+    if(!w) return;
+    const sc = w/1600;
+    const ifr = f.querySelector('iframe');
+    if(ifr && !ifr.dataset.noscale){ ifr.style.transform = `scale(${sc})`; }
+    if(f.dataset.fit !== 'off') f.style.height = (900*sc)+'px';
+  });
+}
+window.addEventListener('resize', ()=>setTimeout(fitFrames, 60));
+
 function render(){
+  if(state.view === 'detail'){ renderDetail(); setTimeout(fitFrames, 30); return; }
   paintDots();
   document.body.classList.toggle('no-anim', state.step === lastStep);
   lastStep = state.step;
+  const names = {1:'立项',2:'检索',3:'素材确认',4:'分析 / 裁框',5:'排版与导出'};
+  const crumb = document.getElementById('crumbs');
+  if(crumb) crumb.innerHTML = `<b>新建分析</b>　·　${names[state.step]||''}`;
   if(state.step===1) step1();
   else if(state.step===2) step2();
   else if(state.step===3) step3();
   else if(state.step===4) step4();
   else step5();
   window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(fitFrames, 30);
 }
 
 /* ---------------- 1 立项 ---------------- */
@@ -233,7 +374,6 @@ function step1(){
   const match = cats.filter(c=>c.category.includes(state.category||''))
                     .slice(0,6);
   app.innerHTML = `<section class="step">
-    <div class="eyebrow">Step 01 · 立项</div>
     <h1>竞品分析，<em>十分钟</em>。</h1>
     <p class="sub">输入设备类别与分析部位，剩下的交给系统。</p>
 
@@ -480,8 +620,8 @@ function step4(){
   app.innerHTML = `<section class="step">
     <div class="phead2"><h2>逐台确认裁框</h2>
       <span class="hint">${i+1} / ${pages.length} · ${esc(pg.brand)} ${esc(pg.model)} · 拖框后点右侧「保存裁框」</span></div>
-    <div class="frame" style="aspect-ratio:auto;height:calc(100vh - 300px)">
-      <iframe src="${src}" style="width:100%;height:100%;transform:none"></iframe>
+    <div class="frame" data-fit="off" style="aspect-ratio:auto;height:calc(100vh - 300px)">
+      <iframe data-noscale="1" src="${src}" style="width:100%;height:100%;transform:none"></iframe>
     </div>
     <div class="actions">
       <button class="btn ghost" id="prev" ${i===0?'disabled':''}>上一台</button>
