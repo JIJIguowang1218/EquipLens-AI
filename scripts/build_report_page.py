@@ -257,11 +257,10 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.mosaic{display:flex;gap:13px;height:100%;min-height:0;overflow:hidden}
-.mcol{display:flex;flex-direction:column;gap:13px;min-height:0;height:100%;
-justify-content:space-between}
-.cell{display:flex;flex-direction:column;min-height:0}
-.cell img{width:100%;display:block;object-fit:cover}
+.mosaic{position:relative;height:100%;min-height:0;width:100%}
+.blk{position:absolute;overflow:hidden;display:flex;flex-direction:column}
+.blk img{display:block;flex:0 0 auto;margin:0 auto}
+.mtext{flex:1 1 auto;min-height:0;width:100%}
 .mtext{background:var(--block);padding:9px 11px;overflow:hidden;flex:0 0 auto;
 display:flex;flex-direction:column;gap:2px;justify-content:flex-start}
 .mt-term{font-size:12px;font-weight:700;line-height:1.25}
@@ -286,37 +285,45 @@ def esc(s) -> str:
 
 
 
-def layout_columns(aspects: list[float], W: float, H: float,
-                   gap: float = 13, min_text: float = 56) -> dict | None:
-    """列式拼贴：按宽高比把图堆进若干列，列内剩余高度均分给文本块。"""
-    n = len(aspects)
-    if n == 0:
-        return None
-    for cols in (3, 2, 4):
-        col_w = (W - gap * (cols - 1)) / cols
-        col_h = [0.0] * cols
-        assign: list[list[int]] = [[] for _ in range(cols)]
-        for i, a in enumerate(aspects):
-            j = min(range(cols), key=lambda k: col_h[k])
-            assign[j].append(i)
-            col_h[j] += col_w / a + gap
-        ok = True
-        plan = []
-        for j, items in enumerate(assign):
-            if not items:
-                plan.append(None); continue
-            img_sum = sum(col_w / aspects[i] for i in items)
-            raw = (H - img_sum - gap * (len(items) - 1)) / len(items)
-            if raw < min_text:
-                ok = False
+def _squarify(weights: list[float], x: float, y: float, w: float, h: float) -> list[tuple]:
+    """squarified treemap：把带权重的矩形铺满 (x,y,w,h)，返回各自 rect。"""
+    total = sum(weights)
+    scaled = [wt / total * w * h for wt in weights]
+    rects: list[tuple] = []
+    i = 0
+    while i < len(scaled):
+        # 取一行（或列）
+        short = min(w, h)
+        row, row_sum, j = [], 0.0, i
+        best = None
+        while j < len(scaled):
+            trial = row + [scaled[j]]
+            ssum = row_sum + scaled[j]
+            side = ssum / short
+            worst = max(max(side / (s_ / side) if s_ else 0,
+                            (s_ / side) / side if s_ else 0) for s_ in trial)
+            if best is not None and worst > best:
                 break
-            text_h = raw  # 文本块吸收该列剩余高度，保证整列填满
-            extra = (H - img_sum - gap * (len(items) - 1)) - text_h * len(items)
-            plan.append({"items": items, "img_sum": img_sum, "text_h": text_h,
-                         "extra": max(0.0, extra)})
-        if ok:
-            return {"cols": cols, "col_w": col_w, "plan": plan}
-    return None
+            best = worst
+            row, row_sum = trial, ssum
+            j += 1
+        side = row_sum / short
+        if w >= h:  # 竖条
+            yy = y
+            for s_ in row:
+                hh = s_ / side if side else 0
+                rects.append((x, yy, side, hh))
+                yy += hh
+            x += side; w -= side
+        else:       # 横条
+            xx = x
+            for s_ in row:
+                ww = s_ / side if side else 0
+                rects.append((xx, y, ww, side))
+                xx += ww
+            y += side; h -= side
+        i = j
+    return rects
 
 
 def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[dict],
@@ -338,33 +345,35 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
         w, h = sizes.get(p["slot"], (4, 3))
         aspects.append(max(0.2, w / max(1, h)))
 
-    W_GRID, H_GRID, GAP = 912, 668, 13
-    plan = layout_columns(aspects, W_GRID, H_GRID, gap=GAP, min_text=56)
-    if not plan:
-        plan = {"cols": len(order), "col_w": (W_GRID - GAP * (len(order) - 1)) / max(1, len(order)),
-                "plan": [{"items": [i], "img_sum": 0, "text_h": 80} for i in range(len(order))]}
+    W_GRID, H_GRID = 912, 668
+    T_TEXT = 86  # 每个文本块的最小高度
+
+    # 解出统一的图高 h：Σ a*h*(h+T) = W*H
+    A = sum(aspects)
+    import math
+    h = (-T_TEXT * A + math.sqrt((T_TEXT * A) ** 2 + 4 * A * W_GRID * H_GRID)) / (2 * A)
+    weights = [a * h * (h + T_TEXT) for a in aspects]
+    rects = _squarify(weights, 0.0, 0.0, float(W_GRID), float(H_GRID))
 
     cols_html = ""
-    for col in plan["plan"]:
-        if not col:
-            continue
-        cells = ""
-        for i in col["items"]:
-            p = order[i]
-            slot = p["slot"]
-            cmf = p.get("cmf") or {}
-            img_h = plan["col_w"] / aspects[i]
-            cells += f"""
-          <div class="cell">
-            <img src="crops/{esc(crops[slot])}" style="height:{img_h:.1f}px">
-            <div class="mtext" style="height:{col['text_h']:.1f}px">
-              <div class="mt-term">{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
-              <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
-              <div class="mt-form">{esc(p.get('form') or '')}</div>
-              <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
-            </div>
-          </div>"""
-        cols_html += f'<div class="mcol" style="width:{plan["col_w"]:.1f}px">{cells}</div>'
+    for i, (rx, ry, rw, rh) in enumerate(rects):
+        if i >= len(order):
+            break
+        p = order[i]
+        slot = p["slot"]
+        cmf = p.get("cmf") or {}
+        img_h = min(rw / aspects[i], max(40.0, rh - 54))
+        left = rw - aspects[i] * img_h
+        cols_html += f"""
+        <div class="blk" style="left:{rx:.1f}px;top:{ry:.1f}px;width:{rw:.1f}px;height:{rh:.1f}px">
+          <img src="crops/{esc(crops[slot])}" style="width:{aspects[i]*img_h:.1f}px;height:{img_h:.1f}px">
+          <div class="mtext">
+            <div class="mt-term">{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
+            <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
+            <div class="mt-form">{esc(p.get('form') or '')}</div>
+            <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
+          </div>
+        </div>"""
 
     mosaic = cols_html
 
