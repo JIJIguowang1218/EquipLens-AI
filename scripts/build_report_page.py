@@ -257,13 +257,18 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.mosaic{position:relative;height:100%;min-height:0;width:100%}
-.blk{position:absolute;overflow:hidden;display:flex;flex-direction:column}
-.blk img{display:block;flex:0 0 auto;margin:0 auto}
-.mtext{flex:1 1 auto;min-height:0;width:100%}
+.mosaic{display:flex;gap:13px;height:100%;min-height:0}
+.imgzone{display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.imgrow{display:flex;gap:0;min-height:0}
+.imgrow img{display:block;flex:0 0 auto}
+.txtzone{flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.blk{display:none}
+.blk img{display:none}
+.mtext{flex:1 1 0;min-height:0;overflow:hidden;margin-bottom:8px}
 .mtext{background:var(--block);padding:9px 11px;overflow:hidden;flex:0 0 auto;
 display:flex;flex-direction:column;gap:2px;justify-content:flex-start}
-.mt-term{font-size:12px;font-weight:700;line-height:1.25}
+.mt-term{font-size:12px;font-weight:700;line-height:1.3;display:flex;gap:5px;align-items:baseline}
+.mt-no{font-family:Consolas,monospace;font-size:9px;color:var(--muted);letter-spacing:.06em}
 .mt-fam{font-size:8.5px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
 .mt-form{font-size:10.5px;line-height:1.35;color:#2b2e33;
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -285,45 +290,37 @@ def esc(s) -> str:
 
 
 
-def _squarify(weights: list[float], x: float, y: float, w: float, h: float) -> list[tuple]:
-    """squarified treemap：把带权重的矩形铺满 (x,y,w,h)，返回各自 rect。"""
-    total = sum(weights)
-    scaled = [wt / total * w * h for wt in weights]
-    rects: list[tuple] = []
-    i = 0
-    while i < len(scaled):
-        # 取一行（或列）
-        short = min(w, h)
-        row, row_sum, j = [], 0.0, i
-        best = None
-        while j < len(scaled):
-            trial = row + [scaled[j]]
-            ssum = row_sum + scaled[j]
-            side = ssum / short
-            worst = max(max(side / (s_ / side) if s_ else 0,
-                            (s_ / side) / side if s_ else 0) for s_ in trial)
-            if best is not None and worst > best:
-                break
-            best = worst
-            row, row_sum = trial, ssum
-            j += 1
-        side = row_sum / short
-        if w >= h:  # 竖条
-            yy = y
-            for s_ in row:
-                hh = s_ / side if side else 0
-                rects.append((x, yy, side, hh))
-                yy += hh
-            x += side; w -= side
-        else:       # 横条
-            xx = x
-            for s_ in row:
-                ww = s_ / side if side else 0
-                rects.append((xx, y, ww, side))
-                xx += ww
-            y += side; h -= side
-        i = j
-    return rects
+def _partitions(n: int):
+    """所有连续行划分。"""
+    from itertools import combinations
+    for k in range(1, n + 1):
+        for cuts in combinations(range(1, n), k - 1):
+            rows, prev = [], 0
+            for c in list(cuts) + [n]:
+                rows.append((prev, c)); prev = c
+            yield rows
+
+
+def layout_split(aspects: list[float], W: float, H: float, img_ratio: float = 0.63,
+                 gap: float = 13) -> dict:
+    """左：图按行铺满；右：文本整列铺满。"""
+    w_img = W * img_ratio
+    n = len(aspects)
+    best = None
+    for rows in _partitions(n):
+        hs = [w_img / sum(aspects[a:b]) for a, b in rows]
+        total = sum(hs) + gap * (len(rows) - 1)
+        if total > H * 1.02:
+            continue
+        score = abs(H - total)
+        if best is None or score < best[0]:
+            best = (score, rows, hs)
+    if not best:
+        rows = [(0, n)]
+        hs = [w_img / sum(aspects)]
+        best = (0, rows, hs)
+    _, rows, hs = best
+    return {"w_img": w_img, "rows": rows, "hs": hs}
 
 
 def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[dict],
@@ -345,37 +342,30 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
         w, h = sizes.get(p["slot"], (4, 3))
         aspects.append(max(0.2, w / max(1, h)))
 
-    W_GRID, H_GRID = 912, 668
-    T_TEXT = 86  # 每个文本块的最小高度
+    W_GRID, H_GRID, GAP = 912, 668, 13
+    lay = layout_split(aspects, W_GRID, H_GRID, gap=GAP)
 
-    # 解出统一的图高 h：Σ a*h*(h+T) = W*H
-    A = sum(aspects)
-    import math
-    h = (-T_TEXT * A + math.sqrt((T_TEXT * A) ** 2 + 4 * A * W_GRID * H_GRID)) / (2 * A)
-    weights = [a * h * (h + T_TEXT) for a in aspects]
-    rects = _squarify(weights, 0.0, 0.0, float(W_GRID), float(H_GRID))
+    left_rows = ""
+    for (a, b), h in zip(lay["rows"], lay["hs"]):
+        imgs = ""
+        for i in range(a, b):
+            imgs += (f'<img src="crops/{esc(crops[order[i]["slot"]])}" '
+                     f'style="height:{h:.1f}px;width:{aspects[i]*h:.1f}px">')
+        left_rows += f'<div class="imgrow" style="height:{h:.1f}px">{imgs}</div>'
 
-    cols_html = ""
-    for i, (rx, ry, rw, rh) in enumerate(rects):
-        if i >= len(order):
-            break
-        p = order[i]
-        slot = p["slot"]
+    texts = ""
+    for i, p in enumerate(order):
         cmf = p.get("cmf") or {}
-        img_h = min(rw / aspects[i], max(40.0, rh - 54))
-        left = rw - aspects[i] * img_h
-        cols_html += f"""
-        <div class="blk" style="left:{rx:.1f}px;top:{ry:.1f}px;width:{rw:.1f}px;height:{rh:.1f}px">
-          <img src="crops/{esc(crops[slot])}" style="width:{aspects[i]*img_h:.1f}px;height:{img_h:.1f}px">
-          <div class="mtext">
-            <div class="mt-term">{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
-            <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
-            <div class="mt-form">{esc(p.get('form') or '')}</div>
-            <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
-          </div>
+        texts += f"""
+        <div class="mtext">
+          <div class="mt-term"><span class="mt-no">{i+1:02d}</span>{esc(p.get('term') or SLOT_CN.get(p['slot'], p['slot']))}</div>
+          <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
+          <div class="mt-form">{esc(p.get('form') or '')}</div>
+          <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
         </div>"""
 
-    mosaic = cols_html
+    mosaic = (f'<div class="imgzone" style="width:{lay["w_img"]:.1f}px">{left_rows}</div>'
+              f'<div class="txtzone">{texts}</div>')
 
     barbits = "".join(
         f'<i style="width:{c["pct"]*100:.2f}%;background:{c["hex"]}"></i>' for c in palette)
