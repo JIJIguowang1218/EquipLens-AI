@@ -200,8 +200,10 @@ panelsEl.addEventListener('pointerdown', e=>{
   const handle = e.target.closest('.h');
   const stage = bx.closest('.stage');
   const r = stage.getBoundingClientRect();
+  const o = cur().parts[i].bbox.slice();
   dragging = {i, el:bx, k:+stage.dataset.k, c:handle?handle.dataset.c:null,
-              sx:e.clientX, sy:e.clientY, r, orig:cur().parts[i].bbox.slice()};
+              sx:e.clientX, sy:e.clientY, r, orig:o,
+              w0:o[2]-o[0], h0:o[3]-o[1]};
   bx.setPointerCapture?.(e.pointerId);
 });
 window.addEventListener('pointermove', e=>{
@@ -209,15 +211,17 @@ window.addEventListener('pointermove', e=>{
   const d = dragging;
   const dx = (e.clientX-d.sx)/d.r.width*1000, dy = (e.clientY-d.sy)/d.r.height*1000;
   let [x1,y1,x2,y2] = d.orig;
-  if(!d.c){ x1+=dx; x2+=dx; y1+=dy; y2+=dy; }
-  else{
-    if(d.c.includes('w')) x1 = Math.min(x2-15, x1+dx);
-    if(d.c.includes('e')) x2 = Math.max(x1+15, x2+dx);
-    if(d.c.includes('n')) y1 = Math.min(y2-10, y1+dy);
-    if(d.c.includes('s')) y2 = Math.max(y1+10, y2+dy);
+  if(!d.c){
+    x1 = clamp(x1+dx, 0, 1000-d.w0); y1 = clamp(y1+dy, 0, 1000-d.h0);
+    x2 = x1+d.w0; y2 = y1+d.h0;
+  } else {
+    if(d.c.includes('w')) x1 = clamp(x1+dx, 0, x2-20);
+    if(d.c.includes('e')) x2 = clamp(x2+dx, x1+20, 1000);
+    if(d.c.includes('n')) y1 = clamp(y1+dy, 0, y2-16);
+    if(d.c.includes('s')) y2 = clamp(y2+dy, y1+16, 1000);
   }
   const p = cur().parts[d.i];
-  p.bbox = [x1,y1,x2,y2].map(v=>Math.round(clamp(v,0,1000)));
+  p.bbox = [x1,y1,x2,y2].map(v=>Math.round(v));
   place(d.el, pct(p.bbox));
   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('drop'));
   if(!d.c){
@@ -235,7 +239,7 @@ window.addEventListener('pointerup', e=>{
     if(t && +t.dataset.k !== d.k){
       const k = +t.dataset.k, p = cur().parts[d.i];
       const st = t.querySelector('.stage').getBoundingClientRect();
-      const w = p.bbox[2]-p.bbox[0], h = p.bbox[3]-p.bbox[1];
+      const w = d.w0 || 160, h = d.h0 || 120;
       const cx = (e.clientX-st.left)/st.width*1000, cy = (e.clientY-st.top)/st.height*1000;
       p.src = cur().imgs[k].src;
       p.bbox = [Math.round(clamp(cx-w/2,0,1000-w)), Math.round(clamp(cy-h/2,0,1000-h)),
