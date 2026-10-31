@@ -87,6 +87,9 @@ def cover_crop(path: Path, w_px: float, h_px: float, tmp: Path) -> Path:
     return out
 
 
+CANVAS_LEFT, CANVAS_TOP = 64, 156   # 画布在页面中的原点（page padding 48 + 居中留白 16 / 40+96+20）
+
+
 def build_slide(prs, data: dict, tmp: Path):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_rect(slide, 0, 0, 1600, 900, fill=PAPER)
@@ -128,6 +131,7 @@ def build_slide(prs, data: dict, tmp: Path):
 
     # ---- 内容块 ----
     for b in data.get("blocks", []):
+        b = dict(b, x=b["x"] + CANVAS_LEFT, y=b["y"] + CANVAS_TOP)
         if b["kind"] == "img":
             src = Path(b["src"])
             if not src.exists():
