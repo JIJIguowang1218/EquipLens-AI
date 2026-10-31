@@ -192,27 +192,19 @@ def crop_parts(src: Path, data: dict, outdir: Path, slug: str,
         if box[2] - box[0] < 24 or box[3] - box[1] < 24:
             continue
         crop = im.crop(box)
-        if crop.size[0] < 160 or crop.size[1] < 120:
-            cx, cy = (box[0] + box[2]) // 2, (box[1] + box[3]) // 2
-            half_w, half_h = max(90, (box[2] - box[0])), max(70, (box[3] - box[1]))
-            box = (max(0, cx - half_w), max(0, cy - half_h),
-                   min(w, cx + half_w), min(h, cy + half_h))
-            crop = im.crop(box)
+        if crop.size[0] < 24 or crop.size[1] < 24:
+            continue
         gray = np.asarray(crop.convert("L"))
-        if gray.mean() < 35:
-            continue  # 全黑区域，判为无效裁图
-        # 统一成 4:3，避免卡片里高度参差
-        cw, ch = crop.size
-        target = 4 / 3
-        if cw / ch > target:
-            new_w = int(ch * target)
-            crop = crop.crop(((cw - new_w) // 2, 0, (cw - new_w) // 2 + new_w, ch))
-        else:
-            new_h = int(cw / target)
-            top = max(0, (ch - new_h) // 2)
-            crop = crop.crop((0, top, cw, top + new_h))
+        if float(gray.std()) < 4:
+            continue  # 无纹理（纯色块），判为无效裁图
+        # 严格按框裁切，不做比例归一化；只放大、不改变长宽比
+        long_side = max(crop.size)
+        if long_side < 900:
+            k = 900 / long_side
+            crop = crop.resize((max(1, int(crop.size[0] * k)),
+                                max(1, int(crop.size[1] * k))), Image.LANCZOS)
         name = f"{slug}-{p['slot']}.jpg"
-        crop.resize((720, 540), Image.LANCZOS).save(outdir / name, quality=90)
+        crop.save(outdir / name, quality=92)
         paths[p["slot"]] = name
     return paths
 
@@ -247,8 +239,9 @@ display:flex;justify-content:space-between}
 /* ---- body ---- */
 main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px;overflow:hidden}
 .left{display:flex;flex-direction:column;gap:20px;height:668px}
-.hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;flex:0 0 auto;align-self:flex-start;justify-self:center;margin:0 auto}
-.hero img{width:100%;height:100%;object-fit:contain}
+.hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;flex:0 0 auto;
+align-self:flex-start;width:540px;height:430px;display:flex;align-items:center;justify-content:center}
+.hero img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;display:block}
 .mark{position:absolute;border:1px solid var(--accent);background:rgba(255,255,255,.06)}
 .mark b{position:absolute;top:-9px;left:-9px;width:18px;height:18px;background:var(--accent);
 color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;
@@ -264,11 +257,11 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,minmax(0,1fr));gap:16px;height:100%;min-height:0;overflow:hidden}
-.card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:118px minmax(0,1fr);
+.grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;height:100%;min-height:0;overflow:hidden}
+.card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:176px minmax(0,1fr);
 overflow:hidden;min-height:0}
-.card .shot{position:relative;overflow:hidden;background:#f1efe9}
-.card .shot img{width:100%;height:100%;object-fit:cover}
+.card .shot{position:relative;overflow:hidden;background:#efece5;display:flex;align-items:center;justify-content:center;padding:8px}
+.card .shot img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;display:block;border:1px solid rgba(0,0,0,.10);background:#fff}
 .card .shot.empty{display:flex;align-items:center;justify-content:center;background:#f4f2ec;border-bottom:1px solid var(--line)}
 .card .na{font-size:11px;color:#a9a59b;letter-spacing:.1em}
 .card .no{position:absolute;top:8px;left:8px;font-size:9px;letter-spacing:.12em;
@@ -309,6 +302,14 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
     tags = u.get("style_tags", [])
     accent = accent_of(palette)
 
+    hw, hh = 540, 430
+    if hero_size:
+        k = min(hw / hero_size[0], hh / hero_size[1])
+        disp_w, disp_h = hero_size[0] * k, hero_size[1] * k
+    else:
+        disp_w, disp_h = hw, hh
+    off_x, off_y = (hw - disp_w) / 2, (hh - disp_h) / 2
+
     marks = ""
     hero_src = (data.get("assets") or {}).get("hero")
     parts_vis = [x for x in data.get("parts", [])
@@ -326,8 +327,12 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
             y2 = (y2 / 1000 * H - by1) / bh * 1000
             x1, x2 = max(0, min(1000, x1)), max(0, min(1000, x2))
             y1, y2 = max(0, min(1000, y1)), max(0, min(1000, y2))
-        marks += (f'<div class="mark" style="left:{x1/10:.2f}%;top:{y1/10:.2f}%;'
-                  f'width:{(x2-x1)/10:.2f}%;height:{(y2-y1)/10:.2f}%"><b>{i:02d}</b></div>')
+        mx1 = off_x + x1 / 1000 * disp_w
+        my1 = off_y + y1 / 1000 * disp_h
+        mx2 = off_x + x2 / 1000 * disp_w
+        my2 = off_y + y2 / 1000 * disp_h
+        marks += (f'<div class="mark" style="left:{mx1:.1f}px;top:{my1:.1f}px;'
+                  f'width:{mx2-mx1:.1f}px;height:{my2-my1:.1f}px"><b>{i:02d}</b></div>')
 
     cards = ""
     order = [p for p in data.get("parts", [])
@@ -361,15 +366,6 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
 
     lines = "".join(f"<li>{esc(x)}</li>" for x in (u.get("character_lines") or [])[:3])
 
-    hw, hh = 540, 430
-    if hero_size:
-        asp = hero_size[0] / max(1, hero_size[1])
-        if asp >= hw / hh:
-            hero_w, hero_h = hw, int(hw / asp)
-        else:
-            hero_w, hero_h = int(hh * asp), hh
-    else:
-        hero_w, hero_h = hw, hh
 
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <title>{esc(v.get('brand'))} {esc(v.get('model'))}</title>
@@ -391,7 +387,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
 
   <main>
     <div class="left">
-      <div class="hero" style="width:{hero_w}px;height:{hero_h}px"><img src="{esc(hero_rel)}" alt="">{marks}</div>
+      <div class="hero"><img src="{esc(hero_rel)}" alt="">{marks}</div>
       <div class="textblock">
         <div class="eyebrow">Front Face / 前脸</div>
         <div class="lead">{esc(u.get('gesture'))}</div>
