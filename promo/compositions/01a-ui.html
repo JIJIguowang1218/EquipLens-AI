@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>UI 演示</title>
+<style>
+@font-face{font-family:"NotoSC";src:url("assets/fonts/NotoSansSC-VF.ttf") format("truetype");font-weight:100 900}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#0B0B0C}
+#root{position:absolute;inset:0;font-family:"NotoSC",sans-serif;color:#F2F1EE}
+.stage{position:absolute;inset:0;background:
+  radial-gradient(1200px 700px at 50% 40%, #17171A 0%, #0B0B0C 62%)}
+.grid{position:absolute;inset:0;opacity:.5;background-image:
+  linear-gradient(#1D1D20 1px,transparent 1px),linear-gradient(90deg,#1D1D20 1px,transparent 1px);
+  background-size:96px 96px}
+.win{position:absolute;left:120px;top:88px;width:1400px;height:875px;overflow:hidden;
+  border:1px solid #2A2A2E;box-shadow:0 60px 160px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.04) inset;
+  background:#fff}
+.win img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.cursor{position:absolute;left:0;top:0;width:46px;height:46px;transform:translate(-6px,-4px);filter:drop-shadow(0 6px 18px rgba(0,0,0,.55))}
+.ring{position:absolute;width:26px;height:26px;border:2px solid rgba(255,255,255,.9);border-radius:50%;
+  transform:translate(-50%,-50%);opacity:0}
+.cap{position:absolute;left:120px;bottom:58px;font-size:26px;letter-spacing:.04em;color:#8A8A8F}
+.cap b{color:#F2F1EE;font-weight:600}
+.tag{position:absolute;right:120px;top:60px;font-size:20px;letter-spacing:.18em;color:#5E5E63}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="uidemo" data-start="0" data-duration="13" data-width="1920" data-height="1080">
+  <div class="stage"></div>
+  <div class="grid"></div>
+  <div class="tag" id="u-tag">REAL INTERFACE · NOT A MOCKUP</div>
+
+  <div class="win" id="u-win">
+    <img id="u-shot-a" src="assets/ui/ui-00-empty.png">
+    <img id="u-shot-b" src="assets/ui/ui-01-start.png" style="opacity:0">
+    <img id="u-shot-c" src="assets/ui/ui-02-result.png" style="opacity:0">
+  </div>
+
+  <div class="ring" id="u-ring1" style="left:956px;top:420px"></div>
+  <div class="ring" id="u-ring2" style="left:995px;top:563px"></div>
+  <div class="ring" id="u-ring3" style="left:543px;top:848px"></div>
+
+  <svg class="cursor" id="u-cur" viewBox="0 0 40 44" fill="none">
+    <path d="M4 3 L34 24 L20 26 L27 40 L21 43 L14 29 L4 38 Z" fill="#FFFFFF" stroke="#0B0B0C" stroke-width="1.6"/>
+  </svg>
+
+  <div class="cap" id="u-cap">真实界面　·　<b>点一下，它就开始干活</b></div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+window.__timelines = window.__timelines || {};
+const tl = gsap.timeline({ paused: true });
+
+// 窗口入场
+tl.fromTo("#u-win", { opacity: 0, y: 46, scale: .965 },
+  { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "expo.out" }, 0.15);
+tl.fromTo("#u-tag", { opacity: 0 }, { opacity: 1, duration: .6 }, 0.9);
+
+// 光标路径
+const cur = { x: 1780, y: 980 };
+const setCur = () => gsap.set("#u-cur", { x: cur.x, y: cur.y });
+const moveTo = (t, x, y, dur = .55, ease = "power3.inOut") => {
+  tl.to(cur, { x, y, duration: dur, ease, onUpdate: setCur }, t);
+};
+setCur(); tl.set("#u-cur", { opacity: 1 }, 0.9);
+
+moveTo(1.0, 956, 420);                  // 类别输入框
+tl.fromTo("#u-ring1", { scale: .3, opacity: .9 }, { scale: 2.6, opacity: 0, duration: .55, ease: "power2.out" }, 1.62);
+tl.to("#u-win", { scale: .985, duration: .1, yoyo: true, repeat: 1, ease: "power2.inOut" }, 1.62);
+
+// 填入类别（截图切换）
+tl.to("#u-shot-a", { opacity: 0, duration: .35 }, 1.85);
+tl.set("#u-shot-b", { opacity: 1 }, 1.86);
+
+moveTo(2.6, 995, 563);                  // 部位输入框
+tl.fromTo("#u-ring2", { scale: .3, opacity: .9 }, { scale: 2.6, opacity: 0, duration: .55, ease: "power2.out" }, 3.2);
+
+moveTo(3.9, 543, 848);                  // 下一步按钮
+tl.fromTo("#u-ring3", { scale: .3, opacity: .9 }, { scale: 2.8, opacity: 0, duration: .6, ease: "power2.out" }, 4.5);
+tl.to("#u-shot-b", { opacity: 0, duration: .5 }, 4.7);
+tl.set("#u-shot-c", { opacity: 1 }, 4.72);
+tl.to("#u-win", { scale: 1.02, duration: .5, ease: "power2.out" }, 4.7);
+
+// 相机推近结果页
+tl.to("#u-win", { scale: 1.16, x: -110, y: -60, duration: 2.2, ease: "power2.inOut" }, 5.6);
+tl.to("#u-cur", { opacity: 0, duration: .4 }, 5.8);
+tl.fromTo("#u-cap", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .5 }, 6.4);
+
+// 收尾
+tl.to("#u-win", { scale: 1.0, x: 0, y: 0, duration: 1.6, ease: "power2.inOut" }, 9.2);
+tl.to("#u-tag", { opacity: 0, duration: .5 }, 9.4);
+
+window.__timelines["uidemo"] = tl;
+tl.seek(0);
+</script>
+</body>
+</html>
