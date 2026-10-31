@@ -168,6 +168,10 @@ def validate_analysis(data: dict, used, vocab: dict, tax: dict,
         if not (isinstance(bbox, list) and len(bbox) == 4
                 and all(isinstance(x, (int, float)) and 0 <= x <= 1000 for x in bbox)):
             errs.append(f"{slot} bbox 非法")
+        elif not (bbox[0] < bbox[2] and bbox[1] < bbox[3]):
+            p["bbox"] = [min(bbox[0], bbox[2]), min(bbox[1], bbox[3]),
+                         max(bbox[0], bbox[2]), max(bbox[1], bbox[3])]
+            errs.append(f"{slot} bbox 顺序错误（应为 [x1,y1,x2,y2] 且 x1<x2, y1<y2）")
     return errs
 
 

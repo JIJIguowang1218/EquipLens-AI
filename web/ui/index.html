@@ -167,8 +167,8 @@ h1 em{font-style:normal;color:var(--muted)}
 /* ---------- results ---------- */
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px}
 .frame{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-  aspect-ratio:16/9;box-shadow:0 10px 30px rgba(0,0,0,.06)}
-.frame iframe{width:1600px;height:900px;border:0;transform:scale(.36);transform-origin:top left}
+  aspect-ratio:16/9;width:100%;max-width:1124px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.frame iframe{width:1600px;height:900px;border:0;transform:scale(.7025);transform-origin:top left}
 @media(max-width:900px){.gallery{grid-template-columns:1fr}.frame iframe{transform:scale(.52)}}
 </style>
 </head>
@@ -519,7 +519,7 @@ function step5(){
     <div class="phead2"><h2>排版完成</h2>
       <span class="hint">${built.length? `${i+1} / ${built.length}` : '无页面'} · 页内可点右下角「编辑布局」微调</span></div>
     ${cur? `<div class="frame" style="aspect-ratio:auto;height:calc(100vh - 330px)">
-      <iframe src="/files/${state.runId}/${cur.file}" style="width:100%;height:100%;transform:none"></iframe>
+      <iframe src="/files/${state.runId}/${cur.file}" scrolling="no"></iframe>
     </div>` : '<p class="hint">没有生成页面</p>'}
     <div class="actions">
       <button class="btn ghost" id="prev" ${i<=0?'disabled':''}>上一页</button>
