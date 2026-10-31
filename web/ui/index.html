@@ -120,6 +120,28 @@ h1 em{font-style:normal;color:var(--muted)}
 .link{background:none;border:0;color:var(--accent);cursor:pointer;font-size:14px;margin-left:8px}
 
 /* ---------- vehicles ---------- */
+.harvest{padding:10px 0 30px}
+.spinner{display:flex;gap:6px;margin-bottom:18px}
+.spinner i{width:8px;height:8px;border-radius:50%;background:var(--ink);opacity:.25;
+  animation:bob 1.1s infinite}
+.spinner i:nth-child(2){animation-delay:.15s}.spinner i:nth-child(3){animation-delay:.3s}
+@keyframes bob{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+.hstage{font-size:15px;color:var(--ink);margin-bottom:12px}
+.hbar{height:3px;background:#efeff1;border-radius:2px;overflow:hidden;margin-bottom:22px}
+.hbar span{display:block;height:100%;background:var(--ink);transition:width .6s var(--ease)}
+.hlist{display:flex;flex-direction:column;gap:8px}
+.hitem{display:flex;gap:14px;align-items:baseline;font-size:13.5px;color:#3a3a3c;
+  padding:8px 0;border-bottom:1px solid var(--line)}
+.hitem b{font-weight:600;min-width:190px}
+.hitem span{color:var(--muted);font-size:12px;min-width:70px}
+.hitem em{color:var(--muted);font-style:normal;margin-left:auto;font-size:12px}
+.vcard.out{opacity:.38}
+.vcard .x{position:absolute;right:10px;top:10px;width:26px;height:26px;border-radius:50%;
+  border:0;background:#fff;color:#8e8e93;font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.vcard .x:hover{color:#ff3b30}
+.vcard .thumb{border-radius:12px;object-fit:cover;background:#eee}
+.vcard .thumb.empty{display:flex;align-items:center;justify-content:center;color:#a1a1a6;font-size:12px}
+.vcard .evi{font-size:11.5px;color:#a1a1a6;margin-top:8px;line-height:1.4}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:28px}
 .vcard{
   background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;
@@ -171,7 +193,7 @@ const PARTS = [
 ];
 const state = {step:1, category:null, parts:[], count:3, catalog:null,
          selected:[], selMeta:[], cand:null, candJob:null,
-         heroes:{}, runId:null, job:null};
+         harvest:null, harvestJob:null, excluded:new Set(), runId:null, job:null};
 const app = document.getElementById('app');
 const dots = document.getElementById('dots');
 const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -263,7 +285,8 @@ function step1(){
   function refresh(){
     const hit = state.category ? matchVehicles().length : 0;
     document.getElementById('cathint').textContent =
-      state.category ? (hit? `匹配 ${hit} 台` : '库里暂无该类目')
+      state.category ? (hit? `库内已有 ${hit} 台相关素材，其余靠实时检索补齐`
+                            : '库里暂无该类目，将全部走实时检索')
                      : '输入后自动匹配库内车型';
     document.getElementById('next').disabled = !(state.category && state.parts.length);
   }
@@ -278,7 +301,7 @@ function step1(){
 
   document.getElementById('minus').onclick = ()=>{ state.count=Math.max(1,state.count-1); render(); };
   document.getElementById('plus').onclick = ()=>{ state.count=Math.min(20,state.count+1); render(); };
-  document.getElementById('next').onclick = ()=>{ state.step=2; startCandidates(); };
+  document.getElementById('next').onclick = ()=>{ state.step=2; startHarvest(); };
 }
 
 const PART_ALIAS = {
@@ -313,125 +336,113 @@ function paintPicked(){
   if(nx) nx.disabled = !(state.category && state.parts.length);
 }
 
-/* ---------------- 2 清单（实时检索） ---------------- */
-async function startCandidates(){
-  state.cand = {status:'running', stage:'正在检索…', candidates:[]};
+/* ---------------- 2 检索（候选 + 现场爬图） ---------------- */
+async function startHarvest(){
+  state.harvest = {status:'running', stage:'准备中', candidates:[], progress:0, articles:0};
   render();
-  const r = await fetch('/api/candidates',{method:'POST',headers:{'Content-Type':'application/json'},
+  const r = await fetch('/api/harvest',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({category: state.category, parts: state.parts})});
-  state.candJob = (await r.json()).job_id;
-  pollCandidates();
+  state.harvestJob = (await r.json()).job_id;
+  pollHarvest();
 }
 
-async function pollCandidates(){
-  const r = await fetch('/api/candidates/'+state.candJob);
-  state.cand = await r.json();
+async function pollHarvest(){
+  const r = await fetch('/api/harvest/'+state.harvestJob);
+  state.harvest = await r.json();
+  if(state.harvest.status==='done'){ state.step = 3; initSelection(); render(); return; }
+  if(state.harvest.status==='fail'){ render(); return; }
   if(state.step===2) render();
-  if(state.cand.status==='running') setTimeout(pollCandidates, 1500);
+  setTimeout(pollHarvest, 1200);
 }
 
 function step2(){
-  const c = state.cand || {status:'running', stage:'正在检索…', candidates:[]};
-  const rows = (c.candidates||[]).map(x=>{
-    const id = x.brand+' '+x.model;
-    return `<div class="crow ${state.selected.includes(id)?'on':''}" data-id="${esc(id)}"
-                 data-brand="${esc(x.brand)}" data-model="${esc(x.model)}">
-      <div class="pick"><i></i></div>
-      <div class="who"><b>${esc(x.brand)}</b> ${esc(x.model)}</div>
-      <div class="rel">${esc(x.relation||'')}</div>
-      <div class="why">${esc(x.reason||'')}
-        ${x.evidence?`<span class="ev">来源：${esc(x.evidence.slice(0,42))}</span>`:''}</div>
-      <div class="cnt">${x.mentions||0}</div>
-    </div>`;
-  }).join('');
-
+  const h = state.harvest || {stage:'准备中', progress:0, candidates:[]};
+  const n = h.candidates.length;
   app.innerHTML = `<section class="step">
-    <div class="phead2"><h2>候选清单</h2>
-      <span class="hint">${c.status==='running'? (c.stage||'检索中') :
-        `检索到 ${c.candidates.length} 台 · 来自 ${c.articles||0} 篇文章`}</span>
+    <div class="phead2"><h2>正在检索</h2>
+      <span class="hint">${h.articles? `已读 ${h.articles} 篇文章` : '打开浏览器抓取搜索结果'}</span></div>
+    <div class="harvest">
+      <div class="spinner"><i></i><i></i><i></i></div>
+      <div class="hstage">${esc(h.stage||'')}</div>
+      <div class="hbar"><span style="width:${Math.min(100, n? n/10*100 : 6)}%"></span></div>
+      <div class="hlist">
+        ${(h.candidates||[]).map(c=>`<div class="hitem">
+          <b>${esc(c.brand)} ${esc(c.model)}</b>
+          <span>${esc(c.relation||'')}</span>
+          <em>${c.status==='ok'?'✓ '+c.images.length+' 图':(c.status==='pending'?'…':'无图')}</em>
+        </div>`).join('')}
+      </div>
     </div>
-    ${c.status==='running' ? `<div class="skel">
-        ${[0,1,2,3,4].map(()=>`<div class="srow"><i></i><span></span></div>`).join('')}
-      </div>` : ''}
-    ${c.status==='fail' ? `<div class="err">${esc(c.error||'检索失败')}
-        <button class="link" id="retry">重试</button></div>` : ''}
-    ${rows? `<div class="clist">${rows}</div>` : ''}
-    <div class="actions">
-      <button class="btn ghost" id="back">上一步</button>
-      <button class="btn" id="next" ${state.selected.length?'':'disabled'}>
-        下一步 · 确认素材（已选 ${state.selected.length}）</button>
-    </div>
+    ${h.status==='fail'? `<div class="err">${esc(h.error||'检索失败')}
+      <button class="link" id="retry">重试</button></div>` : ''}
+    <div class="actions"><button class="btn ghost" id="back" ${h.status==='running'?'disabled':''}>上一步</button></div>
   </section>`;
-
-  if(document.getElementById('retry')) document.getElementById('retry').onclick = startCandidates;
+  const rt = document.getElementById('retry');
+  if(rt) rt.onclick = startHarvest;
   document.getElementById('back').onclick = ()=>{ state.step=1; render(); };
-  const nx = document.getElementById('next');
-  if(nx) nx.onclick = ()=>{ state.step=3; loadHeroes(); };
-  const cl = document.querySelector('.clist');
-  if(cl) cl.onclick = e=>{
-    const row = e.target.closest('[data-id]'); if(!row) return;
-    const id = row.dataset.id;
-    if(state.selected.includes(id)){
-      state.selected = state.selected.filter(x=>x!==id);
-      state.selMeta = state.selMeta.filter(x=>x.id!==id);
-    } else {
-      state.selected.push(id);
-      state.selMeta.push({id, brand:row.dataset.brand, model:row.dataset.model});
-    }
-    render();
-  };
 }
 
-/* ---------------- 3 素材 ---------------- */
-async function loadHeroes(){
-  for(const s0 of state.selMeta){
-    const m = s0.id;
-    if(state.heroes[m]) continue;
-    const r = await fetch('/api/heroes?model='+encodeURIComponent(m));
-    const d = await r.json();
-    state.heroes[m] = d.candidates;
-  }
-  render();
+/* ---------------- 3 素材确认 ---------------- */
+function initSelection(){
+  state.excluded = new Set();
+  (state.harvest.candidates||[]).forEach(c=>{
+    if(!c.images || !c.images.length) state.excluded.add(c.brand+' '+c.model);
+  });
 }
 
 function step3(){
+  const list = state.harvest.candidates || [];
+  const kept = list.filter(c=>!state.excluded.has(c.brand+' '+c.model));
   app.innerHTML = `<section class="step">
     <div class="phead2"><h2>素材确认</h2>
-      <span class="hint">点图片换一张；系统已按"整车、可辨识"筛过</span></div>
-    <div class="grid" id="hs">
-      ${state.selMeta.map((s0,i)=>{
-        const m = s0.id;
-        const c = (state.heroes[m]||[])[0];
-        const src = c ? (c.file_path ? '/'+c.file_path : c.url) : '';
-        return `<div class="vcard">
-          <div class="n">${i+1}</div><div class="t">${esc(m)}</div>
-          <div class="m">${c?esc(c.view_angle):'无素材'}</div>
-          ${src?`<img class="thumb" src="${esc(src)}" data-m="${esc(m)}">`:
-                 `<div class="thumb"></div>`}
+      <span class="hint">${kept.length} / ${list.length} 台参与 · 每台已现场抓图，点图片可换</span></div>
+    <div class="grid">
+      ${list.map(c=>{
+        const id = c.brand+' '+c.model;
+        const out = state.excluded.has(id);
+        const img = (c.images||[])[0];
+        return `<div class="vcard ${out?'out':''}" data-id="${esc(id)}">
+          <button class="x" data-del="${esc(id)}" title="不参与">×</button>
+          <div class="t">${esc(c.brand)} ${esc(c.model)}</div>
+          <div class="m">${esc(c.relation||'')} · ${esc((c.reason||'').slice(0,22))}</div>
+          ${img? `<img class="thumb" src="${esc(img.url)}" data-cycle="${esc(id)}">`
+               : `<div class="thumb empty">未取到图</div>`}
+          <div class="evi">${esc((c.evidence||'').slice(0,34))}</div>
         </div>`;
       }).join('')}
     </div>
     <div class="actions">
       <button class="btn ghost" id="back">上一步</button>
-      <button class="btn" id="next">开始分析 · ${state.selected.length} 台</button>
+      <button class="btn" id="next" ${kept.length?'':'disabled'}>开始分析 · ${kept.length} 台</button>
     </div>
   </section>`;
-  document.getElementById('hs').onclick = e=>{
-    const img = e.target.closest('[data-m]'); if(!img) return;
-    const m = img.dataset.m, arr = state.heroes[m]||[];
-    if(arr.length){ arr.push(arr.shift()); render(); }
-  };
+
   document.getElementById('back').onclick = ()=>{ state.step=2; render(); };
   document.getElementById('next').onclick = startRun;
+  app.querySelectorAll('[data-del]').forEach(b=>{
+    b.onclick = e=>{
+      e.stopPropagation();
+      const id = b.dataset.del;
+      if(state.excluded.has(id)) state.excluded.delete(id); else state.excluded.add(id);
+      render();
+    };
+  });
+  app.querySelectorAll('[data-cycle]').forEach(im=>{
+    im.onclick = ()=>{
+      const id = im.dataset.cycle;
+      const c = list.find(x=>x.brand+' '+x.model===id);
+      if(c && c.images && c.images.length>1){ c.images.push(c.images.shift()); render(); }
+    };
+  });
 }
 
 /* ---------------- 4 分析 ---------------- */
 async function startRun(){
-  const vehicles = state.selMeta.map(s0=>{
-    const hero = (state.heroes[s0.id]||[])[0];
-    return {model_name: s0.model, brand: s0.brand, category: state.category,
-            hero: hero ? (hero.file_path || hero.url) : null};
-  }).filter(v=>v.hero);
+  const vehicles = (state.harvest.candidates||[])
+    .filter(c=>!state.excluded.has(c.brand+' '+c.model))
+    .map(c=>({model_name: c.model, brand: c.brand, category: state.category,
+              hero: (c.images&&c.images[0]) ? c.images[0].url : null}))
+    .filter(v=>v.hero);
   const r = await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({vehicles, parts: state.parts.filter(k=>k!=='front_face')})});
   const d = await r.json();

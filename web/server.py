@@ -167,6 +167,7 @@ def api_catalog():
 
 
 CAND: dict[str, dict] = {}
+HARVEST: dict[str, dict] = {}
 
 
 def _reason_fallback(c: dict, category: str = "") -> dict:
@@ -261,6 +262,76 @@ def _gen_candidates(job_id: str, category: str, parts: list[str]):
         job.update(status="done", candidates=items, articles=len(res.get("articles") or []))
     except Exception as e:  # noqa: BLE001
         job.update(status="fail", error=str(e)[:200])
+
+
+def _harvest(job_id: str, category: str, parts: list[str]):
+    """一步到位：检索候选 → 写关联理由 → 现场爬图（走 imagesearch 管线）。"""
+    job = HARVEST[job_id]
+    try:
+        from equiplens import roster, imagesearch
+        job["stage"] = "检索候选车型（浏览器抓取中）"
+        res = roster.generate_roster(category, DATA, max_articles=6, top_n=10)
+        cands = res.get("candidates") or []
+        job["articles"] = len(res.get("articles") or [])
+        if not cands:
+            job.update(status="fail", error="没有检索到候选，可能被拦截")
+            return
+        job["stage"] = "生成关联理由"
+        try:
+            reasons = _reasons_llm(category, parts, cands)
+        except Exception:
+            reasons = [_reason_fallback(c, category) for c in cands]
+
+        items = []
+        for i, (c, r) in enumerate(zip(cands, reasons), 1):
+            srcs = c.get("sources") or []
+            item = {"brand": c.get("brand", ""), "model": c.get("model", ""),
+                    "mentions": c.get("mentions", 0),
+                    "relation": r.get("relation", "同类目"),
+                    "reason": r.get("reason", ""),
+                    "evidence": (srcs[0].get("title", "") if srcs else ""),
+                    "evidence_url": (srcs[0].get("url", "") if srcs else ""),
+                    "images": [], "status": "pending"}
+            job["stage"] = f"爬取主图 {i}/{len(cands)} · {item['brand']} {item['model']}"
+            job["progress"] = i
+            try:
+                shots, st = imagesearch.search_model_images(item["model"], limit=5)
+                imgs = [{"url": x.get("url"), "title": (x.get("title") or "")[:50],
+                         "w": x.get("width") or 0, "h": x.get("height") or 0}
+                        for x in shots if x.get("url")]
+                imgs.sort(key=lambda x: -(x["w"] * x["h"]))
+                item["images"] = imgs[:4]
+                item["status"] = "ok" if imgs else "noimg"
+                item["channel"] = st
+            except Exception as e:  # noqa: BLE001
+                item["status"] = "err"
+                item["error"] = str(e)[:80]
+            items.append(item)
+            job["candidates"] = items
+        job.update(status="done", stage="完成")
+    except Exception as e:  # noqa: BLE001
+        job.update(status="fail", error=str(e)[:200])
+
+
+@app.post("/api/harvest")
+def api_harvest(payload: dict):
+    category = (payload.get("category") or "").strip()
+    if not category:
+        raise HTTPException(400, "缺类目")
+    job_id = uuid.uuid4().hex[:8]
+    HARVEST[job_id] = {"status": "running", "stage": "准备中", "candidates": [],
+                       "category": category, "progress": 0, "articles": 0}
+    threading.Thread(target=_harvest, args=(job_id, category, payload.get("parts") or []),
+                     daemon=True).start()
+    return {"job_id": job_id}
+
+
+@app.get("/api/harvest/{job_id}")
+def api_harvest_status(job_id: str):
+    job = HARVEST.get(job_id)
+    if not job:
+        raise HTTPException(404, "任务不存在")
+    return job
 
 
 @app.post("/api/candidates")
