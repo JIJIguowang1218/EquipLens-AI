@@ -80,6 +80,8 @@ justify-content:center;flex-direction:column;gap:14px;z-index:20}
   <div class="chips" id="chips"></div>
   <div class="spacer"></div>
   <button class="btn ghost" id="prev">上一台</button>
+  <button class="btn ghost" id="copy">复制本台 JSON</button>
+  <span id="status" style="font-size:12px;color:#8b93a1;min-width:96px;text-align:right"></span>
   <button class="btn" id="ok">这张好了 → 下一台</button>
 </div>
 <div class="wrap">
@@ -184,6 +186,18 @@ window.addEventListener('pointermove',e=>{
   dump();
 });
 window.addEventListener('pointerup',()=>{drag=null;});
+const SERVER = 'http://127.0.0.1:8766/save';
+async function persist(){
+  const d=cur();
+  const payload={slug:d.slug,parts:d.parts.map(p=>({slot:p.slot,bbox:p.bbox}))};
+  try{
+    const r=await fetch(SERVER,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)});
+    if(r.ok){ setStatus('已保存到本地'); return; }
+  }catch(e){}
+  download(); setStatus('浏览器下载');
+}
+function setStatus(t){document.getElementById('status').textContent=t;}
 function download(){
   const d=cur();
   const blob=new Blob([JSON.stringify({slug:d.slug,parts:d.parts.map(p=>({slot:p.slot,bbox:p.bbox}))},null,1)],{type:'application/json'});
@@ -192,7 +206,7 @@ function download(){
   document.body.appendChild(a); a.click(); a.remove();
 }
 document.getElementById('ok').onclick=()=>{
-  download(); done.add(idx);
+  persist(); done.add(idx);
   if(idx<DATA.length-1){ idx++; render(); }
   else{
     renderChips();
@@ -201,6 +215,10 @@ document.getElementById('ok').onclick=()=>{
   }
 };
 document.getElementById('prev').onclick=()=>{if(idx>0){idx--;render();}};
+document.getElementById('copy').onclick=async()=>{
+  await navigator.clipboard.writeText(out.value);
+  setStatus('已复制，粘贴给助手');
+};
 document.getElementById('again').onclick=()=>{panel.classList.remove('on');idx=0;render();};
 img.onload=draw;
 render();
