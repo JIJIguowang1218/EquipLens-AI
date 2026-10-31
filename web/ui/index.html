@@ -55,8 +55,22 @@ nav{
 .hitem2:hover .hdel{opacity:1}
 .hdel:hover{color:#ff3b30}
 .hgroup{font-size:11px;color:#a1a1a6;padding:10px 10px 4px}
+.hren{position:absolute;right:26px;top:50%;transform:translateY(-50%);font-style:normal;
+  color:#c7c7cc;font-size:12px;opacity:0;transition:.15s;cursor:pointer}
+.hitem2:hover .hren{opacity:1}
+.hren:hover{color:var(--ink)}
+.setlist{border-top:1px solid var(--line)}
+.setrow{display:flex;justify-content:space-between;gap:20px;padding:16px 2px;
+  border-bottom:1px solid var(--line);font-size:14px}
+.setrow span{color:var(--muted)}
+.setrow b{font-weight:500;text-align:right;word-break:break-all}
 .hempty{font-size:12.5px;color:#a1a1a6;padding:8px}
 .sidefoot{font-size:11px;color:#a1a1a6;padding:8px}
+.sidefoot a{cursor:pointer;color:var(--muted)}
+.sidefoot a:hover{color:var(--ink)}
+.hsearch{height:32px;border-radius:8px;border:1px solid var(--line);background:#fff;
+  padding:0 10px;font-size:12.5px;outline:none;font-family:inherit}
+.hsearch:focus{border-color:#c7c7cc}
 .main{flex:1;min-width:0;display:flex;flex-direction:column}
 .topbar{height:56px;display:flex;align-items:center;gap:14px;padding:0 28px;
   border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(255,255,255,.8);
@@ -217,9 +231,10 @@ h1 em{font-style:normal;color:var(--muted)}
       <span>EquipLens</span>
     </div>
     <button class="newbtn" id="newbtn">＋ 新建分析</button>
+    <input id="hsearch" class="hsearch" placeholder="搜索历史">
     <div class="sidelabel">历史</div>
     <div class="hist" id="hist"><div class="hempty">加载中…</div></div>
-    <div class="sidefoot">本地运行 · v0.1</div>
+    <div class="sidefoot"><a id="tosettings">设置</a> · 本地运行</div>
   </aside>
   <main class="main">
     <div class="topbar">
@@ -247,41 +262,69 @@ function paintDots(hide){
   dots.innerHTML = hide ? '' : [1,2,3,4,5].map(i=>`<i class="dot ${i===state.step?'on':''}"></i>`).join('');
 }
 
+let HIST = [];
 async function loadHistory(){
-  const el = document.getElementById('hist');
   try{
     const r = await fetch('/api/history');
-    const d = await r.json();
-    if(!d.items.length){ el.innerHTML = '<div class="hempty">还没有分析记录</div>'; return; }
-    const day = t0 => {
-      const today = new Date().toISOString().slice(0,10);
-      const d0 = (t0||'').slice(0,10);
-      return d0===today ? '今天' : '更早';
-    };
-    let cur = '';
-    const rows = d.items.map(it=>{
-      const g = day(it.created_at);
-      const head = g!==cur ? (cur=g, `<div class="hgroup">${g}</div>`) : '';
-      return head + `<div class="hitem2 ${it.id===state.detailRunId?'on':''}"
-        data-run="${esc(it.id)}">
-        <b>${esc(it.category||'未命名')}</b>
-        <span>${esc((it.created_at||'').slice(5))} · ${it.pages} 页</span>
-        <i class="hdel" data-del="${esc(it.id)}" title="删除">×</i></div>`;
-    }).join('');
-    el.innerHTML = rows;
-    el.onclick = async e=>{
-      const del = e.target.closest('[data-del]');
-      if(del){
-        e.stopPropagation();
-        if(!confirm('删除这条记录？')) return;
-        await fetch('/api/run/'+del.dataset.del,{method:'DELETE'});
-        if(state.detailRunId===del.dataset.del){ state.view='new'; state.step=1; render(); }
-        loadHistory(); return;
+    HIST = (await r.json()).items;
+    drawHistory();
+  }catch(err){
+    document.getElementById('hist').innerHTML = '<div class="hempty">历史加载失败</div>';
+  }
+}
+
+function drawHistory(){
+  const el = document.getElementById('hist');
+  const q = (document.getElementById('hsearch').value || '').trim();
+  const items = q ? HIST.filter(it => (it.title||it.category||'').includes(q)) : HIST;
+  if(!HIST.length){
+    el.innerHTML = `<div class="hempty">还没有分析记录<br><br>
+      输入一个类目，比如「沙漠牵引车」，<br>三分钟后这里会出现第一条。</div>`;
+    return;
+  }
+  if(!items.length){ el.innerHTML = '<div class="hempty">没有匹配的记录</div>'; return; }
+  let cur = '';
+  el.innerHTML = items.map(it=>{
+    const g = (it.created_at||'').slice(0,10) === new Date().toISOString().slice(0,10) ? '今天' : '更早';
+    const head = g!==cur ? (cur=g, `<div class="hgroup">${g}</div>`) : '';
+    const name = it.title || it.category || '未命名';
+    return head + `<div class="hitem2 ${it.id===state.detailRunId?'on':''}" data-run="${esc(it.id)}">
+      <b>${esc(name)}</b>
+      <span>${esc((it.created_at||'').slice(5))} · ${it.pages} 页</span>
+      <i class="hdel" data-del="${esc(it.id)}" title="删除">×</i>
+      <i class="hren" data-ren="${esc(it.id)}" title="重命名">✎</i></div>`;
+  }).join('');
+}
+
+function bindHistory(){
+  const el = document.getElementById('hist');
+  el.onclick = async e=>{
+    const del = e.target.closest('[data-del]');
+    if(del){
+      e.stopPropagation();
+      if(!confirm('删除这条记录？')) return;
+      await fetch('/api/run/'+del.dataset.del,{method:'DELETE'});
+      if(state.detailRunId===del.dataset.del){ state.view='new'; state.step=1; render(); }
+      loadHistory(); return;
+    }
+    const ren = e.target.closest('[data-ren]');
+    if(ren){
+      e.stopPropagation();
+      const id = ren.dataset.ren;
+      const it = HIST.find(x=>x.id===id);
+      const name = prompt('重命名', it?.title || it?.category || '');
+      if(name!=null){
+        await fetch('/api/run/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({title:name})});
+        loadHistory();
       }
-      const x = e.target.closest('[data-run]'); if(!x) return;
-      openRun(x.dataset.run);
-    };
-  }catch(err){ el.innerHTML = '<div class="hempty">历史加载失败</div>'; }
+      return;
+    }
+    const x = e.target.closest('[data-run]'); if(!x) return;
+    openRun(x.dataset.run);
+  };
+  const hs = document.getElementById('hsearch');
+  if(hs) hs.oninput = drawHistory;
 }
 
 async function openRun(id){
@@ -289,7 +332,7 @@ async function openRun(id){
   if(!r.ok){ return; }
   state.detail = await r.json();
   state.detailRunId = id; state.detailIdx = 0; state.view = 'detail';
-  render(); loadHistory();
+  render(); loadHistory(); bindHistory();
 }
 
 function renderDetail(){
@@ -324,12 +367,50 @@ document.getElementById('newbtn').onclick = ()=>{
   state.view='new'; state.step=1; state.detail=null; state.detailRunId=null;
   state.harvest=null; state.job=null; state.built=null; state.cropIdx=undefined;
   document.getElementById('crumbs').innerHTML = '<b>新建分析</b>';
-  render(); loadHistory();
+  render(); loadHistory(); bindHistory();
 };
+
+document.getElementById('tosettings').onclick = openSettings;
+
+async function openSettings(){
+  state.view = 'settings'; render();
+}
+
+function renderSettings(){
+  paintDots(true);
+  document.getElementById('crumbs').innerHTML = '<b>设置</b>';
+  app.innerHTML = `<section class="step">
+    <div class="phead2"><h2>设置</h2><span class="hint">本地运行，数据不出机器</span></div>
+    <div class="setlist" id="setlist">加载中…</div>
+  </section>`;
+  fetch('/api/settings').then(r=>r.json()).then(d=>{
+    document.getElementById('setlist').innerHTML = [
+      ['模型', d.model || '—'],
+      ['接口', d.base_url || '—'],
+      ['密钥', d.key],
+      ['历史记录', d.runs + ' 条'],
+      ['占用空间', d.disk_mb + ' MB'],
+      ['数据目录', d.runs_dir],
+    ].map(([k,v])=>`<div class="setrow"><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('');
+  });
+}
 
 async function boot(){
   const r = await fetch('/api/catalog'); state.catalog = await r.json();
-  render(); loadHistory();
+  const saved = localStorage.getItem('el_run');
+  if(saved){
+    try{
+      const rr = await fetch('/api/run/'+saved);
+      if(rr.ok){
+        const job = await rr.json();
+        if(job.status === 'running'){
+          state.runId = saved; state.job = job; state.step = 4;
+          render(); loadHistory(); bindHistory(); poll(); return;
+        }
+      }
+    }catch(e){}
+  }
+  render(); loadHistory(); bindHistory();
 }
 
 function matchVehicles(){
@@ -353,6 +434,7 @@ window.addEventListener('resize', ()=>setTimeout(fitFrames, 60));
 
 function render(){
   if(state.view === 'detail'){ renderDetail(); setTimeout(fitFrames, 30); return; }
+  if(state.view === 'settings'){ renderSettings(); return; }
   paintDots();
   document.body.classList.toggle('no-anim', state.step === lastStep);
   lastStep = state.step;
@@ -588,7 +670,9 @@ async function startRun(){
   const r = await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},
     body:JSON.stringify({vehicles, parts: state.parts.filter(k=>k!=='front_face')})});
   const d = await r.json();
-  state.runId = d.run_id; state.step = 4; render(); poll();
+  state.runId = d.run_id; state.step = 4;
+  localStorage.setItem('el_run', d.run_id);
+  render(); poll();
 }
 
 function step4(){

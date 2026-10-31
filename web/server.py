@@ -541,6 +541,32 @@ def _load_run_from_disk(run_id: str) -> dict | None:
             "meta": meta, "pptx": f"/files/{run_id}/{pptx[0].name}" if pptx else None}
 
 
+@app.patch("/api/run/{run_id}")
+def api_rename_run(run_id: str, payload: dict):
+    mp = RUNS / run_id / "meta.json"
+    if not mp.exists():
+        raise HTTPException(404, "记录不存在")
+    meta = json.loads(mp.read_text(encoding="utf-8"))
+    title = (payload.get("title") or "").strip()[:40]
+    meta["title"] = title
+    mp.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    return {"ok": True, "title": title}
+
+
+@app.get("/api/settings")
+def api_settings():
+    cfg = analysis.load_config()
+    runs = [p for p in RUNS.iterdir() if p.is_dir()] if RUNS.exists() else []
+    size = sum(f.stat().st_size for p in runs for f in p.rglob("*") if f.is_file()) if runs else 0
+    key = cfg.get("LLM_API_KEY") or ""
+    return {"model": cfg.get("LLM_MODEL") or cfg.get("LLM_VISION_MODEL"),
+            "base_url": cfg.get("LLM_BASE_URL"),
+            "key": (key[:6] + "…" + key[-4:]) if len(key) > 12 else ("未配置" if not key else "已配置"),
+            "runs": len(runs),
+            "disk_mb": round(size / 1024 / 1024, 1),
+            "runs_dir": str(RUNS)}
+
+
 @app.delete("/api/run/{run_id}")
 def api_delete_run(run_id: str):
     d = RUNS / run_id
@@ -571,7 +597,8 @@ def api_history():
                     pass
         pages = [f for f in (d / "pages").glob("*.html")
                  if not f.name.endswith("-crop-editor.html")] if (d / "pages").exists() else []
-        out.append({"id": d.name, "category": meta.get("category", ""),
+        out.append({"id": d.name, "title": meta.get("title", ""),
+                    "category": meta.get("category", ""),
                     "parts": meta.get("parts", []),
                     "created_at": meta.get("created_at")
                     or time.strftime("%Y-%m-%d %H:%M", time.localtime(d.stat().st_mtime)),
