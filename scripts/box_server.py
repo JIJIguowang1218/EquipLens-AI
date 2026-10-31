@@ -70,10 +70,31 @@ def make_handler(outdir: Path):
             except Exception as e:  # noqa: BLE001
                 self._json(400, {"ok": False, "error": f"bad json: {e}"})
                 return
+            if item.get("kind") == "layout":
+                if not item.get("slug") or not isinstance(item.get("blocks"), list):
+                    self._json(400, {"ok": False, "error": "bad layout"})
+                    return
+                ldir = ROOT / "data-test" / "layouts"
+                ldir.mkdir(parents=True, exist_ok=True)
+                target = ldir / f"{item['slug']}.json"
+                target.write_text(json.dumps(item, ensure_ascii=False, indent=2),
+                                  encoding="utf-8")
+                print(f"[layout] {target.name} blocks={len(item['blocks'])}")
+                self._json(200, {"ok": True, "file": target.name})
+                return
             if not item.get("slug") or not valid(item):
                 self._json(400, {"ok": False, "error": "invalid payload"})
                 return
             outdir.mkdir(parents=True, exist_ok=True)
+            if item.get("kind") == "layout":
+                ldir = ROOT / "data-test" / "layouts"
+                ldir.mkdir(parents=True, exist_ok=True)
+                target = ldir / f"{item['slug']}.json"
+                target.write_text(json.dumps(item, ensure_ascii=False, indent=2),
+                                  encoding="utf-8")
+                print(f"[layout] {target.name}  blocks={len(item.get('blocks', []))}")
+                self._json(200, {"ok": True, "file": target.name})
+                return
             target = outdir / f"{item['slug']}-boxes.json"
             target.write_text(json.dumps(item, ensure_ascii=False, indent=2),
                               encoding="utf-8")

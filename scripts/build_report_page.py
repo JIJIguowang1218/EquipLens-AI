@@ -258,19 +258,31 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.bands{display:flex;flex-direction:column;justify-content:space-between;gap:12px;height:668px;width:912px;min-width:0}
-.band{display:flex;flex-direction:column;gap:10px}
-.imgrow{display:flex}
-.txtrow{display:flex}
-.pimg{position:relative;overflow:hidden;margin:0}
-.pimg img{width:100%;height:100%;object-fit:cover;display:block}
-.pno{position:absolute;left:6px;top:6px;font-family:Consolas,monospace;font-size:9px;letter-spacing:.1em;background:rgba(0,0,0,.62);color:#fff;padding:1px 5px}
+.canvas{position:relative;width:1472px;height:668px;margin:0 auto;overflow:hidden}
+.blk{position:absolute;overflow:hidden;box-sizing:border-box}
+.blk.img img{width:100%;height:100%;object-fit:cover;display:block}
+.blk.text{background:var(--block);padding:9px 11px;display:flex;flex-direction:column;gap:2px}
+.guide{position:absolute;background:#ff3b6b;z-index:99;display:none;pointer-events:none}
+.guide.v{width:1px;height:100%;top:0}
+.guide.h{height:1px;width:100%;left:0}
+.editbar{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;align-items:center;z-index:300}
+.editbar button{background:#111318;color:#cfd6df;border:1px solid #2b323d;border-radius:7px;
+padding:8px 13px;font-size:12px;cursor:pointer}
+.editbar button.on{background:#1d3a52;border-color:#4ea1ff;color:#cfe8ff}
+.editbar button:disabled{opacity:.4;cursor:not-allowed}
+.tip{font-size:11px;color:#8b93a1}
+body.editing .blk{outline:1px dashed rgba(78,161,255,.55);cursor:move}
+body.editing .blk.text{outline-color:rgba(224,163,58,.7)}
+body.editing .blk.sel{outline:2px solid #4ea1ff;z-index:60}
+.hdl{position:absolute;width:9px;height:9px;background:#fff;border:1.5px solid #4ea1ff;
+border-radius:2px;display:none;z-index:70}
+body.editing .blk.sel .hdl{display:block}
+.hdl.nw{left:0;top:0;cursor:nwse-resize}.hdl.ne{right:0;top:0;cursor:nesw-resize}
+.hdl.sw{left:0;bottom:0;cursor:nesw-resize}.hdl.se{right:0;bottom:0;cursor:nwse-resize}
 .imgzone{display:flex;flex-direction:column;justify-content:space-between;min-height:0}
 .imgrow{display:flex;gap:0;min-height:0}
 .imgrow img{display:block;flex:0 0 auto}
 .txtzone{flex:1 1 auto;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
-.blk{display:none}
-.blk img{display:none}
 .mtext{flex:1 1 0;min-height:0;overflow:hidden;margin-bottom:8px}
 .mtext{background:var(--block);padding:9px 11px;overflow:hidden;flex:0 0 auto;
 display:flex;flex-direction:column;gap:2px;justify-content:flex-start}
@@ -330,9 +342,119 @@ def layout_split(aspects: list[float], W: float, H: float, img_ratio: float = 0.
     return {"w_img": w_img, "rows": rows, "hs": hs}
 
 
+
+JS_EDITOR = """<script>
+(function(){
+  const canvas = document.getElementById('canvas');
+  if(!canvas) return;
+  const slug = canvas.dataset.slug || 'page';
+  const page = document.querySelector('.page');
+  let editing = false, sel = null, drag = null, changed = false;
+  const W = 1472, H = 668;
+
+  const blocks = () => [...canvas.querySelectorAll('.blk')];
+  blocks().forEach(b=>{
+    ['nw','ne','sw','se'].forEach(k=>{
+      const h = document.createElement('span');
+      h.className = 'hdl ' + k; h.dataset.h = k; b.appendChild(h);
+    });
+  });
+
+  function tip(t){ document.getElementById('tip').textContent = t || ''; }
+  function rectOf(el){ return {x:parseFloat(el.style.left)||0, y:parseFloat(el.style.top)||0,
+                               w:parseFloat(el.style.width)||0, h:parseFloat(el.style.height)||0}; }
+  function apply(el, r){ el.style.left=r.x+'px'; el.style.top=r.y+'px';
+                         el.style.width=r.w+'px'; el.style.height=r.h+'px'; }
+  function fitText(el){
+    const box = el;
+    let fs = 12;
+    box.classList.add('fit');
+    while(fs > 7){
+      box.style.fontSize = fs + 'px';
+      if(box.scrollHeight <= box.clientHeight + 1) break;
+      fs -= 0.5;
+    }
+  }
+  function select(el){
+    blocks().forEach(b=>b.classList.toggle('sel', b===el));
+    sel = el;
+  }
+
+  // 拖动 / 缩放
+  canvas.addEventListener('pointerdown', e=>{
+    if(!editing) return;
+    const blk = e.target.closest('.blk');
+    if(!blk) { select(null); return; }
+    select(blk);
+    const hdl = e.target.closest('.hdl');
+    const r = rectOf(blk);
+    drag = {el:blk, h: hdl?hdl.dataset.h:null, sx:e.clientX, sy:e.clientY, r, id:blk.dataset.id};
+    e.preventDefault();
+  });
+  window.addEventListener('pointermove', e=>{
+    if(!drag || !editing) return;
+    const dx = e.clientX - drag.sx, dy = e.clientY - drag.sy;
+    let r = {...drag.r};
+    if(!drag.h){ r.x += dx; r.y += dy; }
+    else {
+      if(drag.h.includes('w')){ r.x += dx; r.w -= dx; }
+      if(drag.h.includes('e')){ r.w += dx; }
+      if(drag.h.includes('n')){ r.y += dy; r.h -= dy; }
+      if(drag.h.includes('s')){ r.h += dy; }
+    }
+    r.w = Math.max(40, r.w); r.h = Math.max(30, r.h);
+    // 吸附
+    const tol = 6, gv = document.getElementById('gv'), gh = document.getElementById('gh');
+    gv.style.display = gh.style.display = 'none';
+    if(!drag.h){
+      const others = blocks().filter(b=>b!==drag.el).map(rectOf);
+      const edgesX = [0, W/2, W, ...others.flatMap(o=>[o.x, o.x+o.w, o.x+o.w/2])];
+      const edgesY = [0, H/2, H, ...others.flatMap(o=>[o.y, o.y+o.h, o.y+o.h/2])];
+      for(const ex of edgesX){
+        if(Math.abs(r.x - ex) < tol){ r.x = ex; gv.style.display='block'; gv.style.left = ex+'px'; break; }
+        if(Math.abs(r.x + r.w - ex) < tol){ r.x = ex - r.w; gv.style.display='block'; gv.style.left = ex+'px'; break; }
+      }
+      for(const ey of edgesY){
+        if(Math.abs(r.y - ey) < tol){ r.y = ey; gh.style.display='block'; gh.style.top = ey+'px'; break; }
+        if(Math.abs(r.y + r.h - ey) < tol){ r.y = ey - r.h; gh.style.display='block'; gh.style.top = ey+'px'; break; }
+      }
+    }
+    r.x = Math.max(0, Math.min(W-40, r.x));
+    r.y = Math.max(0, Math.min(H-30, r.y));
+    apply(drag.el, r);
+    changed = true;
+  });
+  window.addEventListener('pointerup', ()=>{
+    if(drag && drag.el && drag.el.dataset.kind === 'text') fitText(drag.el);
+    if(drag){ drag = null; }
+  });
+
+  document.getElementById('btnEdit').onclick = ()=>{
+    editing = !editing;
+    document.body.classList.toggle('editing', editing);
+    document.getElementById('btnEdit').classList.toggle('on', editing);
+    document.getElementById('btnEdit').textContent = editing ? '退出编辑' : '编辑布局';
+    document.getElementById('btnSave').disabled = !editing;
+    document.getElementById('btnReset').disabled = !editing;
+    if(!editing) select(null);
+  };
+  document.getElementById('btnSave').onclick = async ()=>{
+    const data = blocks().map(b=>({id:b.dataset.id, ...rectOf(b)}));
+    try{
+      const r = await fetch('http://127.0.0.1:8766/save', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({kind:'layout', slug, blocks:data})});
+      tip(r.ok ? '已保存' : '保存失败');
+    }catch(e){ tip('保存失败：本地服务未启动'); }
+  };
+  document.getElementById('btnReset').onclick = ()=>{ location.reload(); };
+})();
+</script>"""
+
+
 def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[dict],
                page: int, total: int, brand_rule: str, hero_box=None,
-               hero_size=None, crop_sizes=None) -> str:
+               hero_size=None, crop_sizes=None, layout_path=None) -> str:
     u = data.get("unit", {})
     v = data.get("vehicle", {})
     tags = u.get("style_tags", [])
@@ -374,34 +496,75 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
                 best = (loss, band1, band2)
     _, band1, band2 = best
 
-    def band_html(band):
-        if not band:
-            return ""
+    lines = "".join(f"<li>{esc(x)}</li>" for x in (u.get("character_lines") or [])[:3])
+
+    layout_override = {}
+    if layout_path and layout_path.exists():
+        try:
+            layout_override = {b["id"]: b for b in json.loads(
+                layout_path.read_text(encoding="utf-8")).get("blocks", [])}
+        except Exception:
+            layout_override = {}
+
+    blocks = [{"id": "hero", "kind": "img", "x": 0, "y": 0, "w": 540, "h": 430,
+               "src": hero_rel},
+              {"id": "front_text", "kind": "text", "x": 0, "y": 442, "w": 540,
+               "h": H_GRID - 442}]
+
+    def add_band(band, y0):
         bw = (W_GRID - GAP * (len(band) - 1)) / len(band)
-        imgs, txts = "", ""
-        for i in band:
+        for k, i in enumerate(band):
             p = order[i]
             slot = p["slot"]
             cmf = p.get("cmf") or {}
-            imgs += (f'<figure class="pimg" style="width:{bw:.1f}px;height:{img_h:.1f}px">'
-                     f'<img src="crops/{esc(crops[slot])}" alt="">'
-                     f'<span class="pno">{i+1:02d}</span></figure>')
-            txts += f"""
-            <div class="mtext" style="width:{bw:.1f}px;height:{TEXT_H}px">
-              <div class="mt-term"><span class="mt-no">{i+1:02d}</span>{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
-              <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
-              <div class="mt-form">{esc(p.get('form') or '')}</div>
-              <div class="mt-cmf">{esc((cmf.get('material_class') or '') + ' · ' + (cmf.get('finish') or ''))}</div>
-            </div>"""
-        return (f'<div class="band"><div class="imgrow" style="gap:{GAP}px">{imgs}</div>'
-                f'<div class="txtrow" style="gap:{GAP}px">{txts}</div></div>')
+            x = 560 + k * (bw + GAP)
+            blocks.append({"id": f"img{i}", "kind": "img", "x": x, "y": y0,
+                           "w": bw, "h": img_h, "src": f"crops/{crops[slot]}", "idx": i + 1})
+            blocks.append({"id": f"txt{i}", "kind": "text", "x": x, "y": y0 + img_h + 10,
+                           "w": bw, "h": TEXT_H, "idx": i + 1,
+                           "term": p.get("term") or SLOT_CN.get(slot, slot),
+                           "fam": FAMILY_CN.get(p.get("part_family"), ""),
+                           "form": p.get("form") or "",
+                           "cmf": " · ".join(v for v in [(cmf.get("material_class") or ""),
+                                                         (cmf.get("finish") or "")] if v)})
 
-    mosaic = band_html(band1) + band_html(band2)
+    add_band(band1, 0)
+    add_band(band2, img_h + 10 + TEXT_H + GAP)
+
+    for blk in blocks:
+        ov = layout_override.get(blk["id"])
+        if ov:
+            for k in ("x", "y", "w", "h"):
+                if k in ov:
+                    blk[k] = float(ov[k])
+
+    blocks_html = ""
+    for blk in blocks:
+        style = (f"left:{blk['x']:.1f}px;top:{blk['y']:.1f}px;"
+                 f"width:{blk['w']:.1f}px;height:{blk['h']:.1f}px")
+        if blk["kind"] == "img":
+            idx = f'<span class="pno">{blk["idx"]:02d}</span>' if blk.get("idx") else ""
+            inner = f'<img src="{esc(blk["src"])}" alt="">{idx}'
+        elif blk["id"] == "front_text":
+            inner = (f'<div class="eyebrow">Front Face / 前脸</div>'
+                     f'<div class="lead">{esc(u.get("gesture"))}</div>'
+                     f'<ul class="lines">{lines}</ul>'
+                     f'<div class="meta">{esc(u.get("proportion"))}｜{esc(u.get("judgement"))}</div>')
+        else:
+            inner = (f'<div class="mt-term"><span class="mt-no">{blk.get("idx", 0):02d}</span>'
+                     f'{esc(blk.get("term", ""))}</div>'
+                     f'<div class="mt-fam">{esc(blk.get("fam", ""))}</div>'
+                     f'<div class="mt-form">{esc(blk.get("form", ""))}</div>'
+                     f'<div class="mt-cmf">{esc(blk.get("cmf", ""))}</div>')
+        blocks_html += (f'<div class="blk {blk["kind"]}" data-id="{blk["id"]}" '
+                        f'data-kind="{blk["kind"]}" style="{style}">{inner}</div>')
+
+    mosaic = ""
+
 
     barbits = "".join(
         f'<i style="width:{c["pct"]*100:.2f}%;background:{c["hex"]}"></i>' for c in palette)
 
-    lines = "".join(f"<li>{esc(x)}</li>" for x in (u.get("character_lines") or [])[:3])
 
 
     return f"""<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
@@ -423,23 +586,22 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
   </header>
 
   <main>
-    <div class="left">
-      <div class="hero"><img src="{esc(hero_rel)}" alt=""></div>
-      <div class="textblock">
-        <div class="eyebrow">Front Face / 前脸</div>
-        <div class="lead">{esc(u.get('gesture'))}</div>
-        <ul class="lines">{lines}</ul>
-        <div class="meta">{esc(u.get('proportion'))}　{esc(u.get('judgement'))}</div>
-      </div>
+    <div class="canvas" id="canvas" data-slug="{esc(v.get('model'))}">{blocks_html}
+      <div class="guide v" id="gv"></div><div class="guide h" id="gh"></div>
     </div>
-    <div class="bands">{mosaic}</div>
   </main>
+  <div class="editbar">
+    <button id="btnEdit">编辑布局</button>
+    <button id="btnSave" disabled>保存</button>
+    <button id="btnReset" disabled>重置</button>
+    <span class="tip" id="tip"></span>
+  </div>
 
   <footer>
     <div class="model"><b>{esc(v.get('brand'))} {esc(v.get('model'))}</b>　{esc(v.get('category'))}　·　{esc(brand_rule)}</div>
     <div class="pn">{page:02d} / {total:02d}</div>
   </footer>
-</div></body></html>"""
+</div></body></html>""" + JS_EDITOR
 
 
 def main() -> int:
@@ -451,6 +613,7 @@ def main() -> int:
     ap.add_argument("--data-dir", default="data-test")
     ap.add_argument("--brand-rule", default="")
     ap.add_argument("--boxes", help="编辑器导出的裁框 JSON（覆盖 bbox）")
+    ap.add_argument("--layout", help="编辑器保存的版式 JSON（覆盖块位置）")
     args = ap.parse_args()
 
     src = ROOT / args.analysis
@@ -499,7 +662,8 @@ def main() -> int:
 
     html = build_html(data, str(hero_rel).replace("\\", "/"), crops, palette,
                       args.page, args.total, args.brand_rule, hero_box,
-                      Image.open(hero_abs).size, crop_sizes)
+                      Image.open(hero_abs).size, crop_sizes,
+                      (ROOT / args.layout) if args.layout else None)
     out = outdir / f"{slug}.html"
     out.write_text(html, encoding="utf-8")
     print(f"[ok] {out}  crops={len(crops)}  palette={[c['hex'] for c in palette]}")
