@@ -58,18 +58,44 @@ def _kmeans(px: np.ndarray, k: int = 5, iters: int = 12) -> tuple[np.ndarray, np
     return centers, counts
 
 
+
+def _bg_mask(arr: np.ndarray, tol: int = 78) -> np.ndarray:
+    """从四边向内做漫水填充，标记与边缘同色的背景像素（保留车身内部同色区域）。"""
+    from collections import deque
+    h, w, _ = arr.shape
+    edge = np.concatenate([arr[:2].reshape(-1, 3), arr[-2:].reshape(-1, 3),
+                           arr[:, :2].reshape(-1, 3), arr[:, -2:].reshape(-1, 3)])
+    bg = np.median(edge, axis=0)
+    near = np.abs(arr - bg).sum(2) < tol
+    mask = np.zeros((h, w), bool)
+    dq = deque()
+    for x in range(w):
+        for y in (0, h - 1):
+            if near[y, x] and not mask[y, x]:
+                mask[y, x] = True; dq.append((y, x))
+    for y in range(h):
+        for x in (0, w - 1):
+            if near[y, x] and not mask[y, x]:
+                mask[y, x] = True; dq.append((y, x))
+    while dq:
+        y, x = dq.popleft()
+        for ny, nx in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+            if 0 <= ny < h and 0 <= nx < w and not mask[ny, nx] and near[ny, nx]:
+                mask[ny, nx] = True; dq.append((ny, nx))
+    return mask
+
 def color_composition(path: Path, max_colors: int = MAX_COLORS, bg=None) -> list[dict]:
     """返回 [{hex, r,g,b, pct}]，按面积降序，最多 4 段。"""
     im = Image.open(path).convert("RGB")
     im.thumbnail((220, 220))
-    arr = np.asarray(im).reshape(-1, 3).astype(float)
+    grid = np.asarray(im).astype(float)
+    mask = _bg_mask(grid)
+    flat = grid.reshape(-1, 3)
+    keep = ~mask.reshape(-1)
+    arr = flat[keep] if keep.sum() > 400 else flat
+    arr = arr.astype(float)
 
-    if bg is None:
-        border = np.concatenate([arr[:12], arr[-12:], arr[:, :12].reshape(-1, 3),
-                                 arr[:, -12:].reshape(-1, 3)])
-        bg = np.median(border, axis=0)
-    else:
-        bg = np.asarray(bg, dtype=float)
+    bg = np.asarray(bg, dtype=float) if bg is not None else np.array([255.0, 255.0, 255.0])
 
     centers, counts = _kmeans(arr, k=max(5, max_colors + 1))
     order = np.argsort(-counts)
@@ -80,10 +106,8 @@ def color_composition(path: Path, max_colors: int = MAX_COLORS, bg=None) -> list
         if share < 0.015:
             continue
         lum = c.mean() / 255
-        sat = (c.max() - c.min()) / max(c.max(), 1)
-        if len(kept) < 2 and (np.linalg.norm(c - bg) < 55 or
-                              (lum > 0.72 and sat < 0.13)):
-            continue  # 背景或地面投影
+        if len(kept) < 3 and lum > 0.93:
+            continue  # 纯白高光，通常是被抠掉的地面反光
         if any(np.linalg.norm(c - k["rgb"]) < 22 for k in kept):
             continue
         kept.append({"rgb": c, "share": share})
@@ -221,7 +245,7 @@ border-radius:999px;line-height:1}
 .bar-cap{font-size:10.5px;letter-spacing:.16em;color:var(--muted);margin-top:6px;width:300px;
 display:flex;justify-content:space-between}
 /* ---- body ---- */
-main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px}
+main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;gap:20px;overflow:hidden}
 .left{display:flex;flex-direction:column;gap:20px;height:668px}
 .hero{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;flex:0 0 auto;align-self:flex-start;justify-self:center;margin:0 auto}
 .hero img{width:100%;height:100%;object-fit:contain}
@@ -229,8 +253,8 @@ main{margin-top:20px;height:668px;display:grid;grid-template-columns:540px 1fr;g
 .mark b{position:absolute;top:-9px;left:-9px;width:18px;height:18px;background:var(--accent);
 color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;
 font-family:Consolas,monospace}
-.textblock{background:var(--block);padding:16px 18px;display:flex;flex-direction:column;gap:8px;
-overflow:hidden}
+.textblock{background:var(--block);padding:18px 20px;display:flex;flex-direction:column;gap:10px;
+overflow:hidden;flex:1 1 auto;min-height:0}
 .eyebrow{font-size:9px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;
 font-family:Bahnschrift,"Arial Narrow",sans-serif}
 .lead{font-size:17px;line-height:1.7;font-weight:600}
@@ -240,22 +264,22 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:16px}
-.card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:130px 1fr;
-overflow:hidden}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,minmax(0,1fr));gap:16px;height:100%;min-height:0;overflow:hidden}
+.card{background:#fff;border:1px solid var(--line);display:grid;grid-template-rows:118px minmax(0,1fr);
+overflow:hidden;min-height:0}
 .card .shot{position:relative;overflow:hidden;background:#f1efe9}
 .card .shot img{width:100%;height:100%;object-fit:cover}
 .card .shot.empty{display:flex;align-items:center;justify-content:center;background:#f4f2ec;border-bottom:1px solid var(--line)}
 .card .na{font-size:11px;color:#a9a59b;letter-spacing:.1em}
 .card .no{position:absolute;top:8px;left:8px;font-size:9px;letter-spacing:.12em;
 background:var(--ink);color:#fff;padding:2px 6px;font-family:Consolas,monospace}
-.card .body{padding:10px 12px;background:var(--block);display:flex;flex-direction:column;gap:4px;
-overflow:hidden}
-.card h3{font-size:13px;font-weight:700;letter-spacing:.02em;line-height:1.2}
+.card .body{padding:8px 11px;background:var(--block);display:flex;flex-direction:column;gap:3px;
+overflow:hidden;min-height:0}
+.card h3{font-size:12.5px;font-weight:700;letter-spacing:.01em;line-height:1.25}
 .card .fam{font-size:9px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
-.card p{font-size:11.5px;line-height:1.45;color:#2b2e33;
+.card p{font-size:11px;line-height:1.4;color:#2b2e33;
 display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .cmf{font-size:10.5px;color:var(--graphite)}
+.card .cmf{font-size:10px;color:var(--graphite);line-height:1.35}
 .chips{display:flex;flex-direction:column;gap:9px;background:var(--block);padding:14px 16px}
 .chips.wide{grid-column:span 2}
 .chip{display:flex;align-items:center;gap:10px}
