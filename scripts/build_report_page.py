@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -257,7 +258,13 @@ flex-direction:column;gap:7px}
 .lines li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:1px;
 background:var(--accent)}
 .meta{font-size:12.5px;color:var(--graphite);line-height:1.7;margin-top:6px}
-.mosaic{display:flex;gap:13px;height:100%;min-height:0}
+.bands{display:flex;flex-direction:column;justify-content:space-between;gap:12px;height:668px;width:912px;min-width:0}
+.band{display:flex;flex-direction:column;gap:10px}
+.imgrow{display:flex}
+.txtrow{display:flex}
+.pimg{position:relative;overflow:hidden;margin:0}
+.pimg img{width:100%;height:100%;object-fit:cover;display:block}
+.pno{position:absolute;left:6px;top:6px;font-family:Consolas,monospace;font-size:9px;letter-spacing:.1em;background:rgba(0,0,0,.62);color:#fff;padding:1px 5px}
 .imgzone{display:flex;flex-direction:column;justify-content:space-between;min-height:0}
 .imgrow{display:flex;gap:0;min-height:0}
 .imgrow img{display:block;flex:0 0 auto}
@@ -342,30 +349,54 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
         w, h = sizes.get(p["slot"], (4, 3))
         aspects.append(max(0.2, w / max(1, h)))
 
-    W_GRID, H_GRID, GAP = 912, 668, 13
-    lay = layout_split(aspects, W_GRID, H_GRID, gap=GAP)
+    W_GRID, H_GRID, GAP = 912, 668, 12
+    n = len(order)
+    TEXT_H = 96
+    # 4 行：图 / 文 / 图 / 文，图片行等高
+    img_h = (H_GRID - 2 * TEXT_H - 3 * GAP) / 2
 
-    left_rows = ""
-    for (a, b), h in zip(lay["rows"], lay["hs"]):
-        imgs = ""
-        for i in range(a, b):
-            imgs += (f'<img src="crops/{esc(crops[order[i]["slot"]])}" '
-                     f'style="height:{h:.1f}px;width:{aspects[i]*h:.1f}px">')
-        left_rows += f'<div class="imgrow" style="height:{h:.1f}px">{imgs}</div>'
+    from itertools import combinations
+    best = None
+    for k in range(1, n):
+        for a in combinations(range(n), k):
+            band1 = list(a)
+            band2 = [i for i in range(n) if i not in band1]
+            if not band2:
+                continue
+            loss = 0.0
+            for band in (band1, band2):
+                bw = (W_GRID - GAP * (len(band) - 1)) / len(band)
+                tgt = bw / img_h
+                for i in band:
+                    loss += abs(math.log(max(0.05, aspects[i]) / tgt))
+            loss += 0.35 * abs(len(band1) - len(band2))
+            if best is None or loss < best[0]:
+                best = (loss, band1, band2)
+    _, band1, band2 = best
 
-    texts = ""
-    for i, p in enumerate(order):
-        cmf = p.get("cmf") or {}
-        texts += f"""
-        <div class="mtext">
-          <div class="mt-term"><span class="mt-no">{i+1:02d}</span>{esc(p.get('term') or SLOT_CN.get(p['slot'], p['slot']))}</div>
-          <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
-          <div class="mt-form">{esc(p.get('form') or '')}</div>
-          <div class="mt-cmf">{esc(cmf.get('material_class') or '')} · {esc(cmf.get('finish') or '')}</div>
-        </div>"""
+    def band_html(band):
+        if not band:
+            return ""
+        bw = (W_GRID - GAP * (len(band) - 1)) / len(band)
+        imgs, txts = "", ""
+        for i in band:
+            p = order[i]
+            slot = p["slot"]
+            cmf = p.get("cmf") or {}
+            imgs += (f'<figure class="pimg" style="width:{bw:.1f}px;height:{img_h:.1f}px">'
+                     f'<img src="crops/{esc(crops[slot])}" alt="">'
+                     f'<span class="pno">{i+1:02d}</span></figure>')
+            txts += f"""
+            <div class="mtext" style="width:{bw:.1f}px;height:{TEXT_H}px">
+              <div class="mt-term"><span class="mt-no">{i+1:02d}</span>{esc(p.get('term') or SLOT_CN.get(slot, slot))}</div>
+              <div class="mt-fam">{esc(FAMILY_CN.get(p.get('part_family'), ''))}</div>
+              <div class="mt-form">{esc(p.get('form') or '')}</div>
+              <div class="mt-cmf">{esc((cmf.get('material_class') or '') + ' · ' + (cmf.get('finish') or ''))}</div>
+            </div>"""
+        return (f'<div class="band"><div class="imgrow" style="gap:{GAP}px">{imgs}</div>'
+                f'<div class="txtrow" style="gap:{GAP}px">{txts}</div></div>')
 
-    mosaic = (f'<div class="imgzone" style="width:{lay["w_img"]:.1f}px">{left_rows}</div>'
-              f'<div class="txtzone">{texts}</div>')
+    mosaic = band_html(band1) + band_html(band2)
 
     barbits = "".join(
         f'<i style="width:{c["pct"]*100:.2f}%;background:{c["hex"]}"></i>' for c in palette)
@@ -401,7 +432,7 @@ def build_html(data: dict, hero_rel: str, crops: dict[str, str], palette: list[d
         <div class="meta">{esc(u.get('proportion'))}　{esc(u.get('judgement'))}</div>
       </div>
     </div>
-    <div class="mosaic">{mosaic}</div>
+    <div class="bands">{mosaic}</div>
   </main>
 
   <footer>
