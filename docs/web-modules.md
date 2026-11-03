@@ -73,7 +73,7 @@
 ## 5. 技术封装（初稿）
 
 ```
-浏览器（单页，原生 JS）
+浏览器（React 19 + TS，Vite 构建；见 docs/web-interaction-spec-v2.md §11）
    │  HTTP / SSE
 FastAPI（单进程）
    ├─ 任务队列（线程池，串行跑分析，避免并发打爆 API）
@@ -82,7 +82,7 @@ FastAPI（单进程）
 静态资源：页面产物（HTML/PPTX/图片）由 /files/<run_id>/ 提供
 ```
 
-- **不引入前端框架**：单页 + 原生 JS，减少构建与调试成本
+- **前端**：React 19 + TypeScript + Vite（2026-11-03 改定；原"单页 + 原生 JS"作废，理由见 `docs/web-interaction-spec-v2.md` §11）
 - **分析串行**：一次一台车，进度可推
 - **失败隔离**：单台失败不影响整批
 

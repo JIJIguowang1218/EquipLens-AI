@@ -1,7 +1,9 @@
 # EquipLens 网页端 · 交互说明（v1.0）
 
+> **已被 `docs/web-interaction-spec-v2.md` 取代（2026-11-03）。** 本文件保留作历史对照：v1 的"五步"、浅色苹果风与"不引入前端框架"三条均作废。
+
 - 日期：2026-10-31
-- 状态：对外评审版
+- 状态：历史版
 - 关联：`docs/web-modules.md`（功能模块）、`docs/PRD.md`、`data-test/report-book/index.html`（版式成品）
 
 ## 1. 一句话定位

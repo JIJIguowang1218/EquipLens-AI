@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>EquipLens · UI 语言样张 v2</title>
+<style>
+:root{
+  --ink:#0B0B0C; --ink1:#121214; --ink2:#17171A;
+  --line:rgba(242,241,238,.13); --line2:rgba(242,241,238,.07);
+  --text:#F2F1EE; --text2:#9A9A95; --text3:#6A6A66;
+  --paper:#F4F2ED; --paperink:#141414; --fail:#C4473C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+body{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:"IBM Plex Mono","JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+.board{width:1440px;height:900px;background:var(--ink);color:var(--text);position:relative;
+  margin:0 auto 40px;display:flex;overflow:hidden}
+/* rail */
+.rail{width:64px;flex:none;border-right:1px solid var(--line);display:flex;flex-direction:column;
+  align-items:center;padding-top:12px}
+.rail .mark{font-size:9px;letter-spacing:.16em;color:var(--text3);writing-mode:vertical-rl;
+  padding:6px 0 16px;text-transform:uppercase}
+.stage{width:64px;height:48px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;letter-spacing:.06em;color:var(--text3);border-top:1px solid var(--line2);position:relative}
+.stage.done{color:var(--text2)}
+.stage.now{background:var(--text);color:var(--ink);font-weight:600}
+.stage.now::after{content:"";position:absolute;right:-1px;top:0;bottom:0;width:2px;background:var(--paper)}
+/* shell */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}
+.top{height:56px;flex:none;display:flex;align-items:center;gap:12px;padding:0 32px;
+  border-bottom:1px solid var(--line);font-size:13px;color:var(--text2)}
+.top b{color:var(--text);font-weight:500}
+.top .sep{color:var(--text3)}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:12px}
+.body{flex:1;min-height:0;display:flex;position:relative}
+.foot{height:64px;flex:none;border-top:1px solid var(--line);display:flex;align-items:center;
+  gap:16px;padding:0 32px;font-size:13px;color:var(--text2)}
+.foot .grow{margin-left:auto;display:flex;align-items:center;gap:14px}
+/* atoms */
+.btn{height:44px;padding:0 22px;border-radius:2px;border:1px solid var(--line);background:transparent;
+  color:var(--text);font-size:14px;font-family:inherit;display:inline-flex;align-items:center;gap:10px;cursor:pointer}
+.btn.solid{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.btn.sm{height:32px;padding:0 12px;font-size:12px}
+.chip{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:2px;display:inline-flex;
+  align-items:center;gap:8px;font-size:13px;color:var(--text);background:var(--ink1)}
+.chip .x{color:var(--text3);font-size:11px}
+.chip .k{font-size:9px;letter-spacing:.12em;color:var(--text3);text-transform:uppercase}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.seg div{padding:0 14px;height:32px;display:flex;align-items:center;font-size:12.5px;color:var(--text2)}
+.seg .on{background:var(--ink2);color:var(--text)}
+.label{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--text3)}
+.hatchtag{background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(242,241,238,.16) 3px 4px);
+  border:1px solid rgba(242,241,238,.22);padding:1px 6px;font-size:10.5px;color:var(--text2);border-radius:1px}
+.ev{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:20px;
+  font-size:10px;letter-spacing:.04em;border-radius:1px}
+.ev.e3{background:var(--text);color:var(--ink);font-weight:600}
+.ev.e1{border:1px solid var(--text2);color:var(--text2)}
+.ev.t3{border:1px solid rgba(242,241,238,.3);color:var(--text3);
+  background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(242,241,238,.1) 3px 4px)}
+.cb{width:16px;height:16px;border:1px solid rgba(242,241,238,.45);border-radius:1px;flex:none;position:relative}
+.cb.on{background:var(--text);border-color:var(--text)}
+.cb.on::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;
+  border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(40deg)}
+/* s0 */
+.s0{padding:0 40px;flex-direction:column;justify-content:center;padding-bottom:40px}
+.s0 h1{font-size:60px;line-height:.95;letter-spacing:-.035em;font-weight:600}
+.s0 .sub{margin:16px 0 30px;font-size:17px;color:var(--text2);letter-spacing:.01em}
+.field{height:76px;border:1px solid rgba(242,241,238,.34);border-radius:2px;display:flex;
+  align-items:center;padding:0 8px 0 24px;gap:16px;background:var(--ink1)}
+.q{font-size:30px;letter-spacing:-.01em;color:var(--text);flex:1;display:flex;align-items:center;gap:3px}
+.caret{width:2px;height:30px;background:var(--paper);display:inline-block;margin-left:2px}
+.chips{margin-top:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hintline{margin-top:30px;font-size:12.5px;color:var(--text3);display:flex;gap:10px;align-items:center}
+.hintline b{color:var(--text2);font-weight:500}
+.recent{position:absolute;right:40px;bottom:88px;width:300px;display:flex;flex-direction:column}
+.recent .lab{font-size:10px;letter-spacing:.13em;color:var(--text3);text-transform:uppercase;margin-bottom:4px}
+.recent .r{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--line2);
+  font-size:12.5px;color:var(--text2)}
+.recent .r b{color:var(--text);font-weight:500}
+/* s1 */
+.filters{width:200px;flex:none;border-right:1px solid var(--line);padding:20px 18px;display:flex;
+  flex-direction:column;gap:22px}
+.fgroup{display:flex;flex-direction:column;gap:6px}
+.frow{display:flex;justify-content:space-between;font-size:13px;color:var(--text2);padding:5px 0}
+.frow.on{color:var(--text)}
+.frow .n{font-size:11px;color:var(--text3)}
+.table{flex:1;min-width:0;display:flex;flex-direction:column}
+.thead{height:38px;flex:none;display:flex;align-items:center;padding:0 24px;font-size:10px;letter-spacing:.13em;
+  color:var(--text3);text-transform:uppercase;border-bottom:1px solid var(--line);gap:16px}
+.rows{flex:1;display:flex;flex-direction:column}
+.tr{height:56px;flex:none;display:flex;align-items:center;padding:0 24px;gap:16px;
+  border-bottom:1px solid var(--line2);font-size:14px}
+.tr.sel{background:var(--ink1)}
+.tr .m{font-size:15px;letter-spacing:.01em;flex:1;min-width:0}
+.tr .b{color:var(--text2);font-size:13px;width:88px}
+.tr .n{color:var(--text2);font-size:12.5px;width:64px}
+.evcell{width:48px;flex:none;display:flex;align-items:center}
+.tr .note{width:150px;text-align:right;font-size:11.5px;color:var(--text3);flex:none}
+.tr.weak{box-shadow:inset 0 0 0 1px rgba(242,241,238,.16)}
+.tfoot{margin-top:auto;height:40px;display:flex;align-items:center;padding:0 24px;font-size:11.5px;
+  color:var(--text3);border-top:1px solid var(--line)}
+.insp{width:360px;flex:none;border-left:1px solid var(--line);padding:20px 22px;display:flex;
+  flex-direction:column;gap:14px;background:var(--ink1)}
+.insp h4{font-size:10px;letter-spacing:.13em;color:var(--text3);text-transform:uppercase;font-weight:500}
+.evitem{border-top:1px solid var(--line2);padding-top:11px;display:flex;gap:10px;font-size:12.5px;
+  color:var(--text2);line-height:1.45}
+.evitem i{font-family:"IBM Plex Mono",monospace;font-style:normal;color:var(--text3);font-size:11px;padding-top:2px}
+.evitem b{color:var(--text);font-weight:500;display:block;margin-bottom:2px;font-size:12.5px}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border:1px solid var(--line2)}
+.facts div{background:var(--ink1);padding:9px 10px}
+.facts .k{font-size:9.5px;letter-spacing:.1em;color:var(--text3);text-transform:uppercase;margin-bottom:3px}
+.facts .v{font-size:13px}
+.reason{border:1px solid var(--line);padding:10px;border-radius:2px;font-size:12.5px;
+  color:var(--text2);line-height:1.6;background:var(--ink)}
+/* retrieving */
+.qcol{width:300px;flex:none;border-right:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:13px}
+.qrow{display:flex;gap:10px;font-size:12.5px;color:var(--text2);align-items:flex-start;line-height:1.4}
+.qrow .st{width:12px;flex:none;color:var(--text);font-size:11px;padding-top:1px}
+.qrow.now{color:var(--text)}
+.qrow.blocked{color:var(--text3)}
+.cands{flex:1;padding:18px 24px;display:flex;flex-direction:column;gap:13px;min-width:0}
+.crow{display:flex;align-items:center;gap:14px;font-size:14px}
+.crow .nm{min-width:190px}
+.crow .track{height:8px;background:#1B1B1E;flex:1;position:relative;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(242,241,238,.05)}
+.crow .track i{position:absolute;left:0;top:0;bottom:0;background:var(--text)}
+.crow .ct{font-size:11px;color:var(--text3);min-width:56px;text-align:right}
+.stream{margin-top:10px;border-top:1px solid var(--line2);padding-top:14px;display:flex;flex-direction:column;gap:9px}
+.srow{display:flex;gap:10px;font-size:12px;color:var(--text3);align-items:baseline}
+.srow b{color:var(--text2);font-weight:400}
+.srow .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--text3);width:96px;flex:none}
+.srow .flag{margin-left:auto;color:var(--text3);font-size:11px;flex:none}
+.srow .sk{height:9px;background:rgba(242,241,238,.05);flex:1;margin-left:4px}
+.chan{width:320px;flex:none;border-left:1px solid var(--line);padding:20px 22px;background:var(--ink1);
+  display:flex;flex-direction:column;gap:16px}
+.chanrow{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding-bottom:10px;
+  border-bottom:1px solid var(--line2)}
+.chanrow .v{font-size:12px;color:var(--text2)}
+.big{font-size:48px;letter-spacing:-.02em;line-height:1}
+.tiny{font-size:11px;color:var(--text3);letter-spacing:.04em}
+.progwrap{height:3px;background:rgba(242,241,238,.07);position:relative}
+.progwrap i{position:absolute;left:0;top:0;bottom:0;width:57%;background:var(--paper)}
+</style>
+</head>
+<body>
+
+<!-- ============ S0 ============ -->
+<section class="board" id="s0">
+  <div class="rail">
+    <div class="mark">EquipLens</div>
+    <div class="stage now">00</div><div class="stage">01</div><div class="stage">02</div>
+    <div class="stage">03</div><div class="stage">04</div>
+  </div>
+  <div class="main">
+    <div class="top">
+      <b>新分析</b><span class="sep">/</span><span>立项</span>
+      <div class="right"><span class="tiny">本地运行</span><span class="sep">·</span><span class="tiny mono">v0.2</span></div>
+    </div>
+    <div class="body s0">
+      <h1>看什么设备？</h1>
+      <div class="sub">说清设备与要看的部件，剩下的交给检索与分析。</div>
+      <div class="field">
+        <div class="q">沙漠牵引车<span class="caret"></span></div>
+        <button class="btn solid">开始 <span class="mono">↵</span></button>
+      </div>
+      <div class="chips">
+        <div class="chip"><span class="k">类别</span>牵引车<span class="x">✕</span></div>
+        <div class="chip">前脸<span class="x">✕</span></div>
+        <div class="chip">格栅<span class="x">✕</span></div>
+        <div class="chip">保险杠<span class="x">✕</span></div>
+        <div class="chip">轮眉<span class="x">✕</span></div>
+        <div class="chip mono">台数&nbsp;&nbsp;−&nbsp;&nbsp;3&nbsp;&nbsp;＋</div>
+        <div class="seg"><div class="on">自动抓图</div><div>我来上传</div></div>
+      </div>
+      <div class="hintline"><b>将检索</b> 约 12 篇来源 · 6 台候选 · 约 40 秒</div>
+    </div>
+    <div class="recent">
+      <div class="lab">最近</div>
+      <div class="r"><b>沙漠牵引车</b><span class="mono">10-31 · 6 台</span></div>
+      <div class="r"><b>重型吊车</b><span class="mono">10-18 · 9 台</span></div>
+      <div class="r"><b>翻斗铲车</b><span class="mono">10-18 · 7 台</span></div>
+    </div>
+    <div class="foot"><span>输入设备类别，或直接说一句话</span>
+      <div class="grow"><span class="tiny mono">⌘↵ 开始</span><button class="btn">高级设置</button></div></div>
+  </div>
+</section>
+
+<!-- ============ S1 ready ============ -->
+<section class="board" id="s1">
+  <div class="rail">
+    <div class="mark">EquipLens</div>
+    <div class="stage done">00</div><div class="stage now">01</div><div class="stage">02</div>
+    <div class="stage">03</div><div class="stage">04</div>
+  </div>
+  <div class="main">
+    <div class="top">
+      <b>牵引车</b><span class="sep">·</span><span>3 台</span>
+      <div class="right">
+        <span class="hatchtag">2 个通道被拦</span>
+        <span class="tiny mono">34 篇来源</span>
+        <button class="btn sm">重新检索</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="filters">
+        <div class="fgroup">
+          <div class="label">品牌</div>
+          <div class="frow on">全部 <span class="n mono">6</span></div>
+          <div class="frow">陕汽 <span class="n mono">2</span></div>
+          <div class="frow">重汽 <span class="n mono">2</span></div>
+          <div class="frow">一汽 <span class="n mono">1</span></div>
+          <div class="frow">三一 <span class="n mono">1</span></div>
+        </div>
+        <div class="fgroup">
+          <div class="label">构型</div>
+          <div class="frow on">全部</div>
+          <div class="frow">6×6 <span class="n mono">3</span></div>
+          <div class="frow">8×4 <span class="n mono">2</span></div>
+        </div>
+        <div class="fgroup">
+          <div class="label">证据</div>
+          <div class="frow on">全部</div>
+          <div class="frow">E3 同页共现 <span class="n mono">3</span></div>
+          <div class="frow">E1 官方 <span class="n mono">1</span></div>
+          <div class="frow">T3 仅搜索词 <span class="n mono">2</span></div>
+        </div>
+        <div style="margin-top:auto"><button class="btn sm" style="width:100%;justify-content:center">＋ 手动添加</button></div>
+      </div>
+
+      <div class="table">
+        <div class="thead"><span style="width:16px"></span><span style="flex:1">车型</span><span style="width:88px">品牌</span>
+          <span style="width:64px">来源</span><span style="width:48px">证据</span><span style="width:150px"></span></div>
+        <div class="rows">
+          <div class="tr sel"><span class="cb on"></span><span class="m mono">德龙 X3000</span><span class="b">陕汽</span>
+            <span class="n mono">12 篇</span><span class="evcell"><span class="ev e3">E3</span></span><span class="note">看证据 →</span></div>
+          <div class="tr"><span class="cb on"></span><span class="m mono">豪沃 4</span><span class="b">重汽</span>
+            <span class="n mono">9 篇</span><span class="evcell"><span class="ev e1">E1</span></span></div>
+          <div class="tr"><span class="cb"></span><span class="m mono">解放 JH6</span><span class="b">一汽</span>
+            <span class="n mono">7 篇</span><span class="evcell"><span class="ev e3">E3</span></span></div>
+          <div class="tr weak"><span class="cb on"></span><span class="m mono">德龙 6X6</span><span class="b">陕汽</span>
+            <span class="n mono">5 篇</span><span class="evcell"><span class="ev t3">T3</span></span><span class="note">仅弱关联，素材页复核</span></div>
+          <div class="tr"><span class="cb"></span><span class="m mono">三一 STC800</span><span class="b">三一</span>
+            <span class="n mono">4 篇</span><span class="evcell"><span class="ev t3">T3</span></span></div>
+          <div class="tr"><span class="cb"></span><span class="m mono">豪沃 TX7</span><span class="b">重汽</span>
+            <span class="n mono">3 篇</span><span class="evcell"><span class="ev t3">T3</span></span></div>
+          <div class="tr"><span class="cb"></span><span class="m mono">天龙 KL</span><span class="b">东风</span>
+            <span class="n mono">2 篇</span><span class="evcell"><span class="ev t3">T3</span></span></div>
+          <div class="tr"><span class="cb"></span><span class="m mono">德龙 M3000</span><span class="b">陕汽</span>
+            <span class="n mono">1 篇</span><span class="evcell"><span class="ev t3">T3</span></span></div>
+          <div class="tr" style="opacity:.45"><span class="cb"></span><span class="m mono">德龙 X5000</span><span class="b">陕汽</span>
+            <span class="n mono">0 篇</span><span class="evcell"><span class="ev t3">—</span></span><span class="note">无证据，不可选</span></div>
+        </div>
+        <div class="tfoot">共 6 台候选 · 来源可按行追溯 · 排序：提及数 ↓</div>
+      </div>
+
+      <div class="insp">
+        <h4>证据 · 德龙 X3000</h4>
+        <div class="evitem"><i>01</i><div><b>陕汽德龙X3000 6×6 牵引车 车型大全</b>360che.com / 型号与主图同页共现 · 2026-10-31</div></div>
+        <div class="evitem"><i>02</i><div><b>德龙X3000 沙漠版 实拍</b>卡车之家 / 标题含型号与构型 · 2026-10-30</div></div>
+        <div class="evitem"><i>03</i><div><b>陕汽 德龙 X3000 配置与报价</b>厂商页 / 官方参数表 · 2026-10-28</div></div>
+        <h4 style="margin-top:4px">事实</h4>
+        <div class="facts">
+          <div><div class="k">类别</div><div class="v">牵引车</div></div>
+          <div><div class="k">构型</div><div class="v mono">6×6</div></div>
+          <div><div class="k">提及</div><div class="v mono">12 篇</div></div>
+          <div><div class="k">最近</div><div class="v mono">10-31</div></div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:7px">关联理由（可改）</div>
+          <div class="reason">同为 6×6 沙漠工况牵引车，覆盖同类竞品的前脸与驾驶室造型。</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span><b style="color:var(--text)">已选 4 台</b> · 1 台仅弱关联</span>
+      <div class="grow"><span class="tiny mono">2 通道被拦 · 仍有 34 篇可用</span><button class="btn solid">确认清单 →</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S1 retrieving ============ -->
+<section class="board" id="s1r">
+  <div class="rail">
+    <div class="mark">EquipLens</div>
+    <div class="stage done">00</div><div class="stage now">01</div><div class="stage">02</div>
+    <div class="stage">03</div><div class="stage">04</div>
+  </div>
+  <div class="main">
+    <div class="top">
+      <b>牵引车</b><span class="sep">·</span><span>3 台</span>
+      <div class="right"><span class="tiny mono">检索中 · 00:24</span><span class="tiny mono">4 / 7 查询</span>
+        <button class="btn sm">取消</button></div>
+    </div>
+    <div class="progwrap"><i></i></div>
+    <div class="body">
+      <div class="qcol">
+        <div class="label">查询队列</div>
+        <div class="qrow"><span class="st">✓</span><span>“牵引车” 车型大全 推荐</span></div>
+        <div class="qrow"><span class="st">✓</span><span>“牵引车” 有哪些型号</span></div>
+        <div class="qrow"><span class="st">✓</span><span>“牵引车” 大吨位 型号</span></div>
+        <div class="qrow now"><span class="st">›</span><span>“沙漠牵引车” 车型</span></div>
+        <div class="qrow blocked"><span class="st">×</span><span>“牵引车” 6×6 推荐</span><span class="hatchtag" style="margin-left:8px;flex:none">被拦</span></div>
+        <div class="qrow" style="opacity:.45"><span class="st">○</span><span>来源正文复核（12 篇）</span></div>
+      </div>
+
+      <div class="cands">
+        <div class="label">候选 · 逐行出现</div>
+        <div class="crow"><span class="nm mono">德龙 X3000</span><span class="track"><i style="width:100%"></i></span><span class="ct mono">12 篇</span></div>
+        <div class="crow"><span class="nm mono">豪沃 4</span><span class="track"><i style="width:78%"></i></span><span class="ct mono">9 篇</span></div>
+        <div class="crow"><span class="nm mono">解放 JH6</span><span class="track"><i style="width:56%"></i></span><span class="ct mono">7 篇</span></div>
+        <div class="crow"><span class="nm mono">德龙 6X6</span><span class="track"><i style="width:34%"></i></span><span class="ct mono">5 篇</span></div>
+        <div class="crow" style="opacity:.55"><span class="nm mono">三一 STC800</span><span class="track"><i style="width:16%"></i></span><span class="ct mono">…</span></div>
+
+        <div class="stream">
+          <div class="label">正文流 · 正在核对</div>
+          <div class="srow"><span class="src">360che.com</span><b>陕汽德龙X3000 6×6 牵引车 车型大全</b><span class="flag">型号命中</span></div>
+          <div class="srow"><span class="src">卡车之家</span><b>德龙X3000 沙漠版实拍：前脸与驾驶室</b><span class="flag">构型命中</span></div>
+          <div class="srow"><span class="src">厂商页</span><b>陕汽 X3000 配置与参数表</b><span class="flag">官方</span></div>
+          <div class="srow" style="opacity:.5"><span class="src">…</span><b>正在读取第 4 篇正文</b><span></span></div>
+        </div>
+      </div>
+
+      <div class="chan">
+        <div class="label">通道状态</div>
+        <div class="chanrow"><span>360 图片</span><span class="v mono">12 / 12 相关</span></div>
+        <div class="chanrow"><span>百度图片</span><span class="v mono" style="color:var(--text3)">被拦 · 验证页</span></div>
+        <div class="chanrow"><span>Bing 图片</span><span class="v mono">0 / 12 相关</span></div>
+        <div style="margin-top:4px">
+          <div class="big mono">34</div>
+          <div class="tiny" style="margin-top:6px">已取回来源 · 正在复核正文</div>
+        </div>
+        <div style="margin-top:auto;font-size:11.5px;color:var(--text3);line-height:1.65">
+          被拦不等于失败：已自动切到可用通道，每条结果都标注来源通道。
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>已取回 34 篇来源 · 6 台候选</span>
+      <div class="grow"><span class="tiny mono">剩余约 16 秒</span></div></div>
+  </div>
+</section>
+
+</body>
+</html>
