@@ -2,15 +2,39 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-10-31** |
-| 当前阶段 | **检索模块（文本线 + 图片线）可跑，进入"整体测试"前夜；L1.5 关联清单模块已从"skill 判断"降级为"schema + 证据 + 校验"（10-31 决定）；VLM 后置。** 今日完成：`l3gate` 接线（双轨指标+离线回放）、关联清单 schema/证据层、skill 四轮 A/B 后降级、`imagesearch` 通道修复（360 可用 + 相关性/构型护栏）、`gate.check_exterior` 整车主图判定、23 车型实图核对（**合格待测**）。 |
+| 更新日期 | **2026-11-03** |
+| 当前阶段 | **竞赛提交收口，进入"前端重做 + 检索优化"两线。** 检索/分析/排版/导出模块可跑，19 页产品说明书与宣传片已交付。11-03 完成：检索能力诊断归档、界面规格 v2（五界面/七状态）、三张视觉语言样张（产品负责人认可）、低保真先行流程约定。 |
 | 用途 | 新会话/新成员从此接续，不必重读全部讨论历史 |
 
-## 0.0 当前状态快照（2026-10-31，新会话先读这里）
+## 0.0 当前状态快照（2026-11-03，新会话先读这里）
+
+**阶段**：竞赛提交告一段落，转入**前端重做 + 检索优化 + 部署**。Python 侧（检索/分析/排版/导出）不动，重点是网页端重做。
+
+**今日（11-03）完成**：
+
+| 件 | 状态 | 关键产物 |
+|---|---|---|
+| 检索能力诊断（技术讨论） | ✅ 归档 | `docs/retrieval-diagnosis-20261103.md`：图片通道**只剩 360 可用**（百度 `antiFlag`/验证页、Bing 相关 0/12）；真短板是"**型号身份不可验证**"（门卫只判是不是工程车）；computer use 不改 IP 与验证码，不换；DSH 侧边栏技术上支持（`ctx.sidebarRightTabs` 公开席位），留作 L0→L1 叠加层 |
+| 界面与交互规格 v2 | ✅ 待评审 | `docs/web-interaction-spec-v2.md`：**五界面 / 七状态**、逐界面版面+控件+状态+动效+跳转、技术栈定稿；v1 已标注作废 |
+| 视觉语言样张 ×3 | ✅ **产品负责人："风格非常好"** | `docs/ui-mock/`（`s0` 立项台 / `s1` 结果筛选 / `s1r` 检索中）——墨色外壳 + 纸色成品、左侧测量轨、裁切标记、等宽型号；`shot.py` 可重渲 |
+| 开发流程约定 | ✅ | **先低保真**（只做布局/状态/跳转/交互编排，不做精修）；**等待功能区与状态编排经产品负责人确认后**才进高保真 |
+
+**前端技术栈（11-03 定）**：React 19 + TypeScript + Vite；CSS Modules + 设计 token（不用组件库）；Motion 做跨界面 morph；TanStack Query + SSE；React Router。框选用原生 `<img>` + SVG 覆盖层。**选 React 的关键理由**：DSH 侧边栏面板本身是 React 组件，日后编排台/交付台可原样复嵌进 harness，不必写第二套 UI。
+
+**页面模型**：`S0 立项 → S1 检索/筛选 → S2 素材/分析 → S3 编排（框选/版面）→ S4 交付`；等待态（`retrieving`/`analyzing`/`composing`）**不单独成页**，是同路由的整屏 morph。判据：对象、主动作、空间模型三者都变才算一个新界面。
+
+**待产品负责人拍板（4 项；未定则按建议默认推进低保真）**：
+
+1. 基调：墨色外壳 + 纸色成品（**建议**，样张即此）vs 全浅色；
+2. 框选：预置框微调为主（**建议**，快）vs 从零手画（自由，每页多 30–60 秒）；
+3. 部件数：固定 5 个（**建议**：前脸/格栅/保险杠/轮眉/踏步）vs 3–8 自定；
+4. 交付物：PPTX 必做，PDF + 网页册是否本期做（**建议**都做，各约 0.5 天）。
+
+### 0.0b 2026-10-31 快照（历史，检索线）
 
 **阶段**：文本检索 + 图片检索都可跑；关联清单（L1.5）已定为"模型自由判断 + 证据强制 + 校验兜底"，**skill 不再承载判断**（细节见 `docs/association-skill-archive.md`）。下一步是整体测试（闸门→runner→audit→报告），VLM 仍后置。
 
-**今日（10-31）完成**：
+**10-31 完成**：
 
 | 件 | 状态 | 关键数字 / 文件 |
 |---|---|---|
@@ -119,6 +143,21 @@
 9. **文本检索（2026-10-23）**："车型名+评测/外观"查询产不出设计文本（6.3%）；LLM 查询规划提升文章命中率（40%→100%）；**关键词段落打分假阳性 43%**；预算边际由"高产出源"决定而非篇数；部件类型学归下游分析整合模块。
 
 ## 3. 下一步（按序执行）
+
+### 3.0 当前主线（2026-11-03 起）
+
+| 序 | 事 | 状态 | 出口条件 |
+|---|---|---|---|
+| ① | **前端低保真**：S0 立项台 + S1 检索台（含 `retrieving`） | 待开工 | 布局/状态/跳转/键盘全通，`?mock=1` 假数据可走完；不做精修 |
+| ② | **等待区与状态编排评审** | 待① | 产品负责人确认 `retrieving/analyzing/composing` 三段的呈现方式与文案 |
+| ③ | **高保真**：补 S2/S3/S4，视觉精修、动效落地 | 待② | 1440×900 无滚动条；morph 680ms；reduced-motion 降级 |
+| ④ | **接后端**：SSE 替换 mock、断点恢复、并发守卫 | 待③ | 五个界面在真实 run 上跑通 |
+| ⑤ | **检索优化**（可并行）：通道熔断+查询缓存（P0）、查询阶梯扩 4 段（P0）、`region_match` 实装（P1）、候选图聚类告警（P1） | 待排期 | 见 `docs/retrieval-diagnosis-20261103.md` §6 |
+| ⑥ | 部署与打包（便携 zip / 云端 demo） | 未启动 | README 首行给 demo 链接 |
+
+**流程铁律**：低保真阶段只回答"这一屏放什么、什么状态、怎么跳"，**不碰**字号/阴影/动效曲线；高保真阶段才回答"好不好看"。样张（`docs/ui-mock/`）是视觉参考，不是实现起点。
+
+### 3.0.1 检索线与既有计划（2026-10-31 及以前，保留）
 
 1. ~~M3.1 / R0 / R1 / 真实渠道 / 名录搜图 / 泛化测试~~ ✅；
 2. ~~判向探针~~ ✅（2026-10-17 收口）；
@@ -257,15 +296,17 @@
 
 ## 6. 新会话续接指引
 
-1. **先读**：§0.0 状态快照 → `docs/module-map.md` → `docs/agent-loop-mechanisms.md` → `docs/domain-bench-runbook.md`。
-2. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；
+1. **先读**：§0.0 状态快照 → `docs/web-interaction-spec-v2.md`（界面规格）→ `docs/ui-mock/README.md`（视觉参考）→ `docs/module-map.md` → `docs/agent-loop-mechanisms.md`。
+2. **若要碰检索**：先读 `docs/retrieval-diagnosis-20261103.md`（通道现状、阻碍归因、优化优先级、computer-use 与 DSH 形态的结论）。
+3. **前端现状**：规格与样张已就绪，**正式前端工程（`webapp/`）尚未创建**；现行 `web/ui/index.html` 是旧版单页（770 行原生 JS），将被替换。样张可重渲：`python docs/ui-mock/shot.py`。
+4. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；
    测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench}.py`。
-3. **跑测试**（全部可离线；`test_probe` 实测 13/13，权重已就绪）：
+5. **跑测试**（全部可离线；`test_probe` 实测 13/13，权重已就绪）：
    `for f in tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
-4. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
+6. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
    `PYTHONPATH=src python -m equiplens text-run scripts/intent-chain2.json --data-dir data-test --run-root data-test/runs --run-id <new-id>`
-5. **闸门评估**：`PYTHONPATH=src python scripts/eval_l3gate.py`（结果 `data-test/evals/l3-gate-v1.md`）。
-6. **误杀抽检**：`python -m equiplens audit-batch <batch_dir> --data-dir data-test`，再用 `audit-apply` 出报告。
-7. **域名基准**：`python -m equiplens domain-bench scripts/domain-bench-queries.json --data-dir data-test`。
-8. **已知坑**：百度间歇拦截（降级链 auto→延迟百度→Bing）；`site:` 定向默认关闭；复测必须新 run_id；A 档产出 ≠ 全部价值（163 等门户可能产 G 档）。
-9. **台账**：`docs/test-log.md`（意见 #20–#23）、`data-test/runs/INDEX.md`、`data-test/evals/`。
+7. **闸门评估**：`PYTHONPATH=src python scripts/eval_l3gate.py`（结果 `data-test/evals/l3-gate-v1.md`）。
+8. **误杀抽检**：`python -m equiplens audit-batch <batch_dir> --data-dir data-test`，再用 `audit-apply` 出报告。
+9. **域名基准**：`python -m equiplens domain-bench scripts/domain-bench-queries.json --data-dir data-test`。
+10. **已知坑**：百度间歇拦截（降级链 auto→延迟百度→Bing）；`site:` 定向默认关闭；复测必须新 run_id；A 档产出 ≠ 全部价值（163 等门户可能产 G 档）。
+11. **台账**：`docs/test-log.md`（意见 #20–#23）、`data-test/runs/INDEX.md`、`data-test/evals/`。
