@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquipLens · S2 素材与分析</title>
+<style>
+:root{
+  --ink:#0B0B0C; --ink1:#121214; --ink2:#17171A;
+  --line:rgba(242,241,238,.13); --line2:rgba(242,241,238,.07);
+  --text:#F2F1EE; --text2:#9A9A95; --text3:#6A6A66;
+  --paper:#F4F2ED; --paperink:#141414;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000}
+html{overflow-x:hidden}
+body{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--text)}
+.mono{font-family:"IBM Plex Mono","JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+button{font-family:inherit;color:inherit}
+
+.app{width:100%;height:100vh;background:var(--ink);display:flex;overflow:hidden}
+
+/* ---------- left column ---------- */
+.side{width:clamp(200px,21vw,280px);flex:none;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding-bottom:24px}
+.brand{height:clamp(48px,4.6vw,64px);flex:none;display:flex;align-items:center;
+  gap:clamp(8px,.9vw,12px);padding:0 clamp(12px,1.4vw,18px)}
+.logo{width:clamp(20px,1.7vw,25px);height:auto;aspect-ratio:1;flex:none;color:var(--text)}
+.name{font-size:clamp(13px,1.02vw,15px);white-space:nowrap}
+.label{font-size:clamp(9px,.72vw,10px);letter-spacing:.13em;text-transform:uppercase;color:var(--text3)}
+.items{display:flex;flex-direction:column;padding:0 clamp(6px,.7vw,10px)}
+.item{display:flex;flex-direction:column;gap:3px;padding:clamp(8px,.85vw,11px) 8px;
+  border-radius:2px;border-top:1px solid var(--line2);cursor:pointer}
+.item:hover{background:var(--ink1)}
+.item .t{font-size:clamp(12px,.95vw,13.5px);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .m{font-size:clamp(10px,.78vw,11px);color:var(--text3)}
+.item:first-child{border-top:0}
+.side .label{margin:clamp(10px,1.2vw,16px) clamp(12px,1.2vw,16px) 6px}
+
+/* ---------- right ---------- */
+.right{flex:1;min-width:0;display:flex;flex-direction:column}
+
+.progress{height:clamp(60px,5.2vw,74px);flex:none;display:flex;align-items:center;
+  gap:clamp(6px,.7vw,10px);padding:0 clamp(12px,1.7vw,24px);border-bottom:1px solid var(--line)}
+.step{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-start;
+  min-height:clamp(20px,1.8vw,24px);gap:clamp(5px,.5vw,7px)}
+.step .bar{display:block;height:3px;border-radius:1px;background:rgba(242,241,238,.10)}
+.step .nm{display:none;font-size:clamp(8.5px,.72vw,9.5px);letter-spacing:.12em;
+  color:var(--text3);white-space:nowrap}
+.step.done .bar{background:rgba(242,241,238,.42)}
+.step.done .nm{display:block}
+.step.now .bar{background:var(--paper)}
+.step.now .nm{display:block;color:var(--paper)}
+
+.runbar{margin:clamp(8px,1vw,14px) clamp(12px,1.7vw,24px) 0;flex:none;
+  height:clamp(44px,3.4vw,52px);border:1px solid var(--line);background:var(--ink1);
+  border-radius:2px;display:flex;align-items:center;gap:clamp(8px,.9vw,14px);
+  padding:0 8px 0 clamp(12px,1.1vw,16px);position:relative;overflow:hidden}
+.rb-state{font-size:clamp(10px,.8vw,11.5px);color:var(--paper);white-space:nowrap;
+  display:flex;align-items:center;gap:7px}
+.rb-state::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--paper);
+  animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.rb-q{font-size:clamp(11px,.9vw,13px);color:var(--text2);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;flex:1;min-width:0}
+.rb-cnt{font-size:clamp(9px,.76vw,11px);color:var(--text3);white-space:nowrap}
+.rb-btn{height:clamp(26px,1.9vw,30px);padding:0 10px;border:1px solid var(--line);
+  background:transparent;color:var(--text2);font-size:clamp(10px,.78vw,11.5px);border-radius:2px;cursor:pointer}
+.rb-btn:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.rb-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--paper);width:100%}
+.st{display:none;font-style:normal}
+body[data-s="working"] .st-w,body[data-s="done"] .st-d{display:inline}
+body[data-s="done"] .rb-state::before{animation:none;background:var(--text2)}
+
+.wrap{flex:1;min-height:0;display:flex;gap:clamp(10px,1.2vw,16px);
+  padding:clamp(10px,1.2vw,16px) clamp(12px,1.7vw,24px) clamp(12px,1.4vw,18px)}
+
+/* ---------- stage (left) ---------- */
+.stage-col{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;
+  scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent;padding-right:2px}
+.scroll::-webkit-scrollbar{width:8px}
+.scroll::-webkit-scrollbar-track{background:transparent}
+.scroll::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:4px}
+
+/* the canvas grows to fill the column; the photo is letterboxed inside it */
+.viewer{flex:1;min-height:clamp(220px,28vh,320px);display:flex;align-items:stretch;
+  gap:clamp(4px,.5vw,8px)}
+.nav{width:clamp(22px,2vw,28px);flex:none;border:1px solid var(--line2);background:transparent;
+  color:var(--text3);border-radius:2px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-size:16px;line-height:1;align-self:stretch}
+.nav:hover{color:var(--text);border-color:rgba(242,241,238,.28);background:var(--ink1)}
+
+.photo{flex:1;min-width:0;height:100%;position:relative;overflow:hidden;
+  background:#141416;border:1px solid var(--line2);
+  background-image:radial-gradient(circle at 50% 50%,#191A1C 0%,#141416 68%)}
+
+/* canvas = the card; the photo sits inside it as a 16:9 plate */
+.plate{position:absolute;inset:0;margin:auto;aspect-ratio:16/9;max-width:100%;max-height:100%;
+  background:#151517;border:1px solid var(--line2)}
+
+/* frame = the truck's 200:72 box; every part box is a % of this frame */
+.frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:74%;aspect-ratio:200/72}
+.frame svg.truck{width:100%;height:100%;opacity:.5;display:block}
+
+.hint{position:absolute;left:50%;top:10px;transform:translateX(-50%);z-index:5;
+  font-size:11px;color:var(--text2);background:rgba(11,11,12,.88);
+  border:1px dashed rgba(242,241,238,.3);border-radius:2px;padding:4px 10px;
+  white-space:nowrap;display:none}
+.photo.pending .hint{display:block}
+.photo.pending .frame{cursor:crosshair}
+
+.box{position:absolute;border:1px dashed rgba(242,241,238,.45);border-radius:1px;cursor:pointer}
+.box .tag{position:absolute;left:-1px;top:-16px;font-size:9.5px;line-height:1;padding:2px 5px;
+  background:rgba(11,11,12,.85);color:var(--text2);border:1px solid var(--line2);border-radius:1px;
+  white-space:nowrap}
+.box.sel{border:1.5px solid var(--paper);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.box.sel .tag{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.box .h{display:none}
+.box.sel .h{position:absolute;width:5px;height:5px;background:var(--paper);border-radius:1px;display:block}
+.h.nw{left:-3px;top:-3px}.h.ne{right:-3px;top:-3px}.h.sw{left:-3px;bottom:-3px}.h.se{right:-3px;bottom:-3px}
+
+.controls{display:flex;align-items:center;gap:clamp(6px,.8vw,10px);margin-top:clamp(8px,.9vw,10px)}
+.btn{height:clamp(30px,2.4vw,34px);padding:0 clamp(10px,1vw,14px);border-radius:2px;
+  border:1px solid var(--line);background:transparent;color:var(--text2);
+  font-size:clamp(11px,.88vw,12.5px);display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.btn:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.btn.solid{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.btn.solid:hover{background:#fff}
+.imgsel{display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:auto;
+  color:var(--text2);font-size:clamp(10px,.8vw,11.5px)}
+.imgsel button{width:clamp(20px,1.8vw,24px);height:clamp(24px,2vw,28px);border:1px solid var(--line2);
+  background:transparent;color:var(--text3);cursor:pointer;border-radius:1px;line-height:1}
+.imgsel button:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.imgsel .n{margin:0 4px;white-space:nowrap}
+.imgsel .n b{color:var(--text);font-weight:500}
+
+.film{margin-top:clamp(8px,1vw,12px)}
+.film .label{margin-bottom:6px;display:flex;gap:8px;align-items:baseline}
+.film .label b{color:var(--text2);font-weight:500}
+.strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent}
+.strip::-webkit-scrollbar{height:6px}
+.strip::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:3px}
+.cell{width:clamp(70px,6.2vw,88px);flex:none;border:1px solid var(--line2);border-radius:2px;
+  background:#141416;overflow:hidden;cursor:pointer;padding:0}
+.cell .th{height:clamp(38px,3.4vw,48px);display:flex;align-items:center;justify-content:center}
+.cell .th svg{width:70%;opacity:.45}
+.cell .cn{font-size:9px;color:var(--text3);padding:2px 4px 3px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;border-top:1px solid var(--line2)}
+.cell:hover{border-color:rgba(242,241,238,.3)}
+.cell.now{border-color:var(--paper)}
+.cell.now .cn{color:var(--text)}
+.cell.extra{opacity:.45;border-style:dashed}
+
+/* bottom dock — collapsed: one row (back | confirm centred | input on its right) */
+.dock{position:sticky;bottom:0;margin-top:auto;display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;
+  padding:clamp(10px,1.2vw,16px) 0 clamp(4px,.6vw,8px);
+  background:linear-gradient(to top,var(--ink) 62%,rgba(11,11,12,0))}
+.dock .back{grid-column:1;justify-self:start}
+.dock .primary{grid-column:2}
+.dock .inputwrap{grid-column:3;height:34px;display:flex;align-items:center;gap:7px;
+  border:1px solid var(--line);background:var(--ink1);border-radius:2px;
+  padding:0 5px 0 10px;transition:border-color .15s}
+.dock .inputwrap:focus-within{border-color:rgba(242,241,238,.4)}
+.dock textarea{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);
+  font-family:inherit;font-size:12.5px;line-height:1.6;resize:none;height:22px;max-height:180px;
+  padding:2px 0;display:block}
+.dock textarea::placeholder{color:var(--text3)}
+.dock .predict{grid-column:1/-1;display:none;font-size:11px;color:var(--text3)}
+.dock .predict b{color:var(--paper);font-weight:500}
+
+/* expanded: the input takes the full width, the confirm button moves to the right of the row above */
+.dock.expand{grid-template-columns:1fr auto;
+  grid-template-areas:"back confirm" "predict predict" "input input";row-gap:8px}
+.dock.expand .back{grid-area:back;justify-self:start}
+.dock.expand .primary{grid-area:confirm;justify-self:end}
+.dock.expand .inputwrap{grid-area:input;height:auto;align-items:flex-end;padding:6px 6px 6px 12px}
+.dock.expand textarea{min-height:88px}
+.dock.expand .predict{grid-area:predict;display:block}
+
+.send{width:24px;height:24px;flex:none;border:1px solid var(--line);border-radius:2px;
+  background:transparent;color:var(--text2);cursor:pointer;line-height:1;font-size:12px}
+.send:hover{background:var(--paper);border-color:var(--paper);color:var(--paperink)}
+.toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%) translateY(8px);
+  background:var(--paper);color:var(--paperink);font-size:12px;padding:8px 14px;border-radius:2px;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:60}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- parts panel (right) ---------- */
+.panel{width:clamp(320px,27vw,392px);flex:none;display:flex;flex-direction:column;
+  min-height:0;gap:6px}
+.panel .label{margin:0 0 2px;display:flex;gap:8px;align-items:baseline}
+.panel .label b{color:var(--text2);font-weight:500}
+.rows{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
+  scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent}
+.rows::-webkit-scrollbar{width:8px}
+.rows::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:4px}
+
+.prow{text-align:left;width:100%;padding:8px 10px 9px;border:0;border-left:2px solid var(--line2);
+  background:var(--ink1);border-radius:2px;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.prow:hover{background:#151517}
+.prow .ptop{display:flex;align-items:baseline;gap:7px}
+.prow .pno{font-size:9px;color:var(--text3);width:13px;flex:none}
+.prow .pname{font-size:clamp(11.5px,.9vw,12.5px);color:var(--text);white-space:nowrap}
+.prow .pterm{font-size:9.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .pstat{margin-left:auto;font-size:9.5px;color:var(--text3);white-space:nowrap;flex:none}
+.prow .pform{font-size:clamp(10px,.8vw,10.8px);line-height:1.62;color:var(--text2)}
+.prow .pmeta{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;
+  font-size:9.5px;color:var(--text3)}
+.prow .pmeta i{font-style:normal;font-size:8px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text3);opacity:.75}
+.prow .pintent{font-size:clamp(9.8px,.79vw,10.6px);line-height:1.55;color:var(--text2);
+  border-left:1px solid var(--line);padding-left:6px}
+.prow .pintent i{font-style:normal;font-size:8px;letter-spacing:.12em;color:var(--text3);
+  margin-right:4px;opacity:.75}
+
+.prow[data-st="framed"]{border-left-color:rgba(242,241,238,.5)}
+.prow[data-st="pending"]{border-left:2px dashed rgba(242,241,238,.28)}
+.prow[data-st="elsewhere"],.prow[data-st="hidden"]{opacity:.55}
+.prow.sel{background:var(--ink2);border-left-color:var(--paper);opacity:1}
+.prow.sel .pstat{color:var(--text2)}
+
+/* working state */
+body[data-s="working"] .box,body[data-s="working"] .hint{display:none}
+body[data-s="working"] .prow{opacity:.85;pointer-events:none}
+body[data-s="working"] .dock .primary{opacity:.35;pointer-events:none}
+.skline{display:flex;flex-direction:column;gap:4px;margin-top:2px}
+.skline i{display:block;height:7px;background:rgba(242,241,238,.06);border-radius:1px}
+.skline i:first-child{width:86%}
+.skline i:last-child{width:62%}
+
+@media (max-width:1180px){ .panel{width:clamp(300px,30vw,340px)} }
+@media (max-width:900px){
+  .app{height:auto;min-height:100vh;overflow:visible}
+  .wrap{flex-direction:column}
+  .panel{width:100%;flex:none}
+  .rows{overflow:visible}
+  .scroll{overflow:visible}
+  .viewer{min-height:260px}
+  .dock{position:relative;background:none}
+}
+@media (max-width:760px){
+  .side{width:56px}
+  .side .brand{justify-content:center;padding:0}
+  .side .name,.side .items,.side .label{display:none}
+}
+</style>
+</head>
+<body data-s="done">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="truck" viewBox="0 0 200 72">
+    <g fill="currentColor">
+      <rect x="4" y="44" width="192" height="7" rx="1"/>
+      <path d="M14 20h40l10 10v18H14z"/>
+      <path d="M60 26h18l6 8v14H60z" opacity=".82"/>
+      <rect x="14" y="30" width="22" height="9" opacity=".55"/>
+      <rect x="98" y="34" width="60" height="6" opacity=".35"/>
+      <circle cx="34" cy="54" r="9"/>
+      <circle cx="34" cy="54" r="3.6" fill="#141416"/>
+      <circle cx="126" cy="54" r="9"/>
+      <circle cx="126" cy="54" r="3.6" fill="#141416"/>
+      <circle cx="166" cy="54" r="9"/>
+      <circle cx="166" cy="54" r="3.6" fill="#141416"/>
+    </g>
+  </symbol>
+</svg>
+
+<section class="app">
+
+  <aside class="side">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+      </svg>
+      <span class="name">EquipLens</span>
+    </div>
+    <div class="label">最近</div>
+    <div class="items">
+      <div class="item"><span class="t">沙漠牵引车</span><span class="m mono">今天 · 进行中</span></div>
+      <div class="item"><span class="t">重型吊车</span><span class="m mono">10-18 · 9 台</span></div>
+      <div class="item"><span class="t">翻斗铲车</span><span class="m mono">10-18 · 7 台</span></div>
+      <div class="item"><span class="t">混凝土泵车</span><span class="m mono">10-15 · 5 台</span></div>
+      <div class="item"><span class="t">高空作业车</span><span class="m mono">10-12 · 8 台</span></div>
+    </div>
+  </aside>
+
+  <div class="right">
+
+    <header class="progress">
+      <div class="step done"><i class="bar"></i><span class="nm">立项</span></div>
+      <div class="step done"><i class="bar"></i><span class="nm">检索</span></div>
+      <div class="step now"><i class="bar"></i><span class="nm">素材</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">排版</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">交付</span></div>
+    </header>
+
+    <div class="runbar">
+      <span class="rb-state mono"><i class="st st-w">分析中</i><i class="st st-d">分析完成</i></span>
+      <span class="rb-q" id="rbq">德龙 X3000 · 图 1 / 3</span>
+      <span class="rb-cnt mono" id="rbc">4 / 5 部件已框</span>
+      <button class="rb-btn" type="button"><i class="st st-w">暂停</i><i class="st st-d">重新分析</i></button>
+      <i class="rb-bar"></i>
+    </div>
+
+    <div class="wrap">
+
+      <main class="stage-col">
+        <div class="scroll">
+
+          <div class="viewer">
+            <button class="nav" id="prevV" type="button" aria-label="上一辆">‹</button>
+            <figure class="photo" id="photo">
+              <div class="hint" id="hint">在图上拖动，为「登车踏步」框选</div>
+              <div class="plate"></div>
+              <div class="frame" id="frame">
+                <svg class="truck"><use href="#truck"/></svg>
+                <div id="boxes"></div>
+              </div>
+            </figure>
+            <button class="nav" id="nextV" type="button" aria-label="下一辆">›</button>
+          </div>
+
+          <div class="controls">
+            <button class="btn" id="prevV2" type="button">‹ 上一辆</button>
+            <div class="imgsel">
+              <button id="prevImg" type="button" aria-label="上一张">‹</button>
+              <span class="n">图 <b id="imgNo">1</b> / <span id="imgTot">3</span></span>
+              <button id="nextImg" type="button" aria-label="下一张">›</button>
+            </div>
+            <button class="btn" id="nextV2" type="button">下一辆 ›</button>
+          </div>
+
+          <div class="film">
+            <div class="label">车辆 <b class="mono" id="vPos">1 / 8</b></div>
+            <div class="strip" id="strip"></div>
+          </div>
+
+          <div class="dock" id="dock">
+            <button class="btn back" id="back" type="button">‹ 上一步</button>
+            <button class="btn solid primary" type="button">确认并开始排版</button>
+            <div class="inputwrap">
+              <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+              <button class="send" id="send" type="button" aria-label="提交">↑</button>
+            </div>
+            <div class="predict" id="dockPredict">
+              系统预判：回到 <b id="predStep">检索</b> · 只重做 <b id="predScope">德龙 X3000</b>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      <aside class="panel">
+        <div class="label">部件分析 <b class="mono" id="pCount">4 / 5 已框</b></div>
+        <div class="rows" id="rows"></div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* 部件分析按 docs/superpowers/specs/2026-10-31-analysis-schema-design.md §2.2 组织：
+   term（词表构型名）/ part_family / form（≤2 句）/ cmf / intent（≤1 句，因果≤2 级）
+   文风按同文件 §5：一句一判断、≤30 字、禁框架句、术语不解释、禁空评价。 */
+const PARTS = [
+  {id:'grille', no:'01', name:'进气格栅', term:'横置多层格栅', family:'钣金件',
+   form:['三层横向饰条横贯车头，与保险杠上沿留一道分缝。','两端收进大灯内缘，宽度略窄于前脸。'],
+   cmf:'钢板 · 哑黑喷涂', intent:'横向拉宽车头视觉，压低头部重心。'},
+  {id:'bumper', no:'02', name:'保险杠', term:'整体式保险杠', family:'钣金件',
+   form:['单一连续件包住车头下部，无横向分缝。','下沿向内收，两端留出雾灯位。'],
+   cmf:'钢板 · 同色漆', intent:'减少接缝积砂，便于冲洗。'},
+  {id:'arch', no:'03', name:'翼子板与轮拱', term:'方形轮拱', family:'钣金件',
+   form:['拱缘带直边折角，外扩包住轮胎上半。','后端与踏步护板相接，形成一道侧向折线。'],
+   cmf:'塑料 · 黑色未喷漆', intent:'折角抬升离地感，兼挡飞石。'},
+  {id:'step', no:'04', name:'登车踏步', term:'两级固定踏板', family:'功能件',
+   form:['两级踏板上下错开，层间留一道可见空隙。','踏面压防滑齿纹，最下层悬空不落地。'],
+   cmf:'钢板 · 防滑涂层', intent:'两级降低登车高度，悬空层避免托底。'},
+  {id:'guard', no:'05', name:'侧防护栏', term:'型钢侧防护栏', family:'型材框架',
+   form:['方管主体横贯前后轮之间，三根竖支腿连车架。','端部与轮拱之间留出装配间隙。'],
+   cmf:'钢制型材 · 防锈漆', intent:'防对向车辆卷入，兼作侧向支撑。'}
+];
+
+/* 框坐标是「卡车画框」的百分比（画框 = 200×72 的等比盒） */
+const IMG = (boxes, visible) => ({boxes, visible});
+const VEHICLES = [
+  {name:'德龙 X3000', brand:'陕汽 · 6×6', imgs:[
+    IMG({grille:[7,42,11,13], bumper:[2,61,20,10], guard:[31,64,28,11]}, ['grille','bumper','guard','step']),
+    IMG({arch:[58,62,10,26]}, ['arch','step']),
+    IMG({grille:[7,42,11,13]}, ['grille','step'])
+  ]},
+  {name:'豪沃 TX7', brand:'重汽 · 6×6', imgs:[
+    IMG({grille:[7,41,12,13], bumper:[2,60,20,11]}, ['grille','bumper','arch']),
+    IMG({arch:[57,61,11,27], guard:[31,63,28,12]}, ['arch','guard','step']),
+    IMG({step:[20,63,11,17]}, ['step'])
+  ]},
+  {name:'解放 JH6', brand:'一汽 · 6×4', imgs:[
+    IMG({grille:[6,40,13,14], guard:[30,63,29,12]}, ['grille','guard','bumper']),
+    IMG({bumper:[2,60,21,11], step:[19,63,12,18]}, ['bumper','step']),
+    IMG({arch:[58,61,10,27]}, ['arch'])
+  ]},
+  {name:'德龙 6X6 沙漠版', brand:'陕汽 · 6×6', imgs:[
+    IMG({grille:[7,42,11,13], bumper:[2,61,20,10], guard:[31,64,28,11], arch:[58,62,10,26]}, ['grille','bumper','guard','arch','step']),
+    IMG({step:[20,64,11,17]}, ['step']),
+    IMG({grille:[7,42,11,13]}, ['grille'])
+  ]},
+  {name:'沙漠运输车', brand:'重汽 · 6×6', imgs:[
+    IMG({grille:[7,42,12,13], guard:[31,64,27,11], step:[20,64,11,16]}, ['grille','guard','step','bumper']),
+    IMG({bumper:[2,61,20,10], arch:[58,62,10,26]}, ['bumper','arch']),
+    IMG({grille:[7,42,11,13]}, ['grille'])
+  ]},
+  {name:'德龙 M3000', brand:'陕汽 · 4×2', imgs:[
+    IMG({grille:[7,41,12,13], bumper:[2,60,20,11]}, ['grille','bumper','arch']),
+    IMG({arch:[57,61,11,27], step:[20,63,11,17]}, ['arch','step']),
+    IMG({guard:[31,63,28,12]}, ['guard'])
+  ]},
+  {name:'三一 STC800', brand:'三一 · 跨车型', extra:true, imgs:[
+    IMG({grille:[7,41,12,13]}, ['grille','bumper']),
+    IMG({step:[20,63,11,17]}, ['step']),
+    IMG({arch:[57,61,11,27]}, ['arch'])
+  ]},
+  {name:'天龙 KL', brand:'东风 · 6×4', extra:true, imgs:[
+    IMG({grille:[7,42,11,13], bumper:[2,61,20,10]}, ['grille','bumper','step']),
+    IMG({guard:[31,64,28,11]}, ['guard']),
+    IMG({arch:[58,62,10,26]}, ['arch','step'])
+  ]}
+];
+
+const S = new URLSearchParams(location.search).get('s');
+if (['working','done'].includes(S)) document.body.dataset.s = S;
+
+const st = {v:0, img:0, sel:null};
+const $ = s => document.querySelector(s);
+const vNow = () => VEHICLES[st.v];
+const iNow = () => vNow().imgs[st.img];
+
+function framedParts(){
+  const set = new Set();
+  vNow().imgs.forEach(im => Object.keys(im.boxes).forEach(p => set.add(p)));
+  return set;
+}
+function partStatus(pid){
+  const im = iNow();
+  if (im.boxes[pid]) return 'framed';
+  const other = vNow().imgs.findIndex((x, i) => i !== st.img && x.boxes[pid]);
+  if (other >= 0) return 'elsewhere:' + other;
+  if ((im.visible || []).includes(pid)) return 'pending';
+  return 'hidden';
+}
+
+function renderBoxes(){
+  const host = $('#boxes'); host.innerHTML = '';
+  Object.entries(iNow().boxes).forEach(([pid, b]) => {
+    const p = PARTS.find(x => x.id === pid);
+    const el = document.createElement('div');
+    el.className = 'box' + (st.sel === pid ? ' sel' : '');
+    el.dataset.part = pid;
+    el.style.left = b[0] + '%'; el.style.top = b[1] + '%';
+    el.style.width = b[2] + '%'; el.style.height = b[3] + '%';
+    el.innerHTML = '<span class="tag">' + p.name + '</span>' +
+      '<span class="h nw"></span><span class="h ne"></span><span class="h sw"></span><span class="h se"></span>';
+    host.appendChild(el);
+  });
+
+  const ph = $('#photo');
+  ph.classList.remove('pending');
+  if (st.sel){
+    const s = partStatus(st.sel);
+    const nm = PARTS.find(x => x.id === st.sel).name;
+    if (s === 'pending'){
+      ph.classList.add('pending');
+      $('#hint').textContent = '在图上拖动，为「' + nm + '」框选';
+    } else if (s === 'hidden'){
+      ph.classList.add('pending');
+      $('#hint').textContent = '本图看不到「' + nm + '」，可切换图片后再框';
+    }
+  }
+}
+
+function renderRows(){
+  const host = $('#rows'); host.innerHTML = '';
+  if (document.body.dataset.s === 'working'){
+    $('#pCount').textContent = '— / ' + PARTS.length;
+    PARTS.forEach(p => {
+      const b = document.createElement('button');
+      b.className = 'prow';
+      b.innerHTML = '<span class="ptop"><span class="pno mono">' + p.no + '</span>' +
+        '<span class="pname">' + p.name + '</span><span class="pstat">分析中</span></span>' +
+        '<span class="skline"><i></i><i></i></span>';
+      host.appendChild(b);
+    });
+    return;
+  }
+
+  const framed = framedParts();
+  $('#pCount').textContent = framed.size + ' / ' + PARTS.length + ' 已框';
+
+  PARTS.forEach(p => {
+    const s = partStatus(p.id);
+    const b = document.createElement('button');
+    b.className = 'prow' + (st.sel === p.id ? ' sel' : '');
+    b.dataset.part = p.id; b.dataset.st = s.split(':')[0];
+
+    let tag = '';
+    if (s === 'framed') tag = '已框定';
+    else if (s.startsWith('elsewhere')) tag = '在 图 ' + (+s.split(':')[1] + 1) + ' 框选';
+    else if (s === 'pending') tag = '本图可见 · 待框选';
+    else tag = '本图不可见 · 换图后框';
+
+    b.innerHTML =
+      '<span class="ptop"><span class="pno mono">' + p.no + '</span>' +
+        '<span class="pname">' + p.name + '</span>' +
+        '<span class="pterm">' + p.term + '</span>' +
+        '<span class="pstat">' + tag + '</span></span>' +
+      '<span class="pform">' + p.form.join('') + '</span>' +
+      '<span class="pmeta"><i>CMF</i>' + p.cmf + '<i>族</i>' + p.family + '</span>' +
+      '<span class="pintent"><i>意图</i>' + p.intent + '</span>';
+
+    b.addEventListener('click', () => {
+      if (s.startsWith('elsewhere')) st.img = +s.split(':')[1];
+      st.sel = (st.sel === p.id) ? null : p.id;
+      render();
+    });
+    host.appendChild(b);
+  });
+}
+
+function renderFilm(){
+  const strip = $('#strip'); strip.innerHTML = '';
+  VEHICLES.forEach((v, i) => {
+    const c = document.createElement('div');
+    c.className = 'cell' + (i === st.v ? ' now' : '') + (v.extra ? ' extra' : '');
+    c.innerHTML = '<div class="th"><svg><use href="#truck"/></svg></div><div class="cn">' + v.name + '</div>';
+    c.addEventListener('click', () => { st.v = i; st.img = 0; st.sel = null; render(); });
+    strip.appendChild(c);
+  });
+  $('#vPos').textContent = (st.v + 1) + ' / ' + VEHICLES.length;
+}
+
+function renderStatus(){
+  $('#rbq').textContent = vNow().name + ' · 图 ' + (st.img + 1) + ' / ' + vNow().imgs.length;
+  $('#rbc').textContent = document.body.dataset.s === 'working'
+    ? '分析中 · 2 / ' + PARTS.length + ' 部件'
+    : framedParts().size + ' / ' + PARTS.length + ' 部件已框';
+  $('#imgNo').textContent = st.img + 1;
+  $('#imgTot').textContent = vNow().imgs.length;
+}
+
+function render(){ renderBoxes(); renderRows(); renderFilm(); renderStatus(); }
+
+/* ---- vehicle / image switching ---- */
+function goV(d){ st.v = (st.v + d + VEHICLES.length) % VEHICLES.length; st.img = 0; st.sel = null; render(); }
+function goImg(d){ const n = vNow().imgs.length; st.img = (st.img + d + n) % n; st.sel = null; render(); }
+$('#prevV').onclick = () => goV(-1);
+$('#nextV').onclick = () => goV(1);
+$('#prevV2').onclick = () => goV(-1);
+$('#nextV2').onclick = () => goV(1);
+$('#prevImg').onclick = () => goImg(-1);
+$('#nextImg').onclick = () => goImg(1);
+
+/* ---- boxes: click to select, drag to move, drag empty to draw ---- */
+const photo = $('#photo');
+const frame = $('#frame');
+
+photo.addEventListener('pointerdown', e => {
+  if (document.body.dataset.s === 'working') return;
+  const boxEl = e.target.closest('.box');
+  if (boxEl) { selectPart(boxEl.dataset.part); startMove(boxEl, e); return; }
+  if (st.sel && partStatus(st.sel) === 'pending') startDraw(e);
+});
+
+function pct(e){
+  const r = frame.getBoundingClientRect();
+  return {x: (e.clientX - r.left) / r.width * 100, y: (e.clientY - r.top) / r.height * 100};
+}
+function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+function selectPart(pid){ st.sel = pid; render(); }
+
+function startMove(el, e){
+  const pid = el.dataset.part, b = iNow().boxes[pid].slice();
+  const start = pct(e);
+  const move = ev => {
+    const p = pct(ev);
+    b[0] = clamp(b[0] + (p.x - start.x), -5, 100); b[1] = clamp(b[1] + (p.y - start.y), -5, 100);
+    start.x = p.x; start.y = p.y;
+    el.style.left = b[0] + '%'; el.style.top = b[1] + '%';
+    iNow().boxes[pid] = b;
+  };
+  const up = () => {
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointerup', up);
+    render();
+  };
+  window.addEventListener('pointermove', move);
+  window.addEventListener('pointerup', up);
+  e.preventDefault();
+}
+
+function startDraw(e){
+  const pid = st.sel;
+  const start = pct(e);
+  const ghost = document.createElement('div');
+  ghost.className = 'box';
+  ghost.style.borderColor = 'rgba(244,242,237,.8)';
+  $('#boxes').appendChild(ghost);
+  let last = start;
+  const move = ev => {
+    const p = pct(ev); last = p;
+    ghost.style.left = Math.min(start.x, p.x) + '%';
+    ghost.style.top = Math.min(start.y, p.y) + '%';
+    ghost.style.width = Math.abs(p.x - start.x) + '%';
+    ghost.style.height = Math.abs(p.y - start.y) + '%';
+  };
+  const up = () => {
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointerup', up);
+    ghost.remove();
+    const w = Math.abs(last.x - start.x), h = Math.abs(last.y - start.y);
+    if (w > 3 && h > 3){
+      iNow().boxes[pid] = [Math.min(start.x, last.x), Math.min(start.y, last.y), w, h];
+      st.sel = pid;
+    }
+    render();
+  };
+  window.addEventListener('pointermove', move);
+  window.addEventListener('pointerup', up);
+  e.preventDefault();
+}
+
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2200);
+}
+
+render();
+
+/* ---- 常驻输入框：聚焦展开、提交即生成回退请求 ---- */
+const dock = $('#dock'), ask = $('#ask');
+const RULES = [
+  [/图|照片|主图|不相关|换一张|型号|认错/, '检索'],
+  [/框|框选|看不到|位置/, '素材'],
+  [/文本|话|啰嗦|写|文案|描述|分析/, '素材'],
+  [/排版|版式|挤|空|页/, '排版']
+];
+
+function fitAsk(){
+  if (!dock.classList.contains('expand')) { ask.style.height = ''; return; }
+  ask.style.height = 'auto';
+  ask.style.height = Math.min(180, Math.max(88, ask.scrollHeight)) + 'px';
+}
+
+function predictAsk(){
+  const q = ask.value;
+  let step = '检索';
+  for (const [re, v] of RULES) { if (re.test(q)) { step = v; break; } }
+  $('#predStep').textContent = step;
+  $('#predScope').textContent = vNow().name;
+}
+
+ask.addEventListener('focus', () => { dock.classList.add('expand'); fitAsk(); predictAsk(); });
+ask.addEventListener('input', () => { predictAsk(); fitAsk(); });
+ask.addEventListener('blur', () => {
+  if (!ask.value.trim()) { dock.classList.remove('expand'); fitAsk(); }
+});
+
+function submitAsk(){
+  const q = ask.value.trim();
+  if (!q) { ask.focus(); return; }
+  toast('已提交：回到「' + $('#predStep').textContent + '」重做 ' + vNow().name);
+  ask.value = '';
+  dock.classList.remove('expand');
+  fitAsk();
+}
+
+$('#send').onclick = submitAsk;
+ask.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitAsk(); }
+});
+$('#back').onclick = () => toast('回看：检索台（只读，不重算）');
+</script>
+</body>
+</html>
