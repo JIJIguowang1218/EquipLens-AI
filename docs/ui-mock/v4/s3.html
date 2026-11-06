@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquipLens · S3 排版与导出</title>
+<style>
+:root{
+  --ink:#0B0B0C; --ink1:#121214; --ink2:#17171A;
+  --line:rgba(242,241,238,.13); --line2:rgba(242,241,238,.07);
+  --text:#F2F1EE; --text2:#9A9A95; --text3:#6A6A66;
+  --paper:#F4F2ED; --paperink:#141414;
+  /* page (the deliverable is paper-coloured) */
+  --p-ink:#141414; --p-mut:#6E6C66; --p-line:rgba(20,20,20,.16); --p-soft:#E6E2D9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000}
+html{overflow-x:hidden}
+body{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--text)}
+.mono{font-family:"IBM Plex Mono","JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+button{font-family:inherit;color:inherit}
+
+:root{
+  --rail:clamp(200px,21vw,280px);   /* 左栏是 rail：固定槽，不参与 12 栏 */
+  --margin:clamp(16px,1.7vw,24px);  /* 内容区左右外边距 */
+  --gutter:16px;                    /* 栏间隙（也是卡片间隙） */
+  --pad-y:16px;                     /* 内容区上边距（8pt 节奏） */
+}
+.app{width:100%;height:100vh;background:var(--ink);display:flex;overflow:hidden}
+
+/* ---------- left column ---------- */
+.side{width:var(--rail);flex:none;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding-bottom:24px}
+.brand{height:clamp(48px,4.6vw,64px);flex:none;display:flex;align-items:center;
+  gap:clamp(8px,.9vw,12px);padding:0 clamp(12px,1.4vw,18px)}
+.logo{width:clamp(20px,1.7vw,25px);height:auto;aspect-ratio:1;flex:none;color:var(--text)}
+.name{font-size:clamp(13px,1.02vw,15px);white-space:nowrap}
+.label{font-size:clamp(9px,.72vw,10px);letter-spacing:.13em;text-transform:uppercase;color:var(--text3)}
+.items{display:flex;flex-direction:column;padding:0 clamp(6px,.7vw,10px)}
+.item{display:flex;flex-direction:column;gap:3px;padding:clamp(8px,.85vw,11px) 8px;
+  border-radius:2px;border-top:1px solid var(--line2);cursor:pointer}
+.item:hover{background:var(--ink1)}
+.item .t{font-size:clamp(12px,.95vw,13.5px);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .m{font-size:clamp(10px,.78vw,11px);color:var(--text3)}
+.item:first-child{border-top:0}
+.side .label{margin:clamp(10px,1.2vw,16px) clamp(12px,1.2vw,16px) 6px}
+
+/* ---------- right ---------- */
+.right{flex:1;min-width:0;display:flex;flex-direction:column}
+
+.progress{height:72px;flex:none;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);align-items:center;padding:0 var(--margin);
+  border-bottom:1px solid var(--line)}
+.step{min-width:0;display:flex;flex-direction:column;justify-content:flex-start;
+  grid-column:span 2;min-height:clamp(20px,1.8vw,24px);gap:clamp(5px,.5vw,7px)}
+/* 五段按 2/2/3/3/2 分栏，段边界正好压在栏线上 */
+.step:nth-child(3),.step:nth-child(4){grid-column:span 3}
+.step .bar{display:block;height:3px;border-radius:1px;background:rgba(242,241,238,.10)}
+.step .nm{display:none;font-size:clamp(8.5px,.72vw,9.5px);letter-spacing:.12em;
+  color:var(--text3);white-space:nowrap}
+.step.done .bar{background:rgba(242,241,238,.42)}
+.step.done .nm{display:block}
+.step.now .bar{background:var(--paper)}
+.step.now .nm{display:block;color:var(--paper)}
+
+.runbar{margin:clamp(8px,1vw,14px) var(--margin) 0;flex:none;
+  height:clamp(44px,3.4vw,52px);border:1px solid var(--line);background:var(--ink1);
+  border-radius:2px;display:flex;align-items:center;gap:clamp(8px,.9vw,14px);
+  padding:0 8px 0 clamp(12px,1.1vw,16px);position:relative;overflow:hidden}
+.rb-state{font-size:clamp(10px,.8vw,11.5px);color:var(--paper);white-space:nowrap;
+  display:flex;align-items:center;gap:7px}
+.rb-state::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--paper)}
+.rb-q{font-size:clamp(11px,.9vw,13px);color:var(--text2);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;flex:1;min-width:0}
+.rb-cnt{font-size:clamp(9px,.76vw,11px);color:var(--text3);white-space:nowrap}
+.rb-btn{height:clamp(26px,1.9vw,30px);padding:0 10px;border:1px solid var(--line);
+  background:transparent;color:var(--text2);font-size:clamp(10px,.78vw,11.5px);border-radius:2px;cursor:pointer}
+.rb-btn:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.rb-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--paper);width:100%}
+
+.wrap{flex:1;min-width:0;min-height:0;display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);row-gap:var(--gutter);
+  padding:var(--pad-y) var(--margin)}
+
+/* ---------- stage ---------- */
+.stage-col{grid-column:1 / span 8;min-width:0;display:flex;flex-direction:column;min-height:0}
+.scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;
+  scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent;padding-right:0}
+.scroll::-webkit-scrollbar{width:8px}
+.scroll::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:4px}
+
+.canvas{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;
+  padding:clamp(4px,.6vw,10px)}
+
+/* the deliverable page: paper on ink, 16:9 */
+.page{position:relative;width:100%;aspect-ratio:16/9;max-height:100%;
+  background:var(--paper);color:var(--p-ink);border-radius:1px;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);overflow:hidden}
+
+.blk{position:absolute;border:1px dashed transparent;cursor:move}
+.blk:hover{border-color:rgba(20,20,20,.28)}
+.blk.sel{border:1.5px solid var(--p-ink)}
+.blk.sel::after{content:"";position:absolute;inset:-4px;pointer-events:none;
+  background:
+   linear-gradient(var(--p-ink),var(--p-ink)) left top/6px 1.5px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) left top/1.5px 6px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) right top/6px 1.5px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) right top/1.5px 6px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) left bottom/6px 1.5px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) left bottom/1.5px 6px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) right bottom/6px 1.5px no-repeat,
+   linear-gradient(var(--p-ink),var(--p-ink)) right bottom/1.5px 6px no-repeat}
+.blk-tag{display:none}
+
+/* title */
+.b-title{left:4%;top:5%;width:56%;height:9%}
+.b-title .m{font-size:clamp(14px,2.1vw,26px);font-weight:600;letter-spacing:-.02em;line-height:1}
+.b-title .s{margin-top:.5em;font-size:clamp(8px,.82vw,10px);color:var(--p-mut)}
+
+/* tags */
+.b-tags{left:62%;top:5.5%;width:34%;height:8%;display:flex;gap:5px;justify-content:flex-end;align-items:flex-start}
+.b-tags span{font-size:clamp(7px,.66vw,8.5px);letter-spacing:.06em;border:1px solid var(--p-line);
+  padding:2px 6px;border-radius:1px;color:var(--p-mut);white-space:nowrap}
+
+/* hero */
+/* hero needs to show its selection label; the artwork is sized to stay inside */
+.b-hero{left:4%;top:17%;width:54%;height:50%;background:#E9E5DC}
+.b-hero svg{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
+  width:78%;color:#B9B3A6}
+.b-hero .cap{position:absolute;left:8px;bottom:7px;font-size:clamp(7px,.66vw,8.5px);
+  color:var(--p-mut);letter-spacing:.02em}
+
+/* parts grid */
+.b-parts{left:60%;top:17%;width:36%;height:50%;display:grid;
+  grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3%}
+.pcell{background:#EDE9E1;position:relative;overflow:hidden;padding:5% 6%}
+.pcell svg{position:absolute;right:-6%;top:6%;width:62%;color:#C6C0B2}
+.pcell b{position:relative;display:block;font-size:clamp(7px,.68vw,8.6px);font-weight:600}
+.pcell i{position:relative;display:block;font-style:normal;font-size:clamp(6px,.56vw,7.2px);
+  color:var(--p-mut);margin-top:2px;line-height:1.35}
+
+/* note */
+.b-note{left:4%;top:70%;width:54%;height:20%;border-top:1px solid var(--p-line);padding-top:2.4%}
+.b-note .k{font-size:clamp(6.5px,.6vw,7.6px);letter-spacing:.16em;color:var(--p-mut);text-transform:uppercase}
+.b-note .g{font-size:clamp(9px,1.05vw,13px);font-weight:600;margin-top:3px;letter-spacing:-.01em}
+.b-note ul{margin-top:4px;padding-left:11px}
+.b-note li{font-size:clamp(7px,.68vw,8.8px);color:#3A3934;line-height:1.55}
+
+/* footnote */
+.b-foot{left:60%;top:70%;width:36%;height:20%;border-top:1px solid var(--p-line);
+  padding-top:2.4%;display:flex;flex-direction:column;gap:4px}
+.b-foot .row{display:flex;justify-content:space-between;font-size:clamp(6.5px,.6vw,7.8px);color:var(--p-mut)}
+.b-foot .src{font-size:clamp(6px,.55vw,7.2px);color:#8A877E;line-height:1.5}
+
+.b-pageno{left:4%;top:93%;width:40%;height:4%;display:flex;align-items:center;
+  font-size:clamp(6.5px,.6vw,7.8px);color:var(--p-mut);letter-spacing:.1em}
+.b-pageno2{left:60%;top:93%;width:36%;height:4%;display:flex;align-items:center;
+  justify-content:flex-end;font-size:clamp(6.5px,.6vw,7.8px);color:var(--p-mut);letter-spacing:.1em}
+
+/* page type variants */
+.page.t-cover .b-hero,.page.t-cover .b-parts,.page.t-cover .b-note,
+.page.t-cover .b-foot,.page.t-cover .b-tags{display:none}
+.page.t-cover .b-title{left:8%;top:38%;width:70%;height:auto}
+.page.t-cover .b-title .m{font-size:clamp(20px,3.6vw,46px)}
+.page.t-method .b-hero,.page.t-method .b-parts,.page.t-method .b-foot{display:none}
+.page.t-method .b-note{left:4%;top:24%;width:70%;height:60%}
+.page.t-overview .b-hero,.page.t-overview .b-note,.page.t-overview .b-foot{display:none}
+.page.t-overview .b-parts{left:4%;top:20%;width:92%;height:66%;
+  grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr)}
+.page.t-back .b-hero,.page.t-back .b-parts,.page.t-back .b-note,
+.page.t-back .b-foot,.page.t-back .b-tags{display:none}
+.page.t-back .b-title{left:8%;top:40%;width:70%;height:auto}
+
+/* bottom bar */
+/* bottom dock — collapsed: one row (back+meta | 暂存/导出 centred | input on its right) */
+.dock{position:sticky;bottom:0;margin-top:auto;display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;
+  padding:clamp(10px,1.2vw,16px) 0 clamp(4px,.6vw,8px);
+  background:linear-gradient(to top,var(--ink) 62%,rgba(11,11,12,0))}
+.dock .left{grid-column:1;justify-self:start;display:flex;align-items:center;gap:10px;min-width:0}
+.dock .primary{grid-column:2;display:flex;align-items:center;gap:8px}
+.dock .inputwrap{grid-column:3;height:34px;display:flex;align-items:center;gap:7px;
+  border:1px solid var(--line);background:var(--ink1);border-radius:2px;
+  padding:0 5px 0 10px;transition:border-color .15s}
+.dock .inputwrap:focus-within{border-color:rgba(242,241,238,.4)}
+.dock textarea{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);
+  font-family:inherit;font-size:12.5px;line-height:1.6;resize:none;height:22px;max-height:180px;
+  padding:2px 0;display:block}
+.dock textarea::placeholder{color:var(--text3)}
+.dock .predict{grid-column:1/-1;display:none;font-size:11px;color:var(--text3)}
+.dock .predict b{color:var(--paper);font-weight:500}
+.dock .meta{font-size:10.5px;color:var(--text3);white-space:nowrap}
+.dock.expand{grid-template-columns:1fr auto;
+  grid-template-areas:"left primary" "predict predict" "input input";row-gap:8px}
+.dock.expand .left{grid-area:left;justify-self:start}
+.dock.expand .primary{grid-area:primary;justify-self:end}
+.dock.expand .inputwrap{grid-area:input;height:auto;align-items:flex-end;padding:6px 6px 6px 12px}
+.dock.expand textarea{min-height:88px}
+.dock.expand .predict{grid-area:predict;display:block}
+.send{width:24px;height:24px;flex:none;border:1px solid var(--line);border-radius:2px;
+  background:transparent;color:var(--text2);cursor:pointer;line-height:1;font-size:12px}
+.send:hover{background:var(--paper);border-color:var(--paper);color:var(--paperink)}
+.btn{height:clamp(30px,2.4vw,36px);padding:0 clamp(12px,1.1vw,16px);border-radius:2px;
+  border:1px solid var(--line);background:transparent;color:var(--text2);
+  font-size:clamp(11px,.88vw,12.5px);display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+.btn:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.btn.solid{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.btn.solid:hover{background:#fff}
+
+/* ---------- preview panel (right) ---------- */
+.panel{grid-column:9 / span 4;min-width:0;display:flex;flex-direction:column;min-height:0;gap:8px}
+.panel .label{display:flex;justify-content:space-between;align-items:baseline}
+.panel .label b{color:var(--text2);font-weight:500}
+.thumbs{flex:1;min-height:0;overflow-y:auto;display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-content:start;
+  padding-right:2px;scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent}
+.thumbs::-webkit-scrollbar{width:6px}
+.thumbs::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:3px}
+.thumb{display:flex;flex-direction:column;gap:3px;align-items:stretch;cursor:pointer;
+  padding:2px;border-radius:2px}
+.thumb:hover{background:var(--ink1)}
+.mini{width:100%;aspect-ratio:16/9;background:var(--paper);border-radius:1px;position:relative;
+  overflow:hidden;border:1px solid transparent;flex:none}
+.thumb.now .mini{outline:1.5px solid var(--paper);outline-offset:1px}
+.mini .mh{position:absolute;left:6%;top:8%;width:44%;height:6%;background:rgba(20,20,20,.55)}
+.mini .mi{position:absolute;left:6%;top:20%;width:52%;height:46%;background:#E4E0D7}
+.mini .mp{position:absolute;right:6%;top:20%;width:34%;height:46%;background:
+   repeating-linear-gradient(90deg,#E4E0D7 0 46%,transparent 46% 52%),#F0ECE4}
+.mini .mf{position:absolute;left:6%;bottom:8%;width:88%;height:3%;background:rgba(20,20,20,.18)}
+.mini .num{position:absolute;left:6%;bottom:14%;font-size:6px;color:#8A877E}
+.mini.m-cover .mh{left:8%;top:42%;width:56%;height:9%;background:rgba(20,20,20,.7)}
+.mini.m-cover .mi,.mini.m-cover .mp{display:none}
+.mini.m-method .mi,.mini.m-method .mp{display:none}
+.mini.m-method .mt{position:absolute;left:6%;top:22%;width:70%;height:3%;background:rgba(20,20,20,.22);
+  box-shadow:0 6px 0 rgba(20,20,20,.18),0 12px 0 rgba(20,20,20,.18),0 18px 0 rgba(20,20,20,.14)}
+.mini.m-overview .mi{width:88%;height:56%}
+.mini.m-overview .mp{display:none}
+.tlabel{font-size:9.5px;color:var(--text3);padding-top:2px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.thumb.now .tlabel{color:var(--text2)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(10px);
+  background:var(--paper);color:var(--paperink);font-size:12px;padding:8px 14px;border-radius:2px;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:50}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+
+@media (max-width:900px){
+  .app{height:auto;min-height:100vh;overflow:visible}
+  .wrap{grid-template-columns:1fr;row-gap:var(--gutter)}
+  .stage-col,.panel{grid-column:1 / -1}
+  .thumbs{grid-template-columns:repeat(4,minmax(0,1fr));overflow:visible}
+  .scroll{overflow:visible}
+  .dock{position:relative;background:none}
+}
+@media (max-width:760px){
+  .side{width:56px}
+  .side .brand{justify-content:center;padding:0}
+  .side .name,.side .items,.side .label{display:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="truck" viewBox="0 0 200 72">
+    <g fill="currentColor">
+      <rect x="4" y="44" width="192" height="7" rx="1"/>
+      <path d="M14 20h40l10 10v18H14z"/>
+      <path d="M60 26h18l6 8v14H60z" opacity=".82"/>
+      <rect x="14" y="30" width="22" height="9" opacity=".55"/>
+      <rect x="98" y="34" width="60" height="6" opacity=".35"/>
+      <circle cx="34" cy="54" r="9"/><circle cx="34" cy="54" r="3.6" fill="#F4F2ED"/>
+      <circle cx="126" cy="54" r="9"/><circle cx="126" cy="54" r="3.6" fill="#F4F2ED"/>
+      <circle cx="166" cy="54" r="9"/><circle cx="166" cy="54" r="3.6" fill="#F4F2ED"/>
+    </g>
+  </symbol>
+</svg>
+
+<section class="app">
+
+  <aside class="side">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+      </svg>
+      <span class="name">EquipLens</span>
+    </div>
+    <div class="label">最近</div>
+    <div class="items">
+      <div class="item"><span class="t">沙漠牵引车</span><span class="m mono">今天 · 进行中</span></div>
+      <div class="item"><span class="t">重型吊车</span><span class="m mono">10-18 · 9 台</span></div>
+      <div class="item"><span class="t">翻斗铲车</span><span class="m mono">10-18 · 7 台</span></div>
+      <div class="item"><span class="t">混凝土泵车</span><span class="m mono">10-15 · 5 台</span></div>
+      <div class="item"><span class="t">高空作业车</span><span class="m mono">10-12 · 8 台</span></div>
+    </div>
+  </aside>
+
+  <div class="right">
+
+    <header class="progress">
+      <div class="step done"><i class="bar"></i><span class="nm">立项</span></div>
+      <div class="step done"><i class="bar"></i><span class="nm">检索</span></div>
+      <div class="step done"><i class="bar"></i><span class="nm">素材</span></div>
+      <div class="step now"><i class="bar"></i><span class="nm">排版</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">交付</span></div>
+    </header>
+
+    <div class="runbar">
+      <span class="rb-state mono">排版中</span>
+      <span class="rb-q" id="rbq">德龙 X3000 · 第 3 / 12 页</span>
+      <span class="rb-cnt mono" id="rbCnt">16:9 · 选中 主图</span>
+      <button class="rb-btn" type="button">撤销</button>
+      <i class="rb-bar"></i>
+    </div>
+
+    <div class="wrap">
+
+      <main class="stage-col">
+        <div class="scroll">
+
+          <div class="canvas">
+            <div class="page t-car" id="page">
+
+              <div class="blk b-title" data-b="title">
+                <span class="blk-tag">标题</span>
+                <div class="m" id="pTitle">德龙 X3000</div>
+                <div class="s" id="pSub">陕汽 · 6×6 牵引车</div>
+              </div>
+
+              <div class="blk b-tags" data-b="tags">
+                <span class="blk-tag">风格词</span>
+                <span>厚实</span><span>硬朗</span><span>规整</span>
+              </div>
+
+              <div class="blk b-hero" data-b="hero">
+                <span class="blk-tag">主图</span>
+                <svg><use href="#truck"/></svg>
+                <div class="cap">主图 · 3/4 前视</div>
+              </div>
+
+              <div class="blk b-parts" id="pParts" data-b="parts">
+                <span class="blk-tag">部件裁图</span>
+              </div>
+
+              <div class="blk b-note" data-b="note">
+                <span class="blk-tag">前脸分析</span>
+                <div class="k">Front Face / 前脸</div>
+                <div class="g">方正、横向拉伸</div>
+                <ul>
+                  <li>车顶线平直，压到尾灯上沿。</li>
+                  <li>格栅上沿与灯眉齐平。</li>
+                  <li>高宽比约 1.2:1（估）。</li>
+                </ul>
+              </div>
+
+              <div class="blk b-foot" data-b="foot">
+                <span class="blk-tag">页脚</span>
+                <div class="row"><span>沙漠牵引车</span><span class="mono">03 / 12</span></div>
+                <div class="row"><span>竞品设计分析</span><span class="mono">2026-11-04</span></div>
+                <div class="src">来源：360che.com / 卡车之家 / 厂商页；分析：EquipLens</div>
+              </div>
+
+              <div class="blk b-pageno" data-b="pageno"><span class="blk-tag">页码</span>EQUIPLENS-AI / 竞品分析</div>
+              <div class="blk b-pageno2" data-b="pageno2"><span class="blk-tag">页码</span><span id="pNo">03</span></div>
+
+            </div>
+          </div>
+
+          <div class="dock" id="dock">
+            <div class="left">
+              <button class="btn" id="back" type="button">‹ 上一步</button>
+              <span class="meta mono">12 页 · PPTX</span>
+            </div>
+            <div class="primary">
+              <button class="btn" id="save" type="button">暂存</button>
+              <button class="btn solid" id="export" type="button">导出</button>
+            </div>
+            <div class="inputwrap">
+              <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+              <button class="send" id="send" type="button" aria-label="提交">↑</button>
+            </div>
+            <div class="predict" id="dockPredict">
+              系统预判：回到 <b id="predStep">检索</b> · 只重做 <b id="predScope">德龙 X3000</b>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      <aside class="panel">
+        <div class="label">页面 <b class="mono" id="pPos">3 / 12</b></div>
+        <div class="thumbs" id="thumbs"></div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PAGES = [
+  {t:'沙漠牵引车', sub:'竞品设计分析 · 2026 年 11 月', type:'cover'},
+  {t:'方法与来源', sub:'四层关联 · 八台参照', type:'method'},
+  {t:'德龙 X3000', sub:'陕汽 · 6×6 牵引车', type:'car'},
+  {t:'豪沃 TX7', sub:'重汽 · 6×6 牵引车', type:'car'},
+  {t:'解放 JH6', sub:'一汽 · 6×4 牵引车', type:'car'},
+  {t:'德龙 6X6 沙漠版', sub:'陕汽 · 6×6 环境特化', type:'car'},
+  {t:'沙漠运输车', sub:'重汽 · 6×6 环境特化', type:'car'},
+  {t:'德龙 M3000', sub:'陕汽 · 4×2 基型平台', type:'car'},
+  {t:'三一 STC800', sub:'三一 · 跨车型', type:'car'},
+  {t:'天龙 KL', sub:'东风 · 6×4 牵引车', type:'car'},
+  {t:'竞品总览', sub:'八台 · 前脸与部件索引', type:'overview'},
+  {t:'EquipLens', sub:'2026 · 竞品设计分析', type:'back'}
+];
+
+const PARTS = [
+  {term:'横置多层格栅', cmf:'钢板 · 哑黑'},
+  {term:'整体式保险杠', cmf:'钢板 · 同色漆'},
+  {term:'方形轮拱', cmf:'塑料 · 未喷漆'},
+  {term:'两级固定踏板', cmf:'钢板 · 防滑'}
+];
+
+const st = {page: 2, sel: 'hero'};
+const $ = s => document.querySelector(s);
+
+const OVERVIEW = [
+  {term:'德龙 X3000', cmf:'陕汽 · 6×6'}, {term:'豪沃 TX7', cmf:'重汽 · 6×6'},
+  {term:'解放 JH6', cmf:'一汽 · 6×4'}, {term:'德龙 6X6 沙漠版', cmf:'陕汽 · 6×6'},
+  {term:'沙漠运输车', cmf:'重汽 · 6×6'}, {term:'德龙 M3000', cmf:'陕汽 · 4×2'},
+  {term:'三一 STC800', cmf:'三一 · 跨车型'}, {term:'天龙 KL', cmf:'东风 · 6×4'}
+];
+
+function renderParts(){
+  const host = $('#pParts');
+  host.querySelectorAll('.pcell').forEach(n => n.remove());
+  const items = PAGES[st.page].type === 'overview' ? OVERVIEW : PARTS;
+  items.forEach(p => {
+    const c = document.createElement('div');
+    c.className = 'pcell';
+    c.innerHTML = '<svg><use href="#truck"/></svg><b>' + p.term + '</b><i>' + p.cmf + '</i>';
+    host.appendChild(c);
+  });
+}
+
+function renderThumbs(){
+  const host = $('#thumbs'); host.innerHTML = '';
+  PAGES.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'thumb' + (i === st.page ? ' now' : '');
+    const mod = p.type === 'cover' ? 'm-cover' : p.type === 'method' ? 'm-method'
+              : p.type === 'overview' ? 'm-overview' : '';
+    d.innerHTML = '<div class="mini ' + mod + '">' +
+      '<div class="mh"></div><div class="mi"></div><div class="mp"></div>' +
+      '<div class="mt"></div><div class="num">' + String(i + 1).padStart(2, '0') + '</div>' +
+      '<div class="mf"></div></div>' +
+      '<div class="tlabel">' + p.t + '</div>';
+    d.addEventListener('click', () => { st.page = i; st.sel = null; render(); });
+    host.appendChild(d);
+  });
+}
+
+function renderPage(){
+  const p = PAGES[st.page];
+  const el = $('#page');
+  el.className = 'page t-' + p.type;
+  $('#pTitle').textContent = p.t;
+  $('#pSub').textContent = p.sub;
+  $('#pNo').textContent = String(st.page + 1).padStart(2, '0');
+  $('#rbq').textContent = p.t + ' · 第 ' + (st.page + 1) + ' / ' + PAGES.length + ' 页';
+  $('#pPos').textContent = (st.page + 1) + ' / ' + PAGES.length;
+  document.querySelectorAll('.blk').forEach(b => {
+    b.classList.toggle('sel', b.dataset.b === st.sel);
+  });
+  const NAMES = {title:'标题', tags:'风格词', hero:'主图', parts:'部件裁图',
+                 note:'前脸分析', foot:'页脚', pageno:'页码', pageno2:'页码'};
+  $('#rbCnt').textContent = '16:9 · ' + (st.sel ? '选中 ' + (NAMES[st.sel] || '') : '未选中');
+  renderParts();
+}
+
+function render(){ renderThumbs(); renderPage(); }
+render();
+
+/* ---- block select / drag ---- */
+const page = $('#page');
+let drag = null;
+
+page.addEventListener('pointerdown', e => {
+  const blk = e.target.closest('.blk');
+  if (!blk) { st.sel = null; renderPage(); return; }
+  st.sel = blk.dataset.b;
+  renderPage();
+  const r = page.getBoundingClientRect();
+  drag = {blk, r, x: e.clientX, y: e.clientY,
+          left: parseFloat(blk.style.left) || blk.offsetLeft / r.width * 100,
+          top: parseFloat(blk.style.top) || blk.offsetTop / r.height * 100};
+  e.preventDefault();
+});
+
+window.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dx = (e.clientX - drag.x) / drag.r.width * 100;
+  const dy = (e.clientY - drag.y) / drag.r.height * 100;
+  drag.blk.style.left = (drag.left + dx) + '%';
+  drag.blk.style.top = (drag.top + dy) + '%';
+  drag.blk.style.width = drag.blk.style.width || (drag.blk.offsetWidth / drag.r.width * 100 + '%');
+  drag.blk.style.height = drag.blk.style.height || (drag.blk.offsetHeight / drag.r.height * 100 + '%');
+});
+
+window.addEventListener('pointerup', () => { drag = null; });
+
+/* ---- save / export ---- */
+const toast = (msg) => {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2200);
+};
+
+$('#save').onclick = () => {
+  try { localStorage.setItem('equiplens.draft.s3', JSON.stringify({page: st.page, at: Date.now()})); } catch (e) {}
+  toast('已暂存到本地草稿');
+};
+
+const FILE_NAME = 'EquipLens-沙漠牵引车-竞品分析-2026-11-04.pptx';
+
+async function doExport(){
+  const blob = new Blob(['EquipLens mock deck'], {
+    type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+  });
+  let picker = false;
+  // 优先调用系统保存对话框（Chrome / Edge 支持 File System Access API）
+  if (window.showSaveFilePicker) {
+    try {
+      const handle = await window.showSaveFilePicker({
+        suggestedName: FILE_NAME,
+        types: [{
+          description: 'PowerPoint 演示文稿',
+          accept: {'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx']}
+        }]
+      });
+      const w = await handle.createWritable();
+      await w.write(blob);
+      await w.close();
+      toast('已导出 ' + handle.name);
+      return;
+    } catch (err) {
+      if (err && err.name === 'AbortError') return;   // 用户取消对话框
+      picker = true;                                   // 接口存在但被拒（如 file:// 或内嵌视图）
+    }
+  }
+  // 兜底：走浏览器下载
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = FILE_NAME;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast(picker ? '系统对话框不可用，已改为下载' : '已导出 ' + FILE_NAME);
+}
+
+$('#export').onclick = doExport;
+
+/* ---- 常驻输入：聚焦展开、提交即生成回退请求 ---- */
+const dock = $('#dock'), ask = $('#ask');
+const RULES = [
+  [/图|照片|主图|不相关|换一张|型号|认错/, '检索'],
+  [/框|框选|看不到|位置/, '素材'],
+  [/文本|话|啰嗦|写|文案|描述|分析/, '素材'],
+  [/排版|版式|挤|空|页|顺序|布局/, '排版']
+];
+
+function fitAsk(){
+  if (!dock.classList.contains('expand')) { ask.style.height = ''; return; }
+  ask.style.height = 'auto';
+  ask.style.height = Math.min(180, Math.max(88, ask.scrollHeight)) + 'px';
+}
+
+function predictAsk(){
+  const q = ask.value;
+  let step = '检索';
+  for (const [re, v] of RULES) { if (re.test(q)) { step = v; break; } }
+  $('#predStep').textContent = step;
+  $('#predScope').textContent = PAGES[st.page].type === 'car' ? PAGES[st.page].t : '本次分析';
+}
+
+ask.addEventListener('focus', () => { dock.classList.add('expand'); fitAsk(); predictAsk(); });
+ask.addEventListener('input', () => { predictAsk(); fitAsk(); });
+ask.addEventListener('blur', () => {
+  if (!ask.value.trim()) { dock.classList.remove('expand'); fitAsk(); }
+});
+
+function submitAsk(){
+  const q = ask.value.trim();
+  if (!q) { ask.focus(); return; }
+  toast('已提交：回到「' + $('#predStep').textContent + '」重做 ' + $('#predScope').textContent);
+  ask.value = ''; dock.classList.remove('expand'); fitAsk();
+}
+
+$('#send').onclick = submitAsk;
+ask.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitAsk(); }
+});
+$('#back').onclick = () => toast('回看：素材与分析（只读，不重算）');
+</script>
+</body>
+</html>

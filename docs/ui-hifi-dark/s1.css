@@ -1,0 +1,167 @@
+/* S1 检索台 v2
+   卡片 = 一条车辆记录：图片 + 名称 + 规格（构型 / 品牌）+ 关联度胶囊。
+   选中不靠彩色整圈：激光绿勾选 + 顶部小刻线 + 表面抬起 + 图片复原；
+   未选把图片压暗，备选再加虚线。清单每条也是一个独立记录胶囊，不用横线切。 */
+
+.cards{flex:1;min-height:0;overflow-y:auto;display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gutter);align-content:start;
+  padding:1px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent}
+
+.vcard{position:relative;background:#0E1115;border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:6px;box-shadow:var(--sh-1);cursor:pointer;
+  transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease),
+    background var(--fast),border-color var(--fast);
+  animation:rise 420ms var(--ease) both}
+.vcard:hover{transform:translateY(-2px);background:#14181E;border-color:var(--line-2);
+  box-shadow:var(--sh-2)}
+.vcard.sel{background:#151A21;border-color:rgba(232,238,246,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 24px 48px -30px #000}
+.vcard.sel:hover{border-color:rgba(232,238,246,.26)}
+/* 备选：虚线 + 灰化 + 不勾选；虚线是结构信号 */
+.vcard.backup{background:#0C0E11;border:1px dashed rgba(232,238,246,.16);box-shadow:none}
+.vcard.backup:hover{background:#101319;border-color:rgba(232,238,246,.26)}
+.vcard.backup .vshot .bg{filter:grayscale(.55) brightness(.3)}
+.vcard.backup .vshot .fg{opacity:.4;filter:grayscale(.7) brightness(.72)}
+.vcard.backup:hover .vshot .fg{opacity:.62;filter:grayscale(.45) brightness(.9)}
+
+.vshot{position:relative;aspect-ratio:1.84;border-radius:var(--r-md);overflow:hidden;
+  background:#08090B;box-shadow:inset 0 0 0 1px rgba(0,0,0,.55)}
+/* 原图完整显示（contain），空白处用同一张图模糊铺满 */
+.vshot .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(26px) saturate(1.05) brightness(.4);transform:scale(1.16);opacity:.92;
+  transition:filter var(--fast),opacity var(--fast)}
+.vshot .fg{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;
+  transition:transform 600ms var(--ease),opacity 260ms,filter 260ms}
+.vcard:not(.sel) .vshot .fg{opacity:.46;filter:grayscale(.35) brightness(.8)}
+.vcard:not(.sel):hover .vshot .fg{opacity:.74;filter:grayscale(.08) brightness(.96)}
+.vcard:hover .vshot .fg{transform:scale(1.015);opacity:1}
+.vshot .ph{position:absolute;inset:0;display:grid;place-items:center;color:#4E5A66}
+.vshot .ph svg{width:46%;opacity:.6}
+.vshot .cnt{position:absolute;right:7px;bottom:7px;z-index:2;font-family:var(--font-mono);
+  font-size:9.5px;color:#E9ECF1;background:rgba(7,8,10,.76);border:1px solid rgba(255,255,255,.13);
+  border-radius:var(--r-pill);padding:2px 7px;backdrop-filter:blur(6px)}
+
+/* 勾选：未选是细描边空框，已选是激光绿实心 + 深色勾 */
+.cb{position:absolute;right:8px;top:8px;z-index:3;width:20px;height:20px;border-radius:6px;
+  border:1.5px solid rgba(232,238,246,.38);background:rgba(7,9,11,.52);
+  backdrop-filter:blur(4px);transition:background var(--fast),border-color var(--fast)}
+.vcard:hover .cb{border-color:rgba(232,238,246,.7)}
+.cb.on{background:var(--accent);border-color:var(--accent)}
+.cb.on::after{content:"";position:absolute;left:5px;top:2px;width:6px;height:10px;
+  border-right:2px solid var(--accent-ink);border-bottom:2px solid var(--accent-ink);
+  transform:rotate(40deg)}
+
+/* 信息区：名称 → 规格字段 → 关联度胶囊，三段有各自的字号与间距 */
+.vbody{margin-top:6px;padding:9px 4px 3px;border-top:1px solid var(--line);
+  display:flex;flex-direction:column;gap:5px;min-width:0}
+.vbody .nm{font-size:13.5px;font-weight:600;line-height:1.25;letter-spacing:-.012em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.vcard:not(.sel) .vbody .nm{color:var(--ink-3);font-weight:500}
+.vbody .cf{display:flex;align-items:center;min-width:0;font-size:10.5px;line-height:1.3;
+  color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cf-k{font-family:var(--font-mono);font-size:10px;color:var(--ink-2);letter-spacing:.015em}
+.cf-sep{display:inline-block;width:1px;height:11px;margin:0 7px;background:var(--line-2);
+  font-size:0;color:transparent;overflow:hidden;vertical-align:-1px}
+.cf-v{font-size:10.5px;color:var(--ink-3)}
+.vcard:not(.sel) .cf{opacity:.8}
+
+/* 关联度不是裸文字：小胶囊 + 4px 点 + 文字，色只占这一小块 */
+.tier-text{display:inline-flex;width:fit-content;align-items:center;gap:5px;
+  font-size:10px;line-height:1;letter-spacing:.02em;padding:4px 8px 4px 7px;
+  border-radius:var(--r-pill);white-space:nowrap;
+  color:var(--tier,var(--t-cross));
+  background:color-mix(in srgb,var(--tier,var(--t-cross)) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--tier,var(--t-cross)) 30%,transparent)}
+.tier-text.exact{--tier:var(--t-exact)}
+.tier-text.environment{--tier:var(--t-env)}
+.tier-text.platform{--tier:var(--t-plat)}
+.tier-text.cross_vehicle{--tier:var(--t-cross)}
+.tier-text .dot{width:4px;height:4px;background:currentColor}
+.tier-text.cross_vehicle .dot{background:transparent;border:1px dashed currentColor}
+.vcard:not(.sel) .tier-text{opacity:.8}
+
+.vsk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:7px;
+  box-shadow:var(--sh-1)}
+.vsk .im{aspect-ratio:1.84;border-radius:var(--r-md)}
+
+/* 右栏 */
+.panel{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
+
+/* 面板头：14px/600，底部一条发丝线；不是 9px 的 eyebrow */
+.analysis{flex:none;overflow:hidden}
+.analysis .eyebrow{display:flex;align-items:center;gap:9px;padding:13px 15px 11px;
+  font-family:var(--font-ui);font-size:15px;font-weight:600;letter-spacing:-.014em;
+  text-transform:none;color:var(--ink);
+  background:linear-gradient(180deg,#14181D,#111419);
+  border-bottom:1px solid var(--line)}
+.analysis .eyebrow::before{content:"";width:3px;height:14px;border-radius:2px;
+  background:var(--accent);flex:none}
+.analysis .eyebrow .ln{display:none}
+.analysis p{margin:13px 15px 15px;padding-left:12px;border-left:2px solid var(--line-2);
+  font-size:11.8px;line-height:1.9;color:var(--ink-2);text-wrap:pretty}
+.analysis p .lead{display:block;margin-bottom:6px;font-size:12.5px;font-weight:600;
+  line-height:1.72;color:var(--ink)}
+/* 检索中：骨架独占，不和已填好的判断句叠在一起 */
+.analysis:has(#proseSk) #prose{display:none}
+.analysis .skl{display:flex;flex-direction:column;gap:8px;margin:13px 15px 15px;
+  padding-left:12px;border-left:2px solid var(--line-2)}
+.analysis .skl i{display:block;height:9px;border-radius:4px}
+.analysis .skl i:nth-child(2){width:92%}
+.analysis .skl i:nth-child(3){width:96%}
+.analysis .skl i:nth-child(4){width:64%}
+
+/* 清单 */
+.roster{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--r-lg);
+  overflow:hidden}
+.roster .hd{display:flex;align-items:center;gap:10px;padding:13px 14px 11px;
+  background:linear-gradient(180deg,#14181D,#111419);
+  border-bottom:1px solid var(--line)}
+.roster .hd b{font-family:var(--font-ui);font-size:15px;font-weight:600;
+  letter-spacing:-.014em;color:var(--ink)}
+.roster .hd span{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;
+  color:var(--ink-3);background:#0D1013;border:1px solid var(--line);border-radius:6px;
+  padding:3px 7px;white-space:nowrap}
+.rows{flex:1;min-height:0;overflow-y:auto;padding:8px;display:flex;flex-direction:column;
+  gap:8px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent;position:relative}
+/* 检索中：清单还没长出第一行时，用一组与记录卡同高的占位条 */
+.rows:empty::before{content:"";position:absolute;left:10px;right:10px;top:8px;bottom:12px;
+  opacity:.72;pointer-events:none;
+  background-image:
+    linear-gradient(to bottom,#1B2027 0 9px,transparent 9px),
+    linear-gradient(to bottom,#161A20 0 6px,transparent 6px);
+  background-size:52% 72px,76% 72px;
+  background-position:0 0,0 20px;
+  background-repeat:repeat-y}
+
+/* 每条记录一个胶囊：左 3px 层级色 + 独立表面；不再用横线切 */
+.rrow{--tier:var(--t-cross);position:relative;display:grid;
+  grid-template-columns:20px minmax(0,1fr) auto;
+  grid-template-areas:"rank rt tag" ". why why";column-gap:9px;row-gap:4px;
+  padding:9px 9px 9px 10px;background:#101419;
+  border:1px solid var(--line);border-left:3px solid var(--tier);border-radius:9px;
+  transition:background var(--fast),border-color var(--fast)}
+.rrow:hover{background:#141A20;border-color:var(--line-2);border-left-color:var(--tier)}
+.rrow[data-tier="exact"]{--tier:var(--t-exact)}
+.rrow[data-tier="environment"]{--tier:var(--t-env)}
+.rrow[data-tier="platform"]{--tier:var(--t-plat)}
+.rrow[data-tier="cross_vehicle"]{--tier:var(--t-cross)}
+
+.rrow .rank{grid-area:rank;font-family:var(--font-mono);font-size:9px;font-weight:500;
+  line-height:1.4;letter-spacing:.02em;color:var(--ink-3);padding-top:2px;
+  font-variant-numeric:tabular-nums}
+.rrow .rt{grid-area:rt;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rrow .nm{font-size:12.5px;font-weight:600;line-height:1.25;letter-spacing:-.008em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.rrow .mt{display:flex;align-items:center;min-width:0;font-size:9.5px;line-height:1.3;
+  color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-k{font-family:var(--font-mono);font-size:9px;color:var(--ink-2)}
+.mt-sep{display:inline-block;width:1px;height:10px;margin:0 6px;background:var(--line-2);
+  font-size:0;color:transparent;overflow:hidden;vertical-align:-1px}
+.rrow .tag{grid-area:tag;align-self:start;display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--font-mono);font-size:9.5px;line-height:1;letter-spacing:.02em;
+  color:var(--tier);background:color-mix(in srgb,var(--tier) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--tier) 30%,transparent);
+  border-radius:var(--r-pill);padding:3px 7px;white-space:nowrap}
+.rrow .tag::before{content:"";width:3px;height:3px;border-radius:50%;background:currentColor;flex:none}
+.rrow .why{grid-area:why;font-size:10.2px;line-height:1.58;color:var(--ink-3);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

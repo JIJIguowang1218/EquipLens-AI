@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 高保真</title>
+<link rel="stylesheet" href="hifi.css">
+<style>
+  .wrap{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:64px clamp(24px,6vw,96px)}
+  h1{font-size:clamp(24px,3vw,34px);letter-spacing:-.03em;font-weight:600}
+  p.sub{color:var(--ink-2);font-size:13px;margin:10px 0 34px;max-width:60ch;line-height:1.7}
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .it{background:var(--surface);border-radius:var(--r-lg);padding:18px;box-shadow:var(--sh-1);
+    text-decoration:none;color:inherit;transition:transform .18s var(--ease),box-shadow .18s var(--ease)}
+  .it:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
+  .it .n{font-size:10px;letter-spacing:.16em;color:var(--ink-3);text-transform:uppercase}
+  .it b{display:block;font-size:15px;margin:8px 0 4px;font-weight:600}
+  .it span{font-size:11.5px;color:var(--ink-3)}
+  .it .th{height:52px;border-radius:10px;margin-top:12px;
+    background:linear-gradient(140deg,#DCE8E9,#C6D8D9)}
+  .it:nth-child(2) .th{background:linear-gradient(140deg,#E9F394,#DCEA6E)}
+  .it:nth-child(3) .th{background:linear-gradient(140deg,#E4ECEA,#CFDCD8)}
+  .it:nth-child(4) .th{background:linear-gradient(140deg,#EDEFEF,#DDE2E2)}
+  .note{font-size:11.5px;color:var(--ink-3);margin-top:26px}
+  @media (max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>EquipLens · 高保真</h1>
+  <p class="sub">浅色、卡片化、无分隔线。进入 S0 后按「开始」会依次经过 检索中 → 分析中 → 排版中，
+    每个等待状态停留几秒再出结果。数据来自 <code>data-test/ui-fixtures</code>（模拟）。</p>
+
+  <div class="grid">
+    <a class="it" href="s0.html"><span class="n">S0</span><b>立项</b><span>一句话说清看什么</span><div class="th"></div></a>
+    <a class="it" href="s1.html?s=loading"><span class="n">S1</span><b>检索</b><span>检索中 → 结果卡片</span><div class="th"></div></a>
+    <a class="it" href="s2.html?s=loading"><span class="n">S2</span><b>素材与分析</b><span>分析中 → 部件行 + 图上框</span><div class="th"></div></a>
+    <a class="it" href="s3.html?s=loading"><span class="n">S3</span><b>排版</b><span>排版中 → 页面预览</span><div class="th"></div></a>
+  </div>
+
+  <p class="note">配色取自参考图：浅灰底 / 白卡 / 青灰主视觉 / 柠檬黄绿仅作强调。详见 PALETTE.md。</p>
+</div>
+</body>
+</html>

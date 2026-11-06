@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 暗色高保真 v2</title>
+<style>
+@font-face{font-family:"Equip Sans";src:url("fonts/EquipSansVar-latin.woff2") format("woff2");
+  font-weight:100 700;font-display:swap}
+@font-face{font-family:"Equip Sans SC";src:url("fonts/EquipSansSC-400.woff2") format("woff2");
+  font-weight:400;font-display:swap}
+@font-face{font-family:"Equip Sans SC";src:url("fonts/EquipSansSC-500.woff2") format("woff2");
+  font-weight:500;font-display:swap}
+@font-face{font-family:"Equip Sans SC";src:url("fonts/EquipSansSC-600.woff2") format("woff2");
+  font-weight:600;font-display:swap}
+@font-face{font-family:"Equip Mono";src:url("fonts/EquipMono-400.woff2") format("woff2");
+  font-weight:400;font-display:swap}
+:root{
+  --bg:#0A0B0D;--surface:#121418;--line:rgba(232,238,246,.08);
+  --ink:#ECEFF3;--ink-2:#A9B1BB;--ink-3:#7C8591;--ink-4:#5C646F;
+  --accent:#C7F14F;--exact:#5FD69F;--env:#5AC6E6;--plat:#E7A15F;--cross:#DE7C87;
+  --paper:#F7F4EC;
+  --ui:"Equip Sans","Equip Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:"Equip Mono","Equip Sans SC",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:
+  radial-gradient(1000px 560px at 60% -12%,#15181D 0%,rgba(21,24,29,0) 62%),
+  radial-gradient(700px 500px at 100% 110%,rgba(199,241,79,.04),rgba(199,241,79,0) 60%),
+  var(--bg);
+  color:var(--ink);font-family:var(--ui);-webkit-font-smoothing:antialiased;
+  padding:40px clamp(24px,5vw,72px) 48px;display:flex;flex-direction:column;gap:44px}
+a{color:inherit;text-decoration:none}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg{width:26px;height:26px;color:#D5DBE3}
+.brand b{font-size:14px;font-weight:600;letter-spacing:-.005em}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-3);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+
+.head{max-width:840px}
+.eyebrow{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:10px}
+.eyebrow::after{content:"";width:44px;height:1px;background:rgba(199,241,79,.38)}
+h1{font-size:clamp(32px,4.4vw,56px);line-height:1.05;letter-spacing:-.045em;font-weight:600;
+  margin-top:16px;text-wrap:balance}
+.sub{font-size:13px;line-height:1.75;color:var(--ink-2);margin-top:14px;max-width:62ch}
+
+.sheet{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:46px minmax(0,1fr) 260px 26px;align-items:center;
+  gap:clamp(12px,2.2vw,28px);padding:16px 4px;border-bottom:1px solid var(--line);
+  transition:background 180ms ease;position:relative}
+.row:hover{background:rgba(255,255,255,.025)}
+.row .no{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.06em}
+.row .name{display:block;font-size:clamp(19px,1.9vw,24px);font-weight:600;
+  letter-spacing:-.03em;line-height:1.15}
+.row .desc{display:block;font-size:11.5px;color:var(--ink-3);margin-top:7px}
+.row .shot{width:260px;aspect-ratio:16/10;border-radius:6px;overflow:hidden;
+  border:1px solid var(--line);background:var(--surface);position:relative}
+.row .shot img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block;
+  filter:saturate(.95);transition:transform 500ms cubic-bezier(.22,1,.36,1)}
+.row:hover .shot img{transform:scale(1.02)}
+.row .arrow{font-size:16px;color:var(--ink-3);transition:transform 180ms ease,color 180ms ease}
+.row:hover .arrow{transform:translateX(3px);color:var(--accent)}
+.hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--ink-4);
+  display:flex;gap:18px;flex-wrap:wrap}
+.hint b{color:var(--ink-3);font-weight:400}
+
+.palette{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:flex-start}
+.sw{display:flex;flex-direction:column;gap:7px;width:96px}
+.sw i{display:block;height:26px;border-radius:3px;border:1px solid rgba(255,255,255,.08)}
+.sw span{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:.02em}
+.sw b{font-size:10.5px;font-weight:500;color:var(--ink-2)}
+
+@media (max-width:900px){
+  .row{grid-template-columns:36px minmax(0,1fr) 22px}
+  .row .shot{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="21" cy="21" r="12.6"/>
+      <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+      <path d="M30.3 30.3 41 41" stroke-width="3"/>
+    </svg>
+    <b>EquipLens</b>
+  </div>
+  <span class="tag">Darkroom · Hi-Fi v2</span>
+</header>
+
+<section class="head">
+  <div class="eyebrow">High-fidelity · Dark theme</div>
+  <h1>四页，一条流程。</h1>
+  <p class="sub">立项 → 检索 → 素材 → 排版。结构与低保真逐项对齐，只重做配色、字体与卡片内部：
+    中性石墨承载界面，激光绿只给「正在进行 / 主行动」，关联度用四个小面积分类色，
+    每条记录都有独立的色彩索引与文字标签。</p>
+</section>
+
+<nav class="sheet" aria-label="页面">
+  <a class="row" href="s0.html">
+    <span class="no">01 / S0</span>
+    <span>
+      <span class="name">立项</span>
+      <span class="desc">一句话说清看什么，或上传参考图。</span>
+    </span>
+    <span class="shot"><img src="shots/s0-ready.png" alt="S0 立项台"></span>
+    <span class="arrow">→</span>
+  </a>
+  <a class="row" href="s1.html?s=ready">
+    <span class="no">02 / S1</span>
+    <span>
+      <span class="name">检索</span>
+      <span class="desc">按关联程度分层出卡片，右侧同步生成清单。</span>
+    </span>
+    <span class="shot"><img src="shots/s1-ready.png" alt="S1 检索台"></span>
+    <span class="arrow">→</span>
+  </a>
+  <a class="row" href="s2.html?s=ready">
+    <span class="no">03 / S2</span>
+    <span>
+      <span class="name">素材与分析</span>
+      <span class="desc">逐车看图，在图上框部件，右侧读形制与 CMF。</span>
+    </span>
+    <span class="shot"><img src="shots/s2-ready.png" alt="S2 素材与分析"></span>
+    <span class="arrow">→</span>
+  </a>
+  <a class="row" href="s3.html?s=ready">
+    <span class="no">04 / S3</span>
+    <span>
+      <span class="name">排版</span>
+      <span class="desc">暗房里的纸：12 页报告逐页预览、选中、导出。</span>
+    </span>
+    <span class="shot"><img src="shots/s3-ready.png" alt="S3 排版台"></span>
+    <span class="arrow">→</span>
+  </a>
+</nav>
+
+<div class="hint">
+  <span><b>直接看动效</b> 不带参数进入 S1–S3 会走 loading</span>
+  <span><b>字体</b> Equip Sans / SC / Mono · SIL OFL 1.1</span>
+  <span><b>对照</b> CONFORMANCE.md · DESIGN.md</span>
+</div>
+
+<section class="palette" aria-label="色板">
+  <div class="sw"><i style="background:#0A0B0D"></i><b>石墨底</b><span>#0A0B0D</span></div>
+  <div class="sw"><i style="background:#121418"></i><b>表面</b><span>#121418</span></div>
+  <div class="sw"><i style="background:#ECEFF3"></i><b>主文字</b><span>#ECEFF3</span></div>
+  <div class="sw"><i style="background:#C7F14F"></i><b>激光绿 / 动作</b><span>#C7F14F</span></div>
+  <div class="sw"><i style="background:#5FD69F"></i><b>精确类目</b><span>#5FD69F</span></div>
+  <div class="sw"><i style="background:#5AC6E6"></i><b>环境特化</b><span>#5AC6E6</span></div>
+  <div class="sw"><i style="background:#E7A15F"></i><b>基型平台</b><span>#E7A15F</span></div>
+  <div class="sw"><i style="background:#DE7C87"></i><b>跨车型</b><span>#DE7C87</span></div>
+  <div class="sw"><i style="background:#F7F4EC"></i><b>报告纸</b><span>#F7F4EC</span></div>
+</section>
+
+</body>
+</html>

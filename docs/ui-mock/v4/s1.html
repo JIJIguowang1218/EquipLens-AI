@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquipLens · S1 检索中</title>
+<style>
+:root{
+  --ink:#0B0B0C; --ink1:#121214; --ink2:#17171A;
+  --line:rgba(242,241,238,.13); --line2:rgba(242,241,238,.07);
+  --text:#F2F1EE; --text2:#9A9A95; --text3:#6A6A66;
+  --paper:#F4F2ED; --paperink:#141414;
+  --t-exact:#F4F2ED; --t-env:#BFB7A7; --t-plat:#8B8880; --t-cross:#5E5C57;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000}
+html{overflow-x:hidden}
+body{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--text)}
+.mono{font-family:"IBM Plex Mono","JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+
+:root{
+  --rail:clamp(200px,21vw,280px);   /* 左栏是 rail：固定槽，不参与 12 栏 */
+  --margin:clamp(16px,1.7vw,24px);  /* 内容区左右外边距 */
+  --gutter:16px;                    /* 栏间隙（也是卡片间隙） */
+  --pad-y:16px;                     /* 内容区上边距（8pt 节奏） */
+}
+.app{width:100%;height:100vh;background:var(--ink);display:flex;overflow:hidden}
+
+/* ---------- left column ---------- */
+.side{width:var(--rail);flex:none;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding-bottom:24px}
+.brand{height:clamp(48px,4.6vw,64px);flex:none;display:flex;align-items:center;
+  gap:clamp(8px,.9vw,12px);padding:0 clamp(12px,1.4vw,18px)}
+.logo{width:clamp(20px,1.7vw,25px);height:auto;aspect-ratio:1;flex:none;color:var(--text)}
+.name{font-size:clamp(13px,1.02vw,15px);white-space:nowrap}
+.label{font-size:clamp(9px,.72vw,10px);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text3);margin:clamp(10px,1.2vw,16px) clamp(12px,1.2vw,16px) 6px}
+.items{display:flex;flex-direction:column;padding:0 clamp(6px,.7vw,10px)}
+.item{display:flex;flex-direction:column;gap:3px;padding:clamp(8px,.85vw,11px) 8px;
+  border-radius:2px;border-top:1px solid var(--line2);cursor:pointer}
+.item:hover{background:var(--ink1)}
+.item .t{font-size:clamp(12px,.95vw,13.5px);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .m{font-size:clamp(10px,.78vw,11px);color:var(--text3)}
+.item:first-child{border-top:0}
+
+/* ---------- right ---------- */
+.right{flex:1;min-width:0;display:flex;flex-direction:column}
+
+.progress{height:72px;flex:none;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);align-items:center;padding:0 var(--margin);
+  border-bottom:1px solid var(--line)}
+.step{min-width:0;display:flex;flex-direction:column;justify-content:flex-start;
+  grid-column:span 2;min-height:clamp(20px,1.8vw,24px);gap:clamp(5px,.5vw,7px)}
+/* 五段按 2/2/3/3/2 分栏，段边界正好压在栏线上 */
+.step:nth-child(3),.step:nth-child(4){grid-column:span 3}
+.step .bar{display:block;height:3px;border-radius:1px;background:rgba(242,241,238,.10)}
+.step .nm{display:none;font-size:clamp(8.5px,.72vw,9.5px);letter-spacing:.12em;
+  color:var(--text3);white-space:nowrap}
+.step.done .bar{background:rgba(242,241,238,.42)}
+.step.done .nm{display:block}
+.step.now .bar{background:var(--paper)}
+.step.now .nm{display:block;color:var(--paper)}
+
+/* 检索中 bar: the search field, pinned, turned into a running state */
+.runbar{margin:clamp(8px,1vw,14px) var(--margin) 0;flex:none;
+  height:clamp(44px,3.4vw,52px);border:1px solid var(--line);background:var(--ink1);
+  border-radius:2px;display:flex;align-items:center;gap:clamp(8px,.9vw,14px);
+  padding:0 8px 0 clamp(12px,1.1vw,16px);position:relative;overflow:hidden}
+.rb-state{font-size:clamp(10px,.8vw,11.5px);color:var(--paper);white-space:nowrap;
+  display:flex;align-items:center;gap:7px}
+.rb-state::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--paper);
+  animation:pulse 1.4s ease-in-out infinite}
+.rb-state .st,.rb-cnt .st,.rb-cancel .st{display:none;font-style:normal}
+body[data-s="start"] .st-start,
+body[data-s="mid"] .st-mid,
+body[data-s="done"] .st-done{display:inline}
+body[data-s="done"] .rb-state::before{animation:none;background:var(--text2)}
+body[data-s="start"] .rb-bar{width:14%}
+body[data-s="mid"] .rb-bar{width:62%}
+body[data-s="done"] .rb-bar{width:100%}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.rb-q{font-size:clamp(11px,.9vw,13px);color:var(--text2);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.rb-cnt{font-size:clamp(9px,.76vw,11px);color:var(--text3);white-space:nowrap}
+.rb-cancel{height:clamp(26px,1.9vw,30px);padding:0 10px;border:1px solid var(--line);
+  background:transparent;color:var(--text2);font-size:clamp(10px,.78vw,11.5px);
+  font-family:inherit;border-radius:2px;cursor:pointer;white-space:nowrap}
+.rb-cancel:hover{color:var(--text);border-color:rgba(242,241,238,.3)}
+.rb-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--paper);width:62%}
+
+/* ---------- content ---------- */
+.wrap{flex:1;min-width:0;min-height:0;display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);row-gap:var(--gutter);
+  padding:var(--pad-y) var(--margin)}
+
+.cards-col{grid-column:1 / span 8;min-width:0;display:flex;flex-direction:column;min-height:0}
+
+/* the card area owns the scrollbar: rows never wrap past 3, they scroll */
+.scroll{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;
+  scrollbar-width:thin;scrollbar-color:rgba(242,241,238,.16) transparent;
+  padding-right:0}
+.scroll::-webkit-scrollbar{width:8px}
+.scroll::-webkit-scrollbar-track{background:transparent}
+.scroll::-webkit-scrollbar-thumb{background:rgba(242,241,238,.16);border-radius:4px}
+.scroll::-webkit-scrollbar-thumb:hover{background:rgba(242,241,238,.28)}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gutter);align-content:start}
+
+.card{border:1px solid var(--line2);border-radius:2px;background:var(--ink1);
+  overflow:hidden;display:flex;flex-direction:column;position:relative}
+.card.sel{border-color:rgba(242,241,238,.30)}
+
+.shot{aspect-ratio:1.9/1;background:#141416;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;cursor:pointer}
+.shot .truck{width:74%;height:auto;opacity:.55;transition:transform .18s ease}
+.shot[data-v="1"] .truck{transform:scale(1) translateY(2%)}
+.shot[data-v="2"] .truck{transform:scale(1.35) translate(-4%,4%)}
+.shot[data-v="3"] .truck{transform:scale(.92) translate(3%,-6%)}
+.shot:hover{background:#17171A}
+.count{position:absolute;right:6px;bottom:6px;font-size:10px;color:var(--text2);
+  background:rgba(0,0,0,.55);border:1px solid var(--line2);border-radius:1px;padding:1px 5px}
+.cb{position:absolute;right:6px;top:6px;width:15px;height:15px;border:1px solid rgba(242,241,238,.4);
+  border-radius:1px;background:rgba(0,0,0,.35)}
+.cb.on{background:var(--paper);border-color:var(--paper)}
+.cb.on::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;
+  border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(40deg)}
+
+.ph{aspect-ratio:1.9/1;display:flex;align-items:center;justify-content:center;
+  background:repeating-linear-gradient(135deg,transparent 0 3px,rgba(242,241,238,.05) 3px 4px),#101012;
+  color:var(--text3);font-size:10.5px;letter-spacing:.06em}
+
+.c-body{padding:8px 10px 10px;display:flex;flex-direction:column;gap:3px}
+.c-name{font-size:clamp(11.5px,.95vw,13px);color:var(--text)}
+.c-meta{font-size:clamp(9.5px,.76vw,11px);color:var(--text2)}
+.tier{display:flex;align-items:center;gap:5px;font-size:clamp(9.5px,.74vw,10.5px);color:var(--text2)}
+.dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--t-cross)}
+[data-tier="exact"] .dot{background:var(--t-exact)}
+[data-tier="environment"] .dot{background:var(--t-env)}
+[data-tier="platform"] .dot{background:var(--t-plat)}
+[data-tier="cross"] .dot{background:transparent;border:1px solid var(--t-cross);border-style:dashed}
+
+/* extras: filled but still gray / not picked */
+.card.extra .shot .truck{opacity:.22;filter:grayscale(1)}
+.card.extra .c-body{opacity:.5}
+.card.extra{border-style:dashed}
+
+/* ---------- state machine ---------- */
+.ph{display:none}
+body[data-s="start"] .ph{display:flex}
+body[data-s="start"] .shot,body[data-s="start"] .c-body{display:none}
+body[data-s="mid"] .card:nth-child(n+5) .ph{display:flex}
+body[data-s="mid"] .card:nth-child(n+5) .shot,
+body[data-s="mid"] .card:nth-child(n+5) .c-body{display:none}
+
+/* placeholder info block keeps the card footprint identical to the filled state */
+.c-skel{display:none;flex-direction:column;gap:6px;padding:9px 10px;min-height:67px}
+.c-skel i{display:block;height:8px;background:rgba(242,241,238,.06);border-radius:1px}
+.c-skel i:nth-child(1){width:58%}
+.c-skel i:nth-child(2){width:76%}
+.c-skel i:nth-child(3){width:46%}
+body[data-s="start"] .c-skel{display:flex}
+body[data-s="mid"] .card:nth-child(n+5) .c-skel{display:flex}
+
+/* nothing is known yet: no tier styling may leak into placeholders */
+body[data-s="start"] .card,
+body[data-s="mid"] .card:nth-child(n+5){border-style:solid;border-color:var(--line2);background:var(--ink1)}
+
+body[data-s="start"] .cb.on{background:transparent;border-color:rgba(242,241,238,.4)}
+body[data-s="start"] .cb.on::after{display:none}
+body[data-s="mid"] .card:nth-child(n+5) .cb.on{background:transparent;border-color:rgba(242,241,238,.4)}
+body[data-s="mid"] .card:nth-child(n+5) .cb.on::after{display:none}
+
+/* bottom dock — collapsed: one row (back | confirm centred | input on its right) */
+.dock{position:sticky;bottom:0;margin-top:auto;display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px;
+  padding:clamp(10px,1.2vw,16px) 0 clamp(4px,.6vw,8px);
+  background:linear-gradient(to top,var(--ink) 62%,rgba(11,11,12,0))}
+.dock .left{grid-column:1;justify-self:start;display:flex;align-items:center;gap:8px}
+.dock .primary{grid-column:2}
+.dock .inputwrap{grid-column:3;height:34px;display:flex;align-items:center;gap:7px;
+  border:1px solid var(--line);background:var(--ink1);border-radius:2px;
+  padding:0 5px 0 10px;transition:border-color .15s}
+.dock .inputwrap:focus-within{border-color:rgba(242,241,238,.4)}
+.dock textarea{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);
+  font-family:inherit;font-size:12.5px;line-height:1.6;resize:none;height:22px;max-height:180px;
+  padding:2px 0;display:block}
+.dock textarea::placeholder{color:var(--text3)}
+.dock .predict{grid-column:1/-1;display:none;font-size:11px;color:var(--text3)}
+.dock .predict b{color:var(--paper);font-weight:500}
+.dock.expand{grid-template-columns:1fr auto;
+  grid-template-areas:"left primary" "predict predict" "input input";row-gap:8px}
+.dock.expand .left{grid-area:left;justify-self:start}
+.dock.expand .primary{grid-area:primary;justify-self:end}
+.dock.expand .inputwrap{grid-area:input;height:auto;align-items:flex-end;padding:6px 6px 6px 12px}
+.dock.expand textarea{min-height:88px}
+.dock.expand .predict{grid-area:predict;display:block}
+.send{width:24px;height:24px;flex:none;border:1px solid var(--line);border-radius:2px;
+  background:transparent;color:var(--text2);cursor:pointer;line-height:1;font-size:12px}
+.send:hover{background:var(--paper);border-color:var(--paper);color:var(--paperink)}
+.toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%) translateY(8px);
+  background:var(--paper);color:var(--paperink);font-size:12px;padding:8px 14px;border-radius:2px;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:60}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.btn{height:clamp(34px,2.8vw,40px);padding:0 clamp(16px,1.8vw,26px);border-radius:2px;
+  border:1px solid var(--line);background:transparent;color:var(--text);
+  font-size:clamp(12px,.92vw,13.5px);font-family:inherit;display:inline-flex;
+  align-items:center;gap:8px;cursor:pointer;white-space:nowrap}
+.btn.solid{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.btn.solid:hover{background:#fff}
+body[data-s="start"] .dock .primary .btn,
+body[data-s="mid"] .dock .primary .btn{opacity:.35;pointer-events:none}
+
+/* ---------- right panel ---------- */
+.panel{grid-column:9 / span 4;min-width:0;display:flex;flex-direction:column;
+  gap:var(--gutter);min-height:0}
+
+.analysis{position:relative;border:1px solid var(--line2);background:var(--ink1);padding:clamp(10px,1vw,14px)}
+.analysis .label{margin:0 0 7px}
+/* the paragraph always reserves its height, so the roster below never jumps */
+.analysis p{visibility:hidden;font-size:clamp(10.5px,.86vw,12px);line-height:1.8;color:var(--text2)}
+body[data-s="done"] .analysis p{visibility:visible}
+.sk{position:absolute;left:clamp(10px,1vw,14px);right:clamp(10px,1vw,14px);
+  top:clamp(26px,2.6vw,37px);display:flex;flex-direction:column;gap:7px}
+body[data-s="done"] .sk{display:none}
+.sk i{display:block;height:8px;background:rgba(242,241,238,.07);border-radius:1px}
+.sk i:nth-child(1){width:100%}
+.sk i:nth-child(2){width:94%}
+.sk i:nth-child(3){width:97%}
+.sk i:nth-child(4){width:88%}
+.sk i:nth-child(5){width:96%}
+.sk i:nth-child(6){width:90%}
+.sk i:nth-child(7){width:97%}
+.sk i:nth-child(8){width:84%}
+.sk i:nth-child(9){width:92%}
+.sk i:nth-child(10){width:52%}
+.sk .note{font-size:10px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:6px}
+.sk .note::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--text3);
+  animation:pulse 1.4s ease-in-out infinite}
+
+.roster{flex:1;min-height:0;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.roster .label{margin:0 0 2px}
+.rows{display:flex;flex-direction:column;gap:4px;overflow:hidden}
+
+.row{padding:7px 9px;border-left:2px solid transparent;border-radius:1px;min-height:45px;
+  display:flex;flex-direction:column;gap:2px;justify-content:center}
+.row[data-tier="exact"]{background:rgba(244,242,237,.13);border-left-color:var(--t-exact)}
+.row[data-tier="environment"]{background:rgba(244,242,237,.075);border-left-color:var(--t-env)}
+.row[data-tier="platform"]{background:rgba(244,242,237,.04);border-left-color:var(--t-plat)}
+.row[data-tier="cross"]{background:transparent;border:1px dashed rgba(242,241,238,.18);border-left-width:2px}
+.row .rt{display:flex;align-items:baseline;gap:6px}
+.row .nm{font-size:clamp(10.5px,.86vw,12px);color:var(--text)}
+.row .mt{font-size:9.5px;color:var(--text3)}
+.row .why{font-size:clamp(9.5px,.76vw,10.5px);color:var(--text2);line-height:1.45}
+.row .tag{margin-left:auto;font-size:9px;color:var(--text3);letter-spacing:.02em}
+
+/* rows loading */
+.rsk{display:none;flex-direction:column;gap:4px}
+.rsk i{display:block;height:6px;background:rgba(242,241,238,.06);border-radius:1px}
+.rsk i:first-child{width:46%}
+.rsk i:last-child{width:82%}
+body[data-s="start"] .row{border:0;background:rgba(242,241,238,.02);border-left:2px solid rgba(242,241,238,.08)}
+body[data-s="start"] .row .rt,body[data-s="start"] .row .why{display:none}
+body[data-s="start"] .rsk{display:flex}
+body[data-s="mid"] .row:nth-child(n+5){border:0;background:rgba(242,241,238,.02);border-left:2px solid rgba(242,241,238,.08)}
+body[data-s="mid"] .row:nth-child(n+5) .rt,
+body[data-s="mid"] .row:nth-child(n+5) .why{display:none}
+body[data-s="mid"] .row:nth-child(n+5) .rsk{display:flex}
+
+@media (max-width:1180px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* narrow (e.g. side panel): stack the panel under the cards instead of hiding it */
+@media (max-width:900px){
+  .app{height:auto;min-height:100vh;overflow:visible}
+  .wrap{grid-template-columns:1fr;row-gap:var(--gutter)}
+  .cards-col,.panel{grid-column:1 / -1}
+  .roster,.rows{overflow:visible}
+  .scroll{overflow:visible}
+  .dock{position:relative;background:none;padding-top:6px}
+}
+@media (max-width:560px){
+  .grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .side{width:56px}
+  .side .brand{justify-content:center;padding:0}
+  .side .name,.side .label,.side .items{display:none}
+}
+</style>
+</head>
+<body data-s="done">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="truck" viewBox="0 0 200 72">
+    <g fill="currentColor">
+      <rect x="4" y="44" width="192" height="7" rx="1"/>
+      <path d="M14 20h40l10 10v18H14z"/>
+      <path d="M60 26h18l6 8v14H60z" opacity=".82"/>
+      <rect x="14" y="30" width="22" height="9" opacity=".55"/>
+      <rect x="98" y="34" width="60" height="6" opacity=".35"/>
+      <circle cx="34" cy="54" r="9"/>
+      <circle cx="34" cy="54" r="3.6" fill="#141416"/>
+      <circle cx="126" cy="54" r="9"/>
+      <circle cx="126" cy="54" r="3.6" fill="#141416"/>
+      <circle cx="166" cy="54" r="9"/>
+      <circle cx="166" cy="54" r="3.6" fill="#141416"/>
+    </g>
+  </symbol>
+</svg>
+
+<section class="app">
+
+  <aside class="side">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+      </svg>
+      <span class="name">EquipLens</span>
+    </div>
+    <div class="label">最近</div>
+    <div class="items">
+      <div class="item"><span class="t">沙漠牵引车</span><span class="m mono">今天 · 进行中</span></div>
+      <div class="item"><span class="t">重型吊车</span><span class="m mono">10-18 · 9 台</span></div>
+      <div class="item"><span class="t">翻斗铲车</span><span class="m mono">10-18 · 7 台</span></div>
+      <div class="item"><span class="t">混凝土泵车</span><span class="m mono">10-15 · 5 台</span></div>
+      <div class="item"><span class="t">高空作业车</span><span class="m mono">10-12 · 8 台</span></div>
+    </div>
+  </aside>
+
+  <div class="right">
+
+    <header class="progress">
+      <div class="step done"><i class="bar"></i><span class="nm">立项</span></div>
+      <div class="step now"><i class="bar"></i><span class="nm">检索</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">素材</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">排版</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">交付</span></div>
+    </header>
+
+    <div class="runbar">
+      <span class="rb-state mono"><i class="st st-start">检索中</i><i class="st st-mid">检索中</i><i class="st st-done">检索完成</i></span>
+      <span class="rb-q">沙漠牵引车 · 前脸 格栅 保险杠</span>
+      <span class="rb-cnt mono"><i class="st st-start">1 / 7 查询</i><i class="st st-mid">4 / 7 查询</i><i class="st st-done">7 / 7 · 34 篇来源</i></span>
+      <button class="rb-cancel" type="button"><i class="st st-start">取消</i><i class="st st-mid">取消</i><i class="st st-done">重新检索</i></button>
+      <i class="rb-bar"></i>
+    </div>
+
+    <div class="wrap">
+
+      <main class="cards-col">
+        <div class="scroll">
+        <div class="grid">
+
+          <!-- 1-3 exact -->
+          <article class="card sel" data-tier="exact">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">德龙 X3000</span>
+              <span class="c-meta">陕汽 · 6×6 牵引车</span>
+              <span class="tier" data-tier="exact"><i class="dot"></i>精确类目 · 直接可比</span>
+            </div>
+          </article>
+
+          <article class="card sel" data-tier="exact">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">豪沃 TX7</span>
+              <span class="c-meta">重汽 · 6×6 牵引车</span>
+              <span class="tier" data-tier="exact"><i class="dot"></i>精确类目 · 直接可比</span>
+            </div>
+          </article>
+
+          <article class="card sel" data-tier="exact">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">解放 JH6</span>
+              <span class="c-meta">一汽 · 6×4 牵引车</span>
+              <span class="tier" data-tier="exact"><i class="dot"></i>精确类目 · 直接可比</span>
+            </div>
+          </article>
+
+          <!-- 4-5 environment -->
+          <article class="card sel" data-tier="environment">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">德龙 6X6 沙漠版</span>
+              <span class="c-meta">陕汽 · 6×6 环境特化</span>
+              <span class="tier" data-tier="environment"><i class="dot"></i>环境特化 · 同工况参照</span>
+            </div>
+          </article>
+
+          <article class="card sel" data-tier="environment">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">沙漠运输车</span>
+              <span class="c-meta">重汽 · 6×6 环境特化</span>
+              <span class="tier" data-tier="environment"><i class="dot"></i>环境特化 · 同工况参照</span>
+            </div>
+          </article>
+
+          <!-- 6 platform -->
+          <article class="card sel" data-tier="platform">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb on"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">德龙 M3000</span>
+              <span class="c-meta">陕汽 · 4×2 同平台</span>
+              <span class="tier" data-tier="platform"><i class="dot"></i>基型平台 · 造型继承</span>
+            </div>
+          </article>
+
+          <!-- 7-8 extras: filled but gray, unselected -->
+          <article class="card extra" data-tier="cross">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">三一 STC800</span>
+              <span class="c-meta">三一 · 跨车型类比</span>
+              <span class="tier" data-tier="cross"><i class="dot"></i>跨车型 · 仅作备选</span>
+            </div>
+          </article>
+
+          <article class="card extra" data-tier="cross">
+            <div class="shot" data-v="1">
+              <svg class="truck"><use href="#truck"/></svg>
+              <span class="count mono">1 / 3</span><span class="cb"></span>
+            </div>
+            <div class="ph">图片检索中</div>
+            <div class="c-skel"><i></i><i></i><i></i></div>
+            <div class="c-body">
+              <span class="c-name mono">天龙 KL</span>
+              <span class="c-meta">东风 · 跨车型类比</span>
+              <span class="tier" data-tier="cross"><i class="dot"></i>跨车型 · 仅作备选</span>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="dock" id="dock">
+          <div class="left"><button class="btn" id="back" type="button">‹ 上一步</button></div>
+          <div class="primary"><button class="btn solid" type="button">确认并开始分析</button></div>
+          <div class="inputwrap">
+            <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+            <button class="send" id="send" type="button" aria-label="提交">↑</button>
+          </div>
+          <div class="predict" id="dockPredict">
+            系统预判：回到 <b id="predStep">检索</b> · 只重做 <b id="predScope">本次检索</b>
+          </div>
+        </div>
+        </div>
+      </main>
+
+      <aside class="panel">
+        <section class="analysis">
+          <div class="label">关联分析</div>
+          <div class="sk">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <span class="note">正在分析关联结构</span>
+          </div>
+          <p>沙漠牵引车以 6×6 为基型，前脸、格栅与保险杠属平台通用造型件，不随工况变化。沙漠工况的特化落在防护栏、进气防护、底盘离地与踏步防滑上，这些部件即使未被点名，亦构成本类车型的设计特征。前脸与驾驶室轮廓承自基型平台，同平台车型可验证其家族关系。踏步、爬梯与把手为功能件，构型跨车型可比，证据强度弱，仅作备选。</p>
+        </section>
+
+        <section class="roster">
+          <div class="label">清单 <span class="mono" style="color:var(--text2)">8 台 · 6 推荐 + 2 备选</span></div>
+          <div class="rows">
+
+            <div class="row" data-tier="exact">
+              <div class="rt"><span class="nm mono">德龙 X3000</span><span class="mt">6×6 · 陕汽</span><span class="tag">精确</span></div>
+              <div class="why">同 6×6 沙漠工况牵引车，前脸与驾驶室可直接对比</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="exact">
+              <div class="rt"><span class="nm mono">豪沃 TX7</span><span class="mt">6×6 · 重汽</span><span class="tag">精确</span></div>
+              <div class="why">同类目竞品，覆盖豪沃侧前脸与格栅造型</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="exact">
+              <div class="rt"><span class="nm mono">解放 JH6</span><span class="mt">6×4 · 一汽</span><span class="tag">精确</span></div>
+              <div class="why">补齐一汽侧参照，验证 6×4 与 6×6 前脸是否同源</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="environment">
+              <div class="rt"><span class="nm mono">德龙 6X6 沙漠版</span><span class="mt">6×6 · 陕汽</span><span class="tag">环境</span></div>
+              <div class="why">防护栏与进气防护的环境特化实证，解释“为什么加这层”</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="environment">
+              <div class="rt"><span class="nm mono">沙漠运输车</span><span class="mt">6×6 · 重汽</span><span class="tag">环境</span></div>
+              <div class="why">极端工况参照车，提供动力舱防护与离地设计的对照</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="platform">
+              <div class="rt"><span class="nm mono">德龙 M3000</span><span class="mt">4×2 · 陕汽</span><span class="tag">平台</span></div>
+              <div class="why">同平台基型，用于确认前脸是家族语言而非个案</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="cross">
+              <div class="rt"><span class="nm mono">三一 STC800</span><span class="mt">跨类 · 三一</span><span class="tag">跨类 · 备选</span></div>
+              <div class="why">踏步与爬梯构型可类比，证据弱，仅备选</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+            <div class="row" data-tier="cross">
+              <div class="rt"><span class="nm mono">天龙 KL</span><span class="mt">6×4 · 东风</span><span class="tag">跨类 · 备选</span></div>
+              <div class="why">把手与后视镜构型参照，转正后才占页槽</div>
+              <div class="rsk"><i></i><i></i></div>
+            </div>
+
+          </div>
+        </section>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // 状态：?s=start | mid | done（默认 done）
+  const S = new URLSearchParams(location.search).get('s');
+  if (['start','mid','done'].includes(S)) document.body.dataset.s = S;
+
+  // 图片切换：单击或右键循环 1..3
+  document.querySelectorAll('.shot').forEach(shot => {
+    let v = 1;
+    const cycle = e => {
+      e.preventDefault();
+      v = v % 3 + 1;
+      shot.dataset.v = v;
+      shot.querySelector('.count').textContent = v + ' / 3';
+    };
+    shot.addEventListener('click', cycle);
+    shot.addEventListener('contextmenu', cycle);
+  });
+
+  /* ---- 常驻输入：聚焦展开、提交即生成回退请求 ---- */
+  const dock = document.querySelector('#dock'), ask = document.querySelector('#ask');
+  const RULES = [
+    [/图|照片|主图|不相关|换一张|型号|认错/, '检索'],
+    [/框|框选|看不到|位置/, '素材'],
+    [/文本|话|啰嗦|写|文案|描述|分析/, '素材'],
+    [/排版|版式|挤|空|页/, '排版']
+  ];
+  function toast(msg){
+    const t = document.querySelector('#toast');
+    t.textContent = msg; t.classList.add('on');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2200);
+  }
+  function fitAsk(){
+    if (!dock.classList.contains('expand')) { ask.style.height = ''; return; }
+    ask.style.height = 'auto';
+    ask.style.height = Math.min(180, Math.max(88, ask.scrollHeight)) + 'px';
+  }
+  function predictAsk(){
+    const q = ask.value;
+    let step = '检索';
+    for (const [re, v] of RULES) { if (re.test(q)) { step = v; break; } }
+    document.querySelector('#predStep').textContent = step;
+  }
+  ask.addEventListener('focus', () => { dock.classList.add('expand'); fitAsk(); predictAsk(); });
+  ask.addEventListener('input', () => { predictAsk(); fitAsk(); });
+  ask.addEventListener('blur', () => {
+    if (!ask.value.trim()) { dock.classList.remove('expand'); fitAsk(); }
+  });
+  function submitAsk(){
+    const q = ask.value.trim();
+    if (!q) { ask.focus(); return; }
+    toast('已提交：回到「' + document.querySelector('#predStep').textContent + '」重做本次检索');
+    ask.value = ''; dock.classList.remove('expand'); fitAsk();
+  }
+  document.querySelector('#send').onclick = submitAsk;
+  ask.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitAsk(); }
+  });
+  document.querySelector('#back').onclick = () => toast('回看：立项台（只读，不重算）');
+</script>
+</body>
+</html>

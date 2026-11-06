@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 排版</title>
+<link rel="stylesheet" href="hifi.css">
+<link rel="stylesheet" href="s3.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="rail">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3"/>
+      </svg>
+      <b>EquipLens</b>
+    </div>
+    <div>
+      <div class="k">最近</div>
+      <div class="recent">
+        <div class="it on"><b>沙漠牵引车</b><span>10-31 · 6 台</span></div>
+        <div class="it"><b>重型吊车</b><span>10-18 · 9 台</span></div>
+        <div class="it"><b>翻斗铲车</b><span>10-18 · 7 台</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="top">
+      <div class="steps">
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">立项</span></div>
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">检索</span></div>
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">素材</span></div>
+        <div class="step now"><span class="track"><i class="fill"></i></span><span class="lb">排版</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">交付</span></div>
+      </div>
+    </header>
+
+    <div class="statusbar" id="sb">
+      <span class="st"><span class="dot"></span><span id="stText">排版中</span></span>
+      <span class="q" id="sbQ">沙漠牵引车 · 第 3 / 12 页</span>
+      <span class="cnt mono" id="sbCnt">16:9 · 未选中</span>
+      <button class="act" id="sbAct" type="button">撤销</button>
+      <i class="line" id="sbLine"></i>
+    </div>
+
+    <div class="body">
+      <div class="col-8">
+        <div class="stage">
+          <div class="canvas">
+            <div class="page" id="page"></div>
+          </div>
+        </div>
+      
+          <div class="dock-wrap">
+            <div class="dock" id="dock">
+              <div class="left">
+                <button class="btn ghost" id="back" type="button">‹ 上一步</button>
+                <span class="meta mono">12 页 · PPTX</span>
+              </div>
+              <div class="primary">
+                <button class="btn ghost" id="save" type="button">暂存</button>
+                <button class="btn ink" id="export" type="button">导出</button>
+              </div>
+              <div class="hint">系统预判：回到 <b>素材</b> · 只重做 <b>第 3 页</b></div>
+              <div class="ask">
+                <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+                <button class="send" id="send" type="button" aria-label="提交">↑</button>
+              </div>
+            </div>
+          </div>
+
+      </div>
+
+      <div class="col-4">
+        <div class="card preview">
+          <div class="hd"><b>页面</b><span id="pnum">— / 12</span></div>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="hifi.js"></script>
+<script>
+(() => {
+  const P = HIFI.s3.pages;
+  let pi = 2;               // 默认停在第一张车型页
+  const qs = new URLSearchParams(location.search);
+  const loading = (qs.get('s') || 'loading') === 'loading';
+  paintSteps(3);
+
+  const byId = (page, id) => (page.blocks || []).find((b) => b.id === id);
+
+  function pageHTML(p, i) {
+    const words = byId(p, 'style_words');
+    const hero = byId(p, 'hero');
+    const parts = byId(p, 'parts');
+    const note = byId(p, 'note') || byId(p, 'placeholder');
+
+    if (p.type === 'cover') {
+      return `<div class="blk cover" data-b="封面">
+        <div class="cv-eyebrow">竞品设计分析 · 2026 年 11 月</div>
+        <div class="cv-title">${p.title}</div>
+        <div class="cv-sub">${p.subtitle}</div>
+        <div class="cv-bar"></div></div>`;
+    }
+    if (p.type === 'back') {
+      return `<div class="blk back" data-b="封底">
+        <div class="bk-logo">EquipLens</div><div class="bk-sub">${p.subtitle}</div></div>`;
+    }
+    if (p.type === 'method' || p.type === 'overview') {
+      const items = p.type === 'method'
+        ? ['精确类目 · 驱动形式与基型', '环境特化 · 工况下被特化的部件',
+           '基型平台 · 前脸与驾驶室继承', '跨车型 · 功能件构型类比']
+        : P.filter((x) => x.type === 'car').map((x) => x.title);
+      return `
+        <div class="blk b-top" data-b="标题"><h2>${p.title}</h2><span class="sub">${p.subtitle}</span></div>
+        <div class="blk b-list" data-b="目录">${items.map((s, k) =>
+          `<div class="li"><i>${String(k + 1).padStart(2, '0')}</i><span>${s}</span></div>`).join('')}</div>
+        <div class="blk b-foot" data-b="页脚"><span>EquipLens · 沙漠牵引车</span>
+          <span class="mono">${String(i + 1).padStart(2, '0')} / ${P.length}</span></div>`;
+    }
+
+    return `
+      <div class="blk b-top" data-b="标题"><h2>${p.title}</h2><span class="sub">${p.subtitle}</span></div>
+      ${words ? `<div class="blk b-words" data-b="风格词">${words.items.map((w) =>
+        `<i title="${w.evidence}">${w.term}</i>`).join('')}</div>` : ''}
+      <div class="blk b-main" data-b="主体">
+        <div class="hero blk" data-b="主图">${hero ? `<img src="${hero.src}" alt="">` : ''}</div>
+        ${parts ? `<div class="parts blk" data-b="部件裁图">${parts.items.map((x) => `
+          <div class="pcell"><span class="t">${x.term}</span><span class="m">${x.cmf}</span></div>`).join('')}</div>`
+        : '<div class="parts blk" data-b="部件裁图"></div>'}
+      </div>
+      <div class="blk b-note" data-b="说明">${note ? note.text : ''}</div>
+      <div class="blk b-foot" data-b="页脚"><span>EquipLens · 沙漠牵引车</span>
+        <span class="mono">${String(i + 1).padStart(2, '0')} / ${P.length}</span></div>`;
+  }
+
+  function selectBlock(b) {
+    $$('#page .blk').forEach((x) => {
+      x.classList.toggle('sel', x === b);
+      x.querySelectorAll('.hnd').forEach((h) => h.remove());
+    });
+    if (b) {
+      b.insertAdjacentHTML('beforeend',
+        '<i class="hnd tl"></i><i class="hnd tr"></i><i class="hnd bl"></i><i class="hnd br"></i>');
+      $('#sbCnt').textContent = `16:9 · 选中 ${b.dataset.b || '块'}`;
+    } else {
+      $('#sbCnt').textContent = '16:9 · 未选中';
+    }
+  }
+
+  function renderPage() {
+    const p = P[pi];
+    const page = $('#page');
+    page.innerHTML = pageHTML(p, pi);
+    page.dataset.type = p.type;
+    $('#pnum').textContent = `${String(pi + 1).padStart(2, '0')} / ${String(P.length).padStart(2, '0')}`;
+    $('#sbQ').textContent = `${p.title} · 第 ${pi + 1} / ${P.length} 页`;
+    $$('#page .blk').forEach((b) => b.addEventListener('click', (e) => {
+      e.stopPropagation(); selectBlock(b);
+    }));
+    $$('#page img').forEach(bindImg);
+  }
+
+  function thumbsHTML(p, i) {
+    return `<div class="thumb ${i === pi ? 'now' : ''}" data-i="${i}">
+      <div class="mini"><div class="l w1"></div><div class="l w2"></div><div class="img"></div>
+        <div class="num mono">${String(i + 1).padStart(2, '0')}</div></div>
+      <div class="tl">${p.title}</div></div>`;
+  }
+
+  function renderThumbs() {
+    const host = $('#thumbs');
+    host.innerHTML = '';
+    P.forEach((p, i) => {
+      host.insertAdjacentHTML('beforeend', thumbsHTML(p, i));
+      const el = host.lastElementChild;
+      el.addEventListener('click', () => { pi = i; renderPage(); renderThumbs(); selectBlock(null); });
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#page')) selectBlock(null);
+  });
+
+  /* 启动 */
+  if (!loading) {
+    renderPage(); renderThumbs();
+    $('#stText').textContent = '排版完成';
+    $('#sbLine').style.width = '100%';
+  } else {
+    $('#page').innerHTML = '<div class="blk" style="display:grid;place-items:center;height:100%">' +
+      '<div class="sk" style="width:46%;height:12px"></div></div>';
+    $('#pnum').textContent = '生成中';
+    $('#sbLine').style.width = '20%';
+    let k = 0, timer = null;
+    setTimeout(() => {
+      timer = setInterval(() => {
+        $('#thumbs').insertAdjacentHTML('beforeend', thumbsHTML(P[k], k));
+        $('#pnum').textContent = `${k + 1} / ${P.length}`;
+        $('#sbLine').style.width = (20 + 80 * (k + 1) / P.length) + '%';
+        k++;
+        if (k >= P.length) {
+          clearInterval(timer);
+          $('#stText').textContent = '排版完成';
+          setTimeout(() => { renderPage(); renderThumbs(); }, 220);
+        }
+      }, 160);
+    }, 600);
+  }
+
+  $('#export').addEventListener('click', async () => {
+    const name = 'EquipLens-沙漠牵引车-竞品分析.pptx';
+    try {
+      if (window.showSaveFilePicker) {
+        const h = await window.showSaveFilePicker({ suggestedName: name,
+          types: [{ description: 'PowerPoint',
+            accept: { 'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'] } }] });
+        const w = await h.createWritable();
+        await w.write(new Blob([new Uint8Array([80, 75, 3, 4])]));
+        await w.close();
+        toast('已导出到所选位置');
+        return;
+      }
+    } catch (e) { return; }
+    toast('当前环境不支持保存对话框，已改为下载');
+  });
+
+  $('#save').addEventListener('click', () => {
+    localStorage.setItem('equiplens:draft', JSON.stringify({ page: pi, at: Date.now() }));
+    toast('已暂存到本地草稿');
+  });
+
+  $('#sbAct').addEventListener('click', () => selectBlock(null));
+
+  initDock({ onSubmit: (v) => toast('已提交修改：' + v.slice(0, 16) + (v.length > 16 ? '…' : '')) });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* S3 排版台：16:9 单页画布 + 竖向页预览；选中只画编辑框，名字只进状态条 */
+
+.stage{flex:1;min-height:0;display:flex;flex-direction:column}
+.canvas{flex:1;min-height:0;display:grid;place-items:center;padding:8px;
+  border-radius:var(--r-xl);background:linear-gradient(160deg,#ECEFEF,#E3E8E8);
+  box-shadow:var(--sh-inset)}
+
+.page{position:relative;background:#FCFCFA;border-radius:10px;overflow:hidden;
+  width:min(100%,calc((100vh - 250px) * 16 / 9));aspect-ratio:16/9;
+  box-shadow:0 20px 50px -26px rgba(20,28,30,.42),0 2px 8px rgba(20,28,30,.06);
+  display:flex;flex-direction:column;padding:5.2% 5.4%;gap:3.2%}
+
+.page .blk{position:relative;border-radius:5px;cursor:pointer}
+.page .blk.sel{box-shadow:0 0 0 1.5px var(--ink)}
+.page .hnd{position:absolute;width:7px;height:7px;background:var(--surface);
+  border:1.5px solid var(--ink);border-radius:1px}
+.page .hnd.tl{left:-4px;top:-4px}.page .hnd.tr{right:-4px;top:-4px}
+.page .hnd.bl{left:-4px;bottom:-4px}.page .hnd.br{right:-4px;bottom:-4px}
+
+.page .b-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.page .b-top h2{font-size:clamp(16px,2vw,28px);letter-spacing:-.03em;line-height:1;font-weight:600}
+.page .b-top .sub{font-size:clamp(8px,.72vw,10px);color:#8B9294;letter-spacing:.02em;padding-bottom:2px}
+.page .b-words{display:flex;gap:6px;flex-wrap:wrap;margin-top:-6px}
+.page .b-words i{font-style:normal;font-size:clamp(7px,.62vw,9px);color:#4A5658;
+  background:#EDF1F1;border-radius:999px;padding:2px 8px;letter-spacing:.04em}
+.page .b-main{flex:1;min-height:0;display:grid;grid-template-columns:1.55fr 1fr;gap:3.2%}
+.page .hero{border-radius:5px;overflow:hidden;background:#DDE6E6}
+.page .hero img{width:100%;height:100%;object-fit:cover;display:block}
+.page .parts{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:7%}
+.page .pcell{background:#F2F4F3;border-radius:4px;padding:6% 7%;display:flex;flex-direction:column;
+  justify-content:flex-end;gap:2px;overflow:hidden}
+.page .pcell .t{font-size:clamp(7px,.6vw,9px);font-weight:600;color:#2A3132}
+.page .pcell .m{font-size:clamp(6px,.52vw,7.6px);color:#8B9294}
+.page .b-note{font-size:clamp(7.5px,.64vw,9.2px);color:#5C6467;line-height:1.6;
+  border-top:1px solid rgba(20,28,30,.08);padding-top:1.6%}
+.page .b-foot{display:flex;justify-content:space-between;font-size:clamp(6px,.55vw,8px);color:#A2A8AA}
+
+/* 封面 / 封底 / 目录 */
+.page[data-type="cover"]{justify-content:center;align-items:flex-start;padding:9% 8%}
+.page .cover{display:flex;flex-direction:column;gap:14px;width:100%}
+.page .cv-eyebrow{font-size:clamp(7px,.6vw,9px);letter-spacing:.2em;color:#8B9294;text-transform:uppercase}
+.page .cv-title{font-size:clamp(24px,4.2vw,54px);font-weight:600;letter-spacing:-.04em;line-height:1.02}
+.page .cv-sub{font-size:clamp(9px,.78vw,11px);color:#5C6467}
+.page .cv-bar{width:34%;height:3px;border-radius:2px;background:var(--t-exact);margin-top:8px}
+.page[data-type="back"]{justify-content:flex-end}
+.page .bk-logo{font-size:clamp(18px,2.2vw,26px);font-weight:600;letter-spacing:-.02em}
+.page .bk-sub{font-size:clamp(7px,.6vw,9px);color:#8B9294;margin-top:4px}
+.page .b-list{display:grid;grid-template-columns:1fr 1fr;gap:3% 4%;flex:1;align-content:center}
+.page .b-list .li{background:#F3F5F4;border-radius:5px;padding:3.2% 4%;
+  display:flex;align-items:baseline;gap:8px}
+.page .b-list .li i{font-style:normal;font-size:clamp(6px,.55vw,8px);color:#A2A8AA;
+  font-family:"IBM Plex Mono",Consolas,monospace}
+.page .b-list .li span{font-size:clamp(8.5px,.7vw,10px);color:#2A3132;font-weight:500}
+
+/* 右侧页预览：竖向列表 */
+.preview{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:var(--r-lg);overflow:hidden}
+.preview .hd{display:flex;align-items:baseline;gap:8px;padding:13px 15px 7px}
+.preview .hd b{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:500}
+.preview .hd span{margin-left:auto;font-size:10.5px;color:var(--ink-3)}
+.thumbs{flex:1;min-height:0;overflow-y:auto;padding:0 10px 10px;display:flex;flex-direction:column;
+  gap:6px;scrollbar-width:thin;scrollbar-color:rgba(22,25,27,.12) transparent}
+.thumbs::-webkit-scrollbar{width:6px}
+.thumbs::-webkit-scrollbar-thumb{background:rgba(22,25,27,.12);border-radius:6px}
+.thumb{display:flex;flex-direction:column;gap:4px;padding:5px;border-radius:10px;cursor:pointer;
+  transition:background var(--fast),box-shadow var(--fast);animation:rise 340ms var(--ease) both}
+.thumb:hover{background:var(--surface-soft)}
+.thumb.now{background:var(--surface-soft);box-shadow:0 0 0 1.5px var(--ink)}
+.mini{aspect-ratio:16/9;border-radius:4px;background:#FBFBF9;overflow:hidden;position:relative;
+  box-shadow:0 2px 8px rgba(20,28,30,.10);display:flex;flex-direction:column;padding:8% 8%;gap:5%}
+.mini .l{height:5%;border-radius:2px;background:#D8DEDD}
+.mini .l.w1{width:60%}
+.mini .l.w2{width:38%;background:#E4E9E8}
+.mini .img{flex:1;border-radius:3px;background:linear-gradient(140deg,#DCE6E6,#C6D6D7)}
+.mini .num{position:absolute;right:6%;bottom:5%;font-size:7px;color:#A9AFB1}
+.thumb .tl{font-size:10px;color:var(--ink-3);padding:0 3px 2px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.thumb.now .tl{color:var(--ink)}

@@ -1,0 +1,297 @@
+/* EquipLens · 暗色高保真 v2（Darkroom）
+   共享层：令牌、字体、rail、进度、状态条、dock、层级色、基础卡片
+   配色纪律见 DESIGN.md：中性石墨做结构，激光绿只表示「正在进行 / 主行动」，
+   关联度用四个小面积分类色，始终配文字与线型。 */
+
+/* ---------------------------------------------------------------- fonts
+   Equip Sans / Equip Sans SC / Equip Mono：由 IBM Plex 子集化并改名，
+   SIL OFL 1.1，可商用、可随包分发；改名遵守 “Plex” 保留字体名条款。
+   Latin 走 Equip Sans（variable 100–700），CJK 走 Equip Sans SC（400/500/600）。
+   同一设计骨架，中英混排不会出现两套字体性格。许可与来源见 fonts/README.md。 */
+@font-face{
+  font-family:"Equip Sans";
+  src:url("fonts/EquipSansVar-latin.woff2") format("woff2");
+  font-weight:100 700;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Sans SC";
+  src:url("fonts/EquipSansSC-400.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Sans SC";
+  src:url("fonts/EquipSansSC-500.woff2") format("woff2");
+  font-weight:500;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Sans SC";
+  src:url("fonts/EquipSansSC-600.woff2") format("woff2");
+  font-weight:600;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Mono";
+  src:url("fonts/EquipMono-400.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Mono";
+  src:url("fonts/EquipMono-500.woff2") format("woff2");
+  font-weight:500;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Equip Mono";
+  src:url("fonts/EquipMono-600.woff2") format("woff2");
+  font-weight:600;font-style:normal;font-display:swap;
+}
+
+:root{
+  /* 表面：暗色层级靠「离黑的距离」，不靠阴影 */
+  --bg:#0A0B0D;
+  --bg-soft:#0C0E11;
+  --surface:#121418;
+  --surface-2:#161A1F;
+  --surface-3:#1C2027;
+  --surface-sink:#08090B;
+
+  /* 文字：四级，全部过 4.5:1（ink-4 只做占位） */
+  --ink:#ECEFF3;
+  --ink-2:#A9B1BB;
+  --ink-3:#7C8591;
+  --ink-4:#5C646F;
+
+  /* 发丝线：不描边分区，只做表面接缝 */
+  --line:rgba(232,238,246,.07);
+  --line-2:rgba(232,238,246,.13);
+  --line-3:rgba(232,238,246,.22);
+
+  /* 唯一强调色：激光绿。只给「live / 主行动 / 选中」 */
+  --accent:#C7F14F;
+  --accent-hi:#D8FB66;
+  --accent-ink:#101405;
+  --accent-soft:rgba(199,241,79,.12);
+
+  /* 关联度：四个分类色，不是明度阶梯。每色只出现在 3px 条、
+     8–9px 标签和 5px 点上；文字与虚线/实线继续兜底。 */
+  --t-exact:#5FD69F;
+  --t-env:#5AC6E6;
+  --t-plat:#E7A15F;
+  --t-cross:#DE7C87;
+
+  /* 部件行状态（与 tier 无关的流程状态） */
+  --s-framed:#8FB4C4;
+  --s-pending:var(--accent);
+  --s-elsewhere:#7C8A9A;
+  --s-hidden:#39424C;
+
+  --r-xl:18px; --r-lg:14px; --r-md:10px; --r-sm:8px; --r-pill:999px;
+  --sh-1:inset 0 1px 0 rgba(255,255,255,.035), 0 18px 40px -32px #000;
+  --sh-2:inset 0 1px 0 rgba(255,255,255,.06), 0 26px 58px -30px #000;
+  --sh-inset:inset 0 0 0 1px rgba(232,238,246,.06);
+
+  --rail:clamp(200px,21vw,280px);
+  --margin:clamp(16px,1.7vw,24px);
+  --gutter:16px;
+
+  --font-ui:"Equip Sans","Equip Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --font-mono:"Equip Mono","Equip Sans SC",Consolas,monospace;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  --fast:180ms;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(1100px 620px at 54% -16%,#15181D 0%,rgba(21,24,29,0) 62%),
+    radial-gradient(820px 560px at 104% 108%,rgba(199,241,79,.015) 0%,rgba(199,241,79,0) 62%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--font-ui);
+  font-size:12.5px;
+  font-weight:400;
+  letter-spacing:.004em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow:hidden;
+}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+::selection{background:rgba(199,241,79,.28);color:#fff}
+:focus-visible{outline:2px solid rgba(199,241,79,.78);outline-offset:2px;border-radius:4px}
+
+/* ---------------------------------------------------------------- shell */
+.shell{height:100vh;display:grid;grid-template-columns:var(--rail) minmax(0,1fr)}
+
+/* 左栏：无填充的独立槽位，只留一条发丝线（与低保真同构） */
+.rail{display:flex;flex-direction:column;gap:24px;padding:20px 12px 16px;min-height:0;
+  border-right:1px solid var(--line);position:relative;z-index:2}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 10px}
+.brand svg{width:25px;height:25px;color:#D5DBE3;flex:none}
+.brand b{font-size:14px;font-weight:600;letter-spacing:-.005em;color:var(--ink)}
+
+.rail .k{font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 12px;margin-bottom:6px}
+.recent{display:flex;flex-direction:column;gap:2px}
+.recent .it{display:flex;flex-direction:column;gap:3px;padding:8px 10px;border-radius:var(--r-sm);
+  color:var(--ink-2);transition:background var(--fast),box-shadow var(--fast);cursor:pointer}
+.recent .it:hover{background:rgba(255,255,255,.028)}
+.recent .it b{font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.recent .it span{font-size:10px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.recent .it.on{background:rgba(255,255,255,.045);box-shadow:inset 0 0 0 1px var(--line)}
+.recent .it.on b{color:var(--ink)}
+.rail .foot{margin-top:auto;display:flex;align-items:center;gap:9px;padding:8px 10px}
+.avatar{width:24px;height:24px;border-radius:50%;flex:none;
+  background:linear-gradient(140deg,#3E4A55,#1A1F26);box-shadow:inset 0 0 0 1px var(--line-2)}
+.rail .foot span{font-size:10.5px;color:var(--ink-3)}
+
+/* main */
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;padding:14px var(--margin) 0}
+
+/* ---------------------------------------------------------------- 进度
+   2px 刻度线：走过的灰、当前激光绿、未到不显示文字。 */
+.top{flex:none;padding:3px 0 12px}
+.steps{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter)}
+.step{grid-column:span 2;display:grid;grid-template-rows:2px auto;gap:8px}
+.step:nth-child(3),.step:nth-child(4){grid-column:span 3}
+.step .track{height:2px;border-radius:1px;background:#22262D;overflow:hidden}
+.step .fill{display:block;height:100%;width:0;border-radius:inherit;background:#4A515C;
+  transition:width 900ms var(--ease),background var(--fast),box-shadow var(--fast)}
+.step.done .fill{width:100%;background:#4A515C}
+.step.now .fill{width:100%;background:var(--accent);box-shadow:0 0 10px rgba(199,241,79,.2)}
+.step .lb{text-align:center;font-size:10px;letter-spacing:.08em;color:transparent;
+  min-height:14px;transition:color var(--fast)}
+.step.done .lb{color:var(--ink-3)}
+.step.now .lb{color:var(--ink);font-weight:500}
+
+/* ---------------------------------------------------------------- 状态条 */
+.statusbar{position:relative;flex:none;display:flex;align-items:center;gap:10px;
+  margin:0 0 14px;padding:8px 8px 8px 14px;border-radius:12px;
+  background:linear-gradient(180deg,#13161A,#0F1115);
+  border:1px solid var(--line);overflow:hidden}
+.statusbar .st{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;
+  color:var(--ink);white-space:nowrap}
+.statusbar .st .dot{width:6px;height:6px;border-radius:50%;background:#6B7380;flex:none}
+.statusbar.live .st .dot{background:var(--accent);box-shadow:0 0 0 3px rgba(199,241,79,.13)}
+.statusbar .q{font-size:11.5px;color:var(--ink-2);min-width:0;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.statusbar .q::before{content:"";display:inline-block;width:1px;height:10px;background:var(--line-2);
+  margin-right:10px;vertical-align:-1px}
+.statusbar .cnt{margin-left:auto;font-size:10.5px;color:var(--ink-3);white-space:nowrap}
+.statusbar .act{height:26px;padding:0 10px;border-radius:6px;font-size:11px;
+  color:var(--ink-2);background:transparent;border:1px solid var(--line-2);white-space:nowrap;
+  transition:background var(--fast),color var(--fast),border-color var(--fast)}
+.statusbar .act:hover{background:rgba(255,255,255,.05);color:var(--ink);border-color:var(--line-3)}
+.statusbar .line{position:absolute;left:0;bottom:0;height:1.5px;width:0;background:#3A414A;
+  transition:width 700ms var(--ease)}
+.statusbar.live .line{background:var(--accent);box-shadow:0 0 8px rgba(199,241,79,.22)}
+
+/* ---------------------------------------------------------------- 内容区 */
+.body{flex:1;min-height:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);row-gap:var(--gutter);padding-bottom:10px}
+.col-8{grid-column:1 / span 8;min-width:0;min-height:0;display:flex;flex-direction:column}
+.col-4{grid-column:9 / span 4;min-width:0;min-height:0;display:flex;flex-direction:column}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--sh-1)}
+.eyebrow{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:9.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+.eyebrow .ln{flex:1;height:1px;background:var(--line)}
+
+.sk{background:linear-gradient(90deg,#1A1E25 25%,#272D36 37%,#1A1E25 63%);
+  background-size:400% 100%;animation:shimmer 1.5s linear infinite;border-radius:6px}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------------------------------------------------------------- dock
+   低保真：三个独立控件浮在底部渐变上（不合并成一张卡）
+   收起： [‹ 上一步]        [主行动 居中]        [输入框]
+   展开： [‹ 上一步]                    [主行动 右]
+          [系统预判 整行]
+          [================ 输入框 ================] */
+.dock-wrap{flex:none;position:relative;padding:26px 0 14px}
+.dock-wrap::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,var(--bg) 54%,rgba(10,11,13,.9) 74%,rgba(10,11,13,0))}
+.dock{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
+  grid-template-areas:"left primary ask";align-items:center;gap:12px}
+
+.dock .left{grid-area:left;justify-self:start;display:flex;align-items:center;gap:10px;min-width:0}
+.dock .left .meta{font-family:var(--font-mono);font-size:10px;color:var(--ink-3);white-space:nowrap;
+  letter-spacing:.02em}
+.dock .primary{grid-area:primary;justify-self:center;display:flex;justify-content:center;gap:8px}
+.dock .hint{display:none;grid-area:hint;font-size:11px;color:var(--ink-3);text-align:right;
+  padding-right:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .hint b{color:var(--ink-2);font-weight:500}
+.dock .ask{grid-area:ask;justify-self:end;width:min(100%,320px);display:flex;align-items:center;
+  gap:8px;background:#101216;border:1px solid var(--line-2);border-radius:var(--r-pill);
+  padding:4px 5px 4px 16px;transition:border-color var(--fast),box-shadow var(--fast)}
+.dock .ask:focus-within{border-color:rgba(199,241,79,.45);
+  box-shadow:0 0 0 4px rgba(199,241,79,.07)}
+
+.dock.focus{grid-template-columns:auto minmax(0,1fr);
+  grid-template-areas:"left primary" "hint hint" "ask ask";row-gap:10px}
+.dock.focus .primary{justify-self:end}
+.dock.focus .hint{display:block;text-align:right}
+.dock.focus .ask{justify-self:stretch;width:100%;border-radius:var(--r-md);
+  padding:9px 9px 9px 14px;align-items:flex-end}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;
+  padding:0 16px;border-radius:var(--r-md);font-size:12.5px;font-weight:500;
+  transition:background var(--fast),color var(--fast),border-color var(--fast),transform var(--fast);
+  white-space:nowrap}
+.btn:active{transform:scale(.985)}
+.btn.ghost{color:#C6CDD6;background:#14171C;border:1px solid var(--line-2)}
+.btn.ghost:hover{background:#1A1E24;color:var(--ink);border-color:var(--line-3)}
+.btn.ink{background:var(--accent);color:var(--accent-ink);font-weight:600;
+  box-shadow:0 10px 30px -16px rgba(199,241,79,.3),inset 0 1px 0 rgba(255,255,255,.18)}
+.btn.ink:hover{background:var(--accent-hi)}
+.btn[disabled]{opacity:.3;pointer-events:none;box-shadow:none}
+.dock textarea{flex:1;min-width:0;border:0;outline:0;resize:none;background:transparent;
+  font-family:var(--font-ui);font-size:12.5px;line-height:1.5;color:var(--ink);height:30px;
+  padding:5px 4px}
+.dock textarea::placeholder{color:var(--ink-4)}
+.dock .send{width:30px;height:30px;border-radius:50%;background:#262B33;color:#DDE2E8;
+  border:1px solid var(--line-2);display:grid;place-items:center;flex:none;
+  transition:background var(--fast),color var(--fast),border-color var(--fast)}
+.dock .send:hover{background:#30363F;color:#fff;border-color:var(--line-3)}
+.dock .send svg{width:13px;height:13px}
+
+/* ---------------------------------------------------------------- 层级色
+   四个分类色：精确绿 / 环境青 / 平台橙 / 跨类玫瑰；跨类加虚线。
+   颜色只做小面积索引，文字与线型始终同时存在。 */
+.dot{width:5px;height:5px;border-radius:50%;flex:none;background:var(--t-cross)}
+.dot.exact{background:var(--t-exact)}
+.dot.environment{background:var(--t-env)}
+.dot.platform{background:var(--t-plat)}
+.dot.cross_vehicle{background:transparent;border:1px dashed var(--t-cross)}
+.tier-text{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.03em;
+  color:var(--ink-2)}
+.tier-text.exact{color:var(--t-exact)}
+.tier-text.environment{color:var(--t-env)}
+.tier-text.platform{color:var(--t-plat)}
+.tier-text.cross_vehicle{color:var(--t-cross)}
+
+/* ---------------------------------------------------------------- 其它 */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(8px);
+  background:#1C2027;color:var(--ink);border:1px solid var(--line-2);font-size:12px;
+  padding:9px 16px;border-radius:var(--r-md);box-shadow:0 26px 50px -26px #000;
+  opacity:0;pointer-events:none;transition:opacity var(--fast),transform var(--fast);z-index:80}
+.toast.on{opacity:1;transform:translateX(-50%)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:rgba(232,238,246,.12);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(232,238,246,.2)}
+::-webkit-scrollbar-track{background:transparent}
+
+@media (max-width:1180px){
+  .body{grid-template-columns:1fr}
+  .col-8,.col-4{grid-column:1 / -1}
+}
+@media (max-width:760px){
+  .shell{grid-template-columns:64px}
+  .brand b,.brand span,.rail .k,.recent .it span{display:none}
+  .recent .it b{font-size:11px}
+  .rail{padding:16px 8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}

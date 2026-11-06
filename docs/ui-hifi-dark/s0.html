@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 立项</title>
+<link rel="stylesheet" href="hifi.css">
+<link rel="stylesheet" href="s0.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="rail">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3"/>
+      </svg>
+      <b>EquipLens</b>
+    </div>
+
+    <div>
+      <div class="k">最近</div>
+      <div class="recent">
+        <div class="it"><b>沙漠牵引车</b><span>10-31 · 6 台</span></div>
+        <div class="it"><b>重型吊车</b><span>10-18 · 9 台</span></div>
+        <div class="it"><b>翻斗铲车</b><span>10-18 · 7 台</span></div>
+        <div class="it"><b>混凝土泵车</b><span>10-15 · 5 台</span></div>
+        <div class="it"><b>高空作业车</b><span>10-12 · 8 台</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="top">
+      <div class="steps">
+        <div class="step now"><span class="track"><i class="fill"></i></span><span class="lb">立项</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">检索</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">素材</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">排版</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">交付</span></div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="in">
+        <h1>今天看什么设备？</h1>
+        <p class="sub">输入设备类别，或者直接说一句话，剩下的交给我。</p>
+
+        <div class="askbox">
+          <input id="q" type="text" autocomplete="off"
+                 placeholder="例：沙漠牵引车，看前脸、格栅、保险杠">
+          <button class="go" id="start" type="button">开始</button>
+        </div>
+
+        <div class="under">
+          <button class="upload" type="button">
+            <span class="plus">＋</span>上传图片<b class="opt">（可选）</b>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="hifi.js"></script>
+<script>
+  const q = $('#q');
+  const start = () => {
+    const v = q.value.trim();
+    go('s1.html?s=loading' + (v ? '&q=' + encodeURIComponent(v) : ''));
+  };
+  $('#start').addEventListener('click', start);
+  q.addEventListener('keydown', (e) => { if (e.key === 'Enter') start(); });
+  q.focus();
+</script>
+</body>
+</html>

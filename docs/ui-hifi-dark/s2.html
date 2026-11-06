@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 素材与分析</title>
+<link rel="stylesheet" href="hifi.css">
+<link rel="stylesheet" href="s2.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="rail">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3"/>
+      </svg>
+      <b>EquipLens</b>
+    </div>
+    <div>
+      <div class="k">最近</div>
+      <div class="recent">
+        <div class="it on"><b>沙漠牵引车</b><span>10-31 · 6 台</span></div>
+        <div class="it"><b>重型吊车</b><span>10-18 · 9 台</span></div>
+        <div class="it"><b>翻斗铲车</b><span>10-18 · 7 台</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="top">
+      <div class="steps">
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">立项</span></div>
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">检索</span></div>
+        <div class="step now"><span class="track"><i class="fill"></i></span><span class="lb">素材</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">排版</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">交付</span></div>
+      </div>
+    </header>
+
+    <div class="statusbar live" id="sb">
+      <span class="st"><span class="dot"></span><span id="stText">分析中</span></span>
+      <span class="q" id="sbQ">德龙 X3000 · 图 1 / 3</span>
+      <span class="cnt mono" id="sbCnt">4 / 5 部件已框</span>
+      <button class="act" id="sbAct" type="button">暂停</button>
+      <i class="line" id="sbLine"></i>
+    </div>
+
+    <div class="body">
+      <div class="col-8">
+        <div class="stage">
+          <div class="viewer" id="photo">
+            <img id="shotBg" class="bg" alt="">
+            <img id="shot" class="fg" alt="">
+            <div class="hint" id="hint">在图上拖动，为「登车踏步」框选</div>
+            <div id="boxes"></div>
+            <button class="nav" id="prevV" type="button" aria-label="上一辆">‹</button>
+            <button class="nav" id="nextV" type="button" aria-label="下一辆">›</button>
+          </div>
+
+          <div class="controls">
+            <button class="cbtn" id="prevV2" type="button">‹ 上一辆</button>
+            <div class="imgsel">
+              <button id="prevImg" type="button" aria-label="上一张">‹</button>
+              <span class="n">图 <b id="imgNo">1</b> / <span id="imgTot">3</span></span>
+              <button id="nextImg" type="button" aria-label="下一张">›</button>
+            </div>
+            <button class="cbtn" id="nextV2" type="button">下一辆 ›</button>
+          </div>
+
+          <div class="filmbar">
+            <div class="film" id="film"></div>
+          </div>
+        </div>
+      
+          <div class="dock-wrap">
+            <div class="dock" id="dock">
+              <div class="left"><button class="btn ghost" id="back" type="button">‹ 上一步</button></div>
+              <div class="primary"><button class="btn ink" id="primary" type="button" disabled>确认并开始排版</button></div>
+              <div class="hint">系统预判：回到 <b>素材</b> · 只重做 <b>这一台车的分析</b></div>
+              <div class="ask">
+                <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+                <button class="send" id="send" type="button" aria-label="提交">↑</button>
+              </div>
+            </div>
+          </div>
+
+      </div>
+
+      <div class="col-4">
+        <div class="card parts">
+          <div class="hd"><b>部件分析</b><span id="pcount">—</span></div>
+          <div class="prows" id="prows"></div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="hifi.js"></script>
+<script>
+(() => {
+  const V = HIFI.s2.vehicles;
+  const FAM = { sheet_metal:'钣金件', frame_profile:'型材框架', cast_forged:'铸锻件',
+                function_attachment:'功能件' };
+  /* 层级来自 S1 名录（按车型名匹配），框与胶片条都按它上色 */
+  const TIERS = (() => {
+    const m = {};
+    (HIFI.s1.cards || []).forEach((c) => { m[c.model] = c.relation; });
+    const sq = (s) => s.replace(/\s+/g, '');
+    return (name) => {
+      const n = sq(name);
+      const hit = Object.keys(m).find((k) => n.startsWith(sq(k)) || sq(k).startsWith(n)
+        || n.includes(sq(k)));
+      return hit ? m[hit] : 'platform';
+    };
+  })();
+
+  let vi = 0, mi = 0, sel = null;
+  const qs = new URLSearchParams(location.search);
+  const loading = (qs.get('s') || 'loading') === 'loading';
+  paintSteps(2);
+
+  const cur = () => V[vi];
+  const view = () => cur().views[mi];
+  const tierOf = (v) => TIERS((v || cur()).name);
+
+  function stateOf(slot) {
+    const vs = cur().views;
+    const here = vs[mi].analysis.parts.find((p) => p.slot === slot);
+    if (here && here.bbox) return 'framed';
+    if (here && here.visible !== 'not_visible') return 'pending';
+    for (let i = 0; i < vs.length; i++) {
+      if (i === mi) continue;
+      if (vs[i].analysis.parts.find((p) => p.slot === slot)?.bbox) return 'elsewhere:' + i;
+    }
+    return 'hidden';
+  }
+
+  function fitBoxes() {
+    const img = $('#shot'), wrap = $('#photo'), layer = $('#boxes');
+    if (!img.naturalWidth) return;
+    const r = img.getBoundingClientRect(), v = wrap.getBoundingClientRect();
+    layer.style.left = (r.left - v.left) + 'px';
+    layer.style.top = (r.top - v.top) + 'px';
+    layer.style.width = r.width + 'px';
+    layer.style.height = r.height + 'px';
+  }
+
+  function renderPhoto() {
+    const v = cur(), w = view();
+    const img = $('#shot'), bg = $('#shotBg');
+    img.style.opacity = '0'; bg.style.opacity = '0';
+    setTimeout(() => {
+      bg.src = w.image;
+      img.onload = fitBoxes;
+      img.src = w.image;
+      img.style.opacity = '1'; bg.style.opacity = '1';
+      if (img.complete) fitBoxes();
+      if (img.decode) img.decode().then(fitBoxes).catch(() => {});
+      requestAnimationFrame(() => requestAnimationFrame(fitBoxes));
+    }, 90);
+    $('#sbQ').textContent = `${v.name} · 图 ${mi + 1} / ${v.views.length}`;
+    $('#imgNo').textContent = mi + 1;
+    $('#imgTot').textContent = v.views.length;
+
+    const host = $('#boxes');
+    host.innerHTML = '';
+    const tier = tierOf();
+    w.analysis.parts.forEach((p) => {
+      if (!p.bbox) return;
+      const [x1, y1, x2, y2] = p.bbox;
+      const el = document.createElement('div');
+      el.className = 'bx' + (sel === p.slot ? ' on' : '');
+      el.dataset.slot = p.slot;
+      el.dataset.tier = tier;
+      el.style.left = (x1 / 10) + '%';
+      el.style.top = (y1 / 10) + '%';
+      el.style.width = ((x2 - x1) / 10) + '%';
+      el.style.height = ((y2 - y1) / 10) + '%';
+      el.innerHTML = `<span class="tag"><span class="n">${p.label}</span>${p.term}</span>
+        <i class="h tl"></i><i class="h tr"></i><i class="h bl"></i><i class="h br"></i>`;
+      host.appendChild(el);
+    });
+  }
+
+  function renderRows(first) {
+    const host = $('#prows');
+    host.innerHTML = '';
+    const parts = view().analysis.parts;
+    let framed = 0;
+    parts.forEach((p, i) => {
+      const st = stateOf(p.slot);
+      if (st === 'framed') framed++;
+      const visible = p.visible !== 'not_visible';
+      const label = st === 'framed' ? '已框定'
+        : st === 'pending' ? '本图可见 · 待框选'
+        : st.startsWith('elsewhere') ? `在 图 ${+st.split(':')[1] + 1} 框选`
+        : '本图不可见 · 换图后框';
+      const row = document.createElement('div');
+      row.className = 'prow' + (sel === p.slot ? ' on' : '');
+      row.dataset.state = st.split(':')[0];
+      row.dataset.slot = p.slot;
+      row.innerHTML = `
+        <span class="st"></span>
+        <div class="rbody">
+          <div class="ptop">
+            <span class="no mono">${String(i + 1).padStart(2, '0')}</span>
+            <span class="pname">${p.label}</span>
+            <span class="pterm">${visible ? p.term : '—'}</span>
+            <span class="pstat">${label}</span>
+          </div>
+          ${visible ? `
+            <div class="pform">${p.form.map((s) => `<span>${s}</span>`).join('')}</div>
+            <div class="pmeta"><span>CMF</span>
+              <b>${p.cmf.material_class} · ${p.cmf.finish}</b>
+              <span>族</span><b>${FAM[p.part_family] || ''}</b></div>
+            <div class="pintent"><span>意图</span>${p.intent}</div>`
+            : `<div class="pform muted">本图不可见，换图后再框。</div>`}
+        </div>`;
+      if (first) row.style.animationDelay = (i * 60) + 'ms';
+      host.appendChild(row);
+
+      row.addEventListener('click', () => {
+        $$('#prows .prow').forEach((r) => r.classList.toggle('on', r === row));
+        sel = p.slot;
+        if (st.startsWith('elsewhere')) {
+          mi = +st.split(':')[1];
+          renderPhoto(); renderRows(); showHint(p, st);
+          toast(`已切到图 ${mi + 1}`);
+        } else {
+          renderPhoto(); showHint(p, st);
+        }
+      });
+    });
+    $('#pcount').textContent = `${framed} / ${parts.length} 部件已框`;
+    $('#sbCnt').textContent = `${framed} / ${parts.length} 部件已框`;
+  }
+
+  function showHint(p, st) {
+    const h = $('#hint');
+    if (st === 'pending') {
+      h.textContent = `在图上拖动，为「${p.label}」框选`;
+      h.classList.add('on');
+    } else if (st === 'hidden') {
+      h.textContent = `本图看不到「${p.label}」，可切换图片后再框`;
+      h.classList.add('on');
+    } else {
+      h.classList.remove('on');
+    }
+  }
+
+  function renderFilm() {
+    const host = $('#film');
+    host.innerHTML = '';
+    V.forEach((v, i) => {
+      const t = tierOf(v);
+      const el = document.createElement('div');
+      el.className = 'fcell' + (i === vi ? ' now' : '') + (t === 'cross_vehicle' ? ' extra' : '');
+      el.dataset.tier = t;
+      el.innerHTML = `<img src="${v.views[0].image}" alt=""><div class="cn">${v.name}</div>`;
+      el.addEventListener('click', () => { vi = i; mi = 0; sel = null; render(); $('#hint').classList.remove('on'); });
+      host.appendChild(el);
+    });
+  }
+
+  function render() { renderPhoto(); renderRows(true); renderFilm(); }
+  window.addEventListener('resize', () => fitBoxes());
+
+  $('#prevV').addEventListener('click', () => stepV(-1));
+  $('#nextV').addEventListener('click', () => stepV(1));
+  $('#prevV2').addEventListener('click', () => stepV(-1));
+  $('#nextV2').addEventListener('click', () => stepV(1));
+  function stepV(d) { vi = (vi + d + V.length) % V.length; mi = 0; sel = null; render(); $('#hint').classList.remove('on'); }
+
+  $('#prevImg').addEventListener('click', () => stepImg(-1));
+  $('#nextImg').addEventListener('click', () => stepImg(1));
+  function stepImg(d) {
+    mi = (mi + d + cur().views.length) % cur().views.length;
+    sel = null; renderPhoto(); renderRows(); $('#hint').classList.remove('on');
+  }
+
+  document.addEventListener('click', (e) => {
+    const bx = e.target.closest('.bx');
+    if (!bx) return;
+    sel = bx.dataset.slot;
+    $$('#prows .prow').forEach((r) => r.classList.toggle('on', r.dataset.slot === sel));
+    $$('#boxes .bx').forEach((b) => b.classList.toggle('on', b === bx));
+  });
+
+  initDock({ onSubmit: () => toast('已提交修改，重新分析这一台') });
+  $('#primary').addEventListener('click', () => go('s3.html?s=loading'));
+  $('#sbAct').addEventListener('click', () => {
+    toast($('#sbAct').textContent === '暂停' ? '已暂停' : '已重新开始分析');
+  });
+
+  /* 启动 */
+  renderFilm();
+  $('#shot').src = V[0].views[0].image;
+  $('#sbQ').textContent = `${V[0].name} · 图 1 / 3`;
+
+  if (!loading) {
+    render();
+    $('#stText').textContent = '分析完成';
+    $('#sb').classList.remove('live');
+    $('#sbAct').textContent = '重新分析';
+    $('#primary').disabled = false;
+    $('#sbLine').style.width = '100%';
+  } else {
+    $('#photo').style.filter = 'blur(6px) saturate(.85)';
+    $('#prows').innerHTML = Array.from({ length: 5 }).map(() => `
+      <div class="prow" style="animation:none">
+        <span class="st"></span>
+        <div class="rbody">
+          <div class="ptop"><span class="sk" style="height:10px;width:44%"></span></div>
+          <div class="skl"><i class="sk"></i><i class="sk"></i></div>
+        </div>
+      </div>`).join('');
+    $('#sbLine').style.width = '35%';
+    setTimeout(() => {
+      $('#photo').style.filter = 'none';
+      $('#stText').textContent = '分析完成';
+      $('#sb').classList.remove('live');
+      $('#sbAct').textContent = '重新分析';
+      $('#sbLine').style.width = '100%';
+      $('#primary').disabled = false;
+      render();
+    }, 2600);
+  }
+})();
+</script>
+</body>
+</html>

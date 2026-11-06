@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EquipLens · 检索</title>
+<link rel="stylesheet" href="hifi.css">
+<link rel="stylesheet" href="s1.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <aside class="rail">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4"
+           stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3"/>
+      </svg>
+      <b>EquipLens</b>
+    </div>
+    <div>
+      <div class="k">最近</div>
+      <div class="recent">
+        <div class="it on"><b>沙漠牵引车</b><span>10-31 · 6 台</span></div>
+        <div class="it"><b>重型吊车</b><span>10-18 · 9 台</span></div>
+        <div class="it"><b>翻斗铲车</b><span>10-18 · 7 台</span></div>
+        <div class="it"><b>混凝土泵车</b><span>10-15 · 5 台</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <header class="top">
+      <div class="steps">
+        <div class="step done"><span class="track"><i class="fill"></i></span><span class="lb">立项</span></div>
+        <div class="step now"><span class="track"><i class="fill"></i></span><span class="lb">检索</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">素材</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">排版</span></div>
+        <div class="step"><span class="track"><i class="fill"></i></span><span class="lb">交付</span></div>
+      </div>
+    </header>
+
+    <div class="statusbar live" id="sb">
+      <span class="st"><span class="dot"></span><span id="stText">检索中</span></span>
+      <span class="q" id="sbQ">沙漠牵引车 · 前脸 格栅 保险杠</span>
+      <span class="cnt mono" id="sbCnt">1 / 7 查询</span>
+      <button class="act" id="sbAct" type="button">取消</button>
+      <i class="line" id="sbLine"></i>
+    </div>
+
+    <div class="body">
+      <div class="col-8">
+          <div class="cards loading" id="cards"></div>
+          <div class="dock-wrap">
+            <div class="dock" id="dock">
+              <div class="left"><button class="btn ghost" id="back" type="button">‹ 上一步</button></div>
+              <div class="primary"><button class="btn ink" id="primary" type="button" disabled>确认并开始分析</button></div>
+              <div class="hint">系统预判：回到 <b>立项</b> · 只重做 <b>本次检索</b></div>
+              <div class="ask">
+                <textarea id="ask" rows="1" placeholder="说哪里不对，或直接说要什么"></textarea>
+                <button class="send" id="send" type="button" aria-label="提交">↑</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="col-4">
+        <div class="panel">
+          <div class="card analysis">
+            <div class="eyebrow"><span>关联分析</span><span class="ln"></span></div>
+            <p id="prose"></p>
+            <div class="skl" id="proseSk"><i class="sk"></i><i class="sk"></i><i class="sk"></i><i class="sk"></i></div>
+          </div>
+          <div class="card roster">
+            <div class="hd"><b>清单</b><span id="rcount">8 台 · 6 推荐 + 2 备选</span></div>
+            <div class="rows" id="rows"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="hifi.js"></script>
+<script>
+(() => {
+  const D = HIFI.s1;
+  const CARDS = D.cards;
+  const TIER = {
+    exact: '精确类目 · 直接可比',
+    environment: '环境特化 · 同工况参照',
+    platform: '基型平台 · 造型继承',
+    cross_vehicle: '跨车型 · 仅作备选'
+  };
+  paintSteps(1);
+  $('#prose').textContent = D.analysis.prose;
+
+  const setStatus = (text, live) => {
+    $('#stText').textContent = text;
+    $('#sb').classList.toggle('live', !!live);
+  };
+
+  const skel = (n) => {
+    const host = $('#cards');
+    host.innerHTML = '';
+    for (let i = 0; i < n; i++) {
+      host.insertAdjacentHTML('beforeend',
+        '<div class="vsk"><div class="im sk"></div>' +
+        '<div class="sk" style="height:11px;width:64%;margin:10px 4px 6px"></div>' +
+        '<div class="sk" style="height:9px;width:42%;margin:0 4px 4px"></div></div>');
+    }
+  };
+
+  function cardHTML(c, i) {
+    const img = c.images[0] || '';
+    const tier = c.relation;
+    return `<article class="vcard ${c.selected ? 'sel' : ''} ${c.role === 'backup' ? 'backup' : ''}"
+        data-i="${i}" data-tier="${tier}" data-role="${c.role}">
+      <div class="vshot" data-img="0">
+        ${img ? `<img class="bg" src="${img}" alt=""><img class="fg" src="${img}" alt="">` : ''}
+        <span class="cnt mono">1 / ${c.image_count || 1}</span>
+        ${c.role === 'backup' ? '' : `<span class="cb ${c.selected ? 'on' : ''}"></span>`}
+      </div>
+      <div class="vbody">
+        <span class="nm mono">${c.model}</span>
+        <span class="cf">${c.label || c.configuration}</span>
+        <span class="tier-text ${tier}"><i class="dot ${tier}"></i>${TIER[tier]}</span>
+      </div>
+    </article>`;
+  }
+
+  const TAG = { exact: '精确', environment: '环境', platform: '平台', cross_vehicle: '跨类 · 备选' };
+  function rowHTML(c, i) {
+    return `<div class="rrow" data-tier="${c.relation}">
+      <span class="rank">${String(i + 1).padStart(2, '0')}</span>
+      <div class="rt">
+        <span class="nm">${c.model}</span>
+        <span class="mt">${c.label || c.configuration}</span>
+        <span class="tag">${TAG[c.relation]}</span>
+      </div>
+      <div class="why" title="${c.reason}">${c.reason}</div>
+    </div>`;
+  }
+
+  async function reveal() {
+    const host = $('#cards');
+    host.innerHTML = '';
+    host.classList.remove('loading');
+    const total = CARDS.length;
+    const rec = CARDS.filter((c) => c.role === 'recommended').length;
+    for (let i = 0; i < total; i++) {
+      host.insertAdjacentHTML('beforeend', cardHTML(CARDS[i], i));
+      const shown = CARDS.slice(0, i + 1).filter((c) => c.role === 'recommended').length;
+      $('#sbCnt').textContent = `${i + 1} / ${total} 查询`;
+      $('#sbLine').style.width = (8 + 92 * (i + 1) / total) + '%';
+      $('#rows').insertAdjacentHTML('beforeend', rowHTML(CARDS[i], i));
+      $('#rcount').textContent = `已出 ${i + 1} / ${total}`;
+      await sleep(340);
+    }
+    $('#proseSk').remove();
+    $('#prose').style.animation = 'rise .5s ease both';
+    setStatus('检索完成', false);
+    $('#sbCnt').textContent = `${total} / ${total} · 34 篇来源`;
+    $('#sbAct').textContent = '重新检索';
+    $('#sbLine').style.width = '100%';
+    $('#primary').disabled = false;
+    bindCards();
+  }
+
+  function bindCards() {
+    $$('.vcard').forEach((el) => {
+      const c = CARDS[+el.dataset.i];
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('.vshot')) return;
+        if (c.role === 'backup') { toast('备选车不参与本册'); return; }
+        el.classList.toggle('sel');
+        el.querySelector('.cb').classList.toggle('on');
+      });
+      const shot = el.querySelector('.vshot');
+      const fg = shot.querySelector('.fg'), bg = shot.querySelector('.bg');
+      let k = 0;
+      const cycle = () => {
+        if (!c.images.length) return;
+        k = (k + 1) % c.images.length;
+        [fg, bg].forEach((n) => { n.style.opacity = '0'; });
+        setTimeout(() => {
+          fg.src = c.images[k]; bg.src = c.images[k];
+          fg.style.opacity = '1'; bg.style.opacity = '1';
+          shot.querySelector('.cnt').textContent = `${k + 1} / ${c.images.length}`;
+        }, 110);
+      };
+      shot.addEventListener('click', cycle);
+      shot.addEventListener('contextmenu', (e) => { e.preventDefault(); cycle(); });
+    });
+  }
+
+  const qs = new URLSearchParams(location.search);
+  const state = qs.get('s') || 'loading';
+  if (qs.get('q')) $('#sbQ').textContent = qs.get('q');
+
+  $('#primary').addEventListener('click', () => go('s2.html?s=loading'));
+  $('#sbAct').addEventListener('click', () => {
+    if ($('#sbAct').textContent === '取消') {
+      setStatus('检索完成', false);
+      $('#primary').disabled = false;
+    } else {
+      toast('已重新发起检索');
+      setStatus('检索中', true);
+    }
+  });
+
+  initDock({
+    onSubmit: () => {
+      toast('已提交修改，回到检索');
+      setStatus('检索中', true);
+      setTimeout(() => setStatus('检索完成', false), 1500);
+    }
+  });
+
+  if (state === 'loading') {
+    skel(6);
+    $('#sbLine').style.width = '6%';
+    setTimeout(reveal, 900);
+  } else {
+    $('#cards').classList.remove('loading');
+    $('#cards').innerHTML = CARDS.map(cardHTML).join('');
+    $('#rows').innerHTML = CARDS.map(rowHTML).join('');
+    $('#proseSk').remove();
+    setStatus('检索完成', false);
+    $('#sbCnt').textContent = '8 / 8 · 34 篇来源';
+    $('#rcount').textContent = '8 台 · 6 推荐 + 2 备选';
+    $('#sbAct').textContent = '重新检索';
+    $('#sbLine').style.width = '100%';
+    $('#primary').disabled = false;
+    bindCards();
+  }
+})();
+</script>
+</body>
+</html>

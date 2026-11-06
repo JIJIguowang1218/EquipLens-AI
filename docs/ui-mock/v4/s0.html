@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquipLens · S0 立项台</title>
+<style>
+:root{
+  --ink:#0B0B0C; --ink1:#121214; --ink2:#17171A;
+  --line:rgba(242,241,238,.13); --line2:rgba(242,241,238,.07);
+  --text:#F2F1EE; --text2:#9A9A95; --text3:#6A6A66;
+  --paper:#F4F2ED; --paperink:#141414;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000}
+html{overflow-x:hidden}
+body{font-family:Inter,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--text)}
+.mono{font-family:"IBM Plex Mono","JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+
+:root{
+  --rail:clamp(200px,21vw,280px);   /* 左栏是 rail：固定槽，不参与 12 栏 */
+  --margin:clamp(16px,1.7vw,24px);  /* 内容区左右外边距 */
+  --gutter:16px;                    /* 栏间隙（也是卡片间隙） */
+  --pad-y:16px;                     /* 内容区上边距（8pt 节奏） */
+}
+.app{width:100%;min-height:100vh;background:var(--ink);display:flex;overflow-x:hidden}
+
+/* ---------- left column: logo + recent, full height ---------- */
+.side{width:var(--rail);flex:none;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;padding-bottom:24px}
+.brand{height:clamp(48px,4.6vw,64px);flex:none;display:flex;align-items:center;
+  gap:clamp(8px,.9vw,12px);padding:0 clamp(12px,1.4vw,18px)}
+.logo{width:clamp(20px,1.7vw,25px);height:auto;aspect-ratio:1;flex:none;color:var(--text)}
+.name{font-size:clamp(13px,1.02vw,15px);white-space:nowrap;letter-spacing:.01em}
+
+.label{font-size:clamp(9px,.72vw,10px);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--text3);margin:clamp(10px,1.2vw,16px) clamp(12px,1.2vw,16px) 6px}
+.items{display:flex;flex-direction:column;padding:0 clamp(6px,.7vw,10px)}
+.item{display:flex;flex-direction:column;gap:3px;padding:clamp(8px,.85vw,11px) 8px;
+  border-radius:2px;border-top:1px solid var(--line2);cursor:pointer}
+.item:hover{background:var(--ink1)}
+.item .t{font-size:clamp(12px,.95vw,13.5px);line-height:1.3;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .m{font-size:clamp(10px,.78vw,11px);color:var(--text3)}
+.item:first-child{border-top:0}
+
+/* ---------- right area ---------- */
+.right{flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* progress: five bars filling the whole top width of the work area */
+.progress{height:72px;flex:none;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);align-items:center;padding:0 var(--margin);
+  border-bottom:1px solid var(--line)}
+.step{min-width:0;display:flex;flex-direction:column;justify-content:flex-start;
+  grid-column:span 2;min-height:clamp(20px,1.8vw,24px);gap:clamp(5px,.5vw,7px)}
+/* 五段按 2/2/3/3/2 分栏，段边界正好压在栏线上 */
+.step:nth-child(3),.step:nth-child(4){grid-column:span 3}
+.step .bar{display:block;height:3px;border-radius:1px;background:rgba(242,241,238,.10)}
+.step .nm{display:none;font-size:clamp(8.5px,.72vw,9.5px);letter-spacing:.12em;
+  color:var(--text3);white-space:nowrap}
+.step.now .bar{background:var(--paper)}
+.step.now .nm{display:block;color:var(--paper)}
+
+.main{flex:1;min-width:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+  column-gap:var(--gutter);align-content:center;
+  padding:var(--pad-y) var(--margin) clamp(24px,6vh,64px)}
+
+/* content block is capped so the input never runs to the far right */
+.ask{grid-column:1 / span 8;min-width:0}
+
+h1{font-size:clamp(22px,2.45vw,34px);line-height:1.1;letter-spacing:-.025em;font-weight:600}
+.sub{margin:clamp(6px,.8vw,10px) 0 clamp(14px,1.6vw,22px);
+  font-size:clamp(12px,.94vw,14px);color:var(--text2);line-height:1.5}
+
+.field{height:clamp(46px,3.5vw,56px);border:1px solid rgba(242,241,238,.30);border-radius:2px;
+  display:flex;align-items:center;gap:clamp(8px,.8vw,12px);
+  padding:0 clamp(6px,.5vw,7px) 0 clamp(12px,1.1vw,16px);background:var(--ink1)}
+.field:focus-within{border-color:rgba(242,241,238,.5)}
+.q{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--text);
+  font-family:inherit;font-size:clamp(13px,1.15vw,16px);letter-spacing:0}
+.q::placeholder{color:var(--text3)}
+
+.btn{height:clamp(30px,2.4vw,36px);padding:0 clamp(12px,1.1vw,16px);border-radius:2px;
+  border:1px solid var(--line);background:transparent;color:var(--text);
+  font-size:clamp(11px,.9vw,13px);font-family:inherit;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn.solid{background:var(--paper);color:var(--paperink);border-color:var(--paper);font-weight:600}
+.btn.solid:hover{background:#fff}
+.btn.ghost:hover{border-color:rgba(242,241,238,.3)}
+.plus{font-size:clamp(12px,.95vw,14px);line-height:1;color:var(--text2)}
+.btn.ghost:hover .plus{color:var(--text)}
+.opt{color:var(--text3);font-size:.92em}
+.under{margin-top:clamp(10px,1vw,14px);display:flex;align-items:center}
+
+/* narrow: keep only the logo rail */
+@media (max-width:760px){
+  .ask{grid-column:1 / -1}
+  .side{width:56px}
+  .side .brand{justify-content:center;padding:0}
+  .side .name,.side .label,.side .items{display:none}
+}
+@media (max-width:420px){
+  .main{padding-left:16px;padding-right:16px}
+}
+</style>
+</head>
+<body>
+
+<section class="app">
+
+  <aside class="side">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" fill="none" stroke="currentColor"
+           stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="21" cy="21" r="12.6"/>
+        <path d="M21 4.4v4.2M35.6 12.4l-3.7 2.1M35.6 29.6l-3.7-2.1M21 37.6v-4.2M6.4 29.6l3.7-2.1M6.4 12.4l3.7 2.1"/>
+        <path d="M30.3 30.3 41 41" stroke-width="3.3"/>
+      </svg>
+      <span class="name">EquipLens</span>
+    </div>
+
+    <div class="label">最近</div>
+    <div class="items">
+      <div class="item"><span class="t">沙漠牵引车</span><span class="m mono">10-31 · 6 台</span></div>
+      <div class="item"><span class="t">重型吊车</span><span class="m mono">10-18 · 9 台</span></div>
+      <div class="item"><span class="t">翻斗铲车</span><span class="m mono">10-18 · 7 台</span></div>
+      <div class="item"><span class="t">混凝土泵车</span><span class="m mono">10-15 · 5 台</span></div>
+      <div class="item"><span class="t">高空作业车</span><span class="m mono">10-12 · 8 台</span></div>
+    </div>
+  </aside>
+
+  <div class="right">
+
+    <header class="progress" aria-label="阶段进度">
+      <div class="step now"><i class="bar"></i><span class="nm">立项</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">检索</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">素材</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">排版</span></div>
+      <div class="step"><i class="bar"></i><span class="nm">交付</span></div>
+    </header>
+
+    <main class="main">
+      <div class="ask">
+        <h1>今天看什么设备？</h1>
+        <p class="sub">输入设备类别，或者直接说一句话，剩下的交给我。</p>
+
+        <div class="field">
+          <input class="q" type="text" placeholder="例：沙漠牵引车，看前脸、格栅、保险杠">
+          <button class="btn solid" type="button">开始</button>
+        </div>
+
+        <div class="under">
+          <button class="btn ghost" type="button">
+            <span class="plus">＋</span>上传图片<span class="opt">（可选）</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</section>
+
+</body>
+</html>
