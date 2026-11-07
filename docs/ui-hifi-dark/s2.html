@@ -44,7 +44,7 @@
     </header>
 
     <div class="statusbar live" id="sb">
-      <span class="st"><span class="dot"></span><span id="stText">分析中</span></span>
+      <span class="st"><span class="ind" aria-hidden="true"></span><span id="stText">分析中</span></span>
       <span class="q" id="sbQ">德龙 X3000 · 图 1 / 3</span>
       <span class="cnt mono" id="sbCnt">4 / 5 部件已框</span>
       <button class="act" id="sbAct" type="button">暂停</button>
@@ -94,7 +94,7 @@
 
       <div class="col-4">
         <div class="card parts">
-          <div class="hd"><b>部件分析</b><span id="pcount">—</span></div>
+          <div class="hd"><span class="ph"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><path d="M2.4 5.6V3.4a1 1 0 0 1 1-1h2.1M13.6 5.6V3.4a1 1 0 0 0-1-1h-2.1M2.4 10.4v2.2a1 1 0 0 0 1 1h2.1M13.6 10.4v2.2a1 1 0 0 1-1 1h-2.1"/><circle cx="8" cy="8" r="1.6"/></svg></span><b>部件分析</b><span class="cnt" id="pcount">—</span></div>
           <div class="prows" id="prows"></div>
         </div>
       </div>
@@ -145,14 +145,22 @@
     return 'hidden';
   }
 
+  /* 原图用 contain 铺满画布，框层要贴的是「内容矩形」。
+     用 img 的实际矩形（含边框偏移、可为小数）反推 contain 的缩放，
+     不要用 clientWidth（取整会让框在 1366/1280 偏移 2–3px）。 */
   function fitBoxes() {
     const img = $('#shot'), wrap = $('#photo'), layer = $('#boxes');
     if (!img.naturalWidth) return;
-    const r = img.getBoundingClientRect(), v = wrap.getBoundingClientRect();
-    layer.style.left = (r.left - v.left) + 'px';
-    layer.style.top = (r.top - v.top) + 'px';
-    layer.style.width = r.width + 'px';
-    layer.style.height = r.height + 'px';
+    const ir = img.getBoundingClientRect(), vr = wrap.getBoundingClientRect();
+    const cw = ir.width, ch = ir.height;
+    const nat = img.naturalWidth / img.naturalHeight;
+    let w = cw, h = cw / nat;
+    if (h > ch) { h = ch; w = ch * nat; }
+    /* 绝对定位的原点是 padding box，要扣掉 1px 边框，否则整体偏 1px */
+    layer.style.left = (ir.left - vr.left - wrap.clientLeft + (cw - w) / 2) + 'px';
+    layer.style.top = (ir.top - vr.top - wrap.clientTop + (ch - h) / 2) + 'px';
+    layer.style.width = w + 'px';
+    layer.style.height = h + 'px';
   }
 
   function renderPhoto() {
@@ -196,6 +204,7 @@
     const host = $('#prows');
     host.innerHTML = '';
     const parts = view().analysis.parts;
+    const tier = tierOf();
     let framed = 0;
     parts.forEach((p, i) => {
       const st = stateOf(p.slot);
@@ -209,23 +218,29 @@
       row.className = 'prow' + (sel === p.slot ? ' on' : '');
       row.dataset.state = st.split(':')[0];
       row.dataset.slot = p.slot;
+      row.dataset.tier = tier;
+      /* 全部常开：有数据的部件展开完整字段；本图看不到的部件用同等高度的占位块，
+         不编造 CMF/意图——保证五张卡同高、结构一致，点击只负责选中与框发光。 */
+      const body = (p.form && p.cmf)
+        ? `<div class="pform">${p.form.map((s) => `<span>${s}</span>`).join('')}</div>
+           <div class="pmeta"><span>CMF</span>
+             <b>${p.cmf.material_class} · ${p.cmf.finish}</b>
+             <span>族</span><b>${FAM[p.part_family] || ''}</b></div>
+           <div class="pintent"><span>意图</span>${p.intent}</div>`
+        : `<div class="pempty">
+             <span class="pe-k mono">本图不可见</span>
+             <span class="pe-t">这个角度看不到「${p.label}」，${st.startsWith('elsewhere')
+               ? `切到 图 ${+st.split(':')[1] + 1} 后可框选并补全形制与 CMF`
+               : '换一张图后再框选并补全形制与 CMF'}</span>
+           </div>`;
       row.innerHTML = `
-        <span class="st"></span>
-        <div class="rbody">
-          <div class="ptop">
-            <span class="no mono">${String(i + 1).padStart(2, '0')}</span>
-            <span class="pname">${p.label}</span>
-            <span class="pterm">${visible ? p.term : '—'}</span>
-            <span class="pstat">${label}</span>
-          </div>
-          ${visible ? `
-            <div class="pform">${p.form.map((s) => `<span>${s}</span>`).join('')}</div>
-            <div class="pmeta"><span>CMF</span>
-              <b>${p.cmf.material_class} · ${p.cmf.finish}</b>
-              <span>族</span><b>${FAM[p.part_family] || ''}</b></div>
-            <div class="pintent"><span>意图</span>${p.intent}</div>`
-            : `<div class="pform muted">本图不可见，换图后再框。</div>`}
-        </div>`;
+        <div class="ptop">
+          <span class="no mono">${String(i + 1).padStart(2, '0')}</span>
+          <span class="pname">${p.label}</span>
+          <span class="pterm">${p.term || '—'}</span>
+          <span class="pstat">${label}</span>
+        </div>
+        ${body}`;
       if (first) row.style.animationDelay = (i * 60) + 'ms';
       host.appendChild(row);
 
@@ -318,11 +333,12 @@
     $('#photo').style.filter = 'blur(6px) saturate(.85)';
     $('#prows').innerHTML = Array.from({ length: 5 }).map(() => `
       <div class="prow" style="animation:none">
-        <span class="st"></span>
-        <div class="rbody">
-          <div class="ptop"><span class="sk" style="height:10px;width:44%"></span></div>
-          <div class="skl"><i class="sk"></i><i class="sk"></i></div>
+        <div class="ptop">
+          <span class="sk" style="height:10px;width:16px"></span>
+          <span class="sk" style="height:10px;width:38%"></span>
+          <span class="sk" style="height:9px;width:20%;margin-left:auto"></span>
         </div>
+        <div class="skl"><i class="sk"></i><i class="sk"></i></div>
       </div>`).join('');
     $('#sbLine').style.width = '35%';
     setTimeout(() => {

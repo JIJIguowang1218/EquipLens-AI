@@ -5,8 +5,11 @@
 
 .cards{flex:1;min-height:0;overflow-y:auto;display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gutter);align-content:start;
-  padding:1px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent}
+  align-items:start;
+  padding:2px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent}
 
+/* 卡片：主图区域不发光。关联度只由正文里的记号与右栏承担，
+   主图保持中性表面——发光会让照片、勾选与层级三者抢注意力。 */
 .vcard{position:relative;background:#0E1115;border:1px solid var(--line);
   border-radius:var(--r-lg);padding:6px;box-shadow:var(--sh-1);cursor:pointer;
   transition:transform var(--fast) var(--ease),box-shadow var(--fast) var(--ease),
@@ -20,9 +23,20 @@
 /* 备选：虚线 + 灰化 + 不勾选；虚线是结构信号 */
 .vcard.backup{background:#0C0E11;border:1px dashed rgba(232,238,246,.16);box-shadow:none}
 .vcard.backup:hover{background:#101319;border-color:rgba(232,238,246,.26)}
-.vcard.backup .vshot .bg{filter:grayscale(.55) brightness(.3)}
-.vcard.backup .vshot .fg{opacity:.4;filter:grayscale(.7) brightness(.72)}
-.vcard.backup:hover .vshot .fg{opacity:.62;filter:grayscale(.45) brightness(.9)}
+/* 未选 = 压暗，不是变透明。
+   旧版把图片透明度降到 .46，暗底透上来，车与背景糊成一块，卡面边界消失。
+   现在图片始终不透明，只用亮度/饱和做「关灯」，再叠一层同色遮罩——
+   卡仍是一块完整的暗牌，边界由表面色与发丝线定义。 */
+.vshot::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:rgba(8,9,11,0);transition:background 220ms ease}
+.vcard:not(.sel) .vshot::after{background:rgba(8,9,11,.18)}
+.vcard:not(.sel) .vshot .fg{filter:grayscale(.22) brightness(.68) saturate(.62) contrast(1.02)}
+.vcard:not(.sel):hover .vshot::after{background:rgba(8,9,11,.06)}
+.vcard:not(.sel):hover .vshot .fg{filter:grayscale(.08) brightness(.95) saturate(.88)}
+.vcard.backup .vshot::after{background:rgba(8,9,11,.28)}
+.vcard.backup .vshot .fg{filter:grayscale(.55) brightness(.56) saturate(.35)}
+.vcard.backup:hover .vshot::after{background:rgba(8,9,11,.12)}
+.vcard.backup:hover .vshot .fg{filter:grayscale(.25) brightness(.8) saturate(.6)}
 
 .vshot{position:relative;aspect-ratio:1.84;border-radius:var(--r-md);overflow:hidden;
   background:#08090B;box-shadow:inset 0 0 0 1px rgba(0,0,0,.55)}
@@ -32,8 +46,8 @@
   transition:filter var(--fast),opacity var(--fast)}
 .vshot .fg{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block;
   transition:transform 600ms var(--ease),opacity 260ms,filter 260ms}
-.vcard:not(.sel) .vshot .fg{opacity:.46;filter:grayscale(.35) brightness(.8)}
-.vcard:not(.sel):hover .vshot .fg{opacity:.74;filter:grayscale(.08) brightness(.96)}
+.vcard:not(.sel) .vshot .fg{opacity:1}
+.vcard:not(.sel):hover .vshot .fg{transform:scale(1.015)}
 .vcard:hover .vshot .fg{transform:scale(1.015);opacity:1}
 .vshot .ph{position:absolute;inset:0;display:grid;place-items:center;color:#4E5A66}
 .vshot .ph svg{width:46%;opacity:.6}
@@ -65,20 +79,35 @@
 .cf-v{font-size:10.5px;color:var(--ink-3)}
 .vcard:not(.sel) .cf{opacity:.8}
 
-/* 关联度不是裸文字：小胶囊 + 4px 点 + 文字，色只占这一小块 */
-.tier-text{display:inline-flex;width:fit-content;align-items:center;gap:5px;
-  font-size:10px;line-height:1;letter-spacing:.02em;padding:4px 8px 4px 7px;
-  border-radius:var(--r-pill);white-space:nowrap;
-  color:var(--tier,var(--t-cross));
-  background:color-mix(in srgb,var(--tier,var(--t-cross)) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--tier,var(--t-cross)) 30%,transparent)}
-.tier-text.exact{--tier:var(--t-exact)}
-.tier-text.environment{--tier:var(--t-env)}
-.tier-text.platform{--tier:var(--t-plat)}
-.tier-text.cross_vehicle{--tier:var(--t-cross)}
-.tier-text .dot{width:4px;height:4px;background:currentColor}
-.tier-text.cross_vehicle .dot{background:transparent;border:1px dashed currentColor}
-.vcard:not(.sel) .tier-text{opacity:.8}
+/* 点击卡片 → 向下展开证据（手风琴：同时只开一张，再点或点别的收回）。
+   展开后的卡片整块放大，证据在卡内下半部，不弹浮层、不占列外空间。 */
+.vcard.open{background:#151A21;border-color:rgba(232,238,246,.2);z-index:2;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 26px 50px -30px #000}
+.vcard .vev{overflow:hidden;max-height:0;opacity:0;
+  transition:max-height .34s var(--ease),opacity .22s ease,margin-top .34s var(--ease)}
+.vcard.open .vev{max-height:300px;opacity:1;margin-top:9px}
+.vev .evhd{display:flex;align-items:center;gap:7px;padding:9px 2px 0;
+  border-top:1px solid var(--line)}
+.vev .evk{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-4)}
+.vev .evg{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-2);
+  border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
+.vev .evn{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;color:var(--ink-3)}
+.vev .evl{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:8px;padding:0 2px}
+.vev .evl li{display:flex;flex-direction:column;gap:3px;padding-left:9px;
+  border-left:2px solid var(--line-2)}
+.vev .evl .t{font-size:11px;line-height:1.5;color:var(--ink-2);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vev .evl .u{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-4);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vev .evfoot{display:flex;align-items:center;justify-content:space-between;
+  margin:9px 2px 0;padding-top:7px;border-top:1px solid var(--line);
+  font-family:var(--font-mono);font-size:9.5px;color:var(--ink-4)}
+
+/* 关联度：几何记号 + 文字，颜色来自 hifi.css 的单色阶梯，并在记账处发光。
+   不做彩色胶囊——卡片里唯一的彩色面积交给「选中勾」与这圈辉光。 */
+.vcard .tier-text{width:fit-content}
+.vcard:not(.sel) .tier-text{opacity:.86}
 
 .vsk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:7px;
   box-shadow:var(--sh-1)}
@@ -87,15 +116,13 @@
 /* 右栏 */
 .panel{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px}
 
-/* 面板头：14px/600，底部一条发丝线；不是 9px 的 eyebrow */
+/* 面板头：15px/600 + 单色图标；图标取代原来的 3px 绿条（一个标记够了） */
 .analysis{flex:none;overflow:hidden}
 .analysis .eyebrow{display:flex;align-items:center;gap:9px;padding:13px 15px 11px;
   font-family:var(--font-ui);font-size:15px;font-weight:600;letter-spacing:-.014em;
   text-transform:none;color:var(--ink);
   background:linear-gradient(180deg,#14181D,#111419);
   border-bottom:1px solid var(--line)}
-.analysis .eyebrow::before{content:"";width:3px;height:14px;border-radius:2px;
-  background:var(--accent);flex:none}
 .analysis .eyebrow .ln{display:none}
 .analysis p{margin:13px 15px 15px;padding-left:12px;border-left:2px solid var(--line-2);
   font-size:11.8px;line-height:1.9;color:var(--ink-2);text-wrap:pretty}
@@ -118,11 +145,11 @@
   border-bottom:1px solid var(--line)}
 .roster .hd b{font-family:var(--font-ui);font-size:15px;font-weight:600;
   letter-spacing:-.014em;color:var(--ink)}
-.roster .hd span{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;
-  color:var(--ink-3);background:#0D1013;border:1px solid var(--line);border-radius:6px;
-  padding:3px 7px;white-space:nowrap}
-.rows{flex:1;min-height:0;overflow-y:auto;padding:8px;display:flex;flex-direction:column;
-  gap:8px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent;position:relative}
+.roster .hd .cnt{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;
+  color:var(--ink-2);background:#0D1013;border:1px solid var(--line);border-radius:6px;
+  padding:3px 8px;white-space:nowrap}
+.rows{flex:1;min-height:0;overflow-y:auto;padding:10px;display:flex;flex-direction:column;
+  gap:10px;scrollbar-width:thin;scrollbar-color:rgba(232,238,246,.12) transparent;position:relative}
 /* 检索中：清单还没长出第一行时，用一组与记录卡同高的占位条 */
 .rows:empty::before{content:"";position:absolute;left:10px;right:10px;top:8px;bottom:12px;
   opacity:.72;pointer-events:none;
@@ -133,35 +160,55 @@
   background-position:0 0,0 20px;
   background-repeat:repeat-y}
 
-/* 每条记录一个胶囊：左 3px 层级色 + 独立表面；不再用横线切 */
-.rrow{--tier:var(--t-cross);position:relative;display:grid;
-  grid-template-columns:20px minmax(0,1fr) auto;
-  grid-template-areas:"rank rt tag" ". why why";column-gap:9px;row-gap:4px;
-  padding:9px 9px 9px 10px;background:#101419;
-  border:1px solid var(--line);border-left:3px solid var(--tier);border-radius:9px;
-  transition:background var(--fast),border-color var(--fast)}
-.rrow:hover{background:#141A20;border-color:var(--line-2);border-left-color:var(--tier)}
-.rrow[data-tier="exact"]{--tier:var(--t-exact)}
-.rrow[data-tier="environment"]{--tier:var(--t-env)}
-.rrow[data-tier="platform"]{--tier:var(--t-plat)}
-.rrow[data-tier="cross_vehicle"]{--tier:var(--t-cross)}
+/* 每条记录一张卡：序号槽 ┃ 内容区。
+   头行 = 名称（左） + 层级记账（右）；其下元字段；再一条发丝线，最后两行原因。
+   序号与内容之间那条竖线是结构分隔，取代原来的整条左缘彩色边。 */
+.rrow{--tier:var(--t-cross);--tg:34%;--ti:18%;
+  position:relative;padding:13px 14px 13px 48px;
+  background:#13171C;
+  border:1px solid color-mix(in srgb,var(--tier) 15%,rgba(232,238,246,.10));
+  border-radius:10px;
+  min-height:124px;box-sizing:border-box;
+  /* 光从卡片背后漏出来：没有 0 扩散的实心描边环，只有几层负扩散的柔光 */
+  box-shadow:
+    0 0 10px -3px color-mix(in srgb,var(--tier) var(--tg),transparent),
+    0 0 26px -10px color-mix(in srgb,var(--tier) calc(var(--tg) * 1.3),transparent),
+    0 0 54px -28px color-mix(in srgb,var(--tier) calc(var(--tg) * .85),transparent),
+    inset 0 0 20px -14px color-mix(in srgb,var(--tier) var(--ti),transparent);
+  transition:background var(--fast),border-color var(--fast),box-shadow var(--fast)}
+/* 卡片背后一块模糊的同色光斑：边缘处几乎看不见，只从缝里透出来 */
+.rrow::after{content:"";position:absolute;inset:-5px;border-radius:15px;z-index:-1;
+  pointer-events:none;opacity:.9;
+  background:color-mix(in srgb,var(--tier) 17%,transparent);
+  filter:blur(12px)}
+.rrow:hover{background:#171C23;
+  border-color:color-mix(in srgb,var(--tier) 26%,rgba(232,238,246,.12));
+  box-shadow:
+    0 0 12px -3px color-mix(in srgb,var(--tier) calc(var(--tg) + 10%),transparent),
+    0 0 30px -9px color-mix(in srgb,var(--tier) calc(var(--tg) * 1.4),transparent),
+    0 0 58px -26px color-mix(in srgb,var(--tier) var(--tg),transparent),
+    inset 0 0 20px -12px color-mix(in srgb,var(--tier) var(--ti),transparent)}
+.rrow[data-tier="exact"]{--tier:var(--t-exact);--tg:44%;--ti:24%}
+.rrow[data-tier="environment"]{--tier:var(--t-env);--tg:34%;--ti:18%}
+.rrow[data-tier="platform"]{--tier:var(--t-plat);--tg:26%;--ti:13%}
+.rrow[data-tier="cross_vehicle"]{--tier:var(--t-cross);--tg:16%;--ti:8%}
 
-.rrow .rank{grid-area:rank;font-family:var(--font-mono);font-size:9px;font-weight:500;
-  line-height:1.4;letter-spacing:.02em;color:var(--ink-3);padding-top:2px;
+.rrow .rank{position:absolute;left:12px;top:14px;font-family:var(--font-mono);
+  font-size:11px;font-weight:500;line-height:1;letter-spacing:.02em;color:var(--ink-3);
   font-variant-numeric:tabular-nums}
-.rrow .rt{grid-area:rt;display:flex;flex-direction:column;gap:2px;min-width:0}
-.rrow .nm{font-size:12.5px;font-weight:600;line-height:1.25;letter-spacing:-.008em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
-.rrow .mt{display:flex;align-items:center;min-width:0;font-size:9.5px;line-height:1.3;
+.rrow .rt{display:flex;flex-direction:column;gap:7px;min-width:0}
+.rrow .rhead{display:flex;align-items:center;gap:8px;min-width:0}
+.rrow .nm{flex:1;min-width:0;font-size:13.5px;font-weight:600;line-height:1.25;
+  letter-spacing:-.008em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  color:var(--ink)}
+.rrow .tag{display:inline-flex;align-items:center;gap:6px;flex:none;
+  font-size:10px;line-height:1;letter-spacing:.02em;color:var(--tier);
+  text-shadow:0 0 10px color-mix(in srgb,var(--tier) 30%,transparent)}
+.rrow .mt{display:flex;align-items:center;min-width:0;font-size:10.5px;line-height:1.3;
   color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mt-k{font-family:var(--font-mono);font-size:9px;color:var(--ink-2)}
-.mt-sep{display:inline-block;width:1px;height:10px;margin:0 6px;background:var(--line-2);
+.mt-k{font-family:var(--font-mono);font-size:10px;color:var(--ink-2)}
+.mt-sep{display:inline-block;width:1px;height:11px;margin:0 7px;background:var(--line-2);
   font-size:0;color:transparent;overflow:hidden;vertical-align:-1px}
-.rrow .tag{grid-area:tag;align-self:start;display:inline-flex;align-items:center;gap:4px;
-  font-family:var(--font-mono);font-size:9.5px;line-height:1;letter-spacing:.02em;
-  color:var(--tier);background:color-mix(in srgb,var(--tier) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--tier) 30%,transparent);
-  border-radius:var(--r-pill);padding:3px 7px;white-space:nowrap}
-.rrow .tag::before{content:"";width:3px;height:3px;border-radius:50%;background:currentColor;flex:none}
-.rrow .why{grid-area:why;font-size:10.2px;line-height:1.58;color:var(--ink-3);
+.rrow .why{margin-top:3px;padding-top:8px;border-top:1px solid var(--line);
+  font-size:11px;line-height:1.62;color:var(--ink-3);
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

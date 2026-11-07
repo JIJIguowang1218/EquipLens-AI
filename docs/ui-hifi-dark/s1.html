@@ -45,7 +45,7 @@
     </header>
 
     <div class="statusbar live" id="sb">
-      <span class="st"><span class="dot"></span><span id="stText">检索中</span></span>
+      <span class="st"><span class="ind" aria-hidden="true"></span><span id="stText">检索中</span></span>
       <span class="q" id="sbQ">沙漠牵引车 · 前脸 格栅 保险杠</span>
       <span class="cnt mono" id="sbCnt">1 / 7 查询</span>
       <button class="act" id="sbAct" type="button">取消</button>
@@ -70,12 +70,12 @@
       <div class="col-4">
         <div class="panel">
           <div class="card analysis">
-            <div class="eyebrow"><span>关联分析</span><span class="ln"></span></div>
+            <div class="eyebrow"><span class="ph"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><circle cx="3.2" cy="4" r="1.5"/><circle cx="12.8" cy="4" r="1.5"/><circle cx="8" cy="11.8" r="1.5"/><path d="M4.7 4.7 7.3 10.6M11.3 4.7 8.7 10.6M4.7 4h6.6"/></svg></span><span>关联分析</span><span class="ln"></span></div>
             <p id="prose"></p>
             <div class="skl" id="proseSk"><i class="sk"></i><i class="sk"></i><i class="sk"></i><i class="sk"></i></div>
           </div>
           <div class="card roster">
-            <div class="hd"><b>清单</b><span id="rcount">8 台 · 6 推荐 + 2 备选</span></div>
+            <div class="hd"><span class="ph"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"><path d="M4.6 4h8.6M4.6 8h8.6M4.6 12h5.6"/><circle cx="2.2" cy="4" r=".8" fill="currentColor" stroke="none"/><circle cx="2.2" cy="8" r=".8" fill="currentColor" stroke="none"/><circle cx="2.2" cy="12" r=".8" fill="currentColor" stroke="none"/></svg></span><b>清单</b><span class="cnt" id="rcount">8 台 · 6 推荐 + 2 备选</span></div>
             <div class="rows" id="rows"></div>
           </div>
         </div>
@@ -131,6 +131,23 @@
     return at > 0 ? [s.slice(0, at), s.slice(at + 3)] : ['', s];
   };
 
+  const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+  /* 证据区：只有点开卡片才展开；内容全部来自 fixture 的 evidence 数组 */
+  function evHTML(c) {
+    const ev = c.evidence || [];
+    if (!ev.length) return '';
+    const grade = ev[0].grade || 'E3';
+    const pct = Math.round((c.confidence || 0) * 100);
+    return `<div class="vev">
+      <div class="evhd"><span class="evk">证据</span><span class="evg">${grade}</span>
+        <span class="evn">${ev.length} 条来源</span></div>
+      <ul class="evl">${ev.map((e) => `<li><span class="t">${e.title}</span>
+        <span class="u">${hostOf(e.url)}</span></li>`).join('')}</ul>
+      <div class="evfoot"><span>置信 ${pct}%</span>
+        <span>${c.role === 'backup' ? '备选 · 不入册' : '推荐 · 可入册'}</span></div>
+    </div>`;
+  }
+
   function cardHTML(c, i) {
     const img = c.images[0] || '';
     const tier = c.relation;
@@ -145,22 +162,24 @@
       <div class="vbody">
         <span class="nm">${c.model}</span>
         <span class="cf">${spec ? `<span class="cf-k mono">${spec}</span><span class="cf-sep">&nbsp;·&nbsp;</span>` : ''}<span class="cf-v">${brand}</span></span>
-        <span class="tier-text ${tier}"><i class="dot ${tier}"></i>${TIER[tier]}</span>
-      </div>
+        <span class="tier-text ${tier}"><i class="mk ${tier}"></i>${TIER[tier]}</span>
+      </div>${evHTML(c)}
     </article>`;
   }
 
-  const TAG = { exact: '精确', environment: '环境', platform: '平台', cross_vehicle: '跨类 · 备选' };
+  const TAG = { exact: '精确类目', environment: '环境特化', platform: '基型平台', cross_vehicle: '跨车型 · 备选' };
   function rowHTML(c, i) {
     const [spec, brand] = splitLabel(c.label || c.configuration);
     return `<div class="rrow" data-tier="${c.relation}">
       <span class="rank">${String(i + 1).padStart(2, '0')}</span>
       <div class="rt">
-        <span class="nm">${c.model}</span>
+        <div class="rhead">
+          <span class="nm">${c.model}</span>
+          <span class="tag"><i class="mk ${c.relation}"></i>${TAG[c.relation]}</span>
+        </div>
         <span class="mt">${spec ? `<span class="mt-k mono">${spec}</span><span class="mt-sep">&nbsp;·&nbsp;</span>` : ''}<span>${brand}</span></span>
+        <div class="why" title="${c.reason}">${c.reason}</div>
       </div>
-      <span class="tag">${TAG[c.relation]}</span>
-      <div class="why" title="${c.reason}">${c.reason}</div>
     </div>`;
   }
 
@@ -189,14 +208,25 @@
     bindCards();
   }
 
+  /* 手风琴：同一时间只开一张；再点同一张收回，点别的先关旧再开新 */
+  function toggleOpen(el) {
+    const was = el.classList.contains('open');
+    $$('.vcard.open').forEach((x) => x.classList.remove('open'));
+    if (!was) el.classList.add('open');
+  }
+
   function bindCards() {
     $$('.vcard').forEach((el) => {
       const c = CARDS[+el.dataset.i];
       el.addEventListener('click', (e) => {
-        if (e.target.closest('.vshot')) return;
-        if (c.role === 'backup') { toast('备选车不参与本册'); return; }
-        el.classList.toggle('sel');
-        el.querySelector('.cb').classList.toggle('on');
+        if (e.target.closest('.cb')) {
+          if (c.role === 'backup') { toast('备选车不参与本册'); return; }
+          el.classList.toggle('sel');
+          el.querySelector('.cb').classList.toggle('on');
+          return;
+        }
+        if (e.target.closest('.vshot')) return;   // 图上：切换图片，不展开
+        toggleOpen(el);
       });
       const shot = el.querySelector('.vshot');
       const fg = shot.querySelector('.fg'), bg = shot.querySelector('.bg');

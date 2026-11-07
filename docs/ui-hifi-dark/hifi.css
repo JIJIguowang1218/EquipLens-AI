@@ -70,18 +70,21 @@
   --accent-ink:#101405;
   --accent-soft:rgba(199,241,79,.12);
 
-  /* 关联度：四个分类色，不是明度阶梯。每色只出现在 3px 条、
-     8–9px 标签和 5px 点上；文字与虚线/实线继续兜底。 */
-  --t-exact:#5FD69F;
-  --t-env:#5AC6E6;
-  --t-plat:#E7A15F;
-  --t-cross:#DE7C87;
+  /* 关联度：单一色相阶梯（v3）。
+     最强的「精确类目」用激光绿本身，中间两档沿同一色相降亮降饱和，
+     最低的「跨车型」退成中性灰——不引入第三个色相，不与石墨底打架。
+     对比度（对 --surface）：14.16 / 10.90 / 7.42 / 5.49，全部过 4.5:1。 */
+  --t-exact:#C7F14F;
+  --t-env:#AFD463;
+  --t-plat:#93AE5E;
+  --t-cross:#848D99;
 
-  /* 部件行状态（与 tier 无关的流程状态） */
-  --s-framed:#8FB4C4;
+  /* 部件卡流程状态：与关联度无关，但同样只允许石墨 + 激光绿。
+     「待框选」是唯一需要你动手的状态，给 accent；其余按明度退让。 */
+  --s-framed:#A9B1BB;
   --s-pending:var(--accent);
-  --s-elsewhere:#7C8A9A;
-  --s-hidden:#39424C;
+  --s-elsewhere:#7C8591;
+  --s-hidden:#4A515C;
 
   --r-xl:18px; --r-lg:14px; --r-md:10px; --r-sm:8px; --r-pill:999px;
   --sh-1:inset 0 1px 0 rgba(255,255,255,.035), 0 18px 40px -32px #000;
@@ -169,10 +172,22 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   margin:0 0 14px;padding:8px 8px 8px 14px;border-radius:12px;
   background:linear-gradient(180deg,#13161A,#0F1115);
   border:1px solid var(--line);overflow:hidden}
-.statusbar .st{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;
+.statusbar .st{display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:500;
   color:var(--ink);white-space:nowrap}
-.statusbar .st .dot{width:6px;height:6px;border-radius:50%;background:#6B7380;flex:none}
-.statusbar.live .st .dot{background:var(--accent);box-shadow:0 0 0 3px rgba(199,241,79,.13)}
+/* 状态指示：进行中 = 单色旋转环；完成后 = 同一几何的静态 ◉。
+   只做黑白（--ink-2 / --ink-3），不用强调色，不与激光绿抢语义。 */
+.statusbar .ind{position:relative;width:12px;height:12px;flex:none;border-radius:50%;
+  border:1px solid rgba(232,238,246,.24);box-sizing:border-box;
+  transition:border-color var(--fast)}
+.statusbar.live .ind{border-color:rgba(232,238,246,.2);
+  border-top-color:var(--ink-2);border-right-color:rgba(169,177,187,.7);
+  animation:spin .9s linear infinite}
+.statusbar:not(.live) .ind::after{content:"";position:absolute;inset:3px;border-radius:50%;
+  background:var(--ink-3)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .statusbar.live .ind{animation:none;border-color:rgba(232,238,246,.35)}
+}
 .statusbar .q{font-size:11.5px;color:var(--ink-2);min-width:0;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap}
 .statusbar .q::before{content:"";display:inline-block;width:1px;height:10px;background:var(--line-2);
@@ -197,6 +212,13 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .eyebrow{display:flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:9.5px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
 .eyebrow .ln{flex:1;height:1px;background:var(--line)}
+
+/* 面板头图标：12px 单色线性符号，1.25px 描边，与标题共基线。
+   它是标题的身份标记，不做彩色，不发光。 */
+.ph{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;
+  flex:none;margin:0;padding:0;background:transparent;border:0;line-height:0;
+  color:var(--ink-3);border-radius:4px}
+.ph svg{width:13px;height:13px;display:block}
 
 .sk{background:linear-gradient(90deg,#1A1E25 25%,#272D36 37%,#1A1E25 63%);
   background-size:400% 100%;animation:shimmer 1.5s linear infinite;border-radius:6px}
@@ -256,20 +278,31 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .dock .send:hover{background:#30363F;color:#fff;border-color:var(--line-3)}
 .dock .send svg{width:13px;height:13px}
 
-/* ---------------------------------------------------------------- 层级色
-   四个分类色：精确绿 / 环境青 / 平台橙 / 跨类玫瑰；跨类加虚线。
-   颜色只做小面积索引，文字与线型始终同时存在。 */
-.dot{width:5px;height:5px;border-radius:50%;flex:none;background:var(--t-cross)}
-.dot.exact{background:var(--t-exact)}
-.dot.environment{background:var(--t-env)}
-.dot.platform{background:var(--t-plat)}
-.dot.cross_vehicle{background:transparent;border:1px dashed var(--t-cross)}
-.tier-text{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.03em;
-  color:var(--ink-2)}
-.tier-text.exact{color:var(--t-exact)}
-.tier-text.environment{color:var(--t-env)}
-.tier-text.platform{color:var(--t-plat)}
-.tier-text.cross_vehicle{color:var(--t-cross)}
+/* ---------------------------------------------------------------- 关联度记号
+   单色阶梯：精确 = 激光绿本身，环境 / 平台沿同色相降档，跨类退成中性灰。
+   记号同时承担几何层级（5 / 4 / 3px 实心方点；跨类虚线空心方点），
+   颜色只是第二信号，文字永远在——不要退回「四个彩色分类」。 */
+.tier-text{--tier:var(--t-cross);display:inline-flex;align-items:center;gap:6px;
+  font-size:9.5px;letter-spacing:.02em;line-height:1;color:var(--tier);
+  white-space:nowrap;
+  text-shadow:0 0 12px color-mix(in srgb,var(--tier) 45%,transparent)}
+.tier-text.exact{--tier:var(--t-exact)}
+.tier-text.environment{--tier:var(--t-env)}
+.tier-text.platform{--tier:var(--t-plat)}
+.tier-text.cross_vehicle{--tier:var(--t-cross)}
+
+/* 方点记号：几何层级 + 当前色；跨类是虚线空心。
+   v3.1 起每档带一圈同色辉光——发光颜色就是该档关联度色，
+   记号和文字一起发光，但只在「记账」这一小块，不污染卡面。 */
+.mk{width:6px;height:6px;border-radius:1px;background:currentColor;flex:none;display:inline-block;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb,currentColor 30%,transparent),
+    0 0 10px -1px color-mix(in srgb,currentColor 65%,transparent),
+    0 0 20px -6px color-mix(in srgb,currentColor 85%,transparent)}
+.mk.environment{width:5px;height:5px}
+.mk.platform{width:4px;height:4px}
+.mk.cross_vehicle{width:5px;height:5px;background:transparent;
+  border:1px dashed currentColor;border-radius:1px}
 
 /* ---------------------------------------------------------------- 其它 */
 .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(8px);
