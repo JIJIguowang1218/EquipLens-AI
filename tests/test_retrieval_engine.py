@@ -233,6 +233,38 @@ def test_idempotent_asset_dedupe():
         assert world.calls["verify"] == 2, world.calls  # bumper 去重后 1 + step 1
 
 
+def test_same_asset_covers_multiple_parts():
+    """一张整车图可以同时是多个部件的证据（M1 loop 暴露的绑定 bug 回归）。"""
+    b = base_brief(parts=("bumper", "step"))
+    w = {
+        "library": {"u-exact": [target("lib-1", ["bumper", "step"])]},
+        "assets": {"lib-1": {"bumper": [asset("shared")], "step": [asset("shared")]}},
+        "verify": {"shared": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, world = run_engine(b, w, root=td)
+        assert summary["state"] == "DONE", summary
+        assert summary["accepted_targets"]["u-exact"] == ["lib-1"], summary
+        assert world.calls["verify"] == 2, world.calls   # 每个部件各核一次
+
+
+def test_second_tier_does_not_steal_target():
+    """同一车型被 environment 层再次发现时，不能抢走 exact 层的证据（M1 回归）。"""
+    b = base_brief(parts=("bumper", "step"), tiers=("exact", "environment"))
+    w = {
+        "library": {},
+        "external": {"u-exact": [target("m1", ["bumper", "step"])],
+                     "u-environment": [target("m1", ["bumper", "step"])]},
+        "assets": {"m1": {"bumper": [asset("a1")], "step": [asset("a1")]}},
+        "verify": {"a1": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, world = run_engine(b, w, root=td)
+        assert summary["accepted_targets"]["u-exact"] == ["m1"], summary
+        # 全局只算一次，不因两个层级各占一个槽
+        assert summary["slots"]["accepted"] == 1, summary
+
+
 def test_event_log():
     b = base_brief()
     w = {
@@ -349,6 +381,8 @@ if __name__ == "__main__":
     check("全失败 → FAILED + 缺口报告", test_gap_report_when_all_fail)
     check("续跑跳过已完成", test_resume_skips_finished_run)
     check("重复资产去重", test_idempotent_asset_dedupe)
+    check("同图可覆盖多部件", test_same_asset_covers_multiple_parts)
+    check("跨层不抢证据", test_second_tier_does_not_steal_target)
     check("事件日志记录转移", test_event_log)
     check("夹具演示案例", test_fixture_demo)
     check("网页-only + 规则核验 + 证据落库", test_web_only_world_rule_verify_and_evidence)

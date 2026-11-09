@@ -36,6 +36,7 @@
 | 两段式门卫 + 98 张回放 | ✅ | 新增 `gate.prefilter`（确定性第一段，零模型）+ `check_v2`（同字节 A/B）+ `reference_candidate`（低清参考层）；预筛否决不进 CLIP。**门槛教训：800→320**（按 800 会白丢 18 张门卫放行的低清真车图）。98 文件 / **52 张唯一图（sha1 去重）**：v2 33 → v4 43（新拦截 3）、概览 17 / 部件 8 / 参考 26 = 43，闭合；[`filter-98-20261109/index.html`](../data-test/runs/filter-98-20261109/index.html)（逐张标签变换 + fail 原因 + 标签词典 + 合并同图）；`tests/test_gate.py` 11/11 |
 | 门卫 v4：背景多车修复 | ✅ | keep 集加第 4 条「主体一台 + 背景另有停车」；`scene=multi_vehicle` 从硬拒降为 hint（只进参考层）。13 张“多车队列”误杀 **13/13 恢复**，9 张真坏图仍拒、31 张原通过不丢；唯一图可用 13/6 → **17/8**。实验表见 [`image-filter-pipeline.md`](image-filter-pipeline.md) §9 |
 | CDN 后缀升图 | ✅ | `imagesearch.upgrade_image_url`：把 `!600`/`!550` 换成 `!1200` 再下载，失败回落原图。13 张带后缀参考图里 **10 张升到 1200×800 → 部件可用**（2 张 401/403 回落，1 张仍因 scene=multi 留参考层）；抽检高频能量是上采样的 1.6–2.2 倍（真细节）。预期唯一图部件可用 **8 → 18**，待 W1 复跑确认；`test_imagesearch` 9/9 |
+| **M1 最小 loop** | ✅ 骨架通 | 用 T19 的 C01（沙漠牵引车）转 brief，`--web-only` 跑真实 360：**DONE 3/3 车槽**，20 事件 / 6 queries / 22 fetches。过程中修了 2 个结构 bug：资产-部件绑定（一张图只能挂一个部件）、跨层抢证据（environment 覆盖 exact 的 unit_id）。见 [`loop-m1-desert.md`](loop-m1-desert.md)；`test_retrieval_engine` 15/15 |
 | 来源页回访（实验） | ⏸ 负结果 | 搜索命中带 `link` → 回访文章页抽图 → 升图。公平 A/B：候选 72→128、下载 49→103，但 page 通道 56 候选只出 **3 张部件**（24 张图标被预筛拦），总部件仍 18、耗时 +23s → **净收益不明确，默认关闭，保留 `--harvest` opt-in**。详见 [`retrieval-experiments-log.md`](retrieval-experiments-log.md) E5 |
 
 ### 前端 UI 进度（暂停点，最新文件）
@@ -78,7 +79,7 @@
 ### 下一步（按序，2026-11-09 晚更新）
 
 1. **筛选线收口（已评估，不再调参）**：边界 9 张人工确认 → 门卫 0 阈值合理；CDN 升图收益 10/13；来源页回访净收益不明确。筛选侧到此为止，只保留金标回归。
-2. **打通最小 loop（手写任务单）**：用真实输入手写一份 brief（如“沙漠牵引车，重点看踏步、防护栏、底盘”），跑 `--web-only`：BRIEF → 空库 → EXTERNAL_DISCOVER(360) → FETCH/VERIFY(现有门卫) → FILL → GAP_CHECK，量“能否收敛到 12 个页槽、缺口在哪、降级触发几次”。
+2. ~~**打通最小 loop（手写任务单）**~~ ✅ 2026-11-10：M1 跑通 DONE 3/3，暴露并修复 2 个结构 bug；下一步是让 `EXTERNAL_DISCOVER` 真的“发现”候选（而不是吃 `--models`），并把证据落库。
 3. **扩源（按 loop 暴露的缺口做）**：不先盲扩；loop 说缺“吊车/矿卡/部件特写”再补对应源，E5 实验留作方法。
 4. **L1.5 M0–M2**：把 brief 从手写变成生成（`data/part_axes.json`、`part_views.json`、`env_relevance`、`coverage()`、惰性放闸）。
 5. **P3 库内检索 / P4 部件级视觉**：`asset_part_feasibility` + 人工录入；100 张标注对比 CLIP/SigLIP2/DINOv3。
@@ -112,6 +113,7 @@
 
 ### 读什么
 
+- **M1 loop 记录**：[`loop-m1-desert.md`](loop-m1-desert.md)（输入、三次运行轨迹、2 个 bug、未解决问题）
 - **实验日志**：[`retrieval-experiments-log.md`](retrieval-experiments-log.md)（CDN 升图 / Scrapling 验证 / 来源页回访 的假设-数据-结论；含负结果）
 - **术语/代号**：[`GLOSSARY.md`](GLOSSARY.md)（W1、门卫 v2/v3/v4、批次名、页槽、状态机、可用口径；看其他文档前先看这个）
 - **本轮主线**：[`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)（专家意见评估 + P0/P1/P2）

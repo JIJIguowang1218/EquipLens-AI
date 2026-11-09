@@ -35,7 +35,18 @@ class RunStore:
         tmp = self.state_path.with_suffix(".tmp")
         tmp.write_text(json.dumps(state, ensure_ascii=False, indent=2),
                        encoding="utf-8")
-        os.replace(tmp, self.state_path)
+        # Windows：杀软/索引/OneDrive 偶尔会短暂占用目标文件，os.replace 报 WinError 5。
+        # 重试几次即可；仍失败才抛出，避免把“临时占用”当成运行时错误。
+        last = None
+        for i in range(6):
+            try:
+                os.replace(tmp, self.state_path)
+                return
+            except PermissionError as e:  # noqa: PERF203
+                last = e
+                time.sleep(0.05 * (i + 1))
+        if last is not None:
+            raise last
 
     def append_event(self, event: dict) -> None:
         event = {"ts": now_iso(), **event}

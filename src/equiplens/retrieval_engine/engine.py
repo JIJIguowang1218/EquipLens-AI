@@ -94,7 +94,20 @@ class RetrievalEngine:
         for t in targets:
             if not t.unit_id:
                 continue
-            state["targets"][t.target_id] = t.to_dict()
+            rec = t.to_dict()
+            prev = state["targets"].get(t.target_id)
+            if prev is None:
+                rec["unit_ids"] = [t.unit_id]
+                state["targets"][t.target_id] = rec
+                continue
+            # 同一个车型可能被不同层级重复发现：不能覆盖，否则后一层会把前面
+            # 已积累的证据“抢走”（M1 实测：exact 0/2，证据全被 environment 接管）。
+            units = set(prev.get("unit_ids") or [prev.get("unit_id")])
+            units.add(t.unit_id)
+            prev["unit_ids"] = sorted(u for u in units if u)
+            prev["unit_id"] = prev.get("unit_id") or t.unit_id
+            prev["parts"] = sorted(set(prev.get("parts") or [])
+                                   | set(rec.get("parts") or []))
 
     def _coverage(self, state: dict) -> dict:
         cov = {}
@@ -152,8 +165,11 @@ class RetrievalEngine:
         state["state"] = "FETCH"
 
     def _state_fetch(self, state: dict) -> None:
+        # 去重键 = (asset, part)：一张整车图可以同时是 bumper / step / side_guard 的证据；
+        # 旧实现按 asset_id 全局去重，导致后面的部件永远拿不到资产（M1 loop 实测 0/2）。
         seen = set(state.get("verified_assets") or [])
-        seen.update(a["asset_id"] for a in state.get("pending_assets") or [])
+        seen.update(f"{a['asset_id']}:{a['part']}"
+                    for a in state.get("pending_assets") or [])
         for tid in state.get("active_targets") or []:
             target = state["targets"].get(tid)
             if not target:
@@ -161,9 +177,10 @@ class RetrievalEngine:
             target_obj = self._target_obj(target)
             for part in target_obj.parts:
                 for asset in self.world.fetch(target_obj, part):
-                    if asset.asset_id in seen:
+                    key = f"{asset.asset_id}:{part}"
+                    if key in seen:
                         continue
-                    seen.add(asset.asset_id)
+                    seen.add(key)
                     state["pending_assets"].append(asset.to_dict())
                     state.setdefault("asset_meta", {})[asset.asset_id] = asset.to_dict()
                     state.setdefault("assets", {}).setdefault(tid, {}) \
@@ -175,7 +192,7 @@ class RetrievalEngine:
     def _state_verify(self, state: dict) -> None:
         verified = set(state.get("verified_assets") or [])
         remaining = [a for a in state.get("pending_assets") or []
-                     if a["asset_id"] not in verified]
+                     if f"{a['asset_id']}:{a['part']}" not in verified]
         for row in remaining:
             asset = Asset(asset_id=row["asset_id"], target_id=row["target_id"],
                           part=row["part"], view=row.get("view", ""),
@@ -183,8 +200,9 @@ class RetrievalEngine:
                           height=int(row.get("height") or 0),
                           url=row.get("url", ""))
             v = self.world.verify(asset, asset.part)
-            state["verifications"][asset.asset_id] = v.to_dict()
-            state["verified_assets"].append(asset.asset_id)
+            key = f"{asset.asset_id}:{asset.part}"
+            state["verifications"][key] = v.to_dict()
+            state["verified_assets"].append(key)
             state["budget_used"]["verifies"] = \
                 int(state["budget_used"].get("verifies", 0)) + 1
         state["pending_assets"] = []
@@ -194,18 +212,19 @@ class RetrievalEngine:
         for unit in state["units"].values():
             unit["accepted_targets"] = []
         for tid, target in state["targets"].items():
-            unit = state["units"].get(target.get("unit_id"))
-            if not unit:
-                continue
-            ok = True
-            for part in unit["parts"]:
-                ids = state.get("assets", {}).get(tid, {}).get(part, [])
-                if not any(state["verifications"].get(aid, {}).get("accepted")
-                           for aid in ids):
-                    ok = False
-                    break
-            if ok and tid not in unit["accepted_targets"]:
-                unit["accepted_targets"].append(tid)
+            for uid in target.get("unit_ids") or [target.get("unit_id")]:
+                unit = state["units"].get(uid)
+                if not unit:
+                    continue
+                ok = True
+                for part in unit["parts"]:
+                    ids = state.get("assets", {}).get(tid, {}).get(part, [])
+                    if not any(state["verifications"].get(f"{aid}:{part}", {})
+                               .get("accepted") for aid in ids):
+                        ok = False
+                        break
+                if ok and tid not in unit["accepted_targets"]:
+                    unit["accepted_targets"].append(tid)
         state["state"] = "GAP_CHECK"
 
     def _state_gap_check(self, state: dict) -> None:
@@ -290,7 +309,7 @@ class RetrievalEngine:
                 for part in unit["parts"]:
                     ids = state.get("assets", {}).get(tid, {}).get(part, [])
                     for aid in ids:
-                        v = state["verifications"].get(aid)
+                        v = state["verifications"].get(f"{aid}:{part}")
                         if v and v.get("accepted"):
                             meta = state.get("asset_meta", {}).get(aid, {})
                             rows.append({
