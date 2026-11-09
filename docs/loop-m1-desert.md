@@ -98,3 +98,23 @@ BRIEF_READY → LIBRARY_SEARCH（库内 0）
 - 三次运行：`data-test/runs/loop-m1-desert{,-v2,-v3}/`（`events.jsonl` / `state.json` / `summary.json`）
 - brief：`data-test/evals/task-briefs-20261109/brief-m1-desert.json`
 - 代码：`src/equiplens/retrieval_engine/{engine,state}.py`
+
+
+---
+
+## 7. M1b：隔离重跑（C01 + 12 车槽，2026-11-10）
+
+针对 M1 的两个问题做了修正后重跑：
+
+1. **不许人工给候选**：`WebWorld` 在 `models` 为空时调用 `retrieval_engine/discover.py`，只从实时 360 抽候选（通用 6×6 语汇 + 各品牌查询，标题必须含 `6x6/六驱/全驱`），不读名录/历史批次/证据索引；
+2. **不许空跑**：brief 车槽改 12（exact 8 + environment 4）；下载的图落到 `runs/<id>/images/`；证据写 `image_evidence`（元数据，不存图）。
+
+**结果**：发现 12 台候选 → 20 张图过两段式门卫 → 18 条证据 → **6 台完整覆盖**（50%），车槽 6/12，`FAILED`。
+缺口原因：6 台里有 3 台检索结果全是经销商/二手页（0 张过门卫），另外 3 台只有低清图。
+
+完整报告：[`data-test/runs/loop-c01-isolated/REPORT.md`](../data-test/runs/loop-c01-isolated/REPORT.md)。
+
+**暴露的新问题**：
+- “候选名 → 同款图”的召回太弱（`"{model} 工程车"` 查到大量经销商页）；
+- 验收仍不看部件可见性，6 台是“上限估计”；
+- 12 个候选里 6 个来自二手车/除雪车等边缘结果，说明发现层还需要“类目相关性”过滤。

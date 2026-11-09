@@ -1,125 +1,201 @@
 {
-  "brief_id": "m1-desert-20261109",
-  "request": {
-    "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）",
-    "class": "沙漠牵引车",
-    "environment": {
-      "value": "沙漠工况（高温/沙尘/强辐射）",
-      "confidence": 0.85
-    },
-    "base_platform": {
-      "value": "6×6 重型卡车底盘/驾驶室",
-      "confidence": 0.8
-    },
-    "configuration": "6×6",
-    "page_budget": {
-      "total": 20,
-      "vehicle_slots": 3,
-      "part_pages": 2
-    }
+ "brief_id": "m1-desert-20261109",
+ "request": {
+  "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "沙漠工况（高温/沙尘/强辐射）",
+   "confidence": 0.85
   },
-  "assumptions": [
-    {
-      "field": "environment",
-      "value": "沙漠工况",
-      "why": "用户原话 + 类目推荐（C01）",
-      "confidence": 0.85
-    },
-    {
-      "field": "base_platform",
-      "value": "6×6 重型卡车底盘/驾驶室",
-      "why": "沙漠牵引车本质是卡车头（评审意见 #5）",
-      "confidence": 0.8
-    }
-  ],
-  "region_requirements": [
-    {
-      "region": "front_face",
-      "label": "前脸（整体）",
-      "fields": ["gesture", "character_lines", "proportion", "cmf", "judgement", "style_tags"],
-      "views": ["front", "hero_45"],
-      "accept": "C"
-    }
-  ],
-  "part_requirements": [
-    {
-      "part": "bumper",
-      "label": "保险杠",
-      "location": "front_lower",
-      "design_relevance": "strong",
-      "views": ["front", "hero_45"],
-      "accept": "A",
-      "mechanism": ["沙石冲击", "接近角"]
-    },
-    {
-      "part": "side_guard",
-      "label": "防护栏",
-      "location": "side_chassis",
-      "design_relevance": "strong",
-      "views": ["side", "rear"],
-      "accept": "B",
-      "mechanism": ["沙石", "防撞", "法规"]
-    },
-    {
-      "part": "step",
-      "label": "登车踏步",
-      "location": "side_lower",
-      "design_relevance": "strong",
-      "views": ["side", "hero_45"],
-      "accept": "B",
-      "mechanism": ["防滑", "沙尘", "离地高"]
-    },
-    {
-      "part": "headlamp",
-      "label": "大灯",
-      "location": "front",
-      "design_relevance": "conditional",
-      "views": ["front", "hero_45"],
-      "accept": "A",
-      "mechanism": ["沙尘", "强光", "灯罩防护"]
-    },
-    {
-      "part": "wheel_arch",
-      "label": "前轮拱",
-      "location": "front",
-      "design_relevance": "conditional",
-      "views": ["side", "hero_45"],
-      "accept": "A",
-      "mechanism": ["离地间隙", "沙石"]
-    },
-    {
-      "part": "grille",
-      "label": "格栅",
-      "location": "front",
-      "design_relevance": "conditional",
-      "views": ["front"],
-      "accept": "A",
-      "mechanism": ["进气防尘"]
-    }
-  ],
-  "research_units": [
-    {
-      "unit_id": "u-exact",
-      "tier": "exact",
-      "scope": "沙漠牵引车 6×6",
-      "parts": ["bumper", "side_guard", "step"],
-      "quota": 2,
-      "budget": {"max_queries": 6, "max_rounds": 2},
-      "stop": "2 台占满即停"
-    },
-    {
-      "unit_id": "u-env",
-      "tier": "environment",
-      "scope": "沙漠工况工程车",
-      "parts": ["side_guard", "step"],
-      "quota": 1,
-      "budget": {"max_queries": 4, "max_rounds": 2},
-      "stop": "1 台占满即停"
-    }
-  ],
-  "tiers": ["exact", "environment"],
-  "budget": {"max_queries": 12, "max_rounds": 2, "max_models": 6},
-  "stop_rules": {"no_new_after": 3, "max_rounds": 2},
-  "negative": ["客车", "SUV", "多车拼图", "内饰", "广告"],
-  "strategy_ref": "default@v1"
+  "base_platform": {
+   "value": "6×6 重型卡车底盘/驾驶室",
+   "confidence": 0.8
+  },
+  "configuration": "6×6",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 12,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "environment",
+   "value": "沙漠工况",
+   "why": "用户原话 + 类目推荐（C01）",
+   "confidence": 0.85
+  },
+  {
+   "field": "base_platform",
+   "value": "6×6 重型卡车底盘/驾驶室",
+   "why": "沙漠牵引车本质是卡车头（评审意见 #5）",
+   "confidence": 0.8
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸（整体）",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "bumper",
+   "label": "保险杠",
+   "location": "front_lower",
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "沙石冲击",
+    "接近角"
+   ]
+  },
+  {
+   "part": "side_guard",
+   "label": "防护栏",
+   "location": "side_chassis",
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "rear"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "沙石",
+    "防撞",
+    "法规"
+   ]
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "location": "side_lower",
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "防滑",
+    "沙尘",
+    "离地高"
+   ]
+  },
+  {
+   "part": "headlamp",
+   "label": "大灯",
+   "location": "front",
+   "design_relevance": "conditional",
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "沙尘",
+    "强光",
+    "灯罩防护"
+   ]
+  },
+  {
+   "part": "wheel_arch",
+   "label": "前轮拱",
+   "location": "front",
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "离地间隙",
+    "沙石"
+   ]
+  },
+  {
+   "part": "grille",
+   "label": "格栅",
+   "location": "front",
+   "design_relevance": "conditional",
+   "views": [
+    "front"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "进气防尘"
+   ]
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车 6×6",
+   "parts": [
+    "bumper",
+    "side_guard",
+    "step"
+   ],
+   "quota": 8,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠工况工程车",
+   "parts": [
+    "side_guard",
+    "step"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "1 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "客车",
+  "SUV",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1"
 }

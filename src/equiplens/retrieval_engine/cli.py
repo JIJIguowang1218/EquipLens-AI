@@ -37,7 +37,7 @@ def main(argv=None) -> int:
     parser.add_argument("--web-only", action="store_true",
                         help="空库 + 真实网页检索（360）")
     parser.add_argument("--models", default=None,
-                        help="网页-only 的型号候选，逗号分隔")
+                        help="可选：手动种子型号（逗号分隔）。不传则用实时检索发现")
     parser.add_argument("--searxng", default=os.environ.get("SEARXNG_URL"),
                         help="SearXNG 实例 URL（如 http://127.0.0.1:8080）")
     parser.add_argument("--tavily-key", default=os.environ.get("TAVILY_API_KEY"),
@@ -53,8 +53,7 @@ def main(argv=None) -> int:
     run_id = args.run_id or f"p1-{time.strftime('%Y%m%d-%H%M%S')}"
     brief = load_brief(args.brief)
     if args.web_only:
-        if not args.models:
-            parser.error("--web-only 需要 --models（逗号分隔）")
+        models = [m.strip() for m in (args.models or "").split(",") if m.strip()]
         router = None
         if args.searxng or args.tavily_key:
             from .sources import (SearchCache, SourceHealth, SourceRouter,
@@ -69,8 +68,8 @@ def main(argv=None) -> int:
                 sources,
                 SourceHealth(base / "source_health.json"),
                 SearchCache(base / "source_cache.json"))
-        world = WebWorld([m.strip() for m in args.models.split(",") if m.strip()],
-                         brief.parts_by_key, router=router)
+        world = WebWorld(models or None, brief.parts_by_key, router=router,
+                         image_dir=Path(args.run_root) / run_id / "images")
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")

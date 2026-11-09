@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import re
 from io import BytesIO
+from pathlib import Path
 from typing import Callable
 
 from .contracts import Asset, PartRequirement, Target, Verification
@@ -79,14 +80,18 @@ class RuleVerifier:
 class WebWorld:
     """网页-only 世界：空库 + 型号候选 + 抓取 + 规则核验。"""
 
-    def __init__(self, models: dict[str, list[str]] | list[str],
+    def __init__(self, models: dict[str, list[str]] | list[str] | None,
                  parts: dict[str, PartRequirement], *,
                  fetch_fn: Callable[[Target, str], list[Asset]] | None = None,
                  library=None, verifier: RuleVerifier | None = None,
-                 router=None, min_width: int = 1200):
+                 router=None, min_width: int = 1200,
+                 image_dir=None, discover_limit: int = 12):
         if isinstance(models, list):
             models = {"*": models}
-        self.models = models
+        self.models = models or {}
+        self.image_dir = Path(image_dir) if image_dir else None
+        self.discover_limit = discover_limit
+        self._search_cache: dict[str, list] = {}
         self.parts = parts
         self.library = library or NullLibraryAdapter()
         self.fetch_fn = fetch_fn or self.live_fetch
@@ -98,6 +103,11 @@ class WebWorld:
 
     def external_targets(self, unit) -> list[Target]:
         names = self.models.get(unit.unit_id) or self.models.get("*") or []
+        if not names:
+            # 隔离测试：候选只来自实时检索（不读名录/历史批次）；库内检索后置。
+            from .discover import discover_models
+            names = [r["model"] for r in
+                     discover_models(unit.scope, limit=self.discover_limit)]
         return [Target(target_id=m, model=m, source="web", tier=unit.tier,
                        parts=tuple(unit.parts), unit_id=unit.unit_id)
                 for m in names]
@@ -119,11 +129,16 @@ class WebWorld:
         """
         from .. import gate, imagesearch
 
-        if self.router is not None:
-            hits, _diag = self.router.search(target.model, 6, target.model)
+        key = target.model
+        if key in self._search_cache:
+            hits = self._search_cache[key]
         else:
-            hits, _diag = imagesearch.search_model_images(
-                target.model, limit=6, hd=True)
+            if self.router is not None:
+                hits, _diag = self.router.search(target.model, 6, target.model)
+            else:
+                hits, _diag = imagesearch.search_model_images(
+                    target.model, limit=6, hd=True)
+            self._search_cache[key] = hits
         out: list[Asset] = []
         for hit in hits:
             res = imagesearch._download_and_gate(hit)
@@ -141,6 +156,11 @@ class WebWorld:
                                       prefilter_result=pre)
             if not a["overview_candidate"]:
                 continue
+            if self.image_dir:
+                d = self.image_dir / re.sub(r"[^0-9A-Za-z一-鿿]+", "_",
+                                            target.model)[:40]
+                d.mkdir(parents=True, exist_ok=True)
+                (d / f"{hashlib.sha1(hit['url'].encode('utf-8')).hexdigest()[:12]}.jpg")                     .write_bytes(data)
             out.append(Asset(
                 asset_id=hashlib.sha1(hit["url"].encode("utf-8")).hexdigest()[:12],
                 target_id=target.target_id,
