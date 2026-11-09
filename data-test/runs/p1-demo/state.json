@@ -1,0 +1,273 @@
+{
+  "run_id": "p1-demo",
+  "brief_id": "b-20261109-p1",
+  "state": "DONE",
+  "finished": true,
+  "round": 0,
+  "tier_index": 1,
+  "tier_tried": true,
+  "library_done": true,
+  "active_source": "external:environment",
+  "active_targets": [
+    "ext-3"
+  ],
+  "pending_assets": [],
+  "verified_assets": [
+    "lib-1-bumper",
+    "lib-1-step",
+    "ext-1-bumper",
+    "ext-1-step",
+    "ext-2-bumper",
+    "ext-2-step",
+    "ext-3-guard",
+    "ext-3-step"
+  ],
+  "verifications": {
+    "lib-1-bumper": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "lib-1-step": {
+      "accepted": false,
+      "identity": "probable",
+      "visibility": "full",
+      "origin": "unknown",
+      "grade": "E1",
+      "defects": [
+        "wrong_identity"
+      ]
+    },
+    "ext-1-bumper": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "ext-1-step": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "ext-2-bumper": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "ext-2-step": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "ext-3-guard": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    },
+    "ext-3-step": {
+      "accepted": true,
+      "identity": "confirmed",
+      "visibility": "full",
+      "origin": "oem",
+      "grade": "E2",
+      "defects": []
+    }
+  },
+  "targets": {
+    "lib-1": {
+      "target_id": "lib-1",
+      "model": "lib-desert-1",
+      "source": "library",
+      "tier": "exact",
+      "parts": [
+        "bumper",
+        "step"
+      ],
+      "unit_id": "u-exact"
+    },
+    "ext-1": {
+      "target_id": "ext-1",
+      "model": "ext-desert-1",
+      "source": "external",
+      "tier": "exact",
+      "parts": [
+        "bumper",
+        "step"
+      ],
+      "unit_id": "u-exact"
+    },
+    "ext-2": {
+      "target_id": "ext-2",
+      "model": "ext-desert-2",
+      "source": "external",
+      "tier": "exact",
+      "parts": [
+        "bumper",
+        "step"
+      ],
+      "unit_id": "u-exact"
+    },
+    "ext-3": {
+      "target_id": "ext-3",
+      "model": "env-desert-3",
+      "source": "external",
+      "tier": "environment",
+      "parts": [
+        "side_guard",
+        "step"
+      ],
+      "unit_id": "u-env"
+    }
+  },
+  "assets": {
+    "lib-1": {
+      "bumper": [
+        "lib-1-bumper"
+      ],
+      "step": [
+        "lib-1-step"
+      ]
+    },
+    "ext-1": {
+      "bumper": [
+        "ext-1-bumper"
+      ],
+      "step": [
+        "ext-1-step"
+      ]
+    },
+    "ext-2": {
+      "bumper": [
+        "ext-2-bumper"
+      ],
+      "step": [
+        "ext-2-step"
+      ]
+    },
+    "ext-3": {
+      "side_guard": [
+        "ext-3-guard"
+      ],
+      "step": [
+        "ext-3-step"
+      ]
+    }
+  },
+  "final_state": "DONE",
+  "units": {
+    "u-exact": {
+      "unit_id": "u-exact",
+      "tier": "exact",
+      "scope": "沙漠工况 6×6 牵引车",
+      "parts": [
+        "bumper",
+        "step"
+      ],
+      "quota": 2,
+      "budget": {
+        "max_queries": 6,
+        "max_rounds": 2
+      },
+      "stop": "2 台满足验收即停",
+      "accepted_targets": [
+        "ext-1",
+        "ext-2"
+      ]
+    },
+    "u-env": {
+      "unit_id": "u-env",
+      "tier": "environment",
+      "scope": "沙漠环境用车",
+      "parts": [
+        "side_guard",
+        "step"
+      ],
+      "quota": 1,
+      "budget": {
+        "max_queries": 4,
+        "max_rounds": 2
+      },
+      "stop": "1 台满足验收即停",
+      "accepted_targets": [
+        "ext-3"
+      ]
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 1 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 2 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 1 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 3/3 已满",
+      "ts": "2026-11-09T03:34:28"
+    }
+  ],
+  "budget_used": {
+    "queries": 3,
+    "models": 3,
+    "fetches": 8,
+    "verifies": 8
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 1,
+      "accepted": 1,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "assumptions": [
+    {
+      "field": "environment",
+      "value": "沙漠工况",
+      "why": "用户原话 + 类目档案",
+      "confidence": 0.85
+    }
+  ],
+  "updated_at": "2026-11-09T03:34:28"
+}

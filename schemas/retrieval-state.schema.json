@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EquipLens retrieval run state v0.1",
+  "type": "object",
+  "required": ["run_id", "brief_id", "state", "finished", "units",
+               "coverage", "decisions", "budget_used"],
+  "properties": {
+    "run_id": {"type": "string", "minLength": 1},
+    "brief_id": {"type": "string", "minLength": 1},
+    "state": {
+      "enum": ["BRIEF_READY", "LIBRARY_SEARCH", "FETCH", "VERIFY", "FILL",
+               "GAP_CHECK", "EXTERNAL_DISCOVER", "DEGRADE", "DONE",
+               "FAILED", "WRITEBACK"]
+    },
+    "final_state": {"enum": ["", "DONE", "FAILED"]},
+    "finished": {"type": "boolean"},
+    "round": {"type": "integer", "minimum": 0},
+    "tier_index": {"type": "integer", "minimum": 0},
+    "tier_tried": {"type": "boolean"},
+    "library_done": {"type": "boolean"},
+    "units": {"type": "object"},
+    "targets": {"type": "object"},
+    "assets": {"type": "object"},
+    "verifications": {"type": "object"},
+    "coverage": {"type": "object"},
+    "decisions": {"type": "array", "items": {"type": "object"}},
+    "budget_used": {"type": "object"},
+    "assumptions": {"type": "array", "items": {"type": "object"}}
+  }
+}

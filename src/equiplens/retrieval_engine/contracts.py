@@ -1,0 +1,328 @@
+"""检索中契约：任务单 / 目标 / 资产 / 核验 / 策略。
+
+P0 只做“读得进来、校验得了、能序列化”，不做检索。
+所有结构都能 JSON 往返，方便写进检查点和事件。
+"""
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+VALID_TIERS = ("exact", "environment", "platform", "cross")
+VALID_RELEVANCE = ("strong", "conditional", "none")
+VALID_ACCEPT = ("A", "B", "C")
+
+
+def _as_list(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return [str(x) for x in value]
+
+
+@dataclass
+class PartRequirement:
+    part: str
+    label: str = ""
+    location: str = ""
+    design_relevance: str = "none"
+    views: tuple[str, ...] = ()
+    accept: str = "A"
+    mechanism: tuple[str, ...] = ()
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "PartRequirement":
+        return cls(
+            part=str(data["part"]),
+            label=str(data.get("label") or data["part"]),
+            location=str(data.get("location") or ""),
+            design_relevance=str(data.get("design_relevance") or "none"),
+            views=tuple(_as_list(data.get("views"))),
+            accept=str(data.get("accept") or "A"),
+            mechanism=tuple(_as_list(data.get("mechanism"))),
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "part": self.part,
+            "label": self.label,
+            "location": self.location,
+            "design_relevance": self.design_relevance,
+            "views": list(self.views),
+            "accept": self.accept,
+            "mechanism": list(self.mechanism),
+        }
+
+
+@dataclass
+class ResearchUnit:
+    unit_id: str
+    tier: str
+    scope: str
+    parts: tuple[str, ...]
+    quota: int
+    budget: dict = field(default_factory=dict)
+    stop: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "ResearchUnit":
+        return cls(
+            unit_id=str(data["unit_id"]),
+            tier=str(data.get("tier") or "exact"),
+            scope=str(data.get("scope") or ""),
+            parts=tuple(_as_list(data.get("parts"))),
+            quota=int(data.get("quota") or 1),
+            budget=dict(data.get("budget") or {}),
+            stop=str(data.get("stop") or ""),
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "unit_id": self.unit_id,
+            "tier": self.tier,
+            "scope": self.scope,
+            "parts": list(self.parts),
+            "quota": self.quota,
+            "budget": dict(self.budget),
+            "stop": self.stop,
+        }
+
+
+@dataclass
+class Brief:
+    brief_id: str
+    request: dict
+    part_requirements: list[PartRequirement]
+    research_units: list[ResearchUnit]
+    tiers: list[str]
+    budget: dict
+    stop_rules: dict
+    negative: list[str]
+    strategy_ref: str
+    assumptions: list[dict] = field(default_factory=list)
+    region_requirements: list[dict] = field(default_factory=list)
+
+    @property
+    def parts_by_key(self) -> dict[str, PartRequirement]:
+        return {p.part: p for p in self.part_requirements}
+
+    @property
+    def vehicle_slots(self) -> int:
+        return int((self.request.get("page_budget") or {}).get("vehicle_slots") or 0)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Brief":
+        return cls(
+            brief_id=str(data["brief_id"]),
+            request=dict(data.get("request") or {}),
+            part_requirements=[PartRequirement.from_dict(x)
+                               for x in data.get("part_requirements", [])],
+            research_units=[ResearchUnit.from_dict(x)
+                            for x in data.get("research_units", [])],
+            tiers=[str(x) for x in data.get("tiers", [])],
+            budget=dict(data.get("budget") or {}),
+            stop_rules=dict(data.get("stop_rules") or {}),
+            negative=_as_list(data.get("negative")),
+            strategy_ref=str(data.get("strategy_ref") or ""),
+            assumptions=[dict(x) for x in data.get("assumptions", [])],
+            region_requirements=[dict(x) for x in data.get("region_requirements", [])],
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "brief_id": self.brief_id,
+            "request": dict(self.request),
+            "part_requirements": [p.to_dict() for p in self.part_requirements],
+            "research_units": [u.to_dict() for u in self.research_units],
+            "tiers": list(self.tiers),
+            "budget": dict(self.budget),
+            "stop_rules": dict(self.stop_rules),
+            "negative": list(self.negative),
+            "strategy_ref": self.strategy_ref,
+            "assumptions": list(self.assumptions),
+            "region_requirements": list(self.region_requirements),
+        }
+
+
+@dataclass
+class Target:
+    target_id: str
+    model: str
+    source: str
+    tier: str
+    parts: tuple[str, ...]
+    unit_id: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict, *, source: str, tier: str) -> "Target":
+        return cls(
+            target_id=str(data["target_id"]),
+            model=str(data.get("model") or data["target_id"]),
+            source=source,
+            tier=tier,
+            parts=tuple(_as_list(data.get("parts"))),
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "target_id": self.target_id,
+            "model": self.model,
+            "source": self.source,
+            "tier": self.tier,
+            "parts": list(self.parts),
+            "unit_id": self.unit_id,
+        }
+
+
+@dataclass
+class Asset:
+    asset_id: str
+    target_id: str
+    part: str
+    view: str = ""
+    width: int = 0
+    height: int = 0
+    url: str = ""
+    title: str = ""
+    model: str = ""
+    channel: str = ""
+    status: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict, *, target_id: str, part: str) -> "Asset":
+        return cls(
+            asset_id=str(data["asset_id"]),
+            target_id=target_id,
+            part=part,
+            view=str(data.get("view") or ""),
+            width=int(data.get("width") or 0),
+            height=int(data.get("height") or 0),
+            url=str(data.get("url") or ""),
+            title=str(data.get("title") or ""),
+            model=str(data.get("model") or ""),
+            channel=str(data.get("channel") or ""),
+            status=str(data.get("status") or ""),
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "asset_id": self.asset_id,
+            "target_id": self.target_id,
+            "part": self.part,
+            "view": self.view,
+            "width": self.width,
+            "height": self.height,
+            "url": self.url,
+            "title": self.title,
+            "model": self.model,
+            "channel": self.channel,
+            "status": self.status,
+        }
+
+
+@dataclass
+class Verification:
+    accepted: bool
+    identity: str = "unknown"
+    visibility: str = "unknown"
+    origin: str = "unknown"
+    grade: str = ""
+    defects: tuple[str, ...] = ()
+    warnings: tuple[str, ...] = ()
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Verification":
+        return cls(
+            accepted=bool(data.get("accepted")),
+            identity=str(data.get("identity") or "unknown"),
+            visibility=str(data.get("visibility") or "unknown"),
+            origin=str(data.get("origin") or "unknown"),
+            grade=str(data.get("grade") or ""),
+            defects=tuple(_as_list(data.get("defects"))),
+            warnings=tuple(_as_list(data.get("warnings"))),
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "accepted": self.accepted,
+            "identity": self.identity,
+            "visibility": self.visibility,
+            "origin": self.origin,
+            "grade": self.grade,
+            "defects": list(self.defects),
+            "warnings": list(self.warnings),
+        }
+
+
+def validate_brief(data: dict) -> list[str]:
+    """返回错误列表；空列表表示通过。"""
+    errors: list[str] = []
+    for key in ("brief_id", "request", "part_requirements", "research_units",
+                "tiers", "strategy_ref"):
+        if key not in data:
+            errors.append(f"missing:{key}")
+    if errors:
+        return errors
+
+    request = data.get("request") or {}
+    if not request.get("class"):
+        errors.append("request.class 不能为空")
+    page_budget = request.get("page_budget") or {}
+    if int(page_budget.get("vehicle_slots") or 0) <= 0:
+        errors.append("request.page_budget.vehicle_slots 必须 > 0")
+
+    parts = data.get("part_requirements") or []
+    if not parts:
+        errors.append("part_requirements 不能为空")
+    part_keys = [str(p.get("part")) for p in parts]
+    if len(part_keys) != len(set(part_keys)):
+        errors.append("part_requirements 存在重复 part")
+    for p in parts:
+        if p.get("design_relevance") not in VALID_RELEVANCE:
+            errors.append(f"part {p.get('part')}: design_relevance 非法")
+        if p.get("accept") not in VALID_ACCEPT:
+            errors.append(f"part {p.get('part')}: accept 非法")
+
+    units = data.get("research_units") or []
+    if not units:
+        errors.append("research_units 不能为空")
+    known = set(part_keys)
+    unit_ids = [str(u.get("unit_id")) for u in units]
+    if len(unit_ids) != len(set(unit_ids)):
+        errors.append("research_units 存在重复 unit_id")
+    for u in units:
+        if u.get("tier") not in VALID_TIERS:
+            errors.append(f"unit {u.get('unit_id')}: tier 非法")
+        if int(u.get("quota") or 0) <= 0:
+            errors.append(f"unit {u.get('unit_id')}: quota 必须 > 0")
+        for part in _as_list(u.get("parts")):
+            if part not in known:
+                errors.append(f"unit {u.get('unit_id')}: 未知 part {part}")
+
+    tiers = data.get("tiers") or []
+    if not tiers:
+        errors.append("tiers 不能为空")
+    for t in tiers:
+        if t not in VALID_TIERS:
+            errors.append(f"tier 非法: {t}")
+    return errors
+
+
+def load_brief(path: str | Path) -> Brief:
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    errors = validate_brief(data)
+    if errors:
+        raise ValueError("; ".join(errors))
+    return Brief.from_dict(data)
+
+
+def load_strategy(path: str | Path, ref: str | None = None) -> dict:
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    ref = ref or data.get("default")
+    strategies = data.get("strategies") or {}
+    if ref not in strategies:
+        raise ValueError(f"未知策略 {ref}; 可选: {', '.join(strategies)}")
+    return dict(strategies[ref])

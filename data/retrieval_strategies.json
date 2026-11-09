@@ -1,0 +1,45 @@
+{
+  "version": "0.1",
+  "updated_at": "2026-11-09",
+  "default": "default@v1",
+  "purpose": "检索中策略骨架：只定义结构与默认参数，具体模型/阈值在实验中定。",
+  "strategies": {
+    "default@v1": {
+      "tier_order": ["exact", "environment", "platform", "cross"],
+      "channel_policy": ["library", "360", "baidu", "bing"],
+      "query_ladder": [
+        "{model} 工程车",
+        "{model}",
+        "{brand} {configuration}",
+        "{model} english"
+      ],
+      "query_anchors": {
+        "enabled": true,
+        "max_per_part": 3,
+        "source": "part.mechanism"
+      },
+      "rerank": {
+        "enabled": false,
+        "kind": "cross_encoder",
+        "top_k": 20
+      },
+      "stop": {
+        "no_new_after": 3,
+        "max_rounds": 2,
+        "max_queries": 20
+      },
+      "cross": {
+        "enabled": true,
+        "max_share": 0.25,
+        "function_parts_only": true
+      },
+      "verification": {
+        "identity": ["confirmed", "probable"],
+        "origin": ["oem", "unknown"],
+        "min_long_side": 1200
+      },
+      "negative": ["乘用车", "SUV", "多车合影", "内饰", "AI 渲染"],
+      "notes": "P1 只用 tier/channel/stop；P3 起接真实通道，P4/P5 用实验替换 rerank/verification。"
+    }
+  }
+}

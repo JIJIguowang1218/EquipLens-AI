@@ -2,19 +2,57 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-07** |
-| 当前阶段 | **高保真暗色 v3.3 完成，待产品负责人评审。** 四页静态高保真在 `docs/ui-hifi-dark/`；浅色版 `docs/ui-hifi/` 保留对照。React 实现、接后端、部署均未开始。 |
+| 更新日期 | **2026-11-08** |
+| 当前阶段 | **UI 暂停在暗色高保真 v3.3（待评审，不再迭代）；主线切回主体功能复盘。** 已归档 11-08 专家咨询并逐条评估（[`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)）。React 实现、接后端、部署均未开始。 |
 | 用途 | 新会话/新成员从此接续，不必重读全部讨论历史 |
 
-## 0.0 当前状态快照（2026-11-07，新会话先读这里）
+## 0.0 当前状态快照（2026-11-08，新会话先读这里）
 
-**阶段**：高保真 **暗色 v3.3** 已完成，等待产品负责人评审。四页静态高保真在 `docs/ui-hifi-dark/`；浅色版 `docs/ui-hifi/` 保留。React 实现、接后端、部署均未开始。
+**阶段**：**UI 设计暂停**——暗色高保真 v3.3 是暂停点（待产品负责人评审，不再继续迭代）；主线切回**主体功能复盘**，已归档 11-08 专家咨询并逐条评估，下一步按 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md) 的 P0 推进。React 实现、接后端、部署均未开始。
 
-**前情**：11-05 浅色高保真 v1（`docs/ui-hifi/`）；11-06 暗色 v2；11-07 四轮评审迭代到 v3.3（v3 结构/配色 → v3.1 字号与图标位置 → v3.2 尝试卡片边缘发光，已推翻 → v3.3 发光收回右栏并改为“漏光”，S2 全部常开）。
+**为什么暂停 UI**：视觉层已收敛到"评审可看"状态（v3.3），继续打磨的边际收益低于把主体功能（清单、证据库、身份校验）跑通；UI 的下一步是"评审 + 接真实数据"，不是再改配色。
 
-**一句话结论**：结构与文案不动，v3→v3.3 只改视觉与交互层——未选压暗、右栏序号槽卡片、面板头单色图标、关联度单色阶梯、右栏“漏光”（仅右栏，主图不发光）、S2 图片贴边、黑白加载指示、S1 卡片手风琴证据、S2 五卡常开且点选联动框发光。
+**前情**：11-05 浅色高保真 v1（`docs/ui-hifi/`）；11-06 暗色 v2；11-07 四轮评审迭代到 v3.3（v3 结构/配色 → v3.1 字号与图标位置 → v3.2 尝试卡片边缘发光，已推翻 → v3.3 发光收回右栏并改为“漏光”，S2 全部常开）；11-08 归档专家讨论、暂停 UI、转入主体功能复盘。
 
-### 最近工作（2026-11-07）
+**一句话结论**：UI 停在"静态可评审"；主体功能停在"文本检索与闸门可跑、清单未实现、图片证据不可复用"。下一阶段不是换框架，是补 L1.5 清单 + 图片证据库 + 身份校验。
+
+### 最近工作（2026-11-08/09）
+
+| 件 | 状态 | 产物 / 关键决定 |
+|---|---|---|
+| 专家讨论归档 | ✅ | `docs/discussions/EquipLens讨论11-8.md`（逐字副本，256 行，sha256 与 Obsidian 原文一致） |
+| 专家意见逐条评估 | ✅ | [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)：13 条逐条评估——采纳 4 条（部件-环境相关性、三证核验、分析裁判、证据库）、部分采纳 5 条、不采纳 4 条；给出 P0/P1/P2 |
+| UI 设计暂停 | ✅ | 本节 + `docs/ui-hifi-dark/README.md` 状态行；v3.3 冻结，等评审 |
+| 主线切换 | ✅ | 下一阶段按 review 文档 P0 走：L1.5 M0–M2 → 图片证据库 v0 → 身份校验对照实验 |
+| 开源 AI 搜索调研 | ✅ | [`research-ai-search-20261109.md`](research-ai-search-20261109.md)：9 条借鉴（含第二推荐）、LangGraph 只做检索 loop、检索中独立模块与 loop 设计 |
+| 检索中 P0–P1 | ✅ | [`retrieval-p0-p1.md`](retrieval-p0-p1.md)：契约 + 状态机 + 检查点/事件 + 假适配器 + CLI；`tests/test_retrieval_engine.py` 10/10；演示 `data-test/retrieval-fixtures-20261109/` |
+| 检索中 P2-W1 | ✅ | [`retrieval-web-p2w1.md`](retrieval-web-p2w1.md)：空库 + `WebWorld`（360）+ 规则核验 + `image_evidence` 落库 + `--web-only`；测试 13/13 |
+| W1 网页冒烟 | ⚠️ 未达标 | 10 查询 / 68 候选 / 门卫 31 / **自动 2、人工约 1 真正可用**；360 分辨率瓶颈；见 [`web-smoke-20261109/report.md`](../data-test/runs/web-smoke-20261109/report.md) |
+| W1-HD 复跑 | ⚠️ 未达标 | 接入“高清/大图”后：73 候选 / 门卫 35 / **自动 4、人工 3**；仅 C7H 有高清，仍低于 ≥10；见 [`web-smoke-hd-20261109/report.md`](../data-test/runs/web-smoke-hd-20261109/report.md) |
+| 检索中 P2-W2 | ✅ 骨架 | [`retrieval-sources-p2w2.md`](retrieval-sources-p2w2.md)：源健康/熔断/24h 缓存 + SearXNG/Tavily 适配器 + 路由；测试 5/5；真实联调缺实例/key |
+| 图片筛选复盘 | ✅ | [`image-filter-pipeline.md`](image-filter-pipeline.md) + [`image-usability-definition.md`](image-usability-definition.md)：**全 FAIL 是展示 bug**；可用口径拆两层；视角是噪声，不能当门槛 |
+| 图片筛选 v3 | ✅ | 门卫补 4 反例 + `gate.assess_image` 分层 + 引擎视角降 warning；53 张同字节重评：门卫 34→31、**概览 13 / 部件 6**（旧“可用”4）；[`web-reassess-20261109/report.md`](../data-test/runs/web-reassess-20261109/report.md)；测试 7/7 |
+| **W1-v5 复跑（达标）** | ✅ | 接入 CDN 升图（`!1200`）+ 门卫 v4 + 参考层后重跑 10 查询：72 候选 / 49 下载 / 39 门卫（54%）/ **概览 26 / 部件 18 / 参考 13**，**部件可用首次越过 ≥10 验收线**；18 张部件里有 **11 张来自升图**；见 [`web-smoke-v5-20261109/report.md`](../data-test/runs/web-smoke-v5-20261109/report.md) |
+| 两段式门卫 + 98 张回放 | ✅ | 新增 `gate.prefilter`（确定性第一段，零模型）+ `check_v2`（同字节 A/B）+ `reference_candidate`（低清参考层）；预筛否决不进 CLIP。**门槛教训：800→320**（按 800 会白丢 18 张门卫放行的低清真车图）。98 文件 / **52 张唯一图（sha1 去重）**：v2 33 → v4 43（新拦截 3）、概览 17 / 部件 8 / 参考 26 = 43，闭合；[`filter-98-20261109/index.html`](../data-test/runs/filter-98-20261109/index.html)（逐张标签变换 + fail 原因 + 标签词典 + 合并同图）；`tests/test_gate.py` 11/11 |
+| 门卫 v4：背景多车修复 | ✅ | keep 集加第 4 条「主体一台 + 背景另有停车」；`scene=multi_vehicle` 从硬拒降为 hint（只进参考层）。13 张“多车队列”误杀 **13/13 恢复**，9 张真坏图仍拒、31 张原通过不丢；唯一图可用 13/6 → **17/8**。实验表见 [`image-filter-pipeline.md`](image-filter-pipeline.md) §9 |
+| CDN 后缀升图 | ✅ | `imagesearch.upgrade_image_url`：把 `!600`/`!550` 换成 `!1200` 再下载，失败回落原图。13 张带后缀参考图里 **10 张升到 1200×800 → 部件可用**（2 张 401/403 回落，1 张仍因 scene=multi 留参考层）；抽检高频能量是上采样的 1.6–2.2 倍（真细节）。预期唯一图部件可用 **8 → 18**，待 W1 复跑确认；`test_imagesearch` 9/9 |
+| 来源页回访（实验） | ⏸ 负结果 | 搜索命中带 `link` → 回访文章页抽图 → 升图。公平 A/B：候选 72→128、下载 49→103，但 page 通道 56 候选只出 **3 张部件**（24 张图标被预筛拦），总部件仍 18、耗时 +23s → **净收益不明确，默认关闭，保留 `--harvest` opt-in**。详见 [`retrieval-experiments-log.md`](retrieval-experiments-log.md) E5 |
+
+### 前端 UI 进度（暂停点，最新文件）
+
+| 项 | 状态 | 文件 |
+|---|---|---|
+| 四页静态高保真 S0–S3 | ✅ v3.3 | `docs/ui-hifi-dark/{index,s0,s1,s2,s3}.html` |
+| 样式/令牌 | ✅ | `hifi.css`、`s0.css`–`s3.css`、`fonts/` |
+| 交互脚本/假数据 | ✅ | `hifi.js`、`data.js` |
+| 设计依据 | ✅ | `DESIGN.md`（v3.3 §4.6 漏光 / §4.7 手风琴）、`CONFORMANCE.md`（§9–§12 四轮增量）、`README.md` |
+| 截图 | ⚠️ 仍是 v2 | `shots/` 为 11-06 产物；v3.x 需在含 `data-test/ab-images/` 的机器上 `python docs/ui-hifi-dark/shot.py` 重出 |
+| 浅色对照版 | ✅ 保留 | `docs/ui-hifi/` |
+| React 工程 / 接后端 / 移动端 | ❌ 未开始 | — |
+
+**暂停点判据**：1440/1366/1280 三档无横向溢出、无控制台报错、无破图；S1 八卡三行放下；S2 五卡常开；dock 中心偏差 0.0px。**未解决**：S2 相邻框标签可能重叠；`shots/` 未更新。
+
+### 最近工作（2026-11-07，UI 迭代，保留备查）
 
 | 件 | 状态 | 产物 / 关键决定 |
 |---|---|---|
@@ -31,21 +69,24 @@
 
 ### 现在能做什么
 
-- 打开 `docs/ui-hifi-dark/index.html` 走 S0→S1→S2→S3；不带参数时 S1–S3 走 loading。
+- **看 UI**：打开 `docs/ui-hifi-dark/index.html` 走 S0→S1→S2→S3；不带参数时 S1–S3 走 loading。只作评审/视觉基准，不再改。
 - 复核 S1：8 卡三行（主图区无发光）；选中/未选/备选三态；右侧清单 8 条记录卡滚动，卡边按档位漏光。
 - 复核 S2：右侧 5 条部件卡常开同高；点卡/点框双向选中并各自发光；S3 纸页。
-- 重出截图：`python docs/ui-hifi-dark/shot.py`（Playwright + Chromium）。
+- 重出截图：`python docs/ui-hifi-dark/shot.py`（Playwright + Chromium；需 `data-test/ab-images/`）。
+- **看主体功能**：读 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md) §1 事实基线、§5 瓶颈排序、§6 P0/P1/P2；再读 [`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)。
 
-### 下一步（按序）
+### 下一步（按序，2026-11-09 晚更新）
 
-1. **产品负责人评审暗色 v3.3**：右栏漏光强度是否合适（当前近场 d≈74、10px 处 d≈21）、S2 全部常开后右栏需滚动（1014/715）是否可接受、证据区长度；决定是否把暗色提升为 `docs/ui-hifi/` 主版本。
-2. **视觉收口（若评审有反馈）**：S0/S3 密度、激光绿冷暖、卡片高度（v3 卡高 203）、清单条目是否要更密。
-3. **React 实现**：按旧技术栈（React 19 + TS + Vite / CSS Modules + tokens / Motion / TanStack Query + SSE），先 S0/S1，再 S2/S3；静态高保真只作视觉基准。
-4. **接后端**：SSE 替换 fixture；框选手势、S3 拖动/撤销、空/失败态、键盘体系仍待做。
-5. **移动端/窄屏**：本轮仅桌面 1440/1366/1280 验证；1024 以下沿用旧堆叠规则，未重构。
+1. **筛选线收口（已评估，不再调参）**：边界 9 张人工确认 → 门卫 0 阈值合理；CDN 升图收益 10/13；来源页回访净收益不明确。筛选侧到此为止，只保留金标回归。
+2. **打通最小 loop（手写任务单）**：用真实输入手写一份 brief（如“沙漠牵引车，重点看踏步、防护栏、底盘”），跑 `--web-only`：BRIEF → 空库 → EXTERNAL_DISCOVER(360) → FETCH/VERIFY(现有门卫) → FILL → GAP_CHECK，量“能否收敛到 12 个页槽、缺口在哪、降级触发几次”。
+3. **扩源（按 loop 暴露的缺口做）**：不先盲扩；loop 说缺“吊车/矿卡/部件特写”再补对应源，E5 实验留作方法。
+4. **L1.5 M0–M2**：把 brief 从手写变成生成（`data/part_axes.json`、`part_views.json`、`env_relevance`、`coverage()`、惰性放闸）。
+5. **P3 库内检索 / P4 部件级视觉**：`asset_part_feasibility` + 人工录入；100 张标注对比 CLIP/SigLIP2/DINOv3。
+6. **UI 恢复条件**：产品负责人评审 v3.3 通过，且主体功能能产出真实清单/图片后再接；React 工程暂不启动。
 
 ### 已知边界（不要误当 bug）
 
+- **UI 已暂停**：v3.3 是冻结版本，不再是“待办”；除非评审明确要求，不再改视觉。
 - S1 清单 8 条在 456px 可视区内滚动（内容 1082、单条 124px），约 3.6 条可见；每条是独立卡，不是横线。
 - S2 五张部件卡常开、匀高 196px，右栏内容 1014 / 可视 715，**三档视口都要滚动**（约 3.6 张可见）；这是“全部展开”的结果，不是 bug。
 - S1 卡片展开是手风琴，同时只开一张；展开后本行变高，同行其它卡不被拉伸（`align-items:start`）。
@@ -56,14 +97,38 @@
 - skill 安装在用户目录，不在仓库内；换机器/换会话需要重装，或直接读 [DESIGN.md](ui-hifi-dark/DESIGN.md) 的审查结论。
 - `docs/ui-hifi-dark/shots/` 仍是 v2 截图（当时用真实现拍渲染）；v3.x 需在含 `data-test/ab-images/` 的机器上重出。
 - 右栏漏光靠 `.rrow::after`（`z-index:-1` + `blur`），不拦截点击；主图卡不参与发光。
+- **本 checkout 的 `data-test/equiplens.db` 是空库（0 资产）**；诊断文档里的 63 台/629 图是历史口径，真实素材需在含图机器上确认。
+- **L1.5 只有设计**：`data/part_axes.json`、`data/part_views.json` 尚未创建，`coverage()`/惰性放闸未实现；不要按设计稿误以为已可跑。
+- **分析模块未验收**：“能有效分析”目前是主观判断，缺金标评测；在把它当“证据裁判”前必须先做 50 张校准（见 review §3.5）。
+- **视角不可当门槛**：`classify_view` 的 top1−top2 中位数 ~0.003（6 个标签几乎同分）；它只输出 `exterior_hint`，主图挑选仍需人工/后续视觉模型。
+- **门卫单标签 verdict 在 ±0.001 上会翻转**：53 张同字节重评里 3 张由过变拒（2 拼图 + 1 内饰），其中 1 张只是边界（±0.001）；下一步做阈值扫掠，不要继续加标签硬调。
+- **两段式第一段只挡硬事实**：`gate.prefilter` 只判字节/解码/格式/长宽比/近空白/缩略图级过小（长边 <320），不判语义。**不要把它设成 800**：按 800 会拦掉 30 张唯一图，其中 18 张 CLIP 门卫会放行（17 张部件特写），等于白丢素材；800/1200 的判断属于分层（概览/部件/参考）。
+- **门卫 v4 对“真·多车队列”没有金标**：新 keep 标签「主体一台 + 背景另有停车」救回了 13 张经销商场地/新闻图，但本批 98 张里**没有纯队列样本**（被拒的 2 张是拼图），所以不能证明它不会放过“一堆车”。缓解：`scene=multi_vehicle` 只进参考层、概览/部件仍要求单主体；等主体检测（P4）再放开。
+- **金标已落库**：`data-test/evals/image-gate-52-20261109.json`（52 张：可用 18 / 低清可用 26 / 坏图 8，含 1 张人工确认的“客车”误杀），以后换模型/标签先跑它。
+- **“同图重复”按字节 sha1 判**，不按 URL：98 行 → 52 张唯一图（46 行重复），其中 1 对 360 URL 返回同一张图；对照页的“合并同图”按钮就是按这个口径收成 52 张。
+- **旧冒烟批次的 PASS/FAIL 画廊按门卫 v2 生成**（`data-test/runs/web-smoke-*/all-downloads.html`），不随 v3 重刷；对照数字看 `web-reassess-20261109/report.md`。
+- **回归里 3 个历史失败与本轮无关**：`test_analysis` 11/14（构型词表/缺部件/prompt 三项）、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 空库）；`analysis` 三项待单独排查。
+- **W1 冒烟批次没有任务单、也没有状态机事件**：`retrieval_web_smoke.py` 的输入是 10 条手写 `(查询, 车型)` 对（每种车 侧视/前脸 各一条，`limit=8`、`hd=True`），直接调 `imagesearch`，不经过 `textrun`/任务单/`events.jsonl`；可追溯信息只有 `report.json`（每查询 hits/gated/diag + 每行 title/url/尺寸）与 `all-downloads.json`。带状态机与检查点的是引擎入口（`--web-only`），两者不要混为一谈。
 
 ### 读什么
 
-- 设计：`docs/ui-hifi-dark/DESIGN.md`
-- 对照/验证：`docs/ui-hifi-dark/CONFORMANCE.md`
-- 入口/文件：`docs/ui-hifi-dark/README.md`
-- 浅色版（内容/位置基线）：`docs/ui-hifi/`
-- 结构基线：`docs/ui-interaction-spec-v3.md` + `docs/ui-mock/v4/`
+- **实验日志**：[`retrieval-experiments-log.md`](retrieval-experiments-log.md)（CDN 升图 / Scrapling 验证 / 来源页回访 的假设-数据-结论；含负结果）
+- **术语/代号**：[`GLOSSARY.md`](GLOSSARY.md)（W1、门卫 v2/v3/v4、批次名、页槽、状态机、可用口径；看其他文档前先看这个）
+- **本轮主线**：[`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)（专家意见评估 + P0/P1/P2）
+- **检索技术调研**：[`research-ai-search-20261109.md`](research-ai-search-20261109.md)（开源 AI 搜索、部件检索、LangGraph 边界、检索中 loop）
+- **检索状态机**：[`retrieval-state-machine.md`](retrieval-state-machine.md)（Mermaid 图 + 状态表 + 检查点 + 失败分类）
+- **建设路线**：[`retrieval-build-plan-20261109.md`](retrieval-build-plan-20261109.md)（P0–P6；直接实现 vs 需测试取舍）
+- **P0–P1 实现记录**：[`retrieval-p0-p1.md`](retrieval-p0-p1.md)（契约、状态机、夹具、跑法、已知限制）
+- **P2-W1 网页适配器**：[`retrieval-web-p2w1.md`](retrieval-web-p2w1.md)（360 层面、通道对照、降级位置、网页-only 跑法）
+- **P2-W2 源路由**：[`retrieval-sources-p2w2.md`](retrieval-sources-p2w2.md)（健康/熔断/缓存、SearXNG/Tavily 适配器、E5 计划）
+- **可用性口径**：[`image-usability-definition.md`](image-usability-definition.md)（新旧策略为什么数字差很多；门卫 vs 分辨率）
+- **筛选管线**：[`image-filter-pipeline.md`](image-filter-pipeline.md)（每步谁负责；检索中 vs 检索后；全 FAIL 展示 bug 与归因；§7 v3 实测）
+- **筛选 v3 实测**：[`web-reassess-20261109/report.md`](../data-test/runs/web-reassess-20261109/report.md)（同一批 53 张图的新旧口径对照）
+- **两段式 + 98 张回放**：[`filter-98-20261109/report.md`](../data-test/runs/filter-98-20261109/report.md) / [`index.html`](../data-test/runs/filter-98-20261109/index.html)（逐张：预筛结论、v2/v3 裕量与竞争标签、fail 原因）
+- **原始讨论**：[`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)
+- UI 设计：`docs/ui-hifi-dark/DESIGN.md`；对照/验证：`docs/ui-hifi-dark/CONFORMANCE.md`；入口/文件：`docs/ui-hifi-dark/README.md`；浅色版：`docs/ui-hifi/`；结构基线：`docs/ui-interaction-spec-v3.md` + `docs/ui-mock/v4/`
+- 检索设计：`docs/roster-expansion-design.md`（L1.5）、`docs/retrieval-diagnosis-20261103.md`（瓶颈/优化优先级）、`docs/retrieval-module-design.md`、`docs/text-retrieval-design.md`
+- 分析契约：`docs/superpowers/specs/2026-10-31-analysis-schema-design.md`
 
 ## 0.0a 2026-11-03/04 快照（历史：低保真、产品说明书与检索线）
 
@@ -219,27 +284,30 @@
 
 ## 3. 下一步（按序执行）
 
-### 3.0 当前主线（2026-11-06 更新；旧计划保留作对照）
+### 3.0 当前主线（2026-11-08 更新；旧计划保留作对照）
 
-> 状态已按暗色 v2 更新；更细的“最近工作 / 已知边界”见 §0.0。
+> 状态已按“UI 暂停 + 主体功能复盘”更新；更细的“最近工作 / 已知边界”见 §0.0，本轮评估见 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)。
 
 | 序 | 事 | 状态 | 出口条件 |
 |---|---|---|---|
-| ① | **前端低保真 + 高保真 v1/v2**：S0–S3 四页 | ✅ 2026-11-05/06 | `docs/ui-mock/v4/`（结构）+ `docs/ui-hifi/`（浅色）+ `docs/ui-hifi-dark/`（暗色 v2）均可走通 |
-| ② | **产品负责人评审暗色 v2**：配色 / 卡片密度 / 面板头 / 选中态 | ⏳ 待评审 | 确认激光绿与四色索引、S1 清单密度、S1 卡片选中；决定是否把暗色提升为 `docs/ui-hifi/` 主版本 |
-| ③ | **高保真视觉收口**：S0/S3 密度、窄屏、细节 | ⏳ 待② | 1440×900 无溢出；评审通过；reduced-motion / 窄屏按需 |
-| ④ | **接后端**：SSE 替换 mock、断点恢复、并发守卫 | 未开始 | 五个界面在真实 run 上跑通；框选/拖动/撤销接真实数据 |
-| ⑤ | **检索优化**（可并行）：通道熔断+查询缓存（P0）、查询阶梯扩 4 段（P0）、`region_match` 实装（P1）、候选图聚类告警（P1） | 待排期 | 见 `docs/retrieval-diagnosis-20261103.md` §6 |
-| ⑥ | 部署与打包（便携 zip / 云端 demo） | 未启动 | README 首行给 demo 链接 |
+| ① | **前端低保真 + 高保真 v1/v2/v3.3**：S0–S3 四页 | ✅ 2026-11-05/06/07 | `docs/ui-mock/v4/`（结构）+ `docs/ui-hifi/`（浅色）+ `docs/ui-hifi-dark/`（暗色 v3.3）均可走通 |
+| ② | **UI 评审 + 视觉收口** | ⏸ **暂停**（2026-11-08） | 等主体功能产出真实清单/图片后再评审；v3.3 冻结，不再迭代 |
+| ③ | **主体功能复盘**：专家意见评估 + 瓶颈排序 | ✅ 2026-11-08 | review 文档；P0 三件已定义 |
+| ③.5 | **检索中 P0–P1**：契约 + 状态机 + 检查点 + 假适配器 | ✅ 2026-11-09 | `tests/test_retrieval_engine.py` 10/10；夹具演示 DONE（slots 3/3） |
+| ③.6 | **图片筛选 v3**：门卫反例 + 分层口径 + 视角降级 | ✅ 2026-11-09 | `tests/test_gate.py` 7/7；53 张重评（概览 13/部件 6） |
+| ④ | **P0-1 L1.5 清单**：M0–M2（数据 + `env_relevance` + `coverage()` + 惰性放闸） | 待开工 | 离线单测通过；决策链可审计 |
+| ⑤ | **P0-2 图片证据库 v0**：`image_evidence` 表 + 查库优先 | 待开工 | 第二次查询命中库内记录 ≥50% |
+| ⑥ | **P0-3 身份校验**：`region_match` 或候选聚类（二选一） | 待开工 | T14 四组错配拦截 ≥3 组，误杀 ≤10% |
+| ⑦ | **接后端 / React / 部署** | 未开始 | 等 P0 完成后再排；UI 恢复条件见 §0.0 |
 
-**流程铁律**：低保真阶段只回答"这一屏放什么、什么状态、怎么跳"，**不碰**字号/阴影/动效曲线；高保真阶段才回答"好不好看"。样张（`docs/ui-mock/`）是视觉参考，不是实现起点。
+**流程铁律**：低保真阶段只回答"这一屏放什么、什么状态、怎么跳"，**不碰**字号/阴影/动效曲线；高保真阶段才回答"好不好看"。样张（`docs/ui-mock/`）是视觉参考，不是实现起点。**2026-11-08 追加**：UI 暂停期间，任何"改视觉"的请求先记录、不执行，优先补主体功能（L1.5 清单 / 证据库 / 身份校验）。
 
 ### 3.0.1 检索线与既有计划（2026-10-31 及以前，保留）
 
 1. ~~M3.1 / R0 / R1 / 真实渠道 / 名录搜图 / 泛化测试~~ ✅；
 2. ~~判向探针~~ ✅（2026-10-17 收口）；
 3. ~~扩大检索测试 T13–T15~~ ✅（2026-10-18，三类目泛化验证通过）；
-4. **文本检索线（R2 后半·当前主线）**：
+4. **文本检索线（R2 后半，2026-10-31 阶段主线；现已收口，保留作追溯）**：
    - ~~第 0 步语料采集（T16）~~ ✅
    - ~~第 0 步复盘（T17：设计分析 6.3%，策略 v0.1）~~ ✅
    - ~~T18-pre LLM 查询规划预实验~~ ✅（文章命中率 40%→100%）
@@ -373,14 +441,15 @@
 
 ## 6. 新会话续接指引
 
-1. **先读**：§0.0 状态快照 → **`docs/ui-interaction-spec-v3.md`（界面与交互，当前唯一权威）** → `docs/ui-mock/README.md`（静态稿入口）→ `docs/module-map.md` → `docs/agent-loop-mechanisms.md`。
+1. **先读**：§0.0 状态快照 → [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)（本轮主线：专家意见评估 + P0/P1/P2）→ [`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)（原始讨论）→ `docs/module-map.md` → **`docs/ui-interaction-spec-v3.md`（界面与交互，当前唯一权威）**。
    - ⚠️ `docs/web-interaction-spec-v2.md` **已归档**（顶部有声明），只用于追溯早期设计，**不得据此实现**；两份冲突时以 v3 为准。
-2. **若要碰检索**：先读 `docs/retrieval-diagnosis-20261103.md`（通道现状、阻碍归因、优化优先级、computer-use 与 DSH 形态的结论）。
-3. **前端现状**：静态稿已到 S3（`docs/ui-mock/s0.html` / `s1.html` / `s2.html` / `s3.html`，含假数据与交互）；**正式前端工程（`webapp/`）尚未创建**。现行 `web/ui/index.html` 是旧版单页（770 行原生 JS），将被替换。v2 样张可重渲：`python docs/ui-mock/shot.py`（仅视觉参照）。
-4. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；
-   测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench}.py`。
+   - ⚠️ UI 已暂停（2026-11-08），`docs/ui-hifi-dark/` 是冻结的评审版，不是当前开发对象。
+2. **若要碰检索**：先读 `docs/roster-expansion-design.md`（L1.5，清单/页槽/放闸）与 `docs/retrieval-diagnosis-20261103.md`（通道现状、阻碍归因、优化优先级）。
+3. **前端现状**：高保真四页在 `docs/ui-hifi-dark/`（v3.3 静态，可走 S0→S3），浅色版在 `docs/ui-hifi/`；**正式前端工程（`webapp/`）尚未创建**。现行 `web/ui/index.html` 是旧版单页（770 行原生 JS），将被替换。旧低保真样张可重渲：`python docs/ui-mock/shot.py`（仅视觉参照）。
+4. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；检索中引擎 `src/equiplens/retrieval_engine/`（P0–P1）；
+   测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,retrieval_engine}.py`。
 5. **跑测试**（全部可离线；`test_probe` 实测 13/13，权重已就绪）：
-   `for f in tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
+   `for f in tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,retrieval_engine,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
 6. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
    `PYTHONPATH=src python -m equiplens text-run scripts/intent-chain2.json --data-dir data-test --run-root data-test/runs --run-id <new-id>`
 7. **闸门评估**：`PYTHONPATH=src python scripts/eval_l3gate.py`（结果 `data-test/evals/l3-gate-v1.md`）。

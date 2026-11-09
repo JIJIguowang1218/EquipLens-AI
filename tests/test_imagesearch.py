@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """imagesearch 通道健康与相关性护栏测试（不联网，全部 monkeypatch）。"""
 
+import json
 import sys
 from pathlib import Path
 
@@ -100,6 +101,86 @@ def test_blocked_status_reported():
          imagesearch._search_bing) = o360, obaidu, obing
 
 
+def test_360_uses_original_image():
+    """360 的 thumb 是缩略图；应优先取 img 原图，并带尺寸/通道/referer。"""
+    class Resp:
+        status_code = 200
+        text = json.dumps({"list": [{
+            "img": "http://x/full.jpg", "thumb": "http://x/thumb.jpg",
+            "title": "测试", "width": 1600, "height": 900}]})
+
+    orig = imagesearch.requests.get
+    imagesearch.requests.get = lambda *a, **k: Resp()
+    try:
+        hits, status = imagesearch._search_360("测试", 5)
+        assert status == "ok", status
+        assert hits[0]["url"] == "http://x/full.jpg", hits
+        assert hits[0]["width"] == 1600 and hits[0]["height"] == 900, hits
+        assert hits[0]["channel"] == "360", hits
+        assert hits[0]["referer"] == "https://image.so.com/", hits
+    finally:
+        imagesearch.requests.get = orig
+
+
+def test_hd_ladder_prefers_high_res():
+    o360, obaidu, obing = (imagesearch._search_360, imagesearch._search_baidu,
+                           imagesearch._search_bing)
+    calls = []
+
+    def fake360(q, n):
+        calls.append(q)
+        width = 1600 if ("高清" in q or "大图" in q) else 600
+        return ([{"url": f"https://x/{len(calls)}.jpg", "thumb_url": "",
+                  "title": "德龙X3000 6x6 工程车", "width": width,
+                  "height": 900, "channel": "360",
+                  "referer": "https://image.so.com/"}], "ok")
+
+    imagesearch._search_360 = fake360
+    imagesearch._search_baidu = lambda q, n: ([], "empty")
+    imagesearch._search_bing = lambda q, n: ([], "empty")
+    try:
+        hits, diag = imagesearch.search_images_hd(
+            "德龙X3000 侧视", 3, model="德龙X3000", hd=True)
+        assert hits and hits[0]["width"] == 1600, hits
+        assert any("高清" in q for q in calls), calls
+        assert any("大图" in q for q in calls), calls
+    finally:
+        (imagesearch._search_360, imagesearch._search_baidu,
+         imagesearch._search_bing) = o360, obaidu, obing
+
+
+def test_upgrade_image_url():
+    """CDN 缩放后缀升大图：只认纯数字后缀，已 ≥1200 与非数字后缀不动。"""
+    up = imagesearch.upgrade_image_url
+    assert up("https://img4.kcimg.cn/imgc/0/865/865416.jpg!600") ==         "https://img4.kcimg.cn/imgc/0/865/865416.jpg!1200"
+    assert up("http://imgh.360che.com/imgc/0/228/228802.jpg!360") ==         "http://imgh.360che.com/imgc/0/228/228802.jpg!1200"
+    assert up("https://a.com/x.jpg!1200") is None
+    assert up("https://a.com/x.jpg!news.pc") is None
+    assert up("https://a.com/x.jpg") is None
+    assert up("") is None
+
+
+def test_extract_page_images():
+    """图集页抽图：绝对化、去小图标、按后缀去重、尊重 limit。"""
+    html = """
+    <img src="/a/1.jpg!600"><img data-src="https://x.com/a/1.jpg!800">
+    <img src="https://x.com/a/2.jpg"><img src="https://x.com/logo.png">
+    <img src="https://x.com/a/3.jpg"><img src="https://x.com/a/4.jpg">
+    """
+    got = imagesearch.extract_page_images(html, "https://x.com/news/1.html", limit=3)
+    assert got == ["https://x.com/a/1.jpg!600", "https://x.com/a/2.jpg",
+                   "https://x.com/a/3.jpg"], got
+    assert imagesearch.upgrade_image_url("https://x.com/a/1.jpg!600") ==         "https://x.com/a/1.jpg!1200"
+
+
+def test_upgrade_sohu_url():
+    """搜狐图床 w_640 → w_1280（实测 640x426 → 1280x852）。"""
+    up = imagesearch.upgrade_image_url
+    u = "http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/2019/a.jpeg"
+    assert up(u) == u.replace("w_640", "w_1280"), up(u)
+    assert up(u.replace("w_640", "w_1280")) is None
+
+
 if __name__ == "__main__":
     check("相关性护栏", test_relevance_guard)
     check("构型/品牌/非车污染护栏", test_config_and_brand_guard)
@@ -107,6 +188,11 @@ if __name__ == "__main__":
     check("多通道累加 + 标注通道", test_search_accumulates_and_marks_channel)
     check("不相关通道自动跳过", test_unrelated_channel_falls_through)
     check("被拦状态如实上报", test_blocked_status_reported)
+    check("360 取原图而非缩略图", test_360_uses_original_image)
+    check("高清/大图阶梯优先高清", test_hd_ladder_prefers_high_res)
+    check("CDN 后缀升大图", test_upgrade_image_url)
+    check("图集页抽图", test_extract_page_images)
+    check("搜狐 w_1280 升图", test_upgrade_sohu_url)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

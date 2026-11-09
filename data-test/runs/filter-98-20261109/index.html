@@ -1,0 +1,3409 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>两段式门卫 · 98 张全流程回放</title>
+<style>
+:root{--bg:#0f1012;--card:#181A1D;--line:#2A2D31;--ink:#E8E6E1;--dim:#8C9095;
+--accent:#DF4A1B;--ok:#3E9E6A;--bad:#C8442E;--warn:#C99A3C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,
+"Segoe UI","Microsoft YaHei",sans-serif}
+header{padding:30px 32px 18px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 4px;font-size:22px;letter-spacing:.01em}
+.meta{color:var(--dim);font-size:12px}
+.sum{display:flex;flex-wrap:wrap;gap:10px;padding:18px 32px;border-bottom:1px solid var(--line)}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;
+padding:9px 13px;min-width:104px}
+.stat .num{display:block;font:600 20px/1.2 ui-monospace,Consolas,monospace}
+.stat .lab{color:var(--dim);font-size:11px}
+.stat.ok .num{color:var(--ok)} .stat.bad .num{color:var(--bad)}
+.stat.ref .num{color:var(--warn)}
+.stat.warn .num{color:var(--warn)}
+.filters{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;
+padding:12px 32px;background:rgba(15,16,18,.94);backdrop-filter:blur(6px);
+border-bottom:1px solid var(--line)}
+.filters button{background:transparent;color:var(--ink);border:1px solid var(--line);
+border-radius:999px;padding:6px 13px;font-size:12px;cursor:pointer}
+.filters button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+gap:16px;padding:22px 32px 60px}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;padding:18px 32px;
+border-bottom:1px solid var(--line)}
+.step{flex:1;min-width:110px;padding:10px 12px;border:1px solid var(--line);
+border-radius:8px;background:var(--card)}
+.step b{display:block;font:600 19px/1.2 ui-monospace,Consolas,monospace}
+.step span{color:var(--dim);font-size:11px}
+.step.drop b{color:var(--bad)} .step.keep b{color:var(--ok)}
+.arrow{align-self:center;color:#4A4E54;padding:0 6px;font-size:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;background:#000;aspect-ratio:16/10}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.badge{position:absolute;left:8px;top:8px;font-size:11px;padding:3px 8px;
+border-radius:999px;color:#fff;background:var(--bad)}
+.badge.ok{background:var(--ok)}
+.badge.ref{background:var(--warn)}
+.fail{margin:9px 0 0;padding:7px 9px;border-radius:6px;background:#2A1E1B;
+border:1px solid #432C26;color:#F0B6A6;font-size:11.5px;line-height:1.45}
+.note{margin:9px 0 0;padding:7px 9px;border-radius:6px;background:#272218;
+border:1px solid #40392A;color:#E4C98C;font-size:11.5px;line-height:1.45}
+.legend{padding:14px 32px 18px;border-bottom:1px solid var(--line);color:#B9BDC2;
+font-size:12px;line-height:1.65}
+.legend summary{cursor:pointer;color:var(--ink);font-size:13px;font-weight:600}
+.legend table{border-collapse:collapse;margin:10px 0;font-size:11.5px}
+.legend th,.legend td{border:1px solid var(--line);padding:4px 8px;text-align:left;
+vertical-align:top}
+.legend th{color:var(--dim);font-weight:400;background:#1B1E22}
+.legend code{background:#24272C}
+.body{padding:12px 13px 14px}
+h3{margin:0 0 4px;font-size:13px;line-height:1.35;font-weight:600;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sub{margin:0 0 9px;color:var(--dim);font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--dim);font-weight:400;width:74px;padding:2px 6px 2px 0;
+vertical-align:top;white-space:nowrap}
+td{padding:2px 0;vertical-align:top}
+td.pass{color:var(--ok)} td.fail{color:var(--bad)}
+td.labels{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:#B9BDC2}
+td.verdict{font-weight:600} td.verdict.ok{color:var(--ok)} td.verdict.bad{color:var(--bad)}
+td.verdict.ref{color:var(--warn)}
+.chips{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:10.5px;padding:2px 7px;border-radius:4px;background:#2A2020;
+color:#E6A99B;border:1px solid #3A2A26}
+.chip.hint{background:#24262A;color:#A9AEB4;border-color:#33363B}
+.chg{margin:8px 0 0;color:var(--dim);font-size:11px}
+.dim{opacity:.7}
+footer{padding:0 32px 40px;color:var(--dim);font-size:12px}
+code{font-family:ui-monospace,Consolas,monospace;background:#1E2126;padding:1px 5px;
+border-radius:4px}
+</style></head>
+<body>
+<header>
+  <h1>两段式门卫 · 98 张全流程回放</h1>
+  <p class="meta">数据源：web-smoke-20261109, web-smoke-hd-20261109 的 all-downloads
+  · 同一批字节上重算 v2 / v3 / 预筛 / 分层 · 生成于 2026-11-09 16:26</p>
+</header>
+<section class="flow">
+  <div class="step"><b>142</b><span>候选（含 1 遗留文件）</span></div>
+  <div class="arrow">→</div>
+  <div class="step drop"><b>44</b><span>下载失败</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><b>98</b><span>下载成功 / 标题护栏过 98</span></div>
+  <div class="arrow">→</div>
+  <div class="step drop"><b>0</b><span>预筛拦下（未进 CLIP）</span></div>
+  <div class="arrow">→</div>
+  <div class="step"><b>98</b><span>进 CLIP</span></div>
+  <div class="arrow">→</div>
+  <div class="step keep"><b>80</b><span>门卫通过</span></div>
+  <div class="arrow">→</div>
+  <div class="step keep"><b>29<span class="sep"> / </span>13</b><span>概览 / 部件可用</span></div>
+</section>
+<section class="legend">
+  <details open>
+    <summary>这些标签是什么？两段式怎么分工？（点开/收起）</summary>
+    <p><b>门卫</b>用零样本 CLIP 判图：把图片分别与「保留标签」和「反例标签」比相似度，
+    各取最高分，<code>margin = keep最高 − drop最高</code>；<code>margin ≥ 0</code> 放行。
+    卡片里的「竞争」就是这两个最高分——所以“为什么被拒”看的是<b>哪个反例赢了</b>，不是随机抖动。</p>
+    <table>
+      <tr><th>版本</th><th>反例标签</th><th>来历</th></tr>
+      <tr><td>v2（旧，7 条）</td><td>客车 / 多车队列 / logo 图标 / 图表 / 人物会议 / 建筑室内 / 文档截图</td><td>2026-10-15 第三轮审核反馈</td></tr>
+      <tr><td>v3（11 条）</td><td>v2 的 7 条 + <b>内饰驾驶舱 / 网格拼图 / 网页截图 / 广告字</b></td><td>W1 冒烟暴露的漏网类型</td></tr>
+      <tr><td>v4（现用）</td><td>反例同 v3；<b>保留标签加第 4 条</b>：主体一台 + 背景另有停车</td><td>“多车队列”误杀经销商场地/新闻图（13 张 13 张全恢复，9 张真坏图仍拒）</td></tr>
+    </table>
+    <p><b>保留标签（v4 起 4 条）</b>：单台重卡整车 / 单台工程车整车 / 部件特写 / 主体一台·背景另有停车。所以门卫放行的图
+    可能只是“部件特写”或“侧面照”，<b>不等于型号身份正确</b>——身份靠标题护栏 + 人工。</p>
+    <p><b>两段式</b>：第一段预筛（不看语义，只看字节/解码/格式/长宽比/近空白/明显过小 &lt;400）
+    → 第二段 CLIP 门卫 → 视角 → 分层（概览 ≥800 / 部件 ≥1200 / <b>参考 &lt;800</b>，参考不占可用名额）。</p>
+    <p><b>怎么读卡片</b>：<code>v2 通过 + v3 拒绝</code> = v3 新加的反例胜出，是“新增拦截”；
+    “同图重复”表示这张照片被基础批和 HD 批各下一次，本页按<b>文件</b>计数，所以 2 张图会出现 4 行。</p>
+  </details>
+</section>
+<section class="sum">
+  <div class="stat "><span class="num">98</span><span class="lab">图片文件</span></div>
+  <div class="stat "><span class="num">52 / 53</span><span class="lab">唯一图 / URL</span></div>
+  <div class="stat "><span class="num">142</span><span class="lab">候选/下载失败</span></div>
+  <div class="stat warn"><span class="num">0</span><span class="lab">预筛拦下（未进 CLIP）</span></div>
+  <div class="stat "><span class="num">98</span><span class="lab">实际跑 CLIP</span></div>
+  <div class="stat "><span class="num">62</span><span class="lab">CLIP 内 v2 通过</span></div>
+  <div class="stat "><span class="num">80</span><span class="lab">门卫通过（v4）</span></div>
+  <div class="stat ok"><span class="num">17</span><span class="lab">概览可用（唯一图）</span></div>
+  <div class="stat ok"><span class="num">8</span><span class="lab">部件可用（唯一图）</span></div>
+  <div class="stat ref"><span class="num">51</span><span class="lab">参考层（低清，全部）</span></div>
+  <div class="stat "><span class="num">5</span><span class="lab">旧“可用”口径</span></div>
+</section>
+<div class="filters">
+  <button class="on" data-f="all">全部 98</button>
+  <button data-f="usable">可用</button>
+  <button data-f="ref">参考层 51</button>
+  <button data-f="unique">合并同图 52</button>
+  <button data-f="bad">不可用</button>
+  <button data-f="changed">标签有变化 30</button>
+  <button data-f="prefilter">预筛拦截 0</button>
+  <button data-f="gate">CLIP 拒绝</button>
+  <button data-f="newlabel">新增反例命中 10</button>
+  <button data-f="hd">HD 批次</button>
+</div>
+<main class="grid">
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/01.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="出口中国重汽豪沃6x6全驱动载货新车18953179828">出口中国重汽豪沃6x6全驱动载货新车18953179828</h3>
+        <p class="sub">豪沃 6X6 侧视 · 1580×1000
+          · 长边 1580 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0012</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0249</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3428 ／ drop 网格拼图 +0.3677</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“网格拼图”胜出（-0.0249 = keep a photo of one truck in  +0.3428 − drop 网格拼图 +0.3677）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· https://cbu01.alicdn.com/img/ibank/O1CN01IUnpTg1fVXlO9E0Af_!!221</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/02.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 侧视 · 640×481
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0138</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0015</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3517 ／ drop 多车队列 +0.3502</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0020</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/201</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/03.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 侧视 · 640×426
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0492</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0492</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3658 ／ drop 多车队列 +0.3166</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0006</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/images/20190105/3e70f293bcff</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/04.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自">6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自</h3>
+        <p class="sub">豪沃 6X6 侧视 · 800×800
+          · 长边 800 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0873</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0685</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3011 ／ drop 网格拼图 +0.2326</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>hero_45 · gap 0.0015</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://cbu01.alicdn.com/img/ibank/O1CN01vdxq741Bs2jdRbWGL_!!0-0-</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/05.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="跨境出售重汽豪沃6x6载货车底盘">跨境出售重汽豪沃6x6载货车底盘</h3>
+        <p class="sub">豪沃 6X6 前脸 · 720×1280
+          · 长边 1280 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0239</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0362</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3821 ／ drop 多车队列 +0.3460</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0010</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://pic.rmb.bdstatic.com/bjh/other/db7261357061b0751130d2e35</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/06.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 前脸 · 640×426
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0342</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0356</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3573 ／ drop 多车队列 +0.3217</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0036</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/images/20190105/ee0bbc668dbc</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/07.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自">6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自</h3>
+        <p class="sub">豪沃 6X6 前脸 · 1500×1122
+          · 长边 1500 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.1462</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.1203</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.3275 ／ drop 网格拼图 +0.2072</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0083</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://sc02.alicdn.com/kf/HTB1obUxO5LaK1RjSZFxq6ymPFXaX/2000478</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/08.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="中国重汽豪沃6x6越野20cbm自卸车翻斗车 - buy howo dump truck,sinot">中国重汽豪沃6x6越野20cbm自卸车翻斗车 - buy howo dump truck,sinot</h3>
+        <p class="sub">豪沃 6X6 前脸 · 898×1000
+          · 长边 1000 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0196</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0196</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3305 ／ drop 客车 +0.3109</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://www.zjpse.com/editorUpload/file/20240617/171861198848601</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/10.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="重汽豪沃六驱越野载货车 ZZ2257V455GF1型6X6越野底盘">重汽豪沃六驱越野载货车 ZZ2257V455GF1型6X6越野底盘</h3>
+        <p class="sub">豪沃 6X6 前脸 · 400×400
+          · 长边 400 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.1308</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.1308</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2098 ／ drop 文档截图 +0.3406</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 文档截图</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“文档截图”胜出（-0.1308 = keep 单台重卡 +0.2098 − drop 文档截图 +0.3406）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://l.b2b168.net/2022/08/31/08/202208310836414280304.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/11.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="乐华49AX3000">乐华49AX3000</h3>
+        <p class="sub">德龙 X3000 侧视 · 800×600
+          · 长边 800 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0248</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0248</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 工程车 +0.2572 ／ drop 文档截图 +0.2820</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 工程车
+            ／ drop 文档截图</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“文档截图”胜出（-0.0248 = keep 工程车 +0.2572 − drop 文档截图 +0.2820）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· http://img.pconline.com.cn/images/upload/upc/tx/pconline_product</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/12.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="德龙X3000购车优惠6000元">德龙X3000购车优惠6000元</h3>
+        <p class="sub">德龙 X3000 侧视 · 600×450
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0018</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0095</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2970 ／ drop 多车队列 +0.2875</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0035</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/05/24/e3a3f037001d4076</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/15.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="德龙X3000牵引车火热促销中 让利高达0.6万">德龙X3000牵引车火热促销中 让利高达0.6万</h3>
+        <p class="sub">德龙 X3000 侧视 · 600×400
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0181</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0153</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3005 ／ drop 多车队列 +0.2852</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0018</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/865/865416.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/17.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="夫妻车真的辛苦吗?16小时真实记录德龙X3000货运生活">夫妻车真的辛苦吗?16小时真实记录德龙X3000货运生活</h3>
+        <p class="sub">德龙 X3000 侧视 · 640×427
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0046</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0133</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3791 ／ drop 多车队列 +0.3657</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0024</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://f11.baidu.com/it/u=117246697,3095864453&amp;fm=170&amp;s=BFB6578</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/19.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="国产最大马力重卡被刷新,600马力的陕汽德龙X3000牵引车图解">国产最大马力重卡被刷新,600马力的陕汽德龙X3000牵引车图解</h3>
+        <p class="sub">德龙 X3000 前脸 · 640×427
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0176</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0363</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3727 ／ drop 多车队列 +0.3365</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0024</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t12.baidu.com/it/u=3001899077,3688113945&amp;fm=173&amp;app=25&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/20.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="到底强在哪?陕汽德龙X3000超强版">到底强在哪?陕汽德龙X3000超强版</h3>
+        <p class="sub">德龙 X3000 前脸 · 830×692
+          · 长边 830 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0783</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0783</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.3264 ／ drop 多车队列 +0.2480</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0012</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://p0.ifengimg.com/pmop/2017/0821/06790F195364C79213B3578A78</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/21.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="搭载460马力黄金动力链,实拍陕汽德龙X3000牵引车">搭载460马力黄金动力链,实拍陕汽德龙X3000牵引车</h3>
+        <p class="sub">德龙 X3000 前脸 · 600×400
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0054</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0087</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3271 ／ drop 多车队列 +0.3183</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0007</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://t10.baidu.com/it/u=1610224878,2217607926&amp;fm=173&amp;app=49&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/22.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="语森忆适用陕汽德龙新m3000数字标x3000车贴标志车头前脸电镀字贴画">语森忆适用陕汽德龙新m3000数字标x3000车贴标志车头前脸电镀字贴画</h3>
+        <p class="sub">德龙 X3000 前脸 · 1000×1000
+          · 长边 1000 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0497</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0497</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2156 ／ drop 图表 +0.2653</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 图表</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“图表”胜出（-0.0497 = keep 部件特写 +0.2156 − drop 图表 +0.2653）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://img14.360buyimg.com/pop/jfs/t1/301671/17/4172/371289/681</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/23.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="为何这么火?实拍陕汽德龙X3000危化品牵引车">为何这么火?实拍陕汽德龙X3000危化品牵引车</h3>
+        <p class="sub">德龙 X3000 前脸 · 640×427
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0169</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0546</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2653 ／ drop 内饰舱 +0.3199</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0546 = keep 单台重卡 +0.2653 − drop 内饰舱 +0.3199）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· http://img.mp.itc.cn/upload/20160704/6b547349862848c8a3cc2fa6362</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/24.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="【促销】德龙X3000重载8X4促销(2台)_四川盛宏车业_卡车之家">【促销】德龙X3000重载8X4促销(2台)_四川盛宏车业_卡车之家</h3>
+        <p class="sub">德龙 X3000 前脸 · 600×800
+          · 长边 800 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0269</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0323</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3720 ／ drop 多车队列 +0.3397</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0067</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/01/26/291d2d3427d24217</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/29.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="中国重汽汕德卡C7H牵引车促销:5万定金抵7万">中国重汽汕德卡C7H牵引车促销:5万定金抵7万</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 600×400
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0419</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0419</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2395 ／ drop 客车 +0.1976</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0047</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://imgn.360che.com/imga/0/264/264345.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/31.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="出口汕德卡c7h;牵引车;6×4,曼机480,手动挡;气囊桥 新曼白;汕德卡c7h">出口汕德卡c7h;牵引车;6×4,曼机480,手动挡;气囊桥 新曼白;汕德卡c7h</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 1707×1280
+          · 长边 1707 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0056</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0100</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2901 ／ drop 多车队列 +0.2801</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0017</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://b0.bdstatic.com/a46be875822d44360c788bb4f068b184.jpeg@h_</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/32.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="直降1.1万元 宿迁汕德卡C7H 牵引车促销">直降1.1万元 宿迁汕德卡C7H 牵引车促销</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 600×450
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0184</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0293</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3421 ／ drop 多车队列 +0.3128</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0083</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/03/13/0c2a570fb870407d</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/34.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="乘龙H7 PK汕德卡C7H 同样是600马力 你会选择谁?">乘龙H7 PK汕德卡C7H 同样是600马力 你会选择谁?</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 511×352
+          · 长边 511 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0192</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0334</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3577 ／ drop 多车队列 +0.3243</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0010</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 511 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://www.find800.cn/uploadfile/2020/0408/20200408072615836.png</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/35.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="双色前脸 右舵版汕德卡 发往澳大利亚的重汽C7H 540牵引车">双色前脸 右舵版汕德卡 发往澳大利亚的重汽C7H 540牵引车</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 640×427
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0316</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0119</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3970 ／ drop 多车队列 +0.3851</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0049</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://p1.itc.cn/images03/20200527/9c96fa51e995418abcf05ad38fc6c</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/36.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="双色前脸 右舵版汕德卡 发往澳大利亚的C7H 540牵引车">双色前脸 右舵版汕德卡 发往澳大利亚的C7H 540牵引车</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 1080×810
+          · 长边 1080 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0001</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0198</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3095 ／ drop 多车队列 +0.2897</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0023</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://p6.itc.cn/images03/20200526/54b19bb2f9c745c99f1461ee71d14</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/39.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="直降1.1万元 宿迁汕德卡C7H 牵引车促销">直降1.1万元 宿迁汕德卡C7H 牵引车促销</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 600×450
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0184</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0293</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3421 ／ drop 多车队列 +0.3128</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0083</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/03/13/0c2a570fb870407d</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/42.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="解放牌_ca1040p40k59l2e6a85载货汽车_">解放牌_ca1040p40k59l2e6a85载货汽车_</h3>
+        <p class="sub">解放 J6G 侧视 · 932×1000
+          · 长边 1000 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0860</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0781</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3826 ／ drop 网格拼图 +0.3045</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0027</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://source.cn-truck.com/ggimg/clcp/353/y51193752.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/43.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="致力打造世界知名的解放卡车品牌">致力打造世界知名的解放卡车品牌</h3>
+        <p class="sub">解放 J6G 侧视 · 500×351
+          · 长边 500 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0578</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0578</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3421 ／ drop 多车队列 +0.2843</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0001</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 500 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://auto.eastday.com/auto/08auto/node16426/node38613/node3897</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/44.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="解放CA3127K2E长头柴油自卸车">解放CA3127K2E长头柴油自卸车</h3>
+        <p class="sub">解放 J6G 侧视 · 624×480
+          · 长边 624 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0493</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0011</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3638 ／ drop 网格拼图 +0.3649</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“网格拼图”胜出（-0.0011 = keep 单台重卡 +0.3638 − drop 网格拼图 +0.3649）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· https://source.cn-truck.com/ggimg/clcp/238/2499eg5.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/45.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="6米8冷藏车 6米8解放j6g冷藏车,24款全新升级 大柴320马力7.8升排量,1">6米8冷藏车 6米8解放j6g冷藏车,24款全新升级 大柴320马力7.8升排量,1</h3>
+        <p class="sub">解放 J6G 前脸 · 960×1280
+          · 长边 1280 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0210</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0082</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3762 ／ drop 多车队列 +0.3680</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0001</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://b0.bdstatic.com/9de98ff6285b7be5590c3a7f0c2bba88.jpeg@h_1</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/46.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="载货车也能有平地板,全新解放J6G曝光">载货车也能有平地板,全新解放J6G曝光</h3>
+        <p class="sub">解放 J6G 前脸 · 640×640
+          · 长边 640 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0113</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0179</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3496 ／ drop 多车队列 +0.3317</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0047</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t11.baidu.com/it/u=2843608043,187953580&amp;fm=30&amp;app=106&amp;f=</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/47.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="#卡车 高清解放j6g,解放动力320马力,大扭矩手动变速箱">#卡车 高清解放j6g,解放动力320马力,大扭矩手动变速箱</h3>
+        <p class="sub">解放 J6G 前脸 · 1067×800
+          · 长边 1067 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0085</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0214</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2847 ／ drop 多车队列 +0.2633</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0007</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img2.baidu.com/it/u=80628774,1204535688&amp;fm=253&amp;app=138&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/48.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="马力,挡位再升级,320马力解放j6g满足高端中卡动力需求">马力,挡位再升级,320马力解放j6g满足高端中卡动力需求</h3>
+        <p class="sub">解放 J6G 前脸 · 960×1280
+          · 长边 1280 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0099</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0099</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3316 ／ drop 客车 +0.3415</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“客车”胜出（-0.0099 = keep 单台重卡 +0.3316 − drop 客车 +0.3415）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://b0.bdstatic.com/62de5c8e8c5d925e3b0491387df0ed1b.jpeg@h_</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/51.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="一汽解放高端中卡j6g载货车 带来全新高效运营解决方案">一汽解放高端中卡j6g载货车 带来全新高效运营解决方案</h3>
+        <p class="sub">解放 J6G 前脸 · 1728×1080
+          · 长边 1728 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0350</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0052</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3084 ／ drop 多车队列 +0.3032</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0027</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t14.baidu.com/it/u=1664727070,1969447833&amp;fm=225&amp;app=113&amp;</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/52.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="热门 2024款解放j6g320马力单桥9.6米自动挡">热门 2024款解放j6g320马力单桥9.6米自动挡</h3>
+        <p class="sub">解放 J6G 前脸 · 1067×800
+          · 长边 1067 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0073</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0296</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2921 ／ drop 多车队列 +0.2625</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0061</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://img0.baidu.com/it/u=3264638282,1923796395&amp;fm=253&amp;fmt=aut</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/53.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔引进NG80的年代 德国已经有自动挡">北奔引进NG80的年代 德国已经有自动挡</h3>
+        <p class="sub">北奔 NG80 侧视 · 600×400
+          · 长边 600 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0104</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0245</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3075 ／ drop 多车队列 +0.2830</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>hero_45 · gap 0.0030</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img9.kcimg.cn/imga/0/553/553225.jpg!602</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/55.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="【图】北奔 NG80系列重卡 325马力 6X4 自卸车(ND3254B38)_实拍图片_124841_卡车之家">【图】北奔 NG80系列重卡 325马力 6X4 自卸车(ND3254B38)_实拍图片_124841_</h3>
+        <p class="sub">北奔 NG80 侧视 · 800×533
+          · 长边 800 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0272</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0545</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2467 ／ drop 内饰舱 +0.3012</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0545 = keep 部件特写 +0.2467 − drop 内饰舱 +0.3012）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· http://imgh.360che.com/imgc/0/124/124841.jpg!800</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/56.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔重汽NG80-6X4非公路自卸车">北奔重汽NG80-6X4非公路自卸车</h3>
+        <p class="sub">北奔 NG80 侧视 · 640×854
+          · 长边 854 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0033</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0256</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2884 ／ drop 内饰舱 +0.3140</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0256 = keep 单台重卡 +0.2884 − drop 内饰舱 +0.3140）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://upimg.tiebaobei.com/img/161007/126f8b57fd967e7d62e79002c</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/57.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80B重卡 375马力 6X4牵引车(ND42510B34J)_鄂尔多斯市凯驰汽车销售有限责任公司_卡车之家">北奔 NG80B重卡 375马力 6X4牵引车(ND42510B34J)_鄂尔多斯市凯驰汽车销售有限责任</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0223</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0244</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3004 ／ drop 多车队列 +0.2761</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0008</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/189/189052.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/58.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 240马力 8X4 6.8米自卸车(ND33100D34J)_江苏隆鑫汽车销售服务_卡车之家">北奔 NG80系列重卡 240马力 8X4 6.8米自卸车(ND33100D34J)_江苏隆鑫汽车销售服</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0389</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0389</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3491 ／ drop 多车队列 +0.3102</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/102/102865.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/59.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 350马力 6X4 8米栏板载货车(ND2250FD5J6Z00)">北奔 NG80系列重卡 350马力 6X4 8米栏板载货车(ND2250FD5J6Z00)</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0206</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0327</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3781 ／ drop 多车队列 +0.3453</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0102</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/228/228651.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/60.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80重卡 375马力 4X2天然气牵引车(ND4180A38J6Z01)">北奔 NG80重卡 375马力 4X2天然气牵引车(ND4180A38J6Z01)</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0319</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0094</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3672 ／ drop 多车队列 +0.3578</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0073</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/45/45947.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/62.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 336马力 8X4 载货车(ND1316D41J)_青县海纳汽车销售有限公司_卡车之家">北奔 NG80系列重卡 336马力 8X4 载货车(ND1316D41J)_青县海纳汽车销售有限公司_卡</h3>
+        <p class="sub">北奔 NG80 前脸 · 360×240
+          · 长边 360 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0211</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0211</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3773 ／ drop 多车队列 +0.3563</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 360 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://imgh.360che.com/imgc/0/228/228802.jpg!360</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/64.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔重卡 310马力 6X2 牵引车(NG80驾驶室)(ND42400L23J7)_江苏隆鑫汽车销售服务_卡车之家">北奔重卡 310马力 6X2 牵引车(NG80驾驶室)(ND42400L23J7)_江苏隆鑫汽车销售服务</h3>
+        <p class="sub">北奔 NG80 前脸 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0069</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0180</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3105 ／ drop 多车队列 +0.2925</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0084</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://imgh.360che.com/imgc/0/82/82317.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/66.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80重卡 375马力 6X4天然气牵引车(ND4250B38J6Z00)_湖北奔驰宏达工贸_卡车之家">北奔 NG80重卡 375马力 6X4天然气牵引车(ND4250B38J6Z00)_湖北奔驰宏达工贸_卡</h3>
+        <p class="sub">北奔 NG80 前脸 · 550×367
+          · 长边 550 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0223</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0244</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3004 ／ drop 多车队列 +0.2761</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0008</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/189/189053.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/68.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔NG80,国外40年前的淘汰车型,旧瓶装新酒,在国内依旧大卖">北奔NG80,国外40年前的淘汰车型,旧瓶装新酒,在国内依旧大卖</h3>
+        <p class="sub">北奔 NG80 前脸 · 700×497
+          · 长边 700 · 基础批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0202</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0202</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2894 ／ drop 多车队列 +0.2692</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0078</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 700 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://k.sinaimg.cn/n/sinacn10/283/w1101h782/20180830/fbb8-hikca</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/69.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="德龙X3000（批次遗留文件，无原始标题）">德龙X3000（批次遗留文件，无原始标题）</h3>
+        <p class="sub">德龙X3000 · 645×480
+          · 长边 645 · 基础批次
+          · 遗留文件</p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0616</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0583</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3637 ／ drop 网格拼图 +0.3054</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0061</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 645 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· </span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/70.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="出口中国重汽豪沃6x6全驱动载货新车18953179828">出口中国重汽豪沃6x6全驱动载货新车18953179828</h3>
+        <p class="sub">豪沃 6X6 侧视 · 1580×1000
+          · 长边 1580 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0012</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0249</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3428 ／ drop 网格拼图 +0.3677</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“网格拼图”胜出（-0.0249 = keep a photo of one truck in  +0.3428 − drop 网格拼图 +0.3677）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· https://cbu01.alicdn.com/img/ibank/O1CN01IUnpTg1fVXlO9E0Af_!!221</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/71.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 侧视 · 640×481
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0138</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0015</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3517 ／ drop 多车队列 +0.3502</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0020</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/201</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/72.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 侧视 · 640×426
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0492</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0492</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3658 ／ drop 多车队列 +0.3166</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0006</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/images/20190105/3e70f293bcff</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/73.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自">6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自</h3>
+        <p class="sub">豪沃 6X6 侧视 · 800×800
+          · 长边 800 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0873</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0685</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3011 ／ drop 网格拼图 +0.2326</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>hero_45 · gap 0.0015</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://cbu01.alicdn.com/img/ibank/O1CN01vdxq741Bs2jdRbWGL_!!0-0-</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/74.jpg" alt="">
+        <span class="badge ok">可用·部件 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自">6x6 全轮驱动 30 吨豪沃自卸车 - buy 豪沃自</h3>
+        <p class="sub">豪沃 6X6 前脸 · 1500×1122
+          · 长边 1500 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.1462</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.1203</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.3275 ／ drop 网格拼图 +0.2072</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0083</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://sc02.alicdn.com/kf/HTB1obUxO5LaK1RjSZFxq6ymPFXaX/2000478</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/75.jpg" alt="">
+        <span class="badge ok">可用·部件 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="跨境出售重汽豪沃6x6载货车底盘">跨境出售重汽豪沃6x6载货车底盘</h3>
+        <p class="sub">豪沃 6X6 前脸 · 720×1280
+          · 长边 1280 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0239</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0362</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3821 ／ drop 多车队列 +0.3460</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0010</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://pic.rmb.bdstatic.com/bjh/other/db7261357061b0751130d2e35</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/76.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车">全驱豪沃牵引车很少见 看看重汽第一代HOWO 375马力 6x6牵引车</h3>
+        <p class="sub">豪沃 6X6 前脸 · 640×426
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0342</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0356</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3573 ／ drop 多车队列 +0.3217</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0036</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://5b0988e595225.cdn.sohucs.com/images/20190105/ee0bbc668dbc</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/77.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="中国重汽豪沃6x6越野20cbm自卸车翻斗车 - buy howo dump truck,sinot">中国重汽豪沃6x6越野20cbm自卸车翻斗车 - buy howo dump truck,sinot</h3>
+        <p class="sub">豪沃 6X6 前脸 · 898×1000
+          · 长边 1000 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0196</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0196</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3305 ／ drop 客车 +0.3109</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://www.zjpse.com/editorUpload/file/20240617/171861198848601</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/79.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="重汽豪沃六驱越野载货车 ZZ2257V455GF1型6X6越野底盘">重汽豪沃六驱越野载货车 ZZ2257V455GF1型6X6越野底盘</h3>
+        <p class="sub">豪沃 6X6 前脸 · 400×400
+          · 长边 400 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.1308</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.1308</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2098 ／ drop 文档截图 +0.3406</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 文档截图</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“文档截图”胜出（-0.1308 = keep 单台重卡 +0.2098 − drop 文档截图 +0.3406）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://l.b2b168.net/2022/08/31/08/202208310836414280304.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/80.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="乐华49AX3000">乐华49AX3000</h3>
+        <p class="sub">德龙 X3000 侧视 · 800×600
+          · 长边 800 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0248</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0248</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 工程车 +0.2572 ／ drop 文档截图 +0.2820</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 工程车
+            ／ drop 文档截图</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“文档截图”胜出（-0.0248 = keep 工程车 +0.2572 − drop 文档截图 +0.2820）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· http://img.pconline.com.cn/images/upload/upc/tx/pconline_product</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/81.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="德龙X3000购车优惠6000元">德龙X3000购车优惠6000元</h3>
+        <p class="sub">德龙 X3000 侧视 · 600×450
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0018</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0095</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2970 ／ drop 多车队列 +0.2875</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0035</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/05/24/e3a3f037001d4076</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/84.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="德龙X3000牵引车火热促销中 让利高达0.6万">德龙X3000牵引车火热促销中 让利高达0.6万</h3>
+        <p class="sub">德龙 X3000 侧视 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0181</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0153</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3005 ／ drop 多车队列 +0.2852</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0018</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/865/865416.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/86.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="夫妻车真的辛苦吗?16小时真实记录德龙X3000货运生活">夫妻车真的辛苦吗?16小时真实记录德龙X3000货运生活</h3>
+        <p class="sub">德龙 X3000 侧视 · 640×427
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0046</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0133</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3791 ／ drop 多车队列 +0.3657</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0024</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://f11.baidu.com/it/u=117246697,3095864453&amp;fm=170&amp;s=BFB6578</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/87.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="【宜春二手车】2016年4月二手陕汽重卡德龙X3000_价格28.36万_二手车城">【宜春二手车】2016年4月二手陕汽重卡德龙X3000_价格28.36万_二手车城</h3>
+        <p class="sub">德龙 X3000 侧视 · 645×480
+          · 长边 645 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0616</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0583</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3637 ／ drop 网格拼图 +0.3054</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0061</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 645 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://pic.cn2che.com/pics/2018/05/28/big_img/201805281129374086</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/88.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="国产最大马力重卡被刷新,600马力的陕汽德龙X3000牵引车图解">国产最大马力重卡被刷新,600马力的陕汽德龙X3000牵引车图解</h3>
+        <p class="sub">德龙 X3000 前脸 · 640×427
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0176</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0363</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3727 ／ drop 多车队列 +0.3365</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0024</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t12.baidu.com/it/u=3001899077,3688113945&amp;fm=173&amp;app=25&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/89.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="到底强在哪?陕汽德龙X3000超强版">到底强在哪?陕汽德龙X3000超强版</h3>
+        <p class="sub">德龙 X3000 前脸 · 830×692
+          · 长边 830 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0783</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0783</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.3264 ／ drop 多车队列 +0.2480</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0012</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://p0.ifengimg.com/pmop/2017/0821/06790F195364C79213B3578A78</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/90.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="搭载460马力黄金动力链,实拍陕汽德龙X3000牵引车">搭载460马力黄金动力链,实拍陕汽德龙X3000牵引车</h3>
+        <p class="sub">德龙 X3000 前脸 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0054</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0087</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3271 ／ drop 多车队列 +0.3183</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0007</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://t10.baidu.com/it/u=1610224878,2217607926&amp;fm=173&amp;app=49&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/91.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="语森忆适用陕汽德龙新m3000数字标x3000车贴标志车头前脸电镀字贴画">语森忆适用陕汽德龙新m3000数字标x3000车贴标志车头前脸电镀字贴画</h3>
+        <p class="sub">德龙 X3000 前脸 · 1000×1000
+          · 长边 1000 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0497</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0497</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2156 ／ drop 图表 +0.2653</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 图表</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“图表”胜出（-0.0497 = keep 部件特写 +0.2156 − drop 图表 +0.2653）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://img14.360buyimg.com/pop/jfs/t1/301671/17/4172/371289/681</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/92.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="为何这么火?实拍陕汽德龙X3000危化品牵引车">为何这么火?实拍陕汽德龙X3000危化品牵引车</h3>
+        <p class="sub">德龙 X3000 前脸 · 640×427
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0169</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0546</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2653 ／ drop 内饰舱 +0.3199</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0546 = keep 单台重卡 +0.2653 − drop 内饰舱 +0.3199）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· http://img.mp.itc.cn/upload/20160704/6b547349862848c8a3cc2fa6362</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/93.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="【促销】德龙X3000重载8X4促销(2台)_四川盛宏车业_卡车之家">【促销】德龙X3000重载8X4促销(2台)_四川盛宏车业_卡车之家</h3>
+        <p class="sub">德龙 X3000 前脸 · 600×800
+          · 长边 800 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0269</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0323</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3720 ／ drop 多车队列 +0.3397</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0067</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img1.kcimg.cn/dealerimg/news/2018/01/26/291d2d3427d24217</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/96.jpg" alt="">
+        <span class="badge ok">可用·部件 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="出口汕德卡c7h;牵引车;6×4,曼机480,手动挡;气囊桥 新曼白;汕德卡c7h">出口汕德卡c7h;牵引车;6×4,曼机480,手动挡;气囊桥 新曼白;汕德卡c7h</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 1707×1280
+          · 长边 1707 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0056</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0100</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2901 ／ drop 多车队列 +0.2801</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0017</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://b0.bdstatic.com/a46be875822d44360c788bb4f068b184.jpeg@h_</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/97.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="他说:用汕德卡C7H跑运输,绝了">他说:用汕德卡C7H跑运输,绝了</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 1278×1338
+          · 长边 1338 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0166</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0166</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2904 ／ drop 客车 +0.2738</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0012</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://p7.itc.cn/q_70/images03/20210218/48b1a861d8344a34bd75d1a</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/101.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="中国重汽汕德卡C7H牵引车促销:5万定金抵7万">中国重汽汕德卡C7H牵引车促销:5万定金抵7万</h3>
+        <p class="sub">汕德卡 C7H 侧视 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0419</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0419</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2395 ／ drop 客车 +0.1976</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0047</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://imgn.360che.com/imga/0/264/264345.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/104.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="刚到家 20年8月 金标汕德卡c7h 超高顶 540马力 自动挡 采埃孚">刚到家 20年8月 金标汕德卡c7h 超高顶 540马力 自动挡 采埃孚</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 1705×1280
+          · 长边 1705 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0280</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0280</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3040 ／ drop 多车队列 +0.2760</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0004</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://b0.bdstatic.com/1615b7d208c72ef9eb8425d365638bd8.jpeg@h_</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/106.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="乘龙H7 PK汕德卡C7H 同样是600马力 你会选择谁?">乘龙H7 PK汕德卡C7H 同样是600马力 你会选择谁?</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 511×352
+          · 长边 511 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0192</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0334</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3577 ／ drop 多车队列 +0.3243</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0010</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 511 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://www.find800.cn/uploadfile/2020/0408/20200408072615836.png</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/107.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="双色前脸 右舵版汕德卡 发往澳大利亚的重汽C7H 540牵引车">双色前脸 右舵版汕德卡 发往澳大利亚的重汽C7H 540牵引车</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 640×427
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0316</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0119</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3970 ／ drop 多车队列 +0.3851</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0049</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://p1.itc.cn/images03/20200527/9c96fa51e995418abcf05ad38fc6c</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/108.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="双色前脸 右舵版汕德卡 发往澳大利亚的C7H 540牵引车">双色前脸 右舵版汕德卡 发往澳大利亚的C7H 540牵引车</h3>
+        <p class="sub">汕德卡 C7H 前脸 · 1080×810
+          · 长边 1080 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0001</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0198</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3095 ／ drop 多车队列 +0.2897</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0023</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://p6.itc.cn/images03/20200526/54b19bb2f9c745c99f1461ee71d14</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/112.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="解放牌_ca1040p40k59l2e6a85载货汽车_">解放牌_ca1040p40k59l2e6a85载货汽车_</h3>
+        <p class="sub">解放 J6G 侧视 · 932×1000
+          · 长边 1000 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0860</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0781</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3826 ／ drop 网格拼图 +0.3045</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0027</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://source.cn-truck.com/ggimg/clcp/353/y51193752.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/113.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="致力打造世界知名的解放卡车品牌">致力打造世界知名的解放卡车品牌</h3>
+        <p class="sub">解放 J6G 侧视 · 500×351
+          · 长边 500 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0578</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0578</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3421 ／ drop 多车队列 +0.2843</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0001</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 500 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://auto.eastday.com/auto/08auto/node16426/node38613/node3897</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/114.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="解放CA3127K2E长头柴油自卸车">解放CA3127K2E长头柴油自卸车</h3>
+        <p class="sub">解放 J6G 侧视 · 624×480
+          · 长边 624 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0493</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0011</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3638 ／ drop 网格拼图 +0.3649</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“网格拼图”胜出（-0.0011 = keep 单台重卡 +0.3638 − drop 网格拼图 +0.3649）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· https://source.cn-truck.com/ggimg/clcp/238/2499eg5.jpg</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/115.jpg" alt="">
+        <span class="badge ok">可用·概览</span>
+      </div>
+      <div class="body">
+        <h3 title="660马力J7领衔,全新J6G载货车抢眼,2023解放亮点车型盘点(上)">660马力J7领衔,全新J6G载货车抢眼,2023解放亮点车型盘点(上)</h3>
+        <p class="sub">解放 J6G 侧视 · 1024×682
+          · 长边 1024 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0364</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0364</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2929 ／ drop 多车队列 +0.2565</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0022</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://p5.itc.cn/images01/20230221/2e93479d94c44e0e8ee8762e80ca2</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/116.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="一汽解放J6G载货车 火热促 销 中">一汽解放J6G载货车 火热促 销 中</h3>
+        <p class="sub">解放 J6G 侧视 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0756</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0756</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.3209 ／ drop 多车队列 +0.2453</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0011</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/1/1722/1722911.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/117.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="解放J6G领航版,载货新车型,欢迎来店垂询!">解放J6G领航版,载货新车型,欢迎来店垂询!</h3>
+        <p class="sub">解放 J6G 侧视 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0169</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0418</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3383 ／ drop 多车队列 +0.2965</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0056</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/1/1595/1595239.jpg!600</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/118.jpg" alt="">
+        <span class="badge ref">参考·低清</span>
+      </div>
+      <div class="body">
+        <h3 title="解放J6G载货 开启营运新&quot;视&quot;界">解放J6G载货 开启营运新&quot;视&quot;界</h3>
+        <p class="sub">解放 J6G 侧视 · 600×450
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0051</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0072</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2828 ／ drop 多车队列 +0.2756</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0027</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://papr.yunshuren.com/file/63/649/1677460664963.jpg!news.pc</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/119.jpg" alt="">
+        <span class="badge ok">可用·部件 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="一汽解放高端中卡j6g载货车 带来全新高效运营解决方案">一汽解放高端中卡j6g载货车 带来全新高效运营解决方案</h3>
+        <p class="sub">解放 J6G 前脸 · 1728×1080
+          · 长边 1728 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0350</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0052</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3084 ／ drop 多车队列 +0.3032</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0027</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t14.baidu.com/it/u=1664727070,1969447833&amp;fm=225&amp;app=113&amp;</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="0">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/120.jpg" alt="">
+        <span class="badge ok">可用·部件</span>
+      </div>
+      <div class="body">
+        <h3 title="新一代&quot;赚钱机器&quot;,号称国内中卡最大空间的一汽解放J6G">新一代&quot;赚钱机器&quot;,号称国内中卡最大空间的一汽解放J6G</h3>
+        <p class="sub">解放 J6G 前脸 · 1338×924
+          · 长边 1338 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0112</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0112</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2572 ／ drop 多车队列 +0.2460</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0070</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://p2.itc.cn/images01/20230408/deeefb8f1efd471cbeb030fa16568</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_part" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/121.jpg" alt="">
+        <span class="badge ok">可用·部件 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="6米8冷藏车 6米8解放j6g冷藏车,24款全新升级 大柴320马力7.8升排量,1">6米8冷藏车 6米8解放j6g冷藏车,24款全新升级 大柴320马力7.8升排量,1</h3>
+        <p class="sub">解放 J6G 前脸 · 960×1280
+          · 长边 1280 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0210</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0082</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3762 ／ drop 多车队列 +0.3680</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0001</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✓
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·部件</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://b0.bdstatic.com/9de98ff6285b7be5590c3a7f0c2bba88.jpeg@h_1</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/122.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="载货车也能有平地板,全新解放J6G曝光">载货车也能有平地板,全新解放J6G曝光</h3>
+        <p class="sub">解放 J6G 前脸 · 640×640
+          · 长边 640 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0113</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0179</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3496 ／ drop 多车队列 +0.3317</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0047</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 640 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://t11.baidu.com/it/u=2843608043,187953580&amp;fm=30&amp;app=106&amp;f=</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="usable_overview" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/123.jpg" alt="">
+        <span class="badge ok">可用·概览 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="#卡车 高清解放j6g,解放动力320马力,大扭矩手动变速箱">#卡车 高清解放j6g,解放动力320马力,大扭矩手动变速箱</h3>
+        <p class="sub">解放 J6G 前脸 · 1067×800
+          · 长边 1067 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0085</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0214</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.2847 ／ drop 多车队列 +0.2633</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0007</td></tr>
+          <tr><th>分层</th><td>概览 ✓
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict ok">可用·概览</td></tr>
+        </table>
+        
+        <p class="chips"><span class="chip">长边 &lt;1200（只能当概览）</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img2.baidu.com/it/u=80628774,1204535688&amp;fm=253&amp;app=138&amp;f</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/124.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="马力,挡位再升级,320马力解放j6g满足高端中卡动力需求">马力,挡位再升级,320马力解放j6g满足高端中卡动力需求</h3>
+        <p class="sub">解放 J6G 前脸 · 960×1280
+          · 长边 1280 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0099</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0099</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3316 ／ drop 客车 +0.3415</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“客车”胜出（-0.0099 = keep 单台重卡 +0.3316 − drop 客车 +0.3415）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://b0.bdstatic.com/62de5c8e8c5d925e3b0491387df0ed1b.jpeg@h_</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/127.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔引进NG80的年代 德国已经有自动挡">北奔引进NG80的年代 德国已经有自动挡</h3>
+        <p class="sub">北奔 NG80 侧视 · 600×400
+          · 长边 600 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0104</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0245</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3075 ／ drop 多车队列 +0.2830</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>hero_45 · gap 0.0030</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 600 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img9.kcimg.cn/imga/0/553/553225.jpg!602</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="newly_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/129.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="【图】北奔 NG80系列重卡 325马力 6X4 自卸车(ND3254B38)_实拍图片_124841_卡车之家">【图】北奔 NG80系列重卡 325马力 6X4 自卸车(ND3254B38)_实拍图片_124841_</h3>
+        <p class="sub">北奔 NG80 侧视 · 800×533
+          · 长边 800 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0272</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0545</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 部件特写 +0.2467 ／ drop 内饰舱 +0.3012</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0545 = keep 部件特写 +0.2467 − drop 内饰舱 +0.3012）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2 通过 → v3 拒绝（新增拦截）
+          <span class="dim">· http://imgh.360che.com/imgc/0/124/124841.jpg!800</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reject_gate" data-change="still_dropped"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="1"
+             data-ref="0"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/130.jpg" alt="">
+        <span class="badge bad">拦·CLIP 门卫 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔重汽NG80-6X4非公路自卸车">北奔重汽NG80-6X4非公路自卸车</h3>
+        <p class="sub">北奔 NG80 侧视 · 640×854
+          · 长边 854 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0033</td></tr>
+          <tr><th>v3 门卫</th><td class="fail">拒绝 -0.0256</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2884 ／ drop 内饰舱 +0.3140</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 客车</td></tr>
+          <tr><th>视角</th><td>—</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✗</td></tr>
+          <tr><th>结论</th><td class="verdict bad">拦·CLIP 门卫</td></tr>
+        </table>
+        <p class="fail">CLIP 拒绝：“内饰舱”胜出（-0.0256 = keep 单台重卡 +0.2884 − drop 内饰舱 +0.3140）</p>
+        <p class="chips"><span class="chip">CLIP 判为无关图</span></p>
+        <p class="chg">v2、v3 都拒绝
+          <span class="dim">· https://upimg.tiebaobei.com/img/161007/126f8b57fd967e7d62e79002c</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/131.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80B重卡 375马力 6X4牵引车(ND42510B34J)_鄂尔多斯市凯驰汽车销售有限责任公司_卡车之家">北奔 NG80B重卡 375马力 6X4牵引车(ND42510B34J)_鄂尔多斯市凯驰汽车销售有限责任</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0223</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0244</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3004 ／ drop 多车队列 +0.2761</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0008</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/189/189052.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/132.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 240马力 8X4 6.8米自卸车(ND33100D34J)_江苏隆鑫汽车销售服务_卡车之家">北奔 NG80系列重卡 240马力 8X4 6.8米自卸车(ND33100D34J)_江苏隆鑫汽车销售服</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0389</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0389</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3491 ／ drop 多车队列 +0.3102</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/102/102865.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/133.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 350马力 6X4 8米栏板载货车(ND2250FD5J6Z00)">北奔 NG80系列重卡 350马力 6X4 8米栏板载货车(ND2250FD5J6Z00)</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0206</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0327</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3781 ／ drop 多车队列 +0.3453</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0102</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/228/228651.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/134.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80重卡 375马力 4X2天然气牵引车(ND4180A38J6Z01)">北奔 NG80重卡 375马力 4X2天然气牵引车(ND4180A38J6Z01)</h3>
+        <p class="sub">北奔 NG80 侧视 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0319</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0094</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3672 ／ drop 多车队列 +0.3578</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0073</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">背景有其他车（不占概览/部件名额，只进参考层）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">background_vehicles</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/45/45947.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/136.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80系列重卡 336马力 8X4 载货车(ND1316D41J)_青县海纳汽车销售有限公司_卡车之家">北奔 NG80系列重卡 336马力 8X4 载货车(ND1316D41J)_青县海纳汽车销售有限公司_卡</h3>
+        <p class="sub">北奔 NG80 前脸 · 360×240
+          · 长边 360 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0211</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0211</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.3773 ／ drop 多车队列 +0.3563</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>rear · gap 0.0003</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 360 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://imgh.360che.com/imgc/0/228/228802.jpg!360</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="resurrected"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/138.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔重卡 310马力 6X2 牵引车(NG80驾驶室)(ND42400L23J7)_江苏隆鑫汽车销售服务_卡车之家">北奔重卡 310马力 6X2 牵引车(NG80驾驶室)(ND42400L23J7)_江苏隆鑫汽车销售服务</h3>
+        <p class="sub">北奔 NG80 前脸 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>拒绝 -0.0069</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0180</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3105 ／ drop 多车队列 +0.2925</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>front · gap 0.0084</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 拒绝 → v4 通过（复活）
+          <span class="dim">· http://imgh.360che.com/imgc/0/82/82317.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/140.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔 NG80重卡 375马力 6X4天然气牵引车(ND4250B38J6Z00)_湖北奔驰宏达工贸_卡车之家">北奔 NG80重卡 375马力 6X4天然气牵引车(ND4250B38J6Z00)_湖北奔驰宏达工贸_卡</h3>
+        <p class="sub">北奔 NG80 前脸 · 550×367
+          · 长边 550 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0223</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0244</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep a photo of one truck in  +0.3004 ／ drop 多车队列 +0.2761</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 部件特写
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>side · gap 0.0008</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 550 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角不可信</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· https://img4.kcimg.cn/imgc/0/189/189053.jpg!550</span></p>
+      </div>
+    </article>
+    <article class="card" data-verdict="reference" data-change="kept"
+             data-stage="gate" data-batch="web-smoke-hd-20261109"
+             data-newlabel="0"
+             data-ref="1"
+             data-dup="1">
+      <div class="thumb">
+        <img loading="lazy" src="thumbs/142.jpg" alt="">
+        <span class="badge ref">参考·低清 · 同图重复</span>
+      </div>
+      <div class="body">
+        <h3 title="北奔NG80,国外40年前的淘汰车型,旧瓶装新酒,在国内依旧大卖">北奔NG80,国外40年前的淘汰车型,旧瓶装新酒,在国内依旧大卖</h3>
+        <p class="sub">北奔 NG80 前脸 · 700×497
+          · 长边 700 · HD 批次
+          </p>
+        <table>
+          <tr><th>预筛</th><td class="pass">通过</td></tr>
+          <tr><th>v2 门卫</th><td>通过 +0.0202</td></tr>
+          <tr><th>v3 门卫</th><td class="pass">通过 +0.0202</td></tr>
+          <tr><th>v3 竞争</th><td class="labels">keep 单台重卡 +0.2894 ／ drop 多车队列 +0.2692</td></tr>
+          <tr><th>v2 竞争</th><td class="labels dim">keep 单台重卡
+            ／ drop 多车队列</td></tr>
+          <tr><th>视角</th><td>detail · gap 0.0078</td></tr>
+          <tr><th>分层</th><td>概览 ✗
+            ／ 部件 ✗
+            ／ 参考 ✓</td></tr>
+          <tr><th>结论</th><td class="verdict ref">参考·低清</td></tr>
+        </table>
+        <p class="note">分辨率不够：长边 700 &lt; 800（只能当参考）</p>
+        <p class="chips"><span class="chip">长边 &lt;800</span><span class="chip hint">视角=部件特写</span></p>
+        <p class="chg">v2 通过 → v3 仍通过
+          <span class="dim">· http://k.sinaimg.cn/n/sinacn10/283/w1101h782/20180830/fbb8-hikca</span></p>
+      </div>
+    </article></main>
+<footer>
+  <p><strong>读法</strong>：<code>预筛</code> 是零模型的确定性第一段（尺寸/字节/格式/长宽比/近空白）；
+  被它拦下的图 <em>不会</em> 进 CLIP，所以 v3 门卫显示“未运行”。
+  <code>v2</code> 是旧反例集（7 条），<code>v3</code> 加了内饰/拼图/截图/广告 4 条。
+  <code>竞争标签</code> 是 keep/drop 两个分数最高的标签及其相似度，门卫判定就是两者相减的裕量。</p>
+  <p>可用 ≠ 型号身份正确：门卫只判“是不是单台目标车类的图”，身份仍靠标题护栏 + 人工复核。</p>
+</footer>
+<script>
+const cards=[...document.querySelectorAll('.card')];
+const F={
+ all:()=>true,
+ usable:c=>c.dataset.verdict.startsWith('usable'),
+ ref:c=>c.dataset.ref==='1',
+ unique:c=>c.dataset.dup!=='1',
+ bad:c=>!c.dataset.verdict.startsWith('usable'),
+ changed:c=>c.dataset.change==='newly_dropped'||c.dataset.change==='resurrected',
+ prefilter:c=>c.dataset.stage==='prefilter',
+ gate:c=>c.dataset.verdict==='reject_gate'||c.dataset.verdict==='reject_scene',
+ newlabel:c=>c.dataset.newlabel==='1',
+ hd:c=>c.dataset.batch==='web-smoke-hd-20261109'
+};
+let cur='all';
+function apply(){cards.forEach(c=>c.style.display=F[cur](c)?'':'none');
+ document.querySelectorAll('.filters button').forEach(b=>
+   b.classList.toggle('on',b.dataset.f===cur));}
+document.querySelectorAll('.filters button').forEach(b=>
+  b.onclick=()=>{cur=b.dataset.f;apply();});
+apply();
+</script>
+</body></html>

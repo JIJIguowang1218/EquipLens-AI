@@ -1,0 +1,2174 @@
+{
+  "meta": {
+    "stage": "pre-retrieval",
+    "module": "L1.5-task-brief",
+    "test": "breadth-20",
+    "version": "0.2",
+    "date": "2026-11-09",
+    "labels": [
+      "pre-retrieval",
+      "task-brief",
+      "breadth-20",
+      "stability"
+    ],
+    "notes": "Paper test. 20 categories incl. 5 deep cases; environment-present-but-irrelevant controls included."
+  },
+  "cases": [
+    {
+      "id": "C01",
+      "category": "沙漠油田牵引车",
+      "input": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）",
+      "environment": {
+        "value": "沙漠工况（高温/沙尘/强辐射）",
+        "confidence": 0.85
+      },
+      "base_platform": {
+        "value": "6×6 重型卡车底盘/驾驶室",
+        "confidence": 0.8
+      },
+      "configuration": "6×6",
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 2
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙石冲击",
+            "接近角"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "防护栏",
+          "location": "side_chassis",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙石",
+            "防撞",
+            "法规"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "防滑",
+            "沙尘",
+            "离地高"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙尘",
+            "强光",
+            "灯罩防护"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "wheel_arch",
+          "label": "前轮拱",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "离地间隙",
+            "沙石"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "grille",
+          "label": "格栅",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "进气防尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "brand_zone",
+          "label": "品牌区",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "front"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform",
+        "cross"
+      ],
+      "notes": "前脸是区域（整体线条/风格），大灯/保险杠同时是部件；不写具体车型。",
+      "review": [
+        "车辆侧护板是前后轮之间的覆盖件结构，位置要单独记。",
+        "前脸是覆盖件整体线条走势与风格描述，和部件的描述不是一个结构。",
+        "有工况的类目可以开 environment，但不能预设每层数量。"
+      ],
+      "changes": [
+        "增加 location 维度",
+        "增加 region_requirements",
+        "删除每层配额"
+      ]
+    },
+    {
+      "id": "C02",
+      "category": "重型吊车",
+      "input": "重型吊车（驾驶室后方侧护板、车辆侧护板、登车踏步、前脸）",
+      "environment": null,
+      "base_platform": {
+        "value": "汽车起重机/全地面起重机专用底盘",
+        "confidence": 0.6
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "车辆侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "驾驶室后方侧护板",
+          "location": "side_cab_rear",
+          "relevance": "none",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "grille",
+          "label": "格栅",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "front"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform",
+        "cross"
+      ],
+      "notes": "无工况输入 → 不开 environment 层；侧护板两个位置必须拆开；词表缺 location 变体。",
+      "review": [
+        "驾驶室后方侧护板和车辆侧护板不是一个位置。",
+        "无工况的类目先按推荐来，不要硬编工况。"
+      ],
+      "changes": [
+        "同名部件按 location 拆分",
+        "无工况时不强开 environment 层"
+      ]
+    },
+    {
+      "id": "C03",
+      "category": "矿用翻斗卡车",
+      "input": "矿用翻斗卡车（登车踏步、大灯、后视镜）",
+      "environment": {
+        "value": "矿山工况（粉尘/重载/坡道）",
+        "confidence": 0.75
+      },
+      "base_platform": {
+        "value": "矿用自卸底盘",
+        "confidence": 0.65
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "粉尘",
+            "防滑",
+            "离地高"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "粉尘",
+            "飞石",
+            "灯罩防护"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "mirror",
+          "label": "后视镜",
+          "location": "side_upper",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "粉尘",
+            "振动",
+            "宽体"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform",
+        "cross"
+      ],
+      "notes": "矿用自卸 vs 刚性矿卡有歧义，默认自卸并写 assumption；后视镜属于 side region。",
+      "review": [
+        "矿用自卸和刚性矿卡的区分很好。"
+      ],
+      "changes": [
+        "保留歧义 assumption，不加追问"
+      ]
+    },
+    {
+      "id": "C04",
+      "category": "随车起重运输车",
+      "input": "随车吊车（侧护板、前轮拱、登车踏步）",
+      "environment": null,
+      "base_platform": {
+        "value": "载货车底盘 + 吊机",
+        "confidence": 0.6
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "wheel_arch",
+          "label": "前轮拱",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform",
+        "cross"
+      ],
+      "notes": "随车吊 vs 汽车吊有歧义；无工况；基础构型是“普通卡车 + 吊机”，踏步/驾驶室按卡车看。",
+      "review": [
+        "随车吊是普通卡车搭载吊机，踏步和驾驶室造型与专用吊车很不一样。"
+      ],
+      "changes": [
+        "增加 base_platform"
+      ]
+    },
+    {
+      "id": "C05",
+      "category": "重型长途牵引车",
+      "input": "重型长途卡车（前脸、保险杠、大灯、登车踏步、前轮拱）",
+      "environment": null,
+      "base_platform": {
+        "value": "重型长途牵引车/重卡",
+        "confidence": 0.8
+      },
+      "configuration": "6×4",
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 2
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "wheel_arch",
+          "label": "前轮拱",
+          "location": "front",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform",
+        "cross"
+      ],
+      "notes": "“长途”是使用场景，不是环境特化 → 不开 environment 层；前脸为区域。",
+      "review": [
+        "基础构型会影响踏步/驾驶室的判断。"
+      ],
+      "changes": [
+        "增加 base_platform",
+        "无工况不开 environment"
+      ]
+    },
+    {
+      "id": "C06",
+      "category": "寒区矿山自卸车",
+      "environment": {
+        "value": "寒区矿山（低温/冰雪/粉尘）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "矿用自卸底盘",
+        "confidence": 0.7
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "沙石"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "防滑",
+            "冰雪",
+            "离地高"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "mirror",
+          "label": "后视镜",
+          "location": "side_upper",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "振动"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "cargo_body",
+          "label": "货厢",
+          "location": "rear_body",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "保温",
+            "防冻"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "conditional",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "寒区工况对货厢/踏步/保险杠有设计驱动；货厢为 taxonomy 新部件。"
+    },
+    {
+      "id": "C07",
+      "category": "高原混凝土搅拌车",
+      "environment": {
+        "value": "高原（低氧/低温/强紫外）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "重卡底盘",
+        "confidence": 0.75
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "mixer_drum",
+          "label": "搅拌罐",
+          "location": "rear_body",
+          "relevance": "none",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "工况存在但不驱动这些外观件 → 不开 environment 层；这是“有环境但无关”的对照。"
+    },
+    {
+      "id": "C08",
+      "category": "港口集装箱牵引车",
+      "environment": {
+        "value": "港口（盐雾/潮湿）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "4×2/6×4 牵引车",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "盐雾腐蚀"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "盐雾",
+            "防滑"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "mirror",
+          "label": "后视镜",
+          "location": "side_upper",
+          "relevance": "none",
+          "views": [
+            "front",
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "fender",
+          "label": "挡泥板",
+          "location": "side_lower",
+          "relevance": "conditional",
+          "views": [
+            "side"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "盐雾"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "盐雾对保险杠/踏步/挡泥板有防腐驱动；挡泥板为 taxonomy 新部件。"
+    },
+    {
+      "id": "C09",
+      "category": "隧道施工装载机",
+      "environment": {
+        "value": "隧道（粉尘/低净空）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "轮式装载机",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "bucket",
+          "label": "铲斗",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "磨蚀",
+            "冲击"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "boom",
+          "label": "动臂",
+          "location": "front_upper",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "低净空",
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "低净空",
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "engine_hood",
+          "label": "发动机罩",
+          "location": "rear_upper",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "隧道工况驱动铲斗/动臂/驾驶室防护；多个新部件。"
+    },
+    {
+      "id": "C10",
+      "category": "市政洒水车",
+      "environment": {
+        "value": "城市道路",
+        "confidence": 0.9
+      },
+      "base_platform": {
+        "value": "重卡底盘",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "tank",
+          "label": "罐体",
+          "location": "rear_body",
+          "relevance": "none",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "城市不是外观设计约束 → 不开 environment 层；罐体为 taxonomy 新部件。"
+    },
+    {
+      "id": "C11",
+      "category": "全地面起重机",
+      "environment": {
+        "value": "通用",
+        "confidence": 0.9
+      },
+      "base_platform": {
+        "value": "专用起重机底盘",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "outrigger",
+          "label": "支腿",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "B",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "counterweight",
+          "label": "配重",
+          "location": "rear_body",
+          "relevance": "none",
+          "views": [
+            "rear",
+            "side"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "无工况；专用底盘，踏步/驾驶室不能按普通卡车判。"
+    },
+    {
+      "id": "C12",
+      "category": "履带起重机",
+      "environment": {
+        "value": "通用",
+        "confidence": 0.9
+      },
+      "base_platform": {
+        "value": "履带底盘",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "boom",
+          "label": "吊臂",
+          "location": "front_upper",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "crawler_frame",
+          "label": "履带架",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "front"
+          ],
+          "accept": "B",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "counterweight",
+          "label": "配重",
+          "location": "rear_body",
+          "relevance": "none",
+          "views": [
+            "rear",
+            "side"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "无工况；履带底盘与轮式底盘不可互借。"
+    },
+    {
+      "id": "C13",
+      "category": "矿用宽体自卸车",
+      "environment": {
+        "value": "矿山（粉尘/重载/坡道）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "宽体矿卡",
+        "confidence": 0.75
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙石",
+            "冲击"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "粉尘",
+            "防滑"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "粉尘",
+            "飞石"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "cargo_body",
+          "label": "货厢",
+          "location": "rear_body",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "磨损",
+            "重载"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "conditional",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "矿山工况驱动保险杠/踏步/货厢；货厢为新部件。"
+    },
+    {
+      "id": "C14",
+      "category": "井下铲运机",
+      "environment": {
+        "value": "井下（低净空/粉尘）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "地下 LHD",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "bucket",
+          "label": "铲斗",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "磨蚀",
+            "冲击"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "boom",
+          "label": "动臂",
+          "location": "front_upper",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "低净空",
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "低净空",
+            "粉尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "tire_guard",
+          "label": "轮胎防护",
+          "location": "side_lower",
+          "relevance": "conditional",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "井下",
+            "粉尘"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "井下工况驱动铲斗/动臂/驾驶室；轮胎防护为新部件。"
+    },
+    {
+      "id": "C15",
+      "category": "林业抓木机",
+      "environment": {
+        "value": "林区（坡地/枝桠）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "轮式/履带底盘 + 抓具",
+        "confidence": 0.7
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "part",
+          "part": "grapple",
+          "label": "抓具",
+          "location": "front_upper",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "枝桠",
+            "坡地"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "boom",
+          "label": "动臂",
+          "location": "front_upper",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "林区",
+            "枝桠"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "落物",
+            "林区"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "protective_mesh",
+          "label": "防护网",
+          "location": "front_upper",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "side"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "落物",
+            "枝桠"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "林区工况驱动抓具/防护网；多个新部件。"
+    },
+    {
+      "id": "C16",
+      "category": "除雪车",
+      "environment": {
+        "value": "雪/寒（低温/冰雪）",
+        "confidence": 0.85
+      },
+      "base_platform": {
+        "value": "重卡底盘",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "盐蚀"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "snow_plow",
+          "label": "除雪铲",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "除雪",
+            "冲击"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "防滑"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "冰雪",
+            "眩光"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "雪/寒工况驱动除雪铲/踏步/保险杠；除雪铲为新部件。"
+    },
+    {
+      "id": "C17",
+      "category": "机场除冰车",
+      "environment": {
+        "value": "寒/机场（低温/除冰液）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "专用底盘",
+        "confidence": 0.7
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "cab",
+          "label": "驾驶室",
+          "location": "front_upper",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "低温",
+            "除冰液"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "deicing_boom",
+          "label": "除冰臂",
+          "location": "front_upper",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "front"
+          ],
+          "accept": "B",
+          "taxonomy": "new",
+          "mechanism": [
+            "除冰",
+            "高空"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "低温",
+            "防滑"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "低温",
+            "眩光"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "寒/机场工况驱动除冰臂/驾驶室；除冰臂为新部件。"
+    },
+    {
+      "id": "C18",
+      "category": "油田修井机",
+      "environment": {
+        "value": "油田（油污/风沙）",
+        "confidence": 0.8
+      },
+      "base_platform": {
+        "value": "重卡/专用底盘",
+        "confidence": 0.7
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "workover_rig",
+          "label": "修井架",
+          "location": "rear_body",
+          "relevance": "conditional",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new",
+          "mechanism": [
+            "油污",
+            "风沙"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "油田工况对修井架有防腐/防风影响，但对外观覆盖件弱 → 不开 environment 层；修井架为新部件。"
+    },
+    {
+      "id": "C19",
+      "category": "沙漠越野运输车",
+      "environment": {
+        "value": "沙漠（高温/沙尘/强辐射）",
+        "confidence": 0.85
+      },
+      "base_platform": {
+        "value": "6×6/8×8 越野卡车",
+        "confidence": 0.8
+      },
+      "configuration": "6×6/8×8",
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "strong",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙石",
+            "接近角"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "防滑",
+            "沙尘"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "wheel_arch",
+          "label": "前轮拱",
+          "location": "front",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "离地",
+            "沙石"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "strong",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "B",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙石",
+            "防撞"
+          ]
+        },
+        {
+          "granularity": "part",
+          "part": "headlamp",
+          "label": "大灯",
+          "location": "front",
+          "relevance": "conditional",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing",
+          "mechanism": [
+            "沙尘",
+            "强光"
+          ]
+        }
+      ],
+      "tiers": [
+        "exact",
+        "environment",
+        "platform"
+      ],
+      "notes": "沙漠工况驱动保险杠/踏步/轮拱/侧护板；与 C01 同类但用途不同。"
+    },
+    {
+      "id": "C20",
+      "category": "压缩式垃圾车",
+      "environment": {
+        "value": "城市道路",
+        "confidence": 0.9
+      },
+      "base_platform": {
+        "value": "重卡底盘",
+        "confidence": 0.8
+      },
+      "configuration": null,
+      "page_budget": {
+        "vehicle_slots": 12,
+        "part_pages": 1
+      },
+      "requirements": [
+        {
+          "granularity": "region",
+          "region": "front_face",
+          "label": "前脸（整体）",
+          "fields": [
+            "gesture",
+            "character_lines",
+            "proportion",
+            "cmf",
+            "judgement",
+            "style_tags"
+          ],
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "C"
+        },
+        {
+          "granularity": "part",
+          "part": "bumper",
+          "label": "保险杠",
+          "location": "front_lower",
+          "relevance": "none",
+          "views": [
+            "front",
+            "hero_45"
+          ],
+          "accept": "A",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "compactor_body",
+          "label": "压缩箱",
+          "location": "rear_body",
+          "relevance": "none",
+          "views": [
+            "side",
+            "rear"
+          ],
+          "accept": "A",
+          "taxonomy": "new"
+        },
+        {
+          "granularity": "part",
+          "part": "step",
+          "label": "登车踏步",
+          "location": "side_lower",
+          "relevance": "none",
+          "views": [
+            "side",
+            "hero_45"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        },
+        {
+          "granularity": "part",
+          "part": "side_guard",
+          "label": "侧护板",
+          "location": "side_chassis",
+          "relevance": "none",
+          "views": [
+            "side"
+          ],
+          "accept": "B",
+          "taxonomy": "existing"
+        }
+      ],
+      "tiers": [
+        "exact",
+        "platform"
+      ],
+      "notes": "城市不是外观设计约束；压缩箱为新部件。"
+    }
+  ]
+}

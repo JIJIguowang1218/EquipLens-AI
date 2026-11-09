@@ -168,7 +168,43 @@ def main(argv=None):
     p = sub.add_parser("vocab-promote", parents=[common], help="提名转正"); p.add_argument("term_id")
     p = sub.add_parser("vocab-retire", parents=[common], help="退役词表项"); p.add_argument("term_id")
 
+    p = sub.add_parser("retrieval-run", parents=[common],
+                       help="检索中状态机（P1 夹具 / P2 网页）")
+    p.add_argument("--brief", required=True)
+    p.add_argument("--fixtures", default=None)
+    p.add_argument("--web-only", action="store_true")
+    p.add_argument("--models", default=None, help="网页-only 型号候选，逗号分隔")
+    p.add_argument("--searxng", default=None, help="SearXNG 实例 URL")
+    p.add_argument("--tavily-key", default=None, help="Tavily API key")
+    p.add_argument("--run-root", default="data-test/runs")
+    p.add_argument("--run-id", default=None)
+    p.add_argument("--strategy", default="data/retrieval_strategies.json")
+    p.add_argument("--evidence-db", default=None)
+    p.add_argument("--json", action="store_true")
+
     args = parser.parse_args(argv)
+    if args.command == "retrieval-run":
+        from .retrieval_engine.cli import main as retrieval_main
+        argv2 = ["--brief", args.brief,
+                 "--run-root", args.run_root, "--strategy", args.strategy]
+        if args.fixtures:
+            argv2 += ["--fixtures", args.fixtures]
+        if args.web_only:
+            argv2.append("--web-only")
+        if args.models:
+            argv2 += ["--models", args.models]
+        if args.searxng:
+            argv2 += ["--searxng", args.searxng]
+        if args.tavily_key:
+            argv2 += ["--tavily-key", args.tavily_key]
+        if args.evidence_db:
+            argv2 += ["--evidence-db", args.evidence_db]
+        if args.run_id:
+            argv2 += ["--run-id", args.run_id]
+        if args.json:
+            argv2.append("--json")
+        return retrieval_main(argv2)
+
     data_dir = Path(args.data_dir)
     if args.command != "ingest":
         data_dir.mkdir(parents=True, exist_ok=True)

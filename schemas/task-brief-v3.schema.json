@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EquipLens retrieval task brief v0.3",
+  "type": "object",
+  "required": ["brief_id", "request", "part_requirements", "research_units",
+               "tiers", "strategy_ref"],
+  "properties": {
+    "brief_id": {"type": "string", "minLength": 1},
+    "request": {
+      "type": "object",
+      "required": ["class", "page_budget"],
+      "properties": {
+        "raw": {"type": "string"},
+        "class": {"type": "string", "minLength": 1},
+        "environment": {"type": ["object", "null"]},
+        "base_platform": {"type": ["object", "null"]},
+        "configuration": {"type": ["string", "null"]},
+        "page_budget": {
+          "type": "object",
+          "required": ["vehicle_slots"],
+          "properties": {
+            "total": {"type": "integer", "minimum": 1},
+            "vehicle_slots": {"type": "integer", "minimum": 1},
+            "part_pages": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "part_requirements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["part", "design_relevance", "accept"],
+        "properties": {
+          "part": {"type": "string", "minLength": 1},
+          "label": {"type": "string"},
+          "location": {"type": "string"},
+          "design_relevance": {"enum": ["strong", "conditional", "none"]},
+          "views": {"type": "array", "items": {"type": "string"}},
+          "accept": {"enum": ["A", "B", "C"]},
+          "mechanism": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "region_requirements": {"type": "array", "items": {"type": "object"}},
+    "research_units": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["unit_id", "tier", "parts", "quota"],
+        "properties": {
+          "unit_id": {"type": "string", "minLength": 1},
+          "tier": {"enum": ["exact", "environment", "platform", "cross"]},
+          "scope": {"type": "string"},
+          "parts": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "quota": {"type": "integer", "minimum": 1},
+          "budget": {"type": "object"},
+          "stop": {"type": "string"}
+        }
+      }
+    },
+    "tiers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"enum": ["exact", "environment", "platform", "cross"]}
+    },
+    "budget": {"type": "object"},
+    "stop_rules": {"type": "object"},
+    "negative": {"type": "array", "items": {"type": "string"}},
+    "strategy_ref": {"type": "string", "minLength": 1},
+    "assumptions": {"type": "array", "items": {"type": "object"}}
+  }
+}

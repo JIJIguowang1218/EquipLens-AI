@@ -1,0 +1,73 @@
+{
+  "run_id": "p1-demo",
+  "brief_id": "b-20261109-p1",
+  "state": "DONE",
+  "slots": {
+    "target": 3,
+    "accepted": 3,
+    "filled": true
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 1,
+      "accepted": 1,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "ext-1",
+      "ext-2"
+    ],
+    "u-env": [
+      "ext-3"
+    ]
+  },
+  "budget_used": {
+    "queries": 3,
+    "models": 3,
+    "fetches": 8,
+    "verifies": 8
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 1 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 2 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 1 个",
+      "ts": "2026-11-09T03:34:28"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 3/3 已满",
+      "ts": "2026-11-09T03:34:28"
+    }
+  ],
+  "state_path": "data-test\\runs\\p1-demo\\state.json",
+  "events_path": "data-test\\runs\\p1-demo\\events.jsonl",
+  "evidence_path": "data-test\\runs\\p1-demo\\evidence.json"
+}

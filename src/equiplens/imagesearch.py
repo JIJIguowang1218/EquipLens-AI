@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import re
 import time
+from html.parser import HTMLParser
 import uuid
 from pathlib import Path
 from urllib.parse import quote
@@ -25,6 +26,12 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) EquipLensResearch/0.1 "
 SLEEP_SECONDS = 1.0
 MAX_IMG_BYTES = 8 * 1024 * 1024
 MIN_IMG_WIDTH = 350
+# 图片 CDN 常按 Referer 放行；用搜索页当 Referer，而不是图片自身 URL。
+CHANNEL_REFERERS = {
+    "360": "https://image.so.com/",
+    "baidu": "https://image.baidu.com/",
+    "bing": "https://cn.bing.com/images/",
+}
 SKIP_IMG_RE = re.compile(r"\.(svg|gif|ico)(\?|$)|logo|icon|banner|qrcode", re.I)
 
 
@@ -39,22 +46,13 @@ def search_images(query: str, limit: int = 12) -> list[dict]:
     return hits
 
 
-def search_model_images(model: str, limit: int = 12) -> tuple[list[dict], list[dict]]:
-    """按型号取图：两段查询阶梯（型号+工程车 → 型号），合并去重并记录每段诊断。"""
-    seen: set[str] = set()
-    out: list[dict] = []
-    diag: list[dict] = []
-    for q in (f"{model} 工程车", model):
-        hits, d = search_images_ex(q, limit, model=model)
-        diag.append({"query": q, "channels": d})
-        for h in hits:
-            if h["url"] in seen:
-                continue
-            seen.add(h["url"])
-            out.append(h)
-            if len(out) >= limit:
-                return out, diag
-    return out, diag
+def search_model_images(model: str, limit: int = 12, *,
+                        hd: bool = False) -> tuple[list[dict], list[dict]]:
+    """按型号取图：基础阶梯；hd=True 时加“高清/大图”段并优先高清。"""
+    queries = [f"{model} 工程车", model]
+    if hd:
+        queries += [f"{model} 高清", f"{model} 大图"]
+    return _search_many(queries, limit, model=model)
 
 
 def search_images_ex(query: str, limit: int = 12,
@@ -81,6 +79,67 @@ def search_images_ex(query: str, limit: int = 12,
             if len(collected) >= limit:
                 return collected[:limit], diag
     return collected[:limit], diag
+
+
+def _search_many(queries: list[str], limit: int, *,
+                 model: str | None = None,
+                 harvest: int = 0) -> tuple[list[dict], list[dict]]:
+    """多段查询合并：去重、记录每段诊断、高分辨率优先返回。
+
+    `harvest=N`：取前 N 个来源页（360 结果里的 `link`）回访，抽整页图片。
+    实测一篇文章页 30 张图、7/8 能升到 1200×800，远高于“每查询 1.8 张可用”。
+    """
+    seen: set[str] = set()
+    out: list[dict] = []
+    diag: list[dict] = []
+    for q in queries:
+        hits, d = search_images_ex(q, limit, model=model)
+        diag.append({"query": q, "channels": d})
+        for h in hits:
+            if h["url"] in seen:
+                continue
+            seen.add(h["url"])
+            out.append(h)
+        big = sum(1 for h in out if int(h.get("width") or 0) >= 1200)
+        if big >= limit:
+            break
+    # 先按 limit 截断搜索命中，再挂来源页结果：否则 harvest>0 时搜索侧会多出
+    # 未截断的命中，A/B 就不公平（实测会多出 60% 候选）。
+    out = out[:limit]
+    if harvest:
+        pages: list[str] = []
+        for h in out:
+            su = h.get("source_url") or ""
+            if su and su not in pages and page_priority(su) >= 0:
+                pages.append(su)
+        pages.sort(key=page_priority, reverse=True)
+        seen_urls = {h["url"] for h in out}
+        harvested = 0
+        for su in pages[:harvest]:
+            for h in harvest_source_page(su, limit=8):
+                if h["url"] in seen_urls:
+                    continue
+                seen_urls.add(h["url"])
+                out.append(h)
+                harvested += 1
+        diag.append({"query": "__harvest__",
+                     "channels": [{"channel": "page", "returned": harvested,
+                                   "pages": pages[:harvest],
+                                   "status": "ok" if harvested else "empty"}]})
+    # 稳定排序：高分辨率在前，组内保持原召回顺序
+    out.sort(key=lambda h: int(h.get("width") or 0) >= 1200, reverse=True)
+    return out, diag
+
+
+def search_images_hd(query: str, limit: int = 12, *,
+                     model: str | None = None,
+                     hd: bool = True,
+                     harvest: int = 0) -> tuple[list[dict], list[dict]]:
+    """按一个查询取图：原查询 + 高清/大图段；可选回访来源页。"""
+    queries = [query]
+    if hd:
+        queries += [f"{query} 高清", f"{query} 大图"]
+    return _search_many(queries, limit, model=model, harvest=harvest)
 
 
 def _tokens(s: str) -> list[str]:
@@ -158,11 +217,17 @@ def _search_360(query: str, limit: int) -> tuple[list[dict], str]:
         return [], "not_json"
     out = []
     for item in d.get("list", []):
-        url = item.get("imgurl") or item.get("thumb") or ""
+        # 360 的 `thumb` 是 240px 缩略图；`img` 才是原图/大图。
+        url = item.get("img") or item.get("imgurl") or item.get("thumb") or ""
         if not url.startswith("http") or SKIP_IMG_RE.search(url):
             continue
         out.append({"url": url, "thumb_url": item.get("thumb", ""),
-                    "title": (item.get("title") or "")[:80]})
+                    "source_url": item.get("link", "") or "",
+                    "title": (item.get("title") or "")[:80],
+                    "width": int(item.get("width") or 0),
+                    "height": int(item.get("height") or 0),
+                    "channel": "360",
+                    "referer": "https://image.so.com/"})
         if len(out) >= limit:
             break
     return out, ("ok" if out else "empty")
@@ -252,26 +317,172 @@ def crawl_model_views(conn, data_dir: Path, vehicle_id: str, vehicle_name: str, 
     return report
 
 
-def _download_and_gate(hit: dict) -> dict:
-    """下载+门卫（线程池内跑; SQLite 入库只在主线程做）。"""
-    out = {"hit": hit, "data": None, "gate": None, "error": None}
+HD_SUFFIX_RE = re.compile(r"!(\d{3,4})$")
+HD_SUFFIX = "!1200"
+
+
+def upgrade_image_url(url: str) -> str | None:
+    """把 CDN 的缩放后缀（`!600`/`!550`）换成 `!1200` 取大图。
+
+    实测（2026-11-09）：13 张带后缀的参考图里 **11 张**能从 550–640px 升到
+    1200×800，直接由“参考层”变成“部件可用”（http 401/403 的两张回落原图）。
+    只认纯数字后缀，`!news.pc` 这类跳过；已经是 ≥1200 的不再动。
+    """
+    m = HD_SUFFIX_RE.search(url or "")
+    if m and int(m.group(1)) < 1200:
+        return url[:m.start()] + HD_SUFFIX
+    # 搜狐图床：/q_70,c_zoom,w_640/ 里的 w_640 可以改成 w_1280（实测 640x426→1280x852）
+    m2 = re.search(r"w_(\d{2,4})", url or "")
+    if m2 and int(m2.group(1)) < 1280:
+        return url[:m2.start()] + "w_1280" + url[m2.end():]
+    return None
+
+
+class _ImgParser(HTMLParser):
+    """只收 <img> 的 src/data-src/data-original，不判断内容。"""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.srcs: list[str] = []
+
+    def handle_starttag(self, tag, attrs):  # noqa: D401
+        if tag.lower() != "img":
+            return
+        d = dict(attrs)
+        u = d.get("data-src") or d.get("data-original") or d.get("src") or ""
+        if u:
+            self.srcs.append(u)
+
+
+def extract_page_images(html: str, page_url: str, limit: int = 12) -> list[str]:
+    """从图集/文章页 HTML 里抽图片 URL（绝对化、去重、去小图标）。"""
+    from urllib.parse import urljoin
+
+    p = _ImgParser()
     try:
-        src = quote(hit["url"], safe=":/?&=%._-#")
-        r = requests.get(src, headers={"User-Agent": UA, "Referer": hit["url"]},
-                         timeout=20, stream=True)
-        data = b""
-        for chunk in r.iter_content(65536):
-            data += chunk
-            if len(data) > MAX_IMG_BYTES:
-                raise ValueError("图片超过 8MB")
-        from PIL import Image
-        from io import BytesIO
-        if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
-            raise ValueError("图片过小")
-        out["data"] = data
-        out["gate"] = gate.check(data)
-    except Exception as e:  # noqa: BLE001
-        out["error"] = str(e)
+        p.feed(html or "")
+    except Exception:  # noqa: BLE001
+        return []
+    seen, out = set(), []
+    for raw in p.srcs:
+        u = urljoin(page_url, raw.strip())
+        if not u.startswith("http") or SKIP_IMG_RE.search(u):
+            continue
+        base = re.sub(r"!\d{3,4}$", "", u)
+        if base in seen:
+            continue
+        seen.add(base)
+        out.append(u)
+        if len(out) >= limit:
+            break
+    return out
+
+
+ARTICLE_DOMAINS = ("360che.com", "chinatruck.org", "sohu.com", "yoojia.com",
+                   "baijiahao.baidu.com", "yidianzixun.com", "cn357.com")
+B2B_DOMAINS = ("alibaba.com", "cmo2o.com", "1688.com", "made-in-china.com",
+               "dealer.360che.com", "product.")
+
+
+def page_priority(url: str) -> int:
+    """来源页打分：资讯/图集页优先，B2B 商品页直接排除（返回 -1）。
+
+    实测 360 结果的 `link` 里 dealer/alibaba 占比高，回访这些页产出几乎为 0；
+    而资讯页一页能出 10–30 张图。
+    """
+    u = (url or "").lower()
+    if any(d in u for d in B2B_DOMAINS):
+        return -1
+    score = 0
+    if any(d in u for d in ARTICLE_DOMAINS):
+        score += 2
+    for seg in ("/tech/", "/news/", "/a/", "/article/", "/pic/", "/photo/"):
+        if seg in u:
+            score += 1
+            break
+    return score
+
+
+def harvest_source_page(source_url: str, limit: int = 8) -> list[dict]:
+    """回访来源页（文章/图集），抽出同页图片并升级到大图。
+
+    背景：360 图片 API 每条结果都带 `link`（来源页），一个 360che 文章页实测有
+    30 张图、抽样 7/8 能升到 1200×800；而图片搜索每查询只出 ~1.8 张部件可用。
+    所以“搜索找页 → 回访取全页图”比“只取搜索结果里的单张”产出高得多。
+    """
+    if not source_url.startswith("http"):
+        return []
+    try:
+        r = requests.get(source_url, headers={"User-Agent": UA}, timeout=20)
+        if r.status_code != 200:
+            return []
+        html = r.text
+    except Exception:  # noqa: BLE001
+        return []
+    hits = []
+    for u in extract_page_images(html, source_url, limit=limit):
+        hits.append({"url": upgrade_image_url(u) or u,
+                     "thumb_url": "", "title": "", "width": 0, "height": 0,
+                     "channel": "page", "source_url": source_url,
+                     "referer": source_url})
+    return hits
+
+
+def _fetch_image(url: str, referer: str) -> bytes:
+    src = quote(url, safe=":/?&=%._-#")
+    r = requests.get(src, headers={"User-Agent": UA, "Referer": referer},
+                     timeout=20, stream=True)
+    if r.status_code != 200:
+        raise ValueError(f"http {r.status_code}")
+    data = b""
+    for chunk in r.iter_content(65536):
+        data += chunk
+        if len(data) > MAX_IMG_BYTES:
+            raise ValueError("图片超过 8MB")
+    return data
+
+
+def _download_and_gate(hit: dict) -> dict:
+    """下载+门卫（线程池内跑; SQLite 入库只在主线程做）。
+
+    先试“大图后缀”（`!1200`），失败再回落到原始 URL——这是本环境最便宜的
+    分辨率提升手段（无登录/无额外请求数）。
+    """
+    out = {"hit": hit, "data": None, "gate": None, "error": None,
+           "url_used": hit.get("url", ""), "upgraded": False}
+    referer = (hit.get("referer")
+               or CHANNEL_REFERERS.get(hit.get("channel", ""))
+               or "https://image.so.com/")
+    big = upgrade_image_url(hit.get("url", ""))
+    attempts = [u for u in (big, hit.get("url", "")) if u]
+    last_err = None
+    for i, src_url in enumerate(attempts):
+        try:
+            data = _fetch_image(src_url, referer)
+            from PIL import Image
+            from io import BytesIO
+            pre = gate.prefilter(data)
+            out["prefilter"] = pre
+            out["url_used"] = src_url
+            out["upgraded"] = bool(big) and i == 0
+            if not pre["ok"]:
+                # 第一段（确定性）已否决：不进 CLIP，省一次推理；理由如实回传
+                out["data"] = data
+                out["gate"] = {"pass": False, "stage": "prefilter",
+                               "reasons": list(pre["reasons"]), "margin": None,
+                               "keep": None, "drop": None, "scene": None,
+                               "keep_label": "", "drop_label": ""}
+                out["error"] = None
+                return out
+            if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
+                raise ValueError("图片过小")
+            out["data"] = data
+            out["gate"] = gate.check(data)
+            out["error"] = None
+            return out
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+    out["error"] = str(last_err)
     return out
 
 
