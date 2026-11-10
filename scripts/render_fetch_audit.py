@@ -98,14 +98,19 @@ def main(argv=None) -> int:
     if state_path.exists():
         try:
             st = json.loads(state_path.read_text(encoding="utf-8"))
-            for model, parts in (st.get("assets") or {}).items():
-                ids = {a for v in (parts or {}).values() for a in (v or [])}
-                if ids:
-                    delivered_models.add(model)
-            # 单张图“入选交付”= 该图有 accepted 的核验记录（不是只看门卫）
+            # 占槽车型以 units.accepted_targets 为准；assets 里还有“抓过图但没占槽”的
+            delivered_models = {tid for u in (st.get("units") or {}).values()
+                                for tid in (u.get("accepted_targets") or [])}
+            accepted_asset_ids = {
+                a for tid in delivered_models
+                for v in ((st.get("assets") or {}).get(tid) or {}).values()
+                for a in (v or [])
+            }
+            # 单张图“入选交付”= 属于占槽车型，且有 accepted 的核验记录
             for key, rec in (st.get("verifications") or {}).items():
-                if rec.get("accepted"):
-                    selected_ids.add(key.split(":")[0])
+                aid = key.split(":")[0]
+                if rec.get("accepted") and aid in accepted_asset_ids:
+                    selected_ids.add(aid)
         except (json.JSONDecodeError, OSError):
             selected_ids, delivered_models = set(), set()
     for it in items:

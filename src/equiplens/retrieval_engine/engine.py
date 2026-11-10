@@ -229,7 +229,13 @@ class RetrievalEngine:
                 if not ok and target.get("citation_ok"):
                     ok = any(state.get("assets", {}).get(tid, {}).values())
 
-                if ok and tid not in unit["accepted_targets"]:
+                # 配额是硬上限：单元 quota=4 就不能塞 10 台（T38 独立测试暴露
+                # 12 槽跑出 20 台）；全局槽满同样停，避免超交付。
+                quota = int(unit.get("quota") or 0) or 10 ** 9
+                if self._global_accepted(state) >= self._slot_target():
+                    break
+                if (ok and tid not in unit["accepted_targets"]
+                        and len(unit["accepted_targets"]) < quota):
                     unit["accepted_targets"].append(tid)
         state["state"] = "GAP_CHECK"
 
@@ -384,12 +390,19 @@ class RetrievalEngine:
         accepted = self._global_accepted(state)
         verifs = state.get("verifications") or {}
         by_target = state.get("assets") or {}
+        accepted_ids = {tid for u in state["units"].values()
+                        for tid in (u.get("accepted_targets") or [])}
         degraded = 0
         degraded_targets: list[str] = []
+        citation_only: list[str] = []
         for tid, parts in by_target.items():
+            if tid not in accepted_ids:
+                continue   # 抓过图但没占槽的车型不算进交付质量
             ids = {a for items in (parts or {}).values() for a in (items or [])}
             idents = {v.get("identity") for k, v in verifs.items()
                       if k.split(":")[0] in ids and v.get("accepted")}
+            if ids and not idents:
+                citation_only.append(tid)   # 一张核验通过的图都没有，只靠引用页
             if ids and "confirmed" not in idents:
                 degraded += 1
                 degraded_targets.append(tid)
@@ -400,6 +413,8 @@ class RetrievalEngine:
             "missing": missing,
             "degraded": degraded,
             "degraded_targets": degraded_targets,
+            "citation_only": len(citation_only),
+            "citation_only_targets": citation_only,
             "status": "complete" if accepted >= target else "short",
         }
 

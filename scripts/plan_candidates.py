@@ -43,16 +43,29 @@ def load_key() -> str:
 
 
 def build_queries(brief: dict) -> list[str]:
-    """任务单 → 查询（不用任何品牌白名单）。"""
+    """任务单 → 查询（不用任何品牌白名单）。
+
+    除 request 的类目/工况，还要覆盖每个 research_unit 的 scope——否则
+    “国际品牌”“某工况工程车”这类单元永远不会被搜到（T38 独立测试暴露）。
+    """
     req = brief.get("request") or {}
     env = (req.get("environment") or {}).get("value") or ""
     klass = req.get("class") or ""
     conf = req.get("configuration") or ""
     neg = " ".join(f'-"{x}"' for x in (brief.get("negative") or [])[:4])
     base = " ".join(x for x in (env, klass, conf) if x)
-    qs = [base, f"{klass} {conf} 车型 品牌", f"{env} {conf} 卡车 车型"]
-    qs.append(f"{klass} {conf} truck brands")
-    return [q.strip() + (" " + neg if neg else "") for q in qs if q.strip()]
+    raw = [base, f"{klass} {conf} 车型 品牌", f"{env} {conf} 卡车 车型",
+           f"{klass} {conf} truck brands"]
+    for unit in brief.get("research_units") or []:
+        scope = (unit.get("scope") or "").strip()
+        if scope:
+            raw.append(f"{scope} {conf}".strip())
+    qs: list[str] = []
+    for q in raw:
+        q = " ".join(q.split())
+        if q and q not in qs:
+            qs.append(q)
+    return [q + (" " + neg if neg else "") for q in qs]
 
 
 def search(key: str, query: str, count: int = 20) -> list[dict]:

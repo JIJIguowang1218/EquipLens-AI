@@ -385,6 +385,22 @@ def test_rule_verifier_rejects_bad_asset():
     assert "view_mismatch" in sv.warnings, sv
 
 
+def test_unit_quota_caps_accepted_targets():
+    """单元配额是硬上限：quota=1 的单元不能因为一批 2 台都合格就占 2 槽。"""
+    b = base_brief(parts=("bumper",), slots=3)
+    b["research_units"][0]["quota"] = 1
+    w = {
+        "library": {"u-exact": [target("a", ["bumper"]), target("b", ["bumper"])]},
+        "assets": {"a": {"bumper": [asset("a1")]},
+                   "b": {"bumper": [asset("b1")]}},
+        "verify": {"a1": ok(), "b1": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        assert len(summary["accepted_targets"]["u-exact"]) == 1, summary
+        assert summary["delivery"]["status"] == "short", summary["delivery"]
+
+
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
 
@@ -433,6 +449,7 @@ if __name__ == "__main__":
     check("空库适配器", test_null_library_adapter)
     check("交付守卫：不足报 short", test_delivery_block_marks_short)
     check("交付守卫：degraded 身份", test_delivery_counts_degraded_identity)
+    check("单元配额是硬上限", test_unit_quota_caps_accepted_targets)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

@@ -105,7 +105,7 @@ def main(argv=None) -> int:
         d = summary.get("delivery") or {}
         print(f"  delivery: {d.get('delivered')}/{d.get('required')} "
               f"{d.get('status')}  missing={d.get('missing')} "
-              f"degraded={d.get('degraded')}")
+              f"degraded={d.get('degraded')} citation_only={d.get('citation_only')}")
         for uid, c in summary["coverage"].items():
             print(f"  {uid}: {c['accepted']}/{c['quota']} "
                   f"{'filled' if c['filled'] else 'gap'}")
