@@ -54,6 +54,14 @@ def main(argv=None) -> int:
     parser.add_argument("--json", action="store_true", help="输出完整 JSON")
     args = parser.parse_args(argv)
 
+    # 2026-11-11：discover fallback 已废弃（内置 18 个国产品牌，静默偏置）。
+    # 无 plan/无 models 的 --web-only 不应再“自动发现”，直接报错并给出下一步。
+    if args.web_only and not args.plan and not (args.models or "").strip():
+        parser.error(
+            "--web-only 需要 --plan 或 --models。discover fallback 已废弃"
+            "（内置国产品牌名单会造成静默偏置）；请先跑 "
+            "scripts/plan_candidates.py --brief <brief> --out <plan.json>，再传 --plan。")
+
     run_id = args.run_id or f"p1-{time.strftime('%Y%m%d-%H%M%S')}"
     brief = load_brief(args.brief)
     if args.web_only:

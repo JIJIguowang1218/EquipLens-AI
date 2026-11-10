@@ -163,10 +163,12 @@ class WebWorld:
             return self._plan_targets(unit)
         names = self.models.get(unit.unit_id) or self.models.get("*") or []
         if not names:
-            # 隔离测试：候选只来自实时检索（不读名录/历史批次）；库内检索后置。
-            from .discover import discover_models
-            names = [r["model"] for r in
-                     discover_models(unit.scope, limit=self.discover_limit)]
+            # 2026-11-11 废弃 discover fallback：它内部是 18 个国产品牌的硬编码
+            # 名单，会让“实时发现”静默变成“国产-only”，与“不设品牌白名单”冲突。
+            raise RuntimeError(
+                "WebWorld 没有候选：请用 --plan（scripts/plan_candidates.py 的输出）"
+                "或 --models 显式给候选；discover fallback 已废弃（内置国产品牌名单"
+                "会造成静默偏置），不要再无 plan 跑 --web-only。")
         return [Target(target_id=m, model=m, source="web", tier=unit.tier,
                        parts=tuple(unit.parts), unit_id=unit.unit_id)
                 for m in names]

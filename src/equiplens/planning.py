@@ -24,9 +24,64 @@ def normalize_text(value) -> str:
 
 
 def candidate_key(model: str) -> str:
-    """车型名的去重键：大小写/空格/标点/× 归一，中文保留。"""
+    """旧口径：整串归一（只用于无车型身份时的兜底，不再用于同款合并）。"""
     s = normalize_text(model).lower().replace("×", "x")
     return re.sub(r"[^0-9a-z\u4e00-\u9fff]+", "", s)
+
+
+# 车系（无型号码时用）；注意不要放品牌名，否则会把同品牌多台车并成一台
+SERIES = ("ZETROS", "AROCS", "ACTROS", "X3000", "X5000", "M3000",
+          "F3000", "HOWO")
+_CODE_PATTERNS = (
+    re.compile(r"\b[A-Z]{1,6}-?\d{3,}[A-Z0-9-]*\b"),   # TAZ4922 / K-65959 / DFV5253TSMGP6D
+    re.compile(r"\b[A-Z]{2,3}\s\d{3,}\b"),              # TB 800
+)
+# 这些是参数单位/缩写，不是型号（K-65959（GVW 35000 kg）里的 GVW35000 是假型号码）
+_CODE_STOPWORDS = {"GVW", "HP", "KW", "NM", "KG", "MM", "CM", "CC",
+                   "RPM", "TON", "MPH", "KPH", "L", "T"}
+
+
+def _identity_text(model: str) -> str:
+    s = normalize_text(model).upper().replace("×", "X")
+    s = re.sub(r"\d+(\.\d+)?\s*马力", " ", s)   # 460马力 不是型号
+    s = re.sub(r"\d+(\.\d+)?\s*吨", " ", s)
+    return s
+
+
+def model_identity(model: str) -> tuple:
+    """车型身份（用于合并同款，不用于品牌去重）。
+
+    优先级：
+      1) 型号码（TAZ4922 / DFV5253TSMGP6D / K-65959 / TB800）→ 同码合并；
+      2) 车系 + 数字（Zetros 4051 / Zetros 3643）→ 同车系同数字合并；
+      3) 只有车系（Arocs）→ 同车系合并；
+      4) 都没有 → generic（保留，不与有型号码的车硬并）。
+    """
+    s = _identity_text(model)
+    codes: list[str] = []
+    for pat in _CODE_PATTERNS:
+        codes += [re.sub(r"[^A-Z0-9]", "", m) for m in pat.findall(s)]
+    clean: list[str] = []
+    for code in codes:
+        prefix = re.match(r"[A-Z]+", code)
+        if prefix and prefix.group(0) in _CODE_STOPWORDS:
+            continue
+        if any(ch.isalpha() for ch in code) and any(ch.isdigit() for ch in code):
+            clean.append(code)
+    if clean:
+        code = sorted(set(clean), key=lambda c: (-len(c), c))[0]
+        return ("code", code)
+    series = next((x for x in SERIES if x in s), "")
+    nums = re.findall(r"\b\d{3,}\b", s)
+    if series and nums:
+        return ("series", series, nums[0])
+    if series:
+        return ("series", series)
+    return ("generic", re.sub(r"[^0-9A-Z\u4e00-\u9fff]+", "", s))
+
+
+def identity_label(identity: tuple) -> str:
+    return "/".join(str(x) for x in identity)
 
 
 def _with_conf(scope: str, conf: str) -> str:
@@ -131,24 +186,33 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
 
 
 def merge_candidates(items: list[dict]) -> list[dict]:
-    """同一车型跨查询合并：来源取并集，保留第一次出现的排序位置。"""
-    merged: dict[str, dict] = {}
-    order: list[str] = []
+    """按**车型身份**合并同款变体；同品牌不同型号码不合并。
+
+    - 同码（TAZ4922 / DFV5253TSMGP6D）→ 合并，保留所有写法到 `model_variants`；
+    - Zetros 4051 与 Zetros 3643 → 不同身份，保留两台；
+    - 东风 EQ2251AX / EQ2220AX → 不同身份，保留两台；
+    - 没有型号码/车系的泛称 → generic，单独保留（不与具体车型硬并）。
+    """
+    merged: dict[tuple, dict] = {}
+    order: list[tuple] = []
     for item in items:
-        key = candidate_key(item.get("model"))
-        if not key:
+        ident = model_identity(item.get("model"))
+        if ident[0] == "generic" and not ident[1]:
             continue
-        if key not in merged:
-            merged[key] = dict(item)
-            merged[key]["source_queries"] = [
+        if ident not in merged:
+            merged[ident] = dict(item)
+            merged[ident]["identity"] = identity_label(ident)
+            merged[ident]["identity_kind"] = ident[0]
+            merged[ident]["model_variants"] = [item.get("model")]
+            merged[ident]["source_queries"] = [
                 {"query_id": item.get("source_query_id"),
                  "query": item.get("source_query")}
             ]
-            merged[key]["dimensions"] = [item.get("dimension")]
-            merged[key]["source_count"] = len(item.get("sources") or [])
-            order.append(key)
+            merged[ident]["dimensions"] = [item.get("dimension")]
+            merged[ident]["source_count"] = len(item.get("sources") or [])
+            order.append(ident)
             continue
-        cur = merged[key]
+        cur = merged[ident]
         for u in item.get("sources") or []:
             if u not in cur["sources"]:
                 cur["sources"].append(u)
@@ -157,11 +221,23 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             cur["source_queries"].append(q)
         if item.get("dimension") not in cur["dimensions"]:
             cur["dimensions"].append(item.get("dimension"))
+        if item.get("model") not in cur["model_variants"]:
+            cur["model_variants"].append(item.get("model"))
         cur["source_count"] = len(cur["sources"])
     return [merged[k] for k in order]
 
 
-def coverage_report(plan: list[dict], candidates: list[dict]) -> dict:
+def dedupe_stats(raw_items: list[dict], merged: list[dict]) -> dict:
+    return {
+        "input": len(raw_items),
+        "unique": len(merged),
+        "removed": max(0, len(raw_items) - len(merged)),
+        "generic": sum(1 for c in merged if c.get("identity_kind") == "generic"),
+    }
+
+
+def coverage_report(plan: list[dict], candidates: list[dict],
+                    slots: int | None = None) -> dict:
     dims: dict[str, dict] = {}
     for row in plan:
         d = dims.setdefault(row["dimension"], {"queries": 0, "candidates": 0})
@@ -173,7 +249,7 @@ def coverage_report(plan: list[dict], candidates: list[dict]) -> dict:
     has_intl = any(any(h in (c.get("source_query") or "") for h in INTERNATIONAL_HINTS)
                    for c in candidates) or any(
         any(h in (q.get("query") or "") for h in INTERNATIONAL_HINTS) for q in plan)
-    return {
+    report = {
         "dimensions": dims,
         "missing": [d for d in CORE_DIMENSIONS
                     if dims.get(d, {}).get("candidates", 0) == 0],
@@ -181,3 +257,7 @@ def coverage_report(plan: list[dict], candidates: list[dict]) -> dict:
         "queries": len(plan),
         "candidates": len(candidates),
     }
+    if slots:
+        report["slots"] = int(slots)
+        report["pool_shortfall"] = max(0, int(slots) - len(candidates))
+    return report

@@ -32,7 +32,8 @@ except Exception:  # noqa: BLE001
     pass
 
 from equiplens.planning import (build_query_plan, coverage_report,  # noqa: E402
-                                merge_candidates, validate_extraction)
+                                dedupe_stats, merge_candidates,
+                                validate_extraction)
 
 API = "https://api.deepseek.com"
 KEY_FILE = Path.home() / ".equiplens" / "deepseek.env"
@@ -93,7 +94,7 @@ def main(argv=None) -> int:
     ap.add_argument("--brief", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--limit", type=int, default=36, help="候选池总上限")
-    ap.add_argument("--per-query", type=int, default=6, help="每条查询最多抽几个候选")
+    ap.add_argument("--per-query", type=int, default=8, help="每条查询最多抽几个候选")
     ap.add_argument("--extra-query", action="append", default=[],
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     args = ap.parse_args(argv)
@@ -145,7 +146,8 @@ def main(argv=None) -> int:
             seen.add(u)
             uniq.append(r)
 
-    candidates = merge_candidates(extracted)[:args.limit]
+    merged_all = merge_candidates(extracted)
+    candidates = merged_all[:args.limit]
     plan = {
         "brief_id": brief.get("brief_id"),
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -154,7 +156,9 @@ def main(argv=None) -> int:
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,
-        "coverage": coverage_report(query_plan, candidates),
+        "coverage": coverage_report(query_plan, candidates,
+                                     slots=((brief.get("request") or {}).get("page_budget") or {}).get("vehicle_slots")),
+        "dedupe": dedupe_stats(extracted, candidates),
         "dropped_without_valid_source": sum(int(q.get("dropped_no_source") or 0)
                                             for q in per_query),
         "dropped_invalid_sources": sum(int(q.get("dropped_invalid_source") or 0)

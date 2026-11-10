@@ -281,3 +281,34 @@
 4. 下一步：① 品牌/车系级去重（现在“奔驰(…)”变体占坑）；② A/B 至少 n=3 并用品牌覆盖做指标；③ 再决定进口查询是否默认。
 
 **产物**：`data-test/runs/plan-ab2-20261111/{A,A2,B,B2}/{plan.json,api_log.jsonl}`；测试 `tests/test_planning.py` 6/6。
+
+---
+
+## E15 车型级去重 + 废弃 discover fallback + A/B n=3（2026-11-11）
+
+**改动**
+1. `planning.model_identity`：型号码优先（TAZ4922/DFV5253/K-65959/TB800）→ 车系+数字（Zetros 4051 vs 3643）→ 车系（Arocs）→ generic。**同品牌不同型号码不合并**。
+2. `merge_candidates` 按 identity 合并，保留 `model_variants / source_queries / dimensions`；`dedupe` 统计输入/唯一/移除/generic。
+3. `discover.py` fallback 废弃：`WebWorld` 无 plan/models 直接报错；CLI 在联网前拦截 `--web-only` 无 `--plan/--models`。
+4. planner 默认 `--per-query 8`；coverage 增加 `slots / pool_shortfall`。
+
+**效果验证（离线回放旧 plan）**：A 27→20、B 27→21；TAZ4922/DFV5253/Zetros 4051 的变体合并，Zetros 4051 vs 3643、EQ2251AX vs EQ2220AX、DFV5253 vs DFV2223 均保持分开（无过度合并）。
+
+**A/B n=3（C01 brief，per-query 8，各跑 3 次）**：
+
+| 组 | 候选池 | 去重前→后 | 去重移除 | 外国候选 | 占比 | 池缺口 |
+|---|---:|---:|---:|---:|---:|---:|
+| A1 | 17 | 25→17 | 8 | 4 | 24% | 0 |
+| A2 | 26 | 35→26 | 9 | 5 | 19% | 0 |
+| A3 | 22 | 30→22 | 8 | 4 | 18% | 0 |
+| B1 | 25 | 33→25 | 8 | 4 | 16% | 0 |
+| B2 | 20 | 31→20 | 11 | 4 | 20% | 0 |
+| B3 | 18 | 28→18 | 10 | 3 | 17% | 0 |
+
+- 去重稳定移除 **8–11 条同款变体（约 25–35%）**；6 次池子 17–26，**没有一次低于 12 槽**（per-query 6 时曾出现 11，已由 8 修复）。
+- 重复运行重合：A 77–82%、B 50–70%（v2 是 26–31%）。
+- **进口查询没有带来外国车型增量**：A 18–24%、B 16–20%；B 只是偶尔多出 Zetros 3643/雷诺，同时会丢 KAMAZ/TB800。结论：**不默认加进口查询**；要补外国车，应在 brief 明确目标市场，或先有车型名再做“型号 → 图”检索。
+
+**下游验证（A2 plan 跑完整 12 槽）**：`loop-ab4-a2-20261111` **12/12 DONE**（exact 8、env 4），12 个占槽车型 **identity 全部不同（无同款重复占槽）**；82 张唯一图 / 304 次抓取 / 7 台 degraded / 1 台 citation_only / bonus 29 张；引用 API $0.01875。说明去重没有伤到资料数量与交付。
+
+**副作用/待观察**：候选里 generic（无型号码）占 35–56%，A2 交付里 3 台是 generic（OTTC、中东版、东风 400 马力）；它们能占槽但身份只能到 probable/unknown，是 degraded 的主要来源。下一步应限制 generic 占比或要求 generic 也必须带品牌+车系证据。

@@ -2,8 +2,8 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-10** |
-| 当前阶段 | **检索中 loop：12 槽交付 + 外国品牌独立测试已跑通**（T36–T39）。下一步是交付口径（备选图/`citation_only`）、身份质量与排序，不是再调门卫。 |
+| 更新日期 | **2026-11-11** |
+| 当前阶段 | **检索中 loop：12 槽交付 + 外国品牌独立测试 + planner 出处/去重**（T36–T41）。下一步是交付口径（备选图/`citation_only`）、身份质量与排序，不是再调门卫。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | `41108d0`（main，已 push）；工作树干净 |
 
@@ -50,12 +50,13 @@ git log --oneline -1        # 应为 41108d0 或更新
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py             # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 18/18
+PYTHONPATH=src python tests/test_planning.py           # 8/8（planner 纯函数）
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 20/20
 PYTHONPATH=src python tests/test_imagesearch.py        # 12/12（全 monkeypatch，不联网）
 PYTHONPATH=src python tests/test_gate.py               # 11/11（首次会加载 CLIP，约 59MB）
 ```
 
-预期结果：`retrieval_engine: 18/18`、`imagesearch: 12/12`、`gate: 11/11`。
+预期结果：`planning: 8/8`、`retrieval_engine: 20/20`、`imagesearch: 12/12`、`gate: 11/11`。
 
 历史遗留失败（与本轮无关，换机器仍可能看到）：`test_analysis` 11/14、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 是空库）。
 
@@ -113,22 +114,25 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T37 交付守卫 + 外国品牌召回 | ✅ | `summary.delivery`（required/delivered/missing/degraded/citation_only/status）；审核页双口径；`_relevant` 修 4 个 bug（多构型 AND、纯数字型号码、中外品牌别名、构型必须在标题）；`alias_query` 变体 |
 | T38 独立测试（含外国品牌） | ✅ | 新 brief（国产 8 + 国际 4）；现场 7 Search → 23 候选（13 外国品牌）；v1 暴露配额 bug（20/12），修复后 v2 **12/12**，**5 台外国品牌占槽**（Zetros/Actros/H6066/T-Way/Kerax）；**8 台 degraded、1 台 citation_only** |
 | T39 审核页四档 | ✅ | `已交付·已核验 / 已交付·未核验 / 备选·未占槽 / 未过门卫`；`delivery.bonus`；明确“分辨率只分档、不淘汰” |
+| T40 planner v2 | ✅ | 逐查询抽取、`source_query` 出处校验、coverage 报告；出处 0/24→100%，但重复运行重合仅 26–31% |
+| T41 去重 + 废弃 fallback | ✅ | 车型级 identity（同款合并、同品牌不同型号码不并）；去重移除 25–35% 变体；`discover` fallback 删除调用、CLI 拦截；A/B n=3 显示进口查询无增量；完整 12 槽 **12/12、无同款重复占槽** |
 
 最近 run：
 
 - `data-test/runs/loop-m1b-global-v2/`：最终 12/12（79 唯一图 / 77 过门卫 / 43 进交付包 / 34 备选）
 - `data-test/runs/loop-m1b-global-20261110/`：v1，保留作“配额未约束 → 20/12”的 bug 证据
+- `data-test/runs/loop-ab4-a2-20261111/`：T41 去重后 plan 的完整 12 槽（82 唯一图、7 degraded、1 citation_only）
 - `data-test/runs/loop-c01-plan9/`：T36 的 12/12（国内沙漠车，7 台 degraded）
 
-细节见 [`test-log.md`](test-log.md) T36–T39、[`retrieval-experiments-log.md`](retrieval-experiments-log.md) E10–E12。
+细节见 [`test-log.md`](test-log.md) T36–T41、[`retrieval-experiments-log.md`](retrieval-experiments-log.md) E10–E15。
 
 ## 0.3 待讨论 / 待拍板（新会话先和用户确认）
 
 1. **34 张“备选图”是否随包交付**：它们过了门卫、内容可用，只因 12 槽被占满而没进交付包（v2：9 车型 / 34 张，11 张 ≥800）。目前只保留在 `images/` + 审核页“备选·未占槽”，是否作为附录随包、是否占槽，需要用户定。
 2. **`citation_only` 收紧**：TAZ4922 有 0 张核验通过的图，仅靠引用页占槽。建议改成“至少 1 张 unknown 级图”或标“待补图”，但会减少交付数（与“不能少交付”冲突），需要拍板。
-3. **外国品牌是否默认搜**：planner 已升级 v2（逐查询抽取 + `source_query` 出处校验 + coverage 报告），出处 0/24 → **100%**；E14 A/B 里加一条 `进口 {class} {conf} 车型` 后外国候选 26–30% → 30–35%，但同组重复运行重合仍只有 26–31%，且候选级占比被“奔驰(…)”变体重复放大。**结论：先做品牌/车系级去重 + n≥3、用品牌覆盖率做指标，再决定默认化**（见 E13/E14）。
-4. **隐藏的国产品牌名单**：`src/equiplens/retrieval_engine/discover.py` 的 `BRANDS` 是 18 个国产品牌 + 固定车系表，只在“无 plan/无 models”的 fallback 路径用；T32/T33（loop-c01-isolated/res）走了这条路，所以那两轮天然没有外国车。当前 12 槽 run 走 `--plan`，不读它。**待办：废弃或泛化这个 fallback，避免再被当成“实时发现”。**
-5. **degraded 是否可接受**：12/12 里 8 台只有 probable 图。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），成本与优先级待定。
+3. **外国品牌是否默认搜**：已按“先控流程”做完并重测——planner v2 出处 100%；E15 A/B n=3（per-query 8、车型级去重后）里，加 `进口 {class} {conf} 车型` 的 B 组外国候选 16–20%，没有超过 A 组 18–24%，且会偶发丢 KAMAZ/TB800。**结论：不默认加进口查询**；要补外国车，应在 brief 里明确目标市场，或先有车型名再做“型号→图”检索（见 E15）。
+4. ~~**隐藏的国产品牌名单**~~ **已处理（2026-11-11）**：`discover.py` fallback 已废弃，`WebWorld` 无 plan/models 直接报错，CLI 在联网前拦截 `--web-only` 无 `--plan/--models`；T32/T33 的“实时发现”只能当历史口径，不能再用于“360 有没有外国车”的结论。
+5. **degraded 是否可接受**：12/12 里 7–8 台只有 probable 图；T41 的完整 run 里 3 台是 generic（OTTC、中东版、东风 400 马力）。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），或限制 generic 占比，成本与优先级待定。
 6. **质量排序未实现**：计划中的 `score = 4×res_high + 2×res_standard + margin + citation`、top-N 激活还没写；当前占槽基本按发现顺序。
 7. **下载失败仍高**：v2 有 56 行失败（403/404/防盗链），集中在经销商/B2B 图床；要不要加通道/域名黑名单待定。
 
@@ -140,12 +144,15 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 - **degraded 只统计占槽车型**：不要把“抓过图但没占槽”的车型算进交付质量。
 - **外国品牌不是 360 没有图**：E10 证明是相关性护栏 bug（多构型 AND / 纯数字型号码 / 中外品牌无别名 / 构型必须在标题）+ 拉丁查询在 360 返回垃圾；修完后 Zetros/Arocs/Volvo 都能进漏斗。
 - **规划候选必须带引用**：LLM 不许凭记忆补车型；外国品牌能否出现取决于检索结果覆盖（E12），不是模型知识。
+- **去重单位是“车型”，不是“品牌”**：同一品牌多台不同型号码（东风 EQ2251AX / EQ2220AX / DFV5253…）必须都保留；只合并同型号的不同写法（TAZ4922 的 3 种写法）。`planning.model_identity` 负责这条，别再加品牌上限。
+- **`discover.py` fallback 已废弃**：`--web-only` 没有 `--plan`/`--models` 会直接报错；不要再写“WebWorld 会自动实时发现”这种文档。T32/T33 的国产-only 结果来自这份 18 品牌名单，不能当 360 的真实分布。
+- **进口查询不是默认项**：E15 n=3 显示它不增加去重后的外国车型数，反而偶尔丢掉 KAMAZ/MOL；默认查询保持现状。
 - **`data-test/equiplens.db` 是空库**：库内检索当前恒为 0 候选，属预期。
 
 ## 0.5 读什么（按顺序）
 
 1. 本文件 §0.1–§0.4（环境、进度、待拍板）
-2. [`test-log.md`](test-log.md) T36–T39（每轮改了什么、数字、失败点）
+2. [`test-log.md`](test-log.md) T36–T41（每轮改了什么、数字、失败点）
 3. [`retrieval-experiments-log.md`](retrieval-experiments-log.md) E10–E12（外国品牌、独立测试、默认品牌比例）
 4. [`loop-m1b-global-v2/REPORT.md`](../data-test/runs/loop-m1b-global-v2/REPORT.md)（隔离性、5 台外国车、8 台 degraded、34 张备选）
 5. [`image-filter-pipeline.md`](image-filter-pipeline.md) §8–§10（两段式门卫、v4、CDN 升图）

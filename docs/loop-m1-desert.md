@@ -106,7 +106,8 @@ BRIEF_READY → LIBRARY_SEARCH（库内 0）
 
 针对 M1 的两个问题做了修正后重跑：
 
-1. **不许人工给候选**：`WebWorld` 在 `models` 为空时调用 `retrieval_engine/discover.py`，只从实时 360 抽候选（通用 6×6 语汇 + 各品牌查询，标题必须含 `6x6/六驱/全驱`），不读名录/历史批次/证据索引；
+1. ~~**不许人工给候选**：`WebWorld` 在 `models` 为空时调用 `retrieval_engine/discover.py`，只从实时 360 抽候选（通用 6×6 语汇 + 各品牌查询，标题必须含 `6x6/六驱/全驱`），不读名录/历史批次/证据索引；~~
+   **更正（2026-11-11）**：该 fallback 已废弃——`discover.py` 的 `BRANDS` 是 18 个国产品牌的硬编码名单，外国品牌标题匹配不到，会让“实时发现”静默变成国产-only（T32/T33 结果因此不可用于“360 有没有外国车”的结论）。现在 `--web-only` 必须带 `--plan` 或 `--models`，否则直接报错。
 2. **不许空跑**：brief 车槽改 12（exact 8 + environment 4）；下载的图落到 `runs/<id>/images/`；证据写 `image_evidence`（元数据，不存图）。
 
 **结果**：发现 12 台候选 → 20 张图过两段式门卫 → 18 条证据 → **6 台完整覆盖**（50%），车槽 6/12，`FAILED`。

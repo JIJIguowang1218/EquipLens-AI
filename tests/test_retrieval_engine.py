@@ -5,6 +5,7 @@ import copy
 import json
 import sys
 import tempfile
+import types
 from pathlib import Path
 
 import jsonschema
@@ -20,6 +21,7 @@ from equiplens.retrieval_engine import (Asset, Brief, PartRequirement,  # noqa: 
                                        RetrievalEngine, RunStore, validate_brief)
 from equiplens.retrieval_engine.adapters import FakeWorld  # noqa: E402
 from equiplens.retrieval_engine.evidence import EvidenceStore  # noqa: E402
+from equiplens.retrieval_engine import cli as engine_cli  # noqa: E402
 from equiplens.retrieval_engine.web import (NullLibraryAdapter,  # noqa: E402
                                             RuleVerifier, WebWorld)
 
@@ -401,6 +403,32 @@ def test_unit_quota_caps_accepted_targets():
         assert summary["delivery"]["status"] == "short", summary["delivery"]
 
 
+def test_web_world_requires_plan_or_models():
+    """discover fallback 已废弃：无 plan/无 models 必须显式报错，不能静默国产-only。"""
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",),
+                           design_relevance="strong", accept="A")
+    world = WebWorld({}, {"bumper": part}, citation_check=False)
+    unit = types.SimpleNamespace(unit_id="u-exact", tier="exact",
+                                 parts=("bumper",), scope="沙漠牵引车")
+    try:
+        world.external_targets(unit)
+    except RuntimeError as e:
+        assert "discover fallback" in str(e), e
+    else:
+        raise AssertionError("应当抛 RuntimeError")
+
+
+def test_cli_web_only_without_plan_errors():
+    """CLI 在联网前就拦住无 plan/无 models 的 --web-only。"""
+    brief = str(FIX / "brief-desert.json")
+    try:
+        engine_cli.main(["--brief", brief, "--web-only", "--run-id", "should-not-run"])
+    except SystemExit as e:
+        assert e.code == 2, e.code
+    else:
+        raise AssertionError("应当 parser.error 退出 2")
+
+
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
 
@@ -447,6 +475,8 @@ if __name__ == "__main__":
     check("网页-only + 规则核验 + 证据落库", test_web_only_world_rule_verify_and_evidence)
     check("规则核验拒绝坏资产", test_rule_verifier_rejects_bad_asset)
     check("空库适配器", test_null_library_adapter)
+    check("无 plan/models 拒绝 fallback", test_web_world_requires_plan_or_models)
+    check("CLI 拦截无 plan 的 web-only", test_cli_web_only_without_plan_errors)
     check("交付守卫：不足报 short", test_delivery_block_marks_short)
     check("交付守卫：degraded 身份", test_delivery_counts_degraded_identity)
     check("单元配额是硬上限", test_unit_quota_caps_accepted_targets)
