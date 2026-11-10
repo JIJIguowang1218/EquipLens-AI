@@ -2,11 +2,156 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-08** |
-| 当前阶段 | **UI 暂停在暗色高保真 v3.3（待评审，不再迭代）；主线切回主体功能复盘。** 已归档 11-08 专家咨询并逐条评估（[`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)）。React 实现、接后端、部署均未开始。 |
-| 用途 | 新会话/新成员从此接续，不必重读全部讨论历史 |
+| 更新日期 | **2026-11-10** |
+| 当前阶段 | **检索中 loop：12 槽交付 + 外国品牌独立测试已跑通**（T36–T39）。下一步是交付口径（备选图/`citation_only`）、身份质量与排序，不是再调门卫。 |
+| 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
+| 最新提交 | `41108d0`（main，已 push）；工作树干净 |
 
-## 0.0 当前状态快照（2026-11-08，新会话先读这里）
+> ## ⚠️ 新会话第一件事
+>
+> **先提醒用户提供 DeepSeek API key（`sk-...`）**，再开始跑真实检索。
+> 仓库里**没有** key，也不要提交 key（`.env.*` 已 gitignore；key 文件在仓库外）。
+>
+> - 放置位置：`~/.equiplens/deepseek.env`
+>   （Windows：`C:\Users\<用户名>\.equiplens\deepseek.env`）
+> - 内容一行：`DEEPSEEK_API_KEY=sk-...`
+> - 同一个 key 同时用于 Chat / Search / Fetch；按**成功调用**计费 $0.75/1000 次
+> - 没有 key 时：门卫/抓取测试仍可跑（本地 CLIP 不花钱），但 `scripts/plan_candidates.py`、引用核验、重规划全部不可用；跑 loop 需加 `--no-citation`，且不能用 `--plan`
+> - 单轮 12 槽实测成本：规划 $0.005 + 引用核验 $0.019 ≈ **$0.024**
+
+## 0.1 换电脑 30 分钟接续（2026-11-10）
+
+### 1) 拉代码与 Python
+
+```bash
+git clone ssh://git@ssh.github.com:443/JIJIguowang1218/EquipLens-AI.git
+cd EquipLens-AI
+git log --oneline -1        # 应为 41108d0 或更新
+```
+
+- Python **3.11**（本项目在 3.11.5 上验证；不要用 3.13）
+- Windows PowerShell 示例：
+  ```powershell
+  py -3.11 -m venv .venv
+  .\.venv\Scripts\Activate.ps1
+  python -m pip install -U pip
+  pip install -r requirements.txt
+  pip install torch --index-url https://download.pytorch.org/whl/cpu
+  ```
+- macOS/Linux：`python3.11 -m venv .venv && source .venv/bin/activate`，其余同上。
+- 依赖说明（`requirements.txt`）：
+  - `pillow` 图片解码；`jsonschema` 契约校验
+  - `uform[onnx]`：门卫模型 `unum-cloud/uform3-image-text-english-small`（约 **59MB**，首次运行自动下载，`gate.py` 已默认 `HF_ENDPOINT=https://hf-mirror.com`）
+  - `torch` + `transformers`：Chinese-CLIP 探针（旧线，跑当前 loop 不必须，但 requirements 里保留；装 CPU 版，别拉 CUDA）
+  - `crawl4ai`：旧渠道实验用；当前 loop 不依赖
+- **不需要** pytest：所有测试是 `check()` 脚本，失败退出码 1。
+
+### 2) 自检 + 全量测试（约 2–4 分钟，除模型首次加载外不联网）
+
+```bash
+PYTHONPATH=src python scripts/check_env.py             # Python/依赖/key/模型/文件自检
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 18/18
+PYTHONPATH=src python tests/test_imagesearch.py        # 12/12（全 monkeypatch，不联网）
+PYTHONPATH=src python tests/test_gate.py               # 11/11（首次会加载 CLIP，约 59MB）
+```
+
+预期结果：`retrieval_engine: 18/18`、`imagesearch: 12/12`、`gate: 11/11`。
+
+历史遗留失败（与本轮无关，换机器仍可能看到）：`test_analysis` 11/14、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 是空库）。
+
+### 3) 跑一轮完整检索（含在线规划）
+
+```bash
+# 3.1 现场生成候选（需要 key；输出 plan.json + api_log.jsonl）
+PYTHONPATH=src python scripts/plan_candidates.py \
+  --brief data-test/evals/task-briefs-20261109/brief-m1b-global.json \
+  --out data-test/runs/plan-m1b-global/plan.json
+
+# 3.2 跑 loop（隔离：空库 + 只用 plan + 新 run 目录；图片落 images/）
+PYTHONPATH=src python -m equiplens.retrieval_engine \
+  --brief data-test/evals/task-briefs-20261109/brief-m1b-global.json \
+  --web-only \
+  --plan data-test/runs/plan-m1b-global/plan.json \
+  --run-root data-test/runs --run-id loop-m1b-global-v2b \
+  --evidence-db data-test/runs/loop-m1b-global-v2b/evidence.db
+
+# 3.3 生成审核页
+PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-global-v2b
+```
+
+- 单轮 12 槽约 **8–12 分钟**、成本 **≈$0.02–0.03**
+- `--web-only` 会走 `NullLibraryAdapter`（库内 0 候选），不会读历史数据
+- 想复现 T38 的 12/12，用 `loop-m1b-global-v2` 的同一 plan；**新 run 必须换 run_id + 新目录**（隔离要求）
+
+### 4) 图片与 run 产物的 Git 边界
+
+- **`images/` 不进 git**（只提交 `state.json` / `summary.json` / `*.jsonl` / `evidence.db` / `audit.html` / `REPORT.md`）。
+- 所以新机器上打开旧的 `audit.html` 会**看不到图**——要么把原机器的 `data-test/runs/<run>/images/` 整个拷过来，要么按 §3 重跑重新生成。
+- `audit.html` 是相对路径引用 `images/...`，拷贝时保持目录结构。
+
+### 5) 关键文件地图
+
+| 用途 | 路径 |
+|---|---|
+| 门卫（预筛 + CLIP v4 + 分层） | `src/equiplens/gate.py` |
+| 图源/下载/升图/相关性护栏 | `src/equiplens/imagesearch.py` |
+| 网页世界 + 规则核验（身份三档） | `src/equiplens/retrieval_engine/web.py` |
+| 状态机 + 交付守卫 | `src/equiplens/retrieval_engine/engine.py` |
+| CLI（`--web-only/--plan/--evidence-db`） | `src/equiplens/retrieval_engine/cli.py` |
+| 在线规划（Search→LLM→引用校验） | `scripts/plan_candidates.py` |
+| 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
+| 外国品牌召回诊断 | `scripts/diag_foreign_search.py` |
+| 任务单 | `data-test/evals/task-briefs-20261109/brief-m1b-global.json`（12 槽：国产 8 + 国际 4） |
+| 金标（门卫 52 张） | `data-test/evals/image-gate-52-20261109.json` |
+
+## 0.2 当前进度（2026-11-10，T36–T39）
+
+| 件 | 状态 | 关键结果 / 产物 |
+|---|---|---|
+| T36 核验重构 | ✅ | 身份三档 confirmed/probable/unknown；只拒构型矛盾；引用页可整台占槽；plan9 **12/12**，38 图 / 34 过门卫，7 台 degraded |
+| T37 交付守卫 + 外国品牌召回 | ✅ | `summary.delivery`（required/delivered/missing/degraded/citation_only/status）；审核页双口径；`_relevant` 修 4 个 bug（多构型 AND、纯数字型号码、中外品牌别名、构型必须在标题）；`alias_query` 变体 |
+| T38 独立测试（含外国品牌） | ✅ | 新 brief（国产 8 + 国际 4）；现场 7 Search → 23 候选（13 外国品牌）；v1 暴露配额 bug（20/12），修复后 v2 **12/12**，**5 台外国品牌占槽**（Zetros/Actros/H6066/T-Way/Kerax）；**8 台 degraded、1 台 citation_only** |
+| T39 审核页四档 | ✅ | `已交付·已核验 / 已交付·未核验 / 备选·未占槽 / 未过门卫`；`delivery.bonus`；明确“分辨率只分档、不淘汰” |
+
+最近 run：
+
+- `data-test/runs/loop-m1b-global-v2/`：最终 12/12（79 唯一图 / 77 过门卫 / 43 进交付包 / 34 备选）
+- `data-test/runs/loop-m1b-global-20261110/`：v1，保留作“配额未约束 → 20/12”的 bug 证据
+- `data-test/runs/loop-c01-plan9/`：T36 的 12/12（国内沙漠车，7 台 degraded）
+
+细节见 [`test-log.md`](test-log.md) T36–T39、[`retrieval-experiments-log.md`](retrieval-experiments-log.md) E10–E12。
+
+## 0.3 待讨论 / 待拍板（新会话先和用户确认）
+
+1. **34 张“备选图”是否随包交付**：它们过了门卫、内容可用，只因 12 槽被占满而没进交付包（v2：9 车型 / 34 张，11 张 ≥800）。目前只保留在 `images/` + 审核页“备选·未占槽”，是否作为附录随包、是否占槽，需要用户定。
+2. **`citation_only` 收紧**：TAZ4922 有 0 张核验通过的图，仅靠引用页占槽。建议改成“至少 1 张 unknown 级图”或标“待补图”，但会减少交付数（与“不能少交付”冲突），需要拍板。
+3. **外国品牌是否默认搜**：默认规划外国品牌占 25–27%（奔驰/MOL/KAMAZ），显式“国际品牌”单元后 57%。建议加一条通用查询 `进口 {class} {conf} 车型`（不是品牌白名单，+$0.00075/次）；是否默认化未定。
+4. **degraded 是否可接受**：12/12 里 8 台只有 probable 图。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），成本与优先级待定。
+5. **质量排序未实现**：计划中的 `score = 4×res_high + 2×res_standard + margin + citation`、top-N 激活还没写；当前占槽基本按发现顺序。
+6. **下载失败仍高**：v2 有 56 行失败（403/404/防盗链），集中在经销商/B2B 图床；要不要加通道/域名黑名单待定。
+
+## 0.4 本轮新增的“不要误判”边界
+
+- **分辨率不参与淘汰**：门卫预筛下限 320（不是 800）；`res_standard`（≥800）/`res_high`（≥1200）/`reference_candidate` 都只是标签。低清只记 `low_resolution` warning。
+- **“过门卫”≠“交付”**：过门卫=预筛+CLIP；进交付包=车型占槽且图写进 `state.assets`；已核验=另有 accepted 的 `verifications` 记录。审核页四档就是这三个口径。
+- **单元 quota 是硬上限**：`_state_fill` 同时受 unit quota 与全局槽位约束；v1 的 20/12 就是这里漏了。
+- **degraded 只统计占槽车型**：不要把“抓过图但没占槽”的车型算进交付质量。
+- **外国品牌不是 360 没有图**：E10 证明是相关性护栏 bug（多构型 AND / 纯数字型号码 / 中外品牌无别名 / 构型必须在标题）+ 拉丁查询在 360 返回垃圾；修完后 Zetros/Arocs/Volvo 都能进漏斗。
+- **规划候选必须带引用**：LLM 不许凭记忆补车型；外国品牌能否出现取决于检索结果覆盖（E12），不是模型知识。
+- **`data-test/equiplens.db` 是空库**：库内检索当前恒为 0 候选，属预期。
+
+## 0.5 读什么（按顺序）
+
+1. 本文件 §0.1–§0.4（环境、进度、待拍板）
+2. [`test-log.md`](test-log.md) T36–T39（每轮改了什么、数字、失败点）
+3. [`retrieval-experiments-log.md`](retrieval-experiments-log.md) E10–E12（外国品牌、独立测试、默认品牌比例）
+4. [`loop-m1b-global-v2/REPORT.md`](../data-test/runs/loop-m1b-global-v2/REPORT.md)（隔离性、5 台外国车、8 台 degraded、34 张备选）
+5. [`image-filter-pipeline.md`](image-filter-pipeline.md) §8–§10（两段式门卫、v4、CDN 升图）
+6. [`GLOSSARY.md`](GLOSSARY.md)（门卫 v4、res_standard/res_high、plan/citation/replan、占槽/备选）
+
+---
+
+## 0.9 历史快照（2026-11-08，UI 暂停期；仅追溯，不代表当前状态）
 
 **阶段**：**UI 设计暂停**——暗色高保真 v3.3 是暂停点（待产品负责人评审，不再继续迭代）；主线切回**主体功能复盘**，已归档 11-08 专家咨询并逐条评估，下一步按 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md) 的 P0 推进。React 实现、接后端、部署均未开始。
 
@@ -78,7 +223,7 @@
 - 重出截图：`python docs/ui-hifi-dark/shot.py`（Playwright + Chromium；需 `data-test/ab-images/`）。
 - **看主体功能**：读 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md) §1 事实基线、§5 瓶颈排序、§6 P0/P1/P2；再读 [`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)。
 
-### 下一步（按序，2026-11-09 晚更新）
+### 下一步（历史，2026-11-09；当前待办以 §0.3 为准）
 
 1. **筛选线收口（已评估，不再调参）**：边界 9 张人工确认 → 门卫 0 阈值合理；CDN 升图收益 10/13；来源页回访净收益不明确。筛选侧到此为止，只保留金标回归。
 2. ~~**打通最小 loop（手写任务单）**~~ ✅ 2026-11-10：M1 跑通 DONE 3/3，暴露并修复 2 个结构 bug；下一步是让 `EXTERNAL_DISCOVER` 真的“发现”候选（而不是吃 `--models`），并把证据落库。
@@ -136,7 +281,7 @@
 
 ## 0.0a 2026-11-03/04 快照（历史：低保真、产品说明书与检索线）
 
-> 以下是 2026-11-03/04 的历史状态，保留用于追溯；当前进度以 §0.0 为准。
+> 以下是 2026-11-03/04 的历史状态，保留用于追溯；当前进度以 §0.1–§0.3 为准。
 
 **阶段**：竞赛提交告一段落，转入**前端重做 + 检索优化 + 部署**。Python 侧（检索/分析/排版/导出）不动，重点是网页端重做。
 
@@ -290,7 +435,7 @@
 
 ### 3.0 当前主线（2026-11-08 更新；旧计划保留作对照）
 
-> 状态已按“UI 暂停 + 主体功能复盘”更新；更细的“最近工作 / 已知边界”见 §0.0，本轮评估见 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)。
+> 状态已按“UI 暂停 + 主体功能复盘”更新；更细的“最近工作 / 已知边界”见 §0.9，本轮评估见 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)。
 
 | 序 | 事 | 状态 | 出口条件 |
 |---|---|---|---|
@@ -302,7 +447,7 @@
 | ④ | **P0-1 L1.5 清单**：M0–M2（数据 + `env_relevance` + `coverage()` + 惰性放闸） | 待开工 | 离线单测通过；决策链可审计 |
 | ⑤ | **P0-2 图片证据库 v0**：`image_evidence` 表 + 查库优先 | 待开工 | 第二次查询命中库内记录 ≥50% |
 | ⑥ | **P0-3 身份校验**：`region_match` 或候选聚类（二选一） | 待开工 | T14 四组错配拦截 ≥3 组，误杀 ≤10% |
-| ⑦ | **接后端 / React / 部署** | 未开始 | 等 P0 完成后再排；UI 恢复条件见 §0.0 |
+| ⑦ | **接后端 / React / 部署** | 未开始 | 等 P0 完成后再排；UI 恢复条件见 §0.9 |
 
 **流程铁律**：低保真阶段只回答"这一屏放什么、什么状态、怎么跳"，**不碰**字号/阴影/动效曲线；高保真阶段才回答"好不好看"。样张（`docs/ui-mock/`）是视觉参考，不是实现起点。**2026-11-08 追加**：UI 暂停期间，任何"改视觉"的请求先记录、不执行，优先补主体功能（L1.5 清单 / 证据库 / 身份校验）。
 
@@ -445,15 +590,15 @@
 
 ## 6. 新会话续接指引
 
-1. **先读**：§0.0 状态快照 → [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)（本轮主线：专家意见评估 + P0/P1/P2）→ [`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)（原始讨论）→ `docs/module-map.md` → **`docs/ui-interaction-spec-v3.md`（界面与交互，当前唯一权威）**。
+1. **先读**：§0.1–§0.5（2026-11-10 最新：换机、依赖、测试、待拍板）→ [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)（P0/P1/P2）→ [`discussions/EquipLens讨论11-8.md`](discussions/EquipLens讨论11-8.md)（原始讨论）→ `docs/module-map.md` → **`docs/ui-interaction-spec-v3.md`（界面与交互，当前唯一权威）**。
    - ⚠️ `docs/web-interaction-spec-v2.md` **已归档**（顶部有声明），只用于追溯早期设计，**不得据此实现**；两份冲突时以 v3 为准。
    - ⚠️ UI 已暂停（2026-11-08），`docs/ui-hifi-dark/` 是冻结的评审版，不是当前开发对象。
 2. **若要碰检索**：先读 `docs/roster-expansion-design.md`（L1.5，清单/页槽/放闸）与 `docs/retrieval-diagnosis-20261103.md`（通道现状、阻碍归因、优化优先级）。
 3. **前端现状**：高保真四页在 `docs/ui-hifi-dark/`（v3.3 静态，可走 S0→S3），浅色版在 `docs/ui-hifi/`；**正式前端工程（`webapp/`）尚未创建**。现行 `web/ui/index.html` 是旧版单页（770 行原生 JS），将被替换。旧低保真样张可重渲：`python docs/ui-mock/shot.py`（仅视觉参照）。
 4. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；检索中引擎 `src/equiplens/retrieval_engine/`（P0–P1）；
    测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,retrieval_engine}.py`。
-5. **跑测试**（全部可离线；`test_probe` 实测 13/13，权重已就绪）：
-   `for f in tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,retrieval_engine,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
+5. **跑测试**（全部可离线；当前检索三件套：`test_retrieval_engine` 18/18、`test_imagesearch` 12/12、`test_gate` 11/11）：
+   `for f in tests/test_{gate,imagesearch,retrieval_engine,textrun,corpus,l3gate,runner,audit,domainbench,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
 6. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
    `PYTHONPATH=src python -m equiplens text-run scripts/intent-chain2.json --data-dir data-test --run-root data-test/runs --run-id <new-id>`
 7. **闸门评估**：`PYTHONPATH=src python scripts/eval_l3gate.py`（结果 `data-test/evals/l3-gate-v1.md`）。

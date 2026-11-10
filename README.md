@@ -1,5 +1,9 @@
 # EquipLens-AI
 
+> **新会话 / 换机接续**：先读 [docs/HANDOFF.md](docs/HANDOFF.md) §0.1–§0.5。
+> 开工前请先提供 `DEEPSEEK_API_KEY`（写入 `~/.equiplens/deepseek.env`，仓库不含 key），
+> 然后跑 `PYTHONPATH=src python scripts/check_env.py` 自检。
+
 > AI 驱动的工程车辆外观部件设计前期分析报告生成工具 —— 让 AI 承担资料检索、图像分析与报告初稿制作，设计师专注于判断与创意。
 
 ## 1. 项目定位
