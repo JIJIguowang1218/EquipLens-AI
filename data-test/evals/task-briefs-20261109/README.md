@@ -61,3 +61,16 @@
 - 本轮已在 [`docs/test-log.md`](../../../docs/test-log.md) §1 追加 `T19-pre-brief`；
 - 本目录只放**检索前**任务单，不放命中单/证据单；命中单在后续 `T19-retrieval-*` 轮次另建目录；
 - 所有文件只读，不接生产库；样本输入来自产品负责人 2026-11-09 提供的 5 条 + 本项目扩展的 15 条。
+
+## 6. 2026-11-11 起：brief 必须 API 生成
+
+此前 `brief-m1-desert.json` / `brief-m1b-global.json` 是**人工根据口述写的**，用于 T31–T41 的下游测试；这导致 brief 生成环节从未被测试。现在改为：
+
+```bash
+PYTHONPATH=src python scripts/build_brief.py   --input "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台"   --class "沙漠牵引车" --slots 12 --out data-test/briefs/brief-c01-auto.json
+```
+
+- 提示/规则：`skills/task-brief/SKILL.md`（`task-brief@v1`）；
+- 校验：`validate_brief` + `schemas/task-brief-v3.schema.json`；
+- 产物带 `brief.json.meta.json`（raw_input / model / skill_version / attempts / llm_payload）；
+- 本目录的 `brief-m1-*.json` 标为 **legacy 手工输入**，只用于复现历史 run，不再作为新实验输入。

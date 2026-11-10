@@ -1,0 +1,228 @@
+{
+ "brief_id": "auto-20261111-033332",
+ "request": {
+  "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "沙漠/油田工况",
+   "confidence": 0.8
+  },
+  "base_platform": null,
+  "configuration": "6×6",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 12,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "environment",
+   "value": "沙漠/油田工况",
+   "why": "用户原话明确给出沙漠/油田工况",
+   "confidence": 0.95
+  },
+  {
+   "field": "configuration",
+   "value": "6×6",
+   "why": "用户原话明确给出 6×6",
+   "confidence": 0.95
+  },
+  {
+   "field": "base_platform",
+   "value": "",
+   "why": "用户未提基型底盘，不猜测",
+   "confidence": 0.2
+  },
+  {
+   "field": "regions.front_face",
+   "value": "前脸整体",
+   "why": "用户把“前脸”作为整体提出，未拆成格栅/大灯等零件",
+   "confidence": 0.85
+  },
+  {
+   "field": "parts.bumper.accept",
+   "value": "B",
+   "why": "保险杠为结构件，接受同类近似但需核对接口与离地参数",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts.step.accept",
+   "value": "B",
+   "why": "踏步为通用功能件，允许近似替代",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 12,
+   "why": "规则：exact 8 + environment 4",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "location": "side_lower",
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "防滑",
+    "沙尘排放",
+    "离地高"
+   ]
+  },
+  {
+   "part": "headlamp",
+   "label": "大灯与灯罩防护",
+   "location": "front",
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "灯罩防护",
+    "沙尘",
+    "可维护性"
+   ]
+  },
+  {
+   "part": "wheel_arch",
+   "label": "翼子板与轮拱",
+   "location": "side_lower",
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "沙石防护",
+    "离地高",
+    "轮跳包络"
+   ]
+  },
+  {
+   "part": "side_guard",
+   "label": "侧防护栏",
+   "location": "side_chassis",
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "侧向防护",
+    "沙石",
+    "蹬踏兼用"
+   ]
+  },
+  {
+   "part": "bumper",
+   "label": "保险杠",
+   "location": "front_lower",
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "side"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "离地角",
+    "抗冲击",
+    "拖拽接口"
+   ]
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车 6×6",
+   "parts": [
+    "step",
+    "headlamp",
+    "wheel_arch",
+    "side_guard",
+    "bumper"
+   ],
+   "quota": 8,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "8 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠/油田工况 工程车",
+   "parts": [
+    "step",
+    "headlamp",
+    "wheel_arch",
+    "side_guard",
+    "bumper"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 14
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型",
+  "玩具"
+ ],
+ "strategy_ref": "default@v1"
+}

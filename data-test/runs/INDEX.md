@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-11T03:12:49 · 共 49 条 · 待补结论 1 条
+> 生成时间：2026-11-11T03:34:27 · 共 50 条 · 待补结论 1 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -28,6 +28,7 @@
 | plan | `plan-ab3-20261111` | plan-set | 2026-11-11 | — | — | 中间实验：per-query 6/8 与池子下限（曾出现 11 台 <12 槽）；结论并入 E15。 |
 | plan | `plan-ab4-20261111` | plan-set | 2026-11-11 | — | — | E15 最终 A/B n=3（per-query 8、车型去重后）：进口查询无增量。 |
 | plan | `plan-c01` | plan | 2026-11-11 | — | candidates=16 | T34 早期规划（无 api_log，出处审计不完整）。 |
+| plan | `plan-c01-auto` | plan | 2026-11-11 | — | candidates=19 | 候选 19 / 查询 6 / 去重移除 10 |
 | plan | `plan-c01-v2` | plan | 2026-11-11 | — | candidates=15 | T34 规划（4 次 Search + 引用校验；后续被 planner v2 取代）。 |
 | plan | `plan-m1b-global` | plan | 2026-11-11 | — | candidates=23 | 候选 23 / 查询 7 / 去重移除 None |
 | search | `diag-foreign` | diag | 2026-11-11 | — | images=17 · gate_pass=17 | E10 诊断：修复前 Zetros/Arocs/Volvo 在 360 的相关性护栏通过数为 0；不是 360 没图。 |

@@ -312,3 +312,30 @@
 **下游验证（A2 plan 跑完整 12 槽）**：`loop-ab4-a2-20261111` **12/12 DONE**（exact 8、env 4），12 个占槽车型 **identity 全部不同（无同款重复占槽）**；82 张唯一图 / 304 次抓取 / 7 台 degraded / 1 台 citation_only / bonus 29 张；引用 API $0.01875。说明去重没有伤到资料数量与交付。
 
 **副作用/待观察**：候选里 generic（无型号码）占 35–56%，A2 交付里 3 台是 generic（OTTC、中东版、东风 400 马力）；它们能占槽但身份只能到 probable/unknown，是 degraded 的主要来源。下一步应限制 generic 占比或要求 generic 也必须带品牌+车系证据。
+
+---
+
+## E16 brief 生成 API 化：不再手工代写（2026-11-11）
+
+**问题（严重）**：此前 T31–T41 的 `brief-m1-desert.json` / `brief-m1b-global.json` 是**人根据口述手写的**，不是 API 生成。测试因此只覆盖了“brief 之后”的链路，brief 生成、类目/工况/构型推断、部件→视角映射全部未被测试；8/4 配额、4 个部件、负词也都是人工决定。
+
+**改法**：
+1. 新增 `skills/task-brief/SKILL.md`（`task-brief@v1`）：只让 LLM 解析 `request/regions/parts/assumptions/negative`；
+2. 新增 `src/equiplens/briefing.py`：LLM 输出 → 代码补 `brief_id/page_budget/research_units/tiers/budget/strategy_ref` → `validate_brief` + JSON Schema 校验；
+3. 新增 `scripts/build_brief.py`：`--input` → DeepSeek Chat → `brief.json` + `brief.json.meta.json`（raw_input/model/skill_version/attempts/usage/llm_payload）；
+4. 手工 brief 标为 **legacy**（`data-test/evals/task-briefs-20261109/README.md` §6），仅用于复现历史 run。
+
+**实测（C01）**：输入“沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台” → API 生成：
+
+- parts：`step/headlamp/wheel_arch/side_guard/bumper`（5 个，含用户点名的保险杠；未把“前脸”硬拆）
+- regions：`front_face`（整体造型维度）
+- units：exact 8 / environment 4；7 条 assumptions（含“前脸不单独建槽”“防护栏映射为侧防护”）
+- 校验通过；`plan_candidates` 在该 brief 上产出 19 个候选（6 查询 / 61 结果）
+
+**代码审计（同类问题）**：
+- 已废弃：`discover.py` 的 18 个国产品牌 fallback；
+- legacy、非当前运行路径：`retrieval_web_smoke.py`（手写查询对）、`run_roster_crawl.py` / `rerun_roster_textrun.py` / `roster_judge_sheet.py`（旧名录文本检索与评测）；
+- 合法测试夹具：`data-test/retrieval-fixtures-*`、`tests/synthetic_data.py`、`make_ui_fixtures.py`（不得进运行时）；
+- 规则/领域数据（非假参数）：门卫标签、品牌别名、`planning.SERIES`、`briefing.DEFAULT_NEGATIVE`、配额 2/3 规则——应记录为规则，不允许冒充 AI 输出。
+
+**未解决**：brief LLM 的稳定性（同一输入多次生成是否一致）、`research_units` 的 2/3 规则是否应由产品确认、L1.5 的页槽/超量推荐仍未实现。

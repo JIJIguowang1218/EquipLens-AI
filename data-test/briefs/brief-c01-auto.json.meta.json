@@ -1,0 +1,182 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v1",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-11T03:33:32",
+ "raw_input": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
+ "brief_path": "data-test\\briefs\\brief-c01-auto.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 1489,
+  "completion_tokens": 575,
+  "total_tokens": 2064,
+  "prompt_tokens_details": {
+   "cached_tokens": 384
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 0
+  },
+  "prompt_cache_hit_tokens": 384,
+  "prompt_cache_miss_tokens": 1105
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠/油田工况",
+   "base_platform": "",
+   "configuration": "6×6"
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "parts": [
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "location": "side_lower",
+    "design_relevance": "strong",
+    "accept": "B",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "mechanism": [
+     "防滑",
+     "沙尘排放",
+     "离地高"
+    ],
+    "design_relevance_note": null
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "location": "front",
+    "design_relevance": "strong",
+    "accept": "B",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "mechanism": [
+     "灯罩防护",
+     "沙尘",
+     "可维护性"
+    ]
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "location": "side_lower",
+    "design_relevance": "strong",
+    "accept": "B",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "mechanism": [
+     "沙石防护",
+     "离地高",
+     "轮跳包络"
+    ]
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "location": "side_chassis",
+    "design_relevance": "strong",
+    "accept": "B",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "mechanism": [
+     "侧向防护",
+     "沙石",
+     "蹬踏兼用"
+    ]
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "location": "front_lower",
+    "design_relevance": "strong",
+    "accept": "B",
+    "views": [
+     "front",
+     "hero_45",
+     "side"
+    ],
+    "mechanism": [
+     "离地角",
+     "抗冲击",
+     "拖拽接口"
+    ]
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "environment",
+    "value": "沙漠/油田工况",
+    "why": "用户原话明确给出沙漠/油田工况",
+    "confidence": 0.95
+   },
+   {
+    "field": "configuration",
+    "value": "6×6",
+    "why": "用户原话明确给出 6×6",
+    "confidence": 0.95
+   },
+   {
+    "field": "base_platform",
+    "value": "",
+    "why": "用户未提基型底盘，不猜测",
+    "confidence": 0.2
+   },
+   {
+    "field": "regions.front_face",
+    "value": "前脸整体",
+    "why": "用户把“前脸”作为整体提出，未拆成格栅/大灯等零件",
+    "confidence": 0.85
+   },
+   {
+    "field": "parts.bumper.accept",
+    "value": "B",
+    "why": "保险杠为结构件，接受同类近似但需核对接口与离地参数",
+    "confidence": 0.6
+   },
+   {
+    "field": "parts.step.accept",
+    "value": "B",
+    "why": "踏步为通用功能件，允许近似替代",
+    "confidence": 0.6
+   }
+  ],
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型",
+   "玩具"
+  ]
+ },
+ "duration_ms": 3755
+}

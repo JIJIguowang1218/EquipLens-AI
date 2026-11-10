@@ -64,6 +64,9 @@ PYTHONPATH=src python tests/test_gate.py               # 11/11（首次会加载
 ### 3) 跑一轮完整检索（含在线规划）
 
 ```bash
+# 3.0 先生成任务单（API；不允许手工代写）
+PYTHONPATH=src python scripts/build_brief.py   --input "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台"   --class "沙漠牵引车" --slots 12 --out data-test/briefs/brief-c01-auto.json
+
 # 3.1 现场生成候选（需要 key；输出 plan.json + api_log.jsonl）
 PYTHONPATH=src python scripts/plan_candidates.py \
   --brief data-test/evals/task-briefs-20261109/brief-m1b-global.json \
@@ -100,6 +103,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | 网页世界 + 规则核验（身份三档） | `src/equiplens/retrieval_engine/web.py` |
 | 状态机 + 交付守卫 | `src/equiplens/retrieval_engine/engine.py` |
 | CLI（`--web-only/--plan/--evidence-db`） | `src/equiplens/retrieval_engine/cli.py` |
+| 任务单生成（API + skill + 校验） | `scripts/build_brief.py`、`src/equiplens/briefing.py`、`skills/task-brief/SKILL.md` |
 | 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
 | 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
@@ -119,6 +123,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T40 planner v2 | ✅ | 逐查询抽取、`source_query` 出处校验、coverage 报告；出处 0/24→100%，但重复运行重合仅 26–31% |
 | T41 去重 + 废弃 fallback | ✅ | 车型级 identity（同款合并、同品牌不同型号码不并）；去重移除 25–35% 变体；`discover` fallback 删除调用、CLI 拦截；A/B n=3 显示进口查询无增量；完整 12 槽 **12/12、无同款重复占槽** |
 | T42 文件治理 / run 台账 | ✅ | 每 run 落 `RUN.json`；`INDEX.json/md` 自动生成；空目录/旧嵌套只标记；`recompute` 已清；新增 `data-test/runs/README.md` 与 `tests/test_run_ledger.py`（4/4） |
+| T43 brief API 化 | ✅ | `skills/task-brief@v1` + `briefing.py` + `build_brief.py`：LLM 只解析 request/regions/parts/assumptions/negative，代码补配额/预算/tiers 并做双校验；产物带 `brief_meta.json`；手工 brief 标 legacy |
 
 最近 run：
 
@@ -148,6 +153,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 - **外国品牌不是 360 没有图**：E10 证明是相关性护栏 bug（多构型 AND / 纯数字型号码 / 中外品牌无别名 / 构型必须在标题）+ 拉丁查询在 360 返回垃圾；修完后 Zetros/Arocs/Volvo 都能进漏斗。
 - **规划候选必须带引用**：LLM 不许凭记忆补车型；外国品牌能否出现取决于检索结果覆盖（E12），不是模型知识。
 - **去重单位是“车型”，不是“品牌”**：同一品牌多台不同型号码（东风 EQ2251AX / EQ2220AX / DFV5253…）必须都保留；只合并同型号的不同写法（TAZ4922 的 3 种写法）。`planning.model_identity` 负责这条，别再加品牌上限。
+- **brief 不再手工写**：新实验必须用 `scripts/build_brief.py` API 生成；`brief-m1-*.json` 是 legacy 手工输入，只能复现历史 run。
 - **`discover.py` fallback 已废弃**：`--web-only` 没有 `--plan`/`--models` 会直接报错；不要再写“WebWorld 会自动实时发现”这种文档。T32/T33 的国产-only 结果来自这份 18 品牌名单，不能当 360 的真实分布。
 - **进口查询不是默认项**：E15 n=3 显示它不增加去重后的外国车型数，反而偶尔丢掉 KAMAZ/MOL；默认查询保持现状。
 - **`data-test/equiplens.db` 是空库**：库内检索当前恒为 0 候选，属预期。
