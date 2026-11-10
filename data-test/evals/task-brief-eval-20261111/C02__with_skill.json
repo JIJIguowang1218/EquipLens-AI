@@ -1,0 +1,317 @@
+{
+ "case": {
+  "id": "C02",
+  "prompt": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+  "expected_output": "把“重型吊车”落成汽车起重机/全地面起重机或写待确认；侧护板按位置拆开；支腿/吊臂不擅自添加。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 9,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044408",
+  "request": {
+   "raw": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+   "class": "重型吊车（移动式起重机：汽车起重机/全地面起重机，待确认）",
+   "environment": {
+    "value": "工地吊装",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "重型卡车起重机底盘/专用起重机底盘（待确认）",
+    "confidence": 0.8
+   },
+   "configuration": "待确认（汽车起重机或全地面起重机；支腿、吊臂、驱动形式未知）",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "移动式起重机（汽车起重机/全地面起重机）",
+    "why": "“重型吊车”为口语，且出现前脸、大灯、登车踏步等道路车辆特征，工地吊装更接近移动式起重机；具体类别待确认。",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.base_platform",
+    "value": "重型卡车起重机底盘/专用起重机底盘",
+    "why": "前脸、侧护板、踏步等对象通常继承或派生自卡车起重机底盘驾驶室与底盘布置。",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.configuration",
+    "value": "待确认（支腿、吊臂、驱动形式未知）",
+    "why": "输入未给出吨位、底盘形式、支腿与吊臂布置，无法判断汽车式或全地面式。",
+    "confidence": 0.3
+   },
+   {
+    "field": "request.environment",
+    "value": "工地吊装（未提沙尘、高寒、腐蚀等极端环境）",
+    "why": "输入仅说明工地吊装，防护分析以工地泥污、粉尘和碰撞为主。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.custom_cab_rear_side_guard",
+    "value": "驾驶室后方侧护板按 custom_* 保留",
+    "why": "该说法不在参考词表中，按“位置+功能+板金件”保留用户原词，不强行归并到其他部件。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.side_guard",
+    "value": "车辆侧护板归一到 side_guard 分析",
+    "why": "与参考词表“侧防护栏”功能相近，但仍以用户原词作为 label。",
+    "confidence": 0.7
+   },
+   {
+    "field": "fleet_count",
+    "value": "12 台",
+    "why": "数量可能用于批量涂装/件号一致性参考，未作为单独设计对象。",
+    "confidence": 0.9
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "驾驶室后方侧护板"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "side/chassis",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "side underrun protection",
+     "panel segmentation",
+     "chassis mounting"
+    ],
+    "why": "能提供侧防护法规形态、板面/型材分缝、与底盘和支腿包络关系的设计证据。"
+   },
+   {
+    "part": "custom_cab_rear_side_guard",
+    "label": "驾驶室后方侧护板",
+    "kind": "part",
+    "location": "side/rear_of_cab",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "cab-to-superstructure transition",
+     "panel segmentation",
+     "maintenance access"
+    ],
+    "why": "能提供驾驶室后部与上装/底盘过渡处的护板分缝、检修开口、间隙与防护证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "side/cab_entry",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "step height and spacing",
+     "anti-slip tread",
+     "mounting/folding"
+    ],
+    "why": "能提供登车人机尺度、防滑构造、安装方式与工地泥污环境适应性的证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "lamp placement",
+     "lighting regulation",
+     "lens/guard protection"
+    ],
+    "why": "能提供大灯布置、法规照明、灯罩防护、更换维修与工地粉尘泥污暴露的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型吊车（移动式起重机：汽车起重机/全地面起重机，待确认） 待确认（汽车起重机或全地面起重机；支腿、吊臂、驱动形式未知）",
+    "parts": [
+     "side_guard",
+     "custom_cab_rear_side_guard",
+     "step",
+     "headlamp"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工地吊装 工程车",
+    "parts": [
+     "side_guard",
+     "custom_cab_rear_side_guard",
+     "step",
+     "headlamp"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补入用户未点名的格栅、保险杠、后视镜、涂装等部件。",
+   "不把“前脸”拆成格栅/大灯/保险杠；大灯仅因用户点名单独分析。",
+   "不推断具体吨位、品牌或型号。",
+   "不将工地吊装直接等同于矿山、沙漠、高寒等极端环境。",
+   "不输出 page_budget、quota、tiers、budget 等代码侧字段。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

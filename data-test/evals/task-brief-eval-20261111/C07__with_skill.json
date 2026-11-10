@@ -1,0 +1,321 @@
+{
+ "case": {
+  "id": "C07",
+  "prompt": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+  "expected_output": "class=装载机；工程机械而非卡车；部件族/设计轴合理；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 5,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044755",
+  "request": {
+   "raw": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+   "class": "轮式装载机",
+   "environment": {
+    "value": "砂石料场（高粉尘、磨蚀性物料）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "轮式底盘",
+    "confidence": 0.8
+   },
+   "configuration": "铰接式（待确认）",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "configuration",
+    "value": "铰接式轮式装载机（待确认）",
+    "why": "用户仅说明轮式底盘，轮式装载机常见铰接构型，但原文未明确，需确认。",
+    "confidence": 0.6
+   },
+   {
+    "field": "environment_detail",
+    "value": "高粉尘、磨蚀性砂石物料",
+    "why": "由“砂石料场”推断，用于判断耐磨、密封、防护相关设计维度。",
+    "confidence": 0.8
+   },
+   {
+    "field": "quantity",
+    "value": "12 台",
+    "why": "原文给出数量，可能用于批量一致性、维护与车队配置考量，但不直接决定造型。",
+    "confidence": 1.0
+   },
+   {
+    "field": "part_family.bucket",
+    "value": "焊接结构功能附件",
+    "why": "铲斗通常为焊接耐磨结构，具体板材与斗容未确认。",
+    "confidence": 0.7
+   },
+   {
+    "field": "part_family.counterweight",
+    "value": "铸造或厚板配重",
+    "why": "配重常见铸造/厚板形式，具体工艺未确认。",
+    "confidence": 0.5
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "铲斗",
+     "动臂",
+     "驾驶室",
+     "轮胎",
+     "配重"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_bucket_a1b2",
+    "label": "铲斗",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "磨蚀磨损",
+     "装载阻力",
+     "焊接结构疲劳"
+    ],
+    "why": "看切削刃、侧板、耐磨板、斗容与开口比例及焊缝布置，判断砂石磨蚀工况下的磨损控制、装载效率和结构可制造性证据。"
+   },
+   {
+    "part": "custom_boom_3a7d",
+    "label": "动臂",
+    "kind": "part",
+    "location": "front/side",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "载荷路径",
+     "铰点受力",
+     "箱型截面稳定"
+    ],
+    "why": "看箱型截面、铰点布置、加强筋与焊缝，判断动臂载荷路径、与铲斗/底盘的接口关系以及大型焊接件的造型约束证据。"
+   },
+   {
+    "part": "custom_cab_6b1e",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "center/side",
+    "part_family": "cab_shell",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "视野",
+     "粉尘密封",
+     "ROPS/FOPS"
+    ],
+    "why": "看玻璃面积、立柱断面、密封结构、登车接口与顶护结构，判断驾驶室在粉尘环境下的视野、人机、法规防护与平台继承证据。"
+   },
+   {
+    "part": "custom_tire_4c8a",
+    "label": "轮胎",
+    "kind": "part",
+    "location": "side/under",
+    "part_family": "rubber_component",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "environment_protection",
+     "structure"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "抓地",
+     "耐切割",
+     "承载"
+    ],
+    "why": "看胎纹、层级、轮距与轮拱/底盘关系，判断砂石场抓地、耐切割、承载需求及轮胎对整机体量比例的影响证据。"
+   },
+   {
+    "part": "custom_counterweight_2d5f",
+    "label": "配重",
+    "kind": "part",
+    "location": "rear",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "后轴配重",
+     "后方体量",
+     "铸造分型"
+    ],
+    "why": "看后部体量、分型线、离地与维修开口，判断配重对整机姿态、后方视野、铸造/厚板工艺和涂装分色的设计证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "轮式装载机 铰接式（待确认）",
+    "parts": [
+     "custom_bucket_a1b2",
+     "custom_boom_3a7d",
+     "custom_cab_6b1e",
+     "custom_tire_4c8a",
+     "custom_counterweight_2d5f"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "砂石料场（高粉尘、磨蚀性物料） 工程车",
+    "parts": [
+     "custom_bucket_a1b2",
+     "custom_boom_3a7d",
+     "custom_cab_6b1e",
+     "custom_tire_4c8a",
+     "custom_counterweight_2d5f"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不分析乘用车式进气格栅、保险杠、大灯等未提及部件。",
+   "不推断具体品牌、型号、吨位、铲斗容积或轮胎规格。",
+   "不把“12 台”扩展为具体车队采购参数或配置清单。",
+   "不默认铰接式/刚性底盘已确认，构型需进一步确认。",
+   "不补入后视镜、爬梯、灯组、空调等用户未点名的部件。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

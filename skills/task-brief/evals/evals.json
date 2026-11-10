@@ -1,21 +1,147 @@
 {
-  "skill_name": "task-brief",
-  "skill_version": "task-brief@v2",
-  "cases": [
-    {
-      "id": "known-parts",
-      "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
-      "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/side_guard/bumper；每件有 relation_axis/design_axes/why；assumptions 记录推断。"
-    },
-    {
-      "id": "unknown-parts",
-      "prompt": "矿山自卸车，重点看防沙板、涉水喉、爬梯、尾灯防护；矿区粉尘；8×4；12 台",
-      "expected_output": "防沙板/涉水喉/爬梯/尾灯防护中词表没有的部件保留为 custom_* + 原词；给出位置/功能/part_family/design_axes；不因词表缺失而丢弃。"
-    },
-    {
-      "id": "ambiguous-category",
-      "prompt": "重型吊车，想分析支腿和吊臂的造型，可能是在工地用；12 台",
-      "expected_output": "把“重型吊车”落参数（吨位/底盘形式/上装）或写 needs_confirmation；支腿/吊臂按 function 处理；给出 design_axes；不猜具体型号。"
-    }
-  ]
+ "skill_name": "task-brief",
+ "skill_version": "task-brief@v2",
+ "method": "with_skill vs without_skill; assertions + human rubric",
+ "cases": [
+  {
+   "id": "C01",
+   "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、保险杠）；沙漠/油田工况；6×6；12 台",
+   "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/bumper；每件 relation_axis/design_axes/why。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 1,
+    "custom_min": 0
+   }
+  },
+  {
+   "id": "C02",
+   "prompt": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+   "expected_output": "把“重型吊车”落成汽车起重机/全地面起重机或写待确认；侧护板按位置拆开；支腿/吊臂不擅自添加。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 1,
+    "custom_min": 0
+   }
+  },
+  {
+   "id": "C03",
+   "prompt": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+   "expected_output": "class=矿用自卸/翻斗车；5 个部件；environment 关系轴优先；不写具体车型。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 0
+   }
+  },
+  {
+   "id": "C04",
+   "prompt": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+   "expected_output": "class=随车起重运输车；货箱/吊机/底盘关系写清；前脸 region；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 1,
+    "custom_min": 0
+   }
+  },
+  {
+   "id": "C05",
+   "prompt": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+   "expected_output": "class=重型牵引车；platform 关系轴为主；前脸 region；5 个部件。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 1,
+    "custom_min": 0
+   }
+  },
+  {
+   "id": "C06",
+   "prompt": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+   "expected_output": "class=挖掘机；上装/底盘区分；履带等词表外部件保留 custom_*；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 1
+   }
+  },
+  {
+   "id": "C07",
+   "prompt": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+   "expected_output": "class=装载机；工程机械而非卡车；部件族/设计轴合理；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 1
+   }
+  },
+  {
+   "id": "C08",
+   "prompt": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+   "expected_output": "class=搅拌车；上装（罐/斗）与底盘分开；词表外上装保留 custom_*；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 1
+   }
+  },
+  {
+   "id": "C09",
+   "prompt": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+   "expected_output": "class=环卫/压缩垃圾车；上装功能件保留 custom_*；不做卡车品类误判；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 1
+   }
+  },
+  {
+   "id": "C10",
+   "prompt": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+   "expected_output": "class=高空作业车；臂架/支腿/工作斗按 function 处理；词表外保留 custom_*；不写具体型号。",
+   "assertions": {
+    "parts_between": [
+     3,
+     5
+    ],
+    "all_have_design_axes": true,
+    "regions_min": 0,
+    "custom_min": 1
+   }
+  }
+ ]
 }

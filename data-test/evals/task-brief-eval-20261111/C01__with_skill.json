@@ -1,0 +1,278 @@
+{
+ "case": {
+  "id": "C01",
+  "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、保险杠）；沙漠/油田工况；6×6；12 台",
+  "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/bumper；每件 relation_axis/design_axes/why。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044320",
+  "request": {
+   "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、保险杠）；沙漠/油田工况；6×6；12 台",
+   "class": "沙漠牵引车（重型越野牵引车）",
+   "environment": {
+    "value": "沙漠/油田工况（沙尘、油污、偏远作业）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "6×6 重型越野牵引车底盘",
+    "confidence": 0.8
+   },
+   "configuration": "6×6",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "沙漠牵引车按重型越野牵引车理解，而非起重机、矿卡或救援车",
+    "why": "用户只给出“沙漠牵引车”，未给吨位与上装形式",
+    "confidence": 0.75
+   },
+   {
+    "field": "request.base_platform",
+    "value": "6×6 重型越野牵引车底盘",
+    "why": "用户明确给出 6×6，但未说明驾驶室形式与吨位",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.environment",
+    "value": "沙漠/油田工况重点按沙尘、油污、偏远作业理解",
+    "why": "用户只写“沙漠/油田工况”，未给具体温度、风沙等级或油田区域",
+    "confidence": 0.8
+   },
+   {
+    "field": "wheel_arch.location",
+    "value": "仅指前轮拱/前翼子板轮拱区域",
+    "why": "用户点名“前轮拱”，不应扩展到后轮拱",
+    "confidence": 0.9
+   },
+   {
+    "field": "quantity",
+    "value": "12 台为车队数量，不作为造型或配置差异线索",
+    "why": "用户输入中的“12 台”更像采购/车队规模信息",
+    "confidence": 0.95
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "front_lower",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "approach_angle",
+     "lower_protection",
+     "recovery_points"
+    ],
+    "why": "可提供沙漠/油田工况下前部防护、离地间隙、拖拽/救援接口与分段结构的证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "cab_side_entry",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "anti_slip",
+     "sand_shedding",
+     "entry_ergonomics"
+    ],
+    "why": "可提供沙尘/油污环境下防滑、排沙、登车人体工学与踏步支架结构的证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "environment_protection",
+     "regulation",
+     "structure"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "dust_sealing",
+     "lamp_guard",
+     "lighting_position"
+    ],
+    "why": "可提供沙尘防护、灯罩/护网结构、法规灯位与前脸造型语言的证据。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "front_axle_wheel_arch",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "tire_clearance",
+     "sand_shedding",
+     "splash_dust_control"
+    ],
+    "why": "可提供前轮包络、沙尘/泥污遮挡、排沙间隙与轮拱钣金分缝结构的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "沙漠牵引车（重型越野牵引车） 6×6",
+    "parts": [
+     "bumper",
+     "step",
+     "headlamp",
+     "wheel_arch"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "沙漠/油田工况（沙尘、油污、偏远作业） 工程车",
+    "parts": [
+     "bumper",
+     "step",
+     "headlamp",
+     "wheel_arch"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补充用户未点名的格栅、后视镜、遮阳板、侧防护、下护板、涂装分色等部件或区域。",
+   "不把“12 台”解释为 12 种造型、配置或工况变体。",
+   "不推断具体吨位、品牌、驾驶室平头/长头形式。",
+   "不将登车踏步扩展为后爬梯或全车攀爬系统。",
+   "不把前轮拱扩展到后轮拱。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

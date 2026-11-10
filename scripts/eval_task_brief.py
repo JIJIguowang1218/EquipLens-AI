@@ -38,17 +38,34 @@ def load_key() -> str:
     return key
 
 
-def auto_checks(brief: dict, raw: str) -> dict:
+def auto_checks(brief: dict, spec: dict, raw: str) -> dict:
     parts = brief.get("part_requirements") or []
-    return {
+    regions = brief.get("region_requirements") or []
+    checks = {
         "schema_ok": briefing.validate_brief_json(brief) == [],
         "parts": len(parts),
         "custom_parts": len([p for p in parts if str(p.get("part", "")).startswith("custom_")]),
         "all_have_design_axes": all(p.get("design_axes") for p in parts),
         "assumptions": len(brief.get("assumptions") or []),
-        "regions": [r.get("region") for r in brief.get("region_requirements") or []],
-        "raw_mentions": [x for x in ("防沙板", "涉水喉", "爬梯", "尾灯", "支腿", "吊臂") if x in raw],
+        "regions": len(regions),
+        "failed": [],
     }
+    a = spec.get("assertions") or {}
+    if "parts_between" in a:
+        lo, hi = a["parts_between"]
+        if not (lo <= len(parts) <= hi):
+            checks["failed"].append(f"parts {len(parts)} not in [{lo},{hi}]")
+    if a.get("all_have_design_axes") and not checks["all_have_design_axes"]:
+        checks["failed"].append("missing design_axes")
+    if len(regions) < int(a.get("regions_min", 0)):
+        checks["failed"].append("regions < min")
+    if len([p for p in parts if str(p.get("part", "")).startswith("custom_")]) < int(a.get("custom_min", 0)):
+        checks["failed"].append("custom < min")
+    if len(brief.get("assumptions") or []) < int(a.get("assumptions_min", 1)):
+        checks["failed"].append("assumptions < min")
+    if not checks["schema_ok"]:
+        checks["failed"].append("schema")
+    return checks
 
 
 def main(argv=None) -> int:
@@ -68,7 +85,7 @@ def main(argv=None) -> int:
                 result = briefing.generate_brief(case["prompt"], key, slots=12,
                                                  model=args.model, use_skill=use_skill)
                 brief = result["brief"]
-                checks = auto_checks(brief, case["prompt"])
+                checks = auto_checks(brief, case, case["prompt"])
                 status = "ok"
             except Exception as e:  # noqa: BLE001
                 brief, checks, status = {}, {}, f"{type(e).__name__}: {e}"[:200]
@@ -83,13 +100,15 @@ def main(argv=None) -> int:
         json.dumps({"skill_version": briefing.SKILL_VERSION, "rows": rows},
                    ensure_ascii=False, indent=1), encoding="utf-8")
     lines = ["# task-brief 必要性 A/B（自动检查）", "",
-             "| case | arm | status | parts | custom | axes | assumptions |",
-             "|---|---|---|---:|---:|---|---:|"]
+             "| case | arm | status | parts | custom | regions | axes | assertions |",
+             "|---|---|---|---:|---:|---:|---|---|"]
     for r in rows:
         c = r["checks"] or {}
+        failed = c.get("failed") or []
         lines.append(f"| {r['case']} | {r['arm']} | {r['status']} | {c.get('parts','')} | "
-                     f"{c.get('custom_parts','')} | {c.get('all_have_design_axes','')} | "
-                     f"{c.get('assumptions','')} |")
+                     f"{c.get('custom_parts','')} | {c.get('regions','')} | "
+                     f"{c.get('all_have_design_axes','')} | "
+                     f"{'PASS' if not failed else '; '.join(failed)} |")
     lines += ["", "> 人工 rubric 必须另填：品类/基型/构型、对象分类、关系轴、设计轴、未知部件、是否编造。"]
     (out_dir / "RESULTS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(json.dumps({"out": str(out_dir), "rows": len(rows)}, ensure_ascii=False))

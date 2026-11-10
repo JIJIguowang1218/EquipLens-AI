@@ -1,0 +1,279 @@
+{
+ "case": {
+  "id": "C05",
+  "prompt": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+  "expected_output": "class=重型牵引车；platform 关系轴为主；前脸 region；5 个部件。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044612",
+  "request": {
+   "raw": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+   "class": "重型长途牵引车（半挂牵引车，平头驾驶室）",
+   "environment": {
+    "value": "干线物流（高速/国道长途运输，非极端沙尘/寒区/矿区工况）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "重型卡车 6×4 三轴底盘 + 平头（cab-over）驾驶室基型",
+    "confidence": 0.8
+   },
+   "configuration": "6×4（前桥转向 + 双后驱动桥），牵引鞍座 + 半挂",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.base_platform",
+    "value": "平头（cab-over）驾驶室 + 6×4 三轴底盘",
+    "why": "用户给 6×4 与‘重型长途牵引车’，国内干线牵引车以平头驾驶室为主流；若为长头（conventional）车型，前脸与轮拱的布置关系需整体重判",
+    "confidence": 0.85
+   },
+   {
+    "field": "request.environment",
+    "value": "干线物流常规公路工况，不做沙尘/寒区/矿区环境特化",
+    "why": "用户写‘干线物流’，未提极端工况；因此各对象的环境防护轴不作主维度，仅踏步/轮拱的泥水飞溅作次要考虑",
+    "confidence": 0.8
+   },
+   {
+    "field": "fleet_size",
+    "value": "12 台",
+    "why": "12 台属小批量车队采购，影响涂装/贴膜批量、外观件模具摊销与一致性控制，是 cmf 与 manufacturing 轴的取舍依据；不构成独立设计对象",
+    "confidence": 0.7
+   },
+   {
+    "field": "parts.headlamp.scope",
+    "value": "用户‘大灯’按灯组整体（灯罩+安装区）理解，不含灯内光学结构设计",
+    "why": "干线牵引车大灯多为外购总成，造型侧关注轮廓、倾角、灯罩表面与安装分缝",
+    "confidence": 0.65
+   },
+   {
+    "field": "parts.step.scope",
+    "value": "踏步按驾驶室侧登车踏板理解，不含后部鞍座登车梯",
+    "why": "用户同时点名前轮拱与前脸，语境为驾驶室前段；如需鞍座登车梯需另行确认",
+    "confidence": 0.7
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "front_lower（前脸下部，横贯车宽，含牌照/拖钩/前下防护区）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "分缝与折弯/冲压成形关系（多段式 vs 一体式保险杠的板面分割）",
+     "前下防护高度、接近角与灯具/牌照安装位对造型边界的约束",
+     "材料与工艺选择（钢/铝/SMC/工程塑料）对板面曲率与加强筋布置的限制"
+    ],
+    "why": "保险杠是前脸唯一同时被法规、结构与制造工艺三重约束的大件，其分缝线和断面对前脸体量分割起决定作用，可作为判断‘造型是否被工程反向定义’的直接证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front（前脸两侧，保险杠上沿或驾驶室前围内嵌）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "regulation",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "灯组轮廓与格栅/保险杠的相对位置关系（内嵌 vs 外凸，决定前脸‘眼睛’位）",
+     "配光与灯位法规对灯面尺寸、倾角、发光区域的硬边界",
+     "灯罩表面处理（透明/熏黑/内纹理）与整车色彩搭配"
+    ],
+    "why": "大灯是前脸上唯一高反光、高对比度的成形件，其轮廓与倾角直接决定前脸的视觉重心与表情，也是法规约束最强、最能看出‘造型妥协点’的部件。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "side_front_lower（驾驶室门下方，前轮之后，含首级踏板/支架/扶手接口）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "踏板级数与踏步高度/深度的人机尺寸链（首级离地高度与驾驶室地板的对应）",
+     "防滑面形式（冲孔/花纹板/注塑嵌件）与型材支架的连接节点",
+     "踏板与保险杠、轮拱、挡泥板的间隙与飞溅遮挡关系"
+    ],
+    "why": "踏步是干线牵引车高频使用的功能件，跨车型可移植性高但尺寸链受驾驶室基型锁定；其支架与踏板分件方式能看出平台化程度与人机取舍，是判断‘功能件是否被造型弱化’的证据。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "front_side（前轮上方与两侧，与驾驶室前围、保险杠转角相接）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮拱开口曲率与轮胎包络、转向跳动间隙的关系，决定开口比例与轮眉厚度",
+     "轮拱与驾驶室前围、保险杠转角的三面交接分缝与密封",
+     "材料选择（钢冲压 / SMC / 注塑）对轮眉翻边与表面质感的影响"
+    ],
+    "why": "前轮拱是前脸与侧面之间的过渡件，其开口比例直接决定整车姿态（离地感、体量支撑），同时是轮胎包络与转向空间的结构结果，可作为‘造型比例由布置反推’的典型证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型长途牵引车（半挂牵引车，平头驾驶室） 6×4（前桥转向 + 双后驱动桥），牵引鞍座 + 半挂",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "干线物流（高速/国道长途运输，非极端沙尘/寒区/矿区工况） 工程车",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补充用户未点名的部件（后视镜、遮阳板、侧防护栏、导流罩、格栅单独拆件等），除前脸区域整体分析外不拆子件",
+   "不检索矿用、寒区、沙漠、油田等环境特化构型（防沙板、涉水喉一类），干線物流无此形态需求",
+   "不做跨类目功能件借用（如客车/工程机械踏步），踏步与前轮拱仅在同品类同构型内比较",
+   "不推测具体品牌、型号、吨位或驾驶室代号",
+   "不输出 page_budget / research_units / quota / tiers / budget / strategy_ref 等由代码生成的字段",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

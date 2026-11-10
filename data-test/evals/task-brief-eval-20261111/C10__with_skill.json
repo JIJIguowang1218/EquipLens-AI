@@ -1,0 +1,345 @@
+{
+ "case": {
+  "id": "C10",
+  "prompt": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+  "expected_output": "class=高空作业车；臂架/支腿/工作斗按 function 处理；词表外保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 4,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-045050",
+  "request": {
+   "raw": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+   "class": "车载式高空作业车",
+   "environment": {
+    "value": "市政工地",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "二类卡车底盘/车载底盘",
+    "confidence": 0.8
+   },
+   "configuration": "臂架式上装（折叠/伸缩形式待确认）",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "车载式高空作业车（truck-mounted aerial work platform）",
+    "why": "用户写高空作业车且明确车载底盘，排除自行式臂车和剪叉式平台。",
+    "confidence": 0.9
+   },
+   {
+    "field": "request.configuration",
+    "value": "臂架式上装；折叠/伸缩、臂架节数待确认",
+    "why": "用户提到臂架和工作台斗，但未说明臂架形式。",
+    "confidence": 0.65
+   },
+   {
+    "field": "request.base_platform",
+    "value": "二类卡车底盘/车载底盘",
+    "why": "用户明确车载底盘，驾驶室与踏步通常沿用底盘平台。",
+    "confidence": 0.9
+   },
+   {
+    "field": "request.environment",
+    "value": "市政工地，空间受限、泥尘、人车混行",
+    "why": "用户给出市政工地工况，用于判断支腿占位、踏步防滑排泥等环境敏感项。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.cab",
+    "value": "驾驶室沿用卡车底盘，局部可能加装上装控制/支腿操纵",
+    "why": "车载式高空作业车通常继承底盘驾驶室，但上装控制接口需确认。",
+    "confidence": 0.6
+   },
+   {
+    "field": "batch_context",
+    "value": "12台为批量配置，需考虑系列化与制造一致性",
+    "why": "用户给出数量，影响臂架、支腿、工作台斗的构型取舍和制造约束判断。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "臂架",
+     "工作台斗",
+     "支腿",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_9a1f",
+    "label": "臂架",
+    "kind": "part",
+    "location": "上装/转台至工作台斗",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "form_gesture",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "折叠/伸缩节数与铰点布置决定收车轮廓",
+     "截面高度与变幅油缸位置影响侧向体量",
+     "焊接箱型/型材节点影响制造与造型连续性"
+    ],
+    "why": "臂架是高空作业车上装的核心功能与造型构件，能提供收放姿态、截面比例、铰点与节点证据。"
+   },
+   {
+    "part": "custom_3c7d",
+    "label": "工作台斗",
+    "kind": "function",
+    "location": "臂架末端",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "detail",
+     "side",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "斗体尺寸与护栏高度影响人机和安全",
+     "入口门/控制盒布置影响操作",
+     "底板与围板分缝影响制造与清洁"
+    ],
+    "why": "工作台斗是作业端人机与安全法规的集中体现，能提供护栏、入口、控制盒与斗体结构证据。"
+   },
+   {
+    "part": "custom_6e2b",
+    "label": "支腿",
+    "kind": "function",
+    "location": "底盘侧/后部",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "支腿跨距与收放方式影响整车宽度和场地占位",
+     "支撑盘/垂直支腿高度影响不平地面适应性",
+     "与底盘连接节点影响侧向比例"
+    ],
+    "why": "市政工地空间受限且地面条件多变，支腿跨距、收放与支撑盘是场地适应性和整车侧向比例的关键证据。"
+   },
+   {
+    "part": "custom_4d8a",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "前部/底盘",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驾驶室与转台/臂架支座的连接影响前部体量",
+     "视窗与A柱影响作业视野",
+     "涂装分色影响底盘与上装整体性"
+    ],
+    "why": "驾驶室多继承卡车底盘，但在车载式高空作业车上需看其与上装连接、视野和涂装整合；作为平台继承证据而非全新造型对象。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "驾驶室侧/门下方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "detail",
+     "side",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏步高度/级差影响频繁上下车人机",
+     "防滑面与排水/排泥影响市政泥尘工况",
+     "支架与车架连接影响刚度和离地"
+    ],
+    "why": "市政工地频繁上下车且泥尘多，踏步高度、防滑、排泥和支架结构能提供人机与防护证据；形态多随底盘平台继承。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "车载式高空作业车 臂架式上装（折叠/伸缩形式待确认）",
+    "parts": [
+     "custom_9a1f",
+     "custom_3c7d",
+     "custom_6e2b",
+     "custom_4d8a",
+     "step"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "市政工地 工程车",
+    "parts": [
+     "custom_9a1f",
+     "custom_3c7d",
+     "custom_6e2b",
+     "custom_4d8a",
+     "step"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不分析自行式臂车、剪叉式平台、乘用车或非车载底盘的高空作业设备。",
+   "不把驾驶室拆成格栅、大灯、保险杠等未点名部件；仅在驾驶室整体证据中出现。",
+   "不推断具体臂长、吨位、品牌型号或液压/电气内部结构。",
+   "不将支腿、臂架、工作台斗拆解到销轴、油缸密封等维修件级别。",
+   "不默认跨类目借用农机/叉车踏步，除非后续标记为 borrowed。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

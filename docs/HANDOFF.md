@@ -125,6 +125,8 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T42 文件治理 / run 台账 | ✅ | 每 run 落 `RUN.json`；`INDEX.json/md` 自动生成；空目录/旧嵌套只标记；`recompute` 已清；新增 `data-test/runs/README.md` 与 `tests/test_run_ledger.py`（4/4） |
 | T43 brief API 化 | ✅ | `briefing.py` + `build_brief.py`：LLM 输出分析字段，代码补配额/预算/tiers 并做双校验；产物带 `brief_meta.json`；手工 brief 标 legacy |
 | T44 skill 必要性 A/B | ✅ | `task-brief@v2`（工程分析方法）+ `evals/evals.json` + `eval_task_brief.py`；with vs without：known-parts 5 vs 1 部件、口语类目 without 崩溃；n=3，待扩样与人工 rubric |
+| T45 generic 只标不删 | ✅ | A2 plan 跑 12 槽：**12/12**，3 台 generic 占槽，82 唯一图/76 过门卫；审核页显示身份并可按泛称筛选；无候选被删 |
+| T46 10 案例 skill A/B | ✅ | 5 旧 + 5 新品类（挖掘机/装载机/搅拌车/环卫压缩车/高空作业车），全部 3–5 部件、无具体车型；with_skill 自动断言 10/10，without 仅 1/10；人工 rubric 见 `REVIEW.md` |
 
 最近 run：
 

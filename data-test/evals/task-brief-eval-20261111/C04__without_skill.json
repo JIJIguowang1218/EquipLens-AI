@@ -1,0 +1,149 @@
+{
+ "case": {
+  "id": "C04",
+  "prompt": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+  "expected_output": "class=随车起重运输车；货箱/吊机/底盘关系写清；前脸 region；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 1,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 3,
+  "regions": 0,
+  "failed": [
+   "parts 1 not in [3,5]",
+   "regions < min"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044551",
+  "request": {
+   "raw": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+   "class": "truck_mounted_crane_transport_vehicle",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_da39a3ee",
+    "label": "",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "truck_mounted_crane_transport_vehicle",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "truck_mounted_crane_transport_vehicle 工程车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "排除乘用车/SUV",
+   "排除无起重装置的普通货车",
+   "排除内饰与驾驶室内部",
+   "排除后围与顶盖除非画面自然带入",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

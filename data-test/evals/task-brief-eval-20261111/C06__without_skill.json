@@ -1,0 +1,338 @@
+{
+ "case": {
+  "id": "C06",
+  "prompt": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+  "expected_output": "class=挖掘机；上装/底盘区分；履带等词表外部件保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 10,
+  "custom_parts": 6,
+  "all_have_design_axes": true,
+  "assumptions": 3,
+  "regions": 0,
+  "failed": [
+   "parts 10 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044722",
+  "request": {
+   "raw": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+   "class": "crawler_hydraulic_excavator",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "动臂",
+     "斗杆",
+     "铲斗",
+     "驾驶室",
+     "履带行走底盘",
+     "配重"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_e1c9150d",
+    "label": "动臂",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_c0dc0150",
+    "label": "斗杆",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_2ef84586",
+    "label": "铲斗",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_345f126c",
+    "label": "履带行走底盘",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_0d8041ac",
+    "label": "配重",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "crawler_hydraulic_excavator",
+    "parts": [
+     "custom_e1c9150d",
+     "custom_c0dc0150",
+     "custom_2ef84586",
+     "custom_0f65b221",
+     "custom_345f126c",
+     "custom_0d8041ac",
+     "step",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "crawler_hydraulic_excavator 工程车",
+    "parts": [
+     "custom_e1c9150d",
+     "custom_c0dc0150",
+     "custom_2ef84586",
+     "custom_0f65b221",
+     "custom_345f126c",
+     "custom_0d8041ac",
+     "step",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出轮式挖掘机或轮胎式底盘相关造型特征",
+   "不引入装载机、推土机等其他工程车类别的前脸与工作装置",
+   "不设定具体品牌 logo 或专有色值",
+   "不涉及未提及的上装属具（如破碎锤、抓斗）细节",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

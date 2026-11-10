@@ -1,0 +1,359 @@
+{
+ "case": {
+  "id": "C09",
+  "prompt": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+  "expected_output": "class=环卫/压缩垃圾车；上装功能件保留 custom_*；不做卡车品类误判；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 3,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 3,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044959",
+  "request": {
+   "raw": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+   "class": "环卫压缩式垃圾车（后装压缩式垃圾车，城市环卫用车）",
+   "environment": {
+    "value": "城市环卫：市区道路、限高限宽、频繁起停与低速作业、垃圾渗滤液腐蚀、每日高频上下车与清洗",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "4×2 中型环卫专用二类底盘（平头驾驶室，GVW 约 12–16 t），上装为压缩箱体+上料机构",
+    "confidence": 0.8
+   },
+   "configuration": "4×2，后置上料（挂桶/翻转斗）+ 压缩箱 + 后门举升卸料；驾驶室为底盘继承件",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.base_platform",
+    "value": "4×2 中型环卫二类底盘，GVW 约 12–16 t，轴距 3800–4500 mm，平头单排/排半日间驾驶室",
+    "why": "用户仅给“4×2”，未给吨位与轴距；按城市环卫主流压缩式垃圾车反推",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.configuration",
+    "value": "后装压缩式（尾部装载斗上料 + 后门举升卸料）",
+    "why": "用户同时点名“压缩箱”与“装载斗”，符合后装压缩式构型；侧装/低位上料亦可能，需确认",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.environment",
+    "value": "城市道路工况，含限高限宽、频繁起停、垃圾渗滤液腐蚀、每日冲洗",
+    "why": "“城市环卫”是唯一工况信息；据此判定防腐、清洁性、行人安全与法规反光标识为优先轴",
+    "confidence": 0.8
+   },
+   {
+    "field": "fleet_scale",
+    "value": "12 台批量投放 → 造型/CMF 一致性、涂装分色统一、易清洁与备件通用优先",
+    "why": "“12 台”为投放数量而非车型参数，但会改变 CMF 与制造一致性权重",
+    "confidence": 0.9
+   },
+   {
+    "field": "region_regulation",
+    "value": "中国城市环卫法规语境（侧/后防护、反光标识、外廓尺寸）",
+    "why": "未给地域；按中文表述与 4×2 环卫车主流市场假设",
+    "confidence": 0.6
+   },
+   {
+    "field": "parts[custom_c03].relation_axis",
+    "value": "platform（驾驶室为底盘继承件）",
+    "why": "环卫车驾驶室通常直接沿用二类底盘驾驶室，仅做涂装与少量附件适配；若为定制驾驶室需改为 exact",
+    "confidence": 0.65
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "压缩箱（箱体总成，含推板/刮板滑板与后门）",
+     "装载斗（上料斗/挂桶翻转机构）",
+     "驾驶室（4×2 底盘二类驾驶室）"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_c01",
+    "label": "压缩箱（箱体总成，含推板/刮板滑板与后门）",
+    "kind": "part",
+    "location": "上装中部至后部，驾驶室之后、后轴之上延伸至车尾",
+    "part_family": "sheet_metal|frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "rear",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "侧板分缝位置、加强筋/压型走向决定立面平整度与鼓胀感",
+     "箱体分块与涂装分色、反光标识带的关系决定侧面识别度",
+     "折弯/焊接工艺与圆弧半径约束板面分块和边角处理"
+    ],
+    "why": "压缩箱占整车侧面约三分之二体量，是环卫车识别度的主体；其侧板分缝、加强筋布置、后门铰接与举升点位置，能提供上装造型语言、体量比例与制造约束的直接证据，也是判断平台继承与上装特化分界的基准。"
+   },
+   {
+    "part": "custom_c02",
+    "label": "装载斗（上料斗/挂桶翻转机构）",
+    "kind": "function",
+    "location": "车尾后门下方/尾部，面向垃圾桶与作业人员",
+    "part_family": "function_attachment|sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "斗口尺度、上料高度与翻转轨迹决定作业节拍与劳动强度",
+     "斗体与后门的连接节点、分缝与密封条影响外观连续性与夹持可靠性",
+     "渗滤液导流、排污口与防腐处理决定长期清洁性"
+    ],
+    "why": "装载斗是整车唯一与垃圾桶、作业人员直接交互的功能界面，其开口尺度、离地高度、翻转包络与污水密封结构，能提供人机作业、结构节点与城市环境卫生防护方面的证据。"
+   },
+   {
+    "part": "custom_c03",
+    "label": "驾驶室（4×2 底盘二类驾驶室）",
+    "kind": "part",
+    "location": "前部，底盘继承件",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "驾驶室高度/前悬与压缩箱顶线的衔接决定整车姿态与限高适应性",
+     "前脸家族语言与上装涂装分色的统一关系",
+     "低顶/日间驾驶室对城市视野与上下车便利的影响"
+    ],
+    "why": "驾驶室多为二类底盘继承件，是区分“平台继承造型”与“工况特化造型”的基准样本；其高度、前悬、门洞与箱体前壁的衔接方式，能提供整车比例及城市工况视野与登车人机的证据。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "侧面下缘，前后轮之间（含油箱/尿素罐/蓄电池箱外侧）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "型材框架断面、支撑点间距与离地间隙的法规符合性",
+     "与油箱、尿素罐、踏步的下缘视觉对齐关系",
+     "泥污飞溅与清洗可达性对杆件间距的影响"
+    ],
+    "why": "侧防护是法规强制件、造型自由度低，但它是侧面下缘唯一连续横向元素，能提供法规尺寸符合性与侧面视觉收边、清洗可达性的证据；对整车造型贡献有限，故列为条件相关。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "驾驶室侧门下方/上装侧面前部",
+    "part_family": "frame_profile|cast_forged",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "踏步级高、踏面尺寸与防滑形式影响高频上下车安全",
+     "与侧防护、油箱、尿素罐、清洗口的空间避让",
+     "折弯/冲压成型与镂空排泥对成本与自清洁的约束"
+    ],
+    "why": "环卫作业每日高频上下车，踏步级高、踏面防滑与泥污自清直接影响人机安全；4×2 底盘侧向空间被油箱、尿素罐与侧防护压缩，踏步与它们的避让关系能提供布置冲突与清洗维护的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "环卫压缩式垃圾车（后装压缩式垃圾车，城市环卫用车） 4×2，后置上料（挂桶/翻转斗）+ 压缩箱 + 后门举升卸料；驾驶室为底盘继承件",
+    "parts": [
+     "custom_c01",
+     "custom_c02",
+     "custom_c03",
+     "side_guard",
+     "step"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "城市环卫：市区道路、限高限宽、频繁起停与低速作业、垃圾渗滤液腐蚀、每日高频上下车与清洗 工程车",
+    "parts": [
+     "custom_c01",
+     "custom_c02",
+     "custom_c03",
+     "side_guard",
+     "step"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不检索沙尘/高温/寒区/涉水等环境特化防护件（防沙板、涉水喉、进气防护），本工况非环境特化场景",
+   "不展开驾驶室前脸内部的格栅、大灯、后视镜、遮阳板等未被点名的细部件（仅保留前脸整体区域）",
+   "不涉及底盘动力传动、上装液压系统原理与压缩机构运动学设计",
+   "不做品牌/竞品对标，除非补充参考车型或对标对象",
+   "不补入用户未提及的部件（爬梯、导流罩、随车吊、称重系统、喷淋除臭等）",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

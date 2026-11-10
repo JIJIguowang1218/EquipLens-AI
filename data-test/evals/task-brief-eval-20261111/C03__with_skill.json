@@ -1,0 +1,328 @@
+{
+ "case": {
+  "id": "C03",
+  "prompt": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+  "expected_output": "class=矿用自卸/翻斗车；5 个部件；environment 关系轴优先；不写具体车型。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 0
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044452",
+  "request": {
+   "raw": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+   "class": "矿用翻斗卡车（矿用自卸车）",
+   "environment": {
+    "value": "露天矿区，粉尘大、重载、连续作业",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "6×4 公路重型卡车底盘衍生（宽体矿用自卸车）",
+    "confidence": 0.8
+   },
+   "configuration": "6×4，前置驾驶室+后翻斗货箱",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "6×4 宽体矿用自卸车（公路重型底盘衍生）",
+    "why": "用户给出 6×4 与“矿用翻斗卡车”，刚性矿卡多为 4×2 大吨位布置，6×4 更符合宽体矿卡/矿区自卸车构型",
+    "confidence": 0.72
+   },
+   {
+    "field": "request.configuration",
+    "value": "前置驾驶室 + 后翻斗货箱，单胎/双胎后桥未定",
+    "why": "该类车型的通用布置，输入未提货箱形式与悬架",
+    "confidence": 0.65
+   },
+   {
+    "field": "environment",
+    "value": "露天矿区，干粉尘为主，含碎石抛洒与重载下坡制动",
+    "why": "用户只写“矿区粉尘/重载”，未区分干湿、是否冻融或腐蚀性物料",
+    "confidence": 0.6
+   },
+   {
+    "field": "manufacturing_emphasis",
+    "value": "12 台视为小批量定制，工装以折弯/焊接型材为主，冲压模具摊销受限",
+    "why": "用户给出台数，通常意味着关注批量对造型与工艺的约束",
+    "confidence": 0.55
+   },
+   {
+    "field": "parts.scope",
+    "value": "仅分析用户点名的 5 项，前轮拱限定为前轴",
+    "why": "用户未提后轮拱、格栅、侧防护等，按原词范围处理",
+    "confidence": 0.9
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "front，驾驶室前下部、车架前端",
+    "part_family": "sheet_metal|frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "重载矿区磕碰与碎石冲击 → 板厚、加强筋与分段可换结构",
+     "粉尘堆积与清洗 → 面型走向、排尘开口、离地角",
+     "小批量 12 台 → 折弯/焊接型材方案 vs 冲压模具的取舍在分缝上留下痕迹"
+    ],
+    "why": "保险杠是前脸体量落地的第一块实体，能同时提供“造型语言（面型/分块）+ 结构构造（板金或型材、连接节点）+ 工况防护（离地、防护、易换）”三类证据，也是判断该车前脸是平台继承还是工况特化的关键参照。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front，保险杠上方/驾驶室前围下部",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "regulation",
+     "environment_protection",
+     "structure"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "粉尘与飞石 → 灯罩防护网/防护栅的存在形式与网格密度",
+     "矿区夜间与扬尘照明 → 灯具安装高度、数量与光型布置",
+     "防护件与保险杠/前围的连接与分缝 → 维修拆装可达性"
+    ],
+    "why": "大灯区能看出该车在法规布置（高度、可见性）与工况防护（防石、防尘、易换灯）之间怎么取平衡；防护栅的形态与分缝是“功能件如何被纳入前脸造型”的直接证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "side，驾驶室门下方/前轮后方",
+    "part_family": "frame_profile|function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "粉尘泥浆附着 → 踏面开孔/格栅式排尘与防滑花纹形式",
+     "频繁上下车与重载振动 → 支架截面、踏步级数与踏面尺寸的人机关系",
+     "离地与轮胎抛洒 → 踏步相对前轮拱、挡泥板的避让与包裹关系"
+    ],
+    "why": "踏步是矿卡高频人机接触件，能提供“登车高度序列、防滑与排尘构造、支架连接方式”三类证据，同时它的位置决定了它与前轮拱、驾驶室下缘的间隙与比例，是侧面构型判断的落点。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "front/side，前轴上方、驾驶室前下侧",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "轮胎抛洒碎石与泥浆 → 轮拱包覆角度、挡泥皮与内衬的有无",
+     "粉尘堆积 → 轮拱内腔的开口、排尘与清洗可达性",
+     "轮拱开口与驾驶室、踏步、保险杠的相对比例 → 整车离地与体量姿态"
+    ],
+    "why": "前轮拱是连接“底盘离地姿态”与“上部造型”的界面件，能证明该车是沿用公路车翼子板造型还是做了矿区特化的包覆与加强；同时它的分块与折弯方式直接反映小批量制造约束。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "part",
+    "location": "front/side，驾驶室 A 柱外侧与前围上方",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "cross_vehicle",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "矿区扬尘与振动 → 支架管径/加强、镜面数量与主镜-广角镜组合",
+     "驾驶室宽体与盲区 → 支臂长度、镜面位置与视野覆盖",
+     "多为通用件选型 → 支架接口与驾驶室/前围的连接节点继承关系"
+    ],
+    "why": "后视镜总成大概率是跨车型通用件，造型自由度低；它的价值在于提供“支臂接口、镜面组合与视野布置”的证据，用来判断该车前部附件是平台继承还是工况加装——因此只作条件性参考，不作为造型主证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "矿用翻斗卡车（矿用自卸车） 6×4，前置驾驶室+后翻斗货箱",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch",
+     "mirror"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "露天矿区，粉尘大、重载、连续作业 工程车",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch",
+     "mirror"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补入用户未点名的部件：进气格栅、侧防护栏、遮阳板、下护板、品牌标识区、涂装分色方案",
+   "不把“前脸”擅自拆成格栅/大灯/保险杠之外的细分件，也不扩展到驾驶室内饰与货箱",
+   "不延伸分析后轮拱、后防护、排气与散热系统",
+   "不使用“同系列/相似车型”作为检索理由，理由须落到可获取的设计证据",
+   "不输出 page_budget / research_units / quota / tiers / budget / strategy_ref 等由代码生成的字段",
+   "不猜具体品牌型号或吨位等级",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

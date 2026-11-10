@@ -1,0 +1,148 @@
+{
+ "case": {
+  "id": "C08",
+  "prompt": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+  "expected_output": "class=搅拌车；上装（罐/斗）与底盘分开；词表外上装保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 1,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 2,
+  "regions": 0,
+  "failed": [
+   "parts 1 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044927",
+  "request": {
+   "raw": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+   "class": "concrete_mixer_truck",
+   "environment": {
+    "value": "construction_site_road",
+    "confidence": 0.8
+   },
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_da39a3ee",
+    "label": "",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45",
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "concrete_mixer_truck",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "construction_site_road 工程车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "排除非混凝土搅拌车车型",
+   "排除乘用车、普通货车、自卸车等非搅拌车底盘/上装",
+   "排除与搅拌罐、进出料斗、驾驶室、侧防护、登车踏步无关的部件",
+   "不引入未提及的品牌标识、涂装方案或改装假设",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

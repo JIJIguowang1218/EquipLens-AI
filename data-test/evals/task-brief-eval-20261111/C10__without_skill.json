@@ -1,0 +1,157 @@
+{
+ "case": {
+  "id": "C10",
+  "prompt": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+  "expected_output": "class=高空作业车；臂架/支腿/工作斗按 function 处理；词表外保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 1,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 2,
+  "regions": 0,
+  "failed": [
+   "parts 1 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-045104",
+  "request": {
+   "raw": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+   "class": "工程车／专用作业车",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_da39a3ee",
+    "label": "",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "工程车／专用作业车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工程车／专用作业车 工程车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "排除非高空作业类工程机械：挖掘机、装载机、起重机（非载人平台）、泵车、搅拌车。",
+   "排除自行式剪叉平台、蜘蛛式/履带式高空作业平台、桅柱式平台（非车载底盘）。",
+   "排除固定式/建筑附着式作业平台与施工升降机。",
+   "排除臂架、工作台斗缺件的整车图，或仅局部特写无法判断整车关系的图。",
+   "排除以人物、建筑、街景为主体而车辆为次要元素的图片。",
+   "排除低分辨率、重水印、明显 AI 失真或结构不合逻辑的图。",
+   "排除乘用车/SUV 前脸细节等与工程车驾驶室无关的参考。",
+   "排除与市政工地场景严重冲突的素材（如室内、越野极限、赛道）。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

@@ -374,3 +374,32 @@
 3. 泛化测试必须用 skill 里没出现过的品类（矿山自卸车、汽车起重机）和词表外部件；下一步扩到 10–20 个 case、每 case 跑 2 次，评“品类/基型/构型、对象分类、关系轴、设计轴、未知部件、是否编造”，再决定 skill 是否保留/怎么改。
 
 **产物**：`data-test/evals/task-brief-eval-20261111/{RESULTS.md,results.json,*.json}`；运行器 `scripts/eval_task_brief.py`。
+
+### E17b 10 案例复跑（2026-11-11）
+
+把 5 个旧案例（C01–C05，来自 `BRIEFS-5`）+ 5 个新品类（C06 挖掘机 / C07 装载机 / C08 搅拌车 / C09 环卫压缩车 / C10 高空作业车）统一成 10 个“品类 + 3–5 部件”的 prompt，全部不含具体车型；`with_skill` vs `without_skill` 各跑一次。
+
+| 组 | 自动断言通过 | 典型失败 |
+|---|---:|---|
+| with_skill | **10/10** | 无 |
+| without_skill | **1/10**（仅 C03） | 7 个 case 只出 1 个部件；多数无 region；C06 出了 10 个部件 |
+
+自动断言只覆盖 schema/部件数/design_axes/region/custom/assumption；**语义质量仍需人工**，评审表在 `data-test/evals/task-brief-eval-20261111/REVIEW.md`（10 行 × 7 个维度）。
+限制：without_skill 是“完全不给方法”的基线，不是“只给格式的 v1”；要证明 v2 方法本身必要，还需要加 v1 格式组，做三臂对照。
+
+---
+
+## E18 generic 只标不删：12 槽实测（2026-11-11）
+
+**原则**：generic（无型号码）不是废品；品牌/车系正确、图过门卫、能看出造型就可用。低清只标 `low_resolution`；不设配额、不删候选。
+
+**做法**：用 T41 的 A2 plan（26 候选，其中 9 个 generic）跑完整 12 槽；新代码把 `identity_kind` 从 plan → Target → state → 审核页，只展示和筛选，不参与淘汰。
+
+**结果**：
+- **12/12 DONE**（exact 8、environment 4），`missing=0`；
+- 目标身份分布：code 13 / series 2 / generic 9；
+- **交付里 3 台 generic 占槽**（OTTC 越野牵引头、中东版 6×6、东风 6×6 沙漠卡车）；
+- 82 张唯一图 / 76 过门卫 / 392 次抓取；`degraded=8`、`citation_only=1`、bonus 32；
+- 没有候选因 generic 被删；审核页可按“泛称车型”筛出。
+
+**结论**：generic 只标不删在 12 槽上可行；它不会自动降低交付数，但会增加 degraded（3 台泛称交付里没有 confirmed 图）。下一步若要提高质量，应做“排序/证据补强”，不是限额。

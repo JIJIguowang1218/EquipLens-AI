@@ -1,0 +1,231 @@
+{
+ "case": {
+  "id": "C02",
+  "prompt": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+  "expected_output": "把“重型吊车”落成汽车起重机/全地面起重机或写待确认；侧护板按位置拆开；支腿/吊臂不擅自添加。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 4,
+  "all_have_design_axes": true,
+  "assumptions": 3,
+  "regions": 0,
+  "failed": [
+   "regions < min"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044430",
+  "request": {
+   "raw": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+   "class": "heavy_crane",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "前脸",
+     "车辆侧护板",
+     "驾驶室后方侧护板",
+     "大灯"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_284a4fb0",
+    "label": "前脸",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_87aec00d",
+    "label": "车辆侧护板",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_492812df",
+    "label": "驾驶室后方侧护板",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_c024ab24",
+    "label": "大灯",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "heavy_crane",
+    "parts": [
+     "custom_284a4fb0",
+     "custom_87aec00d",
+     "custom_492812df",
+     "step",
+     "custom_c024ab24"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "heavy_crane 工程车",
+    "parts": [
+     "custom_284a4fb0",
+     "custom_87aec00d",
+     "custom_492812df",
+     "step",
+     "custom_c024ab24"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不新增用户未列明部件，如格栅、保险杠、后视镜、遮阳板、下护板、涂装分色等",
+   "不改变车型类别、用途和数量",
+   "不假设具体品牌或型号",
+   "不引入非工地吊装场景",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

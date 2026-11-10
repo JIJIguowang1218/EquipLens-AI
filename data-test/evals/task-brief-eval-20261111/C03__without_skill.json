@@ -1,0 +1,227 @@
+{
+ "case": {
+  "id": "C03",
+  "prompt": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+  "expected_output": "class=矿用自卸/翻斗车；5 个部件；environment 关系轴优先；不写具体车型。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 0
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 3,
+  "regions": 0,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044503",
+  "request": {
+   "raw": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+   "class": "mining_dump_truck",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "前轮拱/翼子板"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "custom_81e039a2",
+    "label": "前轮拱/翼子板",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "mining_dump_truck",
+    "parts": [
+     "step",
+     "headlamp",
+     "mirror",
+     "custom_81e039a2",
+     "bumper"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "mining_dump_truck 工程车",
+    "parts": [
+     "step",
+     "headlamp",
+     "mirror",
+     "custom_81e039a2",
+     "bumper"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不按乘用车或轻卡造型处理",
+   "不引入未指定的品牌标识或涂装方案",
+   "不将 6×4 误写为 4×2 或 6×2",
+   "不扩展未提及的车顶部、后围重点部件",
+   "不输出非 JSON 解释",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

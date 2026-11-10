@@ -1,0 +1,296 @@
+{
+ "case": {
+  "id": "C04",
+  "prompt": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+  "expected_output": "class=随车起重运输车；货箱/吊机/底盘关系写清；前脸 region；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044533",
+  "request": {
+   "raw": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+   "class": "随车起重运输车（货车底盘+随车起重机）",
+   "environment": {
+    "value": "工程运输（工地/工程物料运输）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "载货汽车底盘改装的随车起重运输车基型",
+    "confidence": 0.8
+   },
+   "configuration": "随车起重机+货箱布置，驱动形式与吊机位置待确认",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "按载货汽车底盘改装理解",
+    "why": "随车起重运输车通常为货车底盘加装随车起重机与货箱",
+    "confidence": 0.7
+   },
+   {
+    "field": "configuration",
+    "value": "未指明驱动形式、吊机位置与货箱形式",
+    "why": "输入只给出品类与工程运输场景，构型细节缺失",
+    "confidence": 0.4
+   },
+   {
+    "field": "quantity",
+    "value": "12台为车队/采购规模，不作为造型差异化依据",
+    "why": "末尾“12台”更像数量信息而非设计对象",
+    "confidence": 0.6
+   },
+   {
+    "field": "side_guard",
+    "value": "按车辆侧护板/侧防护栏理解",
+    "why": "用户原词与参考词表 side_guard 对齐",
+    "confidence": 0.8
+   },
+   {
+    "field": "headlamp",
+    "value": "包含大灯总成及灯罩防护关注",
+    "why": "用户只写“大灯”，参考词表 headlamp 含灯罩防护语义",
+    "confidence": 0.7
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "side",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "frame_layout",
+     "panel_split",
+     "ground_clearance"
+    ],
+    "why": "可提供侧防护栏框架/板面分缝、离地间隙、反光与法规安装方式的证据，并判断工程运输泥污与碰撞防护。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "front_side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "wheel_opening",
+     "split_line",
+     "tire_clearance"
+    ],
+    "why": "可提供轮口比例、轮胎与驾驶室关系、轮拱分缝/材质与冲压或注塑成型约束的证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "cab_side",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "step_height",
+     "anti_slip",
+     "mud_clearance"
+    ],
+    "why": "可提供登车高度、踏面防滑、泥污排除、支架安装与驾驶室入口人机关系的证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "lighting_regulation",
+     "lamp_guard",
+     "service_access"
+    ],
+    "why": "可提供灯组法规布置、灯罩防护结构、维修可达性以及工程运输防撞防尘处理的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "随车起重运输车（货车底盘+随车起重机） 随车起重机+货箱布置，驱动形式与吊机位置待确认",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "headlamp"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工程运输（工地/工程物料运输） 工程车",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "headlamp"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不要把前脸自动拆成格栅、保险杠、品牌标识区等未点名部件",
+   "不要扩展到随车起重机吊臂、支腿、货箱等上装部件，除非后续确认",
+   "不要把12台理解为需要不同造型配置",
+   "不要用“相似车型/同系列”作为设计证据理由",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

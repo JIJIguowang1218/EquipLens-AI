@@ -1,0 +1,326 @@
+{
+ "case": {
+  "id": "C06",
+  "prompt": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+  "expected_output": "class=挖掘机；上装/底盘区分；履带等词表外部件保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 5,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044704",
+  "request": {
+   "raw": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+   "class": "履带式液压挖掘机",
+   "environment": {
+    "value": "矿山土方",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "履带底盘",
+    "confidence": 0.8
+   },
+   "configuration": "履带式；标准动臂+斗杆+铲斗工作装置，正铲/反铲及具体尺寸未确认",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.configuration",
+    "value": "履带式；正铲/反铲未定，按标准动臂+斗杆+铲斗工作装置描述",
+    "why": "输入列出动臂、斗杆、铲斗，但未说明正铲/反铲、吨位、斗容和臂长",
+    "confidence": 0.7
+   },
+   {
+    "field": "quantity",
+    "value": "12台按设备批量/车队规模处理",
+    "why": "输入末尾“12台”未说明是设备数量还是参考图数量；暂按设备数量理解",
+    "confidence": 0.5
+   },
+   {
+    "field": "custom_cab.protection",
+    "value": "按矿山工况可能需要FOPS/ROPS、防尘增压和落石防护，待确认",
+    "why": "矿山土方存在粉尘和落石风险，但输入未明确驾驶室防护等级",
+    "confidence": 0.6
+   },
+   {
+    "field": "custom_track_undercarriage.level",
+    "value": "只分析到履带总成层级，不拆分履带板/支重轮/驱动轮等子件",
+    "why": "用户只点名“履带”，未点名下级子件",
+    "confidence": 0.8
+   },
+   {
+    "field": "part_taxonomy",
+    "value": "动臂、斗杆、铲斗、驾驶室、履带使用custom_*键并保留原词",
+    "why": "参考词表中无对应部件键，按未知部件处理",
+    "confidence": 0.9
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "动臂",
+     "斗杆",
+     "铲斗",
+     "驾驶室",
+     "履带"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_boom",
+    "label": "动臂",
+    "kind": "part",
+    "location": "上车前部/工作装置根部至斗杆铰点",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱型截面与弯折走向",
+     "焊缝/加强板布置",
+     "液压管线与耐磨护套集成"
+    ],
+    "why": "矿山重载下动臂的截面、弯折和加强节点直接提供工作装置承载与耐磨防护的形态证据。"
+   },
+   {
+    "part": "custom_arm",
+    "label": "斗杆",
+    "kind": "part",
+    "location": "工作装置中段/动臂前端至铲斗铰点",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱型截面收放与铰点布置",
+     "耐磨条/护板布置",
+     "斗杆油缸与管线包络"
+    ],
+    "why": "斗杆连接动臂与铲斗，其截面变化、铰点包络和耐磨防护能反映矿山土方工况下的结构强化与维修可达性。"
+   },
+   {
+    "part": "custom_bucket",
+    "label": "铲斗",
+    "kind": "part",
+    "location": "工作装置前端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "切削刃/斗齿与耐磨板布局",
+     "斗壳和侧板磨损区",
+     "与斗杆连杆的接口"
+    ],
+    "why": "铲斗是直接接触矿山土方和磨蚀物料的执行件，耐磨件布置、斗型与焊接构造能提供重载易损件设计证据。"
+   },
+   {
+    "part": "custom_cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "上车前部驾驶位（左右布置待确认）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "environment_protection",
+     "structure",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "ROPS/FOPS 与骨架集成",
+     "防尘密封/增压接口",
+     "玻璃面与视野"
+    ],
+    "why": "矿山土方驾驶室需要兼顾落石/翻车防护、粉尘密封、视野和操作人机，是环境防护与人机法规证据最集中的部件。"
+   },
+   {
+    "part": "custom_track_undercarriage",
+    "label": "履带",
+    "kind": "part",
+    "location": "下车左右两侧",
+    "part_family": "undercarriage_assembly",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "履带接地长度与整机比例",
+     "履带板/链轨节磨损面",
+     "排泥排石与维护可达性"
+    ],
+    "why": "履带底盘在矿山地面提供通过性、耐磨和清障维护特征，能支撑下车构型与接地关系的判断。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "履带式液压挖掘机 履带式；标准动臂+斗杆+铲斗工作装置，正铲/反铲及具体尺寸未确认",
+    "parts": [
+     "custom_boom",
+     "custom_arm",
+     "custom_bucket",
+     "custom_cab",
+     "custom_track_undercarriage"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "矿山土方 工程车",
+    "parts": [
+     "custom_boom",
+     "custom_arm",
+     "custom_bucket",
+     "custom_cab",
+     "custom_track_undercarriage"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不扩展到轮式底盘、卡车前脸、进气格栅、保险杠、侧防护栏、翼子板/轮拱、登车踏步、大灯、后视镜、遮阳板、下护板、品牌标识区、涂装分色等未点名对象",
+   "不把驾驶室拆成玻璃、车门、座椅、操纵台等未点名子件；不把履带拆成履带板、支重轮、驱动轮、张紧装置等未点名子件",
+   "不猜具体吨位、型号、正铲/反铲、斗容、动臂/斗杆长度",
+   "不编page_budget/quota/tiers/budget等代码侧字段",
+   "不把“12台”当作12张参考图或12个设计变体，除非用户确认",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

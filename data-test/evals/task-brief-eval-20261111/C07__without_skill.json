@@ -1,0 +1,153 @@
+{
+ "case": {
+  "id": "C07",
+  "prompt": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+  "expected_output": "class=装载机；工程机械而非卡车；部件族/设计轴合理；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 1,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 3,
+  "regions": 0,
+  "failed": [
+   "parts 1 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044812",
+  "request": {
+   "raw": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+   "class": "wheel_loader",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_da39a3ee",
+    "label": "",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "wheel_loader",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "wheel_loader 工程车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不要输出乘用车化前脸（进气格栅、保险杠、翼子板等乘用车部件语言）",
+   "不要采用履带底盘或非轮式行走结构",
+   "不要忽略批量 12 台的工艺一致性与可制造性约束",
+   "不要弱化高粉尘环境下的散热、密封与防护表达",
+   "不要把铲斗与动臂简化为装饰性造型而丢失功能结构逻辑",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

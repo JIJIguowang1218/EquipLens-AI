@@ -1,0 +1,219 @@
+{
+ "case": {
+  "id": "C05",
+  "prompt": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+  "expected_output": "class=重型牵引车；platform 关系轴为主；前脸 region；5 个部件。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 2,
+  "regions": 0,
+  "failed": [
+   "regions < min"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-044629",
+  "request": {
+   "raw": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+   "class": "heavy_truck_tractor",
+   "environment": null,
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "views",
+    "value": "hero_45",
+    "why": "LLM 未给合法视角，回落 hero_45",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "heavy_truck_tractor",
+    "parts": [
+     "grille",
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "heavy_truck_tractor 工程车",
+    "parts": [
+     "grille",
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不扩展到挂车或厢体",
+   "不评估后围与顶盖导流（除非与前脸相关）",
+   "不引入未列出的部件如后视镜总成、外部遮阳板、下护板、品牌标识区、涂装分色",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}
