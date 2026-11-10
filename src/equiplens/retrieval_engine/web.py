@@ -308,7 +308,8 @@ class WebWorld:
                 target_id=model, model=model, source="plan", tier=unit.tier,
                 parts=tuple(unit.parts), unit_id=unit.unit_id,
                 sources=tuple(c.get("sources") or []), citation_ok=ok,
-                query=(c.get("query") or self.normalize_query(model))))
+                query=(c.get("query") or self.normalize_query(model)),
+                identity_kind=(c.get("identity_kind") or "")))
         return out
 
     def _api_log(self, row: dict) -> None:

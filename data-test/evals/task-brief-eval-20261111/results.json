@@ -1,0 +1,92 @@
+{
+ "skill_version": "task-brief@v2",
+ "rows": [
+  {
+   "case": "known-parts",
+   "arm": "with_skill",
+   "status": "ok",
+   "checks": {
+    "schema_ok": true,
+    "parts": 5,
+    "custom_parts": 0,
+    "all_have_design_axes": true,
+    "assumptions": 7,
+    "regions": [
+     "front_face"
+    ],
+    "raw_mentions": []
+   },
+   "ms": 25595
+  },
+  {
+   "case": "known-parts",
+   "arm": "without_skill",
+   "status": "ok",
+   "checks": {
+    "schema_ok": true,
+    "parts": 1,
+    "custom_parts": 1,
+    "all_have_design_axes": true,
+    "assumptions": 2,
+    "regions": [],
+    "raw_mentions": []
+   },
+   "ms": 24560
+  },
+  {
+   "case": "unknown-parts",
+   "arm": "with_skill",
+   "status": "ok",
+   "checks": {
+    "schema_ok": true,
+    "parts": 4,
+    "custom_parts": 4,
+    "all_have_design_axes": true,
+    "assumptions": 7,
+    "regions": [],
+    "raw_mentions": [
+     "防沙板",
+     "涉水喉",
+     "爬梯",
+     "尾灯"
+    ]
+   },
+   "ms": 28981
+  },
+  {
+   "case": "unknown-parts",
+   "arm": "without_skill",
+   "status": "ValueError: brief 生成失败（已重试）: 无法确定 request.class：用户输入里没有车型类别，也没有 --class 兜底",
+   "checks": {},
+   "ms": 11170
+  },
+  {
+   "case": "ambiguous-category",
+   "arm": "with_skill",
+   "status": "ok",
+   "checks": {
+    "schema_ok": true,
+    "parts": 2,
+    "custom_parts": 2,
+    "all_have_design_axes": true,
+    "assumptions": 6,
+    "regions": [
+     "side",
+     "rear"
+    ],
+    "raw_mentions": [
+     "支腿",
+     "吊臂"
+    ]
+   },
+   "ms": 18752
+  },
+  {
+   "case": "ambiguous-category",
+   "arm": "without_skill",
+   "status": "JSONDecodeError: Extra data: line 1 column 1775 (char 1774)",
+   "checks": {},
+   "ms": 23623
+  }
+ ]
+}

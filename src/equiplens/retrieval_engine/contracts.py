@@ -177,6 +177,7 @@ class Target:
     sources: tuple[str, ...] = ()
     citation_ok: bool = False
     query: str = ""
+    identity_kind: str = ""   # code / series / generic（只标记，不参与淘汰）
 
     @classmethod
     def from_dict(cls, data: dict, *, source: str, tier: str) -> "Target":
@@ -190,6 +191,7 @@ class Target:
             sources=tuple(_as_list(data.get("sources"))),
             citation_ok=bool(data.get("citation_ok")),
             query=str(data.get("query") or ""),
+            identity_kind=str(data.get("identity_kind") or ""),
         )
 
     def to_dict(self) -> dict:
@@ -203,6 +205,7 @@ class Target:
             "sources": list(self.sources),
             "citation_ok": self.citation_ok,
             "query": self.query,
+            "identity_kind": self.identity_kind,
         }
 
 

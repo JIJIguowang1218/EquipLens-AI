@@ -1,0 +1,239 @@
+{
+ "case": {
+  "id": "ambiguous-category",
+  "prompt": "重型吊车，想分析支腿和吊臂的造型，可能是在工地用；12 台",
+  "expected_output": "把“重型吊车”落参数（吨位/底盘形式/上装）或写 needs_confirmation；支腿/吊臂按 function 处理；给出 design_axes；不猜具体型号。"
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 2,
+  "custom_parts": 2,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": [
+   "side",
+   "rear"
+  ],
+  "raw_mentions": [
+   "支腿",
+   "吊臂"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-043044",
+  "request": {
+   "raw": "重型吊车，想分析支腿和吊臂的造型，可能是在工地用；12 台",
+   "class": "重型吊车（推断为汽车起重机/全地面起重机的上车类产品，非履带吊）",
+   "environment": {
+    "value": "建筑工地/临时施工场地（粉尘、泥泞、临时道路、频繁转场）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "起重机专用多轴卡车底盘 + 回转平台上装（推断为伸缩臂式，需确认）",
+    "confidence": 0.8
+   },
+   "configuration": "多轴（8×4/10×6 级）驾驶室前置或中置 + 后置伸缩吊臂 + 4~6 点液压支腿",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "汽车起重机/全地面起重机（轮式，伸缩臂）",
+    "why": "“重型吊车 + 支腿 + 吊臂”在口语中通常指轮式起重机；履带吊无外伸支腿，与用户描述不符。需确认吨位级与底盘形式。",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.base_platform",
+    "value": "起重机专用多轴卡车底盘 + 回转平台上装",
+    "why": "支腿与吊臂均为上装/底盘接口件，平台决定了支腿跨距与臂架搁置方式；未给型号，按通用轮式起重机平台推断。",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.environment",
+    "value": "建筑工地/临时场地：粉尘、泥泞、频繁转场与收放支腿",
+    "why": "用户表述为“可能是在工地用”，按工地工况判断支腿与吊臂的防护/耐磨/警示类设计维度是否成立。",
+    "confidence": 0.6
+   },
+   {
+    "field": "raw.quantity",
+    "value": "12 台视为车队/采购规模，不进入造型检索条件",
+    "why": "数量影响配置与批量工艺，但不改变“支腿/吊臂造型”的检索方向；若 12 台意味着同型批量涂装统一，可在后续 CMF 任务中单列。",
+    "confidence": 0.75
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "支腿（液压支腿/外伸梁总成）",
+     "吊臂（伸缩臂/臂架）"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_outrigger",
+    "label": "支腿（液压支腿/外伸梁总成）",
+    "kind": "part",
+    "location": "底盘车架两侧（前/后支腿，横向外伸）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "form_gesture",
+     "environment_protection",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "外伸活动梁与固定腿的套接方式（方箱/多边形套筒）决定可见分缝与体量层次",
+     "支腿盘/垫板与球头连接：接地面的形态与加强筋布置",
+     "液压油缸与管路的外露/隐藏处理（护罩、走管槽）"
+    ],
+    "why": "支腿是上车类产品唯一在作业时大幅改变整车外轮廓的结构件，能直接提供“外伸姿态—截面形式—节点构造—防护处理”的证据，用于判断造型是否服从结构逻辑、是否针对工地环境做形态特化。"
+   },
+   {
+    "part": "custom_boom",
+    "label": "吊臂（伸缩臂/臂架）",
+    "kind": "part",
+    "location": "上车回转平台后部，沿整车纵向布置（行车时前伸搁置）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "form_gesture",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "臂节截面形状（六边形/八边形/十二边形/U 形）与折弯板拼接缝位置",
+     "各节臂的搭接长度、伸缩顺序与滑块/导向件的可见痕迹",
+     "臂头滑轮组、绳路与限位块的体量组织"
+    ],
+    "why": "吊臂是这类产品识别度最高的上装构件，其截面与分段直接决定“臂架语言”；同时折弯/焊接工艺对截面形状有硬约束，可提供结构-造型-制造三者耦合的证据，用于判断臂架造型是纯装饰还是有工艺依据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型吊车（推断为汽车起重机/全地面起重机的上车类产品，非履带吊） 多轴（8×4/10×6 级）驾驶室前置或中置 + 后置伸缩吊臂 + 4~6 点液压支腿",
+    "parts": [
+     "custom_outrigger",
+     "custom_boom"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "建筑工地/临时施工场地（粉尘、泥泞、临时道路、频繁转场） 工程车",
+    "parts": [
+     "custom_outrigger",
+     "custom_boom"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不要补入用户未提及的部件（前脸、保险杠、格栅、驾驶室、爬梯、配重罩等）",
+   "不要把汽车起重机与履带吊、随车吊、高空作业车混为同一构型检索",
+   "不要把支腿当作普通侧防护栏/踏板类部件检索（形态与结构逻辑不同）",
+   "不要用“同系列/相似车型”作为入选理由，理由须写明可提供何种设计证据",
+   "不做整车涂装主色方案与品牌视觉的系统分析（除非后续单独提出 CMF 需求）",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

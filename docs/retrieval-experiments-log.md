@@ -341,3 +341,36 @@
 **未解决**：brief LLM 的稳定性（同一输入多次生成是否一致）、`research_units` 的 2/3 规则是否应由产品确认、L1.5 的页槽/超量推荐仍未实现。
 
 **关键认识**：`part_taxonomy.json` 是参考词表/规范输出词汇，不是用户输入准入；分析输入靠“位置+功能+形态+环境+设计维度”的工程方法（skill §1–§3），不是查表。
+
+---
+
+## E17 task-brief skill 必要性 A/B（2026-11-11）
+
+**问题**：`task-brief@v2` 的方法引导是否真的有用？还是只是“写给评委看的 md”？
+
+**方法**：用 `skills/task-brief/evals/evals.json` 的 3 个 case（已知部件 / 词表外部件 / 口语类目），同一提示分别跑 `with_skill` 与 `without_skill`（`--no-skill`，只去掉方法引导），比自动检查和人工 rubric。
+
+**自动检查结果**：
+
+| case | arm | 部件数 | custom | 全有 design_axes | assumptions |
+|---|---|---:|---:|---|---:|
+| known-parts | with_skill | 5 | 1 | ✅ | 8 |
+| known-parts | without_skill | 1 | 1 | ✅ | 3 |
+| unknown-parts | with_skill | 4 | 4 | ✅ | 9 |
+| unknown-parts | without_skill | 7 | 4 | ✅ | 2 |
+| ambiguous-category | with_skill | 2 | 2 | ✅ | 7 |
+| ambiguous-category | without_skill | 崩溃（parts 不是对象） | — | — | — |
+
+**复跑修正（同一天、加防御性解析后重跑 6 次）**：known-parts `5 vs 1`；unknown-parts with_skill `4`，without_skill 因 `request.class` 缺失失败；ambiguous with_skill `2`，without_skill 返回非法 JSON。两次复跑说明 **without_skill 的失败/波动比 with_skill 大**，但样本仍太小。
+
+**人工抽检**：
+- with_skill 的 known-parts：class/base_platform/构型都有推理；5 个部件各带 relation_axis/design_axes/why；regions 有 front_face/side；
+- without_skill 的 known-parts：class=`traction_truck`、base_platform 空，只有 1 个部件、design_axes 全是 `form_gesture`、无 region；
+- without_skill 的 unknown-parts **部件更多**（7 个），但全是 `form_gesture`/`exact`，把侧防护/下护板/踏步也补进来了；with_skill 只保留用户点名的 4 个，且每个有环境/结构/人机轴——**“多”不等于“对”**。
+
+**结论**：
+1. 方法引导在“完整性、对象分类、设计维度、假设记录”上有可见差异，尤其 known-parts 从 1 个部件到 5 个、口语类目从崩溃到可解析；
+2. 自动检查不够，必须人工 rubric；n=3、单次运行，不能证明泛化；
+3. 泛化测试必须用 skill 里没出现过的品类（矿山自卸车、汽车起重机）和词表外部件；下一步扩到 10–20 个 case、每 case 跑 2 次，评“品类/基型/构型、对象分类、关系轴、设计轴、未知部件、是否编造”，再决定 skill 是否保留/怎么改。
+
+**产物**：`data-test/evals/task-brief-eval-20261111/{RESULTS.md,results.json,*.json}`；运行器 `scripts/eval_task_brief.py`。

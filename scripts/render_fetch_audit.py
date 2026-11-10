@@ -94,6 +94,7 @@ def main(argv=None) -> int:
     selected_ids: set[str] = set()
     package_by_model: dict[str, set[str]] = {}
     delivered_models: set[str] = set()
+    identity_by_model: dict[str, str] = {}
     state_path = run_dir / "state.json"
     if state_path.exists():
         try:
@@ -107,6 +108,10 @@ def main(argv=None) -> int:
                 for tid in delivered_models
             }
             package_ids = {a for ids in package_by_model.values() for a in ids}
+            identity_by_model = {
+                tid: (t.get("identity_kind") or "")
+                for tid, t in (st.get("targets") or {}).items()
+            }
             # “已核验”= 属于交付包，且有 accepted 的核验记录
             for key, rec in (st.get("verifications") or {}).items():
                 aid = key.split(":")[0]
@@ -114,7 +119,9 @@ def main(argv=None) -> int:
                     selected_ids.add(aid)
         except (json.JSONDecodeError, OSError):
             selected_ids, package_by_model, delivered_models = set(), {}, set()
+            identity_by_model = {}
     for it in items:
+        it["identity_kind"] = identity_by_model.get(it["model"], "")
         it["selected"] = it.get("sha1") in selected_ids
         it["in_package"] = it.get("sha1") in package_by_model.get(it["model"], set())
         it["delivered"] = it["model"] in delivered_models
@@ -155,6 +162,7 @@ def main(argv=None) -> int:
             return "分辨率/分层：" + "、".join(REASON_CN.get(x, x) for x in reasons)
         return ""
 
+    IDENTITY_CN = {"code": "型号码", "series": "车系", "generic": "泛称"}
     cards = []
     for it in items:
         if it.get("selected"):
@@ -184,14 +192,16 @@ def main(argv=None) -> int:
             f' data-pkg="{1 if it.get("in_package") else 0}"'
             f' data-ov="{1 if it.get("res_standard") else 0}"'
             f' data-part="{1 if it.get("res_high") else 0}"'
-            f' data-ref="{1 if it.get("reference_ok") else 0}">'
+            f' data-ref="{1 if it.get("reference_ok") else 0}"'
+            f' data-generic="{1 if it.get("identity_kind") == "generic" else 0}">'
             f'<div class="thumb"><img loading="lazy" src="images/{html.escape(it["image"])}" alt="">'
             f'<span class="badge {cls}">{html.escape(badge)}</span></div>'
             f'<div class="body"><h3>{html.escape(it["model"])}'
             f'{"" if it.get("delivered") else "（未占槽车型）"}</h3>'
             f'<p class="sub">{it["width"]}×{it["height"]} · 裕量 {margin_txt}'
             f' · 部件 {html.escape(",".join(it["parts"]))}'
-            f' · 交付包 {"是" if it.get("in_package") else "否"}</p>'
+            f' · 交付包 {"是" if it.get("in_package") else "否"}'
+            f' · 身份 {IDENTITY_CN.get(it.get("identity_kind") or "", "—")}</p>'
             f'<p class="sub">keep {html.escape(label_cn(it.get("keep_label", "")))} '
             f'{(it.get("keep") or 0):+.4f} ／ drop '
             f'{html.escape(label_cn(it.get("drop_label", "")))} {(it.get("drop") or 0):+.4f}</p>'
@@ -207,6 +217,7 @@ def main(argv=None) -> int:
     selected = sum(1 for i in items if i.get("selected"))
     packaged = sum(1 for i in items if i.get("in_package"))
     extras = passed - packaged
+    generic = sum(1 for i in items if i.get("identity_kind") == "generic")
     ov = sum(1 for i in items if i.get("res_standard"))
     part = sum(1 for i in items if i.get("res_high"))
     ref = sum(1 for i in items if i.get("reference_ok"))
@@ -270,7 +281,7 @@ const cards=[...document.querySelectorAll('.card')];
 const F={all:()=>true,slot:c=>c.dataset.sel==='1',pkg:c=>c.dataset.pkg==='1',
 sel:c=>c.dataset.sel==='1',pass:c=>c.dataset.pass==='1',
 extra:c=>c.dataset.pass==='1'&&c.dataset.pkg==='0',
-fail:c=>c.dataset.pass==='0',
+fail:c=>c.dataset.pass==='0',generic:c=>c.dataset.generic==='1',
 ov:c=>c.dataset.ov==='1',part:c=>c.dataset.part==='1',ref:c=>c.dataset.ref==='1'};
 let cur='all';
 function apply(){cards.forEach(c=>c.style.display=F[cur](c)?'':'none');
@@ -300,6 +311,7 @@ apply();
         + chip("过门卫合计", passed, "ok")
         + chip("标准清晰 ≥800", ov, "ok")
         + chip("高清 ≥1200", part, "ok") + chip("低清参考", ref)
+        + chip("泛称车型", generic, "warn")
         + chip("未过门卫", total - passed, "bad")
         + "</section>"
         "<table><tr><th>车型（✓=已占槽）</th><th>总图</th><th>交付包</th><th>已核验</th>"
@@ -315,6 +327,7 @@ apply();
         f'<button data-f="ov">概览 {ov}</button>'
         f'<button data-f="part">高清≥1200 {part}</button>'
         f'<button data-f="ref">参考 {ref}</button>'
+        f'<button data-f="generic">泛称车型 {generic}</button>'
         f'</div><main class="grid">{"".join(cards)}</main>'
         f"<script>{js}</script></body></html>"
     )

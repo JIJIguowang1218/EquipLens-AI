@@ -36,21 +36,28 @@ def load_taxonomy(path: Path | None = None) -> dict:
     return json.loads((path or TAXONOMY_PATH).read_text(encoding="utf-8"))
 
 
-def allowed_parts(taxonomy: dict) -> dict[str, str]:
+def reference_parts(taxonomy: dict) -> dict[str, str]:
     return {k: (v.get("label") or k) for k, v in (taxonomy.get("parts") or {}).items()}
 
 
 def build_prompt(raw: str, taxonomy: dict, *, class_hint: str = "",
-                 part_hints: list[str] | None = None) -> str:
-    """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束 + 词表。"""
-    skill = SKILL_PATH.read_text(encoding="utf-8")
-    parts = allowed_parts(taxonomy)
+                 part_hints: list[str] | None = None,
+                 use_skill: bool = True) -> str:
+    """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束 + 词表。
+
+    `use_skill=False` 只用于必要性 A/B（无方法引导的基线），不是生产路径。
+    """
+    skill = (SKILL_PATH.read_text(encoding="utf-8") if use_skill else
+             "你是工程车检索任务单解析器。只输出 JSON："
+             "{request, regions, parts, assumptions, negative}。")
+    parts = reference_parts(taxonomy)
     hints = {
         "raw": raw,
         "class_hint": class_hint,
         "part_hints": part_hints or [],
-        "allowed_parts": parts,
-        "allowed_regions": {k: (v.get("label") or k)
+        "reference_parts": parts,
+        "reference_parts_note": "参考词表，不是准入；用户/新部件可用 custom_*",
+        "reference_regions": {k: (v.get("label") or k)
                             for k, v in (taxonomy.get("regions") or {}).items()},
         "allowed_views": list(ALLOWED_VIEWS),
         "allowed_axes": list(ALLOWED_AXES),
@@ -74,8 +81,10 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
                    now: str | None = None) -> dict:
     """把 LLM 输出补成完整 brief；规则字段在这里生成。"""
     taxonomy = taxonomy or load_taxonomy()
-    parts_meta = allowed_parts(taxonomy)
-    request = payload.get("request") or {}
+    parts_meta = reference_parts(taxonomy)
+    request = payload.get("request")
+    if not isinstance(request, dict):
+        request = {}
     klass = _clean(request.get("class")) or _clean(class_hint)
     if not klass:
         raise ValueError("无法确定 request.class：用户输入里没有车型类别，也没有 --class 兜底")
@@ -83,6 +92,8 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
     regions_meta = taxonomy.get("regions") or {}
     regions_out: list[dict] = []
     for item in _as_list(payload.get("regions")):
+        if not isinstance(item, dict):
+            continue
         key = _clean(item.get("region"))
         if key not in regions_meta:
             continue
@@ -101,6 +112,8 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
     seen: set[str] = set()
     new_parts: list[str] = []
     for item in _as_list(payload.get("parts")):
+        if not isinstance(item, dict):
+            continue
         raw_key = _clean(item.get("part"))
         raw_label = _clean(item.get("label")) or raw_key
         by_label = next((k for k, v in parts_meta.items() if v == raw_label), None)
@@ -257,10 +270,11 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
 def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str = "",
                    part_hints: list[str] | None = None, brief_id: str = "",
                    model: str = "deepseek-flash", taxonomy: dict | None = None,
-                   chat_fn=None) -> dict:
+                   chat_fn=None, use_skill: bool = True) -> dict:
     """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。"""
     taxonomy = taxonomy or load_taxonomy()
-    prompt = build_prompt(raw, taxonomy, class_hint=class_hint, part_hints=part_hints)
+    prompt = build_prompt(raw, taxonomy, class_hint=class_hint,
+                          part_hints=part_hints, use_skill=use_skill)
     result = (chat_fn or chat)(prompt, api_key, model)
     last_error = ""
     for attempt in range(2):
@@ -268,7 +282,7 @@ def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str =
             brief = assemble_brief(result["payload"], raw, slots=slots, brief_id=brief_id,
                                    class_hint=class_hint, taxonomy=taxonomy)
             return {"brief": brief, "prompt": prompt, "response": result,
-                    "attempts": attempt + 1}
+                    "attempts": attempt + 1, "use_skill": use_skill}
         except ValueError as e:
             last_error = str(e)
             if attempt == 1:

@@ -1,0 +1,138 @@
+{
+ "case": {
+  "id": "known-parts",
+  "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
+  "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/side_guard/bumper；每件有 relation_axis/design_axes/why；assumptions 记录推断。"
+ },
+ "arm": "without_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 1,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 2,
+  "regions": [],
+  "raw_mentions": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-042945",
+  "request": {
+   "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
+   "class": "沙漠牵引车",
+   "environment": {
+    "value": "['沙漠', '油田工况']",
+    "confidence": 0.8
+   },
+   "base_platform": null,
+   "configuration": null,
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "parts.new",
+    "value": [
+     "",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_da39a3ee",
+    "label": "",
+    "kind": "function",
+    "location": "",
+    "part_family": "",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [],
+    "why": ""
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "沙漠牵引车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "['沙漠', '油田工况'] 工程车",
+    "parts": [
+     "custom_da39a3ee"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "避免乘用车或SUV化造型",
+   "避免非6×6底盘的普通公路牵引车",
+   "避免缺少沙漠或油田工况防护特征的普通涂装",
+   "避免与所列外观部件无关的内饰细节",
+   "避免无灯罩防护的普通大灯",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

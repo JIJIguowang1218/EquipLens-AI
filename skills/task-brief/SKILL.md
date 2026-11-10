@@ -1,3 +1,8 @@
+---
+name: task-brief
+description: 把用户的工程车/重卡需求（品类 + 工况 + 要分析的区域/部件）分析成检索任务单：先判品类/基型/构型/工况，再判设计对象与设计维度，最后输出结构化 brief。用于用户输入模糊、部件不在词表、需要工程产品设计判断时。
+---
+
 # 任务单分析：工程产品设计方法（task-brief@v2）
 
 > 这不是“把用户的话填进 JSON”的模板，而是一套**分析用户输入的方法**：
@@ -70,59 +75,40 @@
 - `platform`：继承平台造型（驾驶室轮廓、家族前脸）；
 - `cross_vehicle`：功能件可跨类目比较（踏步、爬梯、把手）——默认不开，标 `borrowed`。
 
-## 4. 输出（只输出 JSON）
+## 4. 输出字段（不是完整 brief）
+
+**完整 brief 的格式以 `schemas/task-brief-v3.schema.json` 为准**；下面只是你（LLM）要填的分析字段，
+`page_budget / research_units / quota / tiers / budget / strategy_ref` 由代码补，禁止输出。
 
 ```json
 {
   "request": {
-    "class": "沙漠牵引车",
-    "environment": "沙漠/油田工况",
-    "base_platform": "6×6 重型卡车底盘",
-    "configuration": "6×6",
-    "design_questions": ["前脸在沙尘环境下的防护与家族化", "踏步的防滑与离地"]
+    "class": "车型类别（必填）",
+    "environment": "工况/环境（可空）",
+    "base_platform": "基型平台（可空）",
+    "configuration": "构型（可空）",
+    "design_questions": ["这次要回答的设计问题，1–3 条"]
   },
   "regions": [
-    {"region": "front_face", "label": "前脸", "views": ["front", "hero_45"],
-     "design_axes": ["form_gesture", "proportion", "cmf"]}
+    {"region": "front_face|side|rear|roof", "label": "区域名",
+     "views": ["front|hero_45|side|rear|detail"],
+     "design_axes": ["form_gesture|proportion|structure|cmf|function_ergonomics|environment_protection|regulation|manufacturing"]}
   ],
   "parts": [
-    {
-      "part": "step",
-      "label": "登车踏步",
-      "kind": "part",
-      "location": "side_lower",
-      "part_family": "frame_profile",
-      "taxonomy_status": "known",
-      "relation_axis": "environment",
-      "design_axes": ["structure", "function_ergonomics", "environment_protection"],
-      "views": ["side", "hero_45"],
-      "design_relevance": "strong",
-      "accept": "B",
-      "mechanism": ["防滑", "沙尘", "离地高"],
-      "why": "沙漠工况下踏步要防沙积、防滑，且离地高度影响登车"
-    },
-    {
-      "part": "custom_a1b2c3d4",
-      "label": "涉水喉",
-      "kind": "function",
-      "location": "side_cab_rear",
-      "part_family": "function_attachment",
-      "taxonomy_status": "new",
-      "relation_axis": "environment",
-      "design_axes": ["form_gesture", "function_ergonomics"],
-      "views": ["side", "hero_45"],
-      "design_relevance": "conditional",
-      "accept": "B",
-      "mechanism": ["进气", "涉水"],
-      "why": "用户点名，词表没有；按功能/位置/形态描述，保证可检索"
-    }
+    {"part": "taxonomy 键或 custom_<hash>", "label": "用户原词/标准名",
+     "kind": "part|function", "location": "位置",
+     "part_family": "sheet_metal|frame_profile|cast_forged|function_attachment|...",
+     "taxonomy_status": "known|new", "relation_axis": "exact|environment|platform|cross_vehicle",
+     "design_axes": ["..."], "views": ["..."],
+     "design_relevance": "strong|conditional|none", "accept": "A|B|C",
+     "mechanism": ["..."], "why": "为什么这个对象值得看，能提供什么证据"}
   ],
-  "assumptions": [
-    {"field": "environment", "value": "沙漠/油田工况", "why": "用户原话", "confidence": 0.9}
-  ],
-  "negative": ["客车", "SUV", "房车", "多车拼图", "内饰", "模型"]
+  "assumptions": [{"field": "", "value": "", "why": "", "confidence": 0.0}],
+  "negative": ["..."]
 }
 ```
+
+> 示例见 `references/example-c01.md`，**只是示例，不是模板**；不要照抄车型/部件/理由。
 
 ## 5. 绝对不要
 

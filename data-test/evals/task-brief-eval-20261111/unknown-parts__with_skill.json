@@ -1,0 +1,268 @@
+{
+ "case": {
+  "id": "unknown-parts",
+  "prompt": "矿山自卸车，重点看防沙板、涉水喉、爬梯、尾灯防护；矿区粉尘；8×4；12 台",
+  "expected_output": "防沙板/涉水喉/爬梯/尾灯防护中词表没有的部件保留为 custom_* + 原词；给出位置/功能/part_family/design_axes；不因词表缺失而丢弃。"
+ },
+ "arm": "with_skill",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 4,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": [],
+  "raw_mentions": [
+   "防沙板",
+   "涉水喉",
+   "爬梯",
+   "尾灯"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-043014",
+  "request": {
+   "raw": "矿山自卸车，重点看防沙板、涉水喉、爬梯、尾灯防护；矿区粉尘；8×4；12 台",
+   "class": "矿山自卸车（矿用自卸车）",
+   "environment": {
+    "value": "矿区粉尘",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "8×4 重型自卸车底盘（推断为非铰接式）",
+    "confidence": 0.8
+   },
+   "configuration": "8×4",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "8×4 重型自卸车底盘（非铰接式）",
+    "why": "用户给出8×4，推断为刚性底盘矿用自卸车；若实际为铰接式或刚性矿卡需修正。",
+    "confidence": 0.7
+   },
+   {
+    "field": "防沙板位置",
+    "value": "前下部/进气与底盘易扬尘区",
+    "why": "防沙板安装点未明确，按粉尘防护常见界面推断。",
+    "confidence": 0.5
+   },
+   {
+    "field": "涉水喉用途",
+    "value": "高位进气/防尘为主，涉水为辅",
+    "why": "矿区粉尘工况下涉水喉常与高位进气/预滤相关；实际涉水深度未给出。",
+    "confidence": 0.5
+   },
+   {
+    "field": "爬梯位置",
+    "value": "驾驶室侧/后部登车爬梯",
+    "why": "用户未说明登车位置，按矿山自卸车驾驶室登车界面推断。",
+    "confidence": 0.6
+   },
+   {
+    "field": "尾灯防护形式",
+    "value": "后围尾灯外部防护罩/护栏",
+    "why": "尾灯防护通常为外部防护结构，具体形式待确认。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "防沙板",
+     "涉水喉",
+     "爬梯",
+     "尾灯防护"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_dust_guard",
+    "label": "防沙板",
+    "kind": "part",
+    "location": "前下部/进气与底盘易扬尘区（待确认）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "detail",
+     "front",
+     "side"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "粉尘阻挡/导流",
+     "分块密封与排尘间隙",
+     "可更换耐磨板"
+    ],
+    "why": "可提供粉尘阻挡路径、分块密封、排尘间隙和可更换磨损件的构造证据，用于判断防护等级与维修性。"
+   },
+   {
+    "part": "custom_snorkel",
+    "label": "涉水喉",
+    "kind": "part",
+    "location": "驾驶室侧/A柱至顶部高位进气",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "高位进气路径",
+     "预滤/防尘接口",
+     "管路固定与密封"
+    ],
+    "why": "可提供高位进气路径、预滤/防尘接口、管路固定与驾驶室密封的布置证据。"
+   },
+   {
+    "part": "custom_ladder",
+    "label": "爬梯",
+    "kind": "part",
+    "location": "驾驶室侧/后部登车",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "防滑踏步",
+     "自清洁开孔",
+     "扶手连续性"
+    ],
+    "why": "可提供防滑踏步、自清洁开孔、扶手连续性和模块化安装的人机与结构证据。"
+   },
+   {
+    "part": "custom_tail_lamp_guard",
+    "label": "尾灯防护",
+    "kind": "part",
+    "location": "后围尾灯外部",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "regulation",
+     "environment_protection",
+     "structure",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "灯罩外部防护",
+     "可视性与法规边界",
+     "防尘/防飞石"
+    ],
+    "why": "可提供后部灯具外部防护、可视性/法规边界和快速拆装维修的结构证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "矿山自卸车（矿用自卸车） 8×4",
+    "parts": [
+     "custom_dust_guard",
+     "custom_snorkel",
+     "custom_ladder",
+     "custom_tail_lamp_guard"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "矿区粉尘 工程车",
+    "parts": [
+     "custom_dust_guard",
+     "custom_snorkel",
+     "custom_ladder",
+     "custom_tail_lamp_guard"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不扩展未点名的进气格栅、保险杠、侧防护栏、轮拱、大灯等部件。",
+   "不把前脸整体拆成格栅/大灯/保险杠。",
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref。",
+   "不将“12台”作为设计维度；仅视为数量信息。",
+   "不把矿区粉尘泛化为所有部件都环境敏感；仅对点名防护件按环境轴检索。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

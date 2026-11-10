@@ -18,7 +18,8 @@ except Exception:
     pass
 
 from equiplens.retrieval_engine import (Asset, Brief, PartRequirement,  # noqa: E402
-                                       RetrievalEngine, RunStore, validate_brief)
+                                       RetrievalEngine, RunStore, Target,
+                                       validate_brief)
 from equiplens.retrieval_engine.adapters import FakeWorld  # noqa: E402
 from equiplens.retrieval_engine.evidence import EvidenceStore  # noqa: E402
 from equiplens.retrieval_engine import cli as engine_cli  # noqa: E402
@@ -429,6 +430,15 @@ def test_cli_web_only_without_plan_errors():
         raise AssertionError("应当 parser.error 退出 2")
 
 
+def test_target_identity_kind_roundtrip():
+    """identity_kind 只随 target 传播/展示，不参与淘汰。"""
+    t = Target(target_id="x", model="X", source="plan", tier="exact",
+               parts=("step",), identity_kind="generic")
+    d = t.to_dict()
+    assert d["identity_kind"] == "generic", d
+    assert Target.from_dict(d, source="plan", tier="exact").identity_kind == "generic"
+
+
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
 
@@ -475,6 +485,7 @@ if __name__ == "__main__":
     check("网页-only + 规则核验 + 证据落库", test_web_only_world_rule_verify_and_evidence)
     check("规则核验拒绝坏资产", test_rule_verifier_rejects_bad_asset)
     check("空库适配器", test_null_library_adapter)
+    check("Target 身份标记往返", test_target_identity_kind_roundtrip)
     check("无 plan/models 拒绝 fallback", test_web_world_requires_plan_or_models)
     check("CLI 拦截无 plan 的 web-only", test_cli_web_only_without_plan_errors)
     check("交付守卫：不足报 short", test_delivery_block_marks_short)

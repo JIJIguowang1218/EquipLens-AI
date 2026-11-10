@@ -108,6 +108,7 @@ class RetrievalEngine:
             prev["unit_id"] = prev.get("unit_id") or t.unit_id
             prev["parts"] = sorted(set(prev.get("parts") or [])
                                    | set(rec.get("parts") or []))
+            prev["identity_kind"] = prev.get("identity_kind") or rec.get("identity_kind")
 
     def _coverage(self, state: dict) -> dict:
         cov = {}

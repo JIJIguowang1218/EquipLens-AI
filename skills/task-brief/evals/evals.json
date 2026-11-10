@@ -1,0 +1,21 @@
+{
+  "skill_name": "task-brief",
+  "skill_version": "task-brief@v2",
+  "cases": [
+    {
+      "id": "known-parts",
+      "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台",
+      "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/side_guard/bumper；每件有 relation_axis/design_axes/why；assumptions 记录推断。"
+    },
+    {
+      "id": "unknown-parts",
+      "prompt": "矿山自卸车，重点看防沙板、涉水喉、爬梯、尾灯防护；矿区粉尘；8×4；12 台",
+      "expected_output": "防沙板/涉水喉/爬梯/尾灯防护中词表没有的部件保留为 custom_* + 原词；给出位置/功能/part_family/design_axes；不因词表缺失而丢弃。"
+    },
+    {
+      "id": "ambiguous-category",
+      "prompt": "重型吊车，想分析支腿和吊臂的造型，可能是在工地用；12 台",
+      "expected_output": "把“重型吊车”落参数（吨位/底盘形式/上装）或写 needs_confirmation；支腿/吊臂按 function 处理；给出 design_axes；不猜具体型号。"
+    }
+  ]
+}
