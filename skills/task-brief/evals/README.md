@@ -1,6 +1,7 @@
 # task-brief 评测（10 案例）
 
-按 Agent Skills 官方评测方法：**with_skill vs without_skill、断言、人工评分、汇总**。
+按 Agent Skills 官方评测方法：**with_skill vs previous version / without skill、断言、人工 grading、汇总**。
+这里主对照是 **v2 方法 vs v1 只给格式**；no-method 仅作参考。
 参考：<https://agentskills.io/skill-creation/evaluating-skills>
 
 ## 案例集
@@ -27,7 +28,8 @@ PYTHONPATH=src python scripts/eval_task_brief.py \
   --out data-test/evals/task-brief-eval-20261111
 ```
 
-每个 case 跑两次：`with_skill`（v2 方法）和 `without_skill`（只给输出字段，不给方法）。
+每个 case 跑两次：`v2_method`（方法引导）和 `v1_format`（只给输出字段/枚举，不给方法）。
+`--arms` 可加 `no_method` 做裸基线，但不作为主对照。
 产物：每 case 的 brief、`results.json`、`RESULTS.md`（自动断言）、`REVIEW.md`（人工评分表）。
 
 ## 自动断言
@@ -43,5 +45,5 @@ PYTHONPATH=src python scripts/eval_task_brief.py \
 
 ## 判定
 
-如果 with_skill 在 10 个案例上没有稳定优于 without_skill（或差异只来自输出格式），
+如果 v2 在 10 个案例上没有稳定优于 v1（语义 rubric 盲评），或差异只来自“部件数量”这种格式约束，
 就不把 v2 方法文字当必要组件，只保留 schema + 校验。

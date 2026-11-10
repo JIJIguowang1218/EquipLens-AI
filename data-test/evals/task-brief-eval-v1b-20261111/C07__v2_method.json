@@ -1,0 +1,384 @@
+{
+ "case": {
+  "id": "C07",
+  "prompt": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+  "expected_output": "class=装载机；工程机械而非卡车；部件族/设计轴合理；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 5,
+  "all_have_design_axes": true,
+  "assumptions": 10,
+  "regions": 3,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060620",
+  "request": {
+   "raw": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+   "class": "轮式装载机",
+   "environment": {
+    "value": "砂石料场（高粉尘、磨蚀性松散物料、频繁装卸循环）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "轮式装载机底盘（铰接式、后置发动机、前置动臂铲斗）",
+    "confidence": 0.8
+   },
+   "configuration": "铰接式轮式底盘 + 前置动臂/铲斗工作装置 + 后置配重",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "轮式装载机",
+    "why": "用户原词明确为轮式装载机，不是挖掘机或矿用自卸车",
+    "confidence": 0.95
+   },
+   {
+    "field": "request.environment",
+    "value": "砂石料场：高粉尘、磨蚀性、松散堆积、频繁装卸",
+    "why": "用户给出砂石料场，按典型砂石装卸工况推断环境载荷",
+    "confidence": 0.85
+   },
+   {
+    "field": "request.base_platform",
+    "value": "铰接式轮式底盘、后置发动机、前置工作装置",
+    "why": "轮式装载机常见总体布置，用于判断驾驶室、动臂和配重的关系；具体吨位和品牌未定",
+    "confidence": 0.8
+   },
+   {
+    "field": "request.configuration",
+    "value": "前置动臂与铲斗、中后部驾驶室、后置配重",
+    "why": "由轮式装载机工作装置和用户点名部件推断的总体构型",
+    "confidence": 0.75
+   },
+   {
+    "field": "用户输入.12台",
+    "value": "按12台机队或批量理解；若指图片数量或样本台数需确认",
+    "why": "“12 台”语义不明确，暂不作为设计输入，仅记录为待确认项",
+    "confidence": 0.55
+   },
+   {
+    "field": "驾驶室形式",
+    "value": "封闭式驾驶室",
+    "why": "砂石料场粉尘环境通常采用封闭驾驶室，但用户未明确说明",
+    "confidence": 0.7
+   },
+   {
+    "field": "轮胎形式",
+    "value": "充气轮胎",
+    "why": "轮式装载机常规配置，用户仅说轮胎，未指定实心胎或特殊胎",
+    "confidence": 0.7
+   },
+   {
+    "field": "品牌与吨位",
+    "value": "不锁定具体品牌、型号和吨位",
+    "why": "用户未提供，避免猜测具体产品参数",
+    "confidence": 0.9
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "铲斗",
+     "动臂",
+     "驾驶室",
+     "轮胎",
+     "配重"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "side"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_bucket",
+    "label": "铲斗",
+    "kind": "function",
+    "location": "前部工作装置（动臂前端）",
+    "part_family": "welded_steel_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "斗形与斗刃、斗齿的体量姿态决定前部识别",
+     "耐磨板、加强筋、焊缝与铰接节点体现砂石冲击和磨蚀对策",
+     "耐磨钢与涂装分色影响重载感与维护可达性"
+    ],
+    "why": "铲斗是轮式装载机最前端、最直接承受砂石铲掘与磨蚀的构件；其斗形、刃口、耐磨结构和材料能提供工作装置造型与工况防护的直接证据。"
+   },
+   {
+    "part": "custom_boom",
+    "label": "动臂",
+    "kind": "part",
+    "location": "前部/侧面，连接车架与铲斗",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱型截面与折弯、变截面的线条决定侧面姿态",
+     "动臂长度、铰点位置与铲斗、驾驶室的比例关系",
+     "焊缝、销轴座与加强板体现重载结构与制造约束"
+    ],
+    "why": "动臂是连接车架与铲斗的主承力构件，其走向、截面和铰点布置同时决定整机侧面轮廓、举升几何与重载结构表达。"
+   },
+   {
+    "part": "custom_cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "中部偏后，操作平台上方",
+    "part_family": "cab_assembly",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "驾驶室轮廓、立柱与玻璃面比例构成整机上部识别",
+     "登车、视野与操作界面的人机关系",
+     "粉尘环境下的密封、正压或过滤与维护可达性"
+    ],
+    "why": "驾驶室是操作者界面与整机上部体量的核心，能提供造型家族化、视野人机和粉尘防护（密封与过滤）的证据。"
+   },
+   {
+    "part": "custom_tire",
+    "label": "轮胎",
+    "kind": "part",
+    "location": "底盘前后桥",
+    "part_family": "rubber_component",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "cmf",
+     "environment_protection",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "轮胎直径和宽度与驾驶室、动臂、配重的体量比例",
+     "胎面花纹、胶料与侧壁标识体现砂石场抓地、耐磨与抗刺扎",
+     "轮辋与轮毂的涂装和防护影响CMF与维护"
+    ],
+    "why": "轮胎直接决定整机离地、轮距与侧面比例，其花纹、胶料和规格是砂石料场通过性、耐磨与抗刺扎的直接证据。"
+   },
+   {
+    "part": "custom_counterweight",
+    "label": "配重",
+    "kind": "part",
+    "location": "后部",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "后部体量、曲面或折面与分色形成尾部识别",
+     "配重质量与后悬比例影响整机平衡姿态",
+     "铸造或焊接分块、安装与检修口体现结构与制造"
+    ],
+    "why": "配重是轮式装载机后部体量与视觉平衡的关键，能提供尾部造型、整机比例和铸造或焊接结构及CMF证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "轮式装载机 铰接式轮式底盘 + 前置动臂/铲斗工作装置 + 后置配重",
+    "parts": [
+     "custom_bucket",
+     "custom_boom",
+     "custom_cab",
+     "custom_tire",
+     "custom_counterweight"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "砂石料场（高粉尘、磨蚀性松散物料、频繁装卸循环） 工程车",
+    "parts": [
+     "custom_bucket",
+     "custom_boom",
+     "custom_cab",
+     "custom_tire",
+     "custom_counterweight"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补用户未点名的部件，如铲齿、斗刃、轮辋、发动机罩、散热器、灯组、后视镜、踏步、防护栏等，除非后续确认。",
+   "不分析具体品牌、型号、吨位和法规认证结论。",
+   "不把参考词表中的乘用车或重卡部件（格栅、保险杠、侧防护、踏步、大灯、后视镜、遮阳板、下护板、品牌区、涂装）直接套到轮式装载机。",
+   "不把12台当作设计输入；若涉及机队一致性、维护性或采购批量，需另行确认。",
+   "不输出 quota、tiers、budget、page_budget 等由代码侧生成的字段。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

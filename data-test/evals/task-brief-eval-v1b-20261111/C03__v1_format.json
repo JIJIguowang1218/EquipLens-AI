@@ -1,0 +1,366 @@
+{
+ "case": {
+  "id": "C03",
+  "prompt": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+  "expected_output": "class=矿用自卸/翻斗车；5 个部件；environment 关系轴优先；不写具体车型。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 0
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 4,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060329",
+  "request": {
+   "raw": "矿用翻斗卡车（登车踏步、大灯、后视镜、前轮拱、保险杠）；矿区粉尘/重载；6×4；12 台",
+   "class": "矿用翻斗卡车",
+   "environment": {
+    "value": "矿区粉尘/重载",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "6×4",
+    "confidence": 0.8
+   },
+   "configuration": "12 台",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "矿用翻斗卡车",
+    "why": "原始输入明确车型类别",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "矿区粉尘/重载",
+    "why": "原始输入明确使用工况",
+    "confidence": "high"
+   },
+   {
+    "field": "base_platform",
+    "value": "6×4",
+    "why": "原始输入明确驱动/底盘形式",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台",
+    "why": "原始输入末尾给出数量，按批量配置理解",
+    "confidence": "medium"
+   },
+   {
+    "field": "region_scope",
+    "value": "按前脸、侧面、后围、顶盖四区组织",
+    "why": "采用参考区域词表并覆盖所给部件所在位置",
+    "confidence": "medium"
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "functional_exterior",
+    "location": "驾驶室侧下方/车门下沿",
+    "part_family": "step",
+    "taxonomy_status": "known",
+    "relation_axis": "side",
+    "design_axes": [
+     "function_ergonomics",
+     "environment_protection",
+     "structure",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防滑排尘",
+     "重载抗踩踏",
+     "模块化更换"
+    ],
+    "why": "矿区粉尘与重载工况要求踏步防滑、排尘、抗冲击并便于维护。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "lighting_exterior",
+    "location": "前脸两侧/保险杠上方",
+    "part_family": "headlamp",
+    "taxonomy_status": "known",
+    "relation_axis": "front_face",
+    "design_axes": [
+     "form_gesture",
+     "environment_protection",
+     "regulation",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防飞石灯罩",
+     "防尘密封",
+     "可更换灯组"
+    ],
+    "why": "粉尘和飞石环境要求灯罩防护、密封与可维护性，同时满足照明法规。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "vision_safety_exterior",
+    "location": "驾驶室两侧/前部外伸",
+    "part_family": "mirror",
+    "taxonomy_status": "known",
+    "relation_axis": "side",
+    "design_axes": [
+     "function_ergonomics",
+     "environment_protection",
+     "regulation",
+     "structure"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "抗振稳定",
+     "防尘可调",
+     "广角视野"
+    ],
+    "why": "重载矿区振动粉尘大，后视镜需保持视野稳定、可调且抗碰损。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "body_structure_exterior",
+    "location": "前轮上方/车体侧前",
+    "part_family": "wheel_arch",
+    "taxonomy_status": "known",
+    "relation_axis": "side",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮胎包覆",
+     "排泥排尘",
+     "抗石击"
+    ],
+    "why": "矿区泥尘与重载要求轮拱包覆、排泥和抗石击，并保证轮胎运动间隙。"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "safety_structure_exterior",
+    "location": "前脸下部/车架前端",
+    "part_family": "bumper",
+    "taxonomy_status": "known",
+    "relation_axis": "front_face",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "environment_protection",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "重载抗撞",
+     "接近角",
+     "防尘排泥"
+    ],
+    "why": "重载矿区碰撞与飞石风险高，保险杠需兼顾结构防护、接近角与维修更换。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "矿用翻斗卡车 12 台",
+    "parts": [
+     "step",
+     "headlamp",
+     "mirror",
+     "wheel_arch",
+     "bumper"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "矿区粉尘/重载 工程车",
+    "parts": [
+     "step",
+     "headlamp",
+     "mirror",
+     "wheel_arch",
+     "bumper"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出 page_budget、research_units、quota、tiers、budget、strategy_ref 等字段",
+   "不扩展未指定的动力总成、液压系统等部件",
+   "不将参考部件词表视为强制准入；仅围绕用户列出的五个部件组织",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

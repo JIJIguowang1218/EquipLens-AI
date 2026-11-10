@@ -1,0 +1,1191 @@
+{
+ "case": {
+  "id": "C06",
+  "prompt": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+  "expected_output": "class=挖掘机；上装/底盘区分；履带等词表外部件保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 34,
+  "custom_parts": 23,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 3,
+  "failed": [
+   "parts 34 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060550",
+  "request": {
+   "raw": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+   "class": "履带式液压挖掘机",
+   "environment": {
+    "value": "矿山土方",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "履带底盘",
+    "confidence": 0.8
+   },
+   "configuration": "整机 12 台套/批次，含动臂、斗杆、铲斗、驾驶室、履带总成",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "履带底盘（履带架+支重轮+驱动轮）",
+    "why": "输入明确履带底盘与履带部件",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台为整机批量，非部件数量",
+    "why": "输入以整机部件清单后接“12 台”",
+    "confidence": "medium"
+   },
+   {
+    "field": "environment",
+    "value": "矿山土方，含粉尘、碎石冲击、连续重载",
+    "why": "输入指定矿山土方工况",
+    "confidence": "high"
+   },
+   {
+    "field": "cab_roof_guard",
+    "value": "默认具备落物防护顶棚（ROPS/FOPS 型）",
+    "why": "矿山工况法规与安全惯例",
+    "confidence": "medium"
+   },
+   {
+    "field": "swing_radius",
+    "value": "尾部回转半径按常规机型推定，未指定零尾",
+    "why": "输入未给出机型吨位",
+    "confidence": "low"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "动臂",
+     "斗杆",
+     "铲斗",
+     "动臂液压缸",
+     "斗杆液压缸",
+     "铲斗液压缸及连杆",
+     "驾驶室",
+     "驾驶室顶部防护（落物防护顶棚）",
+     "配重",
+     "发动机罩与侧门",
+     "散热器格栅与进气开口",
+     "扶手",
+     "履带总成",
+     "履带架",
+     "支重轮/托链轮",
+     "驱动轮与行走马达",
+     "引导轮与张紧装置",
+     "底盘下护板与中间护罩",
+     "回转支承与回转平台",
+     "检修爬梯",
+     "排气管与消声器",
+     "空气预滤器",
+     "随车工具箱与润滑件舱"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_e1c9150d",
+    "label": "动臂",
+    "kind": "structural",
+    "location": "回转平台前端至斗杆铰接处",
+    "part_family": "working_equipment",
+    "taxonomy_status": "new",
+    "relation_axis": "upper_structure_to_front_attachment",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "箱型截面折弯成形",
+     "加强板与轴套焊接",
+     "液压缸铰点布置"
+    ],
+    "why": "决定整机姿态与力量感的核心承载构件，直接影响比例与结构表达"
+   },
+   {
+    "part": "custom_c0dc0150",
+    "label": "斗杆",
+    "kind": "structural",
+    "location": "动臂前端至铲斗铰接处",
+    "part_family": "working_equipment",
+    "taxonomy_status": "new",
+    "relation_axis": "boom_to_bucket",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "箱型梁焊接",
+     "端部铰点轴套",
+     "液压管路随行布置"
+    ],
+    "why": "与动臂共同构成工作装置轮廓，管线走向与截面过渡是造型关键"
+   },
+   {
+    "part": "custom_2ef84586",
+    "label": "铲斗",
+    "kind": "tool",
+    "location": "斗杆末端",
+    "part_family": "working_equipment",
+    "taxonomy_status": "new",
+    "relation_axis": "arm_to_ground_contact",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "manufacturing",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "detail",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "耐磨刃板与斗齿",
+     "侧刃与加强筋",
+     "耳板与销轴连接"
+    ],
+    "why": "直接接触矿料，磨损件形态与耐磨设计是矿山工况的表达重点"
+   },
+   {
+    "part": "custom_92ab7cac",
+    "label": "动臂液压缸",
+    "kind": "actuator",
+    "location": "回转平台与动臂之间",
+    "part_family": "hydraulics",
+    "taxonomy_status": "new",
+    "relation_axis": "platform_to_boom",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "缸筒与活塞杆",
+     "防尘罩与护套",
+     "销轴铰接"
+    ],
+    "why": "外露执行件的管线与防护影响侧面视觉秩序与维护可达性"
+   },
+   {
+    "part": "custom_d1e88e17",
+    "label": "斗杆液压缸",
+    "kind": "actuator",
+    "location": "动臂上侧至斗杆",
+    "part_family": "hydraulics",
+    "taxonomy_status": "new",
+    "relation_axis": "boom_to_arm",
+    "design_axes": [
+     "structure",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "缸筒与活塞杆",
+     "销轴铰接"
+    ],
+    "why": "与动臂缸共同构成工作装置上的机械节奏"
+   },
+   {
+    "part": "custom_6c8fa69c",
+    "label": "铲斗液压缸及连杆",
+    "kind": "actuator",
+    "location": "斗杆前部至铲斗连杆",
+    "part_family": "hydraulics",
+    "taxonomy_status": "new",
+    "relation_axis": "arm_to_bucket_linkage",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "连杆机构",
+     "销轴与轴套",
+     "缸体防护"
+    ],
+    "why": "连杆机构暴露件小但视觉集中，影响工作装置收束感"
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "enclosure",
+    "location": "回转平台左前侧",
+    "part_family": "operator_station",
+    "taxonomy_status": "new",
+    "relation_axis": "platform_to_operator",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "cmf",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "框架式骨架与玻璃围合",
+     "落物/翻车防护结构",
+     "减振座椅与悬置"
+    ],
+    "why": "人机界面与安全法规的集中载体，是整机识别的第二主体"
+   },
+   {
+    "part": "custom_51b3493c",
+    "label": "驾驶室顶部防护（落物防护顶棚）",
+    "kind": "safety",
+    "location": "驾驶室顶盖上方",
+    "part_family": "operator_station",
+    "taxonomy_status": "new",
+    "relation_axis": "cab_to_overhead_hazard",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "型材格栅骨架",
+     "螺栓连接立柱",
+     "吸能变形结构"
+    ],
+    "why": "矿山工况必备防护件，轮廓与连接方式显著影响上体量感与合规表达"
+   },
+   {
+    "part": "custom_0d8041ac",
+    "label": "配重",
+    "kind": "structural",
+    "location": "回转平台后部",
+    "part_family": "upper_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "rear_balance",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "hero_45",
+     "side"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "铸件或钢板箱体",
+     "底部贯通与拖拽结构",
+     "螺栓或焊接固定"
+    ],
+    "why": "决定尾部轮廓与视觉重心，是品牌涂装与分色的主要载体"
+   },
+   {
+    "part": "custom_f95f7ced",
+    "label": "发动机罩与侧门",
+    "kind": "enclosure",
+    "location": "回转平台后部右侧",
+    "part_family": "upper_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "powerpack_access",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "钣金折弯外板",
+     "铰接检修门",
+     "百叶散热开口"
+    ],
+    "why": "大面积钣金面与开口分缝是型面与 CMF 的主战场，兼检修可达性"
+   },
+   {
+    "part": "custom_814af991",
+    "label": "散热器格栅与进气开口",
+    "kind": "thermal",
+    "location": "发动机罩侧面/后部",
+    "part_family": "thermal",
+    "taxonomy_status": "new",
+    "relation_axis": "cooling_airflow",
+    "design_axes": [
+     "form_gesture",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "冲孔网或百叶",
+     "防尘滤网",
+     "可拆面板"
+    ],
+    "why": "矿山粉尘环境下的开口防护与形式语言统一是显性设计命题"
+   },
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "thermal",
+    "location": "后部/侧面散热开口",
+    "part_family": "thermal",
+    "taxonomy_status": "known",
+    "relation_axis": "airflow_interface",
+    "design_axes": [
+     "form_gesture",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "冲孔或百叶阵列",
+     "框架嵌装"
+    ],
+    "why": "参考词表件，可作为开口图案化设计的落点"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "safety",
+    "location": "回转平台走台两侧",
+    "part_family": "access_safety",
+    "taxonomy_status": "known",
+    "relation_axis": "platform_perimeter",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "管件或型材焊接",
+     "螺栓连接底座"
+    ],
+    "why": "走台检修安全件，其线型影响侧面轮廓的轻盈感与合规性"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "access",
+    "location": "履带架上方至平台",
+    "part_family": "access_safety",
+    "taxonomy_status": "known",
+    "relation_axis": "ground_to_platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防滑踏板",
+     "扶手与铰接踏步",
+     "型材支架"
+    ],
+    "why": "人机可达性节点，防滑与踏步序列是可设计的功能细节"
+   },
+   {
+    "part": "custom_adbf9056",
+    "label": "扶手",
+    "kind": "access",
+    "location": "登车路径与平台边缘",
+    "part_family": "access_safety",
+    "taxonomy_status": "new",
+    "relation_axis": "human_support",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "弯管成形",
+     "法兰螺栓连接"
+    ],
+    "why": "与踏步成套，是外形上少有的人机亲和元素"
+   },
+   {
+    "part": "custom_fd1ea6b9",
+    "label": "履带总成",
+    "kind": "running_gear",
+    "location": "底盘两侧",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "ground_contact",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "履带板与链节",
+     "履带张紧调整",
+     "接地比压分布"
+    ],
+    "why": "矿山地面接触件，宽度与节距比例决定整机接地姿态"
+   },
+   {
+    "part": "custom_d037b591",
+    "label": "履带架",
+    "kind": "structural",
+    "location": "底盘侧梁",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "track_to_platform",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "焊接箱梁",
+     "与回转支承连接"
+    ],
+    "why": "连接行走与上体，决定整机低重心体量与侧面比例"
+   },
+   {
+    "part": "custom_7b2cfbc4",
+    "label": "支重轮/托链轮",
+    "kind": "running_gear",
+    "location": "履带架下部与上部",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "track_support",
+    "design_axes": [
+     "structure",
+     "manufacturing",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "锻造轮体",
+     "轴端密封",
+     "耐磨衬套"
+    ],
+    "why": "矿山泥浆与粉尘下的密封与耐磨是结构细节表达点"
+   },
+   {
+    "part": "custom_b8ad7db7",
+    "label": "驱动轮与行走马达",
+    "kind": "running_gear",
+    "location": "履带架后端",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "power_to_track",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驱动轮齿形",
+     "行走减速机",
+     "防护罩"
+    ],
+    "why": "动力传动末端，齿形与护罩是机械质感与防护设计的结合点"
+   },
+   {
+    "part": "custom_f2921315",
+    "label": "引导轮与张紧装置",
+    "kind": "running_gear",
+    "location": "履带架前端",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "track_tension",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "引导轮体",
+     "张紧油缸与弹簧",
+     "润滑脂加注口"
+    ],
+    "why": "前端维护点，张紧调整与加注可达性影响前端细节逻辑"
+   },
+   {
+    "part": "custom_61fb7cb6",
+    "label": "底盘下护板与中间护罩",
+    "kind": "protection",
+    "location": "履带架中部下方",
+    "part_family": "undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "ground_hazard_protection",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "厚板或铸件",
+     "可拆螺栓固定",
+     "排泥开口"
+    ],
+    "why": "矿山碎石冲击与排泥需求，是防护与可维护性的显性件"
+   },
+   {
+    "part": "custom_3d9b39ec",
+    "label": "回转支承与回转平台",
+    "kind": "structural",
+    "location": "上体与底盘之间",
+    "part_family": "upper_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "upper_to_lower",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "回转支承齿圈",
+     "润滑与防尘圈",
+     "螺栓连接"
+    ],
+    "why": "上下体分界，决定整机层次与转动界面的防护逻辑"
+   },
+   {
+    "part": "custom_d8388559",
+    "label": "检修爬梯",
+    "kind": "access",
+    "location": "后部或侧面至平台",
+    "part_family": "access_safety",
+    "taxonomy_status": "new",
+    "relation_axis": "ground_to_service_deck",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏杆焊接",
+     "铰接或固定支架"
+    ],
+    "why": "维护通道件，与护栏、踏步共同构成合规可达体系"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "graphic",
+    "location": "配重侧后与动臂侧面",
+    "part_family": "branding",
+    "taxonomy_status": "known",
+    "relation_axis": "identity_on_body",
+    "design_axes": [
+     "cmf",
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "贴膜或喷涂",
+     "凹槽或凸台承面"
+    ],
+    "why": "大面积钣金与配重是标识的最佳平面载体"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "cmf",
+    "location": "整机外表面",
+    "part_family": "branding",
+    "taxonomy_status": "known",
+    "relation_axis": "surface_finish_system",
+    "design_axes": [
+     "cmf",
+     "form_gesture",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "底漆与面漆",
+     "耐磨涂层",
+     "分色腰线"
+    ],
+    "why": "矿山粉尘与重载下的耐磨涂装与分色决定了整体识别与耐候表达"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "lighting",
+    "location": "动臂、驾驶室顶、平台后部",
+    "part_family": "lighting",
+    "taxonomy_status": "known",
+    "relation_axis": "illumination_interface",
+    "design_axes": [
+     "form_gesture",
+     "function_ergonomics",
+     "regulation",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "LED 灯组",
+     "灯罩与护栏防护",
+     "支架可调"
+    ],
+    "why": "照明法规与矿山夜间作业需求，灯位布局与护罩是前端细节重点"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "vision",
+    "location": "驾驶室前上角",
+    "part_family": "operator_station",
+    "taxonomy_status": "known",
+    "relation_axis": "visibility_field",
+    "design_axes": [
+     "function_ergonomics",
+     "regulation",
+     "structure"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "镜臂与支架",
+     "镜面与减振",
+     "可调铰接"
+    ],
+    "why": "视野法规要求，支架与镜臂是驾驶室外轮廓的细部元素"
+   },
+   {
+    "part": "sun_visor",
+    "label": "外部遮阳板",
+    "kind": "enclosure",
+    "location": "驾驶室前上沿",
+    "part_family": "operator_station",
+    "taxonomy_status": "known",
+    "relation_axis": "glare_control",
+    "design_axes": [
+     "function_ergonomics",
+     "form_gesture",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "钣金或工程塑料",
+     "支架铰接"
+    ],
+    "why": "驾驶室前脸的横向元素，影响上体表情与遮光功能"
+   },
+   {
+    "part": "custom_4c27d25f",
+    "label": "排气管与消声器",
+    "kind": "thermal",
+    "location": "发动机罩上部/后侧",
+    "part_family": "thermal",
+    "taxonomy_status": "new",
+    "relation_axis": "emission_outlet",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "regulation",
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "立管与隔热罩",
+     "防雨帽",
+     "支架固定"
+    ],
+    "why": "排放与隔热法规约束下的垂直元素，影响上部轮廓"
+   },
+   {
+    "part": "custom_a15cac69",
+    "label": "空气预滤器",
+    "kind": "intake",
+    "location": "发动机罩上方",
+    "part_family": "thermal",
+    "taxonomy_status": "new",
+    "relation_axis": "dust_intake_control",
+    "design_axes": [
+     "function_ergonomics",
+     "environment_protection",
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "旋风预滤与集尘杯",
+     "管路连接",
+     "支架"
+    ],
+    "why": "矿山粉尘工况的标志性装置，是环境适应性的可视符号"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "protection",
+    "location": "底盘与平台下部",
+    "part_family": "protection",
+    "taxonomy_status": "known",
+    "relation_axis": "underside_protection",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "钢板螺栓固定",
+     "排泥与排屑开口"
+    ],
+    "why": "参考词表件，落地为底盘下部防护逻辑"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "protection",
+    "location": "平台前端下部",
+    "part_family": "protection",
+    "taxonomy_status": "known",
+    "relation_axis": "front_impact_absorption",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "form_gesture"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "型材或铸件",
+     "螺栓连接"
+    ],
+    "why": "参考词表件，挖掘机上前端缓冲作用有限，仅作局部防护延伸"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "enclosure",
+    "location": "履带架上方",
+    "part_family": "undercarriage",
+    "taxonomy_status": "known",
+    "relation_axis": "track_to_body_transition",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "钣金折弯"
+    ],
+    "why": "轮式机械概念，履带式底盘无对应件；如需要应以履带挡泥板替代"
+   },
+   {
+    "part": "custom_e32d44ad",
+    "label": "随车工具箱与润滑件舱",
+    "kind": "storage",
+    "location": "平台侧部或履带架上方",
+    "part_family": "service",
+    "taxonomy_status": "new",
+    "relation_axis": "service_storage",
+    "design_axes": [
+     "function_ergonomics",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "钣金箱体",
+     "锁扣与密封条"
+    ],
+    "why": "矿山维护频次高，随车工具与集中润滑点的收纳逻辑值得落地"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "履带式液压挖掘机 整机 12 台套/批次，含动臂、斗杆、铲斗、驾驶室、履带总成",
+    "parts": [
+     "custom_e1c9150d",
+     "custom_c0dc0150",
+     "custom_2ef84586",
+     "custom_92ab7cac",
+     "custom_d1e88e17",
+     "custom_6c8fa69c",
+     "custom_0f65b221",
+     "custom_51b3493c",
+     "custom_0d8041ac",
+     "custom_f95f7ced",
+     "custom_814af991",
+     "grille",
+     "side_guard",
+     "step",
+     "custom_adbf9056",
+     "custom_fd1ea6b9",
+     "custom_d037b591",
+     "custom_7b2cfbc4",
+     "custom_b8ad7db7",
+     "custom_f2921315",
+     "custom_61fb7cb6",
+     "custom_3d9b39ec",
+     "custom_d8388559",
+     "brand_zone",
+     "paint_scheme",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "custom_4c27d25f",
+     "custom_a15cac69",
+     "under_guard",
+     "bumper",
+     "wheel_arch",
+     "custom_e32d44ad"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "矿山土方 工程车",
+    "parts": [
+     "custom_e1c9150d",
+     "custom_c0dc0150",
+     "custom_2ef84586",
+     "custom_92ab7cac",
+     "custom_d1e88e17",
+     "custom_6c8fa69c",
+     "custom_0f65b221",
+     "custom_51b3493c",
+     "custom_0d8041ac",
+     "custom_f95f7ced",
+     "custom_814af991",
+     "grille",
+     "side_guard",
+     "step",
+     "custom_adbf9056",
+     "custom_fd1ea6b9",
+     "custom_d037b591",
+     "custom_7b2cfbc4",
+     "custom_b8ad7db7",
+     "custom_f2921315",
+     "custom_61fb7cb6",
+     "custom_3d9b39ec",
+     "custom_d8388559",
+     "brand_zone",
+     "paint_scheme",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "custom_4c27d25f",
+     "custom_a15cac69",
+     "under_guard",
+     "bumper",
+     "wheel_arch",
+     "custom_e32d44ad"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出轮式底盘的轮胎、轮毂、轮拱、悬挂件",
+   "不涉及上部结构内部发动机与液压元件的详细布置",
+   "不扩展到属具多样性（破碎锤、抓斗等）的具体设计",
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref 等字段",
+   "不推定未给出的品牌与具体吨位参数",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

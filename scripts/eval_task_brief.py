@@ -72,23 +72,34 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
     ap.add_argument("--model", default="deepseek-flash")
+    ap.add_argument("--arms", default="v2_method,v1_format",
+                    help="逗号分隔：v2_method,v1_format,no_method")
+    ap.add_argument("--cases", default="", help="逗号分隔 case id；空=全部")
     args = ap.parse_args(argv)
     key = load_key()
     spec = json.loads(EVALS.read_text(encoding="utf-8"))
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = []
+    arm_modes = [("v2_method", "v2"), ("v1_format", "v1"), ("no_method", "none")]
+    wanted_arms = {x.strip() for x in args.arms.split(",") if x.strip()}
+    wanted_cases = {x.strip() for x in args.cases.split(",") if x.strip()}
     for case in spec["cases"]:
-        for arm, use_skill in (("with_skill", True), ("without_skill", False)):
+        if wanted_cases and case["id"] not in wanted_cases:
+            continue
+        for arm, mode in arm_modes:
+            if arm not in wanted_arms:
+                continue
             t0 = time.time()
             try:
                 result = briefing.generate_brief(case["prompt"], key, slots=12,
-                                                 model=args.model, use_skill=use_skill)
+                                                 model=args.model, prompt_mode=mode)
                 brief = result["brief"]
                 checks = auto_checks(brief, case, case["prompt"])
                 status = "ok"
             except Exception as e:  # noqa: BLE001
-                brief, checks, status = {}, {}, f"{type(e).__name__}: {e}"[:200]
+                brief, status = {}, f"{type(e).__name__}: {e}"[:200]
+                checks = {"failed": [status]}
             cid = f"{case['id']}__{arm}"
             (out_dir / f"{cid}.json").write_text(
                 json.dumps({"case": case, "arm": arm, "status": status,

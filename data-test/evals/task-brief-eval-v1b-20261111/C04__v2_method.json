@@ -1,0 +1,297 @@
+{
+ "case": {
+  "id": "C04",
+  "prompt": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+  "expected_output": "class=随车起重运输车；货箱/吊机/底盘关系写清；前脸 region；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 9,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060400",
+  "request": {
+   "raw": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+   "class": "随车起重运输车",
+   "environment": {
+    "value": "工程运输",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "载货汽车二类底盘（吨位、轴距、驱动形式待确认）",
+    "confidence": 0.8
+   },
+   "configuration": "载货底盘 + 随车起重机上装 + 货箱/平板（吊臂与支腿布置待确认）",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "按“载货汽车底盘 + 随车起重机上装 + 货箱/平板”理解",
+    "why": "用户只给出品类，未给吨位、吊机位置与货箱形式",
+    "confidence": 0.8
+   },
+   {
+    "field": "base_platform",
+    "value": "载货汽车二类底盘，具体驱动形式/轴距未知",
+    "why": "随车起重运输车通常基于载货底盘改装，但本次输入未指定",
+    "confidence": 0.6
+   },
+   {
+    "field": "configuration",
+    "value": "吊臂布置、支腿形式、货箱形式待确认",
+    "why": "这些参数会影响侧面布置与侧护板/踏步空间，但用户未提供",
+    "confidence": 0.5
+   },
+   {
+    "field": "environment",
+    "value": "工程运输按工地/城郊建设运输理解，含泥水、粉尘、频繁启停与侧向剐蹭风险",
+    "why": "用于判断侧护板、轮拱、踏步、大灯的防护与耐脏设计轴",
+    "confidence": 0.7
+   },
+   {
+    "field": "fleet_size",
+    "value": "12台为采购/投放数量，不作为造型设计输入",
+    "why": "用户把数量放在需求末尾，未说明与设计变量相关",
+    "confidence": 0.9
+   },
+   {
+    "field": "side_guard",
+    "value": "“车辆侧护板”按侧防护栏/侧裙护板理解，不排除指驾驶室侧围下护板",
+    "why": "侧护板在工程车语境中可能指法规侧防护，也可能指外观侧裙",
+    "confidence": 0.6
+   },
+   {
+    "field": "headlamp",
+    "value": "“大灯”按前照灯总成及灯罩防护理解",
+    "why": "参考词表将大灯与灯罩防护归为同一对象",
+    "confidence": 0.8
+   },
+   {
+    "field": "front_face",
+    "value": "“前脸”按驾驶室前围整体造型理解，不拆格栅/保险杠",
+    "why": "用户只点名前脸，未点名其下级部件",
+    "confidence": 0.8
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "side_chassis",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "side_impact_protection",
+     "mud_splash_deflection",
+     "side_underrun_regulation"
+    ],
+    "why": "侧护板在工程运输中直接面对泥水飞溅、侧向剐蹭与法规侧防护要求，能提供板/型材组合、分缝、离地与固定点的设计证据。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "front_side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "wheel_arch_contour",
+     "panel_split",
+     "mud_clearance"
+    ],
+    "why": "前轮拱决定车轮与驾驶室下部的比例关系、开口分缝与泥水遮挡，能给轮拱轮廓、衬板/分缝和最小间隙证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "cab_side",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "anti_slip",
+     "mud_shedding",
+     "step_height"
+    ],
+    "why": "登车踏步在工程运输中需应对泥污、防滑和频繁上下车，能提供踏板层数、防滑面、支架固定与离地/接近角证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "lamp_guard",
+     "recess_depth",
+     "lighting_regulation"
+    ],
+    "why": "大灯在工程运输中受飞石、泥污与法规配光约束，能提供灯罩防护、安装深度、灯腔图形与前脸整合方式的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "随车起重运输车 载货底盘 + 随车起重机上装 + 货箱/平板（吊臂与支腿布置待确认）",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "headlamp"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工程运输 工程车",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "headlamp"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不把前脸拆成格栅、保险杠、品牌标识区等未点名部件",
+   "不补入后视镜、遮阳板、涂装、底盘下护板等未提及对象",
+   "不将12台数量作为设计维度或检索配额",
+   "不假设具体吨位、轴距、驱动形式或吊机型号",
+   "不展开跨车型踏步/侧防护对比，除非后续确认需要 borrowed",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

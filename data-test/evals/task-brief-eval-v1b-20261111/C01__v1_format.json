@@ -1,0 +1,465 @@
+{
+ "case": {
+  "id": "C01",
+  "prompt": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、保险杠）；沙漠/油田工况；6×6；12 台",
+  "expected_output": "class=沙漠牵引车；front_face 区域；step/headlamp/wheel_arch/bumper；每件 relation_axis/design_axes/why。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 9,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 2,
+  "failed": [
+   "parts 9 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060148",
+  "request": {
+   "raw": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、保险杠）；沙漠/油田工况；6×6；12 台",
+   "class": "重型沙漠牵引车/油田牵引车",
+   "environment": {
+    "value": "沙漠/油田非铺装工况，风沙、粉尘、高温、强紫外",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "6×6",
+    "confidence": 0.8
+   },
+   "configuration": "12 台小批量/车队配置",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "重型沙漠牵引车/油田牵引车",
+    "why": "raw 明确为沙漠牵引车，结合油田工况推断重型牵引用途",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "沙漠/油田非铺装工况",
+    "why": "raw 直接给出沙漠/油田工况",
+    "confidence": "high"
+   },
+   {
+    "field": "base_platform",
+    "value": "6×6",
+    "why": "raw 直接给出 6×6",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台小批量/车队配置",
+    "why": "raw 给出 12 台，按批量/车队理解",
+    "confidence": "high"
+   },
+   {
+    "field": "design_scope",
+    "value": "前脸、登车踏步、大灯、前轮拱、保险杠及关联防护/CMF",
+    "why": "用户点名前脸与四个关键部件，参考词表补充关联防护与识别件",
+    "confidence": "medium"
+   },
+   {
+    "field": "reference_parts_usage",
+    "value": "参考词表仅作候选，不强制全量纳入",
+    "why": "reference_parts_note 明确不是准入",
+    "confidence": "high"
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "防护/安全件",
+    "location": "前部",
+    "part_family": "front_protection",
+    "taxonomy_status": "known",
+    "relation_axis": "front_face_protection",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "定义前脸下部横向体量与接近角",
+     "集成拖钩/雾灯/雷达等开口与防护结构",
+     "保护底盘和散热模块免受飞石、沙砾冲击"
+    ],
+    "why": "沙漠/油田工况需要抗冲击、易清洁和维修经济性，保险杠是前脸识别与防护核心件。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "功能/人机附件",
+    "location": "侧面/车门下方",
+    "part_family": "access_system",
+    "taxonomy_status": "known",
+    "relation_axis": "side_access_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "适配 6×6 高底盘登车高度",
+     "防滑踏面与排沙/自清洁结构",
+     "与侧防护栏、轮拱形成连续视觉和结构衔接"
+    ],
+    "why": "高底盘车辆登车安全与沙尘自清洁是沙漠/油田使用中的关键人机问题。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "照明/防护件",
+    "location": "前部两侧",
+    "part_family": "lighting",
+    "taxonomy_status": "known",
+    "relation_axis": "lighting_protection",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "灯罩防护网/护杠降低飞石损伤",
+     "与前脸体量和格栅构图协同",
+     "可更换灯罩/防护件降低维修成本"
+    ],
+    "why": "风沙与飞石环境要求照明功能可靠，同时需兼顾前脸识别和法规照明要求。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "覆盖/防护件",
+    "location": "前轮上方/侧面",
+    "part_family": "wheel_arch",
+    "taxonomy_status": "known",
+    "relation_axis": "wheel_arch_clearance",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "满足轮胎包络、转向和悬挂跳动间隙",
+     "泥沙排逸与挡泥结构",
+     "塑造 6×6 力量感轮拱比例"
+    ],
+    "why": "沙漠工况需要大间隙和排沙能力，轮拱直接影响通过性、侧面比例和视觉力量感。"
+   },
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "功能/外观件",
+    "location": "前脸中部",
+    "part_family": "front_end",
+    "taxonomy_status": "known",
+    "relation_axis": "front_face_airflow",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "组织进气散热与防沙网结构",
+     "形成前脸品牌识别构图",
+     "模块化分件便于清洁与维修"
+    ],
+    "why": "前脸核心视觉与散热功能集中件，需在防沙、散热和识别性之间平衡。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "防护件",
+    "location": "侧面/底盘侧",
+    "part_family": "side_protection",
+    "taxonomy_status": "known",
+    "relation_axis": "side_protection",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防护油箱和底盘侧向冲击",
+     "可与登车踏步集成",
+     "兼顾离地间隙与排沙"
+    ],
+    "why": "油田/沙漠非铺装路侧向防护需求明显，并影响侧面功能分区。"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "防护件",
+    "location": "前下部/底盘",
+    "part_family": "underbody_protection",
+    "taxonomy_status": "known",
+    "relation_axis": "underbody_protection",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "保护散热模块、油底壳等底部关键件",
+     "导流与排沙",
+     "预留维修/放油开口"
+    ],
+    "why": "沙漠/油田底部冲击与沙尘堆积风险高，下护板影响可靠性和维护便利性。"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "外观/识别件",
+    "location": "前脸",
+    "part_family": "brand_identity",
+    "taxonomy_status": "known",
+    "relation_axis": "brand_identity",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "品牌图形与格栅/保险杠整合",
+     "远距离/夜间识别",
+     "分色和贴标工艺控制"
+    ],
+    "why": "车队使用需要品牌一致性与识别性，但不应牺牲前脸防护和清洁性。"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "CMF/涂装",
+    "location": "整车/前脸与侧面",
+    "part_family": "cmf",
+    "taxonomy_status": "known",
+    "relation_axis": "surface_identity",
+    "design_axes": [
+     "cmf",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "耐沙石、耐候和抗紫外涂层",
+     "功能分区色带与警示色",
+     "小批量喷涂和维修补漆经济性"
+    ],
+    "why": "沙漠高紫外、磨损环境对涂层耐久有要求，涂装同时承担车队识别和功能分区。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型沙漠牵引车/油田牵引车 12 台小批量/车队配置",
+    "parts": [
+     "bumper",
+     "step",
+     "headlamp",
+     "wheel_arch",
+     "grille",
+     "side_guard",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "沙漠/油田非铺装工况，风沙、粉尘、高温、强紫外 工程车",
+    "parts": [
+     "bumper",
+     "step",
+     "headlamp",
+     "wheel_arch",
+     "grille",
+     "side_guard",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不将 reference_parts 全量视为强制准入。",
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref。",
+   "不虚构具体品牌、法规数值或未给出的模具/尺寸方案。",
+   "不展开与沙漠牵引车前脸、登车和防护无关的部件。",
+   "不输出解释性文字或 Markdown。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

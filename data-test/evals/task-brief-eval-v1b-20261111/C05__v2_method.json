@@ -1,0 +1,277 @@
+{
+ "case": {
+  "id": "C05",
+  "prompt": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+  "expected_output": "class=重型牵引车；platform 关系轴为主；前脸 region；5 个部件。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 0,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060442",
+  "request": {
+   "raw": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+   "class": "重型长途牵引车（公路干线物流 6×4 牵引车）",
+   "environment": {
+    "value": "干线物流：高速/国道路铺装路面，非越野、非矿区；环境约束以法规、长途耐候、风阻与维修便利为主，沙尘/涉水类环境防护权重低",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "重型卡车 6×4 牵引底盘 + 平头（cab-over）驾驶室（待确认；若为长头平台则前脸相关结论需重做）",
+    "confidence": 0.8
+   },
+   "configuration": "6×4 三轴牵引车，后置鞍座，驾驶室为平头整体式；批量 12 台（小批量）",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform.cab_type",
+    "value": "平头（cab-over）整体式驾驶室",
+    "why": "用户给的是国内/欧系干线牵引车常见构型；平头与长头在前脸比例、登车踏步布置上结论完全不同",
+    "confidence": 0.8
+   },
+   {
+    "field": "environment.weighting",
+    "value": "环境防护轴权重低于法规、人机与制造轴",
+    "why": "干线物流为铺装路面工况，不触发防沙板、涉水喉一类环境特化件",
+    "confidence": 0.85
+   },
+   {
+    "field": "batch_intent",
+    "value": "12 台为小批量采购/试制，制造轴需计入模具摊销与通用件复用",
+    "why": "用户明确给出台数，说明成本敏感性是设计约束之一",
+    "confidence": 0.6
+   },
+   {
+    "field": "class.tonnage",
+    "value": "推定 40–49t 列车总重级别的重型牵引车",
+    "why": "用户只给“重型长途牵引车+6×4”，未给吨位；吨位影响前下防护与灯具法规尺寸",
+    "confidence": 0.55
+   },
+   {
+    "field": "front_face.scope",
+    "value": "前脸整体仅作区域级检索，不下拆到未点名的格栅、雾灯、标识区",
+    "why": "用户只点名保险杠、大灯、踏步、轮拱",
+    "confidence": 0.9
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "front_lower",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "manufacturing",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "同品类同构型对比可见前下防护、牌照/雾灯区、拖钩位的整合方式与分缝走向",
+     "分体式/整体式方案对比可见维修经济性与造型连续性的取舍",
+     "小批量注塑vs钢板折弯的表面与圆角约束差异"
+    ],
+    "why": "保险杠是前脸唯一同时被法规（前下防护、灯具可见性）、结构（分缝、装配、拖钩开口）和制造（模具/折弯）三重约束的部件，能提供“造型如何被工程约束裁剪”的直接证据。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "front",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "同类车型对比可见灯组高度/横向跨度与配光法规、离地尺寸的耦合",
+     "灯罩与保险杠/前围的搭接、密封与单独拆装结构",
+     "灯腔深色化、装饰框等 CMF 处理对手法"
+    ],
+    "why": "大灯是前脸的视觉重心，同时是法规硬约束件；看它能拿到“灯具尺寸/位置如何反向决定前脸比例”的证据，而非只看造型风格。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "side_front_lower",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "对比踏板级差、踏面防滑处理与扶手联动关系，得到人机尺寸证据",
+     "管梁/型材+踏板组合的节点、固定方式与泥污排出做法",
+     "平台通用件与整车造型的衔接（与轮拱、侧裙的分缝关系）"
+    ],
+    "why": "踏步是功能件但直接决定侧前方分缝与下部体量；看它能把“登车人机需求如何约束造型下沿”落到可测的结构与尺寸证据上。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "part",
+    "location": "side_front",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "对比轮拱开口形状、离地间隙与驾驶室下沿的关系，得到前脸/侧面比例证据",
+     "分块式vs一体式轮拱的分缝、挡泥板与防飞溅附件的接口",
+     "转向包络与轮拱间隙的结构约束"
+    ],
+    "why": "前轮拱决定驾驶室与底盘之间的视觉过渡和离地比例，同时是挡泥/防飞溅附件的挂点；但它多为平台继承件，主要作为比例与接口证据而非造型创新来源。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型长途牵引车（公路干线物流 6×4 牵引车） 6×4 三轴牵引车，后置鞍座，驾驶室为平头整体式；批量 12 台（小批量）",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "干线物流：高速/国道路铺装路面，非越野、非矿区；环境约束以法规、长途耐候、风阻与维修便利为主，沙尘/涉水类环境防护权重低 工程车",
+    "parts": [
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不要引入矿用、沙漠、寒区特化工况件（防沙板、涉水喉、散热百叶特化）作为主参考",
+   "不要补入用户未点名的部件：进气格栅、后视镜、遮阳板、涂装分色、下护板",
+   "不要用“同系列/相似车型/风格接近”作为选取理由，必须写能提供什么设计证据",
+   "不要以乘用车或轻卡前脸作为造型参考",
+   "不要输出 page_budget / quota / tiers / budget 等由代码生成的字段",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

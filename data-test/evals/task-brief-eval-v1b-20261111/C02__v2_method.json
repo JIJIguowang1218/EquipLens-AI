@@ -1,0 +1,312 @@
+{
+ "case": {
+  "id": "C02",
+  "prompt": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+  "expected_output": "把“重型吊车”落成汽车起重机/全地面起重机或写待确认；侧护板按位置拆开；支腿/吊臂不擅自添加。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 4,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060213",
+  "request": {
+   "raw": "重型吊车（前脸、车辆侧护板、驾驶室后方侧护板、登车踏步、大灯）；工地吊装；12 台",
+   "class": "重型吊车（移动式起重机，假设为汽车起重机/全地面起重机，吨位未定）",
+   "environment": {
+    "value": "工地吊装作业（非道路场地、泥尘、临边与碎石环境）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "多轴重型卡车底盘 + 上车转台/吊臂（下车驾驶室与上车分体布置）",
+    "confidence": 0.8
+   },
+   "configuration": "多轴（假设 8×4 及以上）下车 + 中/后置转台上车，驾驶室与上车转台之间有明显过渡区",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "汽车起重机（ truck crane ）为主，兼顾全地面起重机",
+    "why": "用户口语“重型吊车”指移动式起重机；有驾驶室+多轴底盘+上车转台，与汽车起重机基型一致",
+    "confidence": 0.66
+   },
+   {
+    "field": "request.configuration",
+    "value": "多轴底盘（≥8×4）+ 下车驾驶室 + 上车转台/吊臂",
+    "why": "用户提到“驾驶室后方侧护板”，说明驾驶室与上车之间存在需要遮蔽的过渡区，属分体布置构型",
+    "confidence": 0.6
+   },
+   {
+    "field": "parts.side_guard",
+    "value": "“车辆侧护板”按底盘两侧裙板/防护板理解，而非法规侧防护栏横杆",
+    "why": "用户用“护板”而非“护栏”，且与“驾驶室后方侧护板”并列，倾向连续覆盖板件",
+    "confidence": 0.55
+   },
+   {
+    "field": "parts.custom_b7d2e4",
+    "value": "“驾驶室后方侧护板”为覆盖驾驶室与上车转台之间外露侧面的独立板件（可能含检修开口）",
+    "why": "该位置在吊车上通常遮蔽油箱/蓄电池/管路；词表无对应键，按位置+功能+形态新建 slug",
+    "confidence": 0.5
+   },
+   {
+    "field": "request.environment",
+    "value": "工地吊装：非道路场地、泥尘、碎石、频繁转场",
+    "why": "用户给出“工地吊装”，用于判断护板/踏步/大灯的防护与清洁性是否为环境驱动",
+    "confidence": 0.7
+   },
+   {
+    "field": "scope.count",
+    "value": "12 台视为检索/样本规模提示，不改变品类与构型判断",
+    "why": "用户输入末尾的台数不构成设计信息",
+    "confidence": 0.4
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "驾驶室后方侧护板"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "底盘两侧、前后轮之间的裙板/防护区域",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "分块与分缝方式（与轮拱、踏步、驾驶室后侧板的接缝关系）决定侧面节奏是否连续",
+     "板面折边、加强筋、支架与吊挂点的可见构造，反映钣金/型材制造约束",
+     "涂装分色与板面质感影响整车体量感与家族一致性"
+    ],
+    "why": "它是侧面面积最大的连续面，能同时提供分缝结构、涂装分色与工地防护三类证据，是把前脸语言延续到侧面的关键载体。"
+   },
+   {
+    "part": "custom_b7d2e4",
+    "label": "驾驶室后方侧护板",
+    "kind": "part",
+    "location": "驾驶室后侧至上车转台前部之间的外露侧面（可能覆盖油箱、蓄电池箱、管路）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "下车驾驶室与上车转台两个体量在此拼接，分缝、收边与开口方式决定侧面是否读作一个整体",
+     "检修口、把手、铰链/卡扣与支架的可见构造，反映装配与维护可达性",
+     "对管路、油箱、蓄电池箱的遮挡与排尘/排水处理，体现工地环境防护"
+    ],
+    "why": "这是吊车类产品特有的体量过渡区，能提供“两个功能体块如何被造型缝合”的直接证据，也可判断护板是纯装饰还是承担功能遮蔽。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "驾驶室门下方/底盘侧面登车通道",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "detail",
+     "side",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "踏步级数、级高与离地高度，以及与车门把手/扶手的对位关系，反映登车人机",
+     "踏面防滑形式（花纹板、冲孔、格栅）与边缘翻边，反映钣金/型材做法",
+     "泥沙排出、积水与踏面清洁性处理，反映工地环境适应性"
+    ],
+    "why": "踏步是少数同时暴露人机尺寸、防滑结构与工地防护的部件，可用来验证护板下方功能带的设计密度是否合理。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "part",
+    "location": "前脸两侧（保险杠内嵌或独立灯组）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "灯位高度、间距与配光/示廓关系，反映法规约束对前脸布局的塑形作用",
+     "灯罩内凹深度、防护栏/护网与灯腔分缝，反映碎石泥污环境下的防护构造",
+     "灯腔黑化、反光碗与装饰圈的材质处理，反映前脸 CMF 与品牌识别"
+    ],
+    "why": "大灯是前脸上唯一受法规与功能双重约束的部件，可提供“造型被法规与防护需求挤压后如何整合”的证据，也用于判断前脸视觉重心。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型吊车（移动式起重机，假设为汽车起重机/全地面起重机，吨位未定） 多轴（假设 8×4 及以上）下车 + 中/后置转台上车，驾驶室与上车转台之间有明显过渡区",
+    "parts": [
+     "side_guard",
+     "custom_b7d2e4",
+     "step",
+     "headlamp"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工地吊装作业（非道路场地、泥尘、临边与碎石环境） 工程车",
+    "parts": [
+     "side_guard",
+     "custom_b7d2e4",
+     "step",
+     "headlamp"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补充用户未点名的部件（进气格栅、保险杠、后视镜、遮阳板、涂装方案、轮拱等）",
+   "不把“前脸”拆解为格栅/保险杠等子件；大灯为用户单独点名，故单列，其余不拆",
+   "不把“重型吊车”收窄为某一具体吨位或品牌型号",
+   "不输出 page_budget / research_units / quota / tiers / budget / strategy_ref 等由代码生成的字段",
+   "不以“相似车型/同系列”作为检索理由，理由须写明可获得的设计证据",
+   "不默认开启跨车型 borrowing；踏步等通用件仍以同品类同构型为主",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

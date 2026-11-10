@@ -1,0 +1,803 @@
+{
+ "case": {
+  "id": "C10",
+  "prompt": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+  "expected_output": "class=高空作业车；臂架/支腿/工作斗按 function 处理；词表外保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 18,
+  "custom_parts": 7,
+  "all_have_design_axes": true,
+  "assumptions": 9,
+  "regions": 4,
+  "failed": [
+   "parts 18 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060921",
+  "request": {
+   "raw": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+   "class": "车载式高空作业车（臂架式高空作业车 / bucket truck，二类底盘上装）",
+   "environment": {
+    "value": "市政工地",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "车载底盘（二类底盘 + 副车架/上装）",
+    "confidence": 0.8
+   },
+   "configuration": "12 台",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "车载式高空作业车（折叠臂/伸缩臂混合，上装+二类底盘）",
+    "why": "输入给出臂架、工作台斗、支腿、驾驶室，符合车载式高空作业车构型",
+    "confidence": "high"
+   },
+   {
+    "field": "request.environment",
+    "value": "市政工地（路面施工、绿化养护、路灯检修）",
+    "why": "原始描述直接给出市政工地",
+    "confidence": "high"
+   },
+   {
+    "field": "request.base_platform",
+    "value": "商用车二类底盘 + 副车架 + 回转台上装",
+    "why": "输入为车载底盘，且需支腿与回转作业，典型为底盘改装",
+    "confidence": "high"
+   },
+   {
+    "field": "request.configuration",
+    "value": "12 台同批次车队化配置，考虑涂装分色与品牌标识一致",
+    "why": "原始描述给出 12 台",
+    "confidence": "high"
+   },
+   {
+    "field": "request.design_questions",
+    "value": "未显式给出，按整车识别、上装体量衔接、安全示界与批量化涂装默认展开",
+    "why": "输入未附设计问题",
+    "confidence": "medium"
+   },
+   {
+    "field": "parts.taxonomy_status",
+    "value": "参考词表部件标 reference，臂架/工作斗/支腿/回转台/警示标识标 custom_new，驾驶室标 extended",
+    "why": "臂架类专属部件不在参考词表内，需自定义扩展",
+    "confidence": "medium"
+   },
+   {
+    "field": "views.coverage",
+    "value": "以 hero_45 与 side 为主，front/rear 补前脸与尾部，detail 覆盖支腿、踏步、铰点",
+    "why": "上装体量与侧向剪影是该类车型识别核心，interior 仅驾驶室适用",
+    "confidence": "medium"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "臂架",
+     "工作台斗",
+     "支腿",
+     "驾驶室",
+     "回转台与上装基座",
+     "底盘车架与副车架",
+     "警示灯与安全标识"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_50dd2dd7",
+    "label": "臂架",
+    "kind": "上装结构件",
+    "location": "回转台至工作斗之间的折叠/伸缩臂节",
+    "part_family": "上装作业机构",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "臂节截面与收臂姿态决定整车侧向剪影",
+     "臂架涂装分色可强化举升方向与安全识别",
+     "铰点罩壳与走线槽一体化为可见设计面"
+    ],
+    "why": "臂架是该类车型最强的识别符号，直接定义形态手势与比例关系，且涉及制造与法规（警示涂装）多重约束。"
+   },
+   {
+    "part": "custom_647fadbd",
+    "label": "工作台斗",
+    "kind": "上装功能件",
+    "location": "臂架末端作业平台",
+    "part_family": "上装作业机构",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "栏板高度与立柱节奏影响视觉轻盈度",
+     "入口门/翻板与脚踏位置决定人机效率",
+     "与臂架端部的连接过渡决定视觉收头"
+    ],
+    "why": "工作斗是作业终端，形态与护栏节奏同时受人体工学与安全法规约束，是上装识别与功能表达的关键点。"
+   },
+   {
+    "part": "custom_3ed214ea",
+    "label": "支腿",
+    "kind": "底盘功能结构件",
+    "location": "底盘两侧前后四角，含支脚盘",
+    "part_family": "底盘支撑系统",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "支腿箱体与车架的整合度决定侧面体量收放",
+     "支脚盘与地面接触面处理影响工况适应与视觉稳定感",
+     "展开状态的警示涂装与灯示"
+    ],
+    "why": "支腿是市政工况下的稳定支撑与安全示界，直接影响侧面比例与收车宽度，兼具法规与地面保护要求。"
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "车身覆盖件总成",
+    "location": "底盘前部",
+    "part_family": "驾驶室",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "前脸表情与上装回转台的体量衔接",
+     "A 柱与视镜布置影响视野与法规符合性",
+     "驾驶室色彩分区与上装呼应"
+    ],
+    "why": "驾驶室是用户第一接触面与品牌载体，且与上装体量、视镜法规、进出人机强相关。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "人机附件",
+    "location": "驾驶室门口下方 / 上装检修登车处",
+    "part_family": "进出系统",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏步级数与踏面深度对应市政工况下的防滑与雨泥",
+     "踏步与侧防护栏的整合造型",
+     "收起状态下的离地间隙"
+    ],
+    "why": "高频人机接触件，直接决定上下车安全与可用性，且易与侧围造型统一处理。"
+   },
+   {
+    "part": "custom_7d91202a",
+    "label": "回转台与上装基座",
+    "kind": "上装结构件",
+    "location": "驾驶室后方副车架上平面",
+    "part_family": "上装基座",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "基座体量与驾驶室顶脊的高度关系",
+     "罩壳分缝与检修口可视化",
+     "线束、油管走向的外露秩序"
+    ],
+    "why": "回转台是驾驶室与臂架之间的过渡体量，决定整车侧向节奏与检修可达性，属高可见设计面。"
+   },
+   {
+    "part": "custom_d09c0ffb",
+    "label": "底盘车架与副车架",
+    "kind": "结构件",
+    "location": "驾驶室后至车尾",
+    "part_family": "底盘系统",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "manufacturing",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "副车架高度影响上装与整车的比例关系",
+     "车架侧面留白与遮挡策略",
+     "尾部收头与离去角"
+    ],
+    "why": "决定整车高度基准与上装承载逻辑，虽多为隐藏面但影响侧视比例与整备制造工艺。"
+   },
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "外观覆盖件",
+    "location": "驾驶室前脸中部",
+    "part_family": "前脸系统",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "格栅横向/纵向分格与整车形态手势一致",
+     "材质对比（黑塑/镀铬/车身同色）",
+     "与品牌标识区的整合"
+    ],
+    "why": "前脸视觉重心，是品牌识别与商用车家族化的主要载体。"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "外观覆盖件",
+    "location": "前脸下部 / 后部",
+    "part_family": "前脸系统",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "下部体量承托前脸并影响接近角",
+     "分色与耐磨材质分区",
+     "与登车踏步的连续造型"
+    ],
+    "why": "承受工地磕碰的高频件，兼顾造型压边与耐久分色。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "灯具总成",
+    "location": "前脸两侧",
+    "part_family": "照明与信号",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "灯组轮廓与前脸特征线的延续",
+     "防护格栅/护罩与灯罩一体设计",
+     "警示灯具与照明灯的视觉序列"
+    ],
+    "why": "灯具是前脸表情核心，同时受照明法规与工地防护需求双重约束。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "功能附件",
+    "location": "驾驶室两侧 A 柱与前围",
+    "part_family": "视野系统",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "镜臂长度与多镜组合满足法规视野",
+     "镜壳造型与驾驶室色块呼应",
+     "振动控制与支臂结构"
+    ],
+    "why": "法规强制项且直接影响侧视轮廓的干净度，是商用车视野人机的显性件。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "安全防护件",
+    "location": "前后轮之间的车身侧面",
+    "part_family": "安全防护",
+    "taxonomy_status": "known",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防护栏横向节奏与轴距比例",
+     "与踏步、油箱、储气筒的遮挡关系",
+     "铝型材断面与端头处理"
+    ],
+    "why": "法规强制侧向防护，同时是侧面视觉连续性与结构外露秩序的关键调节件。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "外观覆盖件",
+    "location": "前/后轮上方",
+    "part_family": "侧围系统",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮拱半径与轮径比例",
+     "轮眉分色界定姿态",
+     "挡泥板与轮拱的接口顺序"
+    ],
+    "why": "决定侧面姿态与离地观感，是把轮胎与车身体量黏合的关键界面。"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "底盘附件",
+    "location": "前悬下方 / 上装底部",
+    "part_family": "底盘防护",
+    "taxonomy_status": "known",
+    "relation_axis": "environment_protection",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "底部平整化与泥沙排放"
+    ],
+    "why": "多位于不可见区，对整体形态贡献低，工地泥污条件下难以在可视图中体现设计判断。"
+   },
+   {
+    "part": "sun_visor",
+    "label": "外部遮阳板",
+    "kind": "附件",
+    "location": "驾驶室前风窗上方",
+    "part_family": "驾驶室附件",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "遮阳板厚度与出挑量"
+    ],
+    "why": "构件小、多为通用外购件，与上装识别体系关联弱，对 12 台批量设计判断的增益有限。"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "视觉识别件",
+    "location": "前脸中央与驾驶室侧门",
+    "part_family": "品牌系统",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "标牌尺度与格栅分格对齐",
+     "立体字/贴花的工艺取舍",
+     "与安全警示色的层级关系"
+    ],
+    "why": "市政车队客户对品牌与车队统一识别敏感，批量 12 台下标识策略需与涂装一同决策。"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "表面策略",
+    "location": "整车（含臂架与工作斗）",
+    "part_family": "色彩与材质",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "腰线分色切断体量高度",
+     "臂架高警示色与主机色的比例配比",
+     "作业区与行驶区色彩功能分离"
+    ],
+    "why": "臂架类车型分色直接承担安全警示与车队识别双重功能，是成本最低、效果最显著的整车设计杠杆。"
+   },
+   {
+    "part": "custom_warning_device",
+    "label": "警示灯与安全标识",
+    "kind": "安全信号件",
+    "location": "驾驶室顶、上装回转台、支腿与尾部",
+    "part_family": "安全与信号",
+    "taxonomy_status": "new",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "警示灯位置与视角覆盖的可见性序列",
+     "灯罩色与涂装分色的协同",
+     "反光标识与支腿展开状态的对应"
+    ],
+    "why": "市政工地作业需强示界，警示与标识的布置既是法规项也是形态构成的节奏元素。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "车载式高空作业车（臂架式高空作业车 / bucket truck，二类底盘上装） 12 台",
+    "parts": [
+     "custom_50dd2dd7",
+     "custom_647fadbd",
+     "custom_3ed214ea",
+     "custom_0f65b221",
+     "step",
+     "custom_7d91202a",
+     "custom_d09c0ffb",
+     "grille",
+     "bumper",
+     "headlamp",
+     "mirror",
+     "side_guard",
+     "wheel_arch",
+     "under_guard",
+     "sun_visor",
+     "brand_zone",
+     "paint_scheme",
+     "custom_warning_device"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "市政工地 工程车",
+    "parts": [
+     "custom_50dd2dd7",
+     "custom_647fadbd",
+     "custom_3ed214ea",
+     "custom_0f65b221",
+     "step",
+     "custom_7d91202a",
+     "custom_d09c0ffb",
+     "grille",
+     "bumper",
+     "headlamp",
+     "mirror",
+     "side_guard",
+     "wheel_arch",
+     "under_guard",
+     "sun_visor",
+     "brand_zone",
+     "paint_scheme",
+     "custom_warning_device"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不覆盖臂架液压缸、油缸杆内部结构与液压原理",
+   "不覆盖电控系统、操控逻辑与安全联锁的电气实现",
+   "不覆盖自行走式、拖车式、剪叉式等非车载底盘平台",
+   "不覆盖底盘动力总成、传动与排放内部结构",
+   "不覆盖市政工地施工场景、人员与障碍物建模",
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref 类字段",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

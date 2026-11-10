@@ -1,0 +1,317 @@
+{
+ "case": {
+  "id": "C10",
+  "prompt": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+  "expected_output": "class=高空作业车；臂架/支腿/工作斗按 function 处理；词表外保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 4,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 1,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060851",
+  "request": {
+   "raw": "高空作业车（臂架、工作台斗、支腿、驾驶室、登车踏步）；市政工地；车载底盘；12 台",
+   "class": "高空作业车",
+   "environment": {
+    "value": "市政工地",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "车载底盘（二类底盘，吨位待确认）",
+    "confidence": 0.8
+   },
+   "configuration": "车载式高空作业车；臂架/工作斗/支腿布置形式待确认",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "boom_type",
+    "value": "未指定，直臂/曲臂/伸缩/折叠均待确认",
+    "why": "输入只写“臂架”，不能猜具体臂架形式",
+    "confidence": 0.3
+   },
+   {
+    "field": "chassis_class",
+    "value": "按车载二类底盘处理，吨位/驱动形式待确认",
+    "why": "输入只写“车载底盘”，未给吨位与驱动",
+    "confidence": 0.6
+   },
+   {
+    "field": "quantity_12",
+    "value": "按批量采购/车队一致性背景理解，不作为设计维度",
+    "why": "12 台更像数量信息，不足以推导造型或结构轴",
+    "confidence": 0.7
+   },
+   {
+    "field": "environment_severity",
+    "value": "市政工地按常规城市施工环境处理，不额外假设重沙尘/重腐蚀",
+    "why": "输入未提特殊防护等级",
+    "confidence": 0.6
+   },
+   {
+    "field": "cab_scope",
+    "value": "驾驶室按底盘驾驶室+上装接口分析，不拆前脸格栅/大灯",
+    "why": "用户只点名驾驶室，未点名前脸细节",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "臂架",
+     "工作台斗",
+     "支腿",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_boom",
+    "label": "臂架",
+    "kind": "part",
+    "location": "上装转台至臂架末端",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱形臂/桁架臂的截面与节点",
+     "臂架铰点与伸缩/折叠机构",
+     "臂架在底盘上的支撑与转台连接"
+    ],
+    "why": "能提供臂架截面、铰点、转台连接和收起布置证据，用于判断上装特化程度与整车比例。"
+   },
+   {
+    "part": "custom_work_platform",
+    "label": "工作台斗",
+    "kind": "function",
+    "location": "臂架末端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "detail",
+     "side",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "护栏/底板/门栏分缝",
+     "上下工作斗的登入与操作接口",
+     "与臂架末端的连接与调平机构"
+    ],
+    "why": "能提供护栏高度、门栏、底板、调平与操作接口证据，用于判断安全人机与法规约束。"
+   },
+   {
+    "part": "custom_outrigger",
+    "label": "支腿",
+    "kind": "function",
+    "location": "底盘下车架四角",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "支腿梁截面与铰点",
+     "支脚盘/接地结构",
+     "收起状态与底盘/踏步的间隙"
+    ],
+    "why": "能提供跨距、支腿梁、支脚盘和收起间隙证据，用于判断稳定性、侧视布置与人机操作空间。"
+   },
+   {
+    "part": "custom_cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "底盘前部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "proportion",
+     "function_ergonomics",
+     "structure"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驾驶室与上装/转台的连接界面",
+     "驾驶室可见面与底盘平台继承关系",
+     "登车口与踏步接口"
+    ],
+    "why": "能提供驾驶室平台继承、可见面与上装连接界限证据，避免把底盘驾驶室误判为上装造型。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "驾驶室侧下部/车门下方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "detail",
+     "side"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏板高度/宽度/防滑面",
+     "支架与车身连接",
+     "折叠/固定形式与离地间隙"
+    ],
+    "why": "能提供登车高度、防滑、支架与离地间隙证据，用于判断人机接口与底盘附件关系。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "高空作业车 车载式高空作业车；臂架/工作斗/支腿布置形式待确认",
+    "parts": [
+     "custom_boom",
+     "custom_work_platform",
+     "custom_outrigger",
+     "custom_cab",
+     "step"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "市政工地 工程车",
+    "parts": [
+     "custom_boom",
+     "custom_work_platform",
+     "custom_outrigger",
+     "custom_cab",
+     "step"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补入进气格栅、保险杠、大灯、后视镜、涂装分色等用户未点名的部件；不把驾驶室拆成前脸细节。",
+   "不假设具体臂架形式、底盘吨位或上装品牌；不确定项写入 assumptions。",
+   "不把 12 台作为造型或结构设计轴，只作为批量一致性背景。",
+   "不扩大到重沙尘/矿山防护件，除非后续确认市政工况有特殊要求。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

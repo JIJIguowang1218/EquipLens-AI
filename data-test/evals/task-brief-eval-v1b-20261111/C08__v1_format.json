@@ -1,0 +1,627 @@
+{
+ "case": {
+  "id": "C08",
+  "prompt": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+  "expected_output": "class=搅拌车；上装（罐/斗）与底盘分开；词表外上装保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 14,
+  "custom_parts": 3,
+  "all_have_design_axes": true,
+  "assumptions": 6,
+  "regions": 4,
+  "failed": [
+   "parts 14 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060734",
+  "request": {
+   "raw": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+   "class": "混凝土搅拌车（搅拌运输车）",
+   "environment": {
+    "value": "工地道路/施工场地",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "8×4 四轴底盘",
+    "confidence": 0.8
+   },
+   "configuration": "搅拌罐+进出料斗+驾驶室+侧防护+登车踏步，12 台批量",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "8×4 四轴底盘，搅拌罐上装",
+    "why": "用户原文给出 8×4，未给具体吨位与品牌",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台批量，属量产改型而非单台定制",
+    "why": "原文给出数量 12 台",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "工地道路为主，含粉尘、泥浆、窄空间作业",
+    "why": "原文仅给“工地道路”，工况细节为推断",
+    "confidence": "medium"
+   },
+   {
+    "field": "class",
+    "value": "重型专用车（混凝土搅拌运输车）",
+    "why": "按车型常识归类",
+    "confidence": "high"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "搅拌罐",
+     "进出料斗（进料斗与出料溜槽）",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_0da19425",
+    "label": "搅拌罐",
+    "kind": "上装主体",
+    "location": "整车中后部",
+    "part_family": "上装",
+    "taxonomy_status": "new",
+    "relation_axis": "比例与姿态主导",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45",
+     "side",
+     "rear"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "罐体锥度与前后段直径比决定整车视觉重心",
+     "罐体轴线与底盘俯仰关系影响姿态",
+     "罐体表面分色与螺旋线视觉引导"
+    ],
+    "why": "搅拌车识别性核心，决定整车体量与姿态"
+   },
+   {
+    "part": "custom_c5dc80da",
+    "label": "进出料斗（进料斗与出料溜槽）",
+    "kind": "功能总成",
+    "location": "罐体后端/尾部",
+    "part_family": "上装",
+    "taxonomy_status": "new",
+    "relation_axis": "与罐体尾部及后围的体量交接",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "detail",
+     "side"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "料斗开口几何与卸料流向的匹配",
+     "与罐体尾端法兰的包覆关系",
+     "防溅挡板与清洗可达性"
+    ],
+    "why": "用户明确点名的功能部件，涉及结构与作业人机"
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "主体总成",
+    "location": "整车前部",
+    "part_family": "底盘/驾驶室",
+    "taxonomy_status": "new",
+    "relation_axis": "与罐体前端的空间与体量关系",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驾驶室高度与罐体前锥的视觉过渡",
+     "A柱与风挡倾角对抗工地粉尘与视野的取舍",
+     "内饰耐污与操作可达"
+    ],
+    "why": "用户点名部件，且是品牌识别与法规视野承载面"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "法规/安全件",
+    "location": "底盘两侧轴间",
+    "part_family": "防护",
+    "taxonomy_status": "known",
+    "relation_axis": "与车轮、油箱、踏步的间距关系",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "离地间隙与防钻入法规尺寸约束",
+     "与轮拱开孔的避让节奏",
+     "泥浆飞溅路径的遮挡效率"
+    ],
+    "why": "用户点名部件，法规强约束且影响侧面节奏"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "人机件",
+    "location": "驾驶室门下方/侧防护前段",
+    "part_family": "人机",
+    "taxonomy_status": "known",
+    "relation_axis": "与侧防护、轮拱的集成关系",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏板高度级差与踏步深度",
+     "防滑面与自清洁排泥",
+     "与防护栏共支架的集成"
+    ],
+    "why": "用户点名部件，工地泥污环境下人机关键"
+   },
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "前脸件",
+    "location": "前脸中部",
+    "part_family": "前脸",
+    "taxonomy_status": "known",
+    "relation_axis": "与前脸主面的比例分割",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "格栅开口率与散热需求匹配",
+     "横纵分缝形成品牌特征",
+     "防尘网与外露结构"
+    ],
+    "why": "前脸识别与散热功能的结合点"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "前脸件",
+    "location": "前脸下部",
+    "part_family": "前脸",
+    "taxonomy_status": "known",
+    "relation_axis": "与离地间隙及接近角的关系",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "environment_protection",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "分段式下护与离地角",
+     "拖车钩与灯具开口整合",
+     "耐刮擦材质与撞色分区"
+    ],
+    "why": "工地工况碰撞与法规灯具承载"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "覆盖件",
+    "location": "各轴车轮上方",
+    "part_family": "车身覆盖",
+    "taxonomy_status": "known",
+    "relation_axis": "与侧防护、踏步的连续性",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮拱开口与轮胎跳动包络",
+     "挡泥板与抛泥路径",
+     "多轴重复节奏的统一"
+    ],
+    "why": "8×4 多轴下侧面节奏的主要控制件"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "灯具",
+    "location": "前脸两侧",
+    "part_family": "灯具",
+    "taxonomy_status": "known",
+    "relation_axis": "与前脸体面及保险杠的位置关系",
+    "design_axes": [
+     "form_gesture",
+     "regulation",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "灯罩防护网/护板结构",
+     "灯具高度与法规配光",
+     "可更换模块化"
+    ],
+    "why": "工地易损件，需防护与法规兼顾"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "安全件",
+    "location": "A柱两侧",
+    "part_family": "视野",
+    "taxonomy_status": "known",
+    "relation_axis": "与驾驶室前角的空间关系",
+    "design_axes": [
+     "function_ergonomics",
+     "regulation",
+     "structure"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "镜面组合覆盖盲区",
+     "支架强度与振动抑制",
+     "可折叠避碰"
+    ],
+    "why": "工地狭窄空间与法规视野要求"
+   },
+   {
+    "part": "sun_visor",
+    "label": "外部遮阳板",
+    "kind": "外饰件",
+    "location": "驾驶室顶部前缘",
+    "part_family": "外饰",
+    "taxonomy_status": "known",
+    "relation_axis": "与顶盖及风挡上沿的过渡",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "遮阳板厚度与风挡倾角的视觉平衡",
+     "集成示廓灯",
+     "低成本成型工艺"
+    ],
+    "why": "影响前脸上部轮廓线"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "防护件",
+    "location": "前脸下部/底盘前段",
+    "part_family": "防护",
+    "taxonomy_status": "known",
+    "relation_axis": "与保险杠及离地间隙的关系",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "泥沙冲刷防护",
+     "快拆检修口",
+     "材质耐磨与减重"
+    ],
+    "why": "工地工况底部防护"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "识别件",
+    "location": "前脸中部/驾驶室侧",
+    "part_family": "识别",
+    "taxonomy_status": "known",
+    "relation_axis": "与格栅、分色的构图关系",
+    "design_axes": [
+     "cmf",
+     "form_gesture",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "标识尺度与主面留白",
+     "发光/立体字工艺",
+     "与分色线对齐"
+    ],
+    "why": "批量车型的品牌一致性"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "CMF",
+    "location": "整车",
+    "part_family": "CMF",
+    "taxonomy_status": "known",
+    "relation_axis": "底盘/上装/罐体的分色层级",
+    "design_axes": [
+     "cmf",
+     "form_gesture",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "hero_45",
+     "side",
+     "rear"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驾驶室与罐体的色彩统一或对比",
+     "罐体螺旋带与腰线的分色对位",
+     "耐污与清洗性涂料选择"
+    ],
+    "why": "决定12台批量车队的整体识别"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "混凝土搅拌车（搅拌运输车） 搅拌罐+进出料斗+驾驶室+侧防护+登车踏步，12 台批量",
+    "parts": [
+     "custom_0da19425",
+     "custom_c5dc80da",
+     "custom_0f65b221",
+     "side_guard",
+     "step",
+     "grille",
+     "bumper",
+     "wheel_arch",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工地道路/施工场地 工程车",
+    "parts": [
+     "custom_0da19425",
+     "custom_c5dc80da",
+     "custom_0f65b221",
+     "side_guard",
+     "step",
+     "grille",
+     "bumper",
+     "wheel_arch",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref",
+   "不涉及罐体内部螺旋叶片与液压驱动系统设计",
+   "不涉及底盘动力总成与悬架布置",
+   "不输出乘用车造型语言与内饰座舱精细化方案",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

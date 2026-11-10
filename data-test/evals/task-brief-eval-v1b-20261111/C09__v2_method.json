@@ -1,0 +1,349 @@
+{
+ "case": {
+  "id": "C09",
+  "prompt": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+  "expected_output": "class=环卫/压缩垃圾车；上装功能件保留 custom_*；不做卡车品类误判；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 3,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060807",
+  "request": {
+   "raw": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+   "class": "环卫压缩式垃圾车（后装压缩式）",
+   "environment": {
+    "value": "城市环卫：街道收集、频繁启停、冲洗与渗滤液腐蚀、人车混行",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "4×2 环卫卡车底盘（吨位/轴距/驾驶室平台待确认）",
+    "confidence": 0.8
+   },
+   "configuration": "4×2 底盘 + 后装压缩箱 + 尾部装载斗",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "后装压缩式垃圾车",
+    "why": "“压缩箱 + 装载斗”指向后装压缩式，未指定侧装/前装或其他上装形式",
+    "confidence": 0.82
+   },
+   {
+    "field": "request.base_platform",
+    "value": "4×2 中轻型环卫底盘，吨位/轴距/驾驶室平台待确认",
+    "why": "用户仅给出 4×2，未给总质量、轴距和底盘品牌",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.environment",
+    "value": "城市环卫：街道收集、频繁启停、冲洗与渗滤液腐蚀、人车混行",
+    "why": "由“城市环卫”推断，用于判断防腐蚀、清洗维护、行人保护和登车人机",
+    "confidence": 0.75
+   },
+   {
+    "field": "parts[custom_cab].relation_axis",
+    "value": "platform",
+    "why": "环卫车驾驶室通常继承 4×2 底盘驾驶室，仅做涂装、标识与少量专用接口",
+    "confidence": 0.65
+   },
+   {
+    "field": "parts[custom_loading_hopper].kind",
+    "value": "function",
+    "why": "装载斗以装载功能/机构命名，兼具结构件与功能附件属性",
+    "confidence": 0.7
+   },
+   {
+    "field": "batch_size",
+    "value": "12 台，小批量",
+    "why": "用户给出 12 台，影响制造工艺与 CMF 选择，但不改变设计对象范围",
+    "confidence": 0.9
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "压缩箱",
+     "装载斗",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_compaction_box",
+    "label": "压缩箱",
+    "kind": "part",
+    "location": "上装/后部（压缩箱体）",
+    "part_family": "welded_sheet_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "manufacturing",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱体板面分缝与加强筋布置",
+     "尾门/填装器接口与密封",
+     "冲洗水与渗滤液导流对板面、折边与排液口的影响"
+    ],
+    "why": "用户点名的核心上装，决定侧面体量、分缝、耐腐蚀与清洗维护，是压缩式垃圾车区别于普通底盘的核心设计证据。"
+   },
+   {
+    "part": "custom_loading_hopper",
+    "label": "装载斗",
+    "kind": "function",
+    "location": "尾部/后围（装载作业区）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "垃圾桶/垃圾袋接口与装载开口几何",
+     "装载斗与压缩箱尾门的铰接、锁止与密封",
+     "防污水外溢、导流与冲洗可达性"
+    ],
+    "why": "装载斗是后装压缩式垃圾车的高频作业界面，直接决定人机操作、污水控制、结构耐磨与尾部造型特征。"
+   },
+   {
+    "part": "custom_cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "前部/驾驶室总成",
+    "part_family": "cab_assembly",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "4×2 底盘驾驶室平台继承关系",
+     "城市工况视野、上下车与频繁启停人机",
+     "驾驶室与压缩箱的体量/色彩衔接"
+    ],
+    "why": "驾驶室是平台继承件，可区分哪些造型与人机来自底盘平台、哪些为环卫作业特化，是判断侧面比例和品牌一致性的基准。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "侧面/底盘两侧",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "法规高度、间隙与边缘圆角",
+     "与压缩箱、登车踏步、轮胎和底盘附件的包络关系",
+     "行人/非机动车防护与可视性"
+    ],
+    "why": "侧防护同时受法规与城市混行安全约束，并影响侧面下部视觉连续性和踏步/底盘附件的布置边界。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "侧面/驾驶室登车口",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "踏板高度、深度与登车步幅",
+     "防滑踏面、排水与泥污自清洁",
+     "与侧防护、轮胎和驾驶室门槛的包络"
+    ],
+    "why": "登车踏步是环卫作业频繁上下车的关键人机件，需同时满足防滑、排水、离地间隙和侧面造型收口。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "环卫压缩式垃圾车（后装压缩式） 4×2 底盘 + 后装压缩箱 + 尾部装载斗",
+    "parts": [
+     "custom_compaction_box",
+     "custom_loading_hopper",
+     "custom_cab",
+     "side_guard",
+     "step"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "城市环卫：街道收集、频繁启停、冲洗与渗滤液腐蚀、人车混行 工程车",
+    "parts": [
+     "custom_compaction_box",
+     "custom_loading_hopper",
+     "custom_cab",
+     "side_guard",
+     "step"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不扩展到未点名的上装附件（如污水箱、液压油缸型号、称重系统、除臭喷淋）",
+   "不把驾驶室自动拆成格栅、大灯、保险杠等前脸分件；如需要前脸分件需用户明确",
+   "不引入其他环卫车型（扫路车、洒水车、餐厨垃圾车）作为同品类替代",
+   "不凭 12 台推断具体底盘品牌、吨位或上装厂家型号",
+   "不输出 page_budget、research_units、quota、tiers、budget、strategy_ref 等代码侧字段",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

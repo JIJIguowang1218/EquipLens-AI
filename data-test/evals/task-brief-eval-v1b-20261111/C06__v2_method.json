@@ -1,0 +1,304 @@
+{
+ "case": {
+  "id": "C06",
+  "prompt": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+  "expected_output": "class=挖掘机；上装/底盘区分；履带等词表外部件保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 5,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 0,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060522",
+  "request": {
+   "raw": "履带式液压挖掘机（动臂、斗杆、铲斗、驾驶室、履带）；矿山土方；履带底盘；12 台",
+   "class": "履带式液压挖掘机",
+   "environment": {
+    "value": "矿山土方",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "履带底盘",
+    "confidence": 0.8
+   },
+   "configuration": "履带式",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "履带",
+    "value": "履带行走装置或履带底盘总成",
+    "why": "用户与履带底盘并列提及，按总成理解而非单条履带板",
+    "confidence": 0.75
+   },
+   {
+    "field": "工况默认条件",
+    "value": "高粉尘、冲击磨损、连续重载",
+    "why": "矿山土方通常包含此类环境载荷，用于判断环境防护维度",
+    "confidence": 0.8
+   },
+   {
+    "field": "驾驶室配置",
+    "value": "按矿山型防护分析，包括落物防护与粉尘密封",
+    "why": "矿山土方工况对驾驶室防护有直接影响，型号未给出",
+    "confidence": 0.7
+   },
+   {
+    "field": "吨位与品牌",
+    "value": "未假设",
+    "why": "输入未给具体吨位、品牌或型号，不猜测",
+    "confidence": 0.95
+   },
+   {
+    "field": "12 台",
+    "value": "机队或样本规模信息",
+    "why": "不作为设计对象，也不生成配额；配额由代码侧处理",
+    "confidence": 0.9
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "动臂",
+     "斗杆",
+     "铲斗",
+     "驾驶室",
+     "履带"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "custom_7a1c",
+    "label": "动臂",
+    "kind": "part",
+    "location": "上车前部工作装置，连接上车与斗杆",
+    "part_family": "welded_box_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "form_gesture"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱型梁截面与加强筋布置",
+     "销轴节点与焊缝",
+     "矿山冲击下的耐磨与防撞加强"
+    ],
+    "why": "可提供矿山型工作装置在箱型结构、节点加强和姿态体量上的设计证据"
+   },
+   {
+    "part": "custom_3d2e",
+    "label": "斗杆",
+    "kind": "part",
+    "location": "动臂前端至铲斗之间的工作装置",
+    "part_family": "welded_box_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "proportion"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱型梁与端部节点",
+     "长度比例与挖掘范围",
+     "耐磨与防撞加强"
+    ],
+    "why": "可提供斗杆长度比例、截面结构与矿山磨损防护的设计证据"
+   },
+   {
+    "part": "custom_9f4b",
+    "label": "铲斗",
+    "kind": "part",
+    "location": "斗杆末端，直接接触矿料",
+    "part_family": "welded_wear_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "耐磨板、斗齿与侧刃",
+     "焊接与铸锻件连接",
+     "冲击磨损下的加强"
+    ],
+    "why": "可提供铲斗耐磨结构、易损件与制造工艺对造型约束的设计证据"
+   },
+   {
+    "part": "custom_5c8d",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "上车平台前部或左前侧操作舱",
+    "part_family": "cab_shell",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "落物防护框架与壳体分缝",
+     "视野与登车人机",
+     "粉尘密封与空调布置"
+    ],
+    "why": "可提供矿山型驾驶室在防护框架、视野人机和密封防尘上的设计证据"
+   },
+   {
+    "part": "custom_2e6f",
+    "label": "履带",
+    "kind": "part",
+    "location": "底盘两侧行走装置",
+    "part_family": "track_undercarriage",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "proportion"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "履带板、支重轮与张紧结构",
+     "排泥与耐磨",
+     "接地比例与底盘体量"
+    ],
+    "why": "可提供履带底盘在矿山地面耐磨、排泥和接地比例上的设计证据"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "履带式液压挖掘机 履带式",
+    "parts": [
+     "custom_7a1c",
+     "custom_3d2e",
+     "custom_9f4b",
+     "custom_5c8d",
+     "custom_2e6f"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "矿山土方 工程车",
+    "parts": [
+     "custom_7a1c",
+     "custom_3d2e",
+     "custom_9f4b",
+     "custom_5c8d",
+     "custom_2e6f"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补充用户未点名的部件，如格栅、保险杠、侧防护栏、后视镜等",
+   "不把驾驶室拆成前脸、格栅、大灯等未点名部件",
+   "不假设具体品牌、吨位或型号",
+   "不输出 quota、tiers、budget、page_budget、research_units、strategy_ref 等代码侧字段",
+   "不将参考词表中的汽车或重卡部件直接套用到挖掘机",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

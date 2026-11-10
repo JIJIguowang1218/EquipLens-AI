@@ -30,6 +30,16 @@ REGION_VIEWS = {"front_face": ["front", "hero_45"], "side": ["side", "hero_45"],
                 "rear": ["rear", "side"], "roof": ["side", "hero_45"]}
 DEFAULT_NEGATIVE = ("客车", "SUV", "房车", "多车拼图", "内饰", "模型")
 SKILL_VERSION = "task-brief@v2"
+FORMAT_ONLY_PROMPT = """你是工程车检索任务单解析器。只输出 JSON，不要解释。
+字段：request{class, environment, base_platform, configuration, design_questions[]}；
+regions[{region, label, views[], design_axes[]}]；
+parts[{part, label, kind, location, part_family, taxonomy_status, relation_axis,
+       design_axes[], views[], design_relevance, accept, mechanism[], why}]；
+assumptions[{field, value, why, confidence}]；negative[]。
+views 只能取 front/hero_45/side/rear/interior/detail；
+design_axes 只能取 form_gesture/proportion/structure/cmf/function_ergonomics/
+environment_protection/regulation/manufacturing。
+不要输出 page_budget/research_units/quota/tiers/budget/strategy_ref。"""
 
 
 def load_taxonomy(path: Path | None = None) -> dict:
@@ -42,14 +52,22 @@ def reference_parts(taxonomy: dict) -> dict[str, str]:
 
 def build_prompt(raw: str, taxonomy: dict, *, class_hint: str = "",
                  part_hints: list[str] | None = None,
-                 use_skill: bool = True) -> str:
+                 use_skill: bool = True,
+                 prompt_mode: str = "v2") -> str:
     """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束 + 词表。
 
     `use_skill=False` 只用于必要性 A/B（无方法引导的基线），不是生产路径。
     """
-    skill = (SKILL_PATH.read_text(encoding="utf-8") if use_skill else
-             "你是工程车检索任务单解析器。只输出 JSON："
-             "{request, regions, parts, assumptions, negative}。")
+    mode = prompt_mode if prompt_mode in ("v2", "v1", "none") else "v2"
+    if not use_skill and mode == "v2":
+        mode = "none"
+    if mode == "v2":
+        skill = SKILL_PATH.read_text(encoding="utf-8")
+    elif mode == "v1":
+        skill = FORMAT_ONLY_PROMPT
+    else:
+        skill = ("你是工程车检索任务单解析器。只输出 JSON："
+                 "{request, regions, parts, assumptions, negative}。")
     parts = reference_parts(taxonomy)
     hints = {
         "raw": raw,
@@ -247,6 +265,27 @@ def validate_brief_json(data: dict) -> list[str]:
     return errors
 
 
+def parse_json_response(text: str) -> dict:
+    """LLM 常带 ```json 围栏/前后说明/控制字符；尽量取出第一个 JSON 对象。"""
+    import json as _json
+    t = (text or "").strip()
+    if t.startswith("```"):
+        t = re.sub(r"^```(?:json)?\s*", "", t)
+        t = re.sub(r"\s*```$", "", t).strip()
+    try:
+        return _json.loads(t, strict=False)
+    except _json.JSONDecodeError:
+        pass
+    start = t.find("{")
+    if start >= 0:
+        try:
+            obj, _ = _json.JSONDecoder().raw_decode(t[start:])
+            return obj
+        except _json.JSONDecodeError:
+            pass
+    raise ValueError("LLM 返回非 JSON（前 200 字）: " + t[:200])
+
+
 def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
     import requests
 
@@ -261,7 +300,7 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
     r.raise_for_status()
     body = r.json()
     return {
-        "payload": json.loads(body["choices"][0]["message"]["content"]),
+        "payload": parse_json_response(body["choices"][0]["message"]["content"]),
         "usage": body.get("usage") or {},
         "model": model,
     }
@@ -270,11 +309,13 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
 def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str = "",
                    part_hints: list[str] | None = None, brief_id: str = "",
                    model: str = "deepseek-flash", taxonomy: dict | None = None,
-                   chat_fn=None, use_skill: bool = True) -> dict:
+                   chat_fn=None, use_skill: bool = True,
+                   prompt_mode: str = "v2") -> dict:
     """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。"""
     taxonomy = taxonomy or load_taxonomy()
     prompt = build_prompt(raw, taxonomy, class_hint=class_hint,
-                          part_hints=part_hints, use_skill=use_skill)
+                          part_hints=part_hints, use_skill=use_skill,
+                          prompt_mode=prompt_mode)
     result = (chat_fn or chat)(prompt, api_key, model)
     last_error = ""
     for attempt in range(2):
@@ -282,7 +323,8 @@ def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str =
             brief = assemble_brief(result["payload"], raw, slots=slots, brief_id=brief_id,
                                    class_hint=class_hint, taxonomy=taxonomy)
             return {"brief": brief, "prompt": prompt, "response": result,
-                    "attempts": attempt + 1, "use_skill": use_skill}
+                    "attempts": attempt + 1, "use_skill": use_skill,
+                    "prompt_mode": prompt_mode}
         except ValueError as e:
             last_error = str(e)
             if attempt == 1:

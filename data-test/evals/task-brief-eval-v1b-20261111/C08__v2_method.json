@@ -1,0 +1,364 @@
+{
+ "case": {
+  "id": "C08",
+  "prompt": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+  "expected_output": "class=搅拌车；上装（罐/斗）与底盘分开；词表外上装保留 custom_*；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v2_method",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 3,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 3,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060719",
+  "request": {
+   "raw": "混凝土搅拌车（搅拌罐、进出料斗、驾驶室、侧防护、登车踏步）；工地道路；8×4；12 台",
+   "class": "混凝土搅拌车",
+   "environment": {
+    "value": "工地道路（非铺装/临时道路，泥浆、扬尘、频繁启停与转弯）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "8×4 重型卡车二类底盘 + 专用搅拌上装",
+    "confidence": 0.8
+   },
+   "configuration": "8×4，前置驾驶室，后部搅拌罐与进出料斗",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "混凝土搅拌车",
+    "why": "用户 raw 明确给出品类。",
+    "confidence": 0.98
+   },
+   {
+    "field": "base_platform",
+    "value": "8×4 重型卡车二类底盘 + 专用搅拌上装",
+    "why": "由 8×4 构型与混凝土搅拌车品类推断，驾驶室按底盘平台继承处理。",
+    "confidence": 0.85
+   },
+   {
+    "field": "environment",
+    "value": "工地道路包含非铺装、泥浆、扬尘和频繁启停",
+    "why": "工地道路工况通常意味着泥浆飞溅、粉尘和低附着路面，对侧防护、踏步和进出料斗影响明显。",
+    "confidence": 0.78
+   },
+   {
+    "field": "12 台",
+    "value": "按样本/车队数量理解，不视为 12 种车型配置",
+    "why": "raw 中“12 台”更像数量信息；若指批量制造规模，则 manufacturing 与 CMF 权重需另行确认。",
+    "confidence": 0.65
+   },
+   {
+    "field": "进出料斗",
+    "value": "作为进料斗与出料斗的功能组统一分析",
+    "why": "用户将“进出料斗”作为一个连续说法给出，未分别点名两个斗。",
+    "confidence": 0.7
+   },
+   {
+    "field": "驾驶室",
+    "value": "按驾驶室总成分析，前脸作为其中区域",
+    "why": "用户在部件清单中点名驾驶室，同时需要其前脸与侧面比例证据。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "搅拌罐",
+     "进出料斗",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "side"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_mixer_drum",
+    "label": "搅拌罐",
+    "kind": "part",
+    "location": "后部上装/车架上方",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "rear",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "罐体直径、长度、锥度与驾驶室后缘、车架长度共同决定整车侧面体量关系",
+     "前后支撑座、滚道与车架连接影响侧面分缝、离地和结构可读性",
+     "罐体涂装分色与表面处理影响旋转体量和工地耐脏、耐磨感知"
+    ],
+    "why": "搅拌罐是搅拌车最核心的上装体量，决定侧面轮廓、与驾驶室的比例关系以及上装特化程度。"
+   },
+   {
+    "part": "custom_feed_discharge_hopper",
+    "label": "进出料斗",
+    "kind": "function",
+    "location": "后部上装/罐体尾端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "进料/出料开口尺寸、倾角和导料板影响后部功能布局与操作可视性",
+     "与罐体尾端、车架尾部的连接和密封决定泥浆、洒料和积料防护",
+     "可拆换耐磨衬板与加强筋影响分缝、维修性和后部结构表达"
+    ],
+    "why": "进出料斗是后部功能与造型的集中区域，能提供搅拌车后部特化、防洒料和维修分缝的直接证据。"
+   },
+   {
+    "part": "custom_cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "前部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45",
+     "side"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "驾驶室轮廓与 8×4 底盘宽度、轮拱和侧面附件形成平台化比例",
+     "前脸体量与线条可在平台继承基础上与搅拌上装形成功能对比",
+     "驾驶室侧围与登车踏步、侧防护的接口关系影响人机和分缝"
+    ],
+    "why": "驾驶室是平台继承与品牌/造型语言的主要载体，也是判断搅拌车与底盘平台关系的基准对象。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "function",
+    "location": "侧面下部/车架侧",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "型材或板金框架的离地高度、间距和端部处理影响侧向防护法规符合性",
+     "下缘、开口和排泥路径影响泥浆飞溅后的积料与清洁",
+     "与车架、登车踏步、罐体侧面的连接节点影响侧面分缝和结构可读性"
+    ],
+    "why": "侧防护同时受法规与工地泥浆环境影响，能提供安全防护、离地间隙和侧面分缝的工程证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "驾驶室侧下方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "踏板高度、宽度、防滑面与驾驶室门槛形成登车人机关系",
+     "泥浆环境下需要排水、排泥和防滑，影响踏板开孔与表面处理",
+     "支架/型材与侧防护、车架的连接和离地间隙影响结构安全与清洁"
+    ],
+    "why": "登车踏步是高频人机接触件，能直接反映工地泥浆条件下的防滑、排泥和结构连接设计。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "混凝土搅拌车 8×4，前置驾驶室，后部搅拌罐与进出料斗",
+    "parts": [
+     "custom_mixer_drum",
+     "custom_feed_discharge_hopper",
+     "custom_cab",
+     "side_guard",
+     "step"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工地道路（非铺装/临时道路，泥浆、扬尘、频繁启停与转弯） 工程车",
+    "parts": [
+     "custom_mixer_drum",
+     "custom_feed_discharge_hopper",
+     "custom_cab",
+     "side_guard",
+     "step"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不补入用户未点名的爬梯、导流罩、支腿、液压系统等部件。",
+   "不将驾驶室拆成格栅、大灯、保险杠等未点名子件。",
+   "不把搅拌罐内部叶片和液压驱动作为造型检索主对象。",
+   "不编造吨位、品牌、具体上装厂型号或法规区域。",
+   "不将侧防护与翼子板/轮拱合并分析。",
+   "不将“12 台”扩展为 12 个车型变体。",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

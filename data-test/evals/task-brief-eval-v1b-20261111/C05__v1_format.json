@@ -1,0 +1,581 @@
+{
+ "case": {
+  "id": "C05",
+  "prompt": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+  "expected_output": "class=重型牵引车；platform 关系轴为主；前脸 region；5 个部件。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 12,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 4,
+  "failed": [
+   "parts 12 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060457",
+  "request": {
+   "raw": "重型长途牵引车（前脸、保险杠、大灯、登车踏步、前轮拱）；干线物流；6×4；12 台",
+   "class": "重型长途牵引车",
+   "environment": {
+    "value": "干线物流（长途高速干线运输）",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "6×4 三轴牵引车底盘",
+    "confidence": 0.8
+   },
+   "configuration": "12 台批量工程车检索任务，聚焦前脸、保险杠、大灯、登车踏步、前轮拱等外部件的造型与防护设计",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "6×4 三轴牵引车（后双桥驱动、前单桥转向）",
+    "why": "输入已明确 6×4，用于约束前轮拱、踏步与轴距布置",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "以高速干线公路为主，含服务区、装卸场低速工况",
+    "why": "输入为干线物流，造型与防护取向按长途高速为主",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台为同批次交付，外部件需保证批次一致性",
+    "why": "输入给出 12 台数量，推断为小批量同规格生产",
+    "confidence": "medium"
+   },
+   {
+    "field": "cab_type",
+    "value": "平头长驾驶室（含卧铺）",
+    "why": "重型长途牵引车常规构型，但输入未明确，需在检索时确认",
+    "confidence": "medium"
+   },
+   {
+    "field": "region_scope",
+    "value": "重点为前脸与侧面下部，后围与顶盖作为完整性补充",
+    "why": "用户列举部件集中在前脸与侧面下部",
+    "confidence": "high"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "前脸检修口盖"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "side"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "reference",
+    "location": "前脸中上部，位于保险杠上方，大灯之间",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "品牌识别面",
+     "进气与散热开闭关系",
+     "整体前脸体量分割"
+    ],
+    "why": "用户明确指定前脸作为重点，格栅是前脸造型主控件，同时影响发动机散热与法规视野"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "reference",
+    "location": "前脸下部，横跨整车宽度",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "structure",
+    "design_axes": [
+     "structure",
+     "form_gesture",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "正面碰撞防护与吸能",
+     "离地间隙与接近角",
+     "下部灯位与踏板集成"
+    ],
+    "why": "用户明确指定；保险杠决定干线物流工况下的低速碰撞维修成本与前脸下部分割"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "reference",
+    "location": "前脸两侧，保险杠上方或嵌入其中",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "夜间长途照明性能",
+     "灯罩防石击与防污",
+     "可维修更换单元化"
+    ],
+    "why": "用户明确指定；长途夜间高速行驶，大灯与防护罩是功能与造型共同交点"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "reference",
+    "location": "驾驶室两侧下方，前轮拱后方",
+    "part_family": "side_access",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf",
+     "manufacturing",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏步高度与级差人机关系",
+     "防滑与排水",
+     "踏步与轮拱、燃油箱的空间竞争"
+    ],
+    "why": "用户明确指定；登车踏步直接影响驾驶员高频上下车体验与侧面造型连续性"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "reference",
+    "location": "前轴上方两侧，环绕前轮",
+    "part_family": "side_body",
+    "taxonomy_status": "known",
+    "relation_axis": "structure",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection",
+     "manufacturing",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "转向包络与轮胎跳动间隙",
+     "泥水飞溅遮挡与防污",
+     "与前保险杠、踏步的接缝关系"
+    ],
+    "why": "用户明确指定；前轮拱决定侧面体量与 6×4 底盘布置的视觉合理性，且涉及法规遮蔽要求"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "reference",
+    "location": "前后轴之间车身下缘两侧",
+    "part_family": "side_body",
+    "taxonomy_status": "known",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "侧面卷入防护法规",
+     "与踏步、油箱、储气筒的布局协调"
+    ],
+    "why": "牵引车法规强制件，与踏步区域相邻，为前脸—侧面造型闭环的组成部分"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "reference",
+    "location": "驾驶室两侧 A 柱与前脸侧上方",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "function_ergonomics",
+     "regulation",
+     "form_gesture",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "间接视野法规覆盖",
+     "风阻与风噪",
+     "与前脸造型的连接过渡"
+    ],
+    "why": "干线物流长途工况对视野与风阻敏感，且直接影响前脸侧向轮廓"
+   },
+   {
+    "part": "sun_visor",
+    "label": "外部遮阳板",
+    "kind": "reference",
+    "location": "驾驶室前风窗上沿",
+    "part_family": "roof",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "前脸顶部横向线条收口",
+     "遮光与导流",
+     "与顶导流罩的衔接"
+    ],
+    "why": "用户强调前脸整体，遮阳板是前脸顶部轮廓的收口要素"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "reference",
+    "location": "前保险杠下方、发动机下部",
+    "part_family": "underbody",
+    "taxonomy_status": "known",
+    "relation_axis": "environment_protection",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "飞石与泥水防护",
+     "底盘气流管理",
+     "维修接近性"
+    ],
+    "why": "干线物流高里程工况下对底盘防护与清洁性有实际需求，与保险杠下部造型耦合"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "reference",
+    "location": "前脸格栅中部或上部",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "cmf",
+     "form_gesture",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "品牌识别与家族化",
+     "标识件与格栅的定位与紧固"
+    ],
+    "why": "12 台批量交付需要一致的品牌呈现，标识区与格栅共用界面"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "reference",
+    "location": "整车外覆盖件",
+    "part_family": "cmf",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "cmf",
+     "manufacturing",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "前脸与侧面的分色切割逻辑",
+     "耐候与耐石击涂层",
+     "批量一致性控制"
+    ],
+    "why": "批量 12 台的涂装一致性是制造与视觉统一的关键约束"
+   },
+   {
+    "part": "custom_front_service_hatch",
+    "label": "前脸检修口盖",
+    "kind": "custom",
+    "location": "前脸格栅两侧或保险杠上方",
+    "part_family": "front_face",
+    "taxonomy_status": "new",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "日常检查与加注的接近性",
+     "与格栅造型的分缝整合"
+    ],
+    "why": "长途干线车辆高频例行检查，检修口盖与前脸分缝体系直接相关"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "重型长途牵引车 12 台批量工程车检索任务，聚焦前脸、保险杠、大灯、登车踏步、前轮拱等外部件的造型与防护设计",
+    "parts": [
+     "grille",
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch",
+     "side_guard",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme",
+     "custom_front_service_hatch"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "干线物流（长途高速干线运输） 工程车",
+    "parts": [
+     "grille",
+     "bumper",
+     "headlamp",
+     "step",
+     "wheel_arch",
+     "side_guard",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme",
+     "custom_front_service_hatch"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出造型草图、效果图或具体造型结论，仅做检索与部件结构化",
+   "不涉及内饰总成与动力总成内部结构",
+   "不给出法规条款具体数值与认证结论",
+   "不输出预算、研究单元、配额或分层策略",
+   "不生成参考词表之外的臆造部件族命名（自定义件使用 custom_ 前缀）",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

@@ -1,0 +1,354 @@
+{
+ "case": {
+  "id": "C04",
+  "prompt": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+  "expected_output": "class=随车起重运输车；货箱/吊机/底盘关系写清；前脸 region；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 1,
+   "custom_min": 0
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 1,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 2,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060420",
+  "request": {
+   "raw": "随车起重运输车（车辆侧护板、前轮拱、登车踏步、前脸、大灯）；工程运输；12 台",
+   "class": "随车起重运输车",
+   "environment": {
+    "value": "工程运输",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "未指定",
+    "confidence": 0.8
+   },
+   "configuration": "12台批量；未提供具体底盘、吊机或货箱配置",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "vehicle_class",
+    "value": "随车起重运输车",
+    "why": "原始任务单直接给出车辆类别。",
+    "confidence": 0.95
+   },
+   {
+    "field": "environment",
+    "value": "工程运输",
+    "why": "原始任务单直接给出使用环境。",
+    "confidence": 0.95
+   },
+   {
+    "field": "base_platform",
+    "value": "未指定",
+    "why": "任务单未提供底盘平台或吨位信息。",
+    "confidence": 0.9
+   },
+   {
+    "field": "configuration",
+    "value": "12台批量，具体配置未给出",
+    "why": "原始任务单仅给出数量“12台”。",
+    "confidence": 0.8
+   },
+   {
+    "field": "part_scope",
+    "value": "车辆侧护板、前轮拱、登车踏步、前脸、大灯",
+    "why": "按用户列出的对象收敛解析范围。",
+    "confidence": 0.95
+   },
+   {
+    "field": "region_mapping",
+    "value": "前脸归入 front_face 区域，侧护板、轮拱、踏步归入 side 区域",
+    "why": "依据 reference_regions 与部件所在位置进行区域归类。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "前脸"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "protective_panel",
+    "location": "cab_side/chassis_side",
+    "part_family": "exterior_protection",
+    "taxonomy_status": "known",
+    "relation_axis": "side_protection_and_visual_continuity",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "侧面防护法规",
+     "防止行人或非机动车卷入",
+     "与底盘和货箱连接"
+    ],
+    "why": "用户明确要求，属于工程运输侧部防护与侧面视觉整体性的关键件。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "body_panel",
+    "location": "front_wheel_arch_left_right",
+    "part_family": "body_structure/wheel_clearance",
+    "taxonomy_status": "known",
+    "relation_axis": "tire_clearance_and_front_side_volume",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮胎包络与转向间隙",
+     "泥沙飞溅防护",
+     "检修与拆装空间"
+    ],
+    "why": "用户明确要求，直接影响前部体量、通过性与工程环境防护。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "access_step",
+    "location": "cab_entry_left_right",
+    "part_family": "access_system",
+    "taxonomy_status": "known",
+    "relation_axis": "entry_access_and_ergonomics",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "登车人机高度与踏面防滑",
+     "承载与固定方式",
+     "离地间隙与防撞"
+    ],
+    "why": "用户明确要求，是驾驶室登车便利性与工程场景耐用性的关键接口。"
+   },
+   {
+    "part": "custom_284a4fb0",
+    "label": "前脸",
+    "kind": "front_assembly",
+    "location": "cab_front",
+    "part_family": "front_identity",
+    "taxonomy_status": "new",
+    "relation_axis": "front_identity_and_integration",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "品牌识别与姿态",
+     "灯具、格栅与保险杠集成",
+     "散热与维修开口"
+    ],
+    "why": "用户明确要求，且前脸是整车识别与多个前部部件集成的核心区域。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "lighting_assembly",
+    "location": "front_left_right",
+    "part_family": "lighting",
+    "taxonomy_status": "known",
+    "relation_axis": "lighting_identity_and_protection",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "照明法规与光型",
+     "灯罩防护与可维修性",
+     "与前脸造型呼应"
+    ],
+    "why": "用户明确要求，涉及法规、夜间安全、前脸识别与维修经济性。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "随车起重运输车 12台批量；未提供具体底盘、吊机或货箱配置",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "custom_284a4fb0",
+     "headlamp"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "工程运输 工程车",
+    "parts": [
+     "side_guard",
+     "wheel_arch",
+     "step",
+     "custom_284a4fb0",
+     "headlamp"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref",
+   "不推断未给出的底盘吨位、吊机型号或货箱尺寸",
+   "不将前脸自动拆分为格栅、保险杠等未明确要求的子件",
+   "不引入 rear、roof、interior 视图，除非后续任务补充",
+   "不把参考词表当作强制准入清单",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

@@ -1,0 +1,387 @@
+{
+ "case": {
+  "id": "C07",
+  "prompt": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+  "expected_output": "class=装载机；工程机械而非卡车；部件族/设计轴合理；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 5,
+  "custom_parts": 5,
+  "all_have_design_axes": true,
+  "assumptions": 8,
+  "regions": 4,
+  "failed": []
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060643",
+  "request": {
+   "raw": "轮式装载机（铲斗、动臂、驾驶室、轮胎、配重）；砂石料场；轮式底盘；12 台",
+   "class": "轮式装载机",
+   "environment": {
+    "value": "砂石料场",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "轮式底盘",
+    "confidence": 0.8
+   },
+   "configuration": "12台",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "轮式装载机",
+    "why": "raw 明确包含“轮式装载机”",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "砂石料场",
+    "why": "raw 明确给出作业环境",
+    "confidence": "high"
+   },
+   {
+    "field": "base_platform",
+    "value": "轮式底盘",
+    "why": "raw 明确给出底盘形式",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12台",
+    "why": "raw 明确给出数量配置",
+    "confidence": "high"
+   },
+   {
+    "field": "design_questions",
+    "value": [],
+    "why": "raw 未提出具体设计问题，保留空数组",
+    "confidence": "medium"
+   },
+   {
+    "field": "part_scope",
+    "value": "优先解析用户显式列出的 5 个核心部件",
+    "why": "reference_parts 仅参考词表，不是准入",
+    "confidence": "high"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "铲斗",
+     "动臂",
+     "驾驶室",
+     "轮胎",
+     "配重"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_2ef84586",
+    "label": "铲斗",
+    "kind": "工作装置",
+    "location": "front",
+    "part_family": "bucket",
+    "taxonomy_status": "new",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "装载作业",
+     "耐磨结构",
+     "容量与刃口形式"
+    ],
+    "why": "用户明确列出，决定前部体量、作业功能与耐磨设计"
+   },
+   {
+    "part": "custom_e1c9150d",
+    "label": "动臂",
+    "kind": "工作装置",
+    "location": "front_side",
+    "part_family": "lift_arm",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "举升机构",
+     "铰点布局",
+     "承载结构"
+    ],
+    "why": "用户明确列出，影响侧面比例、举升结构与承载表现"
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "人机与防护",
+    "location": "upper_center",
+    "part_family": "operator_cab",
+    "taxonomy_status": "new",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "操作视野",
+     "ROPS/FOPS",
+     "进出人机"
+    ],
+    "why": "用户明确列出，涉及视野、防护、人机与法规界面"
+   },
+   {
+    "part": "custom_a708422b",
+    "label": "轮胎",
+    "kind": "行走底盘",
+    "location": "wheel_corners",
+    "part_family": "wheel_tire",
+    "taxonomy_status": "new",
+    "relation_axis": "proportion",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf",
+     "function_ergonomics",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮式底盘承载",
+     "牵引与耐磨",
+     "砂石料场工况"
+    ],
+    "why": "用户明确列出，决定轮式底盘姿态、通过性与砂石场耐磨需求"
+   },
+   {
+    "part": "custom_0d8041ac",
+    "label": "配重",
+    "kind": "后部结构",
+    "location": "rear",
+    "part_family": "counterweight",
+    "taxonomy_status": "new",
+    "relation_axis": "proportion",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "整机平衡",
+     "后部防护",
+     "品牌与检修界面"
+    ],
+    "why": "用户明确列出，影响整机平衡、后部体量与视觉收尾"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "轮式装载机 12台",
+    "parts": [
+     "custom_2ef84586",
+     "custom_e1c9150d",
+     "custom_0f65b221",
+     "custom_a708422b",
+     "custom_0d8041ac"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "砂石料场 工程车",
+    "parts": [
+     "custom_2ef84586",
+     "custom_e1c9150d",
+     "custom_0f65b221",
+     "custom_a708422b",
+     "custom_0d8041ac"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "未提供品牌、市场法规、涂装色板与具体设计问题，相关字段不臆造",
+   "reference_parts 中的部件未全部强制纳入，仅按轮式装载机相关性保留核心显式部件",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

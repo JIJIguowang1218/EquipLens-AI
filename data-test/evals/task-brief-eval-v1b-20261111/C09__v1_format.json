@@ -1,0 +1,628 @@
+{
+ "case": {
+  "id": "C09",
+  "prompt": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+  "expected_output": "class=环卫/压缩垃圾车；上装功能件保留 custom_*；不做卡车品类误判；不写具体型号。",
+  "assertions": {
+   "parts_between": [
+    3,
+    5
+   ],
+   "all_have_design_axes": true,
+   "regions_min": 0,
+   "custom_min": 1
+  }
+ },
+ "arm": "v1_format",
+ "status": "ok",
+ "checks": {
+  "schema_ok": true,
+  "parts": 14,
+  "custom_parts": 3,
+  "all_have_design_axes": true,
+  "assumptions": 7,
+  "regions": 4,
+  "failed": [
+   "parts 14 not in [3,5]"
+  ]
+ },
+ "brief": {
+  "brief_id": "auto-20261111-060820",
+  "request": {
+   "raw": "环卫压缩式垃圾车（压缩箱、装载斗、驾驶室、侧防护、登车踏步）；城市环卫；4×2；12 台",
+   "class": "环卫压缩式垃圾车",
+   "environment": {
+    "value": "城市环卫",
+    "confidence": 0.8
+   },
+   "base_platform": {
+    "value": "4×2",
+    "confidence": 0.8
+   },
+   "configuration": "12 台",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 12,
+    "part_pages": 2
+   }
+  },
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "4×2 中重型底盘",
+    "why": "输入明确给出 4×2，环卫压缩车常见底盘形式",
+    "confidence": "high"
+   },
+   {
+    "field": "environment",
+    "value": "城市道路与社区收集点",
+    "why": "输入限定城市环卫，作业空间狭窄、限高与噪音敏感",
+    "confidence": "high"
+   },
+   {
+    "field": "configuration",
+    "value": "12 台批量车队配置，含统一涂装与标识",
+    "why": "输入给出 12 台，指向车队化一致性要求",
+    "confidence": "high"
+   },
+   {
+    "field": "part_hints",
+    "value": "空，采用参考词表加 custom_* 上部工作装置",
+    "why": "输入未提供部件线索，需自行补足箱体与装载斗等专用件",
+    "confidence": "medium"
+   },
+   {
+    "field": "interior",
+    "value": "以驾驶员作业视野与操控面板人机为主",
+    "why": "驾驶室为外购总成，内饰改动空间有限",
+    "confidence": "medium"
+   },
+   {
+    "field": "parts.new",
+    "value": [
+     "压缩箱体",
+     "装载斗",
+     "驾驶室"
+    ],
+    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+    "confidence": 0.6
+   },
+   {
+    "field": "page_budget",
+    "value": 12,
+    "why": "规则：exact 8 + environment 4",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "后围整体",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement",
+     "style_tags"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "roof",
+    "label": "顶盖与导流",
+    "fields": [
+     "gesture",
+     "character_lines",
+     "proportion",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "hero_45",
+     "side"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_f29ddbf7",
+    "label": "压缩箱体",
+    "kind": "custom_upper_body",
+    "location": "rear",
+    "part_family": "work_equipment",
+    "taxonomy_status": "new",
+    "relation_axis": "structure",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "rear"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "箱体棱线与加强筋随载荷路径布置",
+     "侧壁平面与尾部压缩腔的转折比例",
+     "分色涂层区隔作业面与展示面"
+    ],
+    "why": "压缩箱是整车最大体量面，决定环卫车的识别基调与侧面比例节奏。"
+   },
+   {
+    "part": "custom_1f03cd0a",
+    "label": "装载斗",
+    "kind": "custom_work_device",
+    "location": "rear",
+    "part_family": "work_equipment",
+    "taxonomy_status": "new",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "斗口翻边与导流斜面对位垃圾抛投轨迹",
+     "与箱体尾部的铰接与开合运动包络",
+     "防溢流、防溅密封结构外露处理"
+    ],
+    "why": "装载斗是作业交互核心，直接决定尾部造型语言与清洗、防溢设计。"
+   },
+   {
+    "part": "custom_0f65b221",
+    "label": "驾驶室",
+    "kind": "oem_cab",
+    "location": "front",
+    "part_family": "cab",
+    "taxonomy_status": "new",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "驾驶室与箱体过渡的腰线延续",
+     "A 柱倾角与视野法规平衡",
+     "驾驶室顶与箱体顶面高差处理"
+    ],
+    "why": "驾驶室与后部箱体的比例衔接决定整车姿态是否协调。"
+   },
+   {
+    "part": "grille",
+    "label": "进气格栅",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "横向格栅层数与整车横向主题呼应",
+     "与品牌标识区的比例关系"
+    ],
+    "why": "前脸主要视觉符号，承担品牌与体量收口。"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "proportion",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "分体式下裙与离地间隙",
+     "与登车踏步的视觉连续"
+    ],
+    "why": "影响前部厚重感与下部耐刮擦分色。"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "regulated_part",
+    "location": "side",
+    "part_family": "protection",
+    "taxonomy_status": "known",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "regulation",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "护栏截面与箱体下缘的平行序列",
+     "与挡泥板、轮拱的间隙节奏",
+     "警示色与反光标识布置"
+    ],
+    "why": "法规强制件，是侧面下半部造型与安全可视性的主要载体。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "custom_part",
+    "location": "side",
+    "part_family": "access",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "踏步级高与踏板防滑纹",
+     "与侧护栏的整合或分离形式"
+    ],
+    "why": "作业人员上下车的高频接触件，影响侧面细节密度。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "翼子板与轮拱",
+    "kind": "oem_part",
+    "location": "side",
+    "part_family": "body_side",
+    "taxonomy_status": "known",
+    "relation_axis": "proportion",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮拱包覆量与轮胎外露比例",
+     "与箱体下沿的过渡曲线"
+    ],
+    "why": "4×2 底盘轮位关系决定侧面重心与站姿。"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯与灯罩防护",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "灯组与格栅的横向贯通关系",
+     "环卫工况下的灯罩防护结构"
+    ],
+    "why": "前脸表情与夜间作业辨识度。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜总成",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "cab",
+    "taxonomy_status": "known",
+    "relation_axis": "function_ergonomics",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "支臂形式与视野法规包络",
+     "与驾驶室顶部导流的避让"
+    ],
+    "why": "法规视野件，也是前侧轮廓的显著附加体。"
+   },
+   {
+    "part": "sun_visor",
+    "label": "外部遮阳板",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "cab",
+    "taxonomy_status": "known",
+    "relation_axis": "form_gesture",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "遮阳板轮廓与驾驶室顶线关系"
+    ],
+    "why": "上部横向元素的收口，弱影响整体识别。"
+   },
+   {
+    "part": "under_guard",
+    "label": "下护板",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "protection",
+    "taxonomy_status": "known",
+    "relation_axis": "structure",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "底部封板与离地角"
+    ],
+    "why": "影响下部整洁度与飞溅防护。"
+   },
+   {
+    "part": "brand_zone",
+    "label": "品牌标识区",
+    "kind": "oem_part",
+    "location": "front",
+    "part_family": "front_face",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "form_gesture",
+     "cmf",
+     "regulation"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "标识尺度与格栅中轴的锚定",
+     "发光或高对比处理"
+    ],
+    "why": "车队识别与 12 台批量统一形象的关键。"
+   },
+   {
+    "part": "paint_scheme",
+    "label": "涂装与分色",
+    "kind": "custom_part",
+    "location": "side",
+    "part_family": "cmf",
+    "taxonomy_status": "known",
+    "relation_axis": "cmf",
+    "design_axes": [
+     "cmf",
+     "form_gesture",
+     "regulation",
+     "manufacturing"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "箱体主色与作业区警示色的分界曲线",
+     "反光条、作业标识的版式",
+     "涂装工艺段与钣金分缝对位"
+    ],
+    "why": "环卫车依赖高可视涂装，分色线直接塑造体量感知。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "环卫压缩式垃圾车 12 台",
+    "parts": [
+     "custom_f29ddbf7",
+     "custom_1f03cd0a",
+     "custom_0f65b221",
+     "grille",
+     "bumper",
+     "side_guard",
+     "step",
+     "wheel_arch",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 8,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "8 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "城市环卫 工程车",
+    "parts": [
+     "custom_f29ddbf7",
+     "custom_1f03cd0a",
+     "custom_0f65b221",
+     "grille",
+     "bumper",
+     "side_guard",
+     "step",
+     "wheel_arch",
+     "headlamp",
+     "mirror",
+     "sun_visor",
+     "under_guard",
+     "brand_zone",
+     "paint_scheme"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 40,
+   "max_rounds": 3,
+   "max_models": 14
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref 等预算与策略字段",
+   "不将参考词表视为准入白名单，专用件使用 custom_* 命名",
+   "不展开底盘总成与动力系统内部结构设计",
+   "views 不超出 front/hero_45/side/rear/interior/detail",
+   "design_axes 不超出给定八类",
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型"
+  ],
+  "strategy_ref": "default@v1"
+ }
+}

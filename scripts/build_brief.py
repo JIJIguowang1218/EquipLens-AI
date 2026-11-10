@@ -53,6 +53,8 @@ def main(argv=None) -> int:
     ap.add_argument("--model", default="deepseek-flash")
     ap.add_argument("--no-skill", action="store_true",
                     help="仅用于必要性 A/B：不加载 task-brief skill 的基线")
+    ap.add_argument("--prompt-mode", default="v2", choices=["v2", "v1", "none"],
+                    help="v2=方法引导；v1=只给格式；none=裸基线")
     args = ap.parse_args(argv)
 
     raw = args.input.strip()
@@ -67,7 +69,8 @@ def main(argv=None) -> int:
     try:
         out = briefing.generate_brief(raw, key, slots=args.slots, class_hint=args.klass,
                                       part_hints=hints, brief_id=args.brief_id,
-                                      model=args.model, use_skill=not args.no_skill)
+                                      model=args.model, use_skill=not args.no_skill,
+                                      prompt_mode=args.prompt_mode)
     except Exception as e:  # noqa: BLE001
         print(json.dumps({"ok": False, "error": type(e).__name__, "message": str(e)[:400]},
                          ensure_ascii=False))
