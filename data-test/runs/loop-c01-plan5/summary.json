@@ -1,0 +1,120 @@
+{
+  "run_id": "loop-c01-plan5",
+  "brief_id": "m1-desert-20261109",
+  "state": "FAILED",
+  "slots": {
+    "target": 12,
+    "accepted": 6,
+    "filled": false
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 6,
+      "filled": false
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 0,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-exact",
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "TAZ4922（HOWO 6×6 油田/沙漠牵引车）",
+      "EQ2251AX（沙豹6×6沙漠越野车）",
+      "EQ2220AX（6×6沙漠重型货车）",
+      "ND5250TSMZ04（沙漠车）",
+      "ND5180TSMZ01 / ND5140TSMZ02（沙漠车系列）",
+      "东风 6×6 六驱特种越野卡车（沙漠运输型）"
+    ],
+    "u-env": []
+  },
+  "budget_used": {
+    "queries": 27,
+    "models": 27,
+    "fetches": 172,
+    "verifies": 172
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T04:57:21"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-10T04:57:21"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T04:57:29"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/12，池中仍有候选",
+      "ts": "2026-11-10T04:59:31"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 3 个",
+      "ts": "2026-11-10T04:59:33"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 7，重规划 4 个候选",
+      "ts": "2026-11-10T05:00:22"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-10T05:00:54"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 7，重规划 8 个候选",
+      "ts": "2026-11-10T05:02:04"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 8 个",
+      "ts": "2026-11-10T05:02:56"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T05:04:13"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-10T05:04:13"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-10T05:04:13"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-plan5\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-plan5\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-plan5\\evidence.json"
+}

@@ -1,0 +1,84 @@
+{
+  "run_id": "loop-c01-audit",
+  "brief_id": "m1-desert-20261109",
+  "state": "FAILED",
+  "slots": {
+    "target": 12,
+    "accepted": 6,
+    "filled": false
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 6,
+      "filled": false
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 6,
+      "filled": true
+    }
+  },
+  "gaps": [
+    "u-exact"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "德龙 X3000",
+      "东风 天锦",
+      "红岩 杰狮",
+      "CJ3250D41E",
+      "东风 天龙",
+      "江淮 格尔发"
+    ],
+    "u-env": [
+      "德龙 X3000",
+      "东风 天锦",
+      "红岩 杰狮",
+      "CJ3250D41E",
+      "东风 天龙",
+      "江淮 格尔发"
+    ]
+  },
+  "budget_used": {
+    "queries": 24,
+    "models": 24,
+    "fetches": 90,
+    "verifies": 90
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T01:23:03"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T01:23:25"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T01:25:20"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 12 个",
+      "ts": "2026-11-10T01:25:41"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-10T01:25:54"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-audit\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-audit\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-audit\\evidence.json"
+}

@@ -50,6 +50,7 @@ git log --oneline -1        # 应为 41108d0 或更新
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py             # Python/依赖/key/模型/文件自检
+PYTHONPATH=src python scripts/run_ledger.py --check    # run 台账完整性（缺 RUN.json 会报）
 PYTHONPATH=src python tests/test_planning.py           # 8/8（planner 纯函数）
 PYTHONPATH=src python tests/test_retrieval_engine.py   # 20/20
 PYTHONPATH=src python tests/test_imagesearch.py        # 12/12（全 monkeypatch，不联网）
@@ -102,6 +103,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
 | 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
+| run 台账（RUN.json / INDEX） | `scripts/run_ledger.py`；约定见 `data-test/runs/README.md` |
 | 外国品牌召回诊断 | `scripts/diag_foreign_search.py` |
 | 任务单 | `data-test/evals/task-briefs-20261109/brief-m1b-global.json`（12 槽：国产 8 + 国际 4） |
 | 金标（门卫 52 张） | `data-test/evals/image-gate-52-20261109.json` |
@@ -116,6 +118,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T39 审核页四档 | ✅ | `已交付·已核验 / 已交付·未核验 / 备选·未占槽 / 未过门卫`；`delivery.bonus`；明确“分辨率只分档、不淘汰” |
 | T40 planner v2 | ✅ | 逐查询抽取、`source_query` 出处校验、coverage 报告；出处 0/24→100%，但重复运行重合仅 26–31% |
 | T41 去重 + 废弃 fallback | ✅ | 车型级 identity（同款合并、同品牌不同型号码不并）；去重移除 25–35% 变体；`discover` fallback 删除调用、CLI 拦截；A/B n=3 显示进口查询无增量；完整 12 槽 **12/12、无同款重复占槽** |
+| T42 文件治理 / run 台账 | ✅ | 每 run 落 `RUN.json`；`INDEX.json/md` 自动生成；空目录/旧嵌套只标记；`recompute` 已清；新增 `data-test/runs/README.md` 与 `tests/test_run_ledger.py`（4/4） |
 
 最近 run：
 

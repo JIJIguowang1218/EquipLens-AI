@@ -1,0 +1,123 @@
+{
+  "run_id": "loop-c01-plan8",
+  "brief_id": "m1-desert-20261109",
+  "state": "FAILED",
+  "slots": {
+    "target": 12,
+    "accepted": 10,
+    "filled": false
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 10,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 0,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "TAZ4922（HOWO 6×6 油田/沙漠牵引车）",
+      "DFV5253TSMGP6D（6×6沙漠卡车/400马力）",
+      "DFV2223GP6DJ（天锦6×6越野/沙漠运输底盘）",
+      "EQ2251AX（沙豹6×6沙漠越野车）",
+      "EQ2220AX（6×6沙漠重型货车）",
+      "ND5250TSMZ04（沙漠车）",
+      "北奔 ND5250TSMZ01 沙漠车",
+      "红岩 CQ5147TSMHV09392D 沙漠车",
+      "东风 EQ2102N 6×6 越野/沙漠货车",
+      "北奔 ND5140TSMZ01 沙漠车"
+    ],
+    "u-env": []
+  },
+  "budget_used": {
+    "queries": 31,
+    "models": 31,
+    "fetches": 208,
+    "verifies": 208
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T05:50:51"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-10T05:50:51"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T05:50:59"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/12，池中仍有候选",
+      "ts": "2026-11-10T05:53:10"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 3 个",
+      "ts": "2026-11-10T05:53:12"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 6，重规划 12 个候选",
+      "ts": "2026-11-10T05:53:58"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T05:54:09"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 2，重规划 4 个候选",
+      "ts": "2026-11-10T05:56:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-10T05:56:15"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T05:56:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-10T05:56:15"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-10T06:00:15"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-plan8\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-plan8\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-plan8\\evidence.json"
+}

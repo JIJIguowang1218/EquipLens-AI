@@ -1,0 +1,1093 @@
+{
+ "generated_at": "2026-11-11T03:12:49",
+ "root": "data-test/runs",
+ "counts": {
+  "all": 49,
+  "run": 33,
+  "plan": 3,
+  "plan-set": 4,
+  "diag": 1,
+  "empty": 7,
+  "needs_review": 1
+ },
+ "records": [
+  {
+   "run_id": "diag-foreign",
+   "kind": "diag",
+   "stage": "search",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "images": 17,
+    "gate_pass": 17,
+    "download_failed": 2
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "E10 诊断：修复前 Zetros/Arocs/Volvo 在 360 的相关性护栏通过数为 0；不是 360 没图。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "filter-98-20261109",
+   "kind": "empty",
+   "stage": "gate",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/filter-98-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "两段式门卫 · 98 张全流程回放",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-ab4-a2-20261111",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-11",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "delivery": "12/12",
+    "degraded": 7,
+    "citation_only": 1,
+    "bonus_images": 29,
+    "coverage": {
+     "u-exact": "8/8",
+     "u-env": "4/4"
+    },
+    "images": 82,
+    "gate_pass": 76,
+    "download_failed": 52,
+    "api_calls": 26,
+    "api_cost_usd": 0.01875
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-ab4-a2-20261111/summary.json",
+   "audit": "data-test/runs/loop-ab4-a2-20261111/audit.html",
+   "conclusion": "E15 下游验证：去重后 plan 跑 12 槽 → 12/12，无同款重复占槽，82 张唯一图，7 degraded。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "loop-c01-audit",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "6/8",
+     "u-env": "6/4"
+    },
+    "images": 46,
+    "gate_pass": 37,
+    "download_failed": 240
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-audit/summary.json",
+   "audit": "data-test/runs/loop-c01-audit/audit.html",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-isolated",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "6/8",
+     "u-env": "6/4"
+    }
+   },
+   "report": "data-test/runs/loop-c01-isolated/REPORT.md",
+   "summary": "data-test/runs/loop-c01-isolated/summary.json",
+   "audit": "",
+   "conclusion": "C01 隔离检索 loop 报告（2026-11-10）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "7/8",
+     "u-env": "1/4"
+    },
+    "images": 30,
+    "gate_pass": 27,
+    "download_failed": 8
+   },
+   "report": "data-test/runs/loop-c01-plan/REPORT.md",
+   "summary": "data-test/runs/loop-c01-plan/summary.json",
+   "audit": "data-test/runs/loop-c01-plan/audit.html",
+   "conclusion": "1. **在线规划可用**：16 个候选全部带真实引用，外国品牌自然出现，不需要任何品牌表； 2. **引用核验可用**：56% 的引用页能直接匹配车型；未匹配的候选仍然保留，只影响排序； 3. **排序还没真正生效**：因为是一次性激活整批，没有“只激活前 N 个”； 4. **主要瓶颈变成“候选名 → 检索键”的归一化**：8/16 的 0 图都是长名字导致； 5. **图仍然偏小**：29 ",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan2",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "7/8",
+     "u-env": "0/4"
+    },
+    "images": 23,
+    "gate_pass": 19,
+    "download_failed": 12,
+    "api_calls": 17,
+    "api_cost_usd": 0.012
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan2/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan3",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "coverage": {
+     "u-exact": "11/8",
+     "u-env": "3/4"
+    },
+    "images": 54,
+    "gate_pass": 49,
+    "download_failed": 12,
+    "api_calls": 34,
+    "api_cost_usd": 0.0225
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan3/summary.json",
+   "audit": "",
+   "conclusion": "DONE",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan4",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "coverage": {
+     "u-exact": "10/8",
+     "u-env": "2/4"
+    },
+    "images": 45,
+    "gate_pass": 40,
+    "download_failed": 20,
+    "api_calls": 35,
+    "api_cost_usd": 0.02325
+   },
+   "report": "data-test/runs/loop-c01-plan4/REPORT.md",
+   "summary": "data-test/runs/loop-c01-plan4/summary.json",
+   "audit": "data-test/runs/loop-c01-plan4/audit.html",
+   "conclusion": "C01 在线规划 + 补位 + 重规划 · 12 槽交付（2026-11-10）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan5",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "6/8",
+     "u-env": "0/4"
+    },
+    "images": 47,
+    "gate_pass": 43,
+    "download_failed": 28,
+    "api_calls": 37,
+    "api_cost_usd": 0.02475
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan5/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan6",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "7/8",
+     "u-env": "0/4"
+    },
+    "images": 71,
+    "gate_pass": 54,
+    "download_failed": 40,
+    "api_calls": 33,
+    "api_cost_usd": 0.02175
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan6/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan7",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "8/8",
+     "u-env": "1/4"
+    },
+    "images": 78,
+    "gate_pass": 63,
+    "download_failed": 76,
+    "api_calls": 34,
+    "api_cost_usd": 0.02175
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan7/summary.json",
+   "audit": "data-test/runs/loop-c01-plan7/audit.html",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan8",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "10/8",
+     "u-env": "0/4"
+    },
+    "images": 64,
+    "gate_pass": 52,
+    "download_failed": 36,
+    "api_calls": 33,
+    "api_cost_usd": 0.021
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-c01-plan8/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-plan9",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "delivery": "12/12",
+    "degraded": 7,
+    "citation_only": 0,
+    "bonus_images": 0,
+    "coverage": {
+     "u-exact": "9/8",
+     "u-env": "3/4"
+    },
+    "images": 36,
+    "gate_pass": 32,
+    "download_failed": 24,
+    "api_calls": 40,
+    "api_cost_usd": 0.02625
+   },
+   "report": "data-test/runs/loop-c01-plan9/REPORT.md",
+   "summary": "data-test/runs/loop-c01-plan9/summary.json",
+   "audit": "data-test/runs/loop-c01-plan9/audit.html",
+   "conclusion": "C01 · 核验重构后 12 槽交付（2026-11-10）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-c01-res",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "coverage": {
+     "u-exact": "12/8",
+     "u-env": "0/4"
+    },
+    "images": 46,
+    "gate_pass": 36,
+    "download_failed": 120
+   },
+   "report": "data-test/runs/loop-c01-res/REPORT.md",
+   "summary": "data-test/runs/loop-c01-res/summary.json",
+   "audit": "data-test/runs/loop-c01-res/audit.html",
+   "conclusion": "C01 隔离检索 loop · 口径修正后重跑（2026-11-10）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-m1-desert",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "0/2",
+     "u-env": "0/1"
+    }
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-m1-desert/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-m1-desert-v2",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "FAILED",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "FAILED",
+    "coverage": {
+     "u-exact": "0/2",
+     "u-env": "2/1"
+    }
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-m1-desert-v2/summary.json",
+   "audit": "",
+   "conclusion": "FAILED",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-m1-desert-v3",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1-desert-20261109",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "coverage": {
+     "u-exact": "3/2",
+     "u-env": "3/1"
+    }
+   },
+   "report": "",
+   "summary": "data-test/runs/loop-m1-desert-v3/summary.json",
+   "audit": "",
+   "conclusion": "DONE",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-m1b-global-20261110",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1b-global-20261110",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "delivery": "20/12",
+    "degraded": 16,
+    "citation_only": 2,
+    "bonus_images": 5,
+    "coverage": {
+     "u-exact": "10/8",
+     "u-intl": "10/4",
+     "u-env": "0/4"
+    },
+    "images": 77,
+    "gate_pass": 75,
+    "download_failed": 56,
+    "api_calls": 28,
+    "api_cost_usd": 0.01875
+   },
+   "report": "data-test/runs/loop-m1b-global-20261110/REPORT.md",
+   "summary": "data-test/runs/loop-m1b-global-20261110/summary.json",
+   "audit": "",
+   "conclusion": "v1：配额 bug 的现场（保留作证据）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "loop-m1b-global-v2",
+   "kind": "run",
+   "stage": "loop",
+   "date": "2026-11-10",
+   "status": "DONE",
+   "brief_id": "m1b-global-20261110",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "delivery": "12/12",
+    "degraded": 8,
+    "citation_only": 1,
+    "bonus_images": 32,
+    "coverage": {
+     "u-exact": "8/8",
+     "u-intl": "4/4",
+     "u-env": "0/4"
+    },
+    "images": 77,
+    "gate_pass": 75,
+    "download_failed": 56,
+    "api_calls": 28,
+    "api_cost_usd": 0.01875
+   },
+   "report": "data-test/runs/loop-m1b-global-v2/REPORT.md",
+   "summary": "data-test/runs/loop-m1b-global-v2/summary.json",
+   "audit": "data-test/runs/loop-m1b-global-v2/audit.html",
+   "conclusion": "独立测试：含外国品牌的 12 槽检索（2026-11-10）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "p1-demo",
+   "kind": "run",
+   "stage": "engine",
+   "date": "2026-11-09",
+   "status": "DONE",
+   "brief_id": "b-20261109-p1",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": "DONE",
+    "coverage": {
+     "u-exact": "2/2",
+     "u-env": "1/1"
+    }
+   },
+   "report": "",
+   "summary": "data-test/runs/p1-demo/summary.json",
+   "audit": "",
+   "conclusion": "DONE",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "plan-ab-20261111",
+   "kind": "plan-set",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "plans": 4
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "E13 初版 A/B（一次性抽取）：出处不可归因、同组重合 12–17%。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "plans": [
+    "A",
+    "A2",
+    "B",
+    "B2"
+   ],
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-ab2-20261111",
+   "kind": "plan-set",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "plans": 4
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "E14 planner v2 A/B：出处 100%，同组重合 26–31%。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "plans": [
+    "A",
+    "A2",
+    "B",
+    "B2"
+   ],
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-ab3-20261111",
+   "kind": "plan-set",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "plans": 7
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "中间实验：per-query 6/8 与池子下限（曾出现 11 台 <12 槽）；结论并入 E15。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "plans": [
+    "A1",
+    "A2",
+    "A3",
+    "A4-per10",
+    "B1",
+    "B2",
+    "B3"
+   ],
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-ab4-20261111",
+   "kind": "plan-set",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "plans": 6
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "E15 最终 A/B n=3（per-query 8、车型去重后）：进口查询无增量。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "plans": [
+    "A1",
+    "A2",
+    "A3",
+    "B1",
+    "B2",
+    "B3"
+   ],
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-c01",
+   "kind": "plan",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "queries": 4,
+    "search_results": 27,
+    "candidates": 16,
+    "dedupe_removed": null,
+    "pool_shortfall": null,
+    "coverage_missing": null
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "T34 早期规划（无 api_log，出处审计不完整）。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-c01-v2",
+   "kind": "plan",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "queries": 4,
+    "search_results": 55,
+    "candidates": 15,
+    "dedupe_removed": null,
+    "pool_shortfall": null,
+    "coverage_missing": null
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "T34 规划（4 次 Search + 引用校验；后续被 planner v2 取代）。",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py",
+   "notes": "人工补录（文件治理）"
+  },
+  {
+   "run_id": "plan-m1b-global",
+   "kind": "plan",
+   "stage": "plan",
+   "date": "2026-11-11",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "queries": 7,
+    "search_results": 89,
+    "candidates": 23,
+    "dedupe_removed": null,
+    "pool_shortfall": null,
+    "coverage_missing": null
+   },
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "候选 23 / 查询 7 / 去重移除 None",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-budget-q1",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-budget-q1/REPORT.md",
+   "summary": "data-test/runs/run-budget-q1/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-budget-q1",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-budget-q1-bing",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-budget-q1-bing/REPORT.md",
+   "summary": "data-test/runs/run-budget-q1-bing/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-budget-q1-bing",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-budget-q10",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-budget-q10/REPORT.md",
+   "summary": "data-test/runs/run-budget-q10/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-budget-q10",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-budget-q3",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-budget-q3/REPORT.md",
+   "summary": "data-test/runs/run-budget-q3/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-budget-q3",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-budget-q6",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-budget-q6/REPORT.md",
+   "summary": "data-test/runs/run-budget-q6/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-budget-q6",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-gaokong-blind",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-gaokong-blind/REPORT.md",
+   "summary": "data-test/runs/run-gaokong-blind/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-gaokong-blind",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-gaokong-blind-v2",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-gaokong-blind-v2/REPORT.md",
+   "summary": "data-test/runs/run-gaokong-blind-v2/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-gaokong-blind-v2",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-gaokong-blind-v3",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-gaokong-blind-v3/REPORT.md",
+   "summary": "data-test/runs/run-gaokong-blind-v3/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-gaokong-blind-v3",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-gaokong-budget20",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-gaokong-budget20/REPORT.md",
+   "summary": "data-test/runs/run-gaokong-budget20/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-gaokong-budget20",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-gaokong-budget20-v2",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-gaokong-budget20-v2/REPORT.md",
+   "summary": "data-test/runs/run-gaokong-budget20-v2/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-gaokong-budget20-v2",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-suicheche-blind",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-suicheche-blind/REPORT.md",
+   "summary": "data-test/runs/run-suicheche-blind/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-suicheche-blind",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-suicheche-blind-v2",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-suicheche-blind-v2/REPORT.md",
+   "summary": "data-test/runs/run-suicheche-blind-v2/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-suicheche-blind-v2",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-suicheche-blind-v3",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-suicheche-blind-v3/REPORT.md",
+   "summary": "data-test/runs/run-suicheche-blind-v3/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-suicheche-blind-v3",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "run-suicheche-profile",
+   "kind": "run",
+   "stage": "text-retrieval",
+   "date": "2026-10-23",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {
+    "state": null
+   },
+   "report": "data-test/runs/run-suicheche-profile/REPORT.md",
+   "summary": "data-test/runs/run-suicheche-profile/summary.json",
+   "audit": "",
+   "conclusion": "文本检索运行 run-suicheche-profile",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "runs",
+   "kind": "archived",
+   "stage": "other",
+   "date": "2026-10-30",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "",
+   "summary": "",
+   "audit": "",
+   "conclusion": "",
+   "needs_review": true,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-reassess-20261109",
+   "kind": "empty",
+   "stage": "gate",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-reassess-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "冒烟图离线重评（门卫 v3 + 分层口径）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-smoke-20261109",
+   "kind": "empty",
+   "stage": "search",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-smoke-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "W1 网页检索冒烟测试（360）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-smoke-harvest1-20261109",
+   "kind": "empty",
+   "stage": "search",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-smoke-harvest1-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "W1 网页检索冒烟测试（360）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-smoke-hd-20261109",
+   "kind": "empty",
+   "stage": "search",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-smoke-hd-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "W1 网页检索冒烟测试（360）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-smoke-v3-20261109",
+   "kind": "empty",
+   "stage": "search",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-smoke-v3-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "W1 网页检索冒烟测试（360）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  },
+  {
+   "run_id": "web-smoke-v5-20261109",
+   "kind": "empty",
+   "stage": "search",
+   "date": "2026-11-09",
+   "status": "",
+   "brief_id": "",
+   "git_commit": "03721e7",
+   "metrics": {},
+   "report": "data-test/runs/web-smoke-v5-20261109/REPORT.md",
+   "summary": "",
+   "audit": "",
+   "conclusion": "W1 网页检索冒烟测试（360）",
+   "needs_review": false,
+   "generated_by": "scripts/run_ledger.py"
+  }
+ ]
+}
