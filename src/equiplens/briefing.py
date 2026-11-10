@@ -23,10 +23,13 @@ TAXONOMY_PATH = ROOT / "data" / "part_taxonomy.json"
 SCHEMA_PATH = ROOT / "schemas" / "task-brief-v3.schema.json"
 
 ALLOWED_VIEWS = ("front", "hero_45", "side", "rear", "interior", "detail")
+ALLOWED_AXES = ("form_gesture", "proportion", "structure", "cmf",
+                "function_ergonomics", "environment_protection",
+                "regulation", "manufacturing")
 REGION_VIEWS = {"front_face": ["front", "hero_45"], "side": ["side", "hero_45"],
                 "rear": ["rear", "side"], "roof": ["side", "hero_45"]}
 DEFAULT_NEGATIVE = ("客车", "SUV", "房车", "多车拼图", "内饰", "模型")
-SKILL_VERSION = "task-brief@v1"
+SKILL_VERSION = "task-brief@v2"
 
 
 def load_taxonomy(path: Path | None = None) -> dict:
@@ -50,6 +53,7 @@ def build_prompt(raw: str, taxonomy: dict, *, class_hint: str = "",
         "allowed_regions": {k: (v.get("label") or k)
                             for k, v in (taxonomy.get("regions") or {}).items()},
         "allowed_views": list(ALLOWED_VIEWS),
+        "allowed_axes": list(ALLOWED_AXES),
         "output": "只输出 JSON：{request, regions, parts, assumptions, negative}",
     }
     return (skill + "\n\n---\n\n## 本次输入\n\n"
@@ -95,16 +99,19 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
 
     parts_out: list[dict] = []
     seen: set[str] = set()
-    unmapped: list[str] = []
+    new_parts: list[str] = []
     for item in _as_list(payload.get("parts")):
-        key = _clean(item.get("part"))
-        # 允许 LLM 给 label/中文名；按 label 反查一次
-        if key not in parts_meta:
-            by_label = next((k for k, v in parts_meta.items() if v == key), None)
-            key = by_label or key
-        if key not in parts_meta:
-            unmapped.append(key)
-            continue
+        raw_key = _clean(item.get("part"))
+        raw_label = _clean(item.get("label")) or raw_key
+        by_label = next((k for k, v in parts_meta.items() if v == raw_label), None)
+        key = raw_key if raw_key in parts_meta else (by_label or raw_key)
+        known = key in parts_meta
+        if not known:
+            # 用户/LLM 给的是词表外的新部件：保留，不拒绝（词表不是准入）
+            if not key.startswith("custom_"):
+                import hashlib
+                key = "custom_" + hashlib.sha1((raw_label or key).encode("utf-8")).hexdigest()[:8]
+            new_parts.append(raw_label)
         if key in seen:
             continue
         seen.add(key)
@@ -117,18 +124,27 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
         accept = _clean(item.get("accept")) or "B"
         if accept not in ("A", "B", "C"):
             accept = "B"
+        axes = [a for a in _as_list(item.get("design_axes")) if a in ALLOWED_AXES]
+        if not axes:
+            axes = ["form_gesture"]
         parts_out.append({
             "part": key,
-            "label": parts_meta[key],
+            "label": parts_meta[key] if known else raw_label,
+            "kind": _clean(item.get("kind")) or ("part" if known else "function"),
             "location": _clean(item.get("location")),
+            "part_family": _clean(item.get("part_family"))
+                           or ((taxonomy.get("parts") or {}).get(key, {}) or {}).get("default_family", ""),
+            "taxonomy_status": "known" if known else "new",
+            "relation_axis": _clean(item.get("relation_axis")) or "exact",
+            "design_axes": axes,
             "design_relevance": rel,
             "views": views,
             "accept": accept,
             "mechanism": [_clean(x) for x in _as_list(item.get("mechanism")) if _clean(x)][:3],
+            "why": _clean(item.get("why")),
         })
     if not parts_out:
-        raise ValueError(f"没有可用部件；LLM 返回 {payload.get('parts')}；"
-                         f"允许键：{sorted(parts_meta)}")
+        raise ValueError("没有可用部件：LLM 没有返回任何 parts")
 
     slots = int(slots)
     if slots <= 0:
@@ -156,10 +172,10 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
         })
 
     assumptions = [x for x in _as_list(payload.get("assumptions")) if isinstance(x, dict)]
-    if unmapped:
-        assumptions.append({"field": "parts", "value": unmapped,
-                            "why": "LLM 返回了不在部件词表里的键，已丢弃",
-                            "confidence": 0.0})
+    if new_parts:
+        assumptions.append({"field": "parts.new", "value": new_parts,
+                            "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+                            "confidence": 0.6})
     if any(not _as_list(p.get("views")) for p in payload.get("parts") or []):
         assumptions.append({"field": "views", "value": "hero_45",
                             "why": "LLM 未给合法视角，回落 hero_45",

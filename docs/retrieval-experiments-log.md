@@ -320,14 +320,14 @@
 **问题（严重）**：此前 T31–T41 的 `brief-m1-desert.json` / `brief-m1b-global.json` 是**人根据口述手写的**，不是 API 生成。测试因此只覆盖了“brief 之后”的链路，brief 生成、类目/工况/构型推断、部件→视角映射全部未被测试；8/4 配额、4 个部件、负词也都是人工决定。
 
 **改法**：
-1. 新增 `skills/task-brief/SKILL.md`（`task-brief@v1`）：只让 LLM 解析 `request/regions/parts/assumptions/negative`；
+1. 新增 `skills/task-brief/SKILL.md`（`task-brief@v2`）：先教 LLM 做工程分析（品类/基型/构型/工况/设计对象+设计维度），再输出 `request/regions/parts/assumptions/negative`；词表只做参考、不做准入，未知部件保留为 `custom_*`；
 2. 新增 `src/equiplens/briefing.py`：LLM 输出 → 代码补 `brief_id/page_budget/research_units/tiers/budget/strategy_ref` → `validate_brief` + JSON Schema 校验；
 3. 新增 `scripts/build_brief.py`：`--input` → DeepSeek Chat → `brief.json` + `brief.json.meta.json`（raw_input/model/skill_version/attempts/usage/llm_payload）；
 4. 手工 brief 标为 **legacy**（`data-test/evals/task-briefs-20261109/README.md` §6），仅用于复现历史 run。
 
 **实测（C01）**：输入“沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠）；沙漠/油田工况；6×6；12 台” → API 生成：
 
-- parts：`step/headlamp/wheel_arch/side_guard/bumper`（5 个，含用户点名的保险杠；未把“前脸”硬拆）
+- parts：`step/headlamp/wheel_arch/side_guard/bumper`（5 个，含用户点名的保险杠；未把“前脸”硬拆）；v2 复跑加入“涉水喉”后生成 `custom_9d3f2a7c`，保留原词并标 `taxonomy_status=new`
 - regions：`front_face`（整体造型维度）
 - units：exact 8 / environment 4；7 条 assumptions（含“前脸不单独建槽”“防护栏映射为侧防护”）
 - 校验通过；`plan_candidates` 在该 brief 上产出 19 个候选（6 查询 / 61 结果）
@@ -339,3 +339,5 @@
 - 规则/领域数据（非假参数）：门卫标签、品牌别名、`planning.SERIES`、`briefing.DEFAULT_NEGATIVE`、配额 2/3 规则——应记录为规则，不允许冒充 AI 输出。
 
 **未解决**：brief LLM 的稳定性（同一输入多次生成是否一致）、`research_units` 的 2/3 规则是否应由产品确认、L1.5 的页槽/超量推荐仍未实现。
+
+**关键认识**：`part_taxonomy.json` 是参考词表/规范输出词汇，不是用户输入准入；分析输入靠“位置+功能+形态+环境+设计维度”的工程方法（skill §1–§3），不是查表。

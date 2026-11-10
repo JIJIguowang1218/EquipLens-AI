@@ -32,6 +32,13 @@ class PartRequirement:
     views: tuple[str, ...] = ()
     accept: str = "A"
     mechanism: tuple[str, ...] = ()
+    # L1.5 / task-brief v2 的分析字段：不参与引擎检索，但必须随 brief 保留
+    kind: str = "part"
+    part_family: str = ""
+    taxonomy_status: str = "known"
+    relation_axis: str = "exact"
+    design_axes: tuple[str, ...] = ()
+    why: str = ""
 
     @classmethod
     def from_dict(cls, data: dict) -> "PartRequirement":
@@ -43,6 +50,12 @@ class PartRequirement:
             views=tuple(_as_list(data.get("views"))),
             accept=str(data.get("accept") or "A"),
             mechanism=tuple(_as_list(data.get("mechanism"))),
+            kind=str(data.get("kind") or "part"),
+            part_family=str(data.get("part_family") or ""),
+            taxonomy_status=str(data.get("taxonomy_status") or "known"),
+            relation_axis=str(data.get("relation_axis") or "exact"),
+            design_axes=tuple(_as_list(data.get("design_axes"))),
+            why=str(data.get("why") or ""),
         )
 
     def to_dict(self) -> dict:
@@ -54,6 +67,12 @@ class PartRequirement:
             "views": list(self.views),
             "accept": self.accept,
             "mechanism": list(self.mechanism),
+            "kind": self.kind,
+            "part_family": self.part_family,
+            "taxonomy_status": self.taxonomy_status,
+            "relation_axis": self.relation_axis,
+            "design_axes": list(self.design_axes),
+            "why": self.why,
         }
 
 

@@ -32,6 +32,7 @@ def payload():
         "parts": [
             {"part": "step", "label": "登车踏步", "location": "side_lower",
              "design_relevance": "strong", "accept": "B",
+             "design_axes": ["structure", "function_ergonomics", "environment_protection"],
              "views": ["side", "hero_45"], "mechanism": ["防滑", "沙尘"]},
             {"part": "headlamp", "label": "大灯", "location": "front",
              "design_relevance": "conditional", "accept": "A",
@@ -55,6 +56,9 @@ def test_assemble_brief():
     assert b["part_requirements"][0]["label"] == "登车踏步", b
     assert "客车" in b["negative"] and "SUV" in b["negative"], b["negative"]
     assert briefing.validate_brief_json(b) == [], briefing.validate_brief_json(b)
+    from equiplens.retrieval_engine.contracts import Brief
+    rb = Brief.from_dict(b)
+    assert rb.parts_by_key["step"].design_axes == ("structure", "function_ergonomics", "environment_protection"), rb
 
 
 def test_single_slot():
@@ -63,15 +67,18 @@ def test_single_slot():
     assert b["tiers"] == ["exact"], b
 
 
-def test_unknown_part_rejected():
+def test_unknown_part_kept():
+    """词表外的新部件不能被拒；保留原词并标 custom/new。"""
     p = payload()
-    p["parts"] = [{"part": "front_face", "views": ["front"]}]
-    try:
-        briefing.assemble_brief(p, "前脸", slots=12)
-    except ValueError as e:
-        assert "没有可用部件" in str(e), e
-    else:
-        raise AssertionError("应拒绝未知部件")
+    p["parts"] = [{"part": "涉水喉", "label": "涉水喉", "location": "side_cab_rear",
+                   "views": ["side"], "design_axes": ["function_ergonomics"]}]
+    b = briefing.assemble_brief(p, "沙漠牵引车，加涉水喉", slots=12)
+    part = b["part_requirements"][0]
+    assert part["part"].startswith("custom_"), part
+    assert part["label"] == "涉水喉", part
+    assert part["taxonomy_status"] == "new", part
+    assert part["design_axes"] == ["function_ergonomics"], part
+    assert any("parts.new" == a.get("field") for a in b["assumptions"]), b["assumptions"]
 
 
 def test_missing_class_rejected():
@@ -104,7 +111,7 @@ def test_generate_uses_llm_prompt():
 if __name__ == "__main__":
     check("LLM 输出 → 完整 brief", test_assemble_brief)
     check("单槽规则", test_single_slot)
-    check("未知部件拒绝", test_unknown_part_rejected)
+    check("词表外部件保留", test_unknown_part_kept)
     check("缺 class 拒绝", test_missing_class_rejected)
     check("generate 调 LLM 并带 skill", test_generate_uses_llm_prompt)
     fails = [r for r in results if r[1] == "FAIL"]

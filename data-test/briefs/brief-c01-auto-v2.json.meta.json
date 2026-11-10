@@ -1,0 +1,264 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-11T03:48:30",
+ "raw_input": "沙漠牵引车（前脸、登车踏步、大灯、前轮拱、防护栏、保险杠、涉水喉）；沙漠/油田工况；6×6；12 台",
+ "brief_path": "data-test\\briefs\\brief-c01-auto-v2.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2440,
+  "completion_tokens": 5939,
+  "total_tokens": 8379,
+  "prompt_tokens_details": {
+   "cached_tokens": 0
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 4261
+  },
+  "prompt_cache_hit_tokens": 0,
+  "prompt_cache_miss_tokens": 2440
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠/油田工况",
+   "base_platform": "6×6 重型卡车底盘",
+   "configuration": "6×6",
+   "design_questions": [
+    "前脸在沙尘/油田工况下的防护性、接近角与家族化体量",
+    "登车踏步的防滑、排沙与离地高度",
+    "大灯与灯罩在沙尘/飞石环境下的防护与法规照明",
+    "前轮拱的离地间隙、沙石飞溅防护与轮口比例",
+    "侧防护栏的法规符合性、结构强度与沙石防护",
+    "前保险杠的接近角、功能附件与防护结构",
+    "涉水喉的进气防尘/涉水功能与管路布置"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "part",
+    "location": "side_lower",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "防滑",
+     "沙尘积料",
+     "离地高度"
+    ],
+    "why": "可提供登车人机、防滑踏面、排沙结构与离地高度的设计证据"
+   },
+   {
+    "part": "headlamp",
+    "label": "大灯",
+    "kind": "part",
+    "location": "front",
+    "part_family": "lighting_assembly",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection",
+     "regulation"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "防尘",
+     "灯罩防护",
+     "照明法规"
+    ],
+    "why": "可提供沙尘/飞石环境下灯罩防护、维护可达性与法规照明的设计证据"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "前轮拱",
+    "kind": "part",
+    "location": "front_side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "front",
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "沙石飞溅",
+     "轮口间隙",
+     "分缝/衬板"
+    ],
+    "why": "可提供轮口比例、离地间隙、沙石飞溅防护与分缝结构的造型证据"
+   },
+   {
+    "part": "side_guard",
+    "label": "侧防护栏",
+    "kind": "part",
+    "location": "side_lower",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "侧向防护",
+     "法规",
+     "沙石/碰撞"
+    ],
+    "why": "可提供管梁/板式结构、法规防护范围与沙石碰撞防护的设计证据"
+   },
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "kind": "part",
+    "location": "front_lower",
+    "part_family": "formed_plate",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "接近角",
+     "功能附件",
+     "防撞/防沙"
+    ],
+    "why": "可提供前保险杠分块、接近角、拖拽/功能附件与防护结构的设计证据"
+   },
+   {
+    "part": "custom_9d3f2a7c",
+    "label": "涉水喉",
+    "kind": "function",
+    "location": "side_cab_rear",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "进气",
+     "防尘/涉水",
+     "管路布置"
+    ],
+    "why": "用户点名且词表无该项；可提供抬高进气、防尘涉水与驾驶室侧管路布置的设计证据"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "environment",
+    "value": "沙漠/油田工况",
+    "why": "用户原话",
+    "confidence": 1.0
+   },
+   {
+    "field": "base_platform",
+    "value": "6×6 重型卡车底盘",
+    "why": "由用户给出的 6×6 与沙漠牵引车品类推断，需确认具体底盘平台",
+    "confidence": 0.8
+   },
+   {
+    "field": "part.side_guard",
+    "value": "按侧防护栏理解",
+    "why": "用户写“防护栏”，allowed_parts 中对应 side_guard；若指前防护或上装护栏需确认",
+    "confidence": 0.7
+   },
+   {
+    "field": "part.custom_9d3f2a7c",
+    "value": "涉水喉按抬高进气/防尘涉水功能附件处理",
+    "why": "词表无该项，用户明确点名；按功能、位置、形态保留原词",
+    "confidence": 0.85
+   }
+  ],
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "模型",
+   "乘用车",
+   "皮卡"
+  ]
+ },
+ "duration_ms": 30359
+}
