@@ -1,0 +1,124 @@
+{
+  "run_id": "loop-c01-plan4",
+  "brief_id": "m1-desert-20261109",
+  "state": "DONE",
+  "slots": {
+    "target": 12,
+    "accepted": 12,
+    "filled": true
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 10,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 2,
+      "filled": false
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "TAZ4922（HOWO 6×6 油田/沙漠牵引车）",
+      "DFV5253TSMGP6D（6×6沙漠卡车/400马力）",
+      "DFV2223GP6DJ（天锦6×6越野/沙漠运输底盘）",
+      "EQ2251AX（沙豹6×6沙漠越野车）",
+      "EQ2220AX（6×6沙漠重型货车）",
+      "ND5250TSMZ04（沙漠车）",
+      "ND5180TSMZ01 / ND5140TSMZ02（沙漠车系列）",
+      "东风大力神 6×6 全驱沙漠越野车（dCi385）",
+      "东风 EQ2250AXJ 沙漠越野车底盘（6×6）",
+      "东风沙豹 EQ5251TSM 6×6 全驱沙漠运水车"
+    ],
+    "u-env": [
+      "东风 EQ2250AX 沙漠越野车（国IV版/ISLe375-30，6×6）",
+      "东风 6×6 沙漠越野卡车（EQ2250AX 底盘，D310驾驶室/14.00-20沙漠胎/双软轴操纵）"
+    ]
+  },
+  "budget_used": {
+    "queries": 23,
+    "models": 23,
+    "fetches": 160,
+    "verifies": 160
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T04:31:51"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-10T04:31:51"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T04:31:59"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/12，池中仍有候选",
+      "ts": "2026-11-10T04:34:03"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 3 个",
+      "ts": "2026-11-10T04:34:05"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 5，重规划 4 个候选",
+      "ts": "2026-11-10T04:34:47"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-10T04:35:19"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 2，重规划 4 个候选",
+      "ts": "2026-11-10T04:36:38"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-10T04:36:38"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T04:36:38"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-10T04:36:49"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 12/12 已满",
+      "ts": "2026-11-10T04:37:25"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-plan4\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-plan4\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-plan4\\evidence.json"
+}

@@ -47,6 +47,10 @@ def main(argv=None) -> int:
     parser.add_argument("--strategy", default="data/retrieval_strategies.json")
     parser.add_argument("--evidence-db", default=None,
                         help="写入 image_evidence 的 SQLite 路径（可选）")
+    parser.add_argument("--plan", default=None,
+                        help="候选规划池 JSON（scripts/plan_candidates.py 的输出）")
+    parser.add_argument("--no-citation", action="store_true",
+                        help="跳过引用核验（默认开启）")
     parser.add_argument("--json", action="store_true", help="输出完整 JSON")
     args = parser.parse_args(argv)
 
@@ -68,8 +72,12 @@ def main(argv=None) -> int:
                 sources,
                 SourceHealth(base / "source_health.json"),
                 SearchCache(base / "source_cache.json"))
+        plan = None
+        if args.plan:
+            plan = json.loads(Path(args.plan).read_text(encoding="utf-8")).get("candidates") or []
         world = WebWorld(models or None, brief.parts_by_key, router=router,
-                         image_dir=Path(args.run_root) / run_id / "images")
+                         image_dir=Path(args.run_root) / run_id / "images",
+                         plan=plan, citation_check=not args.no_citation)
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")
@@ -94,6 +102,10 @@ def main(argv=None) -> int:
         print(json.dumps(summary, ensure_ascii=False, indent=2))
     else:
         print(f"run_id: {summary['run_id']}  state: {summary['state']}")
+        d = summary.get("delivery") or {}
+        print(f"  delivery: {d.get('delivered')}/{d.get('required')} "
+              f"{d.get('status')}  missing={d.get('missing')} "
+              f"degraded={d.get('degraded')}")
         for uid, c in summary["coverage"].items():
             print(f"  {uid}: {c['accepted']}/{c['quota']} "
                   f"{'filled' if c['filled'] else 'gap'}")
@@ -103,7 +115,9 @@ def main(argv=None) -> int:
         print(f"  events: {summary['events_path']}")
         if args.evidence_db:
             print(f"  evidence_db: {args.evidence_db}")
-    return 0 if summary["state"] == "DONE" else 2
+    delivery = summary.get("delivery") or {}
+    complete = delivery.get("status") == "complete"
+    return 0 if (summary["state"] == "DONE" and complete) else 2
 
 
 if __name__ == "__main__":

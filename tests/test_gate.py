@@ -216,9 +216,10 @@ def test_reference_tier_for_low_res():
     assert a["reference_candidate"], a
     assert "low_res_overview" in a["reasons"], a["reasons"]
 
-    # 800 以上：进概览层，就不该再算参考图
+    # T33 起 `reference_candidate` 的语义是“过门卫即可参考”，不再是“低清专属”；
+    # 900×600 既是概览图也在参考层（字段是标签，不是互斥筛选器）。
     a = assess(gate_pass(), view("front", gap=0.02), 900, 600)
-    assert a["overview_candidate"] and not a["reference_candidate"], a
+    assert a["overview_candidate"] and a["reference_candidate"], a
 
 
 def test_label_sets_sizes():

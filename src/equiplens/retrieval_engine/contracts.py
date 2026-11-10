@@ -155,6 +155,9 @@ class Target:
     tier: str
     parts: tuple[str, ...]
     unit_id: str = ""
+    sources: tuple[str, ...] = ()
+    citation_ok: bool = False
+    query: str = ""
 
     @classmethod
     def from_dict(cls, data: dict, *, source: str, tier: str) -> "Target":
@@ -164,6 +167,10 @@ class Target:
             source=source,
             tier=tier,
             parts=tuple(_as_list(data.get("parts"))),
+            unit_id=str(data.get("unit_id") or ""),
+            sources=tuple(_as_list(data.get("sources"))),
+            citation_ok=bool(data.get("citation_ok")),
+            query=str(data.get("query") or ""),
         )
 
     def to_dict(self) -> dict:
@@ -174,6 +181,9 @@ class Target:
             "tier": self.tier,
             "parts": list(self.parts),
             "unit_id": self.unit_id,
+            "sources": list(self.sources),
+            "citation_ok": self.citation_ok,
+            "query": self.query,
         }
 
 

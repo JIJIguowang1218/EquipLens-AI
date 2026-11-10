@@ -395,11 +395,14 @@ def assess_from_gate(gate_result: dict, view_result: dict, width: int,
         "view_gap": gap, "view_trusted": _view_trusted(gap),
         # 弱提示：视角标签落在外观四类即记 hint，不要求 gap；gap 另看 view_trusted。
         "exterior_hint": view in EXTERIOR_VIEWS,
+        # 分辨率只作为“质量档位”，不是过滤条件（2026-11-10 口径变更）：
+        # res_standard = 长边 ≥800（常规配图够用）；res_high = ≥1200（可裁切）。
+        "res_standard": usable_base and long_side >= min_overview,
+        "res_high": usable_base and long_side >= min_part,
+        "reference_candidate": passed and not interior_suspect,
+        # 兼容旧字段（脚本迁移期），语义同上
         "overview_candidate": usable_base and long_side >= min_overview,
         "part_candidate": usable_base and long_side >= min_part,
-        # 低清但语义可用，或“主体 + 背景多车”：可看/可参考，不占“可用”名额
-        "reference_candidate": (passed and not interior_suspect
-                                and (multi or long_side < min_overview)),
         "multi_vehicle": multi,
         "interior_suspect": interior_suspect,
         "stage": "gate", "gate_skipped": False,

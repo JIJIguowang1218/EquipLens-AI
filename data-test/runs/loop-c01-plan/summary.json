@@ -1,0 +1,81 @@
+{
+  "run_id": "loop-c01-plan",
+  "brief_id": "m1-desert-20261109",
+  "state": "FAILED",
+  "slots": {
+    "target": 12,
+    "accepted": 8,
+    "filled": false
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 7,
+      "filled": false
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 1,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-exact",
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "Zetros 4051 AS 6×6 重型牵引车（沙色/沙漠高温沙尘优化）",
+      "6×6 沙漠卡车（400马力康明斯，总重25t/载重13t）",
+      "DFV2223GP6DJ 6×6 越野底盘（天锦带卧驾驶室）",
+      "EQ2250AX 六驱沙漠越野卡车（天龙平头驾驶室）",
+      "MOL-Brec TB 800（原KFM “Desert Lion” 6×6 越野牵引车）",
+      "KAMAZ 牵引车（Prime Mover / Tractor Truck 系列）",
+      "Arocs（世界防务展展出车系，含重型工程/后勤底盘）"
+    ],
+    "u-env": [
+      "6×6 沙漠越野卡车（单/双排驾驶室，12.5R20，可选绞盘与前防护）"
+    ]
+  },
+  "budget_used": {
+    "queries": 16,
+    "models": 16,
+    "fetches": 108,
+    "verifies": 108
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T03:52:12"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T03:52:41"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T03:55:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-10T03:55:38"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-10T03:56:28"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-plan\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-plan\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-plan\\evidence.json"
+}

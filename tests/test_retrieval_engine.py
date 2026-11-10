@@ -115,7 +115,7 @@ def test_library_first_no_external():
     with tempfile.TemporaryDirectory() as td:
         summary, world = run_engine(b, w, root=td)
         assert summary["state"] == "DONE", summary
-        assert summary["coverage"]["u-exact"]["accepted"] == 1, summary
+        assert summary["coverage"]["u-exact"]["accepted"] >= 1, summary
         assert world.calls["external"] == 0, world.calls
         assert world.calls["library"] == 1, world.calls
 
@@ -129,8 +129,10 @@ def test_external_fallback_after_library_reject():
             "lib-1": {"bumper": [asset("lib-1-bumper")], "step": [asset("lib-1-step")]},
             "ext-1": {"bumper": [asset("ext-1-bumper")], "step": [asset("ext-1-step")]},
         },
+        # 验收=每台车至少 1 张通过核验的图（部件可见性不在当前验收内）：
+        # 因此库内两条都判坏，才会触发外检补位。
         "verify": {
-            "lib-1-bumper": ok(), "lib-1-step": bad(),
+            "lib-1-bumper": bad(), "lib-1-step": bad(),
             "ext-1-bumper": ok(), "ext-1-step": ok(),
         },
     }
@@ -291,9 +293,10 @@ def test_fixture_demo():
     with tempfile.TemporaryDirectory() as td:
         summary, _ = run_engine(brief, world, run_id="demo", root=td)
         assert summary["state"] == "DONE", summary
-        assert summary["coverage"]["u-exact"]["accepted"] == 2, summary
-        assert summary["coverage"]["u-env"]["accepted"] == 1, summary
         assert not summary["gaps"], summary
+        # 验收口径=每台车 ≥1 张通过核验的图，所以每个单元会把 3 个候选都收下
+        assert summary["coverage"]["u-exact"]["accepted"] >= 2, summary
+        assert summary["slots"]["filled"], summary
 
 
 def test_json_schema_contracts():
@@ -339,7 +342,7 @@ def test_web_only_world_rule_verify_and_evidence():
             evidence_writer=lambda rows: store.write_rows("t-web", rows))
         summary = engine.run()
         assert summary["state"] == "DONE", summary
-        assert summary["coverage"]["u-exact"]["accepted"] == 1, summary
+        assert summary["coverage"]["u-exact"]["accepted"] >= 1, summary
         assert store.count() == 2, store.count()
 
 
@@ -351,8 +354,18 @@ def test_rule_verifier_rejects_bad_asset():
                 width=400, height=300, title="other truck", model="model-1")
     v = verifier.verify(bad, "bumper")
     assert not v.accepted
-    assert "low_resolution" in v.defects
-    assert "wrong_identity" in v.defects
+    # 分辨率降为 warning（只记档位，不否决）
+    assert "low_resolution" in v.warnings
+    assert "low_resolution" not in v.defects
+    # 身份改为分级：对不上型号 → unknown（不再直接判 wrong_identity）
+    assert v.identity == "unknown", v
+    assert "identity_unverified" in v.warnings, v
+    # 构型矛盾仍是硬缺陷
+    wrong_cfg = Asset(asset_id="cfg", target_id="t", part="bumper", view="front",
+                      width=1600, height=900, title="model-1 8x4",
+                      model="model-1 6x6")
+    cv = verifier.verify(wrong_cfg, "bumper")
+    assert not cv.accepted and "wrong_config" in cv.defects, cv
     # 视角从硬缺陷降为 warning：CLIP 视角 top1−top2 中位数 ~0.003，不可当门槛
     assert "view_mismatch" in v.warnings
     assert "wrong_view" not in v.defects
@@ -360,6 +373,10 @@ def test_rule_verifier_rejects_bad_asset():
                  width=1600, height=900, title="model-1 6x6", model="model-1")
     assert verifier.verify(good, "bumper").accepted
     # 视角不符但其余合格：仍接受，只留 warning
+    low = Asset(asset_id="low", target_id="t", part="bumper", view="front",
+                width=640, height=480, title="model-1 6x6", model="model-1")
+    lv = verifier.verify(low, "bumper")
+    assert lv.accepted and "low_resolution" in lv.warnings, lv
     good_side = Asset(asset_id="good-side", target_id="t", part="bumper",
                       view="side", width=1600, height=900,
                       title="model-1 6x6", model="model-1")
@@ -370,6 +387,32 @@ def test_rule_verifier_rejects_bad_asset():
 
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
+
+
+def test_delivery_block_marks_short():
+    """交付守卫：要求 1 个车型却一个都没收，必须显式 status=short + missing。"""
+    b = base_brief()
+    w = {"library": {}, "external": {}, "assets": {}, "verify": {}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["required"] == 1 and d["delivered"] == 0, d
+        assert d["missing"] == 1 and d["status"] == "short", d
+
+
+def test_delivery_counts_degraded_identity():
+    """靠 probable 身份占槽的车要计入 degraded，交付不能假装全是 confirmed。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    w = {
+        "library": {"u-exact": [target("lib-1", ["bumper"])]},
+        "assets": {"lib-1": {"bumper": [asset("a1")]}},
+        "verify": {"a1": {**ok(), "identity": "probable"}},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["status"] == "complete", d
+        assert d["degraded"] == 1 and d["degraded_targets"] == ["lib-1"], d
 
 
 if __name__ == "__main__":
@@ -388,6 +431,8 @@ if __name__ == "__main__":
     check("网页-only + 规则核验 + 证据落库", test_web_only_world_rule_verify_and_evidence)
     check("规则核验拒绝坏资产", test_rule_verifier_rejects_bad_asset)
     check("空库适配器", test_null_library_adapter)
+    check("交付守卫：不足报 short", test_delivery_block_marks_short)
+    check("交付守卫：degraded 身份", test_delivery_counts_degraded_identity)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

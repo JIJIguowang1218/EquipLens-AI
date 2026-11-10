@@ -173,6 +173,16 @@ def test_extract_page_images():
     assert imagesearch.upgrade_image_url("https://x.com/a/1.jpg!600") ==         "https://x.com/a/1.jpg!1200"
 
 
+def test_download_candidates():
+    """下载候选：大图后缀 → 原 URL → 去后缀裸图。"""
+    c = imagesearch.download_candidates("https://x.com/a.jpg!600")
+    assert c[0].endswith("a.jpg!1200"), c
+    assert c[1].endswith("a.jpg!600"), c
+    assert c[2].endswith("a.jpg"), c
+    c = imagesearch.download_candidates("https://x.com/a.jpg")
+    assert c == ["https://x.com/a.jpg"], c
+
+
 def test_upgrade_sohu_url():
     """搜狐图床 w_640 → w_1280（实测 640x426 → 1280x852）。"""
     up = imagesearch.upgrade_image_url
@@ -191,6 +201,7 @@ if __name__ == "__main__":
     check("360 取原图而非缩略图", test_360_uses_original_image)
     check("高清/大图阶梯优先高清", test_hd_ladder_prefers_high_res)
     check("CDN 后缀升大图", test_upgrade_image_url)
+    check("下载候选阶梯", test_download_candidates)
     check("图集页抽图", test_extract_page_images)
     check("搜狐 w_1280 升图", test_upgrade_sohu_url)
     fails = [r for r in results if r[1] == "FAIL"]

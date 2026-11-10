@@ -194,11 +194,14 @@ class RetrievalEngine:
         remaining = [a for a in state.get("pending_assets") or []
                      if f"{a['asset_id']}:{a['part']}" not in verified]
         for row in remaining:
+            # 必须带上 title/model：否则 RuleVerifier 的型号/构型校验会被静默跳过
             asset = Asset(asset_id=row["asset_id"], target_id=row["target_id"],
                           part=row["part"], view=row.get("view", ""),
                           width=int(row.get("width") or 0),
                           height=int(row.get("height") or 0),
-                          url=row.get("url", ""))
+                          url=row.get("url", ""),
+                          title=row.get("title", ""),
+                          model=row.get("model", ""))
             v = self.world.verify(asset, asset.part)
             key = f"{asset.asset_id}:{asset.part}"
             state["verifications"][key] = v.to_dict()
@@ -216,13 +219,16 @@ class RetrievalEngine:
                 unit = state["units"].get(uid)
                 if not unit:
                     continue
-                ok = True
-                for part in unit["parts"]:
-                    ids = state.get("assets", {}).get(tid, {}).get(part, [])
-                    if not any(state["verifications"].get(f"{aid}:{part}", {})
-                               .get("accepted") for aid in ids):
-                        ok = False
-                        break
+                # 验收口径（2026-11-10）：每台车**至少 1 张**通过核验的图即可占槽。
+                # 部件是否拍全交给用户选主图时核对（当前没有部件可见性检测）。
+                ok = any(
+                    state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
+                    for part in unit["parts"]
+                    for aid in state.get("assets", {}).get(tid, {}).get(part, []))
+                # 引用页已证实该车型：有图即可占槽（整车型号证据在 target 上）
+                if not ok and target.get("citation_ok"):
+                    ok = any(state.get("assets", {}).get(tid, {}).values())
+
                 if ok and tid not in unit["accepted_targets"]:
                     unit["accepted_targets"].append(tid)
         state["state"] = "GAP_CHECK"
@@ -233,7 +239,42 @@ class RetrievalEngine:
             record_decision(state, at="GAP_CHECK", action="done",
                             reason=f"全局槽位 {self._global_accepted(state)}/"
                                    f"{self._slot_target()} 已满")
+            state["gaps"] = []   # 全局满了就不报单元缺口（单元配额只是建议）
             state["state"] = "DONE"
+            return
+        # 候选池还有货：先补位（同层可多次发现）
+        more = getattr(self.world, "has_more", None)
+        if callable(more) and more():
+            record_decision(state, at="GAP_CHECK", action="refill",
+                            reason=f"槽位 {self._global_accepted(state)}/"
+                                   f"{self._slot_target()}，池中仍有候选")
+            state["state"] = "EXTERNAL_DISCOVER"
+            return
+        # 池子空了且槽位未满：尝试重规划（只对“规划池模式”的世界生效），最多 2 次
+        can = getattr(self.world, "can_replan", None)
+        replan = getattr(self.world, "replan", None)
+        if (callable(can) and can() and callable(replan)
+                and int(state.get("replans", 0)) < 4):
+            failed = [tid for tid, t in state["targets"].items()
+                      if not any(state.get("assets", {}).get(tid, {}).values())]
+            need = self._slot_target() - self._global_accepted(state)
+            try:
+                got = replan(failed, need)
+            except Exception:  # noqa: BLE001
+                got = 0
+            if got:
+                state["replans"] = int(state.get("replans", 0)) + 1
+                record_decision(state, at="GAP_CHECK", action="replan",
+                                reason=f"缺口 {need}，重规划 {got} 个候选")
+                state["state"] = "EXTERNAL_DISCOVER"
+                return
+        # 候选池还有货：继续补位（同层可以多次发现，不能一次没满就降级）
+        more = getattr(self.world, "has_more", None)
+        if callable(more) and more():
+            record_decision(state, at="GAP_CHECK", action="refill",
+                            reason=f"槽位 {self._global_accepted(state)}/"
+                                   f"{self._slot_target()}，池中仍有候选")
+            state["state"] = "EXTERNAL_DISCOVER"
             return
         if not state.get("tier_tried"):
             state["state"] = "EXTERNAL_DISCOVER"
@@ -333,17 +374,49 @@ class RetrievalEngine:
         state["finished"] = True
 
     # ---------------------------------------------------------------- summary
+    def _delivery(self, state: dict) -> dict:
+        """交付守卫：要求 N 槽就必须有 N 个车型，不足要显式报 short + 缺口。
+
+        `degraded` = 已交付但没有任何一张图达到 confirmed 身份的车型数
+        （靠 probable/unknown + 引用页兜底进来的，必须让调用方看见）。
+        """
+        target = self._slot_target()
+        accepted = self._global_accepted(state)
+        verifs = state.get("verifications") or {}
+        by_target = state.get("assets") or {}
+        degraded = 0
+        degraded_targets: list[str] = []
+        for tid, parts in by_target.items():
+            ids = {a for items in (parts or {}).values() for a in (items or [])}
+            idents = {v.get("identity") for k, v in verifs.items()
+                      if k.split(":")[0] in ids and v.get("accepted")}
+            if ids and "confirmed" not in idents:
+                degraded += 1
+                degraded_targets.append(tid)
+        missing = max(0, target - accepted)
+        return {
+            "required": target,
+            "delivered": accepted,
+            "missing": missing,
+            "degraded": degraded,
+            "degraded_targets": degraded_targets,
+            "status": "complete" if accepted >= target else "short",
+        }
+
     def _summary(self, state: dict) -> dict:
         cov = self._coverage(state)
-        gaps = [uid for uid, c in cov.items() if not c["filled"]]
         accepted = self._global_accepted(state)
         target = self._slot_target()
+        # 全局槽位满了就不报单元缺口（单元配额是建议，不是硬性）
+        gaps = ([] if accepted >= target
+                else [uid for uid, c in cov.items() if not c["filled"]])
         return {
             "run_id": self.run_id,
             "brief_id": self.brief.brief_id,
             "state": state.get("final_state") or state["state"],
             "slots": {"target": target, "accepted": accepted,
                       "filled": accepted >= target},
+            "delivery": self._delivery(state),
             "coverage": cov,
             "gaps": gaps,
             "accepted_targets": {

@@ -142,6 +142,40 @@ def search_images_hd(query: str, limit: int = 12, *,
     return _search_many(queries, limit, model=model, harvest=harvest)
 
 
+def alias_query(src: str) -> str:
+    """把“拉丁品牌/型号 + 括号说明”的车型名改写成 360 更容易命中的中文查询。
+
+    实测（2026-11-10）：`Zetros 4051 AS 6x6` 在 360 返回的是列宁格勒/MAN/卡玛兹，
+    而 `奔驰 Zetros 6x6 牵引车` 能返回 6 张真车图——纯拉丁型号名在中文图库
+    里召回极差，必须补中文品牌或去掉冷门型号码。
+    """
+    s = re.sub(r"[（(][^）)]*[）)]", " ", src or "")
+    toks = _tokens(s)
+    group = _brand_group(s)
+    brand = ""
+    if group:
+        brand = next((a for a in group if re.search(r"[\u4e00-\u9fff]", a)), "")
+        if not brand and group[0] not in _BRAND_LOOKUP:
+            brand = group[0]  # 未知拉丁车系（Zetros）：保留，别丢
+    series = next((t for t in toks if re.search(r"[a-z]", t) and not re.search(r"\d", t)
+                   and len(t) >= 3 and t not in GENERIC and t not in group), "")
+    code = next((t for t in _distinctive(s) if t not in group), "")
+    conf = next((c for c in ("6x6", "8x8", "4x4") if c in _config_set(src or s)), "")
+    tail = "牵引车" if "牵引" in s else "卡车"
+    parts = [brand, series or code, conf, tail]
+    return " ".join(p for p in parts if p).strip()
+
+
+def query_variants(query: str, model: str = "") -> list[str]:
+    """一次抓取的查询阶梯：规划器 query → 车型全名 → 中文别名改写。"""
+    out: list[str] = []
+    for q in (query, model, alias_query(model or query)):
+        q = (q or "").strip()
+        if q and q not in out:
+            out.append(q)
+    return out
+
+
 def _tokens(s: str) -> list[str]:
     return [t for t in re.findall(r"[a-z0-9]+|[\u4e00-\u9fff]+", str(s).lower())
             if len(t) >= 2]
@@ -154,29 +188,105 @@ NON_VEHICLE = ("战争", "壁纸", "动漫", "表情包", "简笔画", "插画",
 GENERIC = {"6x6", "4x4", "8x8", "6*6", "工程车", "卡车", "货车", "牵引车",
            "自卸车", "专用车", "越野车", "载货车"}
 VEHICLE_WORDS = ("卡车", "货车", "牵引", "自卸", "载货", "工程", "吊车", "起重",
-                 "专用车", "越野", "底盘", "驾驶室")
+                 "专用车", "越野", "底盘", "驾驶室", "油井", "矿卡", "运输",
+                 "truck", "lorry", "tractor", "tipper", "dump", "chassis",
+                 "offroad", "off-road", "vehicle", "camion")
+
+# 中外品牌别名：模型名常是拉丁文（Volvo/KAMAZ），标题却是中文（沃尔沃/卡玛斯）。
+# 护栏按“同组任一并集命中”判断，否则这些车型在 360 上永远被判不相关。
+BRAND_GROUPS = (
+    ("volvo", "沃尔沃"),
+    ("kamaz", "卡玛斯", "卡玛兹"),
+    ("mercedes", "benz", "奔驰", "梅赛德斯"),
+    ("man", "曼恩", "曼"),
+    ("scania", "斯堪尼亚"),
+    ("iveco", "依维柯"),
+    ("renault", "雷诺"),
+    ("daf", "达夫"),
+    ("tatra", "太脱拉", "太拖拉"),
+    ("hino", "日野"),
+    ("isuzu", "五十铃"),
+    ("mitsubishi", "三菱"),
+    ("mack", "马克"),
+    ("kenworth", "肯沃斯"),
+    ("peterbilt", "彼得比尔特"),
+    ("sany", "三一"),
+    ("zoomlion", "中联"),
+    ("xcmg", "徐工"),
+    ("shacman", "陕汽"),
+    ("howo", "豪沃"),
+    ("dongfeng", "东风"),
+    ("beiben", "北奔"),
+)
+_BRAND_LOOKUP: dict[str, tuple[str, ...]] = {}
+for _group in BRAND_GROUPS:
+    for _name in _group:
+        _BRAND_LOOKUP[_name] = _group
 
 
 CONF_RE = re.compile(r"\d+\s*[x×]\s*\d+", re.I)
 
 
 def _config_tokens(s: str) -> list[str]:
-    """构型词（6x6/8x8/4x2）：标题必须同构型，防"NG80 6x2"冒充 6x6。"""
+    """构型词（6x6/8x8/4x2）。"""
     return [re.sub(r"[×\s]", "x", m).lower() for m in CONF_RE.findall(s)]
 
 
+CONF_WORDS = {"6x6": ("6x6", "6驱", "六驱"),
+              "8x8": ("8x8", "8驱", "八驱"),
+              "4x4": ("4x4", "4驱", "四驱")}
+
+
+def _config_set(s: str) -> set[str]:
+    """构型集合（含“六驱/6驱”这类中文写法）。"""
+    out = set(_config_tokens(s))
+    low = (s or "").lower().replace("×", "x")
+    for code, words in CONF_WORDS.items():
+        if any(w in low for w in words):
+            out.add(code)
+    return out
+
+
 def _distinctive(model: str) -> list[str]:
-    """型号里"能唯一定位到这台车"的字母数字串（NG80 / CA2191P2K2T / X3000 / C7H）。"""
+    """型号里“能唯一定位到这台车”的字母数字串（NG80 / CA2191P2K2T / X3000 / C7H）。
+
+    必须同时含字母和数字：`4051` / `800` 这类纯数字太泛，会把“800ml”这种
+    正文当车型命中（MOL 那次就是这么混进来的）。
+    """
     return [t for t in _tokens(model)
-            if re.search(r"\d", t) and t not in GENERIC and len(t) >= 3]
+            if re.search(r"[a-z]", t) and re.search(r"\d", t)
+            and t not in GENERIC and len(t) >= 3]
+
+
+def _alias_in(name: str, text: str) -> bool:
+    """品牌别名是否出现在标题里；拉丁别名按词边界匹配，避免 man ⊂ human。"""
+    if not name:
+        return False
+    if re.fullmatch(r"[a-z0-9\-]+", name):
+        return re.search(rf"(?<![a-z0-9]){re.escape(name)}(?![a-z0-9])", text) is not None
+    return name in text
+
+
+def _brand_group(src: str) -> tuple[str, ...]:
+    """取车型名里的品牌别名组；不在别名表里就退回第一个非数字词。"""
+    toks = _tokens(src)
+    for t in toks:
+        if t in _BRAND_LOOKUP:
+            return _BRAND_LOOKUP[t]
+    for t in toks:
+        if not re.search(r"\d", t) and t not in GENERIC and len(t) >= 2:
+            return (t,)
+    return ()
 
 
 def _relevant(query: str, title: str, model: str | None = None) -> bool:
-    """相关性护栏（型号优先）：
+    """相关性护栏（型号优先，召回优先）：
 
     1) 标题含"非车污染词"（解放战争/壁纸/动漫…）→ 直接判不相关；
-    2) 型号里有字母数字代码（NG80/X3000/C7H…）→ 标题必须含该代码；
-    3) 没有代码 → 标题须含品牌词 + 一个车辆词。
+    2) 标题明确写了一个**冲突构型**（车型 6x6、标题 6x2）→ 不相关；
+       标题没写构型不判死（大量中文标题只写"六驱"或干脆不写）；
+    3) 型号代码（NG80/X3000/C7H…）命中 → 最强，直接通过；
+    4) 否则要求品牌（含中外别名）命中 + 车辆词；没有品牌才只要求车辆词。
     """
     t = (title or "").lower()
     if not t:
@@ -184,19 +294,19 @@ def _relevant(query: str, title: str, model: str | None = None) -> bool:
     if any(w in t for w in NON_VEHICLE):
         return False
     src = model or query
-    tn = re.sub(r"[×\s]", "x", t)
-    for c in _config_tokens(src):  # 构型不一致 → 直接不相关
-        if c not in tn:
-            return False
+    want = _config_set(src)
+    have = _config_set(t)
+    if want and have and not (want & have):
+        return False  # 6x6 车型遇到 6x2 标题：明确矛盾
     codes = _distinctive(src)
-    if codes and all(c in t for c in codes[:2]):
+    if codes and any(c in t for c in codes):
         return True  # 型号代码直接命中：最强
     # 代码没命中时退回"品牌 + 车辆词"（召回优先；身份真伪交给门卫 + 人工）
-    toks = _tokens(src)
-    brand = next((x for x in toks if not re.search(r"\d", x) and x not in GENERIC), None)
-    if brand:
-        # 有品牌词就要求品牌出现；仅凭"工程车/卡车"这类泛词不算命中
-        return brand in t and any(w in t for w in VEHICLE_WORDS)
+    group = _brand_group(src)
+    if group:
+        if any(_alias_in(a, t) for a in group):
+            return True
+        return False
     return any(w in t for w in VEHICLE_WORDS)
 
 
@@ -428,6 +538,23 @@ def harvest_source_page(source_url: str, limit: int = 8) -> list[dict]:
     return hits
 
 
+REFERER_FALLBACKS = ("https://image.so.com/", "")
+
+
+def download_candidates(url: str) -> list[str]:
+    """同一张图的候选 URL：先大图后缀，再原样，最后去后缀的裸图。"""
+    out = []
+    up = upgrade_image_url(url)
+    if up:
+        out.append(up)
+    if url and url not in out:
+        out.append(url)
+    base = re.sub(r"!\d{3,4}$", "", url or "")
+    if base and base != url and base not in out:
+        out.append(base)
+    return out[:3]
+
+
 def _fetch_image(url: str, referer: str) -> bytes:
     src = quote(url, safe=":/?&=%._-#")
     r = requests.get(src, headers={"User-Agent": UA, "Referer": referer},
@@ -443,30 +570,42 @@ def _fetch_image(url: str, referer: str) -> bytes:
 
 
 def _download_and_gate(hit: dict) -> dict:
-    """下载+门卫（线程池内跑; SQLite 入库只在主线程做）。
+    """下载 + 两段式门卫。
 
-    先试“大图后缀”（`!1200`），失败再回落到原始 URL——这是本环境最便宜的
-    分辨率提升手段（无登录/无额外请求数）。
+    候选顺序：大图后缀（`!1200`）→ 原 URL → 去后缀裸图；
+    每档再试 Referer（来源 → image.so.com → 无），最多 6 次，覆盖 403/404/超时。
     """
     out = {"hit": hit, "data": None, "gate": None, "error": None,
-           "url_used": hit.get("url", ""), "upgraded": False}
+           "url_used": hit.get("url", ""), "upgraded": False, "tries": 0}
     referer = (hit.get("referer")
                or CHANNEL_REFERERS.get(hit.get("channel", ""))
                or "https://image.so.com/")
-    big = upgrade_image_url(hit.get("url", ""))
-    attempts = [u for u in (big, hit.get("url", "")) if u]
+    urls = download_candidates(hit.get("url", ""))
+    refs: list[str] = []
+    for r in [referer, *REFERER_FALLBACKS]:
+        if r not in refs:
+            refs.append(r)
+    big = upgrade_image_url(hit.get("url", "")) or ""
     last_err = None
-    for i, src_url in enumerate(attempts):
-        try:
-            data = _fetch_image(src_url, referer)
+    tries = 0
+    for src_url in urls:
+        for ref in refs:
+            tries += 1
+            if tries > 6:
+                break
+            try:
+                data = _fetch_image(src_url, ref)
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                continue
             from PIL import Image
             from io import BytesIO
             pre = gate.prefilter(data)
             out["prefilter"] = pre
             out["url_used"] = src_url
-            out["upgraded"] = bool(big) and i == 0
+            out["upgraded"] = bool(big) and src_url == big
+            out["tries"] = tries
             if not pre["ok"]:
-                # 第一段（确定性）已否决：不进 CLIP，省一次推理；理由如实回传
                 out["data"] = data
                 out["gate"] = {"pass": False, "stage": "prefilter",
                                "reasons": list(pre["reasons"]), "margin": None,
@@ -474,14 +613,17 @@ def _download_and_gate(hit: dict) -> dict:
                                "keep_label": "", "drop_label": ""}
                 out["error"] = None
                 return out
-            if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
-                raise ValueError("图片过小")
+            try:
+                if Image.open(BytesIO(data)).size[0] < MIN_IMG_WIDTH:
+                    raise ValueError("图片过小")
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                continue
             out["data"] = data
             out["gate"] = gate.check(data)
             out["error"] = None
             return out
-        except Exception as e:  # noqa: BLE001
-            last_err = e
+    out["tries"] = tries
     out["error"] = str(last_err)
     return out
 

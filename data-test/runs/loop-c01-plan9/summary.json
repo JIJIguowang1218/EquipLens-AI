@@ -1,0 +1,152 @@
+{
+  "run_id": "loop-c01-plan9",
+  "brief_id": "m1-desert-20261109",
+  "state": "DONE",
+  "slots": {
+    "target": 12,
+    "accepted": 12,
+    "filled": true
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 9,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 3,
+      "filled": false
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "TAZ4922（HOWO 6×6 油田/沙漠牵引车）",
+      "DFV5253TSMGP6D（6×6沙漠卡车/400马力）",
+      "DFV2223GP6DJ（天锦6×6越野/沙漠运输底盘）",
+      "EQ2251AX（沙豹6×6沙漠越野车）",
+      "EQ2220AX（6×6沙漠重型货车）",
+      "ND5250TSMZ04（沙漠车）",
+      "ND5180TSMZ01 / ND5140TSMZ02（沙漠车系列）",
+      "东风大力神 6×6 全驱沙漠越野车（dCi385）",
+      "东风沙豹 EQ5251TSM 6×6 沙漠运水车"
+    ],
+    "u-env": [
+      "东风 EQ2250AXJ（沙漠越野车底盘/二类底盘）",
+      "东风商用车 天锦 6×6 越野载货车（ISLe375 30/9挡MT）",
+      "东风大力神 6×6 油田改装沙漠底盘（dCi385/国四）"
+    ]
+  },
+  "budget_used": {
+    "queries": 24,
+    "models": 24,
+    "fetches": 128,
+    "verifies": 128
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-10T06:00:30"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-10T06:00:30"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 12 个",
+      "ts": "2026-11-10T06:01:21"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/12，池中仍有候选",
+      "ts": "2026-11-10T06:03:14"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 3 个",
+      "ts": "2026-11-10T06:03:16"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 5，重规划 3 个候选",
+      "ts": "2026-11-10T06:03:51"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 3 个",
+      "ts": "2026-11-10T06:04:23"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 3，重规划 2 个候选",
+      "ts": "2026-11-10T06:05:08"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-10T06:05:08"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-10T06:05:08"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-10T06:05:10"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "replan",
+      "reason": "缺口 2，重规划 4 个候选",
+      "ts": "2026-11-10T06:05:58"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-10T06:06:04"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 12/12 已满",
+      "ts": "2026-11-10T06:06:39"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-c01-plan9\\state.json",
+  "events_path": "data-test\\runs\\loop-c01-plan9\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-c01-plan9\\evidence.json",
+  "delivery": {
+    "required": 12,
+    "delivered": 12,
+    "missing": 0,
+    "degraded": 7,
+    "degraded_targets": [
+      "TAZ4922（HOWO 6×6 油田/沙漠牵引车）",
+      "DFV5253TSMGP6D（6×6沙漠卡车/400马力）",
+      "DFV2223GP6DJ（天锦6×6越野/沙漠运输底盘）",
+      "东风大力神 6×6 全驱沙漠越野车（dCi385）",
+      "东风 EQ2250AXJ（沙漠越野车底盘/二类底盘）",
+      "东风商用车 天锦 6×6 越野载货车（ISLe375 30/9挡MT）",
+      "东风大力神 6×6 油田改装沙漠底盘（dCi385/国四）"
+    ],
+    "status": "complete"
+  }
+}
