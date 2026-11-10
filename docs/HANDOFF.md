@@ -98,7 +98,8 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | 网页世界 + 规则核验（身份三档） | `src/equiplens/retrieval_engine/web.py` |
 | 状态机 + 交付守卫 | `src/equiplens/retrieval_engine/engine.py` |
 | CLI（`--web-only/--plan/--evidence-db`） | `src/equiplens/retrieval_engine/cli.py` |
-| 在线规划（Search→LLM→引用校验） | `scripts/plan_candidates.py` |
+| 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
+| 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
 | 外国品牌召回诊断 | `scripts/diag_foreign_search.py` |
 | 任务单 | `data-test/evals/task-briefs-20261109/brief-m1b-global.json`（12 槽：国产 8 + 国际 4） |
@@ -125,7 +126,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 
 1. **34 张“备选图”是否随包交付**：它们过了门卫、内容可用，只因 12 槽被占满而没进交付包（v2：9 车型 / 34 张，11 张 ≥800）。目前只保留在 `images/` + 审核页“备选·未占槽”，是否作为附录随包、是否占槽，需要用户定。
 2. **`citation_only` 收紧**：TAZ4922 有 0 张核验通过的图，仅靠引用页占槽。建议改成“至少 1 张 unknown 级图”或标“待补图”，但会减少交付数（与“不能少交付”冲突），需要拍板。
-3. **外国品牌是否默认搜**：E13 A/B（2026-11-11）里，加一条 `进口 {class} {conf} 车型` 后外国候选 19–25% → 38–42%，但**同组重复运行候选重合仅 12–17%**，抽取方差大于查询效应；且候选没有 `source_query`，无法归因。先修“可复现 + 归因”，再谈默认化（见 E13）。
+3. **外国品牌是否默认搜**：planner 已升级 v2（逐查询抽取 + `source_query` 出处校验 + coverage 报告），出处 0/24 → **100%**；E14 A/B 里加一条 `进口 {class} {conf} 车型` 后外国候选 26–30% → 30–35%，但同组重复运行重合仍只有 26–31%，且候选级占比被“奔驰(…)”变体重复放大。**结论：先做品牌/车系级去重 + n≥3、用品牌覆盖率做指标，再决定默认化**（见 E13/E14）。
 4. **隐藏的国产品牌名单**：`src/equiplens/retrieval_engine/discover.py` 的 `BRANDS` 是 18 个国产品牌 + 固定车系表，只在“无 plan/无 models”的 fallback 路径用；T32/T33（loop-c01-isolated/res）走了这条路，所以那两轮天然没有外国车。当前 12 槽 run 走 `--plan`，不读它。**待办：废弃或泛化这个 fallback，避免再被当成“实时发现”。**
 5. **degraded 是否可接受**：12/12 里 8 台只有 probable 图。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），成本与优先级待定。
 6. **质量排序未实现**：计划中的 `score = 4×res_high + 2×res_standard + margin + citation`、top-N 激活还没写；当前占槽基本按发现顺序。
