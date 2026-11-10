@@ -42,11 +42,13 @@ def load_key() -> str:
     raise SystemExit("no DEEPSEEK_API_KEY")
 
 
-def build_queries(brief: dict) -> list[str]:
+def build_queries(brief: dict, extra: list[str] | None = None) -> list[str]:
     """任务单 → 查询（不用任何品牌白名单）。
 
     除 request 的类目/工况，还要覆盖每个 research_unit 的 scope——否则
     “国际品牌”“某工况工程车”这类单元永远不会被搜到（T38 独立测试暴露）。
+
+    `extra` 用于**覆盖实验**：只加“市场段/工况”描述词，不允许塞品牌名单。
     """
     req = brief.get("request") or {}
     env = (req.get("environment") or {}).get("value") or ""
@@ -60,9 +62,10 @@ def build_queries(brief: dict) -> list[str]:
         scope = (unit.get("scope") or "").strip()
         if scope:
             raw.append(f"{scope} {conf}".strip())
+    raw.extend(extra or [])
     qs: list[str] = []
     for q in raw:
-        q = " ".join(q.split())
+        q = " ".join(str(q).split())
         if q and q not in qs:
             qs.append(q)
     return [q + (" " + neg if neg else "") for q in qs]
@@ -112,11 +115,13 @@ def main(argv=None) -> int:
     ap.add_argument("--brief", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--limit", type=int, default=24)
+    ap.add_argument("--extra-query", action="append", default=[],
+                    help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     args = ap.parse_args(argv)
 
     key = load_key()
     brief = json.loads(Path(args.brief).read_text(encoding="utf-8"))
-    queries = build_queries(brief)
+    queries = build_queries(brief, args.extra_query)
     all_results, per_query, api_rows = [], [], []
     for q in queries:
         try:
