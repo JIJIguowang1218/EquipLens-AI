@@ -407,6 +407,11 @@ class RetrievalEngine:
                 degraded += 1
                 degraded_targets.append(tid)
         missing = max(0, target - accepted)
+        bonus_models = sorted(tid for tid, parts in by_target.items()
+                              if tid not in accepted_ids
+                              and any((v or []) for v in (parts or {}).values()))
+        bonus_images = sum(len({a for v in (by_target[m] or {}).values() for a in (v or [])})
+                           for m in bonus_models)
         return {
             "required": target,
             "delivered": accepted,
@@ -415,6 +420,7 @@ class RetrievalEngine:
             "degraded_targets": degraded_targets,
             "citation_only": len(citation_only),
             "citation_only_targets": citation_only,
+            "bonus": {"models": len(bonus_models), "images": bonus_images},
             "status": "complete" if accepted >= target else "short",
         }
 

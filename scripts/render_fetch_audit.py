@@ -89,10 +89,10 @@ def main(argv=None) -> int:
                    key=lambda x: (x["model"], -(x.get("margin") or -9)))
     failed = [r for r in rows if not r.get("ok")]
 
-    # “过门卫”只是 CLIP/预筛语义；一张图要“入选交付”，还得核验通过并写进
-    # state.assets。车型级“占槽”则是这个车型占了一个交付名额（12 槽）。
-    # 审核页三者分开显示，否则会把“过门卫”误读成“已交付”。
+    # “过门卫”只是 CLIP/预筛语义；进交付包还要“车型占槽 + 图写进 state.assets”。
+    # 分辨率只做档位标记，绝不从交付包里删图（2026-11-10 口径）。
     selected_ids: set[str] = set()
+    package_by_model: dict[str, set[str]] = {}
     delivered_models: set[str] = set()
     state_path = run_dir / "state.json"
     if state_path.exists():
@@ -101,20 +101,22 @@ def main(argv=None) -> int:
             # 占槽车型以 units.accepted_targets 为准；assets 里还有“抓过图但没占槽”的
             delivered_models = {tid for u in (st.get("units") or {}).values()
                                 for tid in (u.get("accepted_targets") or [])}
-            accepted_asset_ids = {
-                a for tid in delivered_models
-                for v in ((st.get("assets") or {}).get(tid) or {}).values()
-                for a in (v or [])
+            package_by_model = {
+                tid: {a for v in ((st.get("assets") or {}).get(tid) or {}).values()
+                      for a in (v or [])}
+                for tid in delivered_models
             }
-            # 单张图“入选交付”= 属于占槽车型，且有 accepted 的核验记录
+            package_ids = {a for ids in package_by_model.values() for a in ids}
+            # “已核验”= 属于交付包，且有 accepted 的核验记录
             for key, rec in (st.get("verifications") or {}).items():
                 aid = key.split(":")[0]
-                if rec.get("accepted") and aid in accepted_asset_ids:
+                if rec.get("accepted") and aid in package_ids:
                     selected_ids.add(aid)
         except (json.JSONDecodeError, OSError):
-            selected_ids, delivered_models = set(), set()
+            selected_ids, package_by_model, delivered_models = set(), {}, set()
     for it in items:
         it["selected"] = it.get("sha1") in selected_ids
+        it["in_package"] = it.get("sha1") in package_by_model.get(it["model"], set())
         it["delivered"] = it["model"] in delivered_models
 
     per_model = defaultdict(Counter)
@@ -123,6 +125,7 @@ def main(argv=None) -> int:
         c["total"] += 1
         c["pass"] += bool(it.get("gate_pass"))
         c["selected"] += bool(it.get("selected"))
+        c["pkg"] += bool(it.get("in_package"))
         c["delivered"] = 1 if it.get("delivered") else 0
         c["ov"] += bool(it.get("res_standard", it.get("overview_ok")))
         c["part"] += bool(it.get("res_high", it.get("part_ok")))
@@ -155,9 +158,11 @@ def main(argv=None) -> int:
     cards = []
     for it in items:
         if it.get("selected"):
-            cls, badge = "slot", "入选交付"
+            cls, badge = "slot", "已交付 · 已核验"
+        elif it.get("in_package"):
+            cls, badge = "pkg", "已交付 · 未核验"
         elif it.get("gate_pass"):
-            cls, badge = "warn", "仅过门卫"
+            cls, badge = "warn", "备选 · 未占槽"
         else:
             cls, badge = "bad", "未过门卫"
         if it.get("res_standard"):
@@ -165,7 +170,7 @@ def main(argv=None) -> int:
         if it.get("res_high"):
             badge += " · 高清"
         elif it.get("reference_ok"):
-            badge += " · 参考"
+            badge += " · 低清参考"
         margin = it.get("margin")
         margin_txt = f"{margin:+.4f}" if margin is not None else "—"
         chips = "".join(
@@ -176,16 +181,17 @@ def main(argv=None) -> int:
         cards.append(
             f'<article class="card" data-pass="{1 if it.get("gate_pass") else 0}"'
             f' data-sel="{1 if it.get("selected") else 0}"'
+            f' data-pkg="{1 if it.get("in_package") else 0}"'
             f' data-ov="{1 if it.get("res_standard") else 0}"'
             f' data-part="{1 if it.get("res_high") else 0}"'
             f' data-ref="{1 if it.get("reference_ok") else 0}">'
             f'<div class="thumb"><img loading="lazy" src="images/{html.escape(it["image"])}" alt="">'
             f'<span class="badge {cls}">{html.escape(badge)}</span></div>'
             f'<div class="body"><h3>{html.escape(it["model"])}'
-            f'{"" if it.get("delivered") else "（未占槽）"}</h3>'
+            f'{"" if it.get("delivered") else "（未占槽车型）"}</h3>'
             f'<p class="sub">{it["width"]}×{it["height"]} · 裕量 {margin_txt}'
             f' · 部件 {html.escape(",".join(it["parts"]))}'
-            f' · 入选 {"是" if it.get("selected") else "否"}</p>'
+            f' · 交付包 {"是" if it.get("in_package") else "否"}</p>'
             f'<p class="sub">keep {html.escape(label_cn(it.get("keep_label", "")))} '
             f'{(it.get("keep") or 0):+.4f} ／ drop '
             f'{html.escape(label_cn(it.get("drop_label", "")))} {(it.get("drop") or 0):+.4f}</p>'
@@ -199,6 +205,8 @@ def main(argv=None) -> int:
     total = len(items)
     passed = sum(1 for i in items if i.get("gate_pass"))
     selected = sum(1 for i in items if i.get("selected"))
+    packaged = sum(1 for i in items if i.get("in_package"))
+    extras = passed - packaged
     ov = sum(1 for i in items if i.get("res_standard"))
     part = sum(1 for i in items if i.get("res_high"))
     ref = sum(1 for i in items if i.get("reference_ok"))
@@ -207,7 +215,7 @@ def main(argv=None) -> int:
 
     model_rows = "".join(
         f"<tr><td>{'✓ ' if c['delivered'] else ''}{html.escape(m)}</td>"
-        f"<td>{c['total']}</td><td>{c['selected']}</td>"
+        f"<td>{c['total']}</td><td>{c['pkg']}</td><td>{c['selected']}</td>"
         f"<td>{c['pass']}</td><td>{c['ov']}</td><td>{c['part']}</td><td>{c['ref']}</td>"
         f"<td>{c['fail_dl']}</td></tr>"
         for m, c in sorted(per_model.items(),
@@ -245,6 +253,7 @@ overflow:hidden}
 .badge{position:absolute;left:8px;top:8px;font-size:11px;padding:2px 8px;
 border-radius:999px;color:#fff;background:var(--bad)}
 .badge.ok,.badge.slot{background:var(--ok)}
+.badge.pkg{background:#3E6E9E}
 .badge.warn{background:#B07A25}
 .body{padding:10px 12px 12px}
 h3{margin:0 0 4px;font-size:13px}
@@ -258,8 +267,9 @@ border:1px solid #432C26;color:#F0B6A6;font-size:11px;line-height:1.45}
 """
     js = """
 const cards=[...document.querySelectorAll('.card')];
-const F={all:()=>true,sel:c=>c.dataset.sel==='1',pass:c=>c.dataset.pass==='1',
-only:c=>c.dataset.pass==='1'&&c.dataset.sel==='0',
+const F={all:()=>true,slot:c=>c.dataset.sel==='1',pkg:c=>c.dataset.pkg==='1',
+sel:c=>c.dataset.sel==='1',pass:c=>c.dataset.pass==='1',
+extra:c=>c.dataset.pass==='1'&&c.dataset.pkg==='0',
 fail:c=>c.dataset.pass==='0',
 ov:c=>c.dataset.ov==='1',part:c=>c.dataset.part==='1',ref:c=>c.dataset.ref==='1'};
 let cur='all';
@@ -276,29 +286,31 @@ apply();
         f'<p class="meta">门卫版本 {html.escape(str(gate_version))}'
         f" · 图 {total} 张（车型内按 sha1 去重）/ 全局唯一 {global_unique} · 下载失败行 {len(failed)}"
         f" · 生成于 {time.strftime('%Y-%m-%d %H:%M')}</p>"
-        '<p class="meta">口径：<b>过门卫</b> = 预筛 + CLIP 语义通过；'
-        '<b>入选交付</b> = 该图通过规则核验并写进了交付证据；'
-        '<b>占槽</b> = 该车型占了一个交付名额。'
-        '过门卫但没入选的图会标“仅过门卫”，未交付车型标“（未占槽）”。</p></header>'
+        '<p class="meta">口径：<b>过门卫</b> = 预筛 + CLIP 语义通过（分辨率只分档，<b>不淘汰</b>）；'
+        '<b>已交付</b> = 属于占槽车型、写进了交付包；'
+        '<b>已核验</b> = 另有规则核验通过的记录。'
+        '过门卫但车型没占槽的图标“备选 · 未占槽”，仍保留在 images/ 里可人工取用。</p></header>'
         '<section class="sum">'
         + chip("车型", models) + chip("图（车型内去重）", total)
         + chip("全局唯一图", global_unique)
         + chip("交付车型", f"{len(delivered_models)}", "ok")
-        + chip("入选交付图", selected, "ok")
-        + chip("过门卫（含入选）", passed, "ok")
-        + chip("仅过门卫", passed - selected, "warn")
+        + chip("交付包图", packaged, "ok")
+        + chip("其中已核验", selected, "ok")
+        + chip("备选（未占槽）", extras, "warn")
+        + chip("过门卫合计", passed, "ok")
         + chip("标准清晰 ≥800", ov, "ok")
-        + chip("高清 ≥1200", part, "ok") + chip("参考层", ref)
+        + chip("高清 ≥1200", part, "ok") + chip("低清参考", ref)
         + chip("未过门卫", total - passed, "bad")
         + "</section>"
-        "<table><tr><th>车型（✓=已占槽）</th><th>总图</th><th>入选</th><th>过门卫</th>"
-        "<th>概览</th><th>部件</th><th>参考</th><th>下载失败</th></tr>"
+        "<table><tr><th>车型（✓=已占槽）</th><th>总图</th><th>交付包</th><th>已核验</th>"
+        "<th>过门卫</th><th>概览</th><th>部件</th><th>参考</th><th>下载失败</th></tr>"
         f"{model_rows}</table>"
         '<div class="filters">'
         f'<button class="on" data-f="all">全部 {total}</button>'
-        f'<button data-f="sel">入选交付 {selected}</button>'
+        f'<button data-f="pkg">交付包 {packaged}</button>'
+        f'<button data-f="slot">已核验 {selected}</button>'
+        f'<button data-f="extra">备选·未占槽 {extras}</button>'
         f'<button data-f="pass">过门卫 {passed}</button>'
-        f'<button data-f="only">仅过门卫 {passed - selected}</button>'
         f'<button data-f="fail">未过门卫 {total - passed}</button>'
         f'<button data-f="ov">概览 {ov}</button>'
         f'<button data-f="part">高清≥1200 {part}</button>'
@@ -308,8 +320,9 @@ apply();
     )
     out = run_dir / "audit.html"
     out.write_text(doc, encoding="utf-8")
-    print(json.dumps({"images": total, "selected": selected, "delivered_models": len(delivered_models),
-                      "pass": passed, "pass_only": passed - selected,
+    print(json.dumps({"images": total, "package": packaged, "verified": selected,
+                      "delivered_models": len(delivered_models),
+                      "pass": passed, "extra": extras,
                       "overview": ov, "part": part, "reference": ref,
                       "models": models, "failed_downloads": len(failed)},
                      ensure_ascii=False))
