@@ -17,6 +17,7 @@
 | E24/T52 扩源 pilot（标注） | 100 行/81 唯一；53 target/24 not/22 uncertain；19 重复 URL；accepted 9/9 human target；门卫放行 part 场景，交付策略需加整车资格 | `data-test/evals/source-expansion-pilot-review-20261111/`（`annotations.json`、`ANNOTATION-ANALYSIS.md`） | 同上 | 待提交 |
 | E24/T52 扩源 pilot | 5 brief ×6 候选=30；base 失败 24；通用 alias+harvest verifier 通过 9/24；C holdout 0/6；待人工盲评 100 图 | `data-test/evals/source-expansion-pilot-review-20261111/`（`review.html`、`PROBE-ANALYSIS.md`）；`data-test/runs/source-expansion-probe-20261111/` | `scripts/probe_source_expansion.py`、`scripts/render_probe_review.py`；新 brief/plan | 待提交 |
 | E25/T53 失败 target 漏斗 | 23 唯一车型；base 0 accepted；exp 93 gate pass/23 图 accepted；pending 补评后 accepted precision **69.6%**（16/23），目标图 recall **32.7%**（16/49）；7 张 accepted 错图（车身类型/吨位） | `data-test/runs/source-expansion-funnel-20261111/`（`funnel.json`、`FUNNEL-ANALYSIS.md`）；`source-expansion-funnel-pending-review-20261111/`（`PENDING-ANALYSIS.md`） | `scripts/probe_source_expansion_funnel.py`、`scripts/render_funnel_pending_review.py` | `319d228`、`3dd2bfa`、待提交 |
+| E26/T54 车身/吨位 guard | 激进 hard guard precision 75% 但误杀 8 目标；保守 68.2%；overview-only 62.5%；不采纳硬 guard | `data-test/evals/source-expansion-funnel-pending-review-20261111/BODY-GUARD-ANALYSIS.md`、`BODY-GUARD.json` | `scripts/apply_body_guard.py` | 待提交 |
 | LangGraph 迁移评估 | 暂不全量迁移；先扩源/恢复；分支/feature flag/并行回归 | `docs/langgraph-migration-plan.md` | 待启动 | `1787605` |
 | generic 只标不删 | 12/12，3 generic 交付，82 图；无删除 | `data-test/runs/loop-generic-test-20261111/`、`audit.html` | `scripts/render_fetch_audit.py` | `70970ad` |
 
