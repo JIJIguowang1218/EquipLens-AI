@@ -107,3 +107,22 @@ task-brief@v2 (API)
 - P0 硬 overview 试验：`loop-p0-20261112` 10/12（已放弃硬规则）；
 - 平台对照：`loop-platform-{360,baidu,baidu-filtered}-20261112`，Platform 不接入；
 - code prefilter 独立对照：`loop-code-prefilter-20261112`，12/12 构成不变。
+
+## 8. 测试保真规则（2026-11-12 加）
+
+> 这一段是为了防止“fake Asset 让测试变绿、生产字段没接”的问题再次发生。
+
+1. **新字段必须四件套**：
+   - 生产 dataclass / dict；
+   - `from_dict` / `to_dict`；
+   - `schemas/`；
+   - 至少一个使用真实序列化的测试。
+2. **fill/排序/交付相关测试**不得只用裸 dict；必须经过 `Asset.to_dict → from_dict` 或真实 fixture。
+3. **每个决策必须有对应 invariant test**；没有测试的决策不能标记“已验证”。
+4. **测试通过前**必须确认它走的是生产路径；mock 只能 mock 外部 I/O，不能 mock 掉正在验证的契约。
+5. **P0 案例**：
+   - `Asset.scene/overview` 已加 `to_dict/from_dict`；
+   - `tests/test_retrieval_engine.py` 增加 Asset 序列化与 `part_only` 测试；
+   - `schemas/retrieval-state.schema.json` 增加 `asset_meta/attempts`；
+   - hard overview 的两种实现都记录在 `P0-REVIEW.md`，不再口口相传。
+6. **封装检查**以 `CODE-INDEX.md` 的生产/实验清单为准；任何实验脚本不得成为默认入口。

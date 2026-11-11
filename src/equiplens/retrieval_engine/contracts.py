@@ -254,6 +254,8 @@ class Asset:
             model=str(data.get("model") or ""),
             channel=str(data.get("channel") or ""),
             status=str(data.get("status") or ""),
+            scene=str(data.get("scene") or ""),
+            overview=bool(data.get("overview")),
         )
 
     def to_dict(self) -> dict:

@@ -67,8 +67,9 @@ def target(tid, parts):
     return {"target_id": tid, "model": tid, "parts": list(parts)}
 
 
-def asset(aid, view="front"):
-    return {"asset_id": aid, "view": view, "width": 1600, "height": 900}
+def asset(aid, view="front", scene="", overview=False):
+    return {"asset_id": aid, "view": view, "width": 1600, "height": 900,
+            "scene": scene, "overview": overview}
 
 
 def ok(grade="E2"):
@@ -93,6 +94,30 @@ def run_engine(brief_data, world_data, run_id="t1", root=None):
     world = FakeWorld(world_data)
     engine = RetrievalEngine(brief, world, run_root=root, run_id=run_id)
     return engine.run(), world
+
+
+def test_asset_contract_keeps_scene():
+    a = Asset(asset_id="a", target_id="t", part="bumper", scene="single_vehicle",
+              overview=True)
+    d = a.to_dict()
+    assert d["scene"] == "single_vehicle" and d["overview"] is True, d
+    b = Asset.from_dict(d, target_id="t", part="bumper")
+    assert b.scene == "single_vehicle" and b.overview is True
+
+
+def test_fill_marks_part_only_without_single_vehicle():
+    b = base_brief(slots=1)
+    w = {
+        "library": {},
+        "external": {"u-exact": [target("ext-1", ["bumper"])]},
+        "assets": {"ext-1": {"bumper": [asset("ext-1-bumper", scene="part")]}},
+        "verify": {"ext-1-bumper": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        st = json.loads((Path(td) / "t1" / "state.json").read_text(encoding="utf-8"))
+        assert st["targets"]["ext-1"]["part_only"] is True, st["targets"]["ext-1"]
+        assert summary["coverage"]["u-exact"]["accepted"] == 1
 
 
 def test_brief_validation():
@@ -495,6 +520,8 @@ def test_delivery_counts_degraded_identity():
 
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
+    check("Asset 保留 scene", test_asset_contract_keeps_scene)
+    check("part_only 标记", test_fill_marks_part_only_without_single_vehicle)
     check("JSON Schema 契约", test_json_schema_contracts)
     check("库内优先，不触发外检", test_library_first_no_external)
     check("库内被拒 → 外检补位", test_external_fallback_after_library_reject)
