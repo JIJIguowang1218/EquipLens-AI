@@ -90,18 +90,45 @@ button.p{{background:#1d1d1f;color:#fff;border-color:#1d1d1f}}
 </style></head><body>
 <header><h1>扩源测试：34 张门卫通过图</h1>
 <p class="muted">目标来自 3 个无图车型；测试 query 是短查询 + 来源页 harvest。门卫都通过，核验绝大多数 unknown。</p>
-<p>核验分布：{esc(counts)}；核验通过仅 1 张（probable）。正常 run 的逐图核验通过率约 80–92%，本次约 3%。</p></header>
+<p>核验分布：{esc(counts)}；核验通过仅 1 张（probable）。正常 run 的逐图核验通过率约 80–92%，本次约 3%。</p>
+<p class="muted">如果浏览器禁止 file:// 本地存储：标注仍会留在当前页面，但不会自动持久化；请用“导出核对 JSON”，会同时显示可复制的文本框。旧页标注抢救见 RESCUE.md。</p></header>
 <div class="bar"><button class="p" id="save">保存到浏览器</button><button id="export">导出核对 JSON</button><span class="muted" id="st">改选后自动保存</span></div>
+<div id="outbox" style="display:none;padding:10px 32px;background:#fff8e6;border-bottom:1px solid #e3c3bd">
+<p class="muted">如果浏览器拦截下载，下面的 JSON 已选中，按 Ctrl+C 复制后发我。</p>
+<textarea id="out" rows="6" style="width:100%;font:12px monospace"></textarea>
+<button id="copy">复制</button></div>
 <main>{''.join(cards)}</main>
 <script>
 const KEY='source-expansion-review-20261111';
-const all=JSON.parse(localStorage.getItem(KEY)||'{{}}');
+let all={{}};
+try{{all=JSON.parse(localStorage.getItem(KEY)||'{{}}')||{{}};}}catch(e){{
+  document.getElementById('st').textContent='浏览器禁止 file:// 本地存储：请用“导出”，不要刷新页面';
+}}
+function save(){{try{{localStorage.setItem(KEY,JSON.stringify(all));document.getElementById('st').textContent='已保存 '+new Date().toLocaleTimeString();}}catch(e){{document.getElementById('st').textContent='本地存储不可用：请用“导出”备份';}}}}
+function payload(){{return JSON.stringify(all,null,1);}}
 document.querySelectorAll('[data-v]').forEach(el=>{{
-  if(all[el.dataset.v]!==undefined) el.value=all[el.dataset.v];
-  el.addEventListener('input',()=>{{all[el.dataset.v]=el.value;localStorage.setItem(KEY,JSON.stringify(all));document.getElementById('st').textContent='已保存 '+new Date().toLocaleTimeString();}});
+  const k=el.dataset.v;
+  if(all[k]!==undefined) el.value=all[k];
+  const on=()=>{{all[k]=el.value;save();}};
+  el.addEventListener('input',on); el.addEventListener('change',on);
 }});
-document.getElementById('save').onclick=()=>{{localStorage.setItem(KEY,JSON.stringify(all));document.getElementById('st').textContent='已保存';}};
-document.getElementById('export').onclick=()=>{{const b=new Blob([JSON.stringify(all,null,1)],{{type:'application/json'}});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='source-expansion-review.json';a.click();}};
+document.getElementById('save').onclick=save;
+document.getElementById('export').onclick=()=>{{
+  const text=payload();
+  const box=document.getElementById('outbox'), out=document.getElementById('out');
+  box.style.display='block'; out.value=text; out.focus(); out.select();
+  try{{
+    const b=new Blob([text],{{type:'application/json'}});
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='source-expansion-review.json';
+    document.body.appendChild(a);a.click();a.remove();
+  }}catch(e){{}}
+  document.getElementById('st').textContent='已生成导出内容；如下载无反应，请复制文本框';
+}};
+document.getElementById('copy').onclick=async()=>{{
+  const out=document.getElementById('out');
+  try{{await navigator.clipboard.writeText(out.value);document.getElementById('st').textContent='已复制';}}
+  catch(e){{out.focus();out.select();document.execCommand('copy');document.getElementById('st').textContent='已选中，请 Ctrl+C';}}
+}};
 </script></body></html>"""
     BASE.mkdir(parents=True, exist_ok=True)
     (BASE / "review.html").write_text(doc, encoding="utf-8")

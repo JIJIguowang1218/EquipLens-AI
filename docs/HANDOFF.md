@@ -132,6 +132,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T47 意向排序 + 12+2 | ✅ | `rank_plan.py` 文本排序 12 primary/2 backup；`unit_quotas` 预留、补位不抢 primary；HF8066 rank6 占槽；完整 12/12，backup 仅在 primary 无图时补位 |
 | T48 失败统计 + 先验接线 | ✅ | 4 run 失败统计：403/DNS + 拼图/多车/客车；12 条失败 URL 重放 **0/12**（同 URL 重试无用）；`analysis` 接收 kind/location/family/why 作为待验证先验；`WebWorld` 部件兜底 query + 阶梯日志 |
 | T49 扩源/换源小测 | ⚠️ | 3 个无图目标：长 query 0；短 query/harvest 过门卫 34 张，但身份仅 1 张 probable；扩源能提量，但必须具体 query/来源页 + 核验 |
+| T50 文件索引 | ✅ | `docs/EXPERIMENTS-INDEX.md`：E17b/E19/E20/E21/LangGraph/generic 的结论→数据→脚本→commit；扩源核对页 README/RESCUE；file:// 标注丢失原因 |
 
 最近 run：
 
