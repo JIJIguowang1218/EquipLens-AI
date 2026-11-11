@@ -51,6 +51,8 @@ def main(argv=None) -> int:
                         help="候选规划池 JSON（scripts/plan_candidates.py 的输出）")
     parser.add_argument("--no-citation", action="store_true",
                         help="跳过引用核验（默认开启）")
+    parser.add_argument("--code-prefilter", action="store_true",
+                        help="实验：target 有 code 且标题 code 明确不一致时，下载前拒绝")
     parser.add_argument("--platform-extra", default="", choices=["", "baidu"],
                         help="平台层实验：baidu=360+Baidu；默认只用正常通道")
     parser.add_argument("--pin", default="",
@@ -92,7 +94,8 @@ def main(argv=None) -> int:
                          plan=plan, citation_check=not args.no_citation,
                          pins=[x.strip() for x in args.pin.split(",") if x.strip()],
                          unit_quotas={u.unit_id: u.quota for u in brief.research_units},
-                         platform_extra=args.platform_extra)
+                         platform_extra=args.platform_extra,
+                         code_prefilter=args.code_prefilter)
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")

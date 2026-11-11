@@ -456,6 +456,13 @@ def test_plan_partition_reserves_unit_quotas():
     assert [t.model for t in world.external_targets(u1)] == ["m4", "m5"]
 
 
+def test_code_prefilter_keeps_match_drops_mismatch():
+    assert WebWorld._code_ok("TAZ4922 6×6", "重汽 TAZ4922 牵引车")
+    assert not WebWorld._code_ok("TAZ4922 6×6", "重汽 TAZ4413 牵引车")
+    assert WebWorld._code_ok("TAZ4922 6×6", "重汽 6×6 牵引车")  # 标题无 code，不拒
+    assert WebWorld._code_ok("6×6 沙漠车", "TAZ4413")  # generic target，不拒
+
+
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
 
@@ -504,6 +511,7 @@ if __name__ == "__main__":
     check("空库适配器", test_null_library_adapter)
     check("Target 身份标记往返", test_target_identity_kind_roundtrip)
     check("unit 配额预留 primary", test_plan_partition_reserves_unit_quotas)
+    check("code prefilter", test_code_prefilter_keeps_match_drops_mismatch)
     check("无 plan/models 拒绝 fallback", test_web_world_requires_plan_or_models)
     check("CLI 拦截无 plan 的 web-only", test_cli_web_only_without_plan_errors)
     check("交付守卫：不足报 short", test_delivery_block_marks_short)

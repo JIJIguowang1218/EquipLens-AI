@@ -138,7 +138,7 @@ class WebWorld:
                  citation_check: bool = True, api_key: str | None = None,
                  pins: list[str] | None = None,
                  unit_quotas: dict[str, int] | None = None,
-                 platform_extra: str = ""):
+                 platform_extra: str = "", code_prefilter: bool = False):
         if isinstance(models, list):
             models = {"*": models}
         self.models = models or {}
@@ -148,6 +148,7 @@ class WebWorld:
         self._fetch_cache: dict[str, dict] = {}   # url → _download_and_gate 结果
         self.plan = list(plan or [])
         self.platform_extra = (platform_extra or "").strip().lower()
+        self.code_prefilter = bool(code_prefilter)
         self.pins = [p.lower() for p in (pins or [])]
         for c in self.plan:
             model = str(c.get("model") or "").lower()
@@ -446,6 +447,21 @@ class WebWorld:
             f.write(json.dumps(rec, ensure_ascii=False) + chr(10))
 
     @staticmethod
+    def _code_ok(model: str, title: str) -> bool:
+        import re as _re
+        rx = _re.compile(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", _re.I)
+        tc = {x.lower() for x in rx.findall(model or "")}
+        hc = {x.lower() for x in rx.findall(title or "")}
+        if not tc or not hc:
+            return True
+        return bool(tc & hc)
+
+    def _filter_code(self, target, hits):
+        if not self.code_prefilter or target.identity_kind != "code":
+            return hits
+        return [h for h in hits if self._code_ok(target.model, h.get("title", ""))]
+
+    @staticmethod
     def _search_360_baidu(query: str, model: str) -> list[dict]:
         """平台层实验：360 + Baidu，下载前复用 _relevant 预筛。"""
         from .. import imagesearch
@@ -478,6 +494,7 @@ class WebWorld:
                     else:
                         got, _diag = imagesearch.search_images_hd(
                             q, limit=6, model=target.model)
+                got = self._filter_code(target, got)
                 hits = got or hits
                 if hits:
                     break
@@ -494,6 +511,7 @@ class WebWorld:
                         else:
                             got, _diag = imagesearch.search_images_hd(
                                 pq, limit=6, model=target.model)
+                    got = self._filter_code(target, got)
                     if got:
                         hits = got
                         self._part_query_used = pq
