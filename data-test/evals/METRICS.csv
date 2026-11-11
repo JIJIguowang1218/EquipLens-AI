@@ -1,0 +1,10 @@
+experiment,date,change,baseline,result,unit,source,caveat
+T46 task-brief v2 vs v1,2026-11-11,method vs format-only,v1 3/10 auto,v2 10/10 auto,cases passing assertions,data-test/evals/task-brief-eval-v1b-20261111/RESULTS.md,human semantic review separate; n=10
+T46 human review,2026-11-11,method vs format-only,v1 6 PASS/3 FAIL/1 NA,v2 10 PASS,cases human overall,data-test/evals/task-brief-eval-v1b-20261111/REVIEW-SUMMARY.md,same 10 cases; single reviewer
+T45 generic no-delete,2026-11-11,generic label only,no baseline,12/12 delivery; 3 generic; 82 unique images,run,data-test/runs/loop-generic-test-20261111/SUMMARY,not a controlled A/B
+T47 intent rank,2026-11-11,12 primary+2 backup,baseline order,12/12; HF8066 rank6占槽,run,data-test/runs/loop-intent-test3-20261111/,single brief; 2 primary no image -> backup
+T59 code prefilter,2026-11-12,download-time code mismatch reject,none,12/12 composition unchanged; accepted 236->224; gate 264->256,run,data-test/runs/loop-code-prefilter-20261112/CODE-PREFILTER-LOOP-ANALYSIS.md,single brief; removed accepted assets not all human-labeled
+T57 platform union,2026-11-12,360+Baidu union,360 12/12; degraded 8,12/12 but lost HF8066; unknown 20->284,run,data-test/runs/loop-platform-baidu-20261112/PLATFORM-LOOP-DEEP-ANALYSIS.md,negative; not production
+T58 platform relevance filter,2026-11-12,pre-download _relevant,unfiltered Baidu unknown 284,unknown 0; accepted 216/220; still loses HF8066,run,data-test/runs/loop-platform-baidu-filtered-20261112/FILTERED-PLATFORM-ANALYSIS.md,negative; query fixed class query
+T61 P0 invariants,2026-11-12,asset dedupe/attempts/part_only soft,baseline 12/12,12/12 same composition; part_only flags 4/12,run,data-test/runs/loop-p0c-20261112/P0-REVIEW.md,part_only not enforced; scene labels unreliable
+T56 platform candidate probe,2026-11-12,360 vs Baidu vs union,360 target accepted 5,Baidu 8; union 9; accepted precision 80/94.1/89.8,targets/images,data-test/evals/platform-review-20261111/PLATFORM-REVIEW-ANALYSIS.md,different query/class; not full loop
