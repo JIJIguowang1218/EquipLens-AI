@@ -25,6 +25,21 @@
 > - 没有 key 时：门卫/抓取测试仍可跑（本地 CLIP 不花钱），但 `scripts/plan_candidates.py`、引用核验、重规划全部不可用；跑 loop 需加 `--no-citation`，且不能用 `--plan`
 > - 单轮 12 槽实测成本：规划 $0.005 + 引用核验 $0.019 ≈ **$0.024**
 
+
+## 0.0 当前进度与下一步（2026-11-12）
+
+- 检索 v1 收敛：停止 Query/Source/Platform 扩源；normal 默认仍是 360。
+- P0：asset 去重、attempt 日志、`part_only` 软标记、code prefilter 可选；
+  hard overview 已否（10/12 或 composition 变差），`loop-p0c` 12/12 保持 baseline composition。
+- Platform 完整 loop 对照失败：Baidu union 丢 HF8066、unknown 暴增；只保留 opt-in/降级候选，不默认。
+- code prefilter 独立验证：12/12 构成不变，accepted 236→224；可选。
+- 360+Baidu 定向补位试跑未命中；专门来源 360che 反爬、lmjx 超时，暂不接。
+- 下一步：
+  1. 第一次用户交付（12 主 + 2 备，beta + 人审）；
+  2. feedback router + 短期 session；
+  3. LangGraph 只做 feedback/session spike，不重写核心；
+  4. 不恢复已收口扩源策略；不把 fixture/预制 brief 当用户输入。
+
 ## 0.1 换电脑 30 分钟接续（2026-11-10）
 
 ### 1) 拉代码与 Python

@@ -1,0 +1,41 @@
+# 远程同步清单（新电脑接手）
+
+更新：2026-11-12
+
+## 会同步（git）
+
+- 全部生产代码：`src/equiplens/**`
+- 入口/脚本：`scripts/**`（含实验脚本，但见 CODE-INDEX 标注）
+- 技能：`skills/**`
+- 测试：`tests/**`
+- 契约：`schemas/**`
+- 配置/词表：`data/*.json`
+- 文档：`docs/**`
+- 评测结论/数据：`data-test/evals/**`
+- run 的轻量轨迹：`data-test/runs/**/state.json`、`summary.json`、`fetch_log.jsonl`、`events.jsonl`、`audit.html`、`RUN.json`
+- 测试夹具：`data-test/retrieval-fixtures-20261109/**`（P1 测试必需）
+- 人工审核页：部分 `review.html` + 其中跟踪的缩略图
+
+## 不同步（gitignore / 不入库）
+
+- API key：`~/.equiplens/deepseek.env`（仓库外；新电脑必须自备）
+- Python venv、`__pycache__`
+- UForm3 模型缓存（首次运行自动下载，约 59MB）
+- 大多数 `data-test/runs/**/images/` 原图（版权/体积）
+- `data-test/equiplens.db`、`data-test/ab-images/`、`data-test/ui-fixtures/`
+- `tmp/`、输出视频/PPT 中间产物
+
+## 新电脑缺什么
+
+1. DeepSeek key（否则规划/引用/重规划不可用）；
+2. Python 3.11 + requirements + UForm3 模型下载；
+3. `data-test/runs/**/images/` 原图：run 的 state/log/audit 在，但图片不一定在；
+4. 若审核页图片未跟踪，HTML 会缺缩略图；需要重新抓或看原图 URL；
+5. 旧数据库/演示夹具（如 `data-test/equiplens.db`、`ui-fixtures`）不在仓库。
+
+## 结论
+
+- **主体代码可拉取并跑**，但新电脑必须装环境 + 自备 key + 首次下载模型；
+- **测试结论 JSON/MD/大部分审核页在仓库**，但不是所有图片都在；
+- **不能声称“所有测试过程和结果都同步”**：原图、DB、部分中间产物不同步；
+- 包装前按 `CODE-INDEX.md`/`CURRENT-ARCHITECTURE.md` 走，不要依赖未同步的 run 图片。

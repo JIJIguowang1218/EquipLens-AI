@@ -1,0 +1,69 @@
+{
+  "brief_id": "b-20261109-p1",
+  "request": {
+    "raw": "沙漠牵引车（保险杠、防护栏、登车踏步）",
+    "class": "沙漠牵引车",
+    "environment": {"value": "沙漠工况", "confidence": 0.85},
+    "base_platform": {"value": "6×6 重型卡车", "confidence": 0.8},
+    "configuration": "6×6",
+    "page_budget": {"total": 20, "vehicle_slots": 3, "part_pages": 1}
+  },
+  "assumptions": [
+    {"field": "environment", "value": "沙漠工况", "why": "用户原话 + 类目档案", "confidence": 0.85}
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+    {
+      "part": "bumper",
+      "label": "保险杠",
+      "location": "front_lower",
+      "design_relevance": "strong",
+      "views": ["front", "hero_45"],
+      "accept": "A",
+      "mechanism": ["沙石冲击", "接近角"]
+    },
+    {
+      "part": "side_guard",
+      "label": "防护栏",
+      "location": "side_chassis",
+      "design_relevance": "strong",
+      "views": ["side", "rear"],
+      "accept": "B",
+      "mechanism": ["沙石", "防撞"]
+    },
+    {
+      "part": "step",
+      "label": "登车踏步",
+      "location": "side_lower",
+      "design_relevance": "strong",
+      "views": ["side", "hero_45"],
+      "accept": "B",
+      "mechanism": ["防滑", "沙尘"]
+    }
+  ],
+  "research_units": [
+    {
+      "unit_id": "u-exact",
+      "tier": "exact",
+      "scope": "沙漠工况 6×6 牵引车",
+      "parts": ["bumper", "step"],
+      "quota": 2,
+      "budget": {"max_queries": 6, "max_rounds": 2},
+      "stop": "2 台满足验收即停"
+    },
+    {
+      "unit_id": "u-env",
+      "tier": "environment",
+      "scope": "沙漠环境用车",
+      "parts": ["side_guard", "step"],
+      "quota": 1,
+      "budget": {"max_queries": 4, "max_rounds": 2},
+      "stop": "1 台满足验收即停"
+    }
+  ],
+  "tiers": ["exact", "environment"],
+  "budget": {"max_queries": 10, "max_rounds": 2, "max_models": 6},
+  "stop_rules": {"no_new_after": 3, "max_rounds": 2},
+  "negative": ["乘用车", "SUV", "多车合影", "内饰"],
+  "strategy_ref": "default@v1"
+}

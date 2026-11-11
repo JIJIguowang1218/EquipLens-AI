@@ -1,0 +1,44 @@
+{
+  "library": {
+    "u-exact": [
+      {"target_id": "lib-1", "model": "lib-desert-1", "parts": ["bumper", "step"]}
+    ]
+  },
+  "external": {
+    "u-exact": [
+      {"target_id": "ext-1", "model": "ext-desert-1", "parts": ["bumper", "step"]},
+      {"target_id": "ext-2", "model": "ext-desert-2", "parts": ["bumper", "step"]}
+    ],
+    "u-env": [
+      {"target_id": "ext-3", "model": "env-desert-3", "parts": ["side_guard", "step"]}
+    ]
+  },
+  "assets": {
+    "lib-1": {
+      "bumper": [{"asset_id": "lib-1-bumper", "view": "front", "width": 1600, "height": 900}],
+      "step": [{"asset_id": "lib-1-step", "view": "side", "width": 1600, "height": 900}]
+    },
+    "ext-1": {
+      "bumper": [{"asset_id": "ext-1-bumper", "view": "front", "width": 1600, "height": 900}],
+      "step": [{"asset_id": "ext-1-step", "view": "side", "width": 1600, "height": 900}]
+    },
+    "ext-2": {
+      "bumper": [{"asset_id": "ext-2-bumper", "view": "hero_45", "width": 1600, "height": 900}],
+      "step": [{"asset_id": "ext-2-step", "view": "side", "width": 1600, "height": 900}]
+    },
+    "ext-3": {
+      "side_guard": [{"asset_id": "ext-3-guard", "view": "side", "width": 1600, "height": 900}],
+      "step": [{"asset_id": "ext-3-step", "view": "side", "width": 1600, "height": 900}]
+    }
+  },
+  "verify": {
+    "lib-1-bumper": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "lib-1-step": {"accepted": false, "identity": "probable", "visibility": "full", "origin": "unknown", "grade": "E1", "defects": ["wrong_identity"]},
+    "ext-1-bumper": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "ext-1-step": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "ext-2-bumper": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "ext-2-step": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "ext-3-guard": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []},
+    "ext-3-step": {"accepted": true, "identity": "confirmed", "visibility": "full", "origin": "oem", "grade": "E2", "defects": []}
+  }
+}
