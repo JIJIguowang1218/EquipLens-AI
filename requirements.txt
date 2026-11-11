@@ -1,10 +1,20 @@
 # EquipLens-AI 依赖（Python 3.11）
-pillow>=10.0        # 图片解码/缩放（M1 导入流水线、感知哈希）
-jsonschema>=4.20    # 数据契约校验（数据层第一档测试）
-uform[onnx]>=3.0    # CLIP 零样本门卫（R1.5, onnx CPU 22ms/图; 模型经 HF_ENDPOINT=https://hf-mirror.com 镜像下载）
-crawl4ai>=0.9       # 真实渠道 JS 门户渲染（playwright 内含）
-# 判向探针 v2（意见 #11 路线）: torch 请装 CPU 版避免拉 2GB CUDA 依赖
-#   pip install torch --index-url https://download.pytorch.org/whl/cpu
-torch>=2.2          # Chinese-CLIP 底座推理（CPU 即可）
-transformers>=4.45  # Chinese-CLIP ViT-B/16 特征提取（模型 OFA-Sys/chinese-clip-vit-base-patch16, 走 hf-mirror）
+# 核心检索/评测
+pillow>=10.0          # 图片解码/缩放/审核页缩略图
+jsonschema>=4.20      # schema 契约校验
+requests>=2.31        # 360/Baidu/Bing/API 网络请求
+numpy>=1.26           # 向量/数值计算
+uform[onnx]>=3.0      # UForm3 CLIP 零样本门卫（onxx CPU；模型走 hf-mirror）
 
+# 报告导出（scripts/export_pptx.py 等）
+python-pptx>=0.6.23
+
+# 可选：旧 Chinese-CLIP 探针；跑当前 loop 不需要
+# torch 请装 CPU 版，避免拉 CUDA：
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# torch>=2.2
+# transformers>=4.45
+
+# 可选：crawl4ai/playwright 真实 JS 门户渲染；当前 loop 不依赖
+# crawl4ai>=0.9
+# playwright>=1.40
