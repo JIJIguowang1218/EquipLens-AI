@@ -454,7 +454,6 @@ class _ImgParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
         self.srcs: list[str] = []
-        self.items: list[dict] = []
 
     def handle_starttag(self, tag, attrs):  # noqa: D401
         if tag.lower() != "img":
@@ -463,7 +462,6 @@ class _ImgParser(HTMLParser):
         u = d.get("data-src") or d.get("data-original") or d.get("src") or ""
         if u:
             self.srcs.append(u)
-            self.items.append({"src": u, "alt": d.get("alt") or d.get("title") or ""})
 
 
 def extract_page_images(html: str, page_url: str, limit: int = 12) -> list[str]:
@@ -515,25 +513,12 @@ def page_priority(url: str) -> int:
     return score
 
 
-def _page_title(html: str) -> str:
-    m = re.search(r"<title[^>]*>(.*?)</title>", html or "", re.S | re.I)
-    title = re.sub(r"\s+", " ", m.group(1)).strip() if m else ""
-    if not title:
-        m = re.search(r"property=[\"']og:title[\"'][^>]*content=[\"']([\"']+)", html or "", re.I)
-        title = m.group(1).strip() if m else ""
-    return title[:200]
-
-
 def harvest_source_page(source_url: str, limit: int = 8) -> list[dict]:
     """回访来源页（文章/图集），抽出同页图片并升级到大图。
 
     背景：360 图片 API 每条结果都带 `link`（来源页），一个 360che 文章页实测有
     30 张图、抽样 7/8 能升到 1200×800；而图片搜索每查询只出 ~1.8 张部件可用。
     所以“搜索找页 → 回访取全页图”比“只取搜索结果里的单张”产出高得多。
-
-    2026-11-11：把页面 title / 图片 alt 作为 title 传给核验；否则 harvest 图
-    永远 unknown（泰安五岳 34 张测试里至少 5 张目标图因此漏掉）。仅 harvest
-    路径使用，正常搜索路径不变。
     """
     if not source_url.startswith("http"):
         return []
@@ -541,37 +526,15 @@ def harvest_source_page(source_url: str, limit: int = 8) -> list[dict]:
         r = requests.get(source_url, headers={"User-Agent": UA}, timeout=20)
         if r.status_code != 200:
             return []
-        if not r.encoding or r.encoding.lower() in ("iso-8859-1", "latin-1"):
-            r.encoding = r.apparent_encoding or "utf-8"
         html = r.text
     except Exception:  # noqa: BLE001
         return []
-    page_title = _page_title(html)
-    p = _ImgParser()
-    try:
-        p.feed(html or "")
-    except Exception:  # noqa: BLE001
-        return []
-    from urllib.parse import urljoin
-
-    hits, seen = [], set()
-    for item in p.items:
-        u = urljoin(source_url, (item.get("src") or "").strip())
-        if not u.startswith("http") or SKIP_IMG_RE.search(u):
-            continue
-        base = re.sub(r"!\d{3,4}$", "", u)
-        if base in seen:
-            continue
-        seen.add(base)
-        alt = re.sub(r"\s+", " ", item.get("alt") or "").strip()
-        title = " ".join(x for x in (page_title, alt) if x).strip()
+    hits = []
+    for u in extract_page_images(html, source_url, limit=limit):
         hits.append({"url": upgrade_image_url(u) or u,
-                     "thumb_url": "", "title": title, "alt": alt,
-                     "page_title": page_title, "width": 0, "height": 0,
-                     "channel": "page", "source_mode": "harvest",
-                     "source_url": source_url, "referer": source_url})
-        if len(hits) >= limit:
-            break
+                     "thumb_url": "", "title": "", "width": 0, "height": 0,
+                     "channel": "page", "source_url": source_url,
+                     "referer": source_url})
     return hits
 
 
