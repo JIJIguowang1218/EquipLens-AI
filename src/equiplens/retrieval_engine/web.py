@@ -451,6 +451,7 @@ class WebWorld:
         """
         from .. import gate, imagesearch
 
+        self._part_query_used = ""
         key = target.query or target.model
         hits = self._search_cache.get(key)
         if hits is None:
@@ -465,6 +466,19 @@ class WebWorld:
                 hits = got or hits
                 if hits:
                     break
+            if not hits:
+                # 部件类型/位置的最后一个便宜兜底：用“部件 label + 车型”再搜一次。
+                req = self.parts.get(part)
+                if req is not None and getattr(req, "label", ""):
+                    pq = f"{req.label} {target.query}".strip()
+                    if self.router is not None:
+                        got, _diag = self.router.search(pq, 6, target.model)
+                    else:
+                        got, _diag = imagesearch.search_images_hd(
+                            pq, limit=6, model=target.model)
+                    if got:
+                        hits = got
+                        self._part_query_used = pq
             self._search_cache[key] = hits
 
         log_path = None
@@ -487,6 +501,9 @@ class WebWorld:
                         "model": target.model, "part": part,
                         "url": hit.get("url", ""), "title": hit.get("title", ""),
                         "ok": False, "error": res.get("error") or "no_data",
+                        "tries": res.get("tries"), "url_used": res.get("url_used"),
+                        "upgraded": res.get("upgraded"),
+                        "part_query": getattr(self, "_part_query_used", ""),
                     })
                 continue
             pre = res.get("prefilter") or {}
@@ -523,6 +540,9 @@ class WebWorld:
                         "reasons": a.get("reasons") or [],
                         "hints": a.get("hints") or [],
                         "pre_reasons": (pre.get("reasons") or []),
+                        "tries": res.get("tries"), "url_used": res.get("url_used"),
+                        "upgraded": res.get("upgraded"),
+                        "part_query": getattr(self, "_part_query_used", ""),
                     })
             # 分辨率不再作为放行条件：通过两段式门卫的图都交给 loop/人审
             if not a.get("pass"):

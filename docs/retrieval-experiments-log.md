@@ -426,3 +426,24 @@
 **结论**：LLM 的文本意向排序可以作为“先抓谁/先给谁”的先验，但不能作为终审；必须 evidence 准入。unit 配额预留是必要的，否则 exact 的补位会抢走 environment 的 primary（test2 就出现了 backup 抢槽、primary 9–12 没交付）。
 
 **未解决**：ranker 只跑一次、无人工复核；12+2 的“2 备”是否要展示给用户、pin 的 UI 还没做；HF8066 仍有低清 warning。
+
+---
+
+## E20 失败原因 + 阶梯重放 + 部件先验接线（2026-11-11）
+
+**统计**（`data-test/evals/failure-stats-20261111.md`）：
+
+| run | fetch | 下载失败 | 过门卫 | 无图目标 | 主要失败 |
+|---|---:|---:|---:|---:|---|
+| intent-test3 | 328 | 40 | 264 | 4 | connection 20 / 403 16 / redirect 4；门卫：拼图 12、多车 4、客车 4 |
+| generic-test | 392 | 52 | 316 | 5 | 403 28 / connection 20；同上门卫 |
+| m1b-v2 | 372 | 56 | 308 | 2 | 403 48 / connection 4 / 404 4 |
+| c01-plan9 | 176 | 24 | 136 | 12 | connection 12 / 404 8 / 403 4；拼图 16 |
+
+**阶梯重放**：从 intent3 取 12 条失败 URL，用当前下载阶梯重下：**0/12 成功**，`tries=2` 就停在 DNS/403。说明同一 URL 重试无收益，恢复必须换源/换查询，不是加下载次数。
+
+**接线（已改）**：
+- `analysis._normalize_slots` 保留 `kind/location/part_family/why`；`build_prompt` 把它们作为“检索先验（假设，不是图上结论；不符以图为准）”写进对应 slot；
+- `WebWorld.live_fetch` 在基础 query 无命中时，用 `part.label + target.query` 再做一次部件兜底查询；fetch_log 记录 `tries/url_used/upgraded/part_query`，后续 run 可统计阶梯成功率。
+
+**未验证**：部件兜底查询是否真的提升命中；analysis 先验是否造成确认偏误；新 run 才有阶梯数据。

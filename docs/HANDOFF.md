@@ -129,6 +129,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T45 generic 只标不删 | ✅ | A2 plan 跑 12 槽：**12/12**，3 台 generic 占槽，82 唯一图/76 过门卫；审核页显示身份并可按泛称筛选；无候选被删 |
 | T46 10 案例 skill A/B | ✅ | 5 旧 + 5 新品类（挖掘机/装载机/搅拌车/环卫压缩车/高空作业车），全部 3–5 部件、无具体车型；**v2 vs v1 只给格式**：自动断言 10/10 vs 3/10；人工 PASS/FAIL/证据见 `data-test/evals/task-brief-eval-v1b-20261111/review.html` |
 | T47 意向排序 + 12+2 | ✅ | `rank_plan.py` 文本排序 12 primary/2 backup；`unit_quotas` 预留、补位不抢 primary；HF8066 rank6 占槽；完整 12/12，backup 仅在 primary 无图时补位 |
+| T48 失败统计 + 先验接线 | ✅ | 4 run 失败统计：403/DNS + 拼图/多车/客车；12 条失败 URL 重放 **0/12**（同 URL 重试无用）；`analysis` 接收 kind/location/family/why 作为待验证先验；`WebWorld` 部件兜底 query + 阶梯日志 |
 
 最近 run：
 

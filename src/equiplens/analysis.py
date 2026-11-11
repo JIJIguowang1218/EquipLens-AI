@@ -281,7 +281,10 @@ def _normalize_slots(slots) -> list[dict]:
         if isinstance(x, dict):
             label = x.get("label") or x.get("slot") or f"部位{i}"
             out.append({"id": x.get("id") or f"p{i}", "label": label,
-                        "slot": x.get("slot")})
+                        "slot": x.get("slot"),
+                        "kind": x.get("kind"), "location": x.get("location"),
+                        "part_family": x.get("part_family"),
+                        "why": x.get("why")})
         else:
             out.append({"id": f"p{i}", "label": str(x), "slot": None})
     return out
@@ -296,9 +299,20 @@ def build_prompt(vehicle: str, used: list[str], slots: list[str],
     for i, item in enumerate(_normalize_slots(slots), 1):
         label, canon = item["label"], item.get("slot")
         info = tax_when.get(canon) if canon else None
+        prior = []
+        if item.get("kind"):
+            prior.append(f"类型 {item['kind']}")
+        if item.get("location"):
+            prior.append(f"位置 {item['location']}")
+        if item.get("part_family"):
+            prior.append(f"预计族 {item['part_family']}")
+        if item.get("why"):
+            prior.append(f"关注 {item['why']}")
+        prior_txt = ("；检索先验（假设，不是图上结论；不符以图为准）: " + "；".join(prior)
+                     if prior else "")
         if info:
             names = "；".join(f"{t['name']}（{t['when']}）" for t in info.get("terms", []))
-            term_lines.append(f"- [{item['id']}] {label}（词表槽位 {canon}）: {names}")
+            term_lines.append(f"- [{item['id']}] {label}（词表槽位 {canon}）: {names}{prior_txt}")
         else:
             term_lines.append(
                 f"- [{item['id']}] {label}（不在词表）：按同一四槽结构自行判定类型并描述；"
