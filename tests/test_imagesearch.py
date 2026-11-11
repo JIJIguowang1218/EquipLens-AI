@@ -72,6 +72,21 @@ def test_search_accumulates_and_marks_channel():
         imagesearch._search_360 = orig
 
 
+def test_search_platforms_applies_relevance():
+    o360, obaidu = imagesearch._search_360, imagesearch._search_baidu
+    imagesearch._search_360 = lambda q, n: (
+        [{"url": "https://x/1.jpg", "title": "德龙X3000 6x6 沙漠越野"}], "ok")
+    imagesearch._search_baidu = lambda q, n: (
+        [{"url": "https://x/2.jpg", "title": "梅西壁纸"},
+         {"url": "https://x/3.jpg", "title": "德龙X3000 6x6 实拍"}], "ok")
+    try:
+        hits, diag = imagesearch.search_platforms("德龙X3000 6x6 沙漠", 6, model="德龙X3000 6x6")
+        assert [h["url"] for h in hits] == ["https://x/1.jpg", "https://x/3.jpg"], hits
+        assert diag[1]["filtered"] == 1, diag
+    finally:
+        imagesearch._search_360, imagesearch._search_baidu = o360, obaidu
+
+
 def test_unrelated_channel_falls_through():
     o360, obaidu = imagesearch._search_360, imagesearch._search_baidu
     imagesearch._search_360 = lambda q, n: (
@@ -196,6 +211,7 @@ if __name__ == "__main__":
     check("构型/品牌/非车污染护栏", test_config_and_brand_guard)
     check("整车主图外观策略", test_exterior_policy)
     check("多通道累加 + 标注通道", test_search_accumulates_and_marks_channel)
+    check("平台组合：相关性预筛", test_search_platforms_applies_relevance)
     check("不相关通道自动跳过", test_unrelated_channel_falls_through)
     check("被拦状态如实上报", test_blocked_status_reported)
     check("360 取原图而非缩略图", test_360_uses_original_image)

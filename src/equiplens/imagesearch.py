@@ -81,6 +81,41 @@ def search_images_ex(query: str, limit: int = 12,
     return collected[:limit], diag
 
 
+def search_platforms(query: str, limit: int = 6, *,
+                    model: str | None = None,
+                    platforms: tuple[str, ...] = ("360", "baidu")) -> tuple[list[dict], list[dict]]:
+    """平台层显式组合，并在**下载前**复用 _relevant 护栏。
+
+    正常 search_images_ex 会先 360 命中就停；平台实验需要 360+Baidu 都取一些，
+    所以单独组合，但不能绕过正常路径已有的相关性预筛。
+    """
+    fns = {"360": _search_360, "baidu": _search_baidu, "bing": _search_bing}
+    out, seen, diag = [], set(), []
+    for name in platforms:
+        fn = fns.get(name)
+        if not fn:
+            continue
+        try:
+            got, status = fn(query, max(limit, 12))
+        except Exception as e:  # noqa: BLE001
+            got, status = [], f"error:{type(e).__name__}"
+        rel = [h for h in got if _relevant(query, h.get("title", ""), model)]
+        diag.append({"channel": name, "returned": len(got),
+                     "relevant": len(rel), "filtered": len(got) - len(rel),
+                     "status": status})
+        for h in rel:
+            u = h.get("url", "")
+            if not u or u in seen:
+                continue
+            seen.add(u)
+            h = dict(h)
+            h["channel"] = name
+            out.append(h)
+            if len(out) >= limit:
+                return out, diag
+    return out, diag
+
+
 def _search_many(queries: list[str], limit: int, *,
                  model: str | None = None,
                  harvest: int = 0) -> tuple[list[dict], list[dict]]:

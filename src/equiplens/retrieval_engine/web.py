@@ -447,25 +447,12 @@ class WebWorld:
 
     @staticmethod
     def _search_360_baidu(query: str, model: str) -> list[dict]:
-        """平台层实验：360 + Baidu 各取一半，去重；normal 默认不走这里。"""
+        """平台层实验：360 + Baidu，下载前复用 _relevant 预筛。"""
         from .. import imagesearch
 
-        out, seen = [], set()
-        for fn, name in ((imagesearch._search_360, "360"),
-                         (imagesearch._search_baidu, "baidu")):
-            try:
-                got, _ = fn(query, 6)
-            except Exception:  # noqa: BLE001
-                got = []
-            for h in got:
-                u = h.get("url", "")
-                if not u or u in seen:
-                    continue
-                seen.add(u)
-                h = dict(h)
-                h["channel"] = name
-                out.append(h)
-        return out[:8]
+        got, _diag = imagesearch.search_platforms(
+            query, limit=8, model=model, platforms=("360", "baidu"))
+        return got
 
     def live_fetch(self, target: Target, part: str) -> list[Asset]:
         """真实 360 → 下载 → 两段式门卫 → 分层判定（视角只作 hint）。
