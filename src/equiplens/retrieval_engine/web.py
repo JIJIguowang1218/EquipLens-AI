@@ -137,7 +137,8 @@ class WebWorld:
                  plan: list[dict] | None = None, batch_size: int = 12,
                  citation_check: bool = True, api_key: str | None = None,
                  pins: list[str] | None = None,
-                 unit_quotas: dict[str, int] | None = None):
+                 unit_quotas: dict[str, int] | None = None,
+                 platform_extra: str = ""):
         if isinstance(models, list):
             models = {"*": models}
         self.models = models or {}
@@ -146,6 +147,7 @@ class WebWorld:
         self._search_cache: dict[str, list] = {}
         self._fetch_cache: dict[str, dict] = {}   # url → _download_and_gate 结果
         self.plan = list(plan or [])
+        self.platform_extra = (platform_extra or "").strip().lower()
         self.pins = [p.lower() for p in (pins or [])]
         for c in self.plan:
             model = str(c.get("model") or "").lower()
@@ -443,6 +445,28 @@ class WebWorld:
         with path.open("a", encoding="utf-8") as f:
             f.write(json.dumps(rec, ensure_ascii=False) + chr(10))
 
+    @staticmethod
+    def _search_360_baidu(query: str, model: str) -> list[dict]:
+        """平台层实验：360 + Baidu 各取一半，去重；normal 默认不走这里。"""
+        from .. import imagesearch
+
+        out, seen = [], set()
+        for fn, name in ((imagesearch._search_360, "360"),
+                         (imagesearch._search_baidu, "baidu")):
+            try:
+                got, _ = fn(query, 6)
+            except Exception:  # noqa: BLE001
+                got = []
+            for h in got:
+                u = h.get("url", "")
+                if not u or u in seen:
+                    continue
+                seen.add(u)
+                h = dict(h)
+                h["channel"] = name
+                out.append(h)
+        return out[:8]
+
     def live_fetch(self, target: Target, part: str) -> list[Asset]:
         """真实 360 → 下载 → 两段式门卫 → 分层判定（视角只作 hint）。
 
@@ -453,7 +477,8 @@ class WebWorld:
 
         self._part_query_used = ""
         key = target.query or target.model
-        hits = self._search_cache.get(key)
+        cache_key = key + "|" + self.platform_extra
+        hits = self._search_cache.get(cache_key)
         if hits is None:
             variants = imagesearch.query_variants(key, target.model)
             hits = []
@@ -461,8 +486,11 @@ class WebWorld:
                 if self.router is not None:
                     got, _diag = self.router.search(q, 6, target.model)
                 else:
-                    got, _diag = imagesearch.search_images_hd(
-                        q, limit=6, model=target.model)
+                    if self.platform_extra == "baidu":
+                        got = self._search_360_baidu(q, target.model)
+                    else:
+                        got, _diag = imagesearch.search_images_hd(
+                            q, limit=6, model=target.model)
                 hits = got or hits
                 if hits:
                     break
@@ -474,12 +502,15 @@ class WebWorld:
                     if self.router is not None:
                         got, _diag = self.router.search(pq, 6, target.model)
                     else:
-                        got, _diag = imagesearch.search_images_hd(
-                            pq, limit=6, model=target.model)
+                        if self.platform_extra == "baidu":
+                            got = self._search_360_baidu(pq, target.model)
+                        else:
+                            got, _diag = imagesearch.search_images_hd(
+                                pq, limit=6, model=target.model)
                     if got:
                         hits = got
                         self._part_query_used = pq
-            self._search_cache[key] = hits
+            self._search_cache[cache_key] = hits
 
         log_path = None
         if self.image_dir:

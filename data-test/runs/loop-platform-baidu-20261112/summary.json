@@ -1,0 +1,142 @@
+{
+  "run_id": "loop-platform-baidu-20261112",
+  "brief_id": "m1-desert-20261109",
+  "state": "DONE",
+  "slots": {
+    "target": 12,
+    "accepted": 12,
+    "filled": true
+  },
+  "delivery": {
+    "required": 12,
+    "delivered": 12,
+    "missing": 0,
+    "degraded": 12,
+    "degraded_targets": [
+      "HOWO TAZ4922 6×6 油田专用全驱牵引车",
+      "泰安五岳油田专用全驱牵引车（豪沃驾驶室）",
+      "Zetros 4051 AS 6×6 重型牵引车",
+      "沙漠越野重型牵引车（康明斯 + 艾里逊沙漠运输底盘）",
+      "OTTC 越野 6×6 牵引头（460 马力牵引车）",
+      "中东版 6×6 柴油重型卡车（Deutz D13 动力）",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Arocs 全驱牵引车（6×6/8×8 Zugmaschinen）",
+      "天龙 EQ2250AX 6×6 沙漠越野卡车",
+      "天锦 6×6 沙漠运输车（DFV2223GP6DJ）",
+      "DFV5253TSMGP6D 沙漠车（东风六驱）",
+      "ND5250TSMZ04 沙漠车"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "沙漠越野重型牵引车（康明斯 + 艾里逊沙漠运输底盘）",
+      "OTTC 越野 6×6 牵引头（460 马力牵引车）"
+    ],
+    "bonus": {
+      "models": 8,
+      "images": 38
+    },
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 8,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 4,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "HOWO TAZ4922 6×6 油田专用全驱牵引车",
+      "泰安五岳油田专用全驱牵引车（豪沃驾驶室）",
+      "Zetros 4051 AS 6×6 重型牵引车",
+      "沙漠越野重型牵引车（康明斯 + 艾里逊沙漠运输底盘）",
+      "OTTC 越野 6×6 牵引头（460 马力牵引车）",
+      "中东版 6×6 柴油重型卡车（Deutz D13 动力）",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Arocs 全驱牵引车（6×6/8×8 Zugmaschinen）"
+    ],
+    "u-env": [
+      "天龙 EQ2250AX 6×6 沙漠越野卡车",
+      "天锦 6×6 沙漠运输车（DFV2223GP6DJ）",
+      "DFV5253TSMGP6D 沙漠车（东风六驱）",
+      "ND5250TSMZ04 沙漠车"
+    ]
+  },
+  "budget_used": {
+    "queries": 20,
+    "models": 20,
+    "fetches": 392,
+    "verifies": 392
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T01:18:52"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-12T01:18:52"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 8 个",
+      "ts": "2026-11-12T01:19:38"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/12，池中仍有候选",
+      "ts": "2026-11-12T01:20:49"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 8 个",
+      "ts": "2026-11-12T01:22:03"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 8/12，池中仍有候选",
+      "ts": "2026-11-12T01:23:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T01:23:15"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T01:23:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-12T01:23:28"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 12/12 已满",
+      "ts": "2026-11-12T01:23:59"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-platform-baidu-20261112\\state.json",
+  "events_path": "data-test\\runs\\loop-platform-baidu-20261112\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-platform-baidu-20261112\\evidence.json"
+}

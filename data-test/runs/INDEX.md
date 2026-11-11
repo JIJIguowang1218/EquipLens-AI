@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-11T15:25:51 · 共 55 条 · 待补结论 1 条
+> 生成时间：2026-11-12T01:25:38 · 共 62 条 · 待补结论 5 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -27,6 +27,8 @@
 | loop | `loop-intent-test-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=77 · gate_pass=71 · degraded=9 · $0.0165 | [DONE 12/12（degraded=9）](data-test/runs/loop-intent-test-20261111/summary.json) |
 | loop | `loop-intent-test2-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=70 · gate_pass=64 · degraded=8 · $0.01575 | [DONE 12/12（degraded=8）](data-test/runs/loop-intent-test2-20261111/summary.json) |
 | loop | `loop-intent-test3-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=70 · gate_pass=64 · degraded=8 · $0.0165 | [intent 排序：12/12；HF8066 rank6 占槽；primary 2/4 无图→backup 13/14 补位；4 台 generic 交付。](data-test/runs/loop-intent-test3-20261111/audit.html) |
+| loop | `loop-platform-360-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=69 · gate_pass=64 · degraded=8 · $0.01725 | [DONE 12/12（degraded=8）](data-test/runs/loop-platform-360-20261112/audit.html) |
+| loop | `loop-platform-baidu-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=111 · gate_pass=98 · degraded=12 · $0.0165 | [DONE 12/12（degraded=12）](data-test/runs/loop-platform-baidu-20261112/audit.html) |
 | plan | `plan-ab-20261111` | plan-set | 2026-11-11 | — | — | E13 初版 A/B（一次性抽取）：出处不可归因、同组重合 12–17%。 |
 | plan | `plan-ab2-20261111` | plan-set | 2026-11-11 | — | — | E14 planner v2 A/B：出处 100%，同组重合 26–31%。 |
 | plan | `plan-ab3-20261111` | plan-set | 2026-11-11 | — | — | 中间实验：per-query 6/8 与池子下限（曾出现 11 台 <12 槽）；结论并入 E15。 |
@@ -52,11 +54,16 @@
 | text-retrieval | `run-suicheche-blind-v2` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v2](data-test/runs/run-suicheche-blind-v2/REPORT.md) |
 | text-retrieval | `run-suicheche-blind-v3` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v3](data-test/runs/run-suicheche-blind-v3/REPORT.md) |
 | text-retrieval | `run-suicheche-profile` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-profile](data-test/runs/run-suicheche-profile/REPORT.md) |
+| other | `source-expansion-briefs-20261111` | plan-set | 2026-11-11 | — | — | 3 个 plan |
 
 ## 空目录 / 归档
 
 - `filter-98-20261109` → empty（未删除，仅标记）
+- `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）
+- `source-expansion-class-query-20261111` → empty（未删除，仅标记）
+- `source-expansion-funnel-20261111` → empty（未删除，仅标记）
+- `source-expansion-probe-20261111` → empty（未删除，仅标记）
 - `web-reassess-20261109` → empty（未删除，仅标记）
 - `web-smoke-20261109` → empty（未删除，仅标记）
 - `web-smoke-harvest1-20261109` → empty（未删除，仅标记）
