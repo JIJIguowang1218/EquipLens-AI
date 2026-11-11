@@ -439,6 +439,23 @@ def test_target_identity_kind_roundtrip():
     assert Target.from_dict(d, source="plan", tier="exact").identity_kind == "generic"
 
 
+def test_plan_partition_reserves_unit_quotas():
+    """unit 配额预留 primary：exact 的补位不能抢 environment 的前 4 个 primary。"""
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",))
+    plan = [{"model": f"m{i}", "identity_kind": "code", "intent_rank": i + 1,
+             "role": "primary" if i < 4 else "backup", "citation_ok": True}
+            for i in range(8)]
+    world = WebWorld({}, {"bumper": part}, plan=plan, citation_check=False,
+                     unit_quotas={"u-exact": 2, "u-env": 2})
+    u1 = types.SimpleNamespace(unit_id="u-exact", tier="exact",
+                               parts=("bumper",), quota=2, scope="x")
+    u2 = types.SimpleNamespace(unit_id="u-env", tier="environment",
+                               parts=("bumper",), quota=2, scope="x")
+    assert [t.model for t in world.external_targets(u1)] == ["m0", "m1"]
+    assert [t.model for t in world.external_targets(u2)] == ["m2", "m3"]
+    assert [t.model for t in world.external_targets(u1)] == ["m4", "m5"]
+
+
 def test_null_library_adapter():
     assert NullLibraryAdapter().targets(None) == []
 
@@ -486,6 +503,7 @@ if __name__ == "__main__":
     check("规则核验拒绝坏资产", test_rule_verifier_rejects_bad_asset)
     check("空库适配器", test_null_library_adapter)
     check("Target 身份标记往返", test_target_identity_kind_roundtrip)
+    check("unit 配额预留 primary", test_plan_partition_reserves_unit_quotas)
     check("无 plan/models 拒绝 fallback", test_web_world_requires_plan_or_models)
     check("CLI 拦截无 plan 的 web-only", test_cli_web_only_without_plan_errors)
     check("交付守卫：不足报 short", test_delivery_block_marks_short)

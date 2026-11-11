@@ -51,6 +51,8 @@ def main(argv=None) -> int:
                         help="候选规划池 JSON（scripts/plan_candidates.py 的输出）")
     parser.add_argument("--no-citation", action="store_true",
                         help="跳过引用核验（默认开启）")
+    parser.add_argument("--pin", default="",
+                        help="逗号分隔的车型关键词：强制优先抓取/占槽（用户 pin）")
     parser.add_argument("--json", action="store_true", help="输出完整 JSON")
     args = parser.parse_args(argv)
 
@@ -85,7 +87,9 @@ def main(argv=None) -> int:
             plan = json.loads(Path(args.plan).read_text(encoding="utf-8")).get("candidates") or []
         world = WebWorld(models or None, brief.parts_by_key, router=router,
                          image_dir=Path(args.run_root) / run_id / "images",
-                         plan=plan, citation_check=not args.no_citation)
+                         plan=plan, citation_check=not args.no_citation,
+                         pins=[x.strip() for x in args.pin.split(",") if x.strip()],
+                         unit_quotas={u.unit_id: u.quota for u in brief.research_units})
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")

@@ -105,6 +105,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | CLI（`--web-only/--plan/--evidence-db`） | `src/equiplens/retrieval_engine/cli.py` |
 | 任务单生成（API + skill + 校验） | `scripts/build_brief.py`、`src/equiplens/briefing.py`、`skills/task-brief/`（SKILL.md + references + evals） |
 | 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
+| 意向排序（12 primary/2 backup） | `scripts/rank_plan.py`；`--pin` 可强制保留 |
 | 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
 | run 台账（RUN.json / INDEX） | `scripts/run_ledger.py`；约定见 `data-test/runs/README.md` |
@@ -127,6 +128,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | T44 skill 必要性 A/B | ✅ | `task-brief@v2`（工程分析方法）+ `evals/evals.json` + `eval_task_brief.py`；with vs without：known-parts 5 vs 1 部件、口语类目 without 崩溃；n=3，待扩样与人工 rubric |
 | T45 generic 只标不删 | ✅ | A2 plan 跑 12 槽：**12/12**，3 台 generic 占槽，82 唯一图/76 过门卫；审核页显示身份并可按泛称筛选；无候选被删 |
 | T46 10 案例 skill A/B | ✅ | 5 旧 + 5 新品类（挖掘机/装载机/搅拌车/环卫压缩车/高空作业车），全部 3–5 部件、无具体车型；**v2 vs v1 只给格式**：自动断言 10/10 vs 3/10；人工 PASS/FAIL/证据见 `data-test/evals/task-brief-eval-v1b-20261111/review.html` |
+| T47 意向排序 + 12+2 | ✅ | `rank_plan.py` 文本排序 12 primary/2 backup；`unit_quotas` 预留、补位不抢 primary；HF8066 rank6 占槽；完整 12/12，backup 仅在 primary 无图时补位 |
 
 最近 run：
 

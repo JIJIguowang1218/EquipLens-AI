@@ -109,6 +109,9 @@ class RetrievalEngine:
             prev["parts"] = sorted(set(prev.get("parts") or [])
                                    | set(rec.get("parts") or []))
             prev["identity_kind"] = prev.get("identity_kind") or rec.get("identity_kind")
+            for k in ("intent_rank", "intent_band", "intent_reason", "role", "pinned"):
+                if rec.get(k) and not prev.get(k):
+                    prev[k] = rec[k]
 
     def _coverage(self, state: dict) -> dict:
         cov = {}
@@ -215,7 +218,14 @@ class RetrievalEngine:
     def _state_fill(self, state: dict) -> None:
         for unit in state["units"].values():
             unit["accepted_targets"] = []
-        for tid, target in state["targets"].items():
+        role_rank = {"primary": 0, "backup": 1}
+        ordered = sorted(
+            enumerate(state["targets"].items()),
+            key=lambda kv: (0 if kv[1][1].get("pinned") else 1,
+                            role_rank.get(str(kv[1][1].get("role") or ""), 2),
+                            int(kv[1][1].get("intent_rank") or 10 ** 9),
+                            kv[0]))
+        for _idx, (tid, target) in ordered:
             for uid in target.get("unit_ids") or [target.get("unit_id")]:
                 unit = state["units"].get(uid)
                 if not unit:

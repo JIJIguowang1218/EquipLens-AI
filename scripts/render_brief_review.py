@@ -151,28 +151,73 @@ textarea{{width:100%;border:1px solid var(--line);border-radius:4px;padding:5px;
 display:flex;gap:10px;align-items:center}}
 button{{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer}}
 button.primary{{background:#1d1d1f;color:#fff;border-color:#1d1d1f}}
+.btn{{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;font-size:13px}}
 </style></head><body>
 <header class="page"><h1>task-brief：v2 方法 vs v1 格式组</h1>
 <p class="muted">两边看到的是同一 prompt、同一模型、同一 schema；唯一差别是 v2 有工程分析方法，v1 只给输出字段。</p>
 <p class="muted">自动断言只查结构；语义请按 PASS/FAIL/NA 判，PASS 必须写具体证据（例如“关系轴写成 environment，依据是沙尘”）。</p></header>
-<div class="bar"><button class="primary" id="export">导出评分/反馈</button><span class="muted" id="saved"></span></div>
+<div class="bar">
+<button class="primary" id="fs">选择文件并开启实时保存</button>
+<button id="export">导出评分/反馈</button>
+<label class="btn">导入评分<input type="file" id="import" accept=".json" hidden></label>
+<span class="muted" id="saved">输入会自动保存在本浏览器；建议点左侧按钮写入文件</span></div>
 <main>{''.join(cards)}</main>
 <script>
 const KEY='task-brief-review-v1b';
-function k(el){{return el.dataset.k||el.dataset.note}}
+let fileHandle=null, timer=null;
+const statusEl=document.getElementById('saved');
+function collect(){{
+  const a={{}}; document.querySelectorAll('select,textarea').forEach(el=>{{
+    const k=el.dataset.k||el.dataset.note; if(k) a[k]=el.value;
+  }}); return a;
+}}
+function saveLocal(){{
+  try{{localStorage.setItem(KEY,JSON.stringify(collect()));return true}}
+  catch(e){{statusEl.textContent='浏览器本地存储不可用：请用“选择文件并开启实时保存”';return false}}
+}}
+function payload(){{return JSON.stringify({{review:collect(),saved_at:new Date().toISOString()}},null,1)}}
+async function saveFile(){{
+  if(!fileHandle) return;
+  try{{
+    const w=await fileHandle.createWritable(); await w.write(payload()); await w.close();
+    statusEl.textContent='已写入文件 · '+new Date().toLocaleTimeString();
+  }}catch(e){{statusEl.textContent='写文件失败：'+e.message}}
+}}
+function schedule(){{
+  if(saveLocal()) statusEl.textContent='已保存到本浏览器 · '+new Date().toLocaleTimeString();
+  if(fileHandle){{clearTimeout(timer);timer=setTimeout(saveFile,250);}}
+}}
 document.querySelectorAll('select,textarea').forEach(el=>{{
-  const key=k(el); const all=JSON.parse(localStorage.getItem(KEY)||'{{}}');
-  if(all[key]!==undefined) el.value=all[key];
-  el.addEventListener('input',()=>{{
-    const a=JSON.parse(localStorage.getItem(KEY)||'{{}}'); a[key]=el.value;
-    localStorage.setItem(KEY,JSON.stringify(a)); document.getElementById('saved').textContent='已保存 '+new Date().toLocaleTimeString();
-  }});
+  const k=el.dataset.k||el.dataset.note;
+  try{{const all=JSON.parse(localStorage.getItem(KEY)||'{{}}'); if(all[k]!==undefined) el.value=all[k];}}catch(e){{}}
+  el.addEventListener('input',schedule); el.addEventListener('change',schedule);
 }});
-document.getElementById('export').onclick=()=>{{
-  const a=JSON.parse(localStorage.getItem(KEY)||'{{}}');
-  const blob=new Blob([JSON.stringify({{review:a,saved_at:new Date().toISOString()}},null,1)],{{type:'application/json'}});
-  const x=document.createElement('a');x.href=URL.createObjectURL(blob);x.download='task-brief-review-v1b.json';x.click();
+document.getElementById('fs').onclick=async()=>{{
+  if(!window.showSaveFilePicker){{statusEl.textContent='当前浏览器不支持直接写文件；已用本地存储，请用“导出”备份';return}}
+  try{{
+    fileHandle=await window.showSaveFilePicker({{suggestedName:'task-brief-review.json',
+      types:[{{description:'JSON',accept:{{'application/json':['.json']}}}}]}});
+    await saveFile();
+  }}catch(e){{statusEl.textContent='未选择文件（输入仍保存在本浏览器）';}}
 }};
+document.getElementById('export').onclick=()=>{{
+  const blob=new Blob([payload()],{{type:'application/json'}});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='task-brief-review-v1b.json';a.click();
+}};
+document.getElementById('import').onchange=async(e)=>{{
+  const f=e.target.files[0]; if(!f) return;
+  try{{
+    const d=JSON.parse(await f.text()); const rev=d.review||d;
+    document.querySelectorAll('select,textarea').forEach(el=>{{
+      const k=el.dataset.k||el.dataset.note;
+      if(rev[k]!==undefined) el.value=rev[k];
+    }});
+    saveLocal(); if(fileHandle) await saveFile();
+    statusEl.textContent='已导入 '+f.name;
+  }}catch(err){{statusEl.textContent='导入失败：'+err.message}}
+}};
+window.addEventListener('beforeunload',()=>{{ saveLocal(); if(fileHandle) saveFile(); }});
+window.addEventListener('pagehide',()=>{{ saveLocal(); }});
 </script></body></html>"""
     out = base / "review.html"
     out.write_text(doc, encoding="utf-8")

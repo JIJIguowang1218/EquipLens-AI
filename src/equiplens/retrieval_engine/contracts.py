@@ -178,6 +178,11 @@ class Target:
     citation_ok: bool = False
     query: str = ""
     identity_kind: str = ""   # code / series / generic（只标记，不参与淘汰）
+    intent_rank: int = 0      # 1 = 最想交付（LLM 先验，不是图片质量）
+    intent_band: str = ""     # must / strong / possible / weak
+    intent_reason: str = ""
+    role: str = ""            # primary / backup / pool
+    pinned: bool = False      # 用户指定必须保留
 
     @classmethod
     def from_dict(cls, data: dict, *, source: str, tier: str) -> "Target":
@@ -192,6 +197,11 @@ class Target:
             citation_ok=bool(data.get("citation_ok")),
             query=str(data.get("query") or ""),
             identity_kind=str(data.get("identity_kind") or ""),
+            intent_rank=int(data.get("intent_rank") or 0),
+            intent_band=str(data.get("intent_band") or ""),
+            intent_reason=str(data.get("intent_reason") or ""),
+            role=str(data.get("role") or ""),
+            pinned=bool(data.get("pinned")),
         )
 
     def to_dict(self) -> dict:
@@ -206,6 +216,11 @@ class Target:
             "citation_ok": self.citation_ok,
             "query": self.query,
             "identity_kind": self.identity_kind,
+            "intent_rank": self.intent_rank,
+            "intent_band": self.intent_band,
+            "intent_reason": self.intent_reason,
+            "role": self.role,
+            "pinned": self.pinned,
         }
 
 

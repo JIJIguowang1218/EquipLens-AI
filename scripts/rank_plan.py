@@ -1,0 +1,121 @@
+# -*- coding: utf-8 -*-
+"""给已生成的 plan 加“意向排序”：12 primary + 2 backup + 其余 pool。
+
+只基于文本（用户请求、候选来源/reason），**不看图片**；因此它只是抓取/占槽的先验，
+最终仍由门卫/核验/用户决定。
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from pathlib import Path
+
+import requests
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:  # noqa: BLE001
+    pass
+
+KEY_FILE = Path.home() / ".equiplens" / "deepseek.env"
+
+
+def load_key() -> str:
+    key = os.environ.get("DEEPSEEK_API_KEY")
+    if not key and KEY_FILE.exists():
+        for line in KEY_FILE.read_text(encoding="utf-8").splitlines():
+            if line.startswith("DEEPSEEK_API_KEY="):
+                key = line.split("=", 1)[1].strip()
+    if not key:
+        raise SystemExit("no DEEPSEEK_API_KEY")
+    return key
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--plan", required=True)
+    ap.add_argument("--brief", required=True)
+    ap.add_argument("--out", default="")
+    ap.add_argument("--pin", default="", help="逗号分隔关键词，强制 primary")
+    ap.add_argument("--model", default="deepseek-flash")
+    args = ap.parse_args(argv)
+    plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+    brief = json.loads(Path(args.brief).read_text(encoding="utf-8"))
+    cands = plan.get("candidates") or []
+    if not cands:
+        raise SystemExit("plan 没有 candidates")
+    pins = [x.strip().lower() for x in args.pin.split(",") if x.strip()]
+    compact = [{
+        "model": c.get("model"), "identity_kind": c.get("identity_kind"),
+        "reason": (c.get("reason") or "")[:160],
+        "source_queries": [q.get("query") for q in (c.get("source_queries") or [])][:3],
+    } for c in cands]
+    prompt = (
+        "你是工程车设计检索的规划助手。下面是一个任务单和候选车型（只有文本信息，"
+        "没有图片）。请只依据文本，给候选排序，选出最值得优先抓图/交付的车型。\n"
+        "要求：\n"
+        "1) 只从给出的候选里选，model 必须与列表完全一致；\n"
+        "2) 排序依据：与用户设计问题/工况的匹配、关系轴、代表性、差异性；\n"
+        "3) 不要因为“型号代码更完整”就排前面；generic 也可以 must；\n"
+        "4) 不要编造候选，不要用图片质量/分辨率（你还没看到图）；\n"
+        "5) 输出 JSON：{\"ranking\":[{\"model\":\"\",\"band\":\"must|strong|possible|weak\","
+        "\"reason\":\"为什么值得先看，引用候选的文本信息\",\"role\":\"primary|backup|pool\"}]}；\n"
+        "   前 12 个 primary，接着 2 个 backup，其余 pool。\n\n"
+        f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
+        f"候选：{json.dumps(compact, ensure_ascii=False)}"
+    )
+    r = requests.post("https://api.deepseek.com/chat/completions",
+                      headers={"Authorization": f"Bearer {load_key()}",
+                               "Content-Type": "application/json"},
+                      json={"model": args.model,
+                            "messages": [{"role": "user", "content": prompt}],
+                            "response_format": {"type": "json_object"},
+                            "temperature": 0}, timeout=180)
+    r.raise_for_status()
+    got = json.loads(r.json()["choices"][0]["message"]["content"])
+    by_model = {c["model"]: c for c in cands}
+    order, seen = [], set()
+    for row in got.get("ranking") or []:
+        m = row.get("model")
+        if m not in by_model or m in seen:
+            continue
+        seen.add(m)
+        c = by_model[m]
+        c["intent_band"] = row.get("band") if row.get("band") in ("must", "strong", "possible", "weak") else "possible"
+        c["intent_reason"] = str(row.get("reason") or "")[:300]
+        c["role"] = row.get("role") if row.get("role") in ("primary", "backup", "pool") else "pool"
+        order.append(c)
+    # 未排到的放最后
+    for c in cands:
+        if c["model"] not in seen:
+            c.setdefault("intent_band", "weak")
+            c.setdefault("intent_reason", "LLM 未排序，放到 pool")
+            c["role"] = "pool"
+            order.append(c)
+    # pinned 强制到最前
+    for c in order:
+        if any(p and p in c["model"].lower() for p in pins):
+            c["pinned"] = True
+            c["role"] = "primary"
+    order.sort(key=lambda c: (0 if c.get("pinned") else 1,
+                              {"primary": 0, "backup": 1}.get(c.get("role"), 2)))
+    for i, c in enumerate(order, 1):
+        c["intent_rank"] = i
+    plan["candidates"] = order
+    plan["ranking"] = {"model": args.model, "pins": pins,
+                       "primary": sum(1 for c in order if c.get("role") == "primary"),
+                       "backup": sum(1 for c in order if c.get("role") == "backup")}
+    out = Path(args.out or Path(args.plan).with_name("plan-ranked.json"))
+    out.write_text(json.dumps(plan, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(json.dumps({"out": str(out), "candidates": len(order),
+                      "primary": plan["ranking"]["primary"],
+                      "backup": plan["ranking"]["backup"]}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

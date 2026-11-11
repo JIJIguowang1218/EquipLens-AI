@@ -405,3 +405,24 @@
 - 没有候选因 generic 被删；审核页可按“泛称车型”筛出。
 
 **结论**：generic 只标不删在 12 槽上可行；它不会自动降低交付数，但会增加 degraded（3 台泛称交付里没有 confirmed 图）。下一步若要提高质量，应做“排序/证据补强”，不是限额。
+
+---
+
+## E19 意向排序 + 证据准入 + 12 主/2 备（2026-11-11）
+
+**问题**：HF8066 这种强关联车有 confirmed 图却不占槽；当前占槽 = 规划顺序 + citation + 配额，不是设计意图。
+
+**实现**：
+1. `scripts/rank_plan.py`：只用文本（用户 request + 候选 reason/source）让 LLM 给 12 primary + 2 backup + 其余 pool，输出 `intent_rank/intent_band/intent_reason/role`；不看图片。
+2. `WebWorld` 按 `pinned > primary > backup > intent_rank > citation` 排 plan；`unit_quotas` 预留每个 unit 的 primary（exact 8、env 4），unit 的补位只能取 replacement（backup/pool），不抢别的 unit 的 primary。
+3. `_state_fill` 按 `pinned > role > intent_rank` 填，门卫/核验仍是准入；backup 只在 primary 没图时补位。
+4. `--pin` 用户关键词强制 primary；`Target` 带 intent 字段进入 state/audit。
+
+**A2 plan 实测**：26 候选 → primary 12 / backup 2；HF8066 被排到 **rank 6**。跑 12 槽：
+- **12/12 DONE**（exact 8、env 4）；HF8066 **占槽**；
+- primary rank 2/4 没有抓到图（assets 为空）→ backup 13/14 补位；
+- 身份：code 6 / series 2 / generic 4；degraded 8、citation_only 1；72 唯一图 / 66 过门卫；无候选因 generic 被删。
+
+**结论**：LLM 的文本意向排序可以作为“先抓谁/先给谁”的先验，但不能作为终审；必须 evidence 准入。unit 配额预留是必要的，否则 exact 的补位会抢走 environment 的 primary（test2 就出现了 backup 抢槽、primary 9–12 没交付）。
+
+**未解决**：ranker 只跑一次、无人工复核；12+2 的“2 备”是否要展示给用户、pin 的 UI 还没做；HF8066 仍有低清 warning。

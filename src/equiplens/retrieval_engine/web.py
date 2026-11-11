@@ -135,7 +135,9 @@ class WebWorld:
                  router=None, min_width: int = 1200,
                  image_dir=None, discover_limit: int = 12,
                  plan: list[dict] | None = None, batch_size: int = 12,
-                 citation_check: bool = True, api_key: str | None = None):
+                 citation_check: bool = True, api_key: str | None = None,
+                 pins: list[str] | None = None,
+                 unit_quotas: dict[str, int] | None = None):
         if isinstance(models, list):
             models = {"*": models}
         self.models = models or {}
@@ -144,6 +146,18 @@ class WebWorld:
         self._search_cache: dict[str, list] = {}
         self._fetch_cache: dict[str, dict] = {}   # url → _download_and_gate 结果
         self.plan = list(plan or [])
+        self.pins = [p.lower() for p in (pins or [])]
+        for c in self.plan:
+            model = str(c.get("model") or "").lower()
+            if any(x and x in model for x in self.pins):
+                c["pinned"] = True
+                c["role"] = "primary"
+        self._plan_sorted = False
+        self.unit_quotas = dict(unit_quotas or {})
+        self._unit_queues: dict[str, list[dict]] = {}
+        self._unit_used: set[str] = set()
+        self._replacement: list[dict] = []
+        self._replacement_cursor = 0
         self.batch_size = batch_size
         self.citation_check = citation_check
         self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY", "") or self._file_key()
@@ -290,15 +304,50 @@ class WebWorld:
                               "added": added, "at": __import__("time").strftime("%H:%M:%S")})
         return added
 
+    def _partition_plan(self) -> None:
+        """按 unit 配额预留 primary；unit 的补位只能取 replacement，不能抢别人的 primary。"""
+        if self._unit_queues or not self.unit_quotas:
+            return
+        self.plan.sort(key=self._candidate_key)
+        pos = 0
+        for uid, quota in self.unit_quotas.items():
+            q = max(0, int(quota))
+            self._unit_queues[uid] = self.plan[pos:pos + q]
+            pos += q
+        self._replacement = self.plan[pos:]
+
+    @staticmethod
+    def _candidate_key(c: dict) -> tuple:
+        role = {"primary": 0, "backup": 1}.get(str(c.get("role") or ""), 2)
+        return (0 if c.get("pinned") else 1, role,
+                int(c.get("intent_rank") or 10 ** 9),
+                0 if c.get("citation_ok") else 1,
+                int(c.get("priority", 99)))
+
     def _plan_targets(self, unit) -> list[Target]:
-        """从规划池取下一批候选（带引用）；引用核验后按可靠性排序。"""
-        batch = self.plan[self._plan_cursor:self._plan_cursor + self.batch_size]
-        self._plan_cursor += len(batch)
+        """从规划池取下一批候选（带引用）；intent 先验优先，citation 只作次序兜底。"""
+        if not self._plan_sorted:
+            self.plan.sort(key=self._candidate_key)
+            self._plan_sorted = True
+        self._partition_plan()
+        quota = int(getattr(unit, "quota", 0) or 0) or self.batch_size
+        limit = min(self.batch_size, quota)
+        uid = getattr(unit, "unit_id", "")
+        if self.unit_quotas and uid in self._unit_queues and uid not in self._unit_used:
+            self._unit_used.add(uid)
+            batch = self._unit_queues[uid]
+        elif self.unit_quotas:
+            batch = self._replacement[self._replacement_cursor:
+                                      self._replacement_cursor + limit]
+            self._replacement_cursor += len(batch)
+        else:
+            batch = self.plan[self._plan_cursor:self._plan_cursor + limit]
+            self._plan_cursor += len(batch)
         rows = []
         for c in batch:
             ok, ev = (True, {}) if not self.citation_check else self._verify_citation(c)
             rows.append((c, ok, ev))
-        rows.sort(key=lambda x: (not x[1], x[0].get("priority", 99)))
+        rows.sort(key=lambda x: self._candidate_key(x[0]))
         out = []
         for c, ok, ev in rows:
             model = (c.get("model") or "").strip()
@@ -309,7 +358,12 @@ class WebWorld:
                 parts=tuple(unit.parts), unit_id=unit.unit_id,
                 sources=tuple(c.get("sources") or []), citation_ok=ok,
                 query=(c.get("query") or self.normalize_query(model)),
-                identity_kind=(c.get("identity_kind") or "")))
+                identity_kind=(c.get("identity_kind") or ""),
+                intent_rank=int(c.get("intent_rank") or 0),
+                intent_band=str(c.get("intent_band") or ""),
+                intent_reason=str(c.get("intent_reason") or ""),
+                role=str(c.get("role") or ""),
+                pinned=bool(c.get("pinned"))))
         return out
 
     def _api_log(self, row: dict) -> None:
