@@ -447,3 +447,20 @@
 - `WebWorld.live_fetch` 在基础 query 无命中时，用 `part.label + target.query` 再做一次部件兜底查询；fetch_log 记录 `tries/url_used/upgraded/part_query`，后续 run 可统计阶梯成功率。
 
 **未验证**：部件兜底查询是否真的提升命中；analysis 先验是否造成确认偏误；新 run 才有阶梯数据。
+
+---
+
+## E21 扩源/换源小测：能捞到图，但身份是瓶颈（2026-11-11）
+
+对象：intent3 里 3 个无图目标——泰安五岳、沙漠越野重型牵引车、K-65959。
+
+1. **原长 query + harvest=2**：3 个目标都是 base 0 hits、harvest 0 hits；长描述名在 360 上直接不可检索。
+2. **短 query / alias**：能出结果；`五岳 油田牵引车` 的 harvest 出 10 张过门卫图，`K-65959 6x6` 出 12 张，`沙漠运输车 6x6` 出 2 张。
+3. **身份核验**：34 张过门卫图里，只有 **1 张** `probable`（重汽泰安五岳 TAZ4413 全驱牵引车）；K-65959 的泛 query 全是牧马人/兰博基尼/乌尼莫克等无关车。
+
+结论：
+- 扩源（短 query/来源页）能显著提高“过门卫图”的数量，但**不解决身份**；泛 query 会把无关车捞进来；
+- 恢复必须“**具体车型 query/来源页 + 核验**”，不能只加 harvest；
+- K-65959 这种冷门码，需要官网/公告/出口商来源，而不是通用图片搜索。
+
+数据：`data-test/evals/source-expansion-*.json`。
