@@ -237,6 +237,8 @@ class Asset:
     model: str = ""
     channel: str = ""
     status: str = ""
+    scene: str = ""
+    overview: bool = False
 
     @classmethod
     def from_dict(cls, data: dict, *, target_id: str, part: str) -> "Asset":
@@ -267,6 +269,8 @@ class Asset:
             "model": self.model,
             "channel": self.channel,
             "status": self.status,
+            "scene": self.scene,
+            "overview": self.overview,
         }
 
 

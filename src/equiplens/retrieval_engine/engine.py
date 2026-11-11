@@ -179,6 +179,9 @@ class RetrievalEngine:
             if not target:
                 continue
             target_obj = self._target_obj(target)
+            att = state.setdefault("attempts", {}).setdefault(tid, {})
+            att["fetched"] = True
+            att.setdefault("assets", 0)
             for part in target_obj.parts:
                 for asset in self.world.fetch(target_obj, part):
                     key = f"{asset.asset_id}:{part}"
@@ -210,6 +213,10 @@ class RetrievalEngine:
             key = f"{asset.asset_id}:{asset.part}"
             state["verifications"][key] = v.to_dict()
             state["verified_assets"].append(key)
+            att = state.setdefault("attempts", {}).setdefault(asset.target_id, {})
+            att["verified"] = int(att.get("verified", 0)) + 1
+            if v.accepted:
+                att["accepted"] = int(att.get("accepted", 0)) + 1
             state["budget_used"]["verifies"] = \
                 int(state["budget_used"].get("verifies", 0)) + 1
         state["pending_assets"] = []
@@ -225,29 +232,44 @@ class RetrievalEngine:
                             role_rank.get(str(kv[1][1].get("role") or ""), 2),
                             int(kv[1][1].get("intent_rank") or 10 ** 9),
                             kv[0]))
+        used_assets: set[str] = set()
         for _idx, (tid, target) in ordered:
             for uid in target.get("unit_ids") or [target.get("unit_id")]:
                 unit = state["units"].get(uid)
                 if not unit:
                     continue
-                # 验收口径（2026-11-10）：每台车**至少 1 张**通过核验的图即可占槽。
-                # 部件是否拍全交给用户选主图时核对（当前没有部件可见性检测）。
-                ok = any(
-                    state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
-                    for part in unit["parts"]
-                    for aid in state.get("assets", {}).get(tid, {}).get(part, []))
+                # 每台车至少 1 张通过核验的图；且不能和已占槽 target 复用同一 asset。
+                acc_assets = [
+                    aid for part in unit["parts"]
+                    for aid in state.get("assets", {}).get(tid, {}).get(part, [])
+                    if state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
+                    and aid not in used_assets
+                ]
+                ok = bool(acc_assets)
                 # 引用页已证实该车型：有图即可占槽（整车型号证据在 target 上）
                 if not ok and target.get("citation_ok"):
-                    ok = any(state.get("assets", {}).get(tid, {}).values())
+                    ok = any(
+                        aid not in used_assets
+                        for part in unit["parts"]
+                        for aid in state.get("assets", {}).get(tid, {}).get(part, []))
+                # P0：有 scene 元数据时，整车槽必须有 overview；part-only 不单独占槽。
+                if ok:
+                    meta = state.get("asset_meta") or {}
+                    known = [aid for aid in acc_assets if aid in meta]
+                    has_scene_meta = any(bool(meta[aid].get("scene")) for aid in known)
+                    if has_scene_meta and not any(
+                            meta[aid].get("scene") == "single_vehicle" for aid in known):
+                        # P0 评审：hard reject 会改变 composition；默认只标记，供人工/排序
+                        target["part_only"] = True
 
-                # 配额是硬上限：单元 quota=4 就不能塞 10 台（T38 独立测试暴露
-                # 12 槽跑出 20 台）；全局槽满同样停，避免超交付。
                 quota = int(unit.get("quota") or 0) or 10 ** 9
                 if self._global_accepted(state) >= self._slot_target():
                     break
                 if (ok and tid not in unit["accepted_targets"]
                         and len(unit["accepted_targets"]) < quota):
                     unit["accepted_targets"].append(tid)
+                    used_assets.update(acc_assets)
+                    state.setdefault("attempts", {}).setdefault(tid, {})["filled"] = True
         state["state"] = "GAP_CHECK"
 
     def _state_gap_check(self, state: dict) -> None:

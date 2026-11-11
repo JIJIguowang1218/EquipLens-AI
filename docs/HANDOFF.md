@@ -2,11 +2,17 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-11** |
-| 当前阶段 | **检索中 loop：12 槽交付 + 外国品牌独立测试 + planner 出处/去重**（T36–T41）。下一步是交付口径（备选图/`citation_only`）、身份质量与排序，不是再调门卫。 |
+| 更新日期 | **2026-11-12** |
+| 当前阶段 | **检索 v1 收敛：P0 交付不变量 + 第一次用户交付准备**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准；扩源线已收口。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
-| 最新提交 | `41108d0`（main，已 push）；工作树干净 |
+| 最新提交 | 见 `git log -1`；工作树状态以 git 为准。整体框架/生产/实验边界见 `docs/CURRENT-ARCHITECTURE.md`。 |
 
+> ## ⚠️ 新会话先读
+>
+> 1. `docs/CURRENT-ARCHITECTURE.md`（当前整体框架、生产/实验/已收口）
+> 2. `docs/v1-retrieval-convergence-decision.md`（为什么停止扩源）
+> 3. `docs/EXPERIMENTS-INDEX.md`（实验→数据→脚本→commit）
+>
 > ## ⚠️ 新会话第一件事
 >
 > **先提醒用户提供 DeepSeek API key（`sk-...`）**，再开始跑真实检索。

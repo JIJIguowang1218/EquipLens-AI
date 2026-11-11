@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-12T01:57:23 · 共 63 条 · 待补结论 5 条
+> 生成时间：2026-11-12T03:46:25 · 共 67 条 · 待补结论 5 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -27,6 +27,9 @@
 | loop | `loop-intent-test-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=77 · gate_pass=71 · degraded=9 · $0.0165 | [DONE 12/12（degraded=9）](data-test/runs/loop-intent-test-20261111/summary.json) |
 | loop | `loop-intent-test2-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=70 · gate_pass=64 · degraded=8 · $0.01575 | [DONE 12/12（degraded=8）](data-test/runs/loop-intent-test2-20261111/summary.json) |
 | loop | `loop-intent-test3-20261111` | run | 2026-11-11 | DONE | delivery=12/12 · images=70 · gate_pass=64 · degraded=8 · $0.0165 | [intent 排序：12/12；HF8066 rank6 占槽；primary 2/4 无图→backup 13/14 补位；4 台 generic 交付。](data-test/runs/loop-intent-test3-20261111/audit.html) |
+| loop | `loop-p0-20261112` | run | 2026-11-12 | FAILED | delivery=10/12 · images=83 · gate_pass=78 · degraded=6 · $0.02025 | [FAILED 10/12（degraded=6）](data-test/runs/loop-p0-20261112/summary.json) |
+| loop | `loop-p0b-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=83 · gate_pass=78 · degraded=7 · $0.02025 | [DONE 12/12（degraded=7）](data-test/runs/loop-p0b-20261112/summary.json) |
+| loop | `loop-p0c-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=66 · gate_pass=61 · degraded=8 · $0.0165 | [DONE 12/12（degraded=8）](data-test/runs/loop-p0c-20261112/summary.json) |
 | loop | `loop-platform-360-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=69 · gate_pass=64 · degraded=8 · $0.01725 | [DONE 12/12（degraded=8）](data-test/runs/loop-platform-360-20261112/audit.html) |
 | loop | `loop-platform-baidu-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=111 · gate_pass=98 · degraded=12 · $0.0165 | [DONE 12/12（degraded=12）](data-test/runs/loop-platform-baidu-20261112/audit.html) |
 | plan | `plan-ab-20261111` | plan-set | 2026-11-11 | — | — | E13 初版 A/B（一次性抽取）：出处不可归因、同组重合 12–17%。 |
@@ -39,6 +42,7 @@
 | plan | `plan-c01-v2` | plan | 2026-11-11 | — | candidates=15 | T34 规划（4 次 Search + 引用校验；后续被 planner v2 取代）。 |
 | plan | `plan-m1b-global` | plan | 2026-11-11 | — | candidates=23 | 候选 23 / 查询 7 / 去重移除 None |
 | search | `diag-foreign` | diag | 2026-11-11 | — | images=17 · gate_pass=17 | E10 诊断：修复前 Zetros/Arocs/Volvo 在 360 的相关性护栏通过数为 0；不是 360 没图。 |
+| gate | `loop-code-prefilter-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=67 · gate_pass=62 · degraded=8 · $0.01725 | [DONE 12/12（degraded=8）](data-test/runs/loop-code-prefilter-20261112/summary.json) |
 | gate | `loop-platform-baidu-filtered-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=59 · gate_pass=55 · degraded=8 · $0.01725 | [DONE 12/12（degraded=8）](data-test/runs/loop-platform-baidu-filtered-20261112/audit.html) |
 | engine | `p1-demo` | run | 2026-11-09 | DONE | — | [DONE](data-test/runs/p1-demo/summary.json) |
 | text-retrieval | `run-budget-q1` | run | 2026-10-23 | — | — | [文本检索运行 run-budget-q1](data-test/runs/run-budget-q1/REPORT.md) |

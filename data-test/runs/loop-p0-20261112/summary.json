@@ -1,0 +1,159 @@
+{
+  "run_id": "loop-p0-20261112",
+  "brief_id": "m1-desert-20261109",
+  "state": "FAILED",
+  "slots": {
+    "target": 12,
+    "accepted": 10,
+    "filled": false
+  },
+  "delivery": {
+    "required": 12,
+    "delivered": 10,
+    "missing": 2,
+    "degraded": 6,
+    "degraded_targets": [
+      "HOWO TAZ4922 6×6 油田专用全驱牵引车",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Arocs 全驱牵引车（6×6/8×8 Zugmaschinen）",
+      "豪沃6×6油田牵引车",
+      "沙豹 EQ2251AX 6×6 沙漠越野卡车",
+      "EQ2162NS 6×6 越野卡车"
+    ],
+    "citation_only": 1,
+    "citation_only_targets": [
+      "HOWO TAZ4922 6×6 油田专用全驱牵引车"
+    ],
+    "bonus": {
+      "models": 9,
+      "images": 35
+    },
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 8,
+      "accepted": 8,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 4,
+      "accepted": 2,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "HOWO TAZ4922 6×6 油田专用全驱牵引车",
+      "HF8066 6×6 重型沙漠运输车",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Arocs 全驱牵引车（6×6/8×8 Zugmaschinen）",
+      "豪沃6×6油田牵引车",
+      "沙豹 EQ2251AX 6×6 沙漠越野卡车",
+      "EQ2102G 6×6 沙漠越野卡车",
+      "EQ2162NS 6×6 越野卡车"
+    ],
+    "u-env": [
+      "天龙 EQ2250AX 6×6 沙漠越野卡车",
+      "DFV5253TSMGP6D 沙漠车（东风六驱）"
+    ]
+  },
+  "budget_used": {
+    "queries": 26,
+    "models": 26,
+    "fetches": 312,
+    "verifies": 312
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T03:26:42"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/12，池中仍有候选",
+      "ts": "2026-11-12T03:26:42"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 8 个",
+      "ts": "2026-11-12T03:27:27"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 3/12，池中仍有候选",
+      "ts": "2026-11-12T03:29:05"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 8 个",
+      "ts": "2026-11-12T03:30:08"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/12，池中仍有候选",
+      "ts": "2026-11-12T03:31:42"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 6 个",
+      "ts": "2026-11-12T03:32:10"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 8/12，池中仍有候选",
+      "ts": "2026-11-12T03:33:20"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T03:33:20"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T03:33:20"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 4 个",
+      "ts": "2026-11-12T03:33:29"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 10/12，池中仍有候选",
+      "ts": "2026-11-12T03:34:13"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T03:34:13"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-12T03:34:13"
+    }
+  ],
+  "state_path": "data-test\\runs\\loop-p0-20261112\\state.json",
+  "events_path": "data-test\\runs\\loop-p0-20261112\\events.jsonl",
+  "evidence_path": "data-test\\runs\\loop-p0-20261112\\evidence.json"
+}

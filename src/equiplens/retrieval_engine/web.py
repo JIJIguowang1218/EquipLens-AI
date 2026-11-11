@@ -595,5 +595,7 @@ class WebWorld:
                 model=target.model,
                 channel=hit.get("channel", ""),
                 status="gated",
+                scene=a.get("scene", ""),
+                overview=bool(a.get("overview_candidate")),
             ))
         return out

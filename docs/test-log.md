@@ -82,6 +82,7 @@
 | T57-platform-loop | 2026-11-12 | **Platform 完整 loop 对照（否定）**——同 brief/plan/12槽，只切 360 vs 360+Baidu；均 12/12，但 Baidu 丢 HF8066、degraded 8→12、verification accepted 236→100；候选量 324→608 | 完整 12 槽 A/B | `src/equiplens/retrieval_engine/{web,cli}.py`（opt-in）、`data-test/runs/loop-platform-{360,baidu}-20261112/`、`PLATFORM-LOOP-ANALYSIS.md` | 平台增量未转化为交付质量；normal 默认不变；Platform 不接入 | 未做人工核对；HF assets 存在但未 verify，说明占槽/验证顺序问题 |
 | T58-platform-filtered | 2026-11-12 | **修复平台路径绕过 `_relevant` 后重跑**——fetch 608→288，unknown 284→0，accepted 216/220；但交付丢 HF8066，补 rank18/19；Platform 仍不接入 | 完整 12 槽 A/B | `src/equiplens/imagesearch.py`（search_platforms）、`web.py`、`loop-platform-baidu-filtered-20261112/`、`FILTERED-PLATFORM-ANALYSIS.md` | 预筛修复正确；平台增量仍为负；normal 默认不变 | code 不匹配 prefilter 只做离线评估，未上线 |
 | T59-code-prefilter | 2026-11-12 | **code prefilter 独立完整 loop**——360 + code 不一致 prefilter；交付 12/12 构成不变，accepted 236→224，gate 264→256；无 target 丢失 | 完整 12 槽 A/B | `retrieval_engine/web.py`、`cli.py --code-prefilter`、`loop-code-prefilter-20261112/` | 只拒绝 target/标题 code 明确不一致；不影响核心交付；测试 23/23 | 移除的 accepted 是否全错需人工；仅 1 个 brief |
+| T61-p0-invariants | 2026-11-12 | **P0 交付不变量**——全局 asset 去重、attempt 日志、part_only 软标记、code prefilter 可选；hard overview 两种实现均改变 composition，弃用 | P0/P0b/P0c 三轮 12 槽 | `retrieval_engine/engine.py`、`contracts.py`、`web.py`、`cli.py --code-prefilter`、`loop-p0{c,b}-20261112/` | P0c 12/12 baseline composition；part_only 仅标记；hard 规则 10/12 或 composition 变差 | 未做人工确认 part-only；scene 校准待后续 |
 
 ## 2. 审核包与决策归档索引
 
