@@ -95,7 +95,20 @@ def _with_conf(scope: str, conf: str) -> str:
 
 
 def negative_terms(brief: dict) -> list[str]:
-    return [normalize_text(x) for x in (brief.get("negative") or [])[:4] if normalize_text(x)]
+    """只取适合放进搜索 query 的短负词；长句/指令不要拼进 query。
+
+    2026-11-11：task-brief 的 negative 可能写成“不要把前脸拆成……”这类指令，
+    直接拼进 360 query 会把所有查询变成 0 结果（新 brief 实测）。
+    """
+    out = []
+    for x in (brief.get("negative") or [])[:4]:
+        t = normalize_text(x)
+        if not t or len(t) > 24:
+            continue
+        if any(m in t for m in ("不要", "不得", "禁止", "避免", "必须", "请")):
+            continue
+        out.append(t)
+    return out
 
 
 def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:

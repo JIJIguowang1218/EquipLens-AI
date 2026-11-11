@@ -74,6 +74,7 @@
 | T49-source-expansion | 2026-11-11 | **扩源/换源小测**——3 个无图目标：长 query 0；短 query/harvest 过门卫 34 张，但身份仅 1 张 probable；K-65959 泛 query 全是无关车 | 3 目标 × 多 query + harvest + 核验 | `data-test/evals/source-expansion-*.json` | 扩源能提升过门卫量，但身份/来源是瓶颈；同 URL 重试 0/12；必须具体 query/来源页 + 核验 | 样本小；未接入生产 loop；harvest 噪声大，需白名单/源页优先级 |
 | T50-file-index | 2026-11-11 | **实验文件索引/管理**——`docs/EXPERIMENTS-INDEX.md`：E17b/E19/E20/E21/LangGraph/generic 的结论→数据→脚本→commit；扩源核对页 README/RESCUE；file:// 标注丢失原因 | 文件审计 | `docs/EXPERIMENTS-INDEX.md`、`data-test/evals/source-expansion-review-20261111/{README,RESCUE}.md` | 最近实验均有索引；删除无效首次 v1 中间目录 | 目录约定已写，后续新实验按此登记 |
 | T51-harvest-metadata | 2026-11-11 | **recovery-only 元数据控制变量测试（否定）**——首次 A/B 混淆 base/harvest；只取 harvest 图后 21 张 A/B/C 均 0 通过；收益来自 base 搜索标题，不是 harvest title/alt/description | 4 个无图 target，harvest-only A/B/C | `data-test/evals/harvest-metadata-ab-20261111.md`、`harvest-only-abc-20261111.json`、`scripts/test_harvest_metadata.py` | **不采纳**；代码回退；页面 title 不是身份证据，先修 query/来源相关性；样本小但方向明确 | 不针对车型；normal/harvest 均不改 |
+| T52-source-expansion-pilot | 2026-11-11 | **扩源 pilot**——5 brief（M1/M1B/A/B/C）×6 候选=30；base 失败 24；通用 alias+harvest 后 verifier 通过 9/24；C holdout 0/6 | 30 候选/24 failed/100 图 | `scripts/probe_source_expansion.py`、`scripts/render_probe_review.py`、`data-test/runs/source-expansion-probe-20261111/`、`data-test/evals/source-expansion-pilot-review-20261111/` | 有信号但不泛化：B 4/5、M1 3/6、A 2/4、M1B 0/3、C 0/6；待人工盲评 100 图 | 仅 verifier 口径；C holdout 失败；query/来源问题未分类 |
 
 ## 2. 审核包与决策归档索引
 

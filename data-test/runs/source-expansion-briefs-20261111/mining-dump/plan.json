@@ -1,0 +1,723 @@
+{
+ "brief_id": "source-expansion-mining-dump-20261111",
+ "created_at": "2026-11-11T22:48:30",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "非公路矿区 6×4，70 吨级，后卸货箱 卡车 车型",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 1
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 88,
+ "candidates": [
+  {
+   "model": "矿山霸王 70T（ZZ5707S3842AJ）",
+   "brand": "中国重汽",
+   "reason": "结果标注为70T矿山霸王、非公路车辆，满载质量70000kg；另一来源明确型号ZZ5707S3842AJ为6×4、载重至少70吨的非公路矿用自卸车。",
+   "sources": [
+    "http://www.sinotruk-rus.com/product/83.html",
+    "http://www.bossgoo.com/product-detail/sinotruk-off-road-70-tons-mining-55092771.html#1"
+   ],
+   "source_query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/ZZ5707S3842AJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "矿山霸王 70T（ZZ5707S3842AJ）",
+    "ZZ5707S3842AJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "HOWO Mining Dump Truck 70tons（ZZ5707V3840CJ）",
+   "brand": "中国重汽",
+   "reason": "结果明确型号ZZ5707V3840CJ、6×4、70吨载重，并给出货箱尺寸及矿用自卸配置，符合非公路矿区70吨级6×4后卸自卸车。",
+   "sources": [
+    "https://www.sinotrukinternation.com/product/mining_truck/23.html"
+   ],
+   "source_query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/ZZ5707V3840CJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "HOWO Mining Dump Truck 70tons（ZZ5707V3840CJ）",
+    "ZZ5707V3840CJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Mining King 70t 后卸矿用自卸车（ZZ5707V3840AJ）",
+   "brand": "中国重汽",
+   "reason": "结果标题明确6×4、420HP、70t off-Road Mining King Dump Truck，并带Rear Gate后门/后卸配置，符合矿区非公路70吨级后卸车。",
+   "sources": [
+    "https://www.madeinchina.com/mall/show-Sinotruk-HOWO-6X4-420HP-70t-off-Road-Mining-King-Dump-Truck-with-Rear-Gate-Zz5707V3840aj_226566.html#comid=615795654&mpid=882752445#1",
+    "https://www.madeinchina.com/mall/show-Sinotruk-HOWO-6X4-30-T-50t-70t-371HP-420HP-Heavy-Duty-Mining-Tipper-Dump-Truck_1145841.html#1",
+    "https://haowoqiche.gys.cn/supply/3781882048.html",
+    "https://bkso.baidu.com/item/%e7%9f%bf%e5%b1%b1%e9%9c%b8%e7%8e%8b/4116185?fromModule=lemma_inlink#1",
+    "https://www.machinio.com/listings/81361748-sinotruk-howo-6x4-mining-dump-truck-70ton-dump-truck-in-shandong-china",
+    "https://www.sinotrukinternation.com/product/mining_truck/23.html",
+    "http://www.bossgoo.com/product-detail/sinotruk-off-road-70-tons-mining-55092771.html#1"
+   ],
+   "source_query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/ZZ5707V3840AJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "Mining King 70t 后卸矿用自卸车（ZZ5707V3840AJ）",
+    "HOWO 矿山霸王 70（ZZ5707V3840aj）",
+    "HOWO 70矿山霸王（ZZ5707V3840AJ / 6×4 70t Mining King 后卸自卸车）",
+    "HOWO 6×4 70t 矿山霸王、Mine King（ZZ5707V3840AJ）",
+    "ZZ5707V3840CJ / ZZ5707V3840AJ（HOWO 矿用自卸车）",
+    "ZZ5707V3840AJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    },
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    },
+    {
+     "query_id": "q-env",
+     "query": "非公路矿区 6×4，70 吨级，后卸货箱 卡车 车型"
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "environment",
+    "english",
+    "unit"
+   ],
+   "source_count": 7
+  },
+  {
+   "model": "CT105K",
+   "brand": "驰田",
+   "reason": "结果明确CT105K为非公路宽体矿用自卸车，驱动形式6×4，载质量72吨，U型钢制车厢，符合70吨级矿区后卸宽体车。",
+   "sources": [
+    "http://www.chitiantruck.cn/off-road-mining-dump-truck/off-road-mining-dump-truck-ct105k.html"
+   ],
+   "source_query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/CT105K",
+   "identity_kind": "code",
+   "model_variants": [
+    "CT105K"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "非公路矿区 矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SWK 105Z 矿用宽体自卸车",
+   "brand": "山河智能",
+   "reason": "结果参数明确额定载重70t、驱动形式6×4、最大总重105t，属于矿用宽体自卸车，符合70吨级6×4后卸货箱任务单。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/72030_param.htm"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/SWK105Z矿用宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SWK 105Z 矿用宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SWK105B 矿用宽体自卸车",
+   "brand": "山河智能",
+   "reason": "结果参数明确额定载重70t、驱动形式6×4、最大总重105t，为矿用宽体自卸车型，符合70吨级6×4要求。",
+   "sources": [
+    "https://product.21-sun.com//proDetail/72025_parameter.shtm",
+    "https://www.aichehome.com/wjjdetails/8564.htm"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/SWK105B",
+   "identity_kind": "code",
+   "model_variants": [
+    "SWK105B 矿用宽体自卸车",
+    "SWK105B",
+    "SWK105B / SWK105C 矿用（宽体）自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "XG105 宽体矿用自卸车",
+   "brand": "徐工",
+   "reason": "结果明确为宽体非公路矿用卡车，额定载重70t、6×4驱动，定位70吨级宽体矿用自卸车，符合任务单。",
+   "sources": [
+    "https://cn.globalmachex.com/products/xcmg-xg105-wide-body-mining-truck-english-introduction"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XG105",
+   "identity_kind": "code",
+   "model_variants": [
+    "XG105 宽体矿用自卸车",
+    "XG105"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HW70 宽体自卸车",
+   "brand": "小松",
+   "reason": "结果文章明确HW70为宽体自卸车，并说明宽体自卸车以6×4驱动、适用于中小型露天矿山；型号HW70对应70吨级，可作为70吨级6×4宽体矿用自卸候选。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzkyNjMyNjAzMA==&mid=2247485860&idx=1&sn=968e535e6acf0381493dee87f0be7d0a"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/HW70宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HW70 宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "宽体自卸车（70t级）",
+   "brand": "三一",
+   "reason": "三一官网产品列表列出宽体自卸车载重70t、车厢容积44m³，属于矿用宽体70吨级；结合结果中对宽体自卸车6×4驱动特征的描述，可作为候选。",
+   "sources": [
+    "https://www.sanygroup.com/productList/?cate=8&childid=53&page=1&size=9"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/宽体自卸车70T级",
+   "identity_kind": "generic",
+   "model_variants": [
+    "宽体自卸车（70t级）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "J5P 420马力 70吨 6×4 矿用自卸车",
+   "brand": "一汽（FAW）",
+   "reason": "检索结果标题及属性标明FAW J5P、420马力、70吨、6x4驱动、采矿运输细分市场、柴油矿用自卸车，符合非公路矿区70吨级6×4自卸车任务单。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/FAW-J5P-Right-Hand-420-Horse_1601046955596.html"
+   ],
+   "source_query": "非公路矿区 6×4，70 吨级，后卸货箱 卡车 车型",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/J5P6X4矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J5P 420马力 70吨 6×4 矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "非公路矿区 6×4，70 吨级，后卸货箱 卡车 车型"
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SWK105Z",
+   "brand": "山河智能",
+   "reason": "结果页明确标注为矿用（宽体）自卸车，额定载重量 70t、驱动形式 6×4、最大总重量 105t、后卸货箱，与任务单的 70 吨级 6×4 非公路宽体构型完全一致；页面还给出货箱前板和侧板、驾驶室长宽高、轴距等外观与尺寸参数，可用于前脸、驾驶室侧围、货箱等部位的检索。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/72030_param.htm",
+    "https://www.aichehome.com/wjjdetails/8668.htm",
+    "https://www.china-mcc.com/prod_show-2140.html#1",
+    "https://product.21-sun.com/proDetail/59772.shtm"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/SWK105Z",
+   "identity_kind": "code",
+   "model_variants": [
+    "SWK105Z",
+    "SWK105（含 SWK105Z 系列，70t 载重）",
+    "SWK105Z 矿用（宽体）自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 4
+  },
+  {
+   "model": "NXG5650DT",
+   "brand": "徐工",
+   "reason": "条目明确为“XCMG 70 ton 6*4 375HP dump truck NXG5650DT off road mining mine dump truck”，即 70 吨级、6×4、非公路矿区后卸自卸车，与任务单构型逐一对应。",
+   "sources": [
+    "https://www.machmall.com/item-detail/xcmg-nxg5650dt-6408.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/NXG5650DT",
+   "identity_kind": "code",
+   "model_variants": [
+    "NXG5650DT"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "707（首款 70 吨级非公路宽体自卸车）",
+   "brand": "卡特彼勒",
+   "reason": "结果明确其为卡特彼勒品牌首款 70 吨级 707 非公路宽体自卸车（WBDT），属于宽体车品类并定位于 70 吨级新兴市场矿用场景；同文指出宽体车以 6×4 驱动、带驾驶室为特征，可作为 70 吨级宽体车的对标候选。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAwNTU3MTk0Nw==&mid=2650860218&idx=1&sn=4e53e7746ca416bbe37ae5178086a08f",
+    "https://m.sohu.com/a/973055678_121871959?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334&spm=smwp.channel_247.block2_307_epwR4p_1_fd.10.1772568933054YBvMjR8_324#1"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/707首款级非公路宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "707（首款 70 吨级非公路宽体自卸车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "3110F（60 吨级对应 3090F）",
+   "brand": "山工（卡特彼勒旗下）",
+   "reason": "结果提到卡特彼勒旗下山工品牌早已推出 60 吨级 3090F 与 70 吨级 3110F 两款宽体自卸车，3110F 正好对应任务单的 70 吨级宽体矿用车定位，可与卡特 707 形成同集团不同吨位/品牌的比对候选。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAwNTU3MTk0Nw==&mid=2650860218&idx=1&sn=4e53e7746ca416bbe37ae5178086a08f"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/3110F级对应3090F",
+   "identity_kind": "generic",
+   "model_variants": [
+    "3110F（60 吨级对应 3090F）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "ZT105 矿用自卸车",
+   "brand": "中联重科 ZOOMLION",
+   "reason": "来源标题即为“6x4 自卸车 ZT105 中联重科 70 吨矿用自卸车”，属性页标注驱动形式 6x4、细分市场为采矿运输，属非公路矿区 70 吨级 6×4 后卸自卸车。",
+   "sources": [
+    "https://chinese.alibaba.com/product-detail/China-6x4-Dump-Truck-ZT105-ZOOMLION-1600658626857.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/ZT105",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZT105 矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XDR70 矿用自卸车",
+   "brand": "未标注（XDR70）",
+   "reason": "结果标题为“70T Mining Truck 6*4 XDR70”，描述为机械传动矿用自卸车（带 TCS 防单侧打滑），与任务单的 6×4、70 吨级非公路矿用后卸货箱构型相符；品牌在来源中未明确，仅以型号列示。",
+   "sources": [
+    "https://www.tradechina.com/In-Stock-70T-Mining-Mining-Truck-64-XDR70_242899074.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/XDR70矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XDR70 矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO 70T Mining Tipper Truck",
+   "brand": "SINOTRUK HOWO",
+   "reason": "检索结果显示为6×4、10轮、3轴，70吨级矿用自卸车，符合非公路矿区后卸货箱构型。",
+   "sources": [
+    "https://www.sinotrukhowotruck.com/howo-truck/howo-70t-mining-tipper-truck.html",
+    "http://www.china-truck.com.cn/a/Products/Special_Truck/2017/0813/45.html"
+   ],
+   "source_query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO 70T Mining Tipper Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "ZZ5707S3640AJ",
+   "brand": "SINOTRUK",
+   "reason": "结果标注Dump Truck 70t Mining，型号ZZ5707S3640AJ，驱动轮6×4，载重61-70t。",
+   "sources": [
+    "https://m.okorder.com/p/dump-truck-70t-mining-zz5707s3640aj_909142.html"
+   ],
+   "source_query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/ZZ5707S3640AJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZZ5707S3640AJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "7042KK",
+   "brand": "Beiben",
+   "reason": "结果标注Beiben 70t 420HP Mining Dump Truck，driving model为6×4，匹配70吨级矿用自卸车。",
+   "sources": [
+    "https://oriemac.en.made-in-china.com/product/TeFngrdolOYZ/China-Beiben-70t-420HP-Mining-Dump-Truck-7042KK-.html"
+   ],
+   "source_query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/7042KK",
+   "identity_kind": "generic",
+   "model_variants": [
+    "7042KK"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TL885A",
+   "brand": "Tonly",
+   "reason": "结果标注Tonly TL885A 70 Ton Off-Road Mining Dump Truck 6x4 Heavy Duty Dumper，符合70吨级非公路矿区6×4自卸车。",
+   "sources": [
+    "https://www.ecer.com/corp/details-uuuddzj-p179zv2-off-road-dump-truck.html#1"
+   ],
+   "source_query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/TL885A",
+   "identity_kind": "code",
+   "model_variants": [
+    "TL885A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "非公路矿区 工程车 6×4，70 吨级，后卸货箱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 14
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 20,
+  "slots": 12,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 35,
+  "unique": 20,
+  "removed": 15,
+  "generic": 8
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 1
+}

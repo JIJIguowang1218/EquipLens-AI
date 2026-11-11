@@ -1,0 +1,461 @@
+{
+ "brief_id": "source-expansion-mixer-20261111",
+ "created_at": "2026-11-11T22:50:33",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "城市工程/城建工况：城市道路与市政工地、频繁启停与转弯、道路限行与保洁冲洗要求、对撒漏与外观整洁敏感；非矿区/寒区极端环境 混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "城市工程/城建工况：城市道路与市政工地、频繁启停与转弯、道路限行与保洁冲洗要求、对撒漏与外观整洁敏感；非矿区/寒区极端环境 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 卡车 车型",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "城市工程/城建工况：城市道路与市政工地、频繁启停与转弯、道路限行与保洁冲洗要求、对撒漏与外观整洁敏感；非矿区/寒区极端环境 工程车 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 41,
+ "candidates": [
+  {
+   "model": "豪泺(HOWO)后八轮12方搅拌车 ZZ5257GJBN4047N1",
+   "brand": "中国重汽/豪泺",
+   "reason": "结果明确为后八轮（8×4）混凝土搅拌车，覆盖10/12立方，公告型号ZZ5257GJBN4047N1，符合12方与8×4底盘方向。",
+   "sources": [
+    "http://www.ftclqc.com/sccqysc/869.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/ZZ5257GJBN4047N1",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪泺(HOWO)后八轮12方搅拌车 ZZ5257GJBN4047N1"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃T5G 12方轻量化搅拌车（前四后八）",
+   "brand": "中国重汽/豪沃",
+   "reason": "结果明确为前四后八底盘、T5G-M驾驶室、12方轻量化搅拌车，适合城市工程轻量化方向。",
+   "sources": [
+    "http://www.clzqjym.com/show-12-1451-199.html",
+    "http://m.clwtqxs.com/show-12-1451-405.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/豪沃T5G12方轻量化搅拌车前四后八",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃T5G 12方轻量化搅拌车（前四后八）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃8X4 12轮12-16立方米混凝土搅拌车",
+   "brand": "中国重汽/豪沃",
+   "reason": "结果标题明确8X4、12轮、12-16立方米搅拌车，覆盖任务单12方且驱动形式吻合。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/SINOTRUK-HOWO-8X4-12-Wheels-12_1601577131297.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/豪沃8X412轮1216立方米混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃8X4 12轮12-16立方米混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TGS 41.440 8X4 12m3 Stetter Mixer",
+   "brand": "MAN",
+   "reason": "结果明确为8X4、12m3 Stetter搅拌车上装，驱动形式与容积吻合，可作为高端对照候选。",
+   "sources": [
+    "https://machineryline.ie/-/sale/concrete-mixer-trucks/MAN/TGS-41-440-8X4-NEW-12m3-Stetter-Mixer-Big-Axle-Steelsuspension--26111112152681433000",
+    "https://machineryline.ca/-/sale/concrete-mixer-trucks/MAN/TGS-41-440-8X4-NEW-12m3-Stetter-Mixer-Big-Axle-Steelsuspension--26100918463258064500"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/TGS414408X412M3STETTERMIXER",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TGS 41.440 8X4 12m3 Stetter Mixer"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃TX 12m³混凝土搅拌车（ZZ1257V404GE）",
+   "brand": "中国重汽/豪沃TX",
+   "reason": "结果明确为豪沃TX、12m³混凝土搅拌车，总质量31吨；8×4驱动形式需打开页面进一步核验。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601680539855"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/ZZ1257V404GE",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃TX 12m³混凝土搅拌车（ZZ1257V404GE）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "欧曼ETX 12方搅拌车（国四）",
+   "brand": "欧曼",
+   "reason": "结果为8-12方搅拌车，采用欧曼ETX2490平顶驾驶室、PMP液压泵/马达/减速机，12方与液压驱动罐体方向吻合；8×4需页面核验。",
+   "sources": [
+    "http://www.szclwtq.com/jb4/2256.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/欧曼ETX12方搅拌车国四",
+   "identity_kind": "generic",
+   "model_variants": [
+    "欧曼ETX 12方搅拌车（国四）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "大力神12方混凝土搅拌车",
+   "brand": "东风",
+   "reason": "结果标题明确为东风大力神12方混凝土搅拌车，容积方向吻合；驱动形式需进一步核验是否为8×4。",
+   "sources": [
+    "http://www.jxhengxiong.com/m/view10-1.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/大力神12方混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "大力神12方混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "德龙12方混凝土搅拌运输车",
+   "brand": "陕汽",
+   "reason": "结果标题明确为陕汽德龙12方混凝土搅拌运输车，容积方向吻合；8×4及尾部操作平台细节需页面核验。",
+   "sources": [
+    "https://www.jxhengxiong.com/m/view7-22.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/德龙12方混凝土搅拌运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "德龙12方混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃T5G 12方搅拌车（前四后八/8×4）",
+   "brand": "中国重汽",
+   "reason": "结果页面标题为“重汽四轴搅拌车”，正文明确“前四后八”底盘、12方轻量化搅拌车，并列出重汽豪沃T5G为常用底盘；与8×4、12方城市工程搅拌车构型一致。",
+   "sources": [
+    "http://www.clzqjym.com/show-12-1451-199.html",
+    "http://m.clwtqxs.com/show-12-1451-405.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/豪沃T5G12方搅拌车前四后八8X4",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃T5G 12方搅拌车（前四后八/8×4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃8×4 12轮12-16m³混凝土搅拌车",
+   "brand": "中国重汽",
+   "reason": "结果标题明确“中国重汽豪沃8X4 12轮12-16立方米混凝土搅拌车”，覆盖12m³，8×4底盘与任务单一致。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/SINOTRUK-HOWO-8X4-12-Wheels-12_1601577131297.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/豪沃8X412轮1216M混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃8×4 12轮12-16m³混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TGS 41.440 8X4 12m³ Stetter 搅拌车",
+   "brand": "MAN",
+   "reason": "结果标题/摘要明确MAN TGS 41.440、8X4底盘、12m³、Stetter搅拌上装，符合8×4、12方搅拌车构型。",
+   "sources": [
+    "https://machineryline.ie/-/sale/concrete-mixer-trucks/MAN/TGS-41-440-8X4-NEW-12m3-Stetter-Mixer-Big-Axle-Steelsuspension--26111112152681433000",
+    "https://machineryline.ca/-/sale/concrete-mixer-trucks/MAN/TGS-41-440-8X4-NEW-12m3-Stetter-Mixer-Big-Axle-Steelsuspension--26100918463258064500"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/TGS414408X412MSTETTER搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TGS 41.440 8X4 12m³ Stetter 搅拌车",
+    "TGS 41.440 8×4 12m³ Stetter 搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃T5G 12方（四轴/前四后八轻量化搅拌车）",
+   "brand": "中国重汽",
+   "reason": "结果明确提到“重汽四轴搅拌车”“前四后八底盘”，并列出重汽豪沃T5G轻量化12方配置，符合12m³、8×4城市工程搅拌车方向；轻量化与不漏料描述也贴合城市保洁/撒漏敏感工况。",
+   "sources": [
+    "http://www.clzqjym.com/show-12-1451-199.html",
+    "http://m.clwtqxs.com/show-12-1451-405.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/豪沃T5G12方四轴前四后八轻量化搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃T5G 12方（四轴/前四后八轻量化搅拌车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃 8×4 12-16m³ 混凝土搅拌车",
+   "brand": "中国重汽",
+   "reason": "结果标题明确为8X4、12轮、12-16立方米混凝土搅拌车，属性含12m³/水泥搅拌车与液压相关描述，匹配任务单12m³及8×4重型底盘要求。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/SINOTRUK-HOWO-8X4-12-Wheels-12_1601577131297.html"
+   ],
+   "source_query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/豪沃8X41216M混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃 8×4 12-16m³ 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 3
+   }
+  },
+  "missing": [
+   "base",
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 13,
+  "slots": 12,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 14,
+  "unique": 13,
+  "removed": 1,
+  "generic": 11
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

@@ -38,6 +38,15 @@ def test_query_plan_dimensions():
     assert all('"' in q["query"] for q in plan), plan  # 负词已追加
 
 
+def test_long_negative_not_in_query():
+    b = brief()
+    b["negative"] = ["不要把前脸自行拆成格栅、大灯、保险杠等用户未点名的子部件。",
+                     "客车"]
+    plan = planning.build_query_plan(b)
+    assert all("不要把" not in q["query"] for q in plan), plan
+    assert all('"客车"' in q["query"] for q in plan), plan
+
+
 def test_query_plan_extra_and_dedupe():
     plan = planning.build_query_plan(brief(), ["进口 沙漠牵引车 6×6 车型",
                                                "进口 沙漠牵引车 6×6 车型"])
@@ -143,6 +152,7 @@ def test_coverage_reports_missing_and_intl():
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
+    check("长负词不进 query", test_long_negative_not_in_query)
     check("查询计划：构型不重复", test_config_not_duplicated_in_unit_scope)
     check("抽取校验：拒绝跨查询 URL", test_validate_rejects_foreign_urls)
     check("候选归并：保留来源", test_merge_keeps_provenance)
