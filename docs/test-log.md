@@ -81,6 +81,7 @@
 | T56-platform | 2026-11-12 | **Platform 层 A/B**——同 23 target/class query；360 5 target accepted，Baidu 8，Bing 0，union 9/overview3；Baidu 新增 4 个 360 没有的 target | 23 target，平台单变量 | `scripts/probe_platforms.py`、`data-test/runs/platform-probe-20261111/`、`data-test/evals/platform-review-20261111/` | 平台层有增量信号（union 9 vs 360 5），但 Baidu accepted precision 未确认；33 张盲评 | query 固定 class，不是 normal plan；未接生产；Bing 无产出 |
 | T57-platform-loop | 2026-11-12 | **Platform 完整 loop 对照（否定）**——同 brief/plan/12槽，只切 360 vs 360+Baidu；均 12/12，但 Baidu 丢 HF8066、degraded 8→12、verification accepted 236→100；候选量 324→608 | 完整 12 槽 A/B | `src/equiplens/retrieval_engine/{web,cli}.py`（opt-in）、`data-test/runs/loop-platform-{360,baidu}-20261112/`、`PLATFORM-LOOP-ANALYSIS.md` | 平台增量未转化为交付质量；normal 默认不变；Platform 不接入 | 未做人工核对；HF assets 存在但未 verify，说明占槽/验证顺序问题 |
 | T58-platform-filtered | 2026-11-12 | **修复平台路径绕过 `_relevant` 后重跑**——fetch 608→288，unknown 284→0，accepted 216/220；但交付丢 HF8066，补 rank18/19；Platform 仍不接入 | 完整 12 槽 A/B | `src/equiplens/imagesearch.py`（search_platforms）、`web.py`、`loop-platform-baidu-filtered-20261112/`、`FILTERED-PLATFORM-ANALYSIS.md` | 预筛修复正确；平台增量仍为负；normal 默认不变 | code 不匹配 prefilter 只做离线评估，未上线 |
+| T59-code-prefilter | 2026-11-12 | **code prefilter 独立完整 loop**——360 + code 不一致 prefilter；交付 12/12 构成不变，accepted 236→224，gate 264→256；无 target 丢失 | 完整 12 槽 A/B | `retrieval_engine/web.py`、`cli.py --code-prefilter`、`loop-code-prefilter-20261112/` | 只拒绝 target/标题 code 明确不一致；不影响核心交付；测试 23/23 | 移除的 accepted 是否全错需人工；仅 1 个 brief |
 
 ## 2. 审核包与决策归档索引
 
