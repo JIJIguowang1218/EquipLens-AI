@@ -1,0 +1,56 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>新 brief 审阅（扩源实验）</title><style>
+body{margin:0;background:#f5f4f1;color:#1d1d1f;font:14px/1.55 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+header{padding:24px 32px;border-bottom:1px solid #ddd;background:#efece6}
+h1{margin:0 0 8px;font-size:21px}h2{font-size:16px;margin:0 0 8px}h4{margin:14px 0 4px;color:#555}
+main{padding:18px 32px 60px;max-width:1400px}.muted,.m{color:#6e6e73;font-size:11.5px}
+.card{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 18px;margin:16px 0}
+.prompt{background:#f7f5f0;padding:8px 10px;border-radius:6px}
+.kv{display:flex;gap:8px;font-size:12px;margin:2px 0}.kv span{color:#6e6e73;min-width:38px}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12px}
+th,td{border:1px solid #ddd;padding:5px 6px;text-align:left;vertical-align:top}
+th{background:#f3f0ea;color:#555;font-weight:500}ul{margin:4px 0;padding-left:18px;font-size:12px}
+.warn{background:#fbefed;color:#9b2c1f;padding:6px 8px;border-radius:5px}
+.ok{background:#eef7f1;color:#2f7d4f;padding:6px 8px;border-radius:5px}
+.note{background:#fff8e6;color:#7a5b00;padding:6px 8px;border-radius:5px}
+</style></head><body>
+<header><h1>新 brief 审阅：扩源实验 A/B/C</h1>
+<p class="muted">三个不同品类；不含具体品牌/车型；每个 4 个部件 + region。A/B 用于开发，C 作为 holdout。</p>
+<p class="muted">请重点看：品类/基型/构型、region、部件是否覆盖你点名对象、关系轴/设计轴是否合理。</p></header>
+<main>
+<section class="card">
+  <h2>A · 矿用宽体自卸车</h2>
+  <p class="prompt"><b>用户原话：</b>矿用宽体自卸车，非公路矿区，载重 70 吨级，6×4；重点看前脸、驾驶室侧围、货箱前板/侧板、轮胎挡泥板、登车踏步；要 12 台。</p>
+  <div class="kv"><span>品类</span><b>矿用宽体自卸车</b></div>
+  <div class="kv"><span>基型</span><b>6×4 矿用宽体自卸车底盘</b></div>
+  <div class="kv"><span>构型</span><b>6×4，70 吨级，后卸货箱</b></div>
+  <div class="kv"><span>区域</span><b>前脸整体 / 侧面整体</b></div>
+  <p class='ok'>结构检查：部件 4 个、region 齐全、无具体品牌/车型</p><p class='note'>注意：前脸/驾驶室侧围由 region 覆盖，不是独立 part；请确认是否够用</p>
+  <table><thead><tr><th>对象</th><th>类型</th><th>族</th><th>关系轴</th><th>位置</th><th>设计轴</th><th>why</th></tr></thead>
+  <tbody><tr><td><b>货箱前板</b><div class='m'>custom_cargo_front_plate</div></td><td>部件</td><td>sheet_metal</td><td>工况特化</td><td>上装货箱前部，驾驶室后侧</td><td>结构 / 环境防护 / 制造</td><td>用户点名；可提供货箱前板分块、加强筋布置、耐磨抗冲击结构以及与驾驶室后围安全间隙的设计证据。</td></tr><tr><td><b>货箱侧板</b><div class='m'>custom_cargo_side_plate</div></td><td>部件</td><td>sheet_metal</td><td>工况特化</td><td>上装货箱左右侧部</td><td>结构 / 环境防护 / 制造</td><td>用户点名；能提供侧板分块、加强筋、边梁连接与耐磨方案，支撑 70 吨级装载下的刚度与磨损判断。</td></tr><tr><td><b>轮胎挡泥板</b><div class='m'>custom_tire_mudguard</div></td><td>功能件</td><td>sheet_metal</td><td>工况特化</td><td>底盘车轮上方与侧部</td><td>结构 / 环境防护 / 制造</td><td>用户点名；可提供挡泥包络、离地与轮胎间隙、泥砂导流、支架刚度和拆装维护的设计证据。</td></tr><tr><td><b>登车踏步</b><div class='m'>step</div></td><td>功能件</td><td>function_attachment</td><td>工况特化</td><td>驾驶室侧下方</td><td>功能/人机 / 结构 / 环境防护</td><td>用户点名；能提供踏步高度/深度、防滑排泥、泥砂环境可踏性与支架刚度的设计证据。</td></tr></tbody></table>
+  <h4>假设</h4><ul><li><b>base_platform</b> = 6×4 矿用宽体自卸车底盘<span class='m'>（用户给出 6×4 与 70 吨级，但未给品牌和具体平台；按矿用宽体自卸车常见刚性底盘处理。；0.75）</span></li><li><b>configuration</b> = 后卸货箱<span class='m'>（宽体自卸车通常为后卸；用户未明确卸料方向。；0.7）</span></li><li><b>tire_mudguard_mapping</b> = custom_tire_mudguard，按功能附件处理，不等同于参考词表 wheel_arch<span class='m'>（用户说轮胎挡泥板，参考词表仅有翼子板与轮拱，语义不完全一致。；0.8）</span></li><li><b>cargo_plate_split</b> = 货箱前板与侧板拆为两个 custom 部件<span class='m'>（用户以“前板/侧板”并列点名，二者受力与磨损机制不同；不补充其他货箱部件。；0.8）</span></li><li><b>parts.new</b> = [&#x27;货箱前板&#x27;, &#x27;货箱侧板&#x27;, &#x27;轮胎挡泥板&#x27;]<span class='m'>（词表外的新部件，已保留为 custom_* 并保留原词；0.6）</span></li><li><b>page_budget</b> = 12<span class='m'>（规则：exact 8 + environment 4；1.0）</span></li></ul>
+</section>
+<section class="card">
+  <h2>B · 12 方混凝土搅拌车</h2>
+  <p class="prompt"><b>用户原话：</b>12 方混凝土搅拌车，城市工程，8×4 底盘；重点看驾驶室前脸、搅拌罐、进出料斗、侧防护、尾部操作台；要 12 台。</p>
+  <div class="kv"><span>品类</span><b>混凝土搅拌车（搅拌运输车，公称容积 12 m³）</b></div>
+  <div class="kv"><span>基型</span><b>8×4 重型二类底盘（搅拌车专用底盘，前双转向轴+后双驱动轴）</b></div>
+  <div class="kv"><span>构型</span><b>发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台</b></div>
+  <div class="kv"><span>区域</span><b>前脸整体 / 侧面整体 / 后围整体</b></div>
+  <p class='ok'>结构检查：部件 4 个、region 齐全、无具体品牌/车型</p><p class='note'>注意：前脸/驾驶室侧围由 region 覆盖，不是独立 part；请确认是否够用</p>
+  <table><thead><tr><th>对象</th><th>类型</th><th>族</th><th>关系轴</th><th>位置</th><th>设计轴</th><th>why</th></tr></thead>
+  <tbody><tr><td><b>搅拌罐（罐体）</b><div class='m'>custom_mixer_drum</div></td><td>部件</td><td>welded_shell</td><td>精确类目</td><td>上装中部，后倾布置于前后支架之间，前端接进料斗、后端接出料与操作台</td><td>姿态 / 结构 / CMF</td><td>罐体是搅拌车体量与姿态的决定性形体，其锥度、前后段比例、滚道与支架位置直接决定整车侧面轮廓与离地关系；涂装分色又承担车队识别与市政形象，因此能提供‘构型-比例-涂装’三类设计证据。</td></tr><tr><td><b>进出料斗（前端进料斗 + 尾部出料溜槽/料斗）</b><div class='m'>custom_charging_discharge_hopper</div></td><td>功能件</td><td>function_attachment</td><td>精确类目</td><td>罐体前端（进料斗）与罐体尾部（出料溜槽及料斗、锁紧与回转机构）</td><td>结构 / 功能/人机 / CMF</td><td>进出料斗是搅拌车唯一与混凝土直接交互的功能件，其斗形、加强方式、回转与锁紧机构决定撒漏控制与清洗便利；在城市工况（保洁、撒漏监管）下它也是外观整洁度的关键，能提供构造与人机两类证据</td></tr><tr><td><b>侧防护栏</b><div class='m'>side_guard</div></td><td>部件</td><td>frame_profile</td><td>精确类目</td><td>底盘两侧，前后轮之间的车架外侧</td><td>结构 / 法规 / 功能/人机</td><td>侧防护是法规强制件，同时是底盘侧面唯一的横向线性元素，决定侧面视觉节奏与‘底盘-上装’过渡；其支架节点还受罐体支架与轮胎包络约束，能提供法规符合性与构造分缝证据。</td></tr><tr><td><b>尾部操作台</b><div class='m'>custom_rear_operating_platform</div></td><td>功能件</td><td>frame_profile</td><td>精确类目</td><td>上装尾部，罐体后端与出料溜槽之间，含踏板/平台、扶手栏杆、爬梯与冲洗装置收纳</td><td>功能/人机 / 结构 / 法规</td><td>尾部操作台是操作者登车、控料、冲洗与检修的作业面，其标高、栏杆形式、骨架与后防护/反光件的集成方式，直接给出人机-法规-构造三者耦合的证据，也是尾部视觉密度最集中的部位。</td></tr></tbody></table>
+  <h4>假设</h4><ul><li><b>request.class 参数</b> = 12 m³ 为搅拌罐公称容积，整车总质量按 8×4 城市搅拌车常规量级理解<span class='m'>（用户只说‘12 方’，需落成容积参数才能判断罐体尺寸与轴距关系；0.8）</span></li><li><b>request.base_platform</b> = 8×4 二类底盘，驾驶室为平台化量产驾驶室（多为平顶/标准顶）<span class='m'>（城市搅拌车普遍采用二类底盘改装，驾驶室造型多为平台继承而非全新开发；0.65）</span></li><li><b>request.environment</b> = 城市工程=市政/城建工地运输，含道路限行、冲洗保洁、撒漏监管；不含矿区、寒区、沙尘等极端环境<span class='m'>（‘城市工程’与重载矿区工况的防护需求差异大，需先排除极端环境以免误开环境防护轴；0.75）</span></li><li><b>输入中的‘12 台’</b> = 车队采购/批量数量，提示涂装与标识的一致性、部件通用化，不作为检索配额或页数依据<span class='m'>（数量属于采购信息，不改变设计对象与检索范围；0.9）</span></li><li><b>custom_rear_operating_platform 边界</b> = ‘尾部操作台’包含平台踏板、扶手栏杆、爬梯及冲洗/工具箱收纳，与后防护（法规件）相邻但分开看待<span class='m'>（用户点名的是操作面，未点名后防护；若后续需要法规后防护应单列；0.7）</span></li><li><b>罐体与进出料斗的关系</b> = 进出料斗按用户说法作为一个对象整体分析（前端进料斗+尾部出料溜槽/料斗）<span class='m'>（用户合并表述，不擅自拆分为两个独立检索对象；0.85）</span></li><li><b>parts.new</b> = [&#x27;搅拌罐（罐体）&#x27;, &#x27;进出料斗（前端进料斗 + 尾部出料溜槽/料斗）&#x27;, &#x27;尾部操作台&#x27;]<span class='m'>（词表外的新部件，已保留为 custom_* 并保留原词；0.6）</span></li><li><b>page_budget</b> = 12<span class='m'>（规则：exact 8 + environment 4；1.0）</span></li></ul>
+</section>
+<section class="card">
+  <h2>C · 28 米级折叠臂高空作业车</h2>
+  <p class="prompt"><b>用户原话：</b>28 米级折叠臂高空作业车，城市市政维护，4×2 底盘；重点看驾驶室前脸、臂架/折叠关节、工作斗、支腿、侧防护；要 12 台。</p>
+  <div class="kv"><span>品类</span><b>车载折叠臂式高空作业车（28 米级）</b></div>
+  <div class="kv"><span>基型</span><b>4×2 商用卡车底盘（驾驶室形式未指定）</b></div>
+  <div class="kv"><span>构型</span><b>车载折叠臂、臂端工作斗、支腿支撑</b></div>
+  <div class="kv"><span>区域</span><b>前脸整体</b></div>
+  <p class='ok'>结构检查：部件 4 个、region 齐全、无具体品牌/车型</p><p class='note'>注意：前脸/驾驶室侧围由 region 覆盖，不是独立 part；请确认是否够用</p>
+  <table><thead><tr><th>对象</th><th>类型</th><th>族</th><th>关系轴</th><th>位置</th><th>设计轴</th><th>why</th></tr></thead>
+  <tbody><tr><td><b>臂架/折叠关节</b><div class='m'>custom_boom_folding_joint</div></td><td>部件</td><td>frame_profile</td><td>精确类目</td><td>上装/臂架，驾驶室后方至臂端</td><td>结构 / 制造 / 比例</td><td>折叠臂是该类产品的核心上装；其关节、截面和收起姿态决定整车轮廓、结构表达与可制造性，能提供臂架与驾驶室/工作斗接口证据。</td></tr><tr><td><b>工作斗</b><div class='m'>custom_work_basket</div></td><td>部件</td><td>function_attachment</td><td>精确类目</td><td>臂端</td><td>功能/人机 / 结构 / CMF</td><td>工作斗直接关系作业人机与安全，能提供护栏、控制布局、材料与臂端接口证据。</td></tr><tr><td><b>支腿</b><div class='m'>custom_outriggers</div></td><td>部件</td><td>frame_profile</td><td>精确类目</td><td>底盘/上装下部四角</td><td>结构 / 功能/人机 / 法规</td><td>城市工况下支腿决定稳定性、展开占地与道路/行人安全，能提供结构接口与法规相关证据。</td></tr><tr><td><b>侧防护栏</b><div class='m'>side_guard</div></td><td>部件</td><td>sheet_metal</td><td>精确类目</td><td>底盘侧面/前后轮之间</td><td>法规 / 结构 / 制造</td><td>侧防护是城市道路法规与行人保护件，能提供法规尺寸、连接结构和制造分缝证据。</td></tr></tbody></table>
+  <h4>假设</h4><ul><li><b>class</b> = 车载折叠臂式高空作业车，约 28 米作业高度<span class='m'>（由用户“28 米级折叠臂高空作业车”直接判断；0.95）</span></li><li><b>base_platform</b> = 4×2 商用卡车底盘，驾驶室形式未指定<span class='m'>（用户只给出 4×2 底盘，未说明平头/长头或具体吨级；0.8）</span></li><li><b>configuration</b> = 折叠臂上装、臂端工作斗、支腿支撑<span class='m'>（品类与用户点名部件共同指向该构型；0.9）</span></li><li><b>environment</b> = 城市市政维护，公共道路行驶与街道作业<span class='m'>（用户明确工况；0.95）</span></li><li><b>fleet_size</b> = 12 台<span class='m'>（用户给出数量，可能影响车队标准化、涂装与维修共性；0.9）</span></li><li><b>front_face_scope</b> = 按“驾驶室前脸”整体区域处理，不拆格栅/大灯/保险杠等<span class='m'>（用户只点名前脸，按 brief 规则不主动拆分未点名部件；0.95）</span></li><li><b>parts.new</b> = [&#x27;臂架/折叠关节&#x27;, &#x27;工作斗&#x27;, &#x27;支腿&#x27;]<span class='m'>（词表外的新部件，已保留为 custom_* 并保留原词；0.6）</span></li><li><b>page_budget</b> = 12<span class='m'>（规则：exact 8 + environment 4；1.0）</span></li></ul>
+</section></main></body></html>

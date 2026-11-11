@@ -1,0 +1,223 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-11T22:38:47",
+ "raw_input": "矿用宽体自卸车，非公路矿区，载重 70 吨级，6×4；重点看前脸、驾驶室侧围、货箱前板/侧板、轮胎挡泥板、登车踏步；要 12 台。",
+ "brief_path": "data-test\\evals\\source-expansion-briefs-20261111\\mining-dump.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2488,
+  "completion_tokens": 7435,
+  "total_tokens": 9923,
+  "prompt_tokens_details": {
+   "cached_tokens": 1920
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 5935
+  },
+  "prompt_cache_hit_tokens": 1920,
+  "prompt_cache_miss_tokens": 568
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "矿用宽体自卸车",
+   "environment": "非公路矿区",
+   "base_platform": "6×4 矿用宽体自卸车底盘",
+   "configuration": "6×4，70 吨级，后卸货箱",
+   "design_questions": [
+    "前脸与驾驶室侧围在非公路矿区工况下，如何兼顾造型体量、驾驶室防护与登车/视野人机？",
+    "货箱前板/侧板如何通过板面分块、加强筋与耐磨抗冲击结构适应 70 吨级矿石装载？",
+    "轮胎挡泥板与登车踏步如何解决泥砂飞溅、防滑排泥、离地与可维护性？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸整体",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "驾驶室侧围",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_cargo_front_plate",
+    "label": "货箱前板",
+    "kind": "part",
+    "location": "上装货箱前部，驾驶室后侧",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "矿石装载冲击",
+     "板面磨损",
+     "焊接板与加强筋布置",
+     "与驾驶室后围间隙"
+    ],
+    "why": "用户点名；可提供货箱前板分块、加强筋布置、耐磨抗冲击结构以及与驾驶室后围安全间隙的设计证据。"
+   },
+   {
+    "part": "custom_cargo_side_plate",
+    "label": "货箱侧板",
+    "kind": "part",
+    "location": "上装货箱左右侧部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "侧向矿石压力",
+     "耐磨抗冲击",
+     "板面分块与加强筋",
+     "边梁连接与卸料刚度"
+    ],
+    "why": "用户点名；能提供侧板分块、加强筋、边梁连接与耐磨方案，支撑 70 吨级装载下的刚度与磨损判断。"
+   },
+   {
+    "part": "custom_tire_mudguard",
+    "label": "轮胎挡泥板",
+    "kind": "function",
+    "location": "底盘车轮上方与侧部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "泥砂与碎石飞溅",
+     "轮胎包络与间隙",
+     "支架与紧固",
+     "可更换性"
+    ],
+    "why": "用户点名；可提供挡泥包络、离地与轮胎间隙、泥砂导流、支架刚度和拆装维护的设计证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "驾驶室侧下方",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "登车人机",
+     "防滑与排泥",
+     "踏步刚度",
+     "离地间隙"
+    ],
+    "why": "用户点名；能提供踏步高度/深度、防滑排泥、泥砂环境可踏性与支架刚度的设计证据。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "6×4 矿用宽体自卸车底盘",
+    "why": "用户给出 6×4 与 70 吨级，但未给品牌和具体平台；按矿用宽体自卸车常见刚性底盘处理。",
+    "confidence": 0.75
+   },
+   {
+    "field": "configuration",
+    "value": "后卸货箱",
+    "why": "宽体自卸车通常为后卸；用户未明确卸料方向。",
+    "confidence": 0.7
+   },
+   {
+    "field": "tire_mudguard_mapping",
+    "value": "custom_tire_mudguard，按功能附件处理，不等同于参考词表 wheel_arch",
+    "why": "用户说轮胎挡泥板，参考词表仅有翼子板与轮拱，语义不完全一致。",
+    "confidence": 0.8
+   },
+   {
+    "field": "cargo_plate_split",
+    "value": "货箱前板与侧板拆为两个 custom 部件",
+    "why": "用户以“前板/侧板”并列点名，二者受力与磨损机制不同；不补充其他货箱部件。",
+    "confidence": 0.8
+   }
+  ],
+  "negative": [
+   "不要把前脸自行拆成格栅、大灯、保险杠等用户未点名的子部件。",
+   "不要将轮胎挡泥板直接等同于参考词表 wheel_arch（翼子板与轮拱）。",
+   "不要扩展到公路自卸车或公路重卡作为主要同构型证据。",
+   "不要编造品牌、具体型号或货箱材质牌号。",
+   "不要用“相似/同系列”作为检索理由，理由必须说明能提供什么设计证据。"
+  ]
+ },
+ "duration_ms": 43546
+}

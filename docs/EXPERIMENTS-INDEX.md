@@ -13,6 +13,7 @@
 | E20/T48 失败原因 + 先验接线 | 403/DNS + 拼图/多车/客车；12 条失败 URL 重放 0/12；analysis 接 kind/location/family/why；部件兜底 query | `data-test/evals/failure-stats-20261111.{md,json}`、`failure-replay-sample-20261111.json` | `scripts/analyze_failure_stats.py`；`analysis.py`、`retrieval_engine/web.py` | `f8740ea` |
 | E21/T49 扩源/换源 | 长 query 0；短 query/harvest 34 张过门卫，仅 1 probable；用户标注：8 目标/5 不是/8 不确定/13 空白；至少 5 张目标图被 unknown 漏掉 | `data-test/evals/source-expansion-{test,quality,harvest,verify}-20261111.json`；`source-expansion-review-20261111/`（`annotations.json`、`ANNOTATION-ANALYSIS.md`） | `scripts/build_source_expansion_review.py`；`imagesearch.py`（harvest） | `5d029b7`、`9b31be2`、`b17346a` |
 | E22/T51 harvest 元数据（否定） | 首次 A/B 混淆 base/harvest；只取 harvest 图 21 张 A/B/C 均 0 通过；收益来自 base 搜索标题，不采纳，代码回退 | `data-test/evals/harvest-metadata-ab-20261111.md`、`harvest-only-abc-20261111.json` | `scripts/test_harvest_metadata.py` | 待提交 |
+| E23 扩源新 brief | A 矿用宽体自卸车/B 12 方搅拌车（开发）、C 高空作业车（holdout）；均 4 部件，无具体品牌/车型；待人工审后跑 A/B | `data-test/evals/source-expansion-briefs-20261111/`（`briefs-review.html`、README、三份 brief） | `scripts/build_brief.py`、`scripts/render_new_briefs.py` | 待提交 |
 | LangGraph 迁移评估 | 暂不全量迁移；先扩源/恢复；分支/feature flag/并行回归 | `docs/langgraph-migration-plan.md` | 待启动 | `1787605` |
 | generic 只标不删 | 12/12，3 generic 交付，82 图；无删除 | `data-test/runs/loop-generic-test-20261111/`、`audit.html` | `scripts/render_fetch_audit.py` | `70970ad` |
 

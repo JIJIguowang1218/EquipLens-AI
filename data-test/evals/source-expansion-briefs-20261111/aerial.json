@@ -1,0 +1,267 @@
+{
+ "brief_id": "source-expansion-aerial-20261111",
+ "request": {
+  "raw": "28 米级折叠臂高空作业车，城市市政维护，4×2 底盘；重点看驾驶室前脸、臂架/折叠关节、工作斗、支腿、侧防护；要 12 台。",
+  "class": "车载折叠臂式高空作业车（28 米级）",
+  "environment": {
+   "value": "城市市政维护，公共道路行驶与街道作业",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "4×2 商用卡车底盘（驾驶室形式未指定）",
+   "confidence": 0.8
+  },
+  "configuration": "车载折叠臂、臂端工作斗、支腿支撑",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 12,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "class",
+   "value": "车载折叠臂式高空作业车，约 28 米作业高度",
+   "why": "由用户“28 米级折叠臂高空作业车”直接判断",
+   "confidence": 0.95
+  },
+  {
+   "field": "base_platform",
+   "value": "4×2 商用卡车底盘，驾驶室形式未指定",
+   "why": "用户只给出 4×2 底盘，未说明平头/长头或具体吨级",
+   "confidence": 0.8
+  },
+  {
+   "field": "configuration",
+   "value": "折叠臂上装、臂端工作斗、支腿支撑",
+   "why": "品类与用户点名部件共同指向该构型",
+   "confidence": 0.9
+  },
+  {
+   "field": "environment",
+   "value": "城市市政维护，公共道路行驶与街道作业",
+   "why": "用户明确工况",
+   "confidence": 0.95
+  },
+  {
+   "field": "fleet_size",
+   "value": "12 台",
+   "why": "用户给出数量，可能影响车队标准化、涂装与维修共性",
+   "confidence": 0.9
+  },
+  {
+   "field": "front_face_scope",
+   "value": "按“驾驶室前脸”整体区域处理，不拆格栅/大灯/保险杠等",
+   "why": "用户只点名前脸，按 brief 规则不主动拆分未点名部件",
+   "confidence": 0.95
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "臂架/折叠关节",
+    "工作斗",
+    "支腿"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 12,
+   "why": "规则：exact 8 + environment 4",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_boom_folding_joint",
+   "label": "臂架/折叠关节",
+   "kind": "part",
+   "location": "上装/臂架，驾驶室后方至臂端",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "manufacturing",
+    "proportion"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "折叠关节与臂架截面/铰点布置",
+    "收起包络与驾驶室、工作斗关系",
+    "焊接/折弯与管线过孔"
+   ],
+   "why": "折叠臂是该类产品的核心上装；其关节、截面和收起姿态决定整车轮廓、结构表达与可制造性，能提供臂架与驾驶室/工作斗接口证据。"
+  },
+  {
+   "part": "custom_work_basket",
+   "label": "工作斗",
+   "kind": "part",
+   "location": "臂端",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "detail",
+    "hero_45",
+    "side"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "操作者站立/进出与护栏",
+    "控制盒与工具放置",
+    "排水/防滑/轻量化"
+   ],
+   "why": "工作斗直接关系作业人机与安全，能提供护栏、控制布局、材料与臂端接口证据。"
+  },
+  {
+   "part": "custom_outriggers",
+   "label": "支腿",
+   "kind": "part",
+   "location": "底盘/上装下部四角",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "支腿箱/横梁与底盘连接",
+    "展开/收起的离地与空间",
+    "支腿盘/警示与行人防护"
+   ],
+   "why": "城市工况下支腿决定稳定性、展开占地与道路/行人安全，能提供结构接口与法规相关证据。"
+  },
+  {
+   "part": "side_guard",
+   "label": "侧防护栏",
+   "kind": "part",
+   "location": "底盘侧面/前后轮之间",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "exact",
+   "design_axes": [
+    "regulation",
+    "structure",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧面防护的连续性与离地/间隙",
+    "支架与底盘/上装连接",
+    "折弯/冲压与涂装"
+   ],
+   "why": "侧防护是城市道路法规与行人保护件，能提供法规尺寸、连接结构和制造分缝证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "车载折叠臂式高空作业车（28 米级） 车载折叠臂、臂端工作斗、支腿支撑",
+   "parts": [
+    "custom_boom_folding_joint",
+    "custom_work_basket",
+    "custom_outriggers",
+    "side_guard"
+   ],
+   "quota": 8,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "8 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "城市市政维护，公共道路行驶与街道作业 工程车",
+   "parts": [
+    "custom_boom_folding_joint",
+    "custom_work_basket",
+    "custom_outriggers",
+    "side_guard"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 14
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不要把驾驶室前脸拆成格栅、大灯、保险杠、后视镜等未点名部件",
+  "不要补入未提及的车尾、顶部导流、底盘其他附件或上装细节",
+  "不要假设具体底盘型号、驾驶室形式或折叠臂节数",
+  "不要输出 page_budget/research_units/quota/tiers/budget/strategy_ref",
+  "不要用“相似/同系列”作为检索理由",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

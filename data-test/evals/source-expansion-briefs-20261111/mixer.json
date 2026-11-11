@@ -1,0 +1,305 @@
+{
+ "brief_id": "source-expansion-mixer-20261111",
+ "request": {
+  "raw": "12 方混凝土搅拌车，城市工程，8×4 底盘；重点看驾驶室前脸、搅拌罐、进出料斗、侧防护、尾部操作台；要 12 台。",
+  "class": "混凝土搅拌车（搅拌运输车，公称容积 12 m³）",
+  "environment": {
+   "value": "城市工程/城建工况：城市道路与市政工地、频繁启停与转弯、道路限行与保洁冲洗要求、对撒漏与外观整洁敏感；非矿区/寒区极端环境",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "8×4 重型二类底盘（搅拌车专用底盘，前双转向轴+后双驱动轴）",
+   "confidence": 0.8
+  },
+  "configuration": "发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 12,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "request.class 参数",
+   "value": "12 m³ 为搅拌罐公称容积，整车总质量按 8×4 城市搅拌车常规量级理解",
+   "why": "用户只说‘12 方’，需落成容积参数才能判断罐体尺寸与轴距关系",
+   "confidence": 0.8
+  },
+  {
+   "field": "request.base_platform",
+   "value": "8×4 二类底盘，驾驶室为平台化量产驾驶室（多为平顶/标准顶）",
+   "why": "城市搅拌车普遍采用二类底盘改装，驾驶室造型多为平台继承而非全新开发",
+   "confidence": 0.65
+  },
+  {
+   "field": "request.environment",
+   "value": "城市工程=市政/城建工地运输，含道路限行、冲洗保洁、撒漏监管；不含矿区、寒区、沙尘等极端环境",
+   "why": "‘城市工程’与重载矿区工况的防护需求差异大，需先排除极端环境以免误开环境防护轴",
+   "confidence": 0.75
+  },
+  {
+   "field": "输入中的‘12 台’",
+   "value": "车队采购/批量数量，提示涂装与标识的一致性、部件通用化，不作为检索配额或页数依据",
+   "why": "数量属于采购信息，不改变设计对象与检索范围",
+   "confidence": 0.9
+  },
+  {
+   "field": "custom_rear_operating_platform 边界",
+   "value": "‘尾部操作台’包含平台踏板、扶手栏杆、爬梯及冲洗/工具箱收纳，与后防护（法规件）相邻但分开看待",
+   "why": "用户点名的是操作面，未点名后防护；若后续需要法规后防护应单列",
+   "confidence": 0.7
+  },
+  {
+   "field": "罐体与进出料斗的关系",
+   "value": "进出料斗按用户说法作为一个对象整体分析（前端进料斗+尾部出料溜槽/料斗）",
+   "why": "用户合并表述，不擅自拆分为两个独立检索对象",
+   "confidence": 0.85
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "搅拌罐（罐体）",
+    "进出料斗（前端进料斗 + 尾部出料溜槽/料斗）",
+    "尾部操作台"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 12,
+   "why": "规则：exact 8 + environment 4",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后围整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "rear",
+    "detail",
+    "side"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_mixer_drum",
+   "label": "搅拌罐（罐体）",
+   "kind": "part",
+   "location": "上装中部，后倾布置于前后支架之间，前端接进料斗、后端接出料与操作台",
+   "part_family": "welded_shell",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "rear",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "上装主形体与整车姿态",
+    "罐体分段/滚道/支承节点",
+    "涂装分色与品牌带（城市车队识别）"
+   ],
+   "why": "罐体是搅拌车体量与姿态的决定性形体，其锥度、前后段比例、滚道与支架位置直接决定整车侧面轮廓与离地关系；涂装分色又承担车队识别与市政形象，因此能提供‘构型-比例-涂装’三类设计证据。"
+  },
+  {
+   "part": "custom_charging_discharge_hopper",
+   "label": "进出料斗（前端进料斗 + 尾部出料溜槽/料斗）",
+   "kind": "function",
+   "location": "罐体前端（进料斗）与罐体尾部（出料溜槽及料斗、锁紧与回转机构）",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "detail",
+    "side",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "钣金/型材焊接构造与加强筋",
+    "进料高度、出料回转与清洗可达性",
+    "与罐体涂装的分色收口"
+   ],
+   "why": "进出料斗是搅拌车唯一与混凝土直接交互的功能件，其斗形、加强方式、回转与锁紧机构决定撒漏控制与清洗便利；在城市工况（保洁、撒漏监管）下它也是外观整洁度的关键，能提供构造与人机两类证据。"
+  },
+  {
+   "part": "side_guard",
+   "label": "侧防护栏",
+   "kind": "part",
+   "location": "底盘两侧，前后轮之间的车架外侧",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "型材框架与车架连接节点",
+    "侧防护法规尺寸/间隙要求",
+    "与罐体、轮胎、登车件的空间避让"
+   ],
+   "why": "侧防护是法规强制件，同时是底盘侧面唯一的横向线性元素，决定侧面视觉节奏与‘底盘-上装’过渡；其支架节点还受罐体支架与轮胎包络约束，能提供法规符合性与构造分缝证据。"
+  },
+  {
+   "part": "custom_rear_operating_platform",
+   "label": "尾部操作台",
+   "kind": "function",
+   "location": "上装尾部，罐体后端与出料溜槽之间，含踏板/平台、扶手栏杆、爬梯与冲洗装置收纳",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "detail",
+    "side"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "踏板高度/防滑与扶手人机",
+    "平台骨架与后防护、反光标识集成",
+    "出料操作站位与溜槽收纳关系"
+   ],
+   "why": "尾部操作台是操作者登车、控料、冲洗与检修的作业面，其标高、栏杆形式、骨架与后防护/反光件的集成方式，直接给出人机-法规-构造三者耦合的证据，也是尾部视觉密度最集中的部位。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "混凝土搅拌车（搅拌运输车，公称容积 12 m³） 发动机前置、驾驶室前置、搅拌罐后倾中后置、液压驱动罐体、尾部出料与操作平台",
+   "parts": [
+    "custom_mixer_drum",
+    "custom_charging_discharge_hopper",
+    "side_guard",
+    "custom_rear_operating_platform"
+   ],
+   "quota": 8,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "8 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "城市工程/城建工况：城市道路与市政工地、频繁启停与转弯、道路限行与保洁冲洗要求、对撒漏与外观整洁敏感；非矿区/寒区极端环境 工程车",
+   "parts": [
+    "custom_mixer_drum",
+    "custom_charging_discharge_hopper",
+    "side_guard",
+    "custom_rear_operating_platform"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 14
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不把‘驾驶室前脸’拆成格栅/大灯/保险杠/踏步等未被点名的部件",
+  "不扩展到 6×4、8×4 自卸车、泵车、干混砂浆车等非搅拌上装车型",
+  "不引入矿区、寒区、沙尘等极端环境专用的防护件（防沙板、涉水喉等）",
+  "不以‘相似车型/同系列’作为相关性理由，理由必须写明可提供的设计证据",
+  "不输出 page_budget / quota / tiers / budget / strategy_ref 等由代码生成的字段",
+  "不把‘12 台’解读为检索页数或配额",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}
