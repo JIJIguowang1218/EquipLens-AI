@@ -72,3 +72,17 @@ FILL 只应该消费“哪些 target 有资格”，不应该自己判断“图�
 - 作为交付硬规则，它落后且不可靠；
 - 作为 audit/warning 可以保留；
 - 不应再往 FILL 堆 scene 规则；如果产品需要整车资格，应在 VERIFY 做可靠的整车判定，或继续人审。
+
+## 澄清：标签一直存在，缺的是“消费标签的策略”
+
+之前说“没引入 scene”不准确。准确说法：
+
+- gate 一直计算 `scene`，并在 fetch_log/audit 中可见；
+- `gate.assess_from_gate` 也计算了 `overview_candidate/part_candidate`；
+- 但 `live_fetch` 对 gate-pass 图**全部建 Asset**，不检查 `overview_candidate`；
+- `_state_verify` 只看身份/构型；
+- `_state_fill` 只看 accepted，不读 scene；
+- 所以标签存在，但没有进入交付选择。
+
+`multi_vehicle` 也一样：gate 里会限制 candidate 标志/给 hint，但 fill 不消费。
+这不是“标签没算”，是“标签到交付的线没接”。
