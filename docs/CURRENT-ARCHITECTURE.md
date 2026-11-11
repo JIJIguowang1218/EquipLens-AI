@@ -48,7 +48,7 @@ task-brief@v2 (API)
 
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
 - 每个 target 的 fetch/verify/filled attempt 写入 `state.attempts`；
-- `part_only` 标记：有 scene 元数据、但没有 `scene=single_vehicle` 的 target 标记 `part_only=True`；
+- `part_only` 标记（临时，职责待上移）：有 scene 元数据、但没有 `scene=single_vehicle` 的 target 标记 `part_only=True`；**长期应由 VERIFY/gate 计算 delivery_scope，FILL 只消费**，见 `docs/fill-responsibility-audit.md`；
 - code prefilter（可选，`--code-prefilter`）：code target 且 title code 明确不一致时下载前拒绝。
 
 **未采用**：

@@ -39,3 +39,8 @@
 
 - rank7/8/13/14 的 part-only 图是否其实是可用整车图；
 - gate scene 是否需要后续单独校准（不要在本轮扩源里做）。
+
+
+## 职责修正
+
+`overview` 不应由 FILL 判断。FILL 的原始职责是占槽/备选/族去重；scene/overview 在 gate 里计算，但“整车交付资格”没有模块归属。当前 `part_only` 只是临时标记；长期应上移到 VERIFY/gate。详见 `docs/fill-responsibility-audit.md`。
