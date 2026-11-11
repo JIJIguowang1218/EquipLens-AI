@@ -106,6 +106,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | 任务单生成（API + skill + 校验） | `scripts/build_brief.py`、`src/equiplens/briefing.py`、`skills/task-brief/`（SKILL.md + references + evals） |
 | 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
 | 意向排序（12 primary/2 backup） | `scripts/rank_plan.py`；`--pin` 可强制保留 |
+| LangGraph 迁移计划（暂不迁） | `docs/langgraph-migration-plan.md`；分支/feature flag/并行回归 |
 | 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
 | run 台账（RUN.json / INDEX） | `scripts/run_ledger.py`；约定见 `data-test/runs/README.md` |
