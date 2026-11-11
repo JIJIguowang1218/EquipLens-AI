@@ -12,6 +12,8 @@
 > 1. `docs/CURRENT-ARCHITECTURE.md`（当前整体框架、生产/实验/已收口）
 > 2. `docs/v1-retrieval-convergence-decision.md`（为什么停止扩源）
 > 3. `docs/EXPERIMENTS-INDEX.md`（实验→数据→脚本→commit）
+> 4. `docs/DEPENDENCIES.md`（依赖/模型/key/DB）
+> 5. `docs/OPTIMIZATION-METRICS.md` + `data-test/evals/METRICS.csv`（优化统计边界）
 >
 > ## ⚠️ 新会话第一件事
 >

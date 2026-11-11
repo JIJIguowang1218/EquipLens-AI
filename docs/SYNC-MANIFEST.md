@@ -25,6 +25,12 @@
 - `data-test/equiplens.db`、`data-test/ab-images/`、`data-test/ui-fixtures/`
 - `tmp/`、输出视频/PPT 中间产物
 
+## 依赖/统计入口
+
+- 依赖：`docs/DEPENDENCIES.md`、`requirements.txt`
+- 优化统计：`docs/OPTIMIZATION-METRICS.md`、`data-test/evals/METRICS.csv`
+- DB 说明：`data-test/equiplens.db` 是测试素材库，不是测试结论
+
 ## 新电脑缺什么
 
 1. DeepSeek key（否则规划/引用/重规划不可用）；
