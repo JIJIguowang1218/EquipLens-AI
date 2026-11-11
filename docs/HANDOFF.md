@@ -42,6 +42,23 @@
   3. LangGraph 只做 feedback/session spike，不重写核心；
   4. 不恢复已收口扩源策略；不把 fixture/预制 brief 当用户输入。
 
+
+### 0.0.1 新对话/新设备：实验记录模板（必须）
+
+每次正式实验（不仅是新设备）在 `data-test/evals/METRICS.csv` 追加一行，至少：
+
+```text
+experiment_id, date, commit, brief_id, plan_id,
+query_mode, platform_mode, sample_size,
+delivery, degraded, citation_only, bonus,
+verified_accepted, unknown,
+human_precision, human_recall,
+cost_usd, latency_sec, source, caveat
+```
+
+没有这些字段的实验，只能算探索，不能拿来做“优化提升”统计。  
+初始 vs 最终的边界见 `docs/INITIAL-VS-FINAL.md`。
+
 ## 0.1 换电脑 30 分钟接续（2026-11-10）
 
 ### 1) 拉代码与 Python

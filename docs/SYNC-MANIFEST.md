@@ -31,6 +31,12 @@
 - 优化统计：`docs/OPTIMIZATION-METRICS.md`、`data-test/evals/METRICS.csv`
 - DB 说明：`data-test/equiplens.db` 是测试素材库，不是测试结论
 
+## 新对话/新设备必做
+
+- 正式实验按 `HANDOFF.md` 0.0.1 的 KPI 模板记录；
+- 初始 vs 最终只按 `docs/INITIAL-VS-FINAL.md` 的受控口径比较；
+- 不要把候选级 precision、run 级 delivery、case 级 PASS 混成一个数字。
+
 ## 新电脑缺什么
 
 1. DeepSeek key（否则规划/引用/重规划不可用）；
