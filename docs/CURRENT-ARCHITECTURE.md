@@ -26,6 +26,8 @@ task-brief@v2 (API)
   → analysis (vision, separate module)
 ```
 
+代码位置总索引见 `docs/CODE-INDEX.md`。
+
 关键文件：
 
 | 环节 | 文件 |
