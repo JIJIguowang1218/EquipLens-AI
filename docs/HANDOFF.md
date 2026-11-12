@@ -37,7 +37,7 @@
 - code prefilter 独立验证：12/12 构成不变，accepted 236→224；可选。
 - 360+Baidu 定向补位试跑未命中；专门来源 360che 反爬、lmjx 超时，暂不接。
 - 下一步：
-  1. 第一次用户交付（12 主 + 2 备，beta + 人审）；
+  1. 第一次用户交付（N 主 + 4 备，N = 用户输入槽数；beta + 人审）；
   2. feedback router + 短期 session；
   3. LangGraph 只做 feedback/session spike，不重写核心；
   4. 不恢复已收口扩源策略；不把 fixture/预制 brief 当用户输入。
@@ -146,7 +146,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 | CLI（`--web-only/--plan/--evidence-db`） | `src/equiplens/retrieval_engine/cli.py` |
 | 任务单生成（API + skill + 校验） | `scripts/build_brief.py`、`src/equiplens/briefing.py`、`skills/task-brief/`（SKILL.md + references + evals） |
 | 在线规划（Search→LLM→出处校验） | `scripts/plan_candidates.py` |
-| 意向排序（12 primary/2 backup） | `scripts/rank_plan.py`；`--pin` 可强制保留 |
+| 意向排序（N primary + 4 backup，N=brief 槽数） | `scripts/rank_plan.py`；`--pin` 可强制保留 |
 | LangGraph 迁移计划（暂不迁） | `docs/langgraph-migration-plan.md`；分支/feature flag/并行回归 |
 | 规划核心（查询计划/校验/归并/coverage，可单测） | `src/equiplens/planning.py`（测试 `tests/test_planning.py`） |
 | 审核页（四档徽章） | `scripts/render_fetch_audit.py` |
@@ -187,7 +187,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 
 ## 0.3 待讨论 / 待拍板（新会话先和用户确认）
 
-1. **34 张“备选图”是否随包交付**：它们过了门卫、内容可用，只因 12 槽被占满而没进交付包（v2：9 车型 / 34 张，11 张 ≥800）。目前只保留在 `images/` + 审核页“备选·未占槽”，是否作为附录随包、是否占槽，需要用户定。
+1. ~~**34 张“备选图”是否随包交付**~~ **已定（2026-11-12）**：备选固定 **4 台**（按优先级从候选池取，不额外规划/检索）；其余素材仍留在 `images/` 与审核页“备选·未占槽”，不随包。备选缺图时在 `delivery.backup.short/images` 里显式暴露。
 2. **`citation_only` 收紧**：TAZ4922 有 0 张核验通过的图，仅靠引用页占槽。建议改成“至少 1 张 unknown 级图”或标“待补图”，但会减少交付数（与“不能少交付”冲突），需要拍板。
 3. **外国品牌是否默认搜**：已按“先控流程”做完并重测——planner v2 出处 100%；E15 A/B n=3（per-query 8、车型级去重后）里，加 `进口 {class} {conf} 车型` 的 B 组外国候选 16–20%，没有超过 A 组 18–24%，且会偶发丢 KAMAZ/TB800。**结论：不默认加进口查询**；要补外国车，应在 brief 里明确目标市场，或先有车型名再做“型号→图”检索（见 E15）。
 4. ~~**隐藏的国产品牌名单**~~ **已处理（2026-11-11）**：`discover.py` fallback 已废弃，`WebWorld` 无 plan/models 直接报错，CLI 在联网前拦截 `--web-only` 无 `--plan/--models`；T32/T33 的“实时发现”只能当历史口径，不能再用于“360 有没有外国车”的结论。

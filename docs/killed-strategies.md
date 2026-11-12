@@ -15,7 +15,7 @@
 | K2 | **三证③：改装 / 原厂状态** | **毙** | 2026-11-12 | 分类错误率高、边际效益低，不采纳；`Verification.origin` 恒 `unknown`，只作历史字段兼容 | 不做 |
 | K3 | `part_views.json` 静态表（部件→视角） | 毙 | 2026-11-11 | 视角由用户看图判断，模型不因视角等待或过滤 | 人机交互 |
 | K4 | `part_axes.json` 静态关系轴表 | 改为 brief 输出 | 2026-11-11 | 关系轴（exact/environment/platform/cross）由 `task-brief@v2` 按对象输出，不建静态表 | `skills/task-brief/` |
-| K5 | 硬性"整车槽必须有 overview" / 硬性 part-only 拒绝 | 弃 | 2026-11-12 | `loop-p0` 10/12；`loop-p0b` 12/12 但交付构成被改变（丢 rank7/8/13/14）。现为 `part_only` 软标记 + 人审 | FILL 打标，人审 |
+| K5 | 硬性"整车槽必须有 overview" / 硬性 part-only 拒绝 | 弃（**已定案，不再讨论**） | 2026-11-12 | `loop-p0` 10/12；`loop-p0b` 12/12 但交付构成被改变（丢 rank7/8/13/14）。`part_only` 只作审计/排序信号，**不参与交付门槛** | FILL 打标，人审 |
 | K6 | body / tonnage 硬 guard | 弃 | 2026-11-12 | 激进版 precision 75% 但误杀 8 张目标图；保守版 68.2%；不采纳 | 不做 |
 | K7 | Platform union / 百度默认启用 | 弃 | 2026-11-12 | 完整 loop 丢 HF8066、unknown 20→284；仅保留 `--platform-extra baidu` 实验开关 | 实验开关 |
 | K8 | harvest 标题元数据进生产 | 否定 | 2026-11-11 | 控制变量后只取 harvest 图 21 张，A/B/C 均 0 通过；收益来自 base 标题。代码已回退，`--harvest` 仅 opt-in | 不接 |

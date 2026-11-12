@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""给已生成的 plan 加“意向排序”：12 primary + 2 backup + 其余 pool。
+"""给已生成的 plan 加“意向排序”：N primary（brief 的 vehicle_slots）+ 4 backup + 其余 pool。
 
 只基于文本（用户请求、候选来源/reason），**不看图片**；因此它只是抓取/占槽的先验，
 最终仍由门卫/核验/用户决定。
@@ -41,6 +41,9 @@ def main(argv=None) -> int:
     ap.add_argument("--brief", required=True)
     ap.add_argument("--out", default="")
     ap.add_argument("--pin", default="", help="逗号分隔关键词，强制 primary")
+    ap.add_argument("--slots", type=int, default=None,
+                    help="主交付台数；默认取 brief.request.page_budget.vehicle_slots")
+    ap.add_argument("--backup", type=int, default=4, help="备选台数（默认 4）")
     ap.add_argument("--model", default="deepseek-flash")
     args = ap.parse_args(argv)
     plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
@@ -49,6 +52,14 @@ def main(argv=None) -> int:
     if not cands:
         raise SystemExit("plan 没有 candidates")
     pins = [x.strip().lower() for x in args.pin.split(",") if x.strip()]
+    # 主交付台数由用户输入决定（brief），不写死 12
+    slots = args.slots or int(((brief.get("request") or {}).get("page_budget") or {})
+                              .get("vehicle_slots") or 0)
+    if slots <= 0:
+        slots = sum(int(u.get("quota") or 0) for u in (brief.get("research_units") or []))
+    if slots <= 0:
+        raise SystemExit("brief 没有 vehicle_slots/quota，无法确定主交付台数；用 --slots 指定")
+    backup = max(0, int(args.backup))
     compact = [{
         "model": c.get("model"), "identity_kind": c.get("identity_kind"),
         "reason": (c.get("reason") or "")[:160],
@@ -64,7 +75,9 @@ def main(argv=None) -> int:
         "4) 不要编造候选，不要用图片质量/分辨率（你还没看到图）；\n"
         "5) 输出 JSON：{\"ranking\":[{\"model\":\"\",\"band\":\"must|strong|possible|weak\","
         "\"reason\":\"为什么值得先看，引用候选的文本信息\",\"role\":\"primary|backup|pool\"}]}；\n"
-        "   前 12 个 primary，接着 2 个 backup，其余 pool。\n\n"
+        f"   前 {slots} 个 primary，接着 {backup} 个 backup，其余 pool。
+
+"
         f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
         f"候选：{json.dumps(compact, ensure_ascii=False)}"
     )
@@ -105,8 +118,18 @@ def main(argv=None) -> int:
                               {"primary": 0, "backup": 1}.get(c.get("role"), 2)))
     for i, c in enumerate(order, 1):
         c["intent_rank"] = i
+        # 按名次确定角色，保证与 brief 的台数一致（pinned 不降级）
+        if c.get("pinned"):
+            c["role"] = "primary"
+        elif i <= slots:
+            c["role"] = "primary"
+        elif i <= slots + backup:
+            c["role"] = "backup"
+        else:
+            c["role"] = "pool"
     plan["candidates"] = order
     plan["ranking"] = {"model": args.model, "pins": pins,
+                       "slots": slots, "backup": backup,
                        "primary": sum(1 for c in order if c.get("role") == "primary"),
                        "backup": sum(1 for c in order if c.get("role") == "backup")}
     out = Path(args.out or Path(args.plan).with_name("plan-ranked.json"))

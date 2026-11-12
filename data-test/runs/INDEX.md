@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-12T15:12:45 · 共 68 条 · 待补人工结论 30 条
+> 生成时间：2026-11-12T15:29:12 · 共 68 条 · 待补人工结论 30 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -60,7 +60,7 @@
 | text-retrieval | `run-suicheche-blind-v3` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v3](data-test/runs/run-suicheche-blind-v3/REPORT.md) |
 | text-retrieval | `run-suicheche-profile` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-profile](data-test/runs/run-suicheche-profile/REPORT.md) |
 | other | `source-expansion-briefs-20261111` | plan-set | 2026-11-11 | — | — | — |
-| other | `verify-contract-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=66 · gate_pass=61 · degraded=8 | [—](data-test/runs/verify-contract-20261112/summary.json) |
+| other | `verify-contract-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=66 · gate_pass=61 · degraded=8 | [—](data-test/runs/verify-contract-20261112/audit.html) |
 
 ## 空目录 / 归档
 

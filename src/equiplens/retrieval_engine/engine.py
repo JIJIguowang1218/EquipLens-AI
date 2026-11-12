@@ -416,6 +416,22 @@ class RetrievalEngine:
         state["finished"] = True
 
     # ---------------------------------------------------------------- summary
+    def _backup_priority(self, state: dict, tid: str) -> tuple:
+        """备选排序：有 accepted 图优先 → pinned → role → intent_rank。"""
+        t = (state.get("targets") or {}).get(tid) or {}
+        assets = (state.get("assets") or {}).get(tid) or {}
+        ids = {a for items in assets.values() for a in (items or [])}
+        verifs = state.get("verifications") or {}
+        has_accepted = any(v.get("accepted") for k, v in verifs.items()
+                           if k.split(":")[0] in ids)
+        role_rank = {"primary": 0, "backup": 1, "pool": 2}.get(str(t.get("role") or ""), 3)
+        # 有核验图 > 有任意图 > 无图；再按 pinned / 规划角色 / 意向名次
+        return (0 if has_accepted else (1 if ids else 2),
+                0 if t.get("pinned") else 1,
+                role_rank,
+                int(t.get("intent_rank") or 10 ** 9),
+                tid)
+
     def _delivery(self, state: dict) -> dict:
         """交付守卫：要求 N 槽就必须有 N 个车型，不足要显式报 short + 缺口。
 
@@ -443,11 +459,20 @@ class RetrievalEngine:
                 degraded += 1
                 degraded_targets.append(tid)
         missing = max(0, target - accepted)
-        bonus_models = sorted(tid for tid, parts in by_target.items()
-                              if tid not in accepted_ids
-                              and any((v or []) for v in (parts or {}).values()))
-        bonus_images = sum(len({a for v in (by_target[m] or {}).values() for a in (v or [])})
-                           for m in bonus_models)
+        # 备选池 = 所有未占槽的候选车型（图不够也应占备选位，缺图在 backup.images 体现）
+        pool_models = sorted(
+            (tid for tid in (state.get("targets") or {}) if tid not in accepted_ids),
+            key=lambda tid: self._backup_priority(state, tid))
+        bonus_models = [m for m in pool_models
+                        if any((v or []) for v in (by_target.get(m) or {}).values())]
+        bonus_images = sum(len({a for v in (by_target.get(m) or {}).values()
+                                for a in (v or [])}) for m in bonus_models)
+        # 备选交付：固定 backup_slots 台（默认 4），只在提交阶段从候选池按优先级取，
+        # 不额外检索/规划（2026-11-12 产品要求）。
+        backup_required = self.brief.backup_slots
+        backup_models = pool_models[:backup_required]
+        backup_images = sum(len({a for v in (by_target.get(m) or {}).values()
+                                 for a in (v or [])}) for m in backup_models)
         return {
             "required": target,
             "delivered": accepted,
@@ -457,6 +482,11 @@ class RetrievalEngine:
             "citation_only": len(citation_only),
             "citation_only_targets": citation_only,
             "bonus": {"models": len(bonus_models), "images": bonus_images},
+            "backup": {"required": backup_required,
+                       "delivered": len(backup_models),
+                       "models": backup_models,
+                       "images": backup_images,
+                       "short": max(0, backup_required - len(backup_models))},
             "status": "complete" if accepted >= target else "short",
         }
 

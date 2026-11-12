@@ -120,11 +120,19 @@ def main(argv=None) -> int:
         except (json.JSONDecodeError, OSError):
             selected_ids, package_by_model, delivered_models = set(), {}, set()
             identity_by_model = {}
+    backup_models: set = set()
+    try:
+        sm = json.loads((run_dir / "summary.json").read_text(encoding="utf-8"))
+        backup_models = set(((sm.get("delivery") or {}).get("backup") or {})
+                            .get("models") or [])
+    except (json.JSONDecodeError, OSError):
+        backup_models = set()
     for it in items:
         it["identity_kind"] = identity_by_model.get(it["model"], "")
         it["selected"] = it.get("sha1") in selected_ids
         it["in_package"] = it.get("sha1") in package_by_model.get(it["model"], set())
         it["delivered"] = it["model"] in delivered_models
+        it["backup_selected"] = it["model"] in backup_models
 
     per_model = defaultdict(Counter)
     for it in items:
@@ -169,6 +177,8 @@ def main(argv=None) -> int:
             cls, badge = "slot", "已交付 · 已核验"
         elif it.get("in_package"):
             cls, badge = "pkg", "已交付 · 未核验"
+        elif it.get("gate_pass") and it.get("backup_selected"):
+            cls, badge = "warn", "备选 · 已入选"
         elif it.get("gate_pass"):
             cls, badge = "warn", "备选 · 未占槽"
         else:

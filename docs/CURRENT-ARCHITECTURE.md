@@ -7,7 +7,7 @@
 
 **检索模块 v1 收敛中；第一次用户交付准备阶段。**
 
-- 正常检索：360 主通道，12 槽，意图排序，gate v4，RuleVerifier，fill，audit；
+- 正常检索：360 主通道，**N 槽（N = brief.request.page_budget.vehicle_slots，用户输入）**，意图排序，gate v4，RuleVerifier，fill，audit，交付 **N 主 + 4 备**；
 - 已停止继续扩源（Query/Source/Platform 实验收口）；
 - 第一次交付定位 **beta + 人审**，不是无人值守生产；
 - 下一步：feedback router/session → LangGraph feedback spike。
@@ -17,7 +17,7 @@
 ```text
 task-brief@v2 (API)
   → plan_candidates (Search + LLM 抽取 + provenance)
-  → rank_plan (intent 12 primary + 2 backup)
+  → rank_plan (intent：N primary + 4 backup，N=用户输入槽数)
   → retrieval loop:
        LIBRARY_SEARCH → EXTERNAL_DISCOVER(360)
        → FETCH → VERIFY(gate v4 + RuleVerifier)
@@ -25,6 +25,13 @@ task-brief@v2 (API)
   → fetch_audit.html / state / evidence
   → analysis (vision, separate module)
 ```
+
+**交付口径（2026-11-12 定）**：交付 = **N 主 + 4 备**。
+
+- `N` 来自 `brief.request.page_budget.vehicle_slots`（用户输入，不写死）；
+- 备选 4 台在**提交阶段**从候选池按优先级取（有核验图 > 有任意图 > 无图；再按 pinned / 规划角色 / 意向名次），
+  **不新增规划、不额外检索**；缺口在 `delivery.backup.short` 显式暴露；
+- 审计页对入选备选显示「备选 · 已入选」。
 
 代码位置总索引见 `docs/CODE-INDEX.md`。
 
@@ -48,7 +55,7 @@ task-brief@v2 (API)
 
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
 - 每个 target 的 fetch/verify/filled/`assets` attempt 写入 `state.attempts`（`assets` 为真实入库资产数，2026-11-12 修复此前恒 0）；
-- `part_only` 标记（临时，职责待上移）：有 scene 元数据、但没有 `scene=single_vehicle` 的 target 标记 `part_only=True`；**长期应由 VERIFY/gate 计算 delivery_scope，FILL 只消费**，见 `docs/fill-responsibility-audit.md`。该字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + `schemas/retrieval-state.schema.json`），不再只是裸 key；
+- `part_only` 标记（**2026-11-12 定案：只作审计/排序信号，不参与交付门槛、不拦截、不再作为待拍板项**）：`scene` 是门卫侧标签（single_vehicle / multi_vehicle / part），用于区分整车/多车/局部；FILL 只从 scene 派生这个标记。字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + schema）。是否把交付资格上移到 VERIFY 属内部重构，不是阻塞项；
 - code prefilter（可选，`--code-prefilter`）：code target 且 title code 明确不一致时下载前拒绝。
 
 **未采用**：
@@ -65,7 +72,7 @@ task-brief@v2 (API)
 - 360 平台（**通道口径以代码为准**：`imagesearch.search_images_ex` 先取 360；360 的 relevant 数不足 `limit` 时依次用百度、Bing 兜底。百度在 2026-11-12 修复过一次返回类型 bug，修复后确实会参与兜底。`--platform-extra baidu` 是另一条独立实验路径，默认关）；
 - gate v4 + RuleVerifier；
 - intent rank；
-- 12 槽；
+- N 槽 = 用户输入（`page_budget.vehicle_slots`），不是固定 12；
 - code prefilter 默认 **关闭**（实验通过但未默认）。
 
 ### 实验（不默认）
@@ -106,11 +113,12 @@ task-brief@v2 (API)
 
 ## 6. 当前未决
 
-1. `part_only` 是否最终允许占槽：需要人审/产品决定；
-2. code prefilter 是否默认：已独立验证不影响 12/12，待产品决定；
-3. 360 单点 fallback：Baidu 仅作降级，未实现 health/circuit；
-4. 第一次用户交付的反馈 router/session；
-5. LangGraph 迁移：只做 feedback spike，不做核心重写。
+1. code prefilter 是否默认：已独立验证不影响交付构成，待产品决定；
+2. 360 单点 fallback：百度仅作降级，未实现 health/circuit；
+3. 第一次用户交付的反馈 router/session；
+4. LangGraph 迁移：只做 feedback spike，不做核心重写。
+
+> `part_only` 已于 2026-11-12 定案（只标记、不拦交付），不再列为待决项。
 
 ## 7. 当前状态快照（2026-11-12）
 

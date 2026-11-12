@@ -132,6 +132,11 @@ class Brief:
     def vehicle_slots(self) -> int:
         return int((self.request.get("page_budget") or {}).get("vehicle_slots") or 0)
 
+    @property
+    def backup_slots(self) -> int:
+        """交付备选台数：默认 4（2026-11-12 产品要求，只影响提交阶段）。"""
+        return int((self.request.get("page_budget") or {}).get("backup_slots") or 4)
+
     @classmethod
     def from_dict(cls, data: dict) -> "Brief":
         return cls(

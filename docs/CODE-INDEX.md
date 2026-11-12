@@ -22,7 +22,7 @@
 |---|---|
 | brief 生成 | `src/equiplens/briefing.py`、`scripts/build_brief.py`、`skills/task-brief/SKILL.md` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py` |
-| 意图排序 12+2 | `scripts/rank_plan.py` |
+| 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py` |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py` |
 | 平台/抓取/核验 | `src/equiplens/retrieval_engine/web.py`、`src/equiplens/imagesearch.py` |
 | 契约/状态 | `src/equiplens/retrieval_engine/contracts.py`、`state.py` |

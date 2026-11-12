@@ -121,6 +121,9 @@ def _run_metrics(path: Path, summary: dict | None, state: dict | None) -> dict:
             metrics["degraded"] = delivery.get("degraded")
             metrics["citation_only"] = delivery.get("citation_only")
             metrics["bonus_images"] = (delivery.get("bonus") or {}).get("images")
+            b = delivery.get("backup") or {}
+            if b:
+                metrics["backup"] = f"{b.get('delivered')}/{b.get('required')}"
         coverage = summary.get("coverage") or {}
         if coverage:
             metrics["coverage"] = {k: f"{v.get('accepted')}/{v.get('quota')}"
@@ -327,7 +330,7 @@ def write_index(records: list[dict]) -> None:
             continue
         metrics = rec.get("metrics") or {}
         bits = []
-        for key in ("delivery", "candidates", "images", "gate_pass",
+        for key in ("delivery", "backup", "candidates", "images", "gate_pass",
                     "degraded", "arc"):
             if key in metrics and metrics[key] not in (None, ""):
                 bits.append(f"{key}={metrics[key]}")

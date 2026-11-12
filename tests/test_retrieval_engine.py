@@ -572,6 +572,54 @@ def test_budget_queries_are_issued_queries_not_targets():
         assert used["models"] == 1, used            # 候选车型数单独记
 
 
+def test_delivery_required_follows_user_slots():
+    """交付台数来自用户输入（brief.page_budget.vehicle_slots），不是写死 12。"""
+    b = base_brief(parts=("bumper",), slots=5)
+    w = {"external": {"u-exact": [target("ext-1", ["bumper"])]},
+         "assets": {"ext-1": {"bumper": [asset("a1")]}},
+         "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["required"] == 5, d
+        assert d["delivered"] == 1 and d["status"] == "short", d
+
+
+def test_delivery_backup_four_by_priority():
+    """备选固定 4 台：从候选池按 intent_rank 取，不额外检索。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    ext = [{"target_id": f"t{i}", "model": f"m{i}", "parts": ["bumper"],
+            "intent_rank": i, "role": "primary" if i == 1 else "backup"}
+           for i in range(1, 7)]
+    w = {"external": {"u-exact": ext},
+         "assets": {f"t{i}": {"bumper": [asset(f"a{i}")]} for i in range(1, 7)},
+         "verify": {f"a{i}": ok() for i in range(1, 7)}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["required"] == 1 and d["delivered"] == 1, d
+        bk = d["backup"]
+        assert bk["required"] == 4, bk
+        assert bk["delivered"] == 4, bk
+        assert bk["models"] == ["t2", "t3", "t4", "t5"], bk
+        assert bk["images"] == 4, bk
+        assert bk["short"] == 0, bk
+
+
+def test_delivery_backup_short_is_visible():
+    """候选池不够 4 台时，要显式报 backup.short，不能假装满额。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    ext = [{"target_id": f"t{i}", "model": f"m{i}", "parts": ["bumper"],
+            "intent_rank": i} for i in (1, 2)]
+    w = {"external": {"u-exact": ext},
+         "assets": {f"t{i}": {"bumper": [asset(f"a{i}")]} for i in (1, 2)},
+         "verify": {f"a{i}": ok() for i in (1, 2)}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        bk = summary["delivery"]["backup"]
+        assert bk["delivered"] == 1 and bk["short"] == 3 and bk["models"] == ["t2"], bk
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -601,6 +649,9 @@ if __name__ == "__main__":
     check("part_only 进契约", test_part_only_contract_roundtrip)
     check("attempts 真实计数", test_attempts_asset_count_is_real)
     check("预算按真实查询计数", test_budget_queries_are_issued_queries_not_targets)
+    check("交付台数跟随用户输入", test_delivery_required_follows_user_slots)
+    check("备选固定 4 台按优先级", test_delivery_backup_four_by_priority)
+    check("备选不足要显式报短", test_delivery_backup_short_is_visible)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

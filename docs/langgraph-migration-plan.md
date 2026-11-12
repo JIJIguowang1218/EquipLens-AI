@@ -28,7 +28,7 @@
 3. 用 feature flag：`ORCHESTRATOR=legacy|langgraph`，默认 legacy；
 4. 同一输入并行跑 legacy/langgraph，比较：
    - 10 案例 brief 自动断言 + 人工 PASS/FAIL；
-   - 12 槽交付、HF8066/primary 命中、gate/verify 通过；
+   - N 槽交付（N=用户输入）、primary 命中、gate/verify 通过；
    - 成本、耗时、状态/证据可追溯；
 5. 合并门槛：行为等价或更优、无 gate 语义变化、可回滚；否则保留分支，不合并。
 
