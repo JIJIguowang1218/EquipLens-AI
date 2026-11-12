@@ -4,17 +4,21 @@
 <style>
 :root{--bg:#f7f6f2;--ink:#1b1b1b;--sub:#6b6b6b;--line:#dcd7cc;--acc:#2f6f4f;--warn:#b3541e}
 *{box-sizing:border-box} body{margin:0;font:14px/1.6 -apple-system,"Segoe UI","Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink)}
-header{padding:18px 24px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
+header{padding:16px 24px;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:5}
 h1{margin:0 0 4px;font-size:17px} .sub{color:var(--sub);font-size:12px}
 .stats{display:flex;gap:18px;margin-top:8px;font-size:12px;color:var(--sub);flex-wrap:wrap}
-main{padding:20px 24px;max-width:1180px;margin:0 auto}
-.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+main{padding:18px 24px 90px;max-width:1180px;margin:0 auto}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;scroll-margin-top:130px}
 .card.suspect{border-left:4px solid var(--warn)}
 .model{font-weight:600;font-size:15px}
-.meta{color:var(--sub);font-size:12px;margin:2px 0 8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
-.chip{background:#eef1ea;border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:12px}
-.chip.dup{background:#fdeee6;border-color:#f0c9b3}
+.meta{color:var(--sub);font-size:12px;margin:2px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;align-items:center}
+.chip{border:1px solid var(--line);border-radius:999px;padding:1px 9px;font-size:12px;background:#eef1ea}
+.chip.var{background:#eef1ea}
+.chip.var.merged{background:#fdeee6;border-color:#f0c9b3}
+.chip.q{background:#e8f3ec;border-color:#bcd9c8;color:#245c3f}
+.chip.q.topup{border-style:dashed;font-weight:600}
+.tag{font-size:11px;color:var(--sub);margin-right:4px}
 details summary{cursor:pointer;color:var(--sub);font-size:12px;margin-top:6px}
 .src{font-size:12px;word-break:break-all;color:#33566d}
 .verdict{display:flex;gap:14px;margin-top:10px;font-size:13px;flex-wrap:wrap}
@@ -24,14 +28,34 @@ input[type=text]{width:100%;margin-top:8px;padding:6px 8px;border:1px solid var(
 button{padding:8px 14px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;font:inherit}
 button.primary{background:var(--acc);color:#fff;border-color:var(--acc)}
 .hint{color:var(--sub);font-size:12px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;border:1px solid var(--line)}
+.legend i.red{width:12px;border-left:4px solid var(--warn);background:#fff}
+.rules{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:14px 0;font-size:13px}
+.rules b{color:var(--acc)}
 </style></head><body>
 <header>
   <h1>去重审核 · 沙漠牵引车</h1>
-  <div class="sub">任务单 auto-20261112-185607 · 目标：判断「合并是否正确」以及「疑似同款是否该合并」</div>
+  <div class="sub">任务单 auto-20261112-185607 · 判断两件事：① 这张卡把几种写法合并对了吗？② 两张卡是不是同一台车、该合并？</div>
   <div class="stats" id="stats"></div>
+  <div class="legend">
+    <span><i style="background:#eef1ea"></i>写法</span>
+    <span><i style="background:#fdeee6"></i>合并了多种写法</span>
+    <span><i style="background:#e8f3ec"></i>来源查询</span>
+    <span><i style="background:#e8f3ec;border-style:dashed"></i>补查查询</span>
+    <span><i class="red"></i>疑似同款</span>
+  </div>
 </header>
 <main>
-  <p class="hint">每张卡 = 合并后的一个候选。红色左边框 = 与其他候选词元重叠较高（疑似同款，需你判断是“该合并”还是“本来就不同”）。判完点右下角导出 JSON。</p>
+  <div class="rules">
+    <b>怎么判：</b>
+    ① 同一台车的不同写法（品牌前缀、空格/全半角、马力描述、括号补充）→ <b>合并正确</b>；
+    ② 同车系但型号码/吨位/构型不同（Zetros 4051 vs 3643、400 马力 vs 460 马力）→ <b>应拆分</b>；
+    ③ 两条卡描述同一台车（只差品牌前缀或一个“车”字）→ 备注写“应与 #N 合并”；
+    ④ 泛称且无法定位到具体车型 → <b>不该保留</b>（或保留并注明泛称）。
+    判完点右下角导出 JSON。
+  </div>
+  <p class="hint">橙色左边框 = 系统按词元相似度给的“疑似同款”提示，不是结论；写法区（灰/橙）才是合并结果，绿色是来源查询。</p>
   <div id="cards"></div>
 </main>
 <div class="bar">
@@ -43,63 +67,78 @@ const DATA = {"class": "沙漠牵引车", "brief_id": "auto-20261112-185607", "c
 const KEY = 'dedupe-review:' + (DATA.brief_id || '') + ':' + (DATA.class || '');
 let state = {};
 try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
-const suspect = new Set();
-(DATA.suggested_pairs || []).forEach(p => { suspect.add(p.a); suspect.add(p.b); });
-
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-}
-
+const suspects = {};
+(DATA.suggested_pairs || []).forEach(function (p) {
+  (suspects[p.a] = suspects[p.a] || []).push(p.b + 1);
+  (suspects[p.b] = suspects[p.b] || []).push(p.a + 1);
+});
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (m) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
 function render() {
   const st = DATA.stats || {};
   document.getElementById('stats').innerHTML = [
     '唯一候选 <b>' + st.unique + '</b>',
-    '合并进来的写法 <b>' + st.variants + '</b>',
-    '抽取行 <b>' + ((st.dedupe||{}).input ?? '—') + '</b>',
-    '去重移除 <b>' + ((st.dedupe||{}).removed ?? '—') + '</b>',
-    '查询 <b>' + (st.queries ?? '—') + '</b>',
-    '补查 <b>' + ((st.topup||{}).queries ?? 0) + '</b>'
+    '合并写法 <b>' + st.variants + '</b>',
+    '抽取行 <b>' + (((st.dedupe||{}).input) == null ? '—' : (st.dedupe||{}).input) + '</b>',
+    '去重移除 <b>' + (((st.dedupe||{}).removed) == null ? '—' : (st.dedupe||{}).removed) + '</b>',
+    '查询 <b>' + (st.queries == null ? '—' : st.queries) + '</b>',
+    '补查 <b>' + (((st.topup||{}).queries) == null ? 0 : (st.topup||{}).queries) + '</b>'
   ].join(' · ');
-
   const box = document.getElementById('cards');
   box.innerHTML = '';
-  DATA.candidates.forEach((c, i) => {
+  DATA.candidates.forEach(function (c, i) {
     const div = document.createElement('div');
-    div.className = 'card' + (suspect.has(i) ? ' suspect' : '');
+    div.className = 'card' + (suspects[i] ? ' suspect' : '');
+    div.id = 'c' + (i + 1);
     const v = c.variants || [];
-    const variantChips = v.map(x => `<span class="chip${v.length>1?' dup':''}">${esc(x)}</span>`).join('');
-    const qs = (c.queries || []).map(q => `<span class="chip">${esc(q.query_id||'')} · ${esc((q.query||'').slice(0,60))}</span>`).join('');
-    const srcs = (c.sources || []).slice(0, 6).map(u => `<div class="src">${esc(u)}</div>`).join('');
-    div.innerHTML = `
-      <div class="model">${i+1}. ${esc(c.model)}</div>
-      <div class="meta">identity=${esc(c.identity_kind||'')} · 来源 ${c.source_count||0} 条 · 写法 ${v.length} 种${v.length>1?' <b>（合并了）</b>':''}</div>
-      <div class="chips">${variantChips}</div>
-      <div class="chips">${qs}</div>
-      <details><summary>来源链接（${(c.sources||[]).length}）</summary>${srcs || '<div class="src">—</div>'}</details>
-      <div class="verdict">
-        <label><input type="radio" name="v${i}" value="ok" ${state[i]?.verdict==='ok'?'checked':''}> 合并正确</label>
-        <label><input type="radio" name="v${i}" value="split" ${state[i]?.verdict==='split'?'checked':''}> 应拆分</label>
-        <label><input type="radio" name="v${i}" value="drop" ${state[i]?.verdict==='drop'?'checked':''}> 不该保留</label>
-      </div>
-      <input type="text" placeholder="备注：要拆成哪几台 / 为什么不该保留（可空）"
-             value="${esc(state[i]?.note||'')}" oninput="setNote(${i}, this.value)">
-    `;
-    div.querySelectorAll('input[type=radio]').forEach(r => r.onchange = () => {
-      state[i] = state[i] || {}; state[i].verdict = r.value; save();
+    const variantChips = v.map(function (x) {
+      return '<span class="chip var' + (v.length > 1 ? ' merged' : '') + '">' + esc(x) + '</span>';
+    }).join('');
+    const qs = (c.queries || []).map(function (q) {
+      const id = q.query_id || '';
+      const top = id.indexOf('q-topup') === 0;
+      return '<span class="chip q' + (top ? ' topup' : '') + '">' + (top ? '补查 · ' : '') + esc(id) +
+             ' · ' + esc((q.query || '').slice(0, 60)) + '</span>';
+    }).join('');
+    const srcs = (c.sources || []).slice(0, 8).map(function (u) { return '<div class="src">' + esc(u) + '</div>'; }).join('');
+    const sus = (suspects[i] || []).map(function (n) { return '<a href="#c' + n + '">#' + n + '</a>'; }).join('、');
+    const cur = state[i] || {};
+    div.innerHTML =
+      '<div class="model">' + (i + 1) + '. ' + esc(c.model) + '</div>' +
+      '<div class="meta">identity=' + esc(c.identity_kind || '') + ' · 来源 ' + (c.source_count || 0) +
+        ' 条 · 写法 ' + v.length + ' 种' + (v.length > 1 ? ' <b>（合并了）</b>' : '') + '</div>' +
+      (sus ? '<div class="meta" style="color:var(--warn)">疑似同款：' + sus + '（点编号跳转）</div>' : '') +
+      '<div class="chips"><span class="tag">写法</span>' + variantChips + '</div>' +
+      '<div class="chips"><span class="tag">来源查询</span>' + (qs || '<span class="chip">—</span>') + '</div>' +
+      '<details><summary>来源链接（' + (c.sources || []).length + '）</summary>' + (srcs || '<div class="src">—</div>') + '</details>' +
+      '<div class="verdict">' +
+        '<label><input type="radio" name="v' + i + '" value="ok" ' + (cur.verdict === 'ok' ? 'checked' : '') + '> 合并正确</label>' +
+        '<label><input type="radio" name="v' + i + '" value="split" ' + (cur.verdict === 'split' ? 'checked' : '') + '> 应拆分</label>' +
+        '<label><input type="radio" name="v' + i + '" value="drop" ' + (cur.verdict === 'drop' ? 'checked' : '') + '> 不该保留</label>' +
+      '</div>' +
+      '<input type="text" placeholder="备注：要拆成哪几台 / 应与 #N 合并 / 为什么不该保留（可空）" value="' + esc(cur.note || '') + '" oninput="setNote(' + i + ', this.value)">';
+    div.querySelectorAll('input[type=radio]').forEach(function (r) {
+      r.onchange = function () { state[i] = state[i] || {}; state[i].verdict = r.value; save(); };
     });
     box.appendChild(div);
   });
 }
 function setNote(i, val) { state[i] = state[i] || {}; state[i].note = val; save(); }
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]); }
 function payload() {
+  const pairs = [];
+  DATA.candidates.forEach(function (c, i) {
+    const note = (state[i] || {}).note || '';
+    const m = note.match(/#(\d+)/g) || [];
+    m.forEach(function (x) { pairs.push({from: i + 1, to: parseInt(x.slice(1), 10)}); });
+  });
   return {
     class: DATA.class, brief_id: DATA.brief_id, exported_at: new Date().toISOString(),
-    verdicts: DATA.candidates.map((c, i) => ({
-      index: i + 1, model: c.model, identity_kind: c.identity_kind,
-      variants: c.variants, verdict: (state[i]||{}).verdict || '',
-      note: (state[i]||{}).note || ''
-    }))
+    verdicts: DATA.candidates.map(function (c, i) {
+      const cur = state[i] || {};
+      return {index: i + 1, model: c.model, identity_kind: c.identity_kind,
+              variants: c.variants, verdict: cur.verdict || '', note: cur.note || ''};
+    }),
+    merge_suggestions: pairs
   };
 }
 function exportJSON() {
@@ -109,6 +148,6 @@ function exportJSON() {
   a.download = 'dedupe-verdicts.json';
   a.click();
 }
-function copyJSON() { navigator.clipboard?.writeText(JSON.stringify(payload(), null, 1)); }
+function copyJSON() { if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(payload(), null, 1)); }
 render();
 </script></body></html>
