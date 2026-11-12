@@ -54,10 +54,16 @@ def run(cmd, log_path, timeout):
 
 
 def main():
-    BASE.mkdir(parents=True, exist_ok=True)
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--base", default=str(BASE))
+    ap.add_argument("--topup", type=int, default=0)
+    args = ap.parse_args()
+    base_dir = Path(args.base)
+    base_dir.mkdir(parents=True, exist_ok=True)
     results = []
     for name, text, klass, slots in CASES:
-        case = BASE / name
+        case = base_dir / name
         (case / "logs").mkdir(parents=True, exist_ok=True)
         brief = case / "brief.json"
         plan = case / "plan.json"
@@ -77,6 +83,8 @@ def main():
 
         cmd = [PY, "scripts/plan_candidates.py", "--brief", str(brief),
                "--out", str(plan)]
+        if args.topup:
+            cmd += ["--topup", str(args.topup)]
         rc, sec = run(cmd, case / "logs" / "2-plan.log", 1200)
         steps.append({"step": "plan", "rc": rc, "sec": sec})
         print(f"  plan  rc={rc} {sec}s", flush=True)
@@ -148,7 +156,7 @@ def main():
         rec["steps"] = steps
         results.append(rec)
 
-    out = BASE / "SUITE.json"
+    out = base_dir / "SUITE.json"
     out.write_text(json.dumps(results, ensure_ascii=False, indent=1),
                    encoding="utf-8")
     print("\n=== done ===", flush=True)

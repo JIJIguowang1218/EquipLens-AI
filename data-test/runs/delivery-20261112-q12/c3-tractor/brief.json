@@ -1,0 +1,309 @@
+{
+ "brief_id": "auto-20261112-191206",
+ "request": {
+  "raw": "大马力轮式拖拉机（发动机罩侧板、前配重罩、挡泥板、登车踏步、后视镜支架）；农田/复合作业；4×4；10 台",
+  "class": "大马力轮式拖拉机",
+  "environment": {
+   "value": "农田/复合作业（翻耕、播种、运输等复合工况；泥水、粉尘、秸秆附着）",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "轮式拖拉机底盘：前置纵置发动机 + 中置驾驶室 + 后置三点悬挂/PTO（具体马力段与驾驶室平台未指定）",
+   "confidence": 0.8
+  },
+  "configuration": "4×4（按四轮驱动/MFWD 理解，前后轮规格与转向形式未指定）",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 10,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "base_platform",
+   "value": "前置纵置发动机 + 中置驾驶室 + 后置三点悬挂/PTO 的轮式拖拉机底盘",
+   "why": "输入只给出 4×4 与大马力，未指定马力段、驾驶室平台与底盘代际",
+   "confidence": 0.55
+  },
+  {
+   "field": "configuration",
+   "value": "4×4 按四轮驱动（MFWD）理解",
+   "why": "拖拉机语境下 4×4 通常指四轮驱动，但前后轮规格与转向形式未说明",
+   "confidence": 0.7
+  },
+  {
+   "field": "environment",
+   "value": "农田/复合作业以泥水、粉尘、秸秆附着为主要环境因素",
+   "why": "输入只写农田/复合作业，具体作物、土壤与作业环节未指定",
+   "confidence": 0.6
+  },
+  {
+   "field": "class_detail",
+   "value": "“大马力”的具体马力段未定，按发动机罩体量较大的机型分析",
+   "why": "马力段直接影响发动机罩高度与侧面体量比例",
+   "confidence": 0.45
+  },
+  {
+   "field": "quantity",
+   "value": "10 台视为小批量试制/项目数量，不改变设计维度判断",
+   "why": "输入中的数量未说明用途",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "发动机罩侧板",
+    "前配重罩",
+    "挡泥板",
+    "后视镜支架"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_hood_side_panel",
+   "label": "发动机罩侧板",
+   "kind": "part",
+   "location": "前部/发动机罩左右侧面",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧面体量与曲面走向的连续性",
+    "分缝线、散热开口与板面加强特征的布置",
+    "涂装分色与表面处理对体量分割的影响"
+   ],
+   "why": "发动机罩侧板是拖拉机侧面体量的主要连续面，直接提供分缝、散热开口与家族化侧面语言的造型证据。"
+  },
+  {
+   "part": "custom_front_counterweight_cover",
+   "label": "前配重罩",
+   "kind": "part",
+   "location": "前部/前配重区域包覆",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "proportion",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "前脸最前端的横向体量与高度比例",
+    "与前脸其余体量的收头、转折关系",
+    "材质/涂装对前脸重量感的表达"
+   ],
+   "why": "前配重罩位于整机最前端，决定正视高度比例与前脸收头方式，是家族化前脸识别的关键体量件。"
+  },
+  {
+   "part": "custom_fender",
+   "label": "挡泥板",
+   "kind": "part",
+   "location": "前后轮上方/侧面轮口区域",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "environment_protection",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "rear",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "轮口包覆范围与轮胎间隙",
+    "泥水/秸秆排出路径与防积结构",
+    "拆装方式与维修可达性"
+   ],
+   "why": "农田/复合作业中泥水与秸秆附着直接考验挡泥板的包覆范围、排泥构造与拆装结构，是环境适应性的主要证据。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "part",
+   "location": "驾驶室侧下方/登车区",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "踏步高度、深度与级差的人机关系",
+    "防滑表面与排泥开口构造",
+    "支架与车体连接及泥水飞溅遮挡"
+   ],
+   "why": "登车人机与泥水工况下的防滑、排泥直接体现在踏步几何、表面构造与支架连接方式上，可提供明确的结构与人机证据。"
+  },
+  {
+   "part": "custom_mirror_bracket",
+   "label": "后视镜支架",
+   "kind": "part",
+   "location": "驾驶室前侧/A柱外侧",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "管型材截面、折叠节点与减振结构",
+    "后视镜调节范围与视野稳定性",
+    "外伸尺寸与整机宽度法规限值"
+   ],
+   "why": "支架结构决定后视镜视野稳定性、田间作物刮碰后的回位能力与整机宽度合规，是结构、人机与法规三者的交汇证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "大马力轮式拖拉机 4×4（按四轮驱动/MFWD 理解，前后轮规格与转向形式未指定）",
+   "parts": [
+    "custom_hood_side_panel",
+    "custom_front_counterweight_cover",
+    "custom_fender",
+    "step",
+    "custom_mirror_bracket"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "农田/复合作业（翻耕、播种、运输等复合工况；泥水、粉尘、秸秆附着） 工程车",
+   "parts": [
+    "custom_hood_side_panel",
+    "custom_front_counterweight_cover",
+    "custom_fender",
+    "step",
+    "custom_mirror_bracket"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不补充用户未点名的部件（进气格栅、大灯、保险杠、涂装方案、遮阳板等）",
+  "不把发动机罩侧板拆解为格栅/大灯/散热器，除非用户明确点名",
+  "不以“相似车型/同系列”作为检索理由，理由必须落到可提供的设计证据",
+  "不跨类目借用重卡/工程车部件，除非用户明确要求且标注 borrowed",
+  "不猜测具体型号、马力数值或驾驶室代际",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

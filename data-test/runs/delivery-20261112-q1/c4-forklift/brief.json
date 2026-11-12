@@ -1,0 +1,336 @@
+{
+ "brief_id": "auto-20261112-183632",
+ "request": {
+  "raw": "电动叉车（护顶架、配重罩、车身侧板、登车踏板、警示灯支架）；仓储物流工况；四轮；6 台",
+  "class": "电动叉车",
+  "environment": {
+   "value": "仓储物流工况（室内平地、货架通道、人车混流、频繁启停）",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "四轮电动平衡重式叉车车身/底盘平台",
+   "confidence": 0.8
+  },
+  "configuration": "四轮、平衡重式、坐驾式（待确认）",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 6,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "class",
+   "value": "四轮电动平衡重式坐驾叉车",
+   "why": "用户给出电动叉车、四轮，并点名护顶架与配重罩，符合平衡重式叉车构型。",
+   "confidence": 0.75
+  },
+  {
+   "field": "environment",
+   "value": "仓储物流室内平地、货架通道、人车混流、频繁启停",
+   "why": "用户明确仓储物流工况，按室内物流搬运场景分析。",
+   "confidence": 0.8
+  },
+  {
+   "field": "batch",
+   "value": "6台为小批量采购/试制，制造上优先现有平台改制与钣金焊接",
+   "why": "用户给出6台，推断为小批量，不按大批量全新模具开发分析。",
+   "confidence": 0.6
+  },
+  {
+   "field": "counterweight_cover",
+   "value": "配重罩为后部配重上方覆盖件",
+   "why": "按电动叉车常见后部配重罩理解，用于尾部体量与品牌面分析。",
+   "confidence": 0.65
+  },
+  {
+   "field": "side_panel",
+   "value": "车身侧板包含电池舱/检修口相关分缝",
+   "why": "电动叉车侧板常涉及电池更换与检修可达，但用户未明确，需确认。",
+   "confidence": 0.55
+  },
+  {
+   "field": "warning_light_bracket_location",
+   "value": "警示灯支架安装于护顶架顶部或前立柱附近",
+   "why": "用户未给安装位置，按仓储叉车常见警示灯布置推断。",
+   "confidence": 0.5
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "护顶架",
+    "配重罩",
+    "车身侧板",
+    "登车踏板",
+    "警示灯支架"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "roof",
+   "label": "顶盖与导流",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后围整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "rear",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_7f3a1c",
+   "label": "护顶架",
+   "kind": "part",
+   "location": "驾驶者上方/顶部",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "框架断面与焊接节点",
+    "落物防护与视野开口",
+    "顶部灯具/警示灯安装接口"
+   ],
+   "why": "可提供护顶架框架断面、立柱连接节点、视野开口、顶部附件安装与落物防护法规证据。"
+  },
+  {
+   "part": "custom_b2e4d6",
+   "label": "配重罩",
+   "kind": "part",
+   "location": "后部配重上方",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "proportion",
+    "cmf",
+    "structure"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "尾部体量收放",
+    "罩体分缝与固定",
+    "涂装分色与品牌面"
+   ],
+   "why": "可提供尾部体量收放、配重罩分缝、固定方式、涂装分色与品牌展示面证据。"
+  },
+  {
+   "part": "custom_c3f5a7",
+   "label": "车身侧板",
+   "kind": "part",
+   "location": "车身左右侧面",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "structure",
+    "cmf",
+    "manufacturing",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "钣金分缝与检修开口",
+    "折弯/冲压工艺约束",
+    "涂装分色与表面处理"
+   ],
+   "why": "可提供侧板钣金分缝、电池/检修开口、折弯圆角、涂装工艺与维修可达性证据。"
+  },
+  {
+   "part": "custom_d4a6b8",
+   "label": "登车踏板",
+   "kind": "function",
+   "location": "车身侧面下部/驾驶位登车处",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "防滑踏面",
+    "登车高度与脚部空间",
+    "边缘圆角与清洁/排水"
+   ],
+   "why": "可提供踏板高度/宽度、防滑面、边缘处理、上下车人机与仓储清洁维护证据。"
+  },
+  {
+   "part": "custom_e5b7c9",
+   "label": "警示灯支架",
+   "kind": "part",
+   "location": "护顶架顶部/前立柱附近（待确认）",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "manufacturing"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "detail",
+    "hero_45",
+    "side"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "安装底座与紧固",
+    "线束/电缆走向",
+    "灯具有效高度与可见性"
+   ],
+   "why": "可提供警示灯支架安装接口、线束走向、振动固定、灯具有效高度与仓储人车混流可见性证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "电动叉车 四轮、平衡重式、坐驾式（待确认）",
+   "parts": [
+    "custom_7f3a1c",
+    "custom_b2e4d6",
+    "custom_c3f5a7",
+    "custom_d4a6b8",
+    "custom_e5b7c9"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "仓储物流工况（室内平地、货架通道、人车混流、频繁启停） 工程车",
+   "parts": [
+    "custom_7f3a1c",
+    "custom_b2e4d6",
+    "custom_c3f5a7",
+    "custom_d4a6b8",
+    "custom_e5b7c9"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 8
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不分析内燃叉车发动机舱、排气与散热系统。",
+  "不分析门架、货叉、液压属具（用户未提）。",
+  "不扩展到大灯、后视镜、前脸格栅等未点名部件。",
+  "不按汽车/重卡平台跨类目借形，除非后续确认。",
+  "不编造具体吨位、品牌或型号。",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

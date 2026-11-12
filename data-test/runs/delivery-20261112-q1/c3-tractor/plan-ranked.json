@@ -1,0 +1,689 @@
+{
+ "brief_id": "auto-20261112-182808",
+ "created_at": "2026-11-12T18:30:05",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "大马力轮式拖拉机 4×4 车型",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "农田 / 复合作业 4×4 工程车",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "大马力轮式拖拉机 4×4 truck",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "大马力轮式拖拉机 4×4",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "农田 / 复合作业 工程车 4×4",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 88,
+ "candidates": [
+  {
+   "model": "PH2304",
+   "brand": "五征雷诺曼",
+   "reason": "230马力级大马力轮式拖拉机，配意大利Carraro前驱动桥（前桥参与驱动），全封闭驾驶室，属于200–300马力级4×4非铰接轮式拖拉机；可覆盖发动机罩侧板、前配重罩、挡泥板、登车踏步、后视镜支架等覆盖件与附件检索。",
+   "sources": [
+    "https://www.camda.cn/message/2018/33824.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/PH2304",
+   "identity_kind": "code",
+   "model_variants": [
+    "PH2304",
+    "雷诺曼 PH2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 车型"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "230马力级、配意大利Carraro前驱动桥（前桥参与驱动）、全封闭驾驶室；原文还直接提到可覆盖发动机罩侧板、前配重罩、挡泥板、登车踏步、后视镜支架，和任务单的功率、4×4及覆盖件/附件检索最贴合。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "M2404-7R(G4)",
+   "brand": "雷沃欧豹",
+   "reason": "配套功率240马力，驱动形式明确为四轮驱动，用于犁地、深松、耙地等重负荷农田作业，符合200–300马力级4×4轮式拖拉机及农田/复合作业环境。",
+   "sources": [
+    "http://toutiao.nongjitong.com/product/lovol_m2404-r_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/M24047R",
+   "identity_kind": "code",
+   "model_variants": [
+    "M2404-7R(G4)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 车型"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "配套功率240马力，驱动形式明确为四轮驱动，用于犁地、深松、耙地等重负荷农田作业；核心吨级、驱动形式和复合作业场景匹配度高。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "JT2404",
+   "brand": "特拉克",
+   "reason": "240 马力、四轮驱动轮式拖拉机，配全封闭驾驶室和多路液压输出，满足农田复合作业与 4×4 要求。",
+   "sources": [
+    "https://toutiao.nongjitong.com/product/wfdrjt_jt2404_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/JT2404",
+   "identity_kind": "code",
+   "model_variants": [
+    "JT2404"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "240马力、四轮驱动轮式拖拉机，配全封闭驾驶室和多路液压输出，满足农田复合作业与4×4要求，适合优先看驾驶室外围和附件布置。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "RZ2104-A",
+   "brand": "瑞泽富沃",
+   "reason": "参数明确配套功率210马力、驱动形式四轮驱动，符合200–300 hp级4×4轮式拖拉机。",
+   "sources": [
+    "http://toutiao.nongjitong.com/product/ruize_rz2104-a_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/RZ2104A",
+   "identity_kind": "code",
+   "model_variants": [
+    "RZ2104-A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "参数明确配套功率210马力、驱动形式四轮驱动，直接落在200–300 hp级4×4轮式拖拉机范围内。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "SWT2004",
+   "brand": "Weituo",
+   "reason": "200HP 轮式拖拉机，结果明确标注 4WD，功率和驱动形式均落入任务单范围。",
+   "sources": [
+    "https://m.madeinchina.com/mall/show-Agricultural-Machinery-Weituo-Swt2004-200HP-Wheel-Style-Tractor_228882.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/SWT2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "SWT2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本明确为200HP轮式拖拉机且标注4WD，功率和驱动形式均落入任务范围，可作为200马力端代表车型。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "2104-S",
+   "brand": "悍沃",
+   "reason": "结果列发动机功率155 kW（约210马力）、驱动形式四驱，配24+8档，适合重载农田作业。",
+   "sources": [
+    "http://www.ddnjzzs.com/NewShow_4740.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/2104S",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2104-S"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果列发动机功率155 kW（约210马力）、驱动形式四驱，配24+8档，适合重载农田作业，参数信息对构型判断较有用。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "LP2604",
+   "brand": "东方红（中国一拖）",
+   "reason": "260马力级重型轮式拖拉机，结果明确面向重负荷犁耕、深松、联合整地等复式作业，符合大马力农田复合作业场景；四驱构型建议以正式参数复核。",
+   "sources": [
+    "http://www.first-tractor.com.cn./cpzx/nyjx/lstlj/202406/t20240607_434280.html"
+   ],
+   "source_query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LP2604",
+   "identity_kind": "code",
+   "model_variants": [
+    "LP2604"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田 / 复合作业 大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "260马力级重型轮式拖拉机，明确面向重负荷犁耕、深松、联合整地等复式作业；虽四驱构型建议复核，但复合作业和高功率端代表性好。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "CFJ2004",
+   "brand": "常发",
+   "reason": "结果明确为200马力、四轮驱动轮式拖拉机，定位重负荷作业，符合200–300 hp级4×4农田作业候选。",
+   "sources": [
+    "http://a.nongjitong.com/dealer//492802.html"
+   ],
+   "source_query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/CFJ2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "CFJ2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田 / 复合作业 大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为200马力、四轮驱动轮式拖拉机，定位重负荷作业，符合200–300 hp级4×4农田作业候选。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "HMT2104",
+   "brand": "HMT",
+   "reason": "结果页明确为200马力及以上四轮驱动拖拉机，155kW（约208马力），符合200–300 hp级4×4；摘要未显示企业名称，品牌暂按型号前缀HMT标识。",
+   "sources": [
+    "http://218.60.149.73:2021/BuTCP/Info/970abd64-3b31-48c6-9ab3-ecb781b32026"
+   ],
+   "source_query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/HMT2104",
+   "identity_kind": "code",
+   "model_variants": [
+    "HMT2104"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田 / 复合作业 大马力轮式拖拉机 4×4"
+    },
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 车型"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果页明确为200马力及以上四轮驱动拖拉机，155 kW约208马力，核心功率和驱动形式匹配任务单。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "2004",
+   "brand": "悍沃",
+   "reason": "200 马力轮式拖拉机，整机型式明确为 4×4 四轮驱动，适合作为大马力农田作业车型候选。",
+   "sources": [
+    "https://a.nongjitong.com/dealer/kaideruixin/507967.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/2004",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "generic型号但文本明确200马力、整机型式4×4四轮驱动，作为任务核心参数的基线代表，便于和具体型号做差异对照。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "LX2204",
+   "brand": "东方红（中国一拖）",
+   "reason": "220马力级大马力轮式拖拉机，结果提到配前桥、农田作业效率高，适合复合作业候选；四驱构型建议以正式参数复核。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAxNTIxNjkxNg==&mid=2650382179&idx=5&sn=a7b0dc08f40f4e7eea8c9d608bb3067b",
+    "http://product.nongjigou.cn/lunshituolaji/yituodongfanghong/ssw.html#askp"
+   ],
+   "source_query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田 / 复合作业 大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "220马力级大马力轮式拖拉机，结果提到配前桥、农田作业效率高；四驱构型需正式参数复核，适合作为LX系列220马力备份。",
+   "role": "backup",
+   "intent_rank": 11
+  },
+  {
+   "model": "LX2004",
+   "brand": "东方红（中国一拖）",
+   "reason": "结果描述为大马力轮式拖拉机，配前桥，农田作业效率高；型号2004对应200马力级，适合作为大马力4×4轮拖候选，四驱构型建议以正式参数复核。",
+   "sources": [
+    "http://cn.newmaker.com/pro_94300.html",
+    "http://product.nongjigou.cn/lunshituolaji/yituodongfanghong/ssw.html#askp",
+    "http://www.m.newmaker.com/product-detail-94300.html"
+   ],
+   "source_query": "农田 / 复合作业 大马力轮式拖拉机 4×4",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田 / 复合作业 大马力轮式拖拉机 4×4"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english",
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "strong",
+   "intent_reason": "200马力级大马力轮式拖拉机，配前桥，农田作业效率高；四驱构型需复核，可与LX2204形成同系列不同功率段备份。",
+   "role": "backup",
+   "intent_rank": 12
+  },
+  {
+   "model": "MH2204（G4）",
+   "brand": "五征",
+   "reason": "MH 系列覆盖 210–240 马力，定位大地块重载作业；2204 型号属于大马力四轮驱动轮式拖拉机候选。",
+   "sources": [
+    "http://www.ddnjzzs.com/NewShow_9705.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/MH2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "MH2204（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "MH系列覆盖210–240马力，定位大地块重载作业；2204型号属于大马力四驱轮式拖拉机候选，适合作为重载系列补充。",
+   "role": "backup",
+   "intent_rank": 13
+  },
+  {
+   "model": "RG2104",
+   "brand": "瑞泽富沃",
+   "reason": "210马力级（型号2104）轮式拖拉机，属于200马力及以上大马力轮式机型；结果未显示铰接结构，按4×4轮式拖拉机候选纳入，用于覆盖件与附件检索。",
+   "sources": [
+    "https://toutiao.nongjitong.com/product/ruize_rg2104_roller_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/RG2104",
+   "identity_kind": "code",
+   "model_variants": [
+    "RG2104"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 车型"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "210马力级轮式拖拉机，结果未显示铰接结构，按4×4轮式拖拉机候选纳入，可用于覆盖件与附件检索；因四驱需复核，排在明确四驱机型之后。",
+   "role": "backup",
+   "intent_rank": 14
+  },
+  {
+   "model": "2304",
+   "brand": "悍沃",
+   "reason": "230 马力轮式拖拉机，配套电控高压共轨发动机和重载作业配置；2304 型号属于大马力四驱轮式拖拉机候选。",
+   "sources": [
+    "http://www.ddnjzzs.com/NewShow_3791.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/2304",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 truck"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "230马力轮式拖拉机，配電控高压共轨发动机和重载作业配置；但文本未明确四驱，且为generic型号，先作为吨位补充池。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "雷诺曼PH2304",
+   "brand": "五征",
+   "reason": "结果称配套前驱动桥及前驱动换档结构，2304型号属230马力级大马力轮式拖拉机，适配农田重载作业。",
+   "sources": [
+    "https://www.camda.cn/message/2018/33824.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/雷诺曼PH2304",
+   "identity_kind": "generic",
+   "model_variants": [
+    "雷诺曼PH2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "2304型号属230马力级大马力轮式拖拉机，提到前驱动桥及前驱动换档结构；与PH2304同族，差异性和去重优先级较低，放池中备用。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "4X4 Farm Tractor With Front Loader",
+   "brand": "Raygoo Machinery",
+   "reason": "结果中明确为4×4轮式农田拖拉机，配封闭驾驶室（带暖风/空调）并用于田间作业，符合农田/复合作业与4×4轮式构型；但页面未标注200–300 hp马力，需进一步核验是否属于大马力机型。",
+   "sources": [
+    "https://www.raygoo-loader.com/wheel-loader/4x4-farm-tractor-with-front-loader.html"
+   ],
+   "source_query": "农田 / 复合作业 工程车 4×4",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/4X4FARMTRACTORWITHFRONTLOADER",
+   "identity_kind": "generic",
+   "model_variants": [
+    "4X4 Farm Tractor With Front Loader"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "农田 / 复合作业 工程车 4×4"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "明确为4×4轮式农田拖拉机并配封闭驾驶室（带暖风/空调），但未标注200–300 hp，且带前装载机与任务单指定覆盖件/附件关系较弱，需先核验马力。",
+   "role": "pool",
+   "intent_rank": 17
+  }
+ ],
+ "topup": {
+  "enabled": 0,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 17
+ },
+ "pool": {
+  "count": 17,
+  "required": 23,
+  "ok": false,
+  "warning": "候选池 17 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 9
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 17,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 26,
+  "unique": 17,
+  "removed": 9,
+  "generic": 5
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 4,
+  "primary": 10
+ }
+}

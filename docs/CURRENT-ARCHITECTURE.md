@@ -36,6 +36,7 @@ task-brief@v2 (API)
   单个目标连续 8 张硬失败即早停（把预算让给下一个候选）；
 - **候选池下限**：`planning.pool_requirement = ceil(1.6 × (slots + backup))`；12 主 + 4 备 → ≥26，20 主 + 4 备 → ≥39；
   `plan_candidates` 的 `--limit/--per-query` 默认按此自动推导（用户显式传值则尊重），不足时打 WARN 并写入 `plan.pool`；
+  池子仍不足时默认追加 **2 条**同义查询（`--topup 2`，可用 0 关闭），补到的候选仍走出处校验；
 - **死图床监测**：`scripts/monitor_bad_domains.py` 汇总历次 run 的下载失败（按 host/错误类型），输出
   `data-test/evals/bad-domains-monitor.{json,md}`；**只做长期观测，生产不读取**；单轮内拉黑仍由 `DomainHealth` 负责；
 - **缺图归因**：`summary.delivery.unavailable` 逐台给出 `no_hits / all_download_failed / gate_or_verify_rejected / not_delivered / not_fetched`，

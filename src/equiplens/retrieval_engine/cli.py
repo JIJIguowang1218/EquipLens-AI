@@ -116,6 +116,7 @@ def main(argv=None) -> int:
         print(f"run_id: {summary['run_id']}  state: {summary['state']}")
         d = summary.get("delivery") or {}
         print(f"  delivery: {d.get('delivered')}/{d.get('required')} "
+              f"{'backup_short=' + str(d.get('backup_short')) if d.get('backup_short') else ''} "
               f"{d.get('status')}  missing={d.get('missing')} "
               f"degraded={d.get('degraded')} citation_only={d.get('citation_only')} "
               f"bonus={(d.get('bonus') or {}).get('images')}",

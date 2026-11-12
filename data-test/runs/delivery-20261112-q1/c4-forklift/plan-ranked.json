@@ -1,0 +1,887 @@
+{
+ "brief_id": "auto-20261112-183632",
+ "created_at": "2026-11-12T18:37:46",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "仓储物流工况 四轮 工程车 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "仓储物流工况 工程车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 88,
+ "candidates": [
+  {
+   "model": "ERP15-35UX 四轮电动平衡重叉车（1.5–3.5t）",
+   "brand": "Yale（耶鲁）",
+   "reason": "结果明确为四轮电动平衡重式叉车，充气轮胎，载重1.5–3.5t；采用坐驾式布置，具备护顶架、配重罩、上下车踏板等本体结构；吨位处于仓储物流工况的常规区间，与四轮电动平衡重平台和6台批量特征匹配。",
+   "sources": [
+    "https://www.yale.com/zh-sg/asia-pacific/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/",
+    "https://www.yale.com/en-sg/asia-pacific/4-wheel-electric-forklift-trucks/erp15-35ux/?utm_campaign=dealer+connect"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/ERP1535UX四轮电动平衡重叉车1535T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP15-35UX 四轮电动平衡重叉车（1.5–3.5t）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "文本明确为四轮电动平衡重式、坐驾式，并直接提到具备护顶架、配重罩、上下车踏板等本体结构；1.5–3.5t吨位与仓储物流及6台批量最匹配，应优先抓图。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "CPD-D",
+   "brand": "扬子",
+   "reason": "2.0吨四轮锂电叉车，覆盖仓库、物流中心到工厂车间，并提到标配LED警示灯，与仓储工况及警示灯支架关注点相关。",
+   "sources": [
+    "http://www.yzgyclean.com/zhuanti/380.html"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/CPDD",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD-D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "2.0吨四轮锂电叉车，覆盖仓库、物流中心到工厂车间，且文本提到标配LED警示灯，直接对应警示灯支架关注点，仓储工况匹配度高。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "EL20 四支点电动叉车（2.0t，2026款）",
+   "brand": "比亚迪（BYD）",
+   "reason": "结果描述为2.0吨级四支点（四轮）平衡重座驾式电动叉车，四轮底盘、交流电控，明确面向工厂车间、仓储库房等室内场景堆垛与转运，与仓储物流工况和四轮坐驾构型高度一致。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el20"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/EL20四支点电动叉车20T2026款",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL20 四支点电动叉车（2.0t，2026款）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "文本明确为2.0吨四支点（四轮）平衡重座驾式，面向工厂车间、仓储库房室内堆垛与转运，四轮底盘和交流电控适合频繁启停的仓储物流。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "Electric 3/4 Wheel Truck（1.6–2t，四轮型）",
+   "brand": "Linde（林德）",
+   "reason": "结果页明确含四轮电动平衡重车型（1.6–2t），强调操作室人机工程、可调座椅与转向柱，对应护顶架、登车踏板、车身侧板等本体部位，适合频繁启停的仓储通道作业；仅取其中四轮构型。",
+   "sources": [
+    "https://www.lindemhe.com/product/electric-counterbalance-forklift/electric-3-wheel-and-4-wheel-truck-1-6-2ton/"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/ELECTRIC34WHEELTRUCK162T四轮型",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Electric 3/4 Wheel Truck（1.6–2t，四轮型）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确含四轮电动平衡重1.6–2t车型，并强调操作室人机工程、可调座椅与转向柱，文本对应护顶架、登车踏板、车身侧板等本体部位，适合仓储通道频繁启停。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "ERP2.2-3.5N 四轮电动平衡式叉车（2.2–3.5t）",
+   "brand": "Yale（耶鲁）",
+   "reason": "同一四轮电动叉车产品页中列为独立型号，载重2.2–3.5t，属于四轮电动平衡重式坐驾车身/底盘平台，吨位适合货架通道与人车混流的中等载荷搬运。",
+   "sources": [
+    "https://www.yale.com/zh-sg/asia-pacific/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/ERP2235N四轮电动平衡式叉车2235T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP2.2-3.5N 四轮电动平衡式叉车（2.2–3.5t）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本列为四轮电动平衡重式坐驾车身/底盘平台，2.2–3.5t吨位适合货架通道与人车混流的中等载荷搬运，与任务平台匹配。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "EL25",
+   "brand": "比亚迪",
+   "reason": "2.5吨四支点座驾式电动叉车，四轮平衡重底盘，明确适用于仓储库房堆垛与转运，和仓储物流、四轮电动平衡重工况匹配。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el25"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/EL25",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL25"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "2.5吨四支点座驾式电动叉车，四轮平衡重底盘，明确适用于仓储库房堆垛与转运，和仓储物流、四轮电动平衡重工况直接匹配。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "FE4P25N",
+   "brand": "诺力（NOBLELIFT）",
+   "reason": "结果标注为四轮座驾式电动叉车、2.5吨平衡重升降堆高车，48V电瓶、标准门架，转弯半径2050mm，符合仓储物流通道作业的四轮平衡重坐驾式构型。",
+   "sources": [
+    "https://gpyx.jd.com/product/80121407"
+   ],
+   "source_query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/FE4P25N",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FE4P25N"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "四轮座驾式电动叉车，2.5吨平衡重，文本给出转弯半径2050mm，直接关联仓储通道作业；可作通道尺寸与踏板/护顶架抓图备选。",
+   "role": "backup",
+   "intent_rank": 7
+  },
+  {
+   "model": "7系列 四轮电动叉车（1.5–3.5t，含Plus）",
+   "brand": "山猫（Bobcat）",
+   "reason": "结果列出1.5–1.8t、1.6–2t、2–3.2t、2.5–3.5t多个四轮电动叉车系列，均为四轮电动平衡重构型，吨位覆盖仓储常用段；4–5t段不纳入本次室内仓储工况。",
+   "sources": [
+    "https://brand.lmjx.net/l_bobcat/product/gongyecheliang/"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/7系列四轮电动叉车1535T含PLUS",
+   "identity_kind": "generic",
+   "model_variants": [
+    "7系列 四轮电动叉车（1.5–3.5t，含Plus）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本列出1.5–3.5t多个四轮电动平衡重系列，覆盖仓储常用吨位段，代表性和差异性较好；4–5t段不纳入本次室内仓储工况。",
+   "role": "backup",
+   "intent_rank": 8
+  },
+  {
+   "model": "FB16CN2–FB20N2 四轮电动平衡重叉车（约1.2–1.8t）",
+   "brand": "Mitsubishi（三菱叉车）",
+   "reason": "结果标题即“4-Wheel Electric Counterbalance Forklift”，载重2,700–4,000 lb（约1.2–1.8t），定位为紧凑、快节奏物料搬运环境，符合仓储物流工况与四轮平衡重坐驾平台。",
+   "sources": [
+    "https://www.logisnextamericas.com/es-co/mit/products/electric-counterbalance/fb16cn2-fb20n2#request-a-quote-form"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/FB16CN2FB20N2四轮电动平衡重叉车约1218T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FB16CN2–FB20N2 四轮电动平衡重叉车（约1.2–1.8t）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "标题即4-Wheel Electric Counterbalance Forklift，约1.2–1.8t，定位紧凑、快节奏物料搬运，补充小吨位四轮平衡重仓储车型差异。",
+   "role": "backup",
+   "intent_rank": 9
+  },
+  {
+   "model": "EL18-PRO",
+   "brand": "比亚迪",
+   "reason": "1.8吨四支点平衡重座驾式电动叉车，四轮底盘，面向仓库堆垛与室内外多工况搬运，符合四轮电动平衡重方向。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el18pro"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/EL18PRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL18-PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "1.8吨四支点平衡重座驾式电动叉车，四轮底盘，面向仓库堆垛与室内外多工况；匹配但护顶架、踏板等部件文本不如前排直接。",
+   "role": "backup",
+   "intent_rank": 10
+  },
+  {
+   "model": "J1.6-2.0XN",
+   "brand": "Hyster",
+   "reason": "四轮平衡式电动叉车，面向室内外中型应用，机动性与频繁装卸场景适配，可作为仓储物流四轮电动候选。",
+   "sources": [
+    "https://www.hyster.com/zh-sg/asia-pacific/%e5%9b%9b%e8%bd%ae%e7%94%b5%e5%8a%a8%e5%8f%89%e8%bd%a6/j1.6-2.0xn/"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/J1620XN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J1.6-2.0XN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "四轮平衡式电动叉车，面向室内外中型应用，文本强调机动性与频繁装卸场景，可作为仓储物流四轮电动候选；缺少护顶架、踏板等直接描述。",
+   "role": "pool",
+   "intent_rank": 11
+  },
+  {
+   "model": "CPD-25",
+   "brand": "博赫尔（POHIR）",
+   "reason": "结果标注为电动四轮叉车、座驾式、平衡重，额定载重2500kg，构型与仓储物流四轮电动叉车需求相符。",
+   "sources": [
+    "https://www.vipmro.com/product/82125595"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/CPD25",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD-25"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标注电动四轮叉车、座驾式、平衡重，额定载重2500kg，构型与任务单相符；未明确护顶架、配重罩、踏板等部件细节。",
+   "role": "pool",
+   "intent_rank": 12
+  },
+  {
+   "model": "MXS series",
+   "brand": "Nissan Forklift",
+   "reason": "结果标注为坐驾式、4轮、平衡重式电动叉车，载荷约1.22-1.81吨，构型与任务单四轮座驾平衡重需求一致。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/nissan-forklift/product-14113-2675443.html"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/MXSSERIES",
+   "identity_kind": "generic",
+   "model_variants": [
+    "MXS series"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标注坐驾式、4轮、平衡重式电动叉车，载荷约1.22–1.81吨，构型一致；吨位偏小，可作差异化参考。",
+   "role": "pool",
+   "intent_rank": 13
+  },
+  {
+   "model": "7系列四轮电动叉车（1.5-1.8吨）",
+   "brand": "山猫（Bobcat）",
+   "reason": "结果列出山猫1.5-1.8吨四轮电动叉车-7系列，属于四轮电动叉车车系，吨位更适合仓储物流工况。",
+   "sources": [
+    "https://brand.lmjx.net/l_bobcat/product/gongyecheliang/"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/7系列四轮电动叉车15",
+   "identity_kind": "generic",
+   "model_variants": [
+    "7系列四轮电动叉车（1.5-1.8吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本列出山猫1.5–1.8吨四轮电动叉车-7系列，吨位适合仓储物流；与更长7系列描述有重叠，故降为池内参考。",
+   "role": "pool",
+   "intent_rank": 14
+  },
+  {
+   "model": "ERP15-35UX",
+   "brand": "Yale（耶鲁）",
+   "reason": "结果列为四轮电动平衡式叉车，容量1500-3500kg，属于四轮电动平衡重叉车车系，适合作为候选。",
+   "sources": [
+    "https://www.yale.com/zh-sg/asia-pacific/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/ERP1535UX",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP15-35UX"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标注四轮电动平衡式叉车，容量1500–3500kg，构型匹配；相比同系长描述，缺少护顶架、配重罩、踏板等直接部件信息。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "ERP2.2-3.5N",
+   "brand": "Yale（耶鲁）",
+   "reason": "结果在同一四轮电动叉车页面列出ERP2.2-3.5N，容量2200-3500kg，符合四轮电动平衡重叉车方向。",
+   "sources": [
+    "https://www.yale.com/zh-sg/asia-pacific/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/ERP2235N",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP2.2-3.5N"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标注同一四轮电动叉车页面列出ERP2.2-3.5N，容量2200–3500kg，符合四轮电动平衡重方向；部件信息不如长描述具体。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "CPD18FVD",
+   "brand": "EP",
+   "reason": "1.8吨四轮电动叉车，商品页适用行业包含仓库，和仓储物流、四轮电动构型相符；来源为B2B商品页，参数需后续核验。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/EP-1-8-Ton-Good-Four_62439490298.html"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/CPD18FVD",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD18FVD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "1.8吨四轮电动叉车，商品页适用行业包含仓库，和仓储物流、四轮电动构型相符；文本注明来源为B2B商品页、参数需核验。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "8FBN",
+   "brand": "丰田",
+   "reason": "资料明确丰田8系列包含四轮电动叉车8FBN，面向物流配送中心等频繁作业场景，可作为四轮电动平衡重候选。",
+   "sources": [
+    "https://mh.jgvogel.cn/c/964/964200.shtml"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/8FBN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8FBN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "资料明确丰田8系列包含四轮电动叉车8FBN，面向物流配送中心等频繁作业场景；文本未点明护顶架、侧板、踏板等本体部件。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "ERC080-120VH",
+   "brand": "Yale",
+   "reason": "电动四轮缓冲轮胎叉车，强调室内托盘存取和运输重载，适合平坦仓储地面；需确认具体吨位与通道尺寸。",
+   "sources": [
+    "https://www.yale.com/zh-sg/asia-pacific/%e5%9b%9b%e8%bd%ae%e7%94%b5%e5%8a%a8%e5%8f%89%e8%bd%a6/erc080-120vh/"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/ERC080120VH",
+   "identity_kind": "code",
+   "model_variants": [
+    "ERC080-120VH"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "电动四轮缓冲轮胎叉车，强调室内托盘存取和运输重载，适合平坦仓储地面；具体吨位与通道尺寸需确认。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "大四轮电动叉车 3t/3m（四支点平衡重）",
+   "brand": "恒载（京东工品汇在售商品页）",
+   "reason": "结果参数显示四支点大四轮、平衡重式、额定载重3000kg、48V、标准门架，属四轮电动平衡重车身平台；品牌与型号命名不规范，仅可作为车身/底盘参考，需后续核对官方型号。",
+   "sources": [
+    "https://www.vipmro.com/product/81029207",
+    "https://gpyx.jd.com/product/81029207"
+   ],
+   "source_query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/大四轮电动叉车3T3M四支点平衡重",
+   "identity_kind": "generic",
+   "model_variants": [
+    "大四轮电动叉车 3t/3m（四支点平衡重）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "文本显示四支点大四轮、平衡重式、额定载重3000kg、48V、标准门架，属四轮电动平衡重车身平台；品牌与型号命名不规范，仅作参考。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "CPD40-35B",
+   "brand": "扬子（YANGZI）",
+   "reason": "结果标注为电动叉车4吨四轮座驾式平衡重堆高装卸搬运车，明确四轮、座驾式、平衡重，可作为四轮电动叉车候选。",
+   "sources": [
+    "https://www.vipmro.com/product/82127178"
+   ],
+   "source_query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/CPD4035B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD40-35B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标注4吨四轮座驾式平衡重堆高装卸搬运车，明确四轮、座驾式、平衡重；载重偏大，仓储通道适配需确认。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "CPD40-40B",
+   "brand": "扬子（YANGZI）",
+   "reason": "结果明确为4吨四轮座驾式CPD40-40B平衡重电动叉车，铅酸电池60V、标准门架，车身/底盘为四轮平衡重平台，四轮平衡重车身形制与任务单要求一致（载重偏大，可作备选）。",
+   "sources": [
+    "https://www.vipmro.com/product/82127184"
+   ],
+   "source_query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/CPD4040B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD40-40B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确为4吨四轮座驾式平衡重电动叉车，车身/底盘为四轮平衡重平台；载重偏大，适合作为载重上限备选。",
+   "role": "pool",
+   "intent_rank": 22
+  },
+  {
+   "model": "ERP4.0-5.0MXLG",
+   "brand": "Yale",
+   "reason": "四轮电动平衡式叉车，适用于室内或室外工作环境，具备锂电与侧充配置；吨位偏4.0-5.0吨，需后续确认货架通道适配。",
+   "sources": [
+    "https://www.yale.com/zh-cn/asia-pacific/4-wheel-electric-forklift-trucks/erp4.0-5.0mxlg/"
+   ],
+   "source_query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/ERP4050MXLG",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP4.0-5.0MXLG"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "四轮电动平衡式，适用于室内或室外，具备锂电与侧充配置；但4.0–5.0吨吨位偏大，文本也提示需确认货架通道适配。",
+   "role": "pool",
+   "intent_rank": 23
+  },
+  {
+   "model": "J4.0-5.5XN",
+   "brand": "Hyster（海斯特）",
+   "reason": "结果为四轮电动平衡重叉车J4.0-5.5XN（4000-5500kg），坚固车架与交流牵引电机、可在室内外使用，四轮平衡重车身/底盘构型符合任务单，可在载重需求偏大时选用。",
+   "sources": [
+    "https://www.hyster.com/zh-cn/china/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/j4.0-5.5xn6/"
+   ],
+   "source_query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/J4055XN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J4.0-5.5XN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"不分析内燃叉车发动机舱、排气与散热系统。\" -\"不分析门架、货叉、液压属具（用户未提）。\" -\"不扩展到大灯、后视镜、前脸格栅等未点名部件。\" -\"不按汽车/重卡平台跨类目借形，除非后续确认。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "四轮电动平衡重叉车4000–5500kg，坚固车架、室内外使用，构型符合；载重明显偏大，对仓储货架通道与人车混流场景适配性较弱。",
+   "role": "pool",
+   "intent_rank": 24
+  }
+ ],
+ "topup": {
+  "enabled": 0,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 24
+ },
+ "pool": {
+  "count": 24,
+  "required": 16,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 8
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 24,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 31,
+  "unique": 24,
+  "removed": 7,
+  "generic": 23
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 6,
+  "backup": 4,
+  "primary": 6
+ }
+}

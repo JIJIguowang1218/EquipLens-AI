@@ -33,7 +33,7 @@ except Exception:  # noqa: BLE001
 
 from equiplens.planning import (auto_limits, build_query_plan, coverage_report,  # noqa: E402
                                 dedupe_stats, merge_candidates,
-                                pool_requirement, pool_warning,
+                                pool_requirement, pool_warning, top_up_queries,
                                 validate_extraction)
 
 API = "https://api.deepseek.com"
@@ -96,6 +96,8 @@ def main(argv=None) -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--limit", type=int, default=0,
                     help="候选池总上限；0=按 1.6×(slots+backup) 自动（2026-11-12）")
+    ap.add_argument("--topup", type=int, default=2,
+                    help="候选池不足时追加的查询数（默认 2，0=关闭；最多 2）")
     ap.add_argument("--per-query", type=int, default=0,
                     help="每条查询最多抽几个候选；0=按目标池/查询数自动")
     ap.add_argument("--extra-query", action="append", default=[],
@@ -148,6 +150,45 @@ def main(argv=None) -> int:
         per_query.append(row)
         time.sleep(0.3)
 
+    topup_rows: list[dict] = []
+    extras: list[dict] = []
+    if int(args.topup or 0) > 0:
+        merged_so_far = merge_candidates(extracted)
+        if len(merged_so_far) < limits["need"]:
+            extras = top_up_queries(brief, [q["query"] for q in query_plan],
+                                    max_extra=min(2, int(args.topup)))
+            for meta in extras:
+                q = meta["query"]
+                try:
+                    res = search(key, q, 20)
+                except Exception as e:  # noqa: BLE001
+                    print(f"topup search fail {q}: {type(e).__name__}")
+                    res = []
+                row = {**meta, "results": len(res)}
+                api_rows.append({"api": "search", "query_id": meta["query_id"],
+                                 "dimension": meta["dimension"], "query": q,
+                                 "results": len(res), "billable": bool(res),
+                                 "cost_usd": 0.00075 if res else 0})
+                all_results.extend(res)
+                if res:
+                    try:
+                        got, usage = extract(key, brief, meta, res, extract_n)
+                        api_rows.append({"api": "chat", "model": "deepseek-flash",
+                                         "query_id": meta["query_id"],
+                                         "prompt_tokens": usage.get("prompt_tokens"),
+                                         "completion_tokens": usage.get("completion_tokens"),
+                                         "billable": True})
+                        rows, stats = validate_extraction(
+                            got, {str(r.get("url") or "") for r in res}, meta, extract_n)
+                        row.update(stats)
+                        extracted.extend(rows)
+                    except Exception as e:  # noqa: BLE001
+                        print("topup extract fail", meta["query_id"], type(e).__name__, str(e)[:160])
+                        row.update({"kept": 0, "error": type(e).__name__})
+                per_query.append(row)
+                topup_rows.append(row)
+                time.sleep(0.3)
+
     seen: set[str] = set()
     uniq: list[dict] = []
     for r in all_results:
@@ -170,6 +211,9 @@ def main(argv=None) -> int:
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,
+        "topup": {"enabled": int(args.topup or 0), "queries": len(extras),
+                  "kept": sum(int(x.get("kept") or 0) for x in topup_rows),
+                  "candidates_before": len(merge_candidates(extracted)) if not extras else None},
         "pool": {"count": len(candidates), "required": need,
                  "slots": slots, "backup": backup,
                  "per_query": extract_n, "limit": limits["limit"],

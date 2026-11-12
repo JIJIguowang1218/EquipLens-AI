@@ -1,0 +1,339 @@
+{
+ "brief_id": "auto-20261112-190335",
+ "request": {
+  "raw": "港口集装箱正面吊（驾驶室外罩、配重罩、走台护栏、登车踏步、灯具护罩）；港口堆场工况；4×2 底盘；10 台",
+  "class": "港口集装箱正面吊（reach stacker，集装箱堆高机）",
+  "environment": {
+   "value": "港口集装箱堆场：沿海盐雾/高湿腐蚀、粉尘、高频次连续作业、人车混行、夜间照明作业",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "正面吊专用两轴底盘（前转向/驱动桥 + 后驱动桥）+ 伸缩臂架 + 可升降偏置驾驶室",
+   "confidence": 0.8
+  },
+  "configuration": "4×2（两轴），偏置可升降驾驶室，后置配重，臂架前伸作业",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 10,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "request.class",
+   "value": "港口集装箱正面吊（reach stacker），非道路移动机械，非道路车辆法规体系",
+   "why": "用户输入明确为'港口集装箱正面吊'，但需注意其不适用公路车辆外部尺寸/灯光法规，检索时应排除卡车/牵引车法规证据作为唯一依据",
+   "confidence": 0.95
+  },
+  {
+   "field": "request.configuration",
+   "value": "4×2 指两轴底盘（前转向/驱动 + 后驱动），用户说的'4×2 底盘'按此理解",
+   "why": "正面吊通常为两轴专用底盘；若用户实指道路卡车 4×2 底盘改装，则构型判断需修正",
+   "confidence": 0.8
+  },
+  {
+   "field": "request.environment",
+   "value": "沿海港口堆场：盐雾腐蚀 + 粉尘 + 高频连续作业 + 夜间照明作业",
+   "why": "用户仅说'港口堆场工况'；盐雾与夜间作业为港口常见但未被明说的环境因素，直接影响防护件与灯具护罩设计判断",
+   "confidence": 0.65
+  },
+  {
+   "field": "batch_quantity",
+   "value": "10 台为批量交付，涉及覆盖件一致性、涂装分色批次稳定性与附件标准化",
+   "why": "用户给出数量；数量本身不进 brief 检索字段，但影响制造与 CMF 维度的权重判断",
+   "confidence": 0.7
+  },
+  {
+   "field": "parts[custom_cab_shell].relation_axis",
+   "value": "platform（同厂/同系列正面吊驾驶室外罩有继承关系）",
+   "why": "驾驶室外罩多为平台化沿用+工况微调，需与配重罩的 exact 轴区分检索范围",
+   "confidence": 0.6
+  },
+  {
+   "field": "regions",
+   "value": "仅取 front_face / side / rear 三个区域，未设 roof",
+   "why": "用户点名的部件集中在驾驶室外罩、配重罩、走台与踏步、灯具，顶盖与导流未被提及，故不作为独立区域检索",
+   "confidence": 0.75
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "驾驶室外罩",
+    "配重罩",
+    "走台护栏",
+    "灯具护罩"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后围整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "rear",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_cab_shell",
+   "label": "驾驶室外罩",
+   "kind": "part",
+   "location": "整机前上部，偏置可升降驾驶室外覆盖件（顶/侧/前围板与门窗框）",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "整机形象的主要载体：偏置驾驶室的体量、前倾/直立姿态决定正面吊的识别性",
+    "分缝与板面划分：门窗框、顶盖与侧围的接缝走向、折弯半径，决定'工程感'还是'商用车感'",
+    "升降轨道/支撑结构与外罩的交界处理，是正面吊区别于道路卡车的造型证据"
+   ],
+   "why": "能提供：非道路港机驾驶室外罩的体量组织方式、分缝逻辑、玻璃与钣金比例、升降结构外露处理——这是判断'正面吊特有形象'最直接的证据。"
+  },
+  {
+   "part": "custom_counterweight_cover",
+   "label": "配重罩",
+   "kind": "part",
+   "location": "车体后部，配重块外部覆盖/包覆件（含检修口、灯具与标识安装面）",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "尾部体量收尾与倒角/折面处理，是整机'重心感'与稳定感的造型手段",
+    "配重罩与车架、配重本体的分缝、检修开口、吊装孔布置，反映可维护性与制造约束",
+    "大平面上的加强筋/压型、涂装分色与品牌标识区的组织"
+   ],
+   "why": "能提供：大块配重覆盖件的分缝与折面语言、检修口与造型的整合方式、尾部大面 CMF 处理——用于回答'尾部体量如何收尾而不显笨重'。"
+  },
+  {
+   "part": "custom_walkway_guardrail",
+   "label": "走台护栏",
+   "kind": "function",
+   "location": "车体侧/上部走台通道边缘（含立柱、横杆、踢脚板、与车架的连接节点）",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "cross_vehicle",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "regulation",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "型材断面（圆管/方管/异型）、立柱间距与连接耳板形式，展示'轻量化结构 + 安全件'的构造做法",
+    "护栏高度、横杆层数、踢脚板与开口位置，对应登高作业安全与通行人机",
+    "与车架/走台的螺栓连接与可拆卸分段，影响装配与运输"
+   ],
+   "why": "能提供：港机安全护栏的型材节点、立柱间距、与车体的连接与分段做法，以及防腐工艺的外观结果——是'结构 + 安全法规 + 环境'三重证据的集中部件。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "function",
+   "location": "驾驶室下方侧向登车通道（含踏步踏板、扶手、第一级踏高与防滑面）",
+   "part_family": "function_attachment",
+   "taxonomy_status": "known",
+   "relation_axis": "cross_vehicle",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "detail",
+    "side",
+    "front"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "踏高/踏深/级数序列与扶手位置，对应登车人机与安全规范（登车通道尺寸要求）",
+    "踏板防滑面形式（花纹板/冲孔翻边/格栅）与排水、积尘积盐的处理",
+    "踏板与车架/驾驶室的支架结构、可拆换性与碰撞让步设计"
+   ],
+   "why": "能提供：港机登车系统的级距人机、防滑与排水做法、支架节点形式——功能件跨类目可比的典型证据，但需以港机尺度判断而非乘用车踏步。"
+  },
+  {
+   "part": "custom_lamp_guard",
+   "label": "灯具护罩",
+   "kind": "part",
+   "location": "前部/后部工作灯与信号灯外部防护（含护罩框架、网格、固定点）",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "regulation",
+    "structure",
+    "environment_protection",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "detail",
+    "front",
+    "side"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "护罩开孔率/网格形式与灯具发光面可见角度的关系，涉及照明与信号可见性要求",
+    "护罩与灯具的相对间隙、快拆或翻盖结构，对应维护可达性",
+    "防碰撞、防尘积料、防盐雾腐蚀的框架断面与固定方式"
+   ],
+   "why": "能提供：灯具防护件的开孔与遮蔽做法、与法规可见性/维护性的平衡、附件级 CMF 处理——用于回答'防护件如何不破坏整体形象'。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "港口集装箱正面吊（reach stacker，集装箱堆高机） 4×2（两轴），偏置可升降驾驶室，后置配重，臂架前伸作业",
+   "parts": [
+    "custom_cab_shell",
+    "custom_counterweight_cover",
+    "custom_walkway_guardrail",
+    "step",
+    "custom_lamp_guard"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "港口集装箱堆场：沿海盐雾/高湿腐蚀、粉尘、高频次连续作业、人车混行、夜间照明作业 工程车",
+   "parts": [
+    "custom_cab_shell",
+    "custom_counterweight_cover",
+    "custom_walkway_guardrail",
+    "step",
+    "custom_lamp_guard"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不要补入用户未提及的部件（进气格栅、保险杠、后视镜、遮阳板、轮拱、下护板、品牌标识区、涂装方案等），即使它们在参考词表中",
+  "不要把'驾驶室外罩'再拆成格栅/大灯/保险杠等子件；用户未点名即不拆",
+  "不要用公路卡车/牵引车的前脸与侧防护作为 exact 同品类证据（法规体系与人机尺度不同）；跨类目仅可作为 borrowed 参考并显式标注",
+  "不要把'汽车起重机'或'平衡重叉车'当作同品类直接类比，除非仅取其功能件构造做法",
+  "不要用'相似/同系列/风格接近'作为设计理由；理由必须写明该图能提供什么设计证据（分缝、节点、人机尺寸、防护构造等）",
+  "不要输出 quota / tiers / budget / page_budget / research_units 等由代码生成的字段",
+  "不要猜具体品牌型号或吨位参数",
+  "不要把走台护栏与道路车辆'侧防护栏(side_guard)'混为一谈——前者是登高作业防坠构件，后者是防卷入法规件",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

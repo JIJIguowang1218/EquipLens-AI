@@ -1,0 +1,553 @@
+{
+ "brief_id": "auto-20261112-181236",
+ "created_at": "2026-11-12T18:15:10",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "沙漠牵引车 6×6 三轴全驱 车型",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 1
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "沙漠牵引车 6×6 三轴全驱 truck",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "沙漠牵引车 6×6 三轴全驱",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 52,
+ "candidates": [
+  {
+   "model": "泰安五岳 6×6油田专用全驱牵引车（6X6油田沙漠重型牵引车）",
+   "brand": "中国重汽",
+   "reason": "检索结果明确为6X6油田专用全驱牵引车，面向沙特高温高辐射沙漠油田，集载货车、牵引车、撬装于一体，采用豪沃驾驶室及康明斯QSX15 600马力发动机；同规格专利还描述最大总质量92吨、可单车拖挂180吨井架，和沙漠油田重型牵引工况高度匹配。",
+   "sources": [
+    "http://www.ecv360.com/e/DoPrint/?classid=47&id=19014",
+    "http://ecv360.com/e/DoPrint/?classid=56&id=19543",
+    "http://ecv360.com/special/201603/19543.html",
+    "https://patents.google.com/patent/CN206171594U/zh#2"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/泰安五岳6X6油田专用全驱牵引车6X6油田沙漠重型牵引车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "泰安五岳 6×6油田专用全驱牵引车（6X6油田沙漠重型牵引车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 4,
+   "intent_band": "must",
+   "intent_reason": "文本明确为6X6油田专用全驱牵引车，面向沙特高温高辐射沙漠油田，采用豪沃驾驶室及康明斯QSX15 600马力，最大总质量92吨、可拖挂180吨井架；与沙漠/油田、6×6、牵引车及前部防护件设计问题高度匹配。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "TAZ4922 油田专用全驱牵引车",
+   "brand": "中国重汽泰安五岳",
+   "reason": "结果称其为6X6油田专用全驱牵引车，为沙特沙漠油田运输井架等大型设备开发，集载货、牵引、撬装于一体，符合沙漠油田牵引用途。",
+   "sources": [
+    "https://www.360che.com/tech/160303/52370_all.html#t2",
+    "http://ecv360.com/special/201603/19543.html",
+    "http://www.qipeiren.com/toutiao/32666",
+    "http://ecv360.com/e/DoPrint/?classid=56&id=19543",
+    "http://www.ecv360.com/e/DoPrint/?classid=47&id=19014",
+    "https://tu.360che.com/news/545.html#1"
+   ],
+   "source_query": "沙漠牵引车 6×6 三轴全驱 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/TAZ4922",
+   "identity_kind": "code",
+   "model_variants": [
+    "TAZ4922 油田专用全驱牵引车",
+    "TAZ4922 6×6 油田专用牵引车",
+    "TAZ4922"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6×6 三轴全驱 车型"
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6×6 三轴全驱 truck"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 6,
+   "intent_band": "must",
+   "intent_reason": "文本称其为6X6油田专用全驱牵引车，为沙特沙漠油田运输井架等大型设备开发，集载货、牵引、撬装于一体；直接覆盖沙漠油田牵引工况。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "6×6油田专用全驱牵引车",
+   "brand": "中国重汽泰安五岳",
+   "reason": "检索结果明确为6X6油田专用全驱牵引车，面向沙特油田运输，并可拖挂井架，与沙漠/油田工况、6×6三轴全驱及牵引车用途最直接匹配。",
+   "sources": [
+    "http://www.ecv360.com/e/DoPrint/?classid=47&id=19014"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/6X6油田专用全驱牵引车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "6×6油田专用全驱牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车"
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "文本明确为6X6油田专用全驱牵引车，面向沙特油田运输并可拖挂井架，与沙漠/油田工况、6×6三轴全驱及牵引用途最直接匹配。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "豪沃TX 6×6牵引车（ZZ4257V455GF1）",
+   "brand": "中国重汽",
+   "reason": "结果将其列为豪沃6×6全驱牵引车主流型号，适配特种运输、油田、矿山等高强度场景；给出440马力国六、12挡AMT等配置，属于6×6牵引车候选。",
+   "sources": [
+    "https://b2b.baidu.com/q/aland?q=ADABFDF0FFFAABF9FCAAFDF0FAAAA8AAF0AAF9F9FBF9FDACFBABA8A8AAFBF8FD&id=qiddb4963b05c493cac9c00204e2baac214&answer=3370470051727958&ptype=9&fid=0%2C1792677512102&pi=b2b.land....8043910607576987"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/ZZ4257V455GF1",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃TX 6×6牵引车（ZZ4257V455GF1）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本将其列为豪沃6×6全驱牵引车主流型号，适配特种运输、油田、矿山，并给出440马力国六、12挡AMT；有具体驾驶室/底盘型号，便于优先抓取前保险杠、大灯、踏步、前轮拱等前部细节。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "HOWO 6×6 全驱牵引车",
+   "brand": "中国重汽 / HOWO",
+   "reason": "检索结果明确为HOWO 6×6全驱牵引车/越野牵引车，6×6全驱适合复杂越野工况；可作为沙漠油田牵引车候选，但来源未逐项确认沙漠油田专用配置。",
+   "sources": [
+    "http://cc.m.lmjx.net/d/zhongqi/HOWO+6%C3%976%E5%85%A8%E9%A9%B1/pMTY1NDA=/",
+    "https://www.chinese-trailer.com/info/howo-6x6-all-wheel-drive-tractor-ideal-for-com-103712252.html",
+    "https://www.zonhanusedtrucks.com/products/all-wheel-drive-off-road-vehicle-tractor/"
+   ],
+   "source_query": "沙漠牵引车 6×6 三轴全驱 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO 6×6 全驱牵引车",
+    "HOWO 6×6全驱牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6×6 三轴全驱 车型"
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6×6 三轴全驱 truck"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "strong",
+   "intent_reason": "文本明确为HOWO 6×6全驱牵引车/越野牵引车，6×6全驱适合复杂越野工况；可代表量产6×6牵引车基础构型，但沙漠油田专用配置未逐项确认。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "泰安五岳油田专用全驱牵引车（6×6）",
+   "brand": "中国重汽",
+   "reason": "检索结果明确为中国重汽泰安五岳公司的6×6油田专用全驱牵引车，专为沙特沙漠油田工况设计，集牵引车功能，符合6×6三轴全驱、沙漠/油田、牵引用途的候选方向。",
+   "sources": [
+    "http://ecv360.com/special/201603/19543.html",
+    "http://ecv360.com/e/DoPrint/?classid=56&id=19543",
+    "http://www.ecv360.com/e/DoPrint/?classid=47&id=19014"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/泰安五岳油田专用全驱牵引车6X6",
+   "identity_kind": "generic",
+   "model_variants": [
+    "泰安五岳油田专用全驱牵引车（6×6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "strong",
+   "intent_reason": "文本明确为中国重汽泰安五岳公司的6×6油田专用全驱牵引车，专为沙特沙漠油田工况设计；匹配度高，但与首条候选高度重复，作为直接参考仍值得先看。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "ZETROS 3643 6X6",
+   "brand": "Mercedes-Benz",
+   "reason": "检索结果为6X6沙漠用牵引车（cavalo mecânico），面向沙漠行驶，符合6×6三轴全驱牵引车方向。",
+   "sources": [
+    "https://planetacaminhao.com.br/noticias/ver/195/zetros-3643-6x6"
+   ],
+   "source_query": "沙漠牵引车 6×6 三轴全驱 车型",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "series/ZETROS/3643",
+   "identity_kind": "series",
+   "model_variants": [
+    "ZETROS 3643 6X6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6×6 三轴全驱 车型"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本称其为6X6沙漠用牵引车（cavalo mecânico），面向沙漠行驶；差异化强，适合参考沙漠牵引车的前部防护、大灯与前轮拱布置，但油田专用配置未详。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "全轮驱动超重型沙漠运输车（6×6，含鞍座）",
+   "brand": "未注明（专利文献）",
+   "reason": "专利文献公开一种6×6全轮驱动超重型沙漠运输车，驱动形式为6×6，并明确包含鞍座，符合沙漠运输及牵引鞍座构型；但文献未给出品牌，需进一步核验。",
+   "sources": [
+    "https://patentimages.storage.googleapis.com/b5/c6/0f/6193fbdef8e763/CN215398370U.pdf#1#2#1"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/全轮驱动超重型沙漠运输车6X6含鞍座",
+   "identity_kind": "generic",
+   "model_variants": [
+    "全轮驱动超重型沙漠运输车（6×6，含鞍座）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "专利文献明确为6×6全轮驱动超重型沙漠运输车且包含鞍座，符合沙漠运输及牵引鞍座构型；虽无品牌，但对鞍座式重载沙漠车辆的防护件布置有配置参考价值。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "HF8066 6×6 重型沙漠运输车",
+   "brand": "比利时Mol",
+   "reason": "结果为6×6重型沙漠运输车，230吨连接总重，曾在北非和中东油田使用；可作为重型沙漠牵引/运输平台候选，需进一步确认牵引鞍座形式。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzU3NTAzMDcxMg==&mid=2247497572&idx=1&sn=ca518f425b1d481e1e3ef0f64d0d473b"
+   ],
+   "source_query": "沙漠牵引车 6×6 三轴全驱 truck",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/HF8066",
+   "identity_kind": "code",
+   "model_variants": [
+    "HF8066 6×6 重型沙漠运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6×6 三轴全驱 truck"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本为6×6重型沙漠运输车，230吨连接总重，曾在北非和中东油田使用；重载沙漠/油田背景强，但需确认是否为牵引鞍座式构型。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "豪沃TH7 6×6牵引车系列",
+   "brand": "中国重汽",
+   "reason": "结果将TH7列为重汽豪沃6×6全驱牵引车系列之一，面向油田等高强度作业场景；具体吨位、沙漠工况包和牵引鞍座配置需进一步确认。",
+   "sources": [
+    "https://b2b.baidu.com/q/aland?q=ADABFDF0FFFAABF9FCAAFDF0FAAAA8AAF0AAF9F9FBF9FDACFBABA8A8AAFBF8FD&id=qiddb4963b05c493cac9c00204e2baac214&answer=3370470051727958&ptype=9&fid=0%2C1792677512102&pi=b2b.land....8043910607576987"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/豪沃TH76X6牵引车系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃TH7 6×6牵引车系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本将TH7列为重汽豪沃6×6全驱牵引车系列之一，面向油田等高强度作业；可补充同品牌不同驾驶室前脸、侧防护与踏步差异，但吨位和沙漠工况包待确认。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "豪沃T7H 6×6牵引车系列",
+   "brand": "中国重汽",
+   "reason": "结果将T7H列为重汽豪沃6×6全驱牵引车系列之一，适配油田等高强度作业；需进一步核对沙漠环境适应性和牵引鞍座参数。",
+   "sources": [
+    "https://b2b.baidu.com/q/aland?q=ADABFDF0FFFAABF9FCAAFDF0FAAAA8AAF0AAF9F9FBF9FDACFBABA8A8AAFBF8FD&id=qiddb4963b05c493cac9c00204e2baac214&answer=3370470051727958&ptype=9&fid=0%2C1792677512102&pi=b2b.land....8043910607576987"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/豪沃T7H6X6牵引车系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃T7H 6×6牵引车系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 / 油田工况：高沙尘 沙漠牵引车 6×6 三轴全驱"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本将T7H列为重汽豪沃6×6全驱牵引车系列之一，适配油田等高强度作业；作为豪沃驾驶室变体备份，可补充前脸与大灯造型差异，但沙漠适应性和鞍座参数需核对。",
+   "role": "backup",
+   "intent_rank": 11
+  },
+  {
+   "model": "6×6全驱沙漠车",
+   "brand": "陕汽通力（陕西通力专用汽车有限责任公司）",
+   "reason": "结果明确为6×6全驱沙漠车，针对沙漠极端环境研发，且可改装为油田专用车等用途，适合作沙漠/油田工况候选平台；是否带牵引鞍座需进一步确认。",
+   "sources": [
+    "https://www.ishaanxi.com/c/2025/0211/3356499.shtml"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/6X6全驱沙漠车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "6×6全驱沙漠车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车"
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确为6×6全驱沙漠车，针对沙漠极端环境研发，且可改装为油田专用车；环境匹配强，但牵引鞍座式构型需进一步确认，适合作环境差异化备份。",
+   "role": "backup",
+   "intent_rank": 12
+  },
+  {
+   "model": "沙豹 DFV5253GP6DJ",
+   "brand": "东风",
+   "reason": "结果给出DFV5253GP6DJ沙漠车底盘，驱动形式6X6、全时四驱，适合高沙尘和松软路面；作为沙漠运输/勘查底盘可作候选，但牵引鞍座式构型需确认。",
+   "sources": [
+    "http://51dfc.com/car/7378.html"
+   ],
+   "source_query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/DFV5253GP6DJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "沙豹 DFV5253GP6DJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 / 油田工况：高沙尘 6×6 三轴全驱 工程车"
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本给出DFV5253GP6DJ沙漠车底盘，驱动形式6X6、全时四驱，适合高沙尘和松软路面；但更偏沙漠运输/勘查底盘，牵引鞍座式构型需确认，故排后。",
+   "role": "backup",
+   "intent_rank": 13
+  }
+ ],
+ "topup": {
+  "enabled": 0,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 13
+ },
+ "pool": {
+  "count": 13,
+  "required": 23,
+  "ok": false,
+  "warning": "候选池 13 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 4
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 13,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 17,
+  "unique": 13,
+  "removed": 4,
+  "generic": 7
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 1,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 3,
+  "primary": 10
+ }
+}

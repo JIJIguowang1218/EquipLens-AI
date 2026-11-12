@@ -620,6 +620,8 @@ def test_delivery_backup_short_is_visible():
         summary, _ = run_engine(b, w, root=td)
         bk = summary["delivery"]["backup"]
         assert bk["delivered"] == 1 and bk["short"] == 3 and bk["models"] == ["t2"], bk
+        assert bk["status"] == "short", bk
+        assert summary["delivery"]["backup_short"] == 3, summary["delivery"]
 
 
 def test_backup_excludes_models_without_images():

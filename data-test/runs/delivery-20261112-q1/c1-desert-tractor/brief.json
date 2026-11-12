@@ -1,0 +1,310 @@
+{
+ "brief_id": "auto-20261112-181236",
+ "request": {
+  "raw": "沙漠牵引车（前保险杠、侧防护栏、登车踏步、大灯、前轮拱）；沙漠/油田工况；6×6；10 台",
+  "class": "沙漠牵引车（重型牵引车，油田/沙漠运输用途，小批量 10 台）",
+  "environment": {
+   "value": "沙漠 / 油田工况：高沙尘、强风携沙、碎石击打、昼夜温差、路面松软与局部油污",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "6×6 重型卡车底盘（牵引鞍座式，具体吨位级与驾驶室基型待确认）",
+   "confidence": 0.8
+  },
+  "configuration": "6×6 三轴全驱，前置驾驶室，后置牵引鞍座",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 10,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "request.class",
+   "value": "沙漠牵引车按“6×6 重型牵引车（鞍座牵引半挂）+ 沙漠/油田适应性改装”理解",
+   "why": "用户给出 6×6 与沙漠/油田工况，但未给吨位级、驾驶室基型与是否带绞盘/随车设备",
+   "confidence": 0.7
+  },
+  {
+   "field": "request.base_platform",
+   "value": "推断为量产重型越野牵引车底盘平台，前脸与驾驶室多为平台继承、下部防护件为工况特化",
+   "why": "10 台属小批量，通常沿用成熟底盘与驾驶室，仅对防护/登车/灯具等下部件做定制",
+   "confidence": 0.6
+  },
+  {
+   "field": "regions",
+   "value": "补充 front_face 与 side 两个区域，仅作为已点名部件的位置/比例上下文，不额外拆出格栅、后视镜等未点名部件",
+   "why": "保险杠、大灯、轮拱需前视整体判比例；侧防护栏、踏步需侧视整体判位置关系",
+   "confidence": 0.75
+  },
+  {
+   "field": "parts[wheel_arch].part_family",
+   "value": "按板金件（sheet_metal）判断，但不排除为铸造/玻璃钢轮眉或纯挡泥板件",
+   "why": "用户只说“前轮拱”，未区分翼子板本体与轮眉装饰/挡泥皮",
+   "confidence": 0.5
+  },
+  {
+   "field": "parts[bumper].part_family",
+   "value": "按型材+板材混合（frame_profile）判断，小批量常为钢板折弯焊接而非模具冲压",
+   "why": "10 台小批量难以摊销冲压模具，且沙漠工况偏向钢制可修件",
+   "confidence": 0.55
+  },
+  {
+   "field": "request.environment",
+   "value": "沙尘与碎石击打为主要环境驱动；未确认是否含涉水、盐雾/沿海、极端高温散热需求",
+   "why": "用户仅写沙漠/油田，未说明具体区域与是否沿海或盐碱地",
+   "confidence": 0.6
+  },
+  {
+   "field": "regulation",
+   "value": "法规区域未定（可能为中东/西北油田或中国公路法规），大灯与侧防护的法规证据按“同类法规通用做法”收集",
+   "why": "用户未说明注册地与上路法规体系",
+   "confidence": 0.4
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "bumper",
+   "label": "保险杠",
+   "kind": "part",
+   "location": "前围下部，横贯前脸、含两侧与轮拱衔接段",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "environment_protection",
+    "proportion"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "板材/型材组合方式与分缝走向可见：能看出是折弯钢板、方管骨架还是覆盖蒙皮，以及是否为可拆分段",
+    "与车架的连接节点、加强筋、拖拽/绞盘/牵引销开口的布置，可判断结构加强逻辑",
+    "下缘离地高度、接近角与下护板衔接，可测沙漠工况的通过性取舍"
+   ],
+   "why": "沙漠/油田车的保险杠是环境特化最集中的部件：它同时承担接近角、防撞、防沙石、附件安装接口，是判断“平台件被工况改造到什么程度”的直接证据。"
+  },
+  {
+   "part": "side_guard",
+   "label": "侧防护栏",
+   "kind": "part",
+   "location": "车身两侧，前后轮之间、沿车架外侧低位布置",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "横杆/竖杆的型材截面、间距、端部收头与车架连接支架，可看出是否为法规防护件加沙漠加强",
+    "离地高度与下缘包覆范围，可对照侧防护法规尺寸要求",
+    "是否兼作挡沙/挡泥板、是否与登车踏步、油箱/储气筒护罩连成一体，可判断功能合并程度"
+   ],
+   "why": "侧防护栏在沙漠车上常从纯法规件演化为挡沙/防护/踏步的多功能框架，是“法规 + 环境”两轴叠加的典型对象。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "part",
+   "location": "驾驶室两侧门下方，沿侧防护栏上方或独立支架布置",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "function_ergonomics",
+    "environment_protection",
+    "structure"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "踏板级数、级高与踏面深度，可对照高底盘驾驶室的登车人机序列",
+    "踏面防滑处理（花纹板、格栅条、穿孔）与排沙开口，可判断沙尘堆积与湿滑工况对策",
+    "支架与车架/侧防护栏的连接方式、是否为可翻转或可拆式，可判断通过性与易损件更换逻辑"
+   ],
+   "why": "6×6 高底盘车的登车踏步是纯人机与环境对抗的部件，能提供防滑、排沙、级高配置的具体做法证据。"
+  },
+  {
+   "part": "headlamp",
+   "label": "大灯与灯罩防护",
+   "kind": "part",
+   "location": "前脸两侧，保险杠上方或嵌入前围/保险杠开口",
+   "part_family": "function_attachment",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "regulation",
+    "environment_protection",
+    "form_gesture"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "灯具的安装高度、间距与外廓尺寸关系，可对照配光与灯具位置法规",
+    "是否内凹布置、是否加护网/护罩、灯罩材质与厚度，可判断防沙石击打与防尘做法",
+    "灯具与保险杠、轮拱的分缝与包裹关系，可看出前脸造型语言如何被防护需求改写"
+   ],
+   "why": "大灯是前脸上唯一受强法规约束又被碎石/沙尘直接冲击的功能件，能提供“防护形态与造型、法规如何相互让步”的证据。"
+  },
+  {
+   "part": "wheel_arch",
+   "label": "翼子板与轮拱",
+   "kind": "part",
+   "location": "前轴两侧，前轮上方与前围/保险杠过渡处",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "proportion",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "轮拱开口半径、轮眉外扩量与轮胎外露程度，可测离地与通过性比例关系",
+    "分缝位置、焊接/螺栓连接与内衬挡泥板做法，可判断防沙石飞溅与易维修性",
+    "与保险杠、登车踏步侧向覆盖的衔接方式，可判断侧面防护是否连续"
+   ],
+   "why": "前轮拱是决定前脸比例与侧面离地姿态的关键界面，同时是沙石飞溅的第一受力区，能提供造型与防护一体化的证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车（重型牵引车，油田/沙漠运输用途，小批量 10 台） 6×6 三轴全驱，前置驾驶室，后置牵引鞍座",
+   "parts": [
+    "bumper",
+    "side_guard",
+    "step",
+    "headlamp",
+    "wheel_arch"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠 / 油田工况：高沙尘、强风携沙、碎石击打、昼夜温差、路面松软与局部油污 工程车",
+   "parts": [
+    "bumper",
+    "side_guard",
+    "step",
+    "headlamp",
+    "wheel_arch"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不要补充用户未点名的部件：进气格栅、后视镜、遮阳板、下护板、涂装分色、品牌标识区等均不主动纳入",
+  "不要把“前保险杠”再拆成格栅/雾灯/拖车钩等子件，除非有整体图中可见的布置证据需要说明",
+  "不要以乘用车越野改装件（SUV 护杠、涉水喉改装）作为主要证据；跨类目借用默认关闭",
+  "不要扩展到整车总布置、动力传动、上装挂车或驾驶室内饰",
+  "不要猜测具体型号、吨位级与发动机配置；不确定项写入 assumptions 而非当作事实",
+  "不要输出 quota / tiers / budget / page_budget / research_units 等由代码侧生成的字段",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

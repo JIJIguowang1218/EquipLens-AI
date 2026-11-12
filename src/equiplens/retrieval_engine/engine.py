@@ -575,6 +575,8 @@ class RetrievalEngine:
             "bonus": {"models": len(bonus_models), "images": bonus_images},
             "backup": {"required": backup_required,
                        "delivered": len(backup_models),
+                       "status": ("complete" if len(backup_models) >= backup_required
+                                  else "short"),
                        "models": backup_models,
                        "images": backup_images,
                        # 入选但一张图都没有的备选：可解释性用，不进交付包图片
@@ -582,6 +584,7 @@ class RetrievalEngine:
                                            if not any((v or []) for v in
                                                       (by_target.get(m) or {}).values())],
                        "short": max(0, backup_required - len(backup_models))},
+            "backup_short": max(0, backup_required - len(backup_models)),
             "unavailable": self._unavailable(state),
             "status": "complete" if accepted >= target else "short",
         }

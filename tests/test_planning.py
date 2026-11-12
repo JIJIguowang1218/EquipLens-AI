@@ -166,6 +166,26 @@ def test_pool_requirement_guard():
     assert planning.auto_limits(12, 4, n_queries=6)["need"] == 26
 
 
+def test_short_query_builder():
+    """长描述不能原样拼进搜索 query（2026-11-12 交付测试：0 结果/0 抽取）。"""
+    from equiplens import planning
+    b = {"request": {"class": "港口集装箱正面吊（reach stacker，集装箱正面吊运机）",
+                     "configuration": "4×2 底盘",
+                     "environment": {"value": "港口堆场，集装箱/潮湿盐雾，粉尘、车辆频繁起停、夜间强光作业"}},
+         "research_units": [{"unit_id": "u-exact",
+                             "scope": "港口集装箱正面吊（reach stacker） 4×2 底盘，用于堆场装卸"}],
+         "negative": []}
+    qs = planning.build_query_plan(b)
+    assert qs, qs
+    assert all("（" not in q["query"] and "(" not in q["query"] for q in qs), qs
+    assert all(len(q["query"]) <= 40 for q in qs), [(q["query"], len(q["query"])) for q in qs]
+    extras = planning.top_up_queries(b, [q["query"] for q in qs], max_extra=2)
+    assert len(extras) == 2, extras
+    assert all(e["dimension"] == "topup" for e in extras)
+    # 已用过的查询不再重复生成
+    assert planning.top_up_queries(b, [e["query"] for e in extras]) == []
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -177,6 +197,7 @@ if __name__ == "__main__":
     check("候选归并：只并同款", test_merge_dedupes_same_model_only)
     check("覆盖报告：缺口/国际", test_coverage_reports_missing_and_intl)
     check("候选池下限守卫", test_pool_requirement_guard)
+    check("查询压缩与补查询", test_short_query_builder)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

@@ -1,0 +1,283 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-12T18:19:02",
+ "raw_input": "港口集装箱正面吊（驾驶室外罩、配重罩、走台护栏、登车踏步、灯具护罩）；港口堆场工况；4×2 底盘；10 台",
+ "brief_path": "data-test\\runs\\delivery-20261112-q1\\c2-reach-stacker\\brief.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2475,
+  "completion_tokens": 4854,
+  "total_tokens": 7329,
+  "prompt_tokens_details": {
+   "cached_tokens": 2304
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 3281
+  },
+  "prompt_cache_hit_tokens": 2304,
+  "prompt_cache_miss_tokens": 171
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "港口集装箱正面吊（reach stacker）",
+   "environment": "港口集装箱堆场：盐雾/潮湿、粉尘、连续装卸、室外作业",
+   "base_platform": "集装箱正面吊专用底盘（高位驾驶室+伸缩臂+吊具）",
+   "configuration": "4×2 底盘；后置配重；正面吊运构型",
+   "design_questions": [
+    "驾驶室外罩与配重罩如何形成正面吊的家族化体量与防护感，同时满足高位驾驶室视野、散热与维修开口？",
+    "走台护栏与登车踏步如何组织安全、防滑、防腐蚀的登车路径与人机尺度？",
+    "灯具护罩如何在不遮挡照明的前提下实现防撞、防尘/盐雾防护并满足灯具可见性要求？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "驾驶室外罩前部与灯具护罩区域",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection",
+     "regulation"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面走台、护栏与登车区域",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后部配重罩与后防护区域",
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_cab_shell_9c1a",
+    "label": "驾驶室外罩",
+    "kind": "part",
+    "location": "驾驶室外围（前/侧/顶）",
+    "part_family": "sheet_metal_or_composite_cover",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "高位驾驶室视野",
+     "外罩覆盖件分缝",
+     "盐雾/粉尘防护",
+     "维修开口"
+    ],
+    "why": "决定正面吊驾驶室的体量姿态、家族化前脸与侧面轮廓，并能提供覆盖件分缝、圆角、加强筋和涂装分色的直接证据。"
+   },
+   {
+    "part": "custom_counterweight_cover_4d2e",
+    "label": "配重罩",
+    "kind": "part",
+    "location": "后部配重区域",
+    "part_family": "sheet_metal_or_composite_cover",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "后部体量平衡",
+     "配重防护",
+     "散热/维修开口",
+     "品牌与涂装承载"
+    ],
+    "why": "配重罩是正面吊后部体量与视觉收尾的关键覆盖件，可提供后部造型、分缝、防护开口和制造约束的证据。"
+   },
+   {
+    "part": "custom_walkway_guard_6b7f",
+    "label": "走台护栏",
+    "kind": "function",
+    "location": "侧面走台/登车通道周边",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "防坠落",
+     "通道分隔",
+     "盐雾腐蚀防护",
+     "安全法规"
+    ],
+    "why": "走台护栏直接反映港口机械的安全通道组织、型材节点、连接方式和防腐蚀处理，是功能与人机尺度的核心证据。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "驾驶室侧下方/登车通道",
+    "part_family": "sheet_metal_or_frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "登车路径",
+     "防滑",
+     "扶手/护栏衔接",
+     "离地高度"
+    ],
+    "why": "登车踏步能提供踏步高度、防滑面、结构支撑和与护栏衔接的设计证据，直接影响港口高频作业的登车安全。"
+   },
+   {
+    "part": "custom_lamp_guard_2e8c",
+    "label": "灯具护罩",
+    "kind": "part",
+    "location": "驾驶室及作业灯具周边（前/顶/后）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "regulation",
+     "manufacturing"
+    ],
+    "views": [
+     "detail",
+     "front",
+     "rear",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "防撞",
+     "防尘/盐雾",
+     "透光与可见性",
+     "法规灯具可见"
+    ],
+    "why": "灯具护罩体现港口堆场对灯具的防撞、防尘和盐雾防护逻辑，同时需兼顾照明可见性与法规要求，适合用特写证据判断。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "港口集装箱正面吊（reach stacker）",
+    "why": "用户明确给出品类；按正面吊而非通用重卡分析。",
+    "confidence": 0.95
+   },
+   {
+    "field": "configuration",
+    "value": "4×2 底盘、后置配重、驾驶室高位布置",
+    "why": "用户给出4×2；驾驶室与配重布置为正面吊常见构型，具体位置需图确认。",
+    "confidence": 0.8
+   },
+   {
+    "field": "environment",
+    "value": "港口堆场以盐雾/潮湿、粉尘和连续装卸为主",
+    "why": "环境会驱动覆盖件防腐、灯具护罩、踏步防滑与护栏表面处理。",
+    "confidence": 0.85
+   },
+   {
+    "field": "part_material",
+    "value": "驾驶室外罩/配重罩可能为钢制钣金+涂装或FRP覆盖件；护栏/踏步为型材/钣金",
+    "why": "材料影响分缝、圆角、加强筋和CMF判断，需检索图确认。",
+    "confidence": 0.45
+   },
+   {
+    "field": "lighting_guard_location",
+    "value": "灯具护罩覆盖驾驶室及作业照明灯具，非乘用车大灯灯罩",
+    "why": "用户写“灯具护罩”，在港口机械上通常指作业灯/前后灯的防撞护罩。",
+    "confidence": 0.7
+   },
+   {
+    "field": "taxonomy",
+    "value": "驾驶室外罩、配重罩、走台护栏、灯具护罩使用custom_*；登车踏步用step",
+    "why": "上述覆盖件/护罩不在参考词表中，保留用户原词并新建slug。",
+    "confidence": 0.9
+   }
+  ],
+  "negative": [
+   "不分析伸缩臂、吊具、液压系统、动力总成、底盘悬挂等用户未点名的结构。",
+   "不把驾驶室外罩强行拆成格栅、大灯、保险杠、后视镜等未点名部件。",
+   "不将走台护栏/登车踏步默认跨车型借用；仅在确有必要时再标borrowed。",
+   "不把港口堆场工况泛化为矿山、沙漠或寒区工况。",
+   "不输出page_budget、research_units、quota、tiers、budget、strategy_ref。"
+  ]
+ },
+ "duration_ms": 30146
+}

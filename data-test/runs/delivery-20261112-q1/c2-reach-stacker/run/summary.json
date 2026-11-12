@@ -1,0 +1,345 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-181902",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 4,
+    "degraded_targets": [
+      "XCMG集装箱正面吊（45吨级，燃油/纯电动产品线）",
+      "正面吊（徐工港机）",
+      "柳工正面吊（港口机械）",
+      "正面吊（沃尔华）"
+    ],
+    "citation_only": 1,
+    "citation_only_targets": [
+      "XCMG集装箱正面吊（45吨级，燃油/纯电动产品线）"
+    ],
+    "bonus": {
+      "models": 1,
+      "images": 5
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 1,
+      "status": "short",
+      "models": [
+        "正面吊"
+      ],
+      "images": 5,
+      "no_image_models": [],
+      "short": 3
+    },
+    "backup_short": 3,
+    "unavailable": [
+      {
+        "model": "RSH4532-Vo",
+        "reason": "gate_or_verify_rejected",
+        "hits": 30,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4532-VO2",
+        "reason": "gate_or_verify_rejected",
+        "hits": 10,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4536-VO2",
+        "reason": "gate_or_verify_rejected",
+        "hits": 10,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "E5系列纯电动正面吊",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "45吨级集装箱正面吊（K系列）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "正面吊",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "RSH4532-Vo正面吊运机",
+      "XCMG集装箱正面吊（45吨级，燃油/纯电动产品线）",
+      "CRS450Z5",
+      "HCS46",
+      "港口正面吊",
+      "RSH4528-VO2",
+      "正面吊（徐工港机）"
+    ],
+    "u-env": [
+      "柳工正面吊（港口机械）",
+      "正面吊（沃尔华）",
+      "集装箱正面吊"
+    ]
+  },
+  "budget_used": {
+    "queries": 60,
+    "models": 16,
+    "fetches": 210,
+    "verifies": 210
+  },
+  "downloads": {
+    "hits": 325,
+    "downloaded": 275,
+    "failed": 50,
+    "blocked": 0,
+    "gate_pass": 215,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "cos3.solepic.com": 1,
+      "img.csc86.com": 1,
+      "img001.hc360.cn": 1,
+      "luzhou.114chn.com": 1,
+      "timg.china.cn": 1,
+      "www.lmjx.net": 1,
+      "www.qx100.com": 1,
+      "www.xcmg.com": 2
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T18:21:07"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T18:21:07"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T18:21:59"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/10，池中仍有候选",
+      "ts": "2026-11-12T18:24:10"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 6 个",
+      "ts": "2026-11-12T18:24:38"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T18:26:50"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T18:26:50"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T18:26:50"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T18:27:08"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 3 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-12T18:27:36"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_exhausted",
+      "reason": "plan 池已无候选，备选按实际数量交付",
+      "ts": "2026-11-12T18:27:36"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T18:21:07"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 52547,
+      "at": "2026-11-12T18:21:59"
+    },
+    {
+      "state": "FETCH",
+      "ms": 130907,
+      "at": "2026-11-12T18:24:10"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-12T18:24:10"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T18:24:10"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T18:24:10"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 28164,
+      "at": "2026-11-12T18:24:38"
+    },
+    {
+      "state": "FETCH",
+      "ms": 131917,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T18:26:50"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 18161,
+      "at": "2026-11-12T18:27:08"
+    },
+    {
+      "state": "FETCH",
+      "ms": 27800,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "FILL",
+      "ms": 1,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-12T18:27:36"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 11,
+      "at": "2026-11-12T18:27:36"
+    }
+  ],
+  "elapsed_ms": 389509,
+  "state_path": "data-test\\runs\\delivery-20261112-q1\\c2-reach-stacker\\run\\state.json",
+  "events_path": "data-test\\runs\\delivery-20261112-q1\\c2-reach-stacker\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\delivery-20261112-q1\\c2-reach-stacker\\run\\evidence.json"
+}

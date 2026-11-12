@@ -1,0 +1,352 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-185607",
+  "state": "FAILED",
+  "slots": {
+    "target": 10,
+    "accepted": 8,
+    "filled": false
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 8,
+    "missing": 2,
+    "degraded": 4,
+    "degraded_targets": [
+      "TAZ4922 6×6 油田专用牵引车",
+      "Zetros 4051 AS 6×6",
+      "6×6 沙漠卡车（400 马力，25 吨级）",
+      "东风 6×6 沙漠卡车（400 马力 25 吨级）"
+    ],
+    "citation_only": 0,
+    "citation_only_targets": [],
+    "bonus": {
+      "models": 1,
+      "images": 1
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 1,
+      "status": "short",
+      "models": [
+        "6×6沙漠卡车"
+      ],
+      "images": 1,
+      "no_image_models": [],
+      "short": 3
+    },
+    "backup_short": 3,
+    "unavailable": [
+      {
+        "model": "6×6全驱沙漠车",
+        "reason": "all_download_failed",
+        "hits": 15,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6 全驱沙漠车（可改装油田专用车）",
+        "reason": "all_download_failed",
+        "hits": 15,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6 越野牵引头（460 马力）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6长头油田卡车（TGS系列）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6 越野牵引车头（460 马力）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6沙漠卡车",
+        "reason": "not_delivered",
+        "hits": 15,
+        "downloaded": 10,
+        "blocked": 0
+      }
+    ],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 1,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "TAZ4922 6×6 油田专用牵引车",
+      "Zetros 4051 AS 6×6",
+      "HF 8066（H6066）6×6 重型沙漠运输车/越野底盘",
+      "H6066 6×6 特种运输车",
+      "X3000 6×6沙漠越野车",
+      "6×6 沙漠卡车（400 马力，25 吨级）",
+      "东风 6×6 沙漠卡车（400 马力 25 吨级）"
+    ],
+    "u-env": [
+      "ND5250TSMZ04 沙漠车"
+    ]
+  },
+  "budget_used": {
+    "queries": 60,
+    "models": 14,
+    "fetches": 170,
+    "verifies": 170
+  },
+  "downloads": {
+    "hits": 235,
+    "downloaded": 180,
+    "failed": 41,
+    "blocked": 0,
+    "gate_pass": 175,
+    "early_stop_models": 2,
+    "blocked_hosts": [
+      "img.jdzj.com",
+      "img2.fr-trading.com"
+    ],
+    "fail_counts": {
+      "img.jdzj.com": 3,
+      "img2.fr-trading.com": 3,
+      "s9.rr.itc.cn": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T18:59:10"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T18:59:10"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T19:00:37"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/10，池中仍有候选",
+      "ts": "2026-11-12T19:02:03"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-12T19:02:04"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T19:02:34"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T19:02:34"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T19:02:34"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T19:02:35"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 8/10，池中仍有候选",
+      "ts": "2026-11-12T19:03:07"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T19:03:07"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-12T19:03:07"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T18:59:10"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 87315,
+      "at": "2026-11-12T19:00:37"
+    },
+    {
+      "state": "FETCH",
+      "ms": 85661,
+      "at": "2026-11-12T19:02:03"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-12T19:02:03"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T19:02:03"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T19:02:03"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 977,
+      "at": "2026-11-12T19:02:04"
+    },
+    {
+      "state": "FETCH",
+      "ms": 30209,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T19:02:34"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 862,
+      "at": "2026-11-12T19:02:35"
+    },
+    {
+      "state": "FETCH",
+      "ms": 31571,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-12T19:03:07"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 12,
+      "at": "2026-11-12T19:03:07"
+    }
+  ],
+  "elapsed_ms": 236609,
+  "state_path": "data-test\\runs\\delivery-20261112-q12\\c1-desert-tractor\\run\\state.json",
+  "events_path": "data-test\\runs\\delivery-20261112-q12\\c1-desert-tractor\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\delivery-20261112-q12\\c1-desert-tractor\\run\\evidence.json"
+}

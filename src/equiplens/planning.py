@@ -141,6 +141,48 @@ def _with_conf(scope: str, conf: str) -> str:
     return f"{scope} {conf}".strip()
 
 
+def short_text(value, limit: int = 20) -> str:
+    """把 brief 里的长描述压成适合搜索 query 的短词。
+
+    2026-11-12 实测：LLM 生成的 environment.value / scope 是整段工况描述，
+    直接拼进 query 会让 360 返回 0 结果或抽取为 0（正面吊/拖拉机/叉车）。
+    规则：去括号补充、取第一个短句、限长。
+    """
+    t = normalize_text(value)
+    if not t:
+        return ""
+    t = re.sub(r"[（(][^）)]*[）)]", " ", t)
+    t = re.split(r"[，。；;、,]", t)[0]
+    t = normalize_text(t)
+    return t[:limit].strip()
+
+
+def top_up_queries(brief: dict, existing: list[str] | None = None,
+                   max_extra: int = 2) -> list[dict]:
+    """候选池不足时追加的查询（默认最多 2 条）。
+
+    只做"同义补充"，不换源、不加品牌白名单；查询同样要走
+    validate_extraction（候选必须出自该查询的结果）。
+    """
+    req = brief.get("request") or {}
+    klass = short_text(req.get("class"), 18)
+    conf = short_text(req.get("configuration"), 10)
+    if not klass:
+        return []
+    existing_norm = {normalize_text(x) for x in (existing or [])}
+    pool = [f"{klass} {conf} 实车", f"{klass} {conf} 厂家"]
+    out: list[dict] = []
+    for q in pool:
+        q = normalize_text(q)
+        if not q or q in existing_norm:
+            continue
+        out.append({"query_id": f"q-topup-{len(out) + 1}", "dimension": "topup",
+                    "query": q, "purpose": "候选池不足，补 1 条同义查询"})
+        if len(out) >= max_extra:
+            break
+    return out
+
+
 def negative_terms(brief: dict) -> list[str]:
     """只取适合放进搜索 query 的短负词；长句/指令不要拼进 query。
 
@@ -164,9 +206,10 @@ def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:
     `extra` 只用于覆盖实验，必须是“市场段/工况”描述，不允许写品牌名单。
     """
     req = brief.get("request") or {}
-    env = normalize_text((req.get("environment") or {}).get("value"))
-    klass = normalize_text(req.get("class"))
-    conf = normalize_text(req.get("configuration"))
+    # 只取短词：长描述直接拼 query 会让搜索 0 结果（2026-11-12 交付测试复现）
+    env = short_text((req.get("environment") or {}).get("value"), 14)
+    klass = short_text(req.get("class"), 18)
+    conf = short_text(req.get("configuration"), 10)
     neg = " ".join(f'-"{x}"' for x in negative_terms(brief))
 
     rows: list[dict] = []
@@ -177,15 +220,18 @@ def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:
             rows.append({"query_id": query_id, "dimension": dimension,
                          "query": q, "purpose": purpose})
 
-    add("base", "q-base", " ".join(x for x in (env, klass, conf) if x),
+    add("base", "q-base", short_text(" ".join(x for x in (env, klass, conf) if x), 34),
         "工况 + 类目 + 构型")
-    add("model", "q-model", f"{klass} {conf} 车型 品牌", "车型候选主查询")
-    add("environment", "q-env", f"{env} {conf} 卡车 车型", "邻域工况/上装")
-    add("english", "q-en", f"{klass} {conf} truck brands", "英文品牌兜底")
+    add("model", "q-model", short_text(f"{klass} {conf} 车型", 30),
+        "车型候选主查询")
+    add("environment", "q-env", short_text(f"{env} {conf} 工程车", 30),
+        "邻域工况/上装")
+    add("english", "q-en", short_text(f"{klass} {conf} truck", 30),
+        "英文品牌兜底")
 
     for unit in brief.get("research_units") or []:
         uid = normalize_text(unit.get("unit_id")) or f"u{len(rows)}"
-        scope = normalize_text(unit.get("scope"))
+        scope = short_text(unit.get("scope"), 20)
         add("unit", f"q-unit-{uid}", _with_conf(scope, conf),
             f"research_unit {uid} 的 scope")
     for i, q in enumerate(extra or [], start=1):
