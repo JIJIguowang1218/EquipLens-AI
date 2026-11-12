@@ -115,7 +115,8 @@ task-brief@v2 (API)
 
 ### 已归档、不再读取的配置（2026-11-12）
 
-- `Brief.stop_rules` / `Brief.negative` / `Brief.strategy_ref`：**只解析、不消费**；schema 保留仅为兼容旧 brief；
+- `Brief.stop_rules` / `Brief.strategy_ref`：**只解析、不消费**；schema 保留仅为兼容旧 brief；
+- `Brief.negative`：**在 `build_query_plan` 消费**（每条 query 追加 `-"短词"`），只影响搜索，不影响门卫/核验/占槽；
 - unit 级 `budget` / `stop`：同上；
 - `.env` 的 `LLM_MONTHLY_BUDGET_CNY`、`LLM_MAX_IMAGES_PER_CALL`：代码无引用，已从 `.env` 删除；
 - 停止条件实际由代码决定：tier 耗尽、槽位满、`budget.max_queries`。注意该键名是历史命名，**实际约束的是累计候选车型数**（`budget_used.models`）；`budget_used.queries` 是真实搜索请求数，目前只做成本/延迟观测，不参与停止判断（2026-11-12）。

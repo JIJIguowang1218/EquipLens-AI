@@ -32,7 +32,8 @@
 |---|---|---|
 | `Verification.visibility` | `retrieval_engine/contracts.py` | 恒 `"unknown"`；旧实现用"有宽高"冒充 `full`，已去掉 |
 | `Verification.origin` | 同上 | 恒 `"unknown"`（K2） |
-| `Brief.stop_rules` / `Brief.negative` / `Brief.strategy_ref` | `contracts.py` | **只解析不消费**（2026-11-12 确认）。schema 里保留以免旧 brief 校验失败；新 brief 不要再指望它们生效 |
+| `Brief.stop_rules` / `Brief.strategy_ref` | `contracts.py` | **只解析不消费**（2026-11-12 确认）。schema 里保留以免旧 brief 校验失败；新 brief 不要再指望它们生效 |
+| `Brief.negative` | `contracts.py` → `planning.negative_terms` | **在查询构造阶段消费**（追加 `-"短词"`）；不影响门卫/核验/占槽。2026-11-12 起只收 ≤8 字短词 |
 | unit 级 `budget` / `stop`（"2 台占满即停"） | brief `research_units[*]` | 同上，不消费 |
 | `.env` 的 `LLM_MONTHLY_BUDGET_CNY` / `LLM_MAX_IMAGES_PER_CALL` | `~/.equiplens` 外的仓库 `.env` | 代码从不读取，已从 `.env` 删除 |
 
@@ -44,7 +45,7 @@
 | "能不能判断这张图是原厂还是改装？" | K2 已毙：错误率高、收益低；`origin` 恒 unknown |
 | "为什么不做多平台/百度联合检索？" | K7：完整 loop 丢 HF8066、unknown 暴增；只留实验开关 |
 | "用 strategy 配置驱动查询阶梯是不是更灵活？" | K14：已删。查询阶梯是 `imagesearch.query_variants` 的硬编码行为，改行为改代码 + 测试 |
-| "brief 里的 stop_rules/negative 为什么没生效？" | §2：已归档、不消费。停止条件由代码实现（tier 耗尽 / 槽位满 / 预算帽） |
+| "brief 里的 stop_rules/negative 为什么没生效？" | stop_rules 确实不消费；negative 只影响查询（`build_query_plan`），不影响停止/门卫。停止条件由代码实现（tier 耗尽 / 槽位满 / 预算帽） |
 | "能不能按品牌白名单先发现候选？" | K12：已废弃，会造成静默国产-only 偏置 |
 
 ## 4. 重新开启的唯一入口
