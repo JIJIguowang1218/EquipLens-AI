@@ -159,6 +159,7 @@ PYTHONPATH=src python tests/test_dedupe_review.py       # 2/2
 **交付链路冒烟（需要 key，约 2–3 分钟/条）**：
 
 ```bash
+mkdir -p /tmp/demo
 # 1) brief（API 生成，不允许手写）
 PYTHONPATH=src python scripts/build_brief.py --input "沙漠牵引车（前保险杠、侧防护栏、登车踏步、大灯、前轮拱）；沙漠/油田工况；6×6；10 台"   --class "沙漠牵引车" --slots 10 --out /tmp/demo/brief.json
 # 2) plan + 排序（API；--topup 2 为默认）
