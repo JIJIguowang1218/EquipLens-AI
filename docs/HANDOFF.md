@@ -193,7 +193,9 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 4. ~~**隐藏的国产品牌名单**~~ **已处理（2026-11-11）**：`discover.py` fallback 已废弃，`WebWorld` 无 plan/models 直接报错，CLI 在联网前拦截 `--web-only` 无 `--plan/--models`；T32/T33 的“实时发现”只能当历史口径，不能再用于“360 有没有外国车”的结论。
 5. **degraded 是否可接受**：12/12 里 7–8 台只有 probable 图；T41 的完整 run 里 3 台是 generic（OTTC、中东版、东风 400 马力）。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），或限制 generic 占比，成本与优先级待定。
 6. **质量排序未实现**：计划中的 `score = 4×res_high + 2×res_standard + margin + citation`、top-N 激活还没写；当前占槽基本按发现顺序。
-7. **下载失败仍高**：v2 有 56 行失败（403/404/防盗链），集中在经销商/B2B 图床；要不要加通道/域名黑名单待定。
+7. **下载失败仍高（不是新问题）**：2026-11-10 起就有记录（E20/T48、`retrieval-experiments-log.md` 的失败表：403/DNS 为主，无图目标 2–12 台/轮）；**12 条失败 URL 阶梯重放 0/12**，结论是"同 URL 重试无收益，恢复必须换源/换查询"。
+   - 待做：域名黑名单/降权（外贸站、已死域名反复重试）、目标级早停（连续 N 张失败就放弃该台换候选）；
+   - 交付侧已加保护：缺图车型不进备选，备选不足从 plan 池补抓（2026-11-12）。
 
 ## 0.4 本轮新增的“不要误判”边界
 
