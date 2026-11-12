@@ -118,6 +118,11 @@ cd EquipLens-AI
 git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 ```
 
+> ⚠️ **2026-11-12 历史改写**：旧 `3a77ab4` 及之前的 4 个提交因 WeChat AppID 告警被改写（新 HEAD `6d45c12`）。
+> 如果你手上是**旧 clone**，不要直接 `git pull`；用
+> `git fetch origin && git reset --hard origin/main`，或重新 clone。
+> 详见 `docs/DATA-CHANGELOG.md` §6.1；提交前先跑 `python scripts/scan_secrets.py`。
+
 - Python **3.11**（本项目在 3.11.5 上验证；不要用 3.13）
 - Windows PowerShell 示例：
   ```powershell

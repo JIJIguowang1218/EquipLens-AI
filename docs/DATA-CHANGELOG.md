@@ -56,6 +56,19 @@
 - `data-test/equiplens.db`、`data-test/ab-images/`、`prompt` 缓存等历史 DB/素材：不同步；
 - API key：`~/.equiplens/deepseek.env`，换机器需自备（另一台已有 key）。
 
+### 6.1 安全事件：WeChat AppID 进入公开仓库（2026-11-12）
+
+- **告警**：GitHub 提示 commit `340ae47`（当前已改写为 `d811f41`）含 “Tencent WeChat API App ID”。
+- **事实**：不是 API 密钥，而是第三方图片 CDN URL 里的 `wx<16 hex>`（公众号 AppID，公开标识）；
+  出现在 `delivery-20261112-clean/c3-tractor/run/` 的 `fetch_log.jsonl`、`state.json`、`audit.html`。
+- **风险**：AppID 单独不能调用接口（需 AppSecret），无 DeepSeek key / GitHub token / 私钥泄露；
+  `git grep sk-`、`ghp_`、`AKIA`、私钥头均为 0。
+- **处置**：三个文件已把 AppID 替换为 `wx-REDACTED`；**改写 340ae47..HEAD 四个提交并 force-push**
+  （旧 HEAD `3a77ab4` → 新 HEAD `6d45c12`，提交哈希已变）。
+- **影响**：旧 clone（包括另一台电脑）不能直接 `git pull`，需重新 clone 或 `git fetch && git reset --hard origin/main`。
+- **防复发**：新增 `scripts/scan_secrets.py`（扫 git 跟踪文件：WeChat AppID / `sk-` / GitHub PAT / AWS key / 私钥头）
+  与 `tests/test_no_secrets.py`；提交前跑一遍。
+
 ### 6. 复核方法（新机器上可自检）
 
 ```bash

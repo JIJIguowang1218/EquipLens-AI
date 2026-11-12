@@ -36,6 +36,7 @@
 | 交付清单/监控 | `scripts/build_delivery_manifest.py`（DELIVERY.md/json）、`src/equiplens/pricing.py`、`summary.timings` |
 | 去重人工审核 | `scripts/build_dedupe_review.py`（生成可离线打开的 review.html） |
 | 死图床监测 | `scripts/monitor_bad_domains.py`（只统计，不参与生产） |
+| 密钥卫生 | `scripts/scan_secrets.py`、`tests/test_no_secrets.py`（提交前跑） |
 | 交付测试套件 | `scripts/run_delivery_suite.py`、`scripts/summarize_delivery_suite.py` |
 
 ## 3. 支撑模块
