@@ -486,6 +486,10 @@ class RetrievalEngine:
                        "delivered": len(backup_models),
                        "models": backup_models,
                        "images": backup_images,
+                       # 入选但一张图都没有的备选：可解释性用，不进交付包图片
+                       "no_image_models": [m for m in backup_models
+                                           if not any((v or []) for v in
+                                                      (by_target.get(m) or {}).values())],
                        "short": max(0, backup_required - len(backup_models))},
             "status": "complete" if accepted >= target else "short",
         }
