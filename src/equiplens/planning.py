@@ -95,6 +95,36 @@ def _identity_text(model: str) -> str:
     return s
 
 
+_PAREN_RE = re.compile(r"[（(][^）)]*[）)]")
+# 泛称里不构成“身份”的词：构型/工况/车身/通用描述
+_GENERIC_WORDS = ("沙漠", "全驱", "六驱", "四驱", "越野", "油田", "运输", "牵引",
+                  "卡车", "货车", "专用", "特种", "改装", "可", "车", "头",
+                  "马力", "吨级", "驾驶室", "底盘", "系列")
+
+
+def strip_parens(text: str) -> str:
+    return re.sub(r"\s+", "", _PAREN_RE.sub("", text or ""))
+
+
+def has_qualifier(text: str) -> bool:
+    """括号里的补充说明（如“可改装油田专用车”）算有效限定，不建议丢弃。"""
+    return bool(_PAREN_RE.search(text or ""))
+
+
+def generic_is_weak(model: str) -> bool:
+    """泛称是否“弱到无法定位”：去掉括号/构型/通用词后没有型号、数字、品牌、车系。
+
+    括号里的限定（如“可改装油田专用车”“460 马力”）算有效信息，不判弱。
+    """
+    if has_qualifier(model):
+        return False
+    t = strip_parens(model).lower().replace("×", "x")
+    for w in _GENERIC_WORDS:
+        t = t.replace(w, "")
+    t = re.sub(r"\d+x\d+|\dx\d", "", t)
+    return not re.search(r"[a-z]{2,}|\d{2,}", t)
+
+
 def model_identity(model: str) -> tuple:
     """车型身份（用于合并同款，不用于品牌去重）。
 
@@ -115,6 +145,9 @@ def model_identity(model: str) -> tuple:
             continue
         if any(ch.isalpha() for ch in code) and any(ch.isdigit() for ch in code):
             clean.append(code)
+    if len(set(clean)) >= 2:
+        # 一条候选里出现两个不同型号码（如 HF 8066（H6066））→ 必须拆开，不能并
+        return ("multi", tuple(sorted(set(clean))))
     if clean:
         code = sorted(set(clean), key=lambda c: (-len(c), c))[0]
         return ("code", code)
@@ -124,7 +157,8 @@ def model_identity(model: str) -> tuple:
         return ("series", series, nums[0])
     if series:
         return ("series", series)
-    return ("generic", re.sub(r"[^0-9A-Z\u4e00-\u9fff]+", "", s))
+    return ("generic", re.sub(r"[^0-9A-Z\u4e00-\u9fff]+", "",
+                              strip_parens(s)))
 
 
 def identity_label(identity: tuple) -> str:
@@ -294,17 +328,18 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
 def merge_candidates(items: list[dict]) -> list[dict]:
     """按**车型身份**合并同款变体；同品牌不同型号码不合并。
 
+    规则（2026-11-12 人审后补充）：
     - 同码（TAZ4922 / DFV5253TSMGP6D）→ 合并，保留所有写法到 `model_variants`；
-    - Zetros 4051 与 Zetros 3643 → 不同身份，保留两台；
-    - 东风 EQ2251AX / EQ2220AX → 不同身份，保留两台；
-    - 没有型号码/车系的泛称 → generic，单独保留（不与具体车型硬并）。
+    - 一条记录里出现**两个不同型号码**（如 `HF 8066（H6066）`）→ 拆成两条，不并；
+    - 泛称：去掉括号补充后再比较，`6×6全驱沙漠车` 与
+      `6×6 全驱沙漠车（可改装油田专用车）` 视为同款（保留信息更全的那条）；
+    - 泛称且去掉通用词后没有任何型号/数字/品牌/限定 → 丢弃（如 `6×6沙漠卡车`）；
+    - Zetros 4051 与 Zetros 3643 → 不同身份，保留两台。
     """
     merged: dict[tuple, dict] = {}
     order: list[tuple] = []
-    for item in items:
-        ident = model_identity(item.get("model"))
-        if ident[0] == "generic" and not ident[1]:
-            continue
+
+    def _absorb(ident: tuple, item: dict) -> None:
         if ident not in merged:
             merged[ident] = dict(item)
             merged[ident]["identity"] = identity_label(ident)
@@ -317,12 +352,13 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             merged[ident]["dimensions"] = [item.get("dimension")]
             merged[ident]["source_count"] = len(item.get("sources") or [])
             order.append(ident)
-            continue
+            return
         cur = merged[ident]
         for u in item.get("sources") or []:
             if u not in cur["sources"]:
                 cur["sources"].append(u)
-        q = {"query_id": item.get("source_query_id"), "query": item.get("source_query")}
+        q = {"query_id": item.get("source_query_id"),
+             "query": item.get("source_query")}
         if q not in cur["source_queries"]:
             cur["source_queries"].append(q)
         if item.get("dimension") not in cur["dimensions"]:
@@ -330,7 +366,25 @@ def merge_candidates(items: list[dict]) -> list[dict]:
         if item.get("model") not in cur["model_variants"]:
             cur["model_variants"].append(item.get("model"))
         cur["source_count"] = len(cur["sources"])
-    return [merged[k] for k in order]
+
+    for item in items:
+        ident = model_identity(item.get("model"))
+        if ident[0] == "multi":
+            # 多码记录：一条拆成两条，各自走身份合并（H6066 归 H6066，8066 独立）
+            for code in ident[1]:
+                _absorb(("code", code), item)
+            continue
+        _absorb(ident, item)
+
+    out: list[dict] = []
+    for k in order:
+        c = merged[k]
+        if c.get("identity_kind") == "generic":
+            variants = c.get("model_variants") or [c.get("model")]
+            if all(generic_is_weak(v) for v in variants):
+                continue      # 弱泛称：无型号/数字/品牌/限定，人审判定不该保留
+        out.append(c)
+    return out
 
 
 def dedupe_stats(raw_items: list[dict], merged: list[dict]) -> dict:

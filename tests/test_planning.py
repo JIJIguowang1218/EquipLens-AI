@@ -186,6 +186,46 @@ def test_short_query_builder():
     assert planning.top_up_queries(b, [e["query"] for e in extras]) == []
 
 
+def test_merge_rules_from_human_verdicts():
+    """2026-11-12 人审（沙漠牵引车 14 张卡）后的合并规则：
+    同款泛称合并、弱泛称丢弃、多码记录拆分。"""
+    from equiplens.planning import merge_candidates
+    cards = [
+        ["TAZ4922 6×6 油田专用牵引车", "TAZ4922 6×6 油田牵引车", "TAZ4922 6×6油田牵引车"],
+        ["6×6 全驱沙漠车（可改装油田专用车）"],
+        ["H6066 6×6 特种运输车", "H6066 6×6特种运输车"],
+        ["6×6 越野牵引头（460 马力）"],
+        ["Zetros 4051 AS 6×6"],
+        ["6×6全驱沙漠车"],                       # 人审：应与 #2 合并
+        ["X3000 6×6沙漠越野车"],
+        ["6×6长头油田卡车（TGS系列）"],
+        ["6×6 越野牵引车头（460 马力）"],
+        ["6×6 沙漠卡车（400 马力，25 吨级）"],
+        ["ND5250TSMZ04 沙漠车"],
+        ["6×6沙漠卡车"],                          # 人审：不该保留
+        ["HF 8066（H6066）6×6 重型沙漠运输车"],   # 人审：应拆成 8066 / 6066
+        ["东风 6×6 沙漠卡车（400 马力 25 吨级）"],
+    ]
+    items = []
+    for i, vs in enumerate(cards):
+        for j, m in enumerate(vs):
+            items.append({"model": m, "sources": [f"https://e/{i}/{j}"],
+                          "source_query_id": "q", "source_query": "x"})
+    merged = merge_candidates(items)
+    models = [c["model"] for c in merged]
+    assert len(merged) == 12, models
+    # #6 并入 #2：同一个候选里出现两种写法
+    two = next(c for c in merged if "可改装油田专用车" in c["model"])
+    assert set(two["model_variants"]) == {
+        "6×6 全驱沙漠车（可改装油田专用车）", "6×6全驱沙漠车"}, two["model_variants"]
+    # 多码拆分：H6066 归 H6066，HF8066 独立
+    h = next(c for c in merged if c["model"].startswith("H6066"))
+    assert any("HF 8066" in v for v in h["model_variants"]), h["model_variants"]
+    assert any(c["model"].startswith("HF 8066") for c in merged), models
+    # 弱泛称不单独成候选（被并入 #10 或丢弃）
+    assert "6×6沙漠卡车" not in models
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -198,6 +238,7 @@ if __name__ == "__main__":
     check("覆盖报告：缺口/国际", test_coverage_reports_missing_and_intl)
     check("候选池下限守卫", test_pool_requirement_guard)
     check("查询压缩与补查询", test_short_query_builder)
+    check("人审后的合并规则", test_merge_rules_from_human_verdicts)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))
