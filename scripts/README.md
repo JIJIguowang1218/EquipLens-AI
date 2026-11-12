@@ -8,6 +8,7 @@
 
 | 脚本 | 用途 |
 |---|---|
+| `monitor_bad_domains.py` | 死图床长期监测（只统计，不参与生产）：汇总 403/DNS 到 `data-test/evals/bad-domains-monitor.*` |
 | `run_roster_crawl.py` | T18-roster 首跑：4 类目 39 车型语料采集 |
 | `recrawl_craneL.py` / `recrawl_generic.py` | 轻型吊车补爬 / 宏观设计查询补爬 |
 | `roster_judge_sheet.py` | 生成三分类判定工作表 |

@@ -157,6 +157,13 @@ def test_pool_requirement_guard():
     assert planning.pool_requirement(0, 4) == 0
     assert planning.pool_warning(26, 12, 4) == ""
     assert "26" in planning.pool_warning(20, 12, 4)
+    # 目标由用户输入推导：20 台 -> 1.6*(20+4)=39；抽取数按查询数反推
+    lim = planning.auto_limits(20, 4, n_queries=6)
+    assert lim["need"] == 39 and lim["limit"] == 39, lim
+    # 12 台时上限保持 36（不因 need=26 而砍掉备选余量）
+    assert planning.auto_limits(12, 4, n_queries=6)["limit"] == 36
+    assert lim["per_query"] >= 8, lim
+    assert planning.auto_limits(12, 4, n_queries=6)["need"] == 26
 
 
 if __name__ == "__main__":

@@ -38,6 +38,24 @@ def pool_requirement(slots, backup: int = 4, factor: float = POOL_FACTOR) -> int
     return int(math.ceil(float(factor) * (slots + backup)))
 
 
+def auto_limits(slots, backup: int = 4, n_queries: int = 1,
+                per_query: int = 0, limit: int = 0) -> dict:
+    """把“用户输入台数”换算成 planner 的目标池/每条查询抽取数/总上限。
+
+    - need = 1.6 × (slots + backup)：候选池目标（由用户输入决定，不是固定值）；
+    - per_query：按查询条数反推，保证总产出够 need（用户显式给了就用用户的）；
+    - limit：候选截断上限，默认 = need。
+    """
+    need = pool_requirement(slots, backup)
+    n = max(1, int(n_queries or 1))
+    per = int(per_query) if int(per_query or 0) > 0 else max(
+        8, int(math.ceil(need / n)) + 2)
+    # 上限只用来防止无限膨胀；不要卡在 need 上——多出来的候选是备选补抓的余量，
+    # 且提取已经发生，保留它们不额外花钱。12 台时保持原来的 36 不变。
+    lim = int(limit) if int(limit or 0) > 0 else max(36, need)
+    return {"need": need, "per_query": per, "limit": lim}
+
+
 def pool_warning(count, slots, backup: int = 4) -> str:
     """候选池不足时返回一句告警；够则返回空串。"""
     need = pool_requirement(slots, backup)

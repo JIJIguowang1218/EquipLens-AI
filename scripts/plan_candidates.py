@@ -31,7 +31,7 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
-from equiplens.planning import (build_query_plan, coverage_report,  # noqa: E402
+from equiplens.planning import (auto_limits, build_query_plan, coverage_report,  # noqa: E402
                                 dedupe_stats, merge_candidates,
                                 pool_requirement, pool_warning,
                                 validate_extraction)
@@ -94,8 +94,10 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--brief", required=True)
     ap.add_argument("--out", required=True)
-    ap.add_argument("--limit", type=int, default=36, help="候选池总上限")
-    ap.add_argument("--per-query", type=int, default=8, help="每条查询最多抽几个候选")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="候选池总上限；0=按 1.6×(slots+backup) 自动（2026-11-12）")
+    ap.add_argument("--per-query", type=int, default=0,
+                    help="每条查询最多抽几个候选；0=按目标池/查询数自动")
     ap.add_argument("--extra-query", action="append", default=[],
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     args = ap.parse_args(argv)
@@ -103,6 +105,13 @@ def main(argv=None) -> int:
     key = load_key()
     brief = json.loads(Path(args.brief).read_text(encoding="utf-8"))
     query_plan = build_query_plan(brief, args.extra_query)
+    page_budget = (brief.get("request") or {}).get("page_budget") or {}
+    slots = int(page_budget.get("vehicle_slots") or 0)
+    backup = page_budget.get("backup_slots")
+    backup = 4 if backup is None else int(backup)
+    limits = auto_limits(slots, backup, n_queries=len(query_plan),
+                         per_query=args.per_query, limit=args.limit)
+    per_query = limits["per_query"]
 
     all_results: list[dict] = []
     per_query: list[dict] = []
@@ -123,14 +132,14 @@ def main(argv=None) -> int:
         all_results.extend(res)
         if res:
             try:
-                got, usage = extract(key, brief, meta, res, args.per_query)
+                got, usage = extract(key, brief, meta, res, per_query)
                 api_rows.append({"api": "chat", "model": "deepseek-flash",
                                  "query_id": meta["query_id"],
                                  "prompt_tokens": usage.get("prompt_tokens"),
                                  "completion_tokens": usage.get("completion_tokens"),
                                  "billable": True})
                 rows, stats = validate_extraction(
-                    got, {str(r.get("url") or "") for r in res}, meta, args.per_query)
+                    got, {str(r.get("url") or "") for r in res}, meta, per_query)
                 row.update(stats)
                 extracted.extend(rows)
             except Exception as e:  # noqa: BLE001
@@ -148,12 +157,8 @@ def main(argv=None) -> int:
             uniq.append(r)
 
     merged_all = merge_candidates(extracted)
-    candidates = merged_all[:args.limit]
-    page_budget = (brief.get("request") or {}).get("page_budget") or {}
-    slots = int(page_budget.get("vehicle_slots") or 0)
-    backup = page_budget.get("backup_slots")
-    backup = 4 if backup is None else int(backup)
-    need = pool_requirement(slots, backup)
+    need = limits["need"]
+    candidates = merged_all[:limits["limit"]]
     warn = pool_warning(len(candidates), slots, backup)
     if warn:
         print("WARN " + warn, file=sys.stderr)
@@ -166,8 +171,9 @@ def main(argv=None) -> int:
         "search_results": len(uniq),
         "candidates": candidates,
         "pool": {"count": len(candidates), "required": need,
-                 "slots": slots, "backup": backup, "ok": not warn,
-                 "warning": warn},
+                 "slots": slots, "backup": backup,
+                 "per_query": per_query, "limit": limits["limit"],
+                 "ok": not warn, "warning": warn},
         "coverage": coverage_report(query_plan, candidates,
                                      slots=((brief.get("request") or {}).get("page_budget") or {}).get("vehicle_slots")),
         "dedupe": dedupe_stats(extracted, candidates),
