@@ -205,7 +205,8 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 - **通道口径以代码为准**：360 优先，relevant 不足时百度/Bing 兜底（`search_images_ex`）；不是"360 独占"。
 - **缺图不可交付（P0）**：交付 = N 主 + 4 备，每一台都必须有 ≥1 张可用图；备选不够时 loop 从既有 plan 池补抓（不新增规划），plan 耗尽才报 `backup.short`。
 - **必须交付、降级优先（P0，2026-11-12）**：凑不齐时用**降级填充**（probable/unknown、低清、泛称）并标 degraded，
-  **不换源、不重开扩源**；扩源未获明确批准不得再启动。当前 unknown 兜底填充未实现，short 会如实报。
+  **不换源、不重开扩源**；扩源未获明确批准不得再启动。降级兜底已实现：层级耗尽后 `_degraded_fill`
+  用任意过门卫图填满，target 标 `degraded_fill`。
 - **`budget_used.queries` 是真实搜索请求数**（含查询阶梯）；`budget_used.models` 才是累计候选车型数，也是 `brief.budget.max_queries` 实际约束的量。
 
 - **分辨率不参与淘汰**：门卫预筛下限 320（不是 800）；`res_standard`（≥800）/`res_high`（≥1200）/`reference_candidate` 都只是标签。低清只记 `low_resolution` warning。

@@ -72,7 +72,7 @@ EXTERNAL_DISCOVER ┘                         │
 | `BRIEF_READY` | 校验任务单与预算 | `brief.json` | 校验后的 state | `LIBRARY_SEARCH` | schema 错 → 直接失败，不检索 |
 | `LIBRARY_SEARCH` | 先查库内已有素材/证据 | brief、库索引 | 候选目标 + 资产 | `FETCH` | 库空 → 仍走 `FETCH`（空资产） |
 | `FETCH` | 抓取/下载/去重/门卫 | 候选目标 | 资产 + 通道状态 | `VERIFY` | 被拦/空 → 记录失败，`VERIFY` 里判不通过 |
-| `VERIFY` | **身份核验**（型号码/品牌车系/构型）；（② 可见性 / ③ 原厂已归档，见 `docs/killed-strategies.md` K1/K2） | 资产、部件验收 | 通过/不通过 + 缺陷标签 | `FILL` | 不通过 → 不占槽；P1 不做 RETRY |
+| `VERIFY` | **身份核验**（型号码/品牌车系/构型）；②③ 已归档 | 资产、部件验收 | 通过/不通过 + 缺陷标签 | `FILL` | 不通过 → 正常不占槽；层级耗尽后由 `DEGRADE` 降级兜底占槽（标 `degraded_fill`） |
 | `FILL` | 占槽/备选/族去重 | 通过证据、槽位 | 新覆盖 | `GAP_CHECK` | 槽满 → `GAP_CHECK` 判 `DONE` |
 | `GAP_CHECK` | 判断全局槽位/部件覆盖 | 候选、配额、验收 | 缺口清单 | `DONE` / `EXTERNAL_DISCOVER` / `DEGRADE` | 全局槽满 → `DONE` |
 | `EXTERNAL_DISCOVER` | 找车型/来源/查询目标 | 缺口、层级、源注册表 | 候选目标（不保证有图） | `FETCH` | 无候选 → `DEGRADE` |

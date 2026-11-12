@@ -229,55 +229,88 @@ class RetrievalEngine:
         state["pending_assets"] = []
         state["state"] = "GAP_CHECK" if state.get("backup_only") else "FILL"
 
-    def _state_fill(self, state: dict) -> None:
-        for unit in state["units"].values():
-            unit["accepted_targets"] = []
+    def _ordered_targets(self, state: dict) -> list[tuple]:
         role_rank = {"primary": 0, "backup": 1}
-        ordered = sorted(
+        return sorted(
             enumerate(state["targets"].items()),
             key=lambda kv: (0 if kv[1][1].get("pinned") else 1,
                             role_rank.get(str(kv[1][1].get("role") or ""), 2),
                             int(kv[1][1].get("intent_rank") or 10 ** 9),
                             kv[0]))
-        used_assets: set[str] = set()
+
+    def _used_assets(self, state: dict) -> set[str]:
+        used: set[str] = set()
+        for unit in state["units"].values():
+            for tid in unit.get("accepted_targets") or []:
+                for part in unit["parts"]:
+                    used.update((state.get("assets", {}).get(tid, {}) or {}).get(part, []))
+        return used
+
+    def _fill_pass(self, state: dict, ordered: list[tuple], used_assets: set[str],
+                   *, allow_degraded: bool) -> None:
         for _idx, (tid, target) in ordered:
+            already = any(tid in u["accepted_targets"]
+                          for u in state["units"].values())
+            if already:
+                continue
             for uid in target.get("unit_ids") or [target.get("unit_id")]:
                 unit = state["units"].get(uid)
                 if not unit:
                     continue
-                # 每台车至少 1 张通过核验的图；且不能和已占槽 target 复用同一 asset。
-                acc_assets = [
-                    aid for part in unit["parts"]
-                    for aid in state.get("assets", {}).get(tid, {}).get(part, [])
-                    if state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
-                    and aid not in used_assets
-                ]
-                ok = bool(acc_assets)
-                # 引用页已证实该车型：有图即可占槽（整车型号证据在 target 上）
-                if not ok and target.get("citation_ok"):
-                    ok = any(
-                        aid not in used_assets
-                        for part in unit["parts"]
-                        for aid in state.get("assets", {}).get(tid, {}).get(part, []))
-                # P0：有 scene 元数据时，整车槽必须有 overview；part-only 不单独占槽。
+                avail = [aid for part in unit["parts"]
+                         for aid in state.get("assets", {}).get(tid, {}).get(part, [])
+                         if aid not in used_assets]
+                chosen: list[str] = []
+                if allow_degraded:
+                    chosen = avail          # 兜底：过了门卫即可，身份/清晰度可能不达标
+                else:
+                    chosen = [
+                        aid for part in unit["parts"]
+                        for aid in state.get("assets", {}).get(tid, {}).get(part, [])
+                        if state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
+                        and aid not in used_assets
+                    ]
+                    if not chosen and target.get("citation_ok"):
+                        chosen = avail
+                ok = bool(chosen)
                 if ok:
                     meta = state.get("asset_meta") or {}
-                    known = [aid for aid in acc_assets if aid in meta]
+                    known = [aid for aid in chosen if aid in meta]
                     has_scene_meta = any(bool(meta[aid].get("scene")) for aid in known)
                     if has_scene_meta and not any(
                             meta[aid].get("scene") == "single_vehicle" for aid in known):
-                        # P0 评审：hard reject 会改变 composition；默认只标记，供人工/排序
                         target["part_only"] = True
 
                 quota = int(unit.get("quota") or 0) or 10 ** 9
                 if self._global_accepted(state) >= self._slot_target():
-                    break
-                if (ok and tid not in unit["accepted_targets"]
-                        and len(unit["accepted_targets"]) < quota):
-                    unit["accepted_targets"].append(tid)
-                    used_assets.update(acc_assets)
-                    state.setdefault("attempts", {}).setdefault(tid, {})["filled"] = True
+                    return
+                if not ok or len(unit["accepted_targets"]) >= quota:
+                    continue
+                unit["accepted_targets"].append(tid)
+                used_assets.update(chosen)
+                att = state.setdefault("attempts", {}).setdefault(tid, {})
+                att["filled"] = True
+                if allow_degraded:
+                    target["degraded_fill"] = True
+                    att["degraded_fill"] = True
+
+    def _state_fill(self, state: dict) -> None:
+        """正常占槽：accepted 图（或 citation_ok + 有图）。
+
+        降级兜底不在这里做：先让 loop 继续找图/换层，全部耗尽后才由 DEGRADE 兜底，
+        避免“一缺就降级”、不再尝试找到更好的图。
+        """
+        for unit in state["units"].values():
+            unit["accepted_targets"] = []
+        self._fill_pass(state, self._ordered_targets(state), set(),
+                        allow_degraded=False)
         state["state"] = "GAP_CHECK"
+
+    def _degraded_fill(self, state: dict) -> None:
+        """底线：所有层级/候选都耗尽后，用未知身份/低清/泛称的图把槽填满。"""
+        used = self._used_assets(state)
+        self._fill_pass(state, self._ordered_targets(state), used,
+                        allow_degraded=True)
 
     def _backup_ready(self, state: dict) -> int:
         """已有图的未占槽车型数（备选的实际可用量）。"""
@@ -430,8 +463,18 @@ class RetrievalEngine:
                             reason=f"{current} 耗尽，开 {self._tier_name(state)}")
             state["state"] = "EXTERNAL_DISCOVER"
         else:
+            before = self._global_accepted(state)
+            self._degraded_fill(state)
+            after = self._global_accepted(state)
+            if after >= self._slot_target():
+                record_decision(state, at="DEGRADE", action="degraded_fill",
+                                reason=f"层级耗尽，降级兜底补满 {after - before} 台"
+                                       f"（共 {after}/{self._slot_target()}）")
+                state["state"] = "DONE"
+                return
             record_decision(state, at="DEGRADE", action="all_tiers_exhausted",
-                            reason="所有层级耗尽，报缺口")
+                            reason=f"所有层级耗尽，仍缺 "
+                                   f"{self._slot_target() - after} 台，报缺口")
             state["state"] = "FAILED"
 
     def _state_done(self, state: dict) -> None:
@@ -535,6 +578,7 @@ class RetrievalEngine:
                         for tid in (u.get("accepted_targets") or [])}
         degraded = 0
         degraded_targets: list[str] = []
+        degraded_fill: list[str] = []
         citation_only: list[str] = []
         for tid, parts in by_target.items():
             if tid not in accepted_ids:
@@ -547,6 +591,8 @@ class RetrievalEngine:
             if ids and "confirmed" not in idents:
                 degraded += 1
                 degraded_targets.append(tid)
+            if (state["targets"].get(tid) or {}).get("degraded_fill"):
+                degraded_fill.append(tid)
         missing = max(0, target - accepted)
         # 备选池 = 未占槽且**至少有一张可用图**的候选车型（缺图不可交付，P0）
         pool_models = sorted(
@@ -572,6 +618,7 @@ class RetrievalEngine:
             "degraded_targets": degraded_targets,
             "citation_only": len(citation_only),
             "citation_only_targets": citation_only,
+            "degraded_fill": degraded_fill,
             "bonus": {"models": len(bonus_models), "images": bonus_images},
             "backup": {"required": backup_required,
                        "delivered": len(backup_models),

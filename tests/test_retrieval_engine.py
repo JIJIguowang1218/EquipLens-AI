@@ -735,6 +735,24 @@ def test_summary_records_step_timings():
         assert summary.get("elapsed_ms") is not None
 
 
+def test_degraded_fill_when_tiers_exhausted():
+    """底线：层级耗尽、没有 accepted 图时，用 unknown/低清的图也要把槽填满并标 degraded。"""
+    b = base_brief(parts=("bumper",), slots=1, tiers=("exact",), backup=0)
+    unknown = {"accepted": False, "identity": "unknown", "visibility": "unknown",
+               "origin": "unknown", "grade": "", "defects": []}
+    w = {"external": {"u-exact": [target("t1", ["bumper"])]},
+         "assets": {"t1": {"bumper": [asset("a1")]}},
+         "verify": {"a1": unknown}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert summary["state"] == "DONE", summary
+        assert d["delivered"] == 1 and d["status"] == "complete", d
+        assert "t1" in d["degraded_fill"], d
+        assert d["degraded"] == 1, d
+        assert any(x.get("action") == "degraded_fill" for x in summary["decisions"])
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -773,6 +791,7 @@ if __name__ == "__main__":
     check("缺图原因可解释", test_delivery_explains_unavailable_reasons)
     check("拉黑图床触发早停", test_blocked_hosts_trigger_early_stop)
     check("节点耗时记录", test_summary_records_step_timings)
+    check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))
