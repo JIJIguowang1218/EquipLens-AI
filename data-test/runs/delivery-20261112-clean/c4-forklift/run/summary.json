@@ -1,0 +1,363 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-212154",
+  "state": "DONE",
+  "slots": {
+    "target": 6,
+    "accepted": 6,
+    "filled": true
+  },
+  "delivery": {
+    "required": 6,
+    "delivered": 6,
+    "missing": 0,
+    "degraded": 4,
+    "degraded_targets": [
+      "ERP15-35UX",
+      "J1.6-2.0XN",
+      "H4 3吨电动叉车",
+      "EA系列 电动四轮平衡重式叉车"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "ERP15-35UX",
+      "J1.6-2.0XN"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 4,
+      "images": 17
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "3.0T电动叉车（锂电四轮平衡重款）",
+        "CPD20/CPD25 四轮电动叉车",
+        "CPD40-50B",
+        "B15S-7（7系列四轮电动叉车）"
+      ],
+      "images": 17,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "unavailable": [
+      {
+        "model": "EL16-PRO（EL系列四支点平衡重）",
+        "reason": "gate_or_verify_rejected",
+        "hits": 25,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "四轮座式电动叉车全系列（1.6/2.0/2.5/3.0吨）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "CPD20/CPD25 四轮电动叉车",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "CPD40-50B",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "3.0T电动叉车（锂电四轮平衡重款）",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "B15S-7（7系列四轮电动叉车）",
+        "reason": "not_delivered",
+        "hits": 5,
+        "downloaded": 5,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 4,
+      "accepted": 4,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "FE4P25N",
+      "ERP15-35UX",
+      "EL25",
+      "J1.6-2.0XN"
+    ],
+    "u-env": [
+      "H4 3吨电动叉车",
+      "EA系列 电动四轮平衡重式叉车"
+    ]
+  },
+  "budget_used": {
+    "queries": 45,
+    "models": 12,
+    "fetches": 170,
+    "verifies": 170
+  },
+  "downloads": {
+    "hits": 255,
+    "downloaded": 230,
+    "failed": 25,
+    "blocked": 0,
+    "gate_pass": 170,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "img1.fr-trading.com": 1,
+      "img74.xwboo.com": 1,
+      "www.chinatruck.org": 1,
+      "www.esugimoto.com": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T21:24:01"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/6，池中仍有候选",
+      "ts": "2026-11-12T21:24:01"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-12T21:24:23"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 4/6，池中仍有候选",
+      "ts": "2026-11-12T21:24:58"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T21:24:58"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T21:24:58"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-12T21:25:11"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/6，池中仍有候选",
+      "ts": "2026-11-12T21:25:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-12T21:25:32"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 3 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-12T21:25:49"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 4 个候选",
+      "ts": "2026-11-12T21:26:13"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 6/6 已满",
+      "ts": "2026-11-12T21:26:57"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:24:01"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 22210,
+      "at": "2026-11-12T21:24:23"
+    },
+    {
+      "state": "FETCH",
+      "ms": 34965,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T21:24:58"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 12795,
+      "at": "2026-11-12T21:25:11"
+    },
+    {
+      "state": "FETCH",
+      "ms": 17457,
+      "at": "2026-11-12T21:25:28"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:25:28"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:25:28"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:25:28"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 3464,
+      "at": "2026-11-12T21:25:32"
+    },
+    {
+      "state": "FETCH",
+      "ms": 17075,
+      "at": "2026-11-12T21:25:49"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:25:49"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:25:49"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:25:49"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 24837,
+      "at": "2026-11-12T21:26:13"
+    },
+    {
+      "state": "FETCH",
+      "ms": 43646,
+      "at": "2026-11-12T21:26:57"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:26:57"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:26:57"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-12T21:26:57"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 10,
+      "at": "2026-11-12T21:26:57"
+    }
+  ],
+  "elapsed_ms": 176459,
+  "state_path": "data-test\\runs\\delivery-20261112-clean\\c4-forklift\\run\\state.json",
+  "events_path": "data-test\\runs\\delivery-20261112-clean\\c4-forklift\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\delivery-20261112-clean\\c4-forklift\\run\\evidence.json"
+}

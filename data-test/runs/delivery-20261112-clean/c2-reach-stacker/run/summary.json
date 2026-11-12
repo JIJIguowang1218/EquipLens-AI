@@ -1,0 +1,351 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-210206",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 6,
+    "degraded_targets": [
+      "LG420FC4 集装箱正面吊",
+      "RS45（B921）正面吊",
+      "DRU450-570 Essential系列正面吊",
+      "XCMG 集装箱正面吊（45吨级）",
+      "SMV 4542 TB4 BH 正面吊",
+      "ZRS4531 集装箱正面吊运机"
+    ],
+    "citation_only": 0,
+    "citation_only_targets": [],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 2,
+      "images": 8
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 2,
+      "status": "short",
+      "models": [
+        "RSH4532-Vo 正面吊运机",
+        "RSH4531-VO5"
+      ],
+      "images": 8,
+      "no_image_models": [],
+      "short": 2
+    },
+    "backup_short": 2,
+    "unavailable": [
+      {
+        "model": "DRD420-65S6",
+        "reason": "all_download_failed",
+        "hits": 30,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4532-Vo正面吊运机",
+        "reason": "gate_or_verify_rejected",
+        "hits": 25,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4532-VO2",
+        "reason": "gate_or_verify_rejected",
+        "hits": 10,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "TOMAC 集装箱正面吊",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4531-VO5",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "RSH4532-Vo 正面吊运机",
+        "reason": "not_delivered",
+        "hits": 25,
+        "downloaded": 25,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "XCS4531K2",
+      "CRS450Z5",
+      "HCS46",
+      "LG420FC4 集装箱正面吊",
+      "RS45（B921）正面吊",
+      "DRU450-570 Essential系列正面吊",
+      "XCMG 集装箱正面吊（45吨级）"
+    ],
+    "u-env": [
+      "SMV 4542 TB4 BH 正面吊",
+      "ZRS4531 集装箱正面吊运机",
+      "集装箱正面吊"
+    ]
+  },
+  "budget_used": {
+    "queries": 54,
+    "models": 16,
+    "fetches": 205,
+    "verifies": 205
+  },
+  "downloads": {
+    "hits": 380,
+    "downloaded": 300,
+    "failed": 58,
+    "blocked": 0,
+    "gate_pass": 235,
+    "early_stop_models": 1,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "cos3.solepic.com": 1,
+      "f25.wenku365.com": 2,
+      "images.998jx.com": 2,
+      "img.csc86.com": 1,
+      "img.jdzj.com": 1,
+      "img001.hc360.cn": 1,
+      "img009.hc360.cn": 1,
+      "img1.makepolo.net": 1,
+      "img2.fr-trading.com": 1,
+      "www.port-m.com": 1,
+      "www.qx100.com": 1,
+      "wx4.sinaimg.cn": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T21:04:51"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T21:04:51"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T21:05:28"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/10，池中仍有候选",
+      "ts": "2026-11-12T21:07:45"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 6 个",
+      "ts": "2026-11-12T21:08:35"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T21:09:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T21:09:28"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T21:09:28"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T21:09:42"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 2 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-12T21:10:06"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_exhausted",
+      "reason": "plan 池已无候选，备选按实际数量交付",
+      "ts": "2026-11-12T21:10:06"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:04:51"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 36647,
+      "at": "2026-11-12T21:05:28"
+    },
+    {
+      "state": "FETCH",
+      "ms": 137542,
+      "at": "2026-11-12T21:07:45"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-12T21:07:45"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:07:45"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:07:45"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 49916,
+      "at": "2026-11-12T21:08:35"
+    },
+    {
+      "state": "FETCH",
+      "ms": 53204,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T21:09:28"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 13458,
+      "at": "2026-11-12T21:09:42"
+    },
+    {
+      "state": "FETCH",
+      "ms": 24372,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-12T21:10:06"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 9,
+      "at": "2026-11-12T21:10:06"
+    }
+  ],
+  "elapsed_ms": 315151,
+  "state_path": "data-test\\runs\\delivery-20261112-clean\\c2-reach-stacker\\run\\state.json",
+  "events_path": "data-test\\runs\\delivery-20261112-clean\\c2-reach-stacker\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\delivery-20261112-clean\\c2-reach-stacker\\run\\evidence.json"
+}

@@ -1,0 +1,402 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-211042",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 1,
+    "degraded_targets": [
+      "TT1604（G4）"
+    ],
+    "citation_only": 1,
+    "citation_only_targets": [
+      "TT1604（G4）"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 7,
+      "images": 17
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "TN1454",
+        "2104",
+        "JC1804（G4）",
+        "1504"
+      ],
+      "images": 8,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "unavailable": [
+      {
+        "model": "KD1804",
+        "reason": "all_download_failed",
+        "hits": 5,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "TT1600（G4）",
+        "reason": "gate_or_verify_rejected",
+        "hits": 30,
+        "downloaded": 15,
+        "blocked": 0
+      },
+      {
+        "model": "T7.260 SIDEWINDER II Stufe V",
+        "reason": "gate_or_verify_rejected",
+        "hits": 25,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "TN1454",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "1654",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 15,
+        "blocked": 0
+      },
+      {
+        "model": "Luzhong1804",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "Maxxum 145 CVX",
+        "reason": "not_delivered",
+        "hits": 20,
+        "downloaded": 10,
+        "blocked": 0
+      },
+      {
+        "model": "2104",
+        "reason": "not_delivered",
+        "hits": 15,
+        "downloaded": 10,
+        "blocked": 0
+      },
+      {
+        "model": "JC1804（G4）",
+        "reason": "not_delivered",
+        "hits": 15,
+        "downloaded": 10,
+        "blocked": 0
+      },
+      {
+        "model": "1504",
+        "reason": "not_delivered",
+        "hits": 5,
+        "downloaded": 5,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "LX2004",
+      "OPTUM2704",
+      "PL2304",
+      "PH2304",
+      "M1654",
+      "TT1604（G4）",
+      "JC2104"
+    ],
+    "u-env": [
+      "6170R",
+      "2204",
+      "LX2204系列"
+    ]
+  },
+  "budget_used": {
+    "queries": 72,
+    "models": 20,
+    "fetches": 270,
+    "verifies": 270
+  },
+  "downloads": {
+    "hits": 465,
+    "downloaded": 370,
+    "failed": 95,
+    "blocked": 0,
+    "gate_pass": 280,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "static.cnmasike.com"
+    ],
+    "fail_counts": {
+      "eishodo.xsrv.jp": 1,
+      "gd-hbimg.huaban.com": 1,
+      "i00.c.aliimg.com": 1,
+      "img.zcool.cn": 1,
+      "img003.hc360.cn": 1,
+      "img011.hc360.cn": 1,
+      "img77.nongjx.com": 1,
+      "img78.nongjx.com": 1,
+      "static.cmo2o.com": 1,
+      "static.cnmasike.com": 3,
+      "www.chinanev.net": 1,
+      "www.cn357.com": 2,
+      "www.ecv360.com": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T21:13:01"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T21:13:01"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T21:13:16"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T21:17:45"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T21:17:45"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T21:17:45"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T21:17:46"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 9/10，池中仍有候选",
+      "ts": "2026-11-12T21:18:16"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T21:18:44"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 3 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-12T21:19:16"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 7 个候选",
+      "ts": "2026-11-12T21:20:02"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 10/10 已满",
+      "ts": "2026-11-12T21:21:23"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:13:01"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 14766,
+      "at": "2026-11-12T21:13:16"
+    },
+    {
+      "state": "FETCH",
+      "ms": 268417,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T21:17:45"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 1250,
+      "at": "2026-11-12T21:17:46"
+    },
+    {
+      "state": "FETCH",
+      "ms": 30317,
+      "at": "2026-11-12T21:18:16"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:18:16"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:18:16"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:18:16"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 28136,
+      "at": "2026-11-12T21:18:44"
+    },
+    {
+      "state": "FETCH",
+      "ms": 31333,
+      "at": "2026-11-12T21:19:16"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:19:16"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T21:19:16"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:19:16"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 46145,
+      "at": "2026-11-12T21:20:02"
+    },
+    {
+      "state": "FETCH",
+      "ms": 81487,
+      "at": "2026-11-12T21:21:23"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T21:21:23"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T21:21:23"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-12T21:21:23"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 14,
+      "at": "2026-11-12T21:21:23"
+    }
+  ],
+  "elapsed_ms": 501866,
+  "state_path": "data-test\\runs\\delivery-20261112-clean\\c3-tractor\\run\\state.json",
+  "events_path": "data-test\\runs\\delivery-20261112-clean\\c3-tractor\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\delivery-20261112-clean\\c3-tractor\\run\\evidence.json"
+}
