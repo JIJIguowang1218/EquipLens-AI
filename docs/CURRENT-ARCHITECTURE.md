@@ -65,6 +65,9 @@ task-brief@v2 (API)
 
 - **交付台数 = 用户输入**：`page_budget.vehicle_slots`（主）+ `backup_slots`（默认 4）；
 - **每一台交付/备选都必须有 ≥1 张可用图**；备选不够就从 plan 池补抓（2026-11-12，P0）；
+- **交付优先于质量（P0，2026-11-12）**：任何情况下都要交付 N 主 + 4 备；图/身份不够时**降级填充**
+  （probable/unknown 身份、低清、泛称）并在 `delivery` 标 degraded；**不得用换源/扩源解决**——
+  扩源已收口，未获明确批准不得重开。当前 `unknown` 兜底填充尚未实现，short 会如实上报（见 §6）；
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
 - 每个 target 的 fetch/verify/filled/`assets` attempt 写入 `state.attempts`（`assets` 为真实入库资产数，2026-11-12 修复此前恒 0）；
 - `part_only` 标记（**2026-11-12 定案：只作审计/排序信号，不参与交付门槛、不拦截、不再作为待拍板项**）：`scene` 是门卫侧标签（single_vehicle / multi_vehicle / part），用于区分整车/多车/局部；FILL 只从 scene 派生这个标记。字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + schema）。是否把交付资格上移到 VERIFY 属内部重构，不是阻塞项；
@@ -143,10 +146,11 @@ task-brief@v2 (API)
 
 ## 6. 当前未决
 
-1. code prefilter 是否默认：已独立验证不影响交付构成，待产品决定；
-2. 360 单点 fallback：百度仅作降级，未实现 health/circuit；
-3. 第一次用户交付的反馈 router/session；
-4. LangGraph 迁移：只做 feedback spike，不做核心重写。
+1. **降级兜底填充**：`unknown` 级图/泛称车型暂不占槽，交付不足时仍会 short；下一步要实现"降级也能交满"；
+2. code prefilter 是否默认：已独立验证不影响交付构成，待产品决定；
+3. 360 单点 fallback：百度仅作降级，未实现 health/circuit；
+4. 第一次用户交付的反馈 router/session；
+5. LangGraph 迁移：只做 feedback spike，不做核心重写。
 
 > `part_only` 已于 2026-11-12 定案（只标记、不拦交付），不再列为待决项。
 

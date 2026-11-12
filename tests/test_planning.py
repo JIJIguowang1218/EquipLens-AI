@@ -213,7 +213,11 @@ def test_merge_rules_from_human_verdicts():
                           "source_query_id": "q", "source_query": "x"})
     merged = merge_candidates(items)
     models = [c["model"] for c in merged]
-    assert len(merged) == 12, models
+    assert len(merged) == 10, models
+    # #4/#9 只差一个“车”字 → 并成一台；#10/#14 差品牌前缀 → 并成一台
+    assert len([c for c in merged if "460" in c["model"]]) == 1, models
+    big = next(c for c in merged if "400" in c["model"] and "沙漠卡车" in c["model"])
+    assert any("东风" in v for v in big["model_variants"]), big["model_variants"]
     # #6 并入 #2：同一个候选里出现两种写法
     two = next(c for c in merged if "可改装油田专用车" in c["model"])
     assert set(two["model_variants"]) == {

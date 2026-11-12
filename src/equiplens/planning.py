@@ -157,8 +157,8 @@ def model_identity(model: str) -> tuple:
         return ("series", series, nums[0])
     if series:
         return ("series", series)
-    return ("generic", re.sub(r"[^0-9A-Z\u4e00-\u9fff]+", "",
-                              strip_parens(s)))
+    core = strip_parens(s).replace("牵引车头", "牵引头")
+    return ("generic", re.sub(r"[^0-9A-Z一-鿿]+", "", core))
 
 
 def identity_label(identity: tuple) -> str:
@@ -339,7 +339,25 @@ def merge_candidates(items: list[dict]) -> list[dict]:
     merged: dict[tuple, dict] = {}
     order: list[tuple] = []
 
+    def _same_generic(ident: tuple) -> tuple:
+        """泛称近似合并：差一个品牌前缀（如“东风 …” vs “…”，≤4 个中文字）算同款。"""
+        if ident[0] != "generic":
+            return ident
+        k1 = ident[1]
+        for k2 in order:
+            if merged[k2].get("identity_kind") != "generic":
+                continue
+            s2 = k2[1]
+            a, b = (k1, s2) if len(k1) >= len(s2) else (s2, k1)
+            if not a.endswith(b):
+                continue
+            diff = a[: len(a) - len(b)]
+            if diff and len(diff) <= 4 and re.fullmatch(r"[一-鿿]+", diff):
+                return k2
+        return ident
+
     def _absorb(ident: tuple, item: dict) -> None:
+        ident = _same_generic(ident)
         if ident not in merged:
             merged[ident] = dict(item)
             merged[ident]["identity"] = identity_label(ident)

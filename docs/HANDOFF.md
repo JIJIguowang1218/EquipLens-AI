@@ -193,7 +193,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 4. ~~**隐藏的国产品牌名单**~~ **已处理（2026-11-11）**：`discover.py` fallback 已废弃，`WebWorld` 无 plan/models 直接报错，CLI 在联网前拦截 `--web-only` 无 `--plan/--models`；T32/T33 的“实时发现”只能当历史口径，不能再用于“360 有没有外国车”的结论。
 5. **degraded 是否可接受**：12/12 里 7–8 台只有 probable 图；T41 的完整 run 里 3 台是 generic（OTTC、中东版、东风 400 马力）。要提高 confirmed 需要回访官网/公告页图集（外国车标题普遍不写 4051/3343），或限制 generic 占比，成本与优先级待定。
 6. **质量排序未实现**：计划中的 `score = 4×res_high + 2×res_standard + margin + citation`、top-N 激活还没写；当前占槽基本按发现顺序。
-7. **下载失败仍高（不是新问题）**：2026-11-10 起就有记录（E20/T48、`retrieval-experiments-log.md` 的失败表：403/DNS 为主，无图目标 2–12 台/轮）；**12 条失败 URL 阶梯重放 0/12**，结论是"同 URL 重试无收益，恢复必须换源/换查询"。
+7. **下载失败仍高（不是新问题）**：2026-11-10 起就有记录（E20/T48、`retrieval-experiments-log.md` 的失败表：403/DNS 为主，无图目标 2–12 台/轮）；**12 条失败 URL 阶梯重放 0/12**，结论是"同 URL 重试无收益，恢复必须换源/换查询"。**但扩源已收口：交付不足时先走降级填充，不换源**（2026-11-12 拍板）。
    - 已做（2026-11-12）：单轮内按 host 拉黑（连续 3 次）+ 目标级早停（连续 8 次失败，跨部件累计）；
      长期观测见 `scripts/monitor_bad_domains.py` → `data-test/evals/bad-domains-monitor.md`（只统计，不参与生产）；
    - 待做：跨 run 持久化黑名单（等监测数据积累后再定）；
@@ -204,6 +204,8 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 - **已毙/归档策略先查 [`docs/killed-strategies.md`](killed-strategies.md)**：三证②可见性已归档（挪到人机交互）、三证③原厂已毙、`retrieval_strategies.json` 已删；再提之前先看判决。
 - **通道口径以代码为准**：360 优先，relevant 不足时百度/Bing 兜底（`search_images_ex`）；不是"360 独占"。
 - **缺图不可交付（P0）**：交付 = N 主 + 4 备，每一台都必须有 ≥1 张可用图；备选不够时 loop 从既有 plan 池补抓（不新增规划），plan 耗尽才报 `backup.short`。
+- **必须交付、降级优先（P0，2026-11-12）**：凑不齐时用**降级填充**（probable/unknown、低清、泛称）并标 degraded，
+  **不换源、不重开扩源**；扩源未获明确批准不得再启动。当前 unknown 兜底填充未实现，short 会如实报。
 - **`budget_used.queries` 是真实搜索请求数**（含查询阶梯）；`budget_used.models` 才是累计候选车型数，也是 `brief.budget.max_queries` 实际约束的量。
 
 - **分辨率不参与淘汰**：门卫预筛下限 320（不是 800）；`res_standard`（≥800）/`res_high`（≥1200）/`reference_candidate` 都只是标签。低清只记 `low_resolution` warning。
