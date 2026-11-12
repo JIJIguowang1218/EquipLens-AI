@@ -719,6 +719,20 @@ def test_blocked_hosts_trigger_early_stop():
     assert st["blocked"] == 5, st         # 凑满 8 次连续失败后早停，其余不再尝试
 
 
+def test_summary_records_step_timings():
+    """每次 run 要留下每个状态的耗时（交付报告按节点时长复盘的依据）。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    w = {"external": {"u-exact": [target("t1", ["bumper"])]},
+         "assets": {"t1": {"bumper": [asset("a1")]}},
+         "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        timings = summary.get("timings") or []
+        assert timings, summary
+        assert all("ms" in t and "state" in t for t in timings), timings
+        assert summary.get("elapsed_ms") is not None
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -756,6 +770,7 @@ if __name__ == "__main__":
     check("下载全失败时目标级早停", test_live_fetch_early_stop_when_all_downloads_fail)
     check("缺图原因可解释", test_delivery_explains_unavailable_reasons)
     check("拉黑图床触发早停", test_blocked_hosts_trigger_early_stop)
+    check("节点耗时记录", test_summary_records_step_timings)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

@@ -33,6 +33,8 @@
 | 报告/PPT | `scripts/build_report_page.py`、`scripts/export_pptx.py` |
 | 评测 | `scripts/eval_task_brief.py`、`data-test/evals/` |
 | 台账 | `scripts/run_ledger.py`、`data-test/runs/INDEX.md` |
+| 交付清单/监控 | `scripts/build_delivery_manifest.py`（DELIVERY.md/json）、`src/equiplens/pricing.py` |
+| 死图床监测 | `scripts/monitor_bad_domains.py`（只统计，不参与生产） |
 
 ## 3. 支撑模块
 

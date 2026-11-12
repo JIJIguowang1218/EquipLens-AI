@@ -5,6 +5,7 @@ P1 只依赖适配器协议与夹具；不联网、不碰数据库。
 """
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from typing import Any
 
@@ -50,12 +51,17 @@ class RetrievalEngine:
             return self._summary(state)
 
         steps = 0
+        timings = state.setdefault("timings", [])
         while not state.get("finished") and steps < self.max_steps:
             before = state["state"]
             handler = self.handlers.get(before)
             if handler is None:
                 raise RuntimeError(f"未知状态: {before}")
+            t0 = time.perf_counter()
             handler(state)
+            elapsed_ms = int((time.perf_counter() - t0) * 1000)
+            timings.append({"state": before, "ms": elapsed_ms,
+                            "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
             if state["state"] != before:
                 self.store.append_event({
                     "run_id": self.run_id, "from": before,
@@ -604,6 +610,9 @@ class RetrievalEngine:
             "downloads": (self.world.download_stats()
                           if hasattr(self.world, "download_stats") else {}),
             "decisions": list(state.get("decisions") or []),
+            "timings": list(state.get("timings") or []),
+            "elapsed_ms": sum(int(t.get("ms") or 0)
+                              for t in (state.get("timings") or [])),
             "state_path": str(self.store.state_path),
             "events_path": str(self.store.events_path),
             "evidence_path": str(self.store.evidence_path),

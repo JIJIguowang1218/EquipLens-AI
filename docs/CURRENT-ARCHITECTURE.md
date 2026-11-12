@@ -122,6 +122,24 @@ task-brief@v2 (API)
 - `data-test/runs/INDEX.md` 是 run 台账；`docs/EXPERIMENTS-INDEX.md` 是实验索引；
 - 若某策略已收口，不得在打包时恢复默认。
 
+## 5.5 交付与监控（2026-11-12）
+
+交付物分三层，不要混：
+
+1. **用户交付物**：N 台主交付车型的图（部件图按 part 分组）+ 任务单摘要；
+2. **内部监控**：每台实现状态（交付/备选/缺图原因）、degraded/citation_only、下载质量、
+   `timings`（每个状态耗时）、API 成本（峰/谷两口径）；
+3. **可复用中间产物**：任务单 JSON（分析模块输入）、plan（优先级先验）、部件图（知识库候选）、
+   `evidence.db`、`audit.html`。
+
+工具：
+
+- `scripts/build_delivery_manifest.py` → `DELIVERY.md/json`（三层分开列）；
+- `src/equiplens/pricing.py`：DeepSeek 官网价（`deepseek-flash` 输入 ¥2/¥1、输出 ¥8/¥4 每百万 tokens；
+  Search/Fetch ¥5/1000 次），峰时段为北京时间周一至周五 9:00–12:00、14:00–18:00，
+  其余（含周末/节假日）空闲；同一份用量同时给"全峰/全谷"两个数；
+- engine 写 `summary.timings` 与 `summary.elapsed_ms`，每步状态一条 `{state, ms, at}`。
+
 ## 6. 当前未决
 
 1. code prefilter 是否默认：已独立验证不影响交付构成，待产品决定；
