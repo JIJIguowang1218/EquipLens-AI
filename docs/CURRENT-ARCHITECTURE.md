@@ -29,8 +29,9 @@ task-brief@v2 (API)
 **交付口径（2026-11-12 定）**：交付 = **N 主 + 4 备**。
 
 - `N` 来自 `brief.request.page_budget.vehicle_slots`（用户输入，不写死）；
-- 备选 4 台在**提交阶段**从候选池按优先级取（有核验图 > 有任意图 > 无图；再按 pinned / 规划角色 / 意向名次），
-  **不新增规划、不额外检索**；缺口在 `delivery.backup.short` 显式暴露；
+- 备选 4 台在**提交阶段**按优先级取（有核验图 > 有任意图；再按 pinned / 规划角色 / 意向名次），**没有图的车型不进备选**；
+- **缺图不可交付（P0）**：主槽满但备选有图数 < 4 时，`GAP_CHECK` 把"备选缺口"当成 gap，从**既有 plan 池**继续抓（不新增规划、不重跑 planner），最多 3 轮；plan 耗尽才 `backup.short`；
+- 补抓轮不经过主槽 FILL、也不受主检索 `max_queries` 闸门限制（否则会把已满的 12/12 误判成 FAILED）；
 - 审计页对入选备选显示「备选 · 已入选」。
 
 代码位置总索引见 `docs/CODE-INDEX.md`。
@@ -53,6 +54,8 @@ task-brief@v2 (API)
 
 已实现：
 
+- **交付台数 = 用户输入**：`page_budget.vehicle_slots`（主）+ `backup_slots`（默认 4）；
+- **每一台交付/备选都必须有 ≥1 张可用图**；备选不够就从 plan 池补抓（2026-11-12，P0）；
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
 - 每个 target 的 fetch/verify/filled/`assets` attempt 写入 `state.attempts`（`assets` 为真实入库资产数，2026-11-12 修复此前恒 0）；
 - `part_only` 标记（**2026-11-12 定案：只作审计/排序信号，不参与交付门槛、不拦截、不再作为待拍板项**）：`scene` 是门卫侧标签（single_vehicle / multi_vehicle / part），用于区分整车/多车/局部；FILL 只从 scene 派生这个标记。字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + schema）。是否把交付资格上移到 VERIFY 属内部重构，不是阻塞项；
@@ -126,6 +129,8 @@ task-brief@v2 (API)
 - P0 硬 overview 试验：`loop-p0-20261112` 10/12（已放弃硬规则）；
 - 平台对照：`loop-platform-{360,baidu,baidu-filtered}-20261112`，Platform 不接入；
 - code prefilter 独立对照：`loop-code-prefilter-20261112`，12/12 构成不变。
+- **备选补抓回归（2026-11-12）**：`verify-backup2-20261112`，12/12（构成与 baseline 完全一致）+ 备选 **4/4、20 图**；
+  一轮补抓新增 6 个候选（plan 26 台用尽），`queries 114 / models 26 / fetches 316`；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
   `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。

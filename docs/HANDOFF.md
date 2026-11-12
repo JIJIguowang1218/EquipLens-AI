@@ -199,6 +199,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 
 - **已毙/归档策略先查 [`docs/killed-strategies.md`](killed-strategies.md)**：三证②可见性已归档（挪到人机交互）、三证③原厂已毙、`retrieval_strategies.json` 已删；再提之前先看判决。
 - **通道口径以代码为准**：360 优先，relevant 不足时百度/Bing 兜底（`search_images_ex`）；不是"360 独占"。
+- **缺图不可交付（P0）**：交付 = N 主 + 4 备，每一台都必须有 ≥1 张可用图；备选不够时 loop 从既有 plan 池补抓（不新增规划），plan 耗尽才报 `backup.short`。
 - **`budget_used.queries` 是真实搜索请求数**（含查询阶梯）；`budget_used.models` 才是累计候选车型数，也是 `brief.budget.max_queries` 实际约束的量。
 
 - **分辨率不参与淘汰**：门卫预筛下限 320（不是 800）；`res_standard`（≥800）/`res_high`（≥1200）/`reference_candidate` 都只是标签。低清只记 `low_resolution` warning。

@@ -134,8 +134,9 @@ class Brief:
 
     @property
     def backup_slots(self) -> int:
-        """交付备选台数：默认 4（2026-11-12 产品要求，只影响提交阶段）。"""
-        return int((self.request.get("page_budget") or {}).get("backup_slots") or 4)
+        """交付备选台数：默认 4；显式写 0 表示不要求备选（测试/特殊任务单）。"""
+        value = (self.request.get("page_budget") or {}).get("backup_slots")
+        return 4 if value is None else max(0, int(value))
 
     @classmethod
     def from_dict(cls, data: dict) -> "Brief":

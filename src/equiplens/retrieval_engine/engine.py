@@ -197,6 +197,9 @@ class RetrievalEngine:
                         int(state["budget_used"].get("fetches", 0)) + 1
             # 可解释性：记录这台车真正抓到并入库的资产数（旧实现恒为 0）
             att["assets"] = int(att.get("assets", 0)) + added
+        # 抓取阶段会继续发搜索（查询阶梯/部件兜底/备选补抓），这里同步真实查询数
+        state["budget_used"]["queries"] = int(
+            getattr(self.world, "query_count", state["budget_used"].get("queries", 0)))
         state["state"] = "VERIFY"
 
     def _state_verify(self, state: dict) -> None:
@@ -218,7 +221,7 @@ class RetrievalEngine:
             state["budget_used"]["verifies"] = \
                 int(state["budget_used"].get("verifies", 0)) + 1
         state["pending_assets"] = []
-        state["state"] = "FILL"
+        state["state"] = "GAP_CHECK" if state.get("backup_only") else "FILL"
 
     def _state_fill(self, state: dict) -> None:
         for unit in state["units"].values():
@@ -270,9 +273,31 @@ class RetrievalEngine:
                     state.setdefault("attempts", {}).setdefault(tid, {})["filled"] = True
         state["state"] = "GAP_CHECK"
 
+    def _backup_ready(self, state: dict) -> int:
+        """已有图的未占槽车型数（备选的实际可用量）。"""
+        accepted = {tid for u in state["units"].values()
+                    for tid in (u.get("accepted_targets") or [])}
+        assets = state.get("assets") or {}
+        return sum(1 for tid in (state.get("targets") or {})
+                   if tid not in accepted
+                   and any((v or []) for v in (assets.get(tid) or {}).values()))
+
     def _state_gap_check(self, state: dict) -> None:
         gaps = self._gaps(state)
         if self._global_accepted(state) >= self._slot_target():
+            # P0：交付 = N 主 + 4 备，备选也必须有图；不够就从 plan 池继续抓，
+            # 不新增规划（复用 plan-ranked），最多补 3 轮，避免无限循环。
+            short = self.brief.backup_slots - self._backup_ready(state)
+            if short > 0 and int(state.get("backup_rounds", 0)) < 3:
+                state["backup_rounds"] = int(state.get("backup_rounds", 0)) + 1
+                state["backup_only"] = True
+                state["active_targets"] = []
+                record_decision(state, at="GAP_CHECK", action="backup_refill",
+                                reason=f"备选缺 {short} 台有图车型，从 plan 池补抓"
+                                       f"（第 {state['backup_rounds']} 轮，不新增规划）")
+                state["state"] = "EXTERNAL_DISCOVER"
+                return
+            state["backup_only"] = False
             record_decision(state, at="GAP_CHECK", action="done",
                             reason=f"全局槽位 {self._global_accepted(state)}/"
                                    f"{self._slot_target()} 已满")
@@ -319,6 +344,32 @@ class RetrievalEngine:
         state["state"] = "DEGRADE"
 
     def _state_external_discover(self, state: dict) -> None:
+        # 备选补抓优先于预算闸门：补抓轮数已硬限制（3 轮），且不新增规划；
+        # 若用主检索的 models 上限卡它，会把已 12/12 的正常轮变成 FAILED。
+        if state.get("backup_only"):
+            targets = []
+            for unit_id, unit in state["units"].items():
+                got = self.world.external_targets(self._unit_obj(unit))
+                for t in got:
+                    t.unit_id = unit_id
+                targets.extend(got)
+                if targets:
+                    break
+            if not targets:
+                state["backup_only"] = False
+                record_decision(state, at="EXTERNAL_DISCOVER",
+                                action="backup_exhausted",
+                                reason="plan 池已无候选，备选按实际数量交付")
+                state["state"] = "DONE"
+                return
+            self._add_targets(state, targets)
+            state["active_source"] = f"external:backup"
+            state["active_targets"] = [t.target_id for t in targets]
+            state["budget_used"]["models"] =                 int(state["budget_used"].get("models", 0)) + len(targets)
+            record_decision(state, at="EXTERNAL_DISCOVER", action="backup_targets",
+                            reason=f"备选补抓 {len(targets)} 个候选")
+            state["state"] = "FETCH"
+            return
         # 历史键名：brief.budget.max_queries 实际约束的是“累计发现的候选车型数”
         # （旧实现 queries 计数就是 len(targets)）。真实搜索请求数见
         # budget_used.queries，只做成本观测，不改停止行为（2026-11-12）。
@@ -329,6 +380,7 @@ class RetrievalEngine:
                             reason=f"models {used_models} >= {cap}（brief.budget.max_queries）")
             state["state"] = "FAILED"
             return
+
         gaps = self._gaps(state)
         current_tier = self._tier_name(state)
         gaps = [uid for uid in gaps
@@ -459,9 +511,11 @@ class RetrievalEngine:
                 degraded += 1
                 degraded_targets.append(tid)
         missing = max(0, target - accepted)
-        # 备选池 = 所有未占槽的候选车型（图不够也应占备选位，缺图在 backup.images 体现）
+        # 备选池 = 未占槽且**至少有一张可用图**的候选车型（缺图不可交付，P0）
         pool_models = sorted(
-            (tid for tid in (state.get("targets") or {}) if tid not in accepted_ids),
+            (tid for tid in (state.get("targets") or {})
+             if tid not in accepted_ids
+             and any((v or []) for v in (by_target.get(tid) or {}).values())),
             key=lambda tid: self._backup_priority(state, tid))
         bonus_models = [m for m in pool_models
                         if any((v or []) for v in (by_target.get(m) or {}).values())]

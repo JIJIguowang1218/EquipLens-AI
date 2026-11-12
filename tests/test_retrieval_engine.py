@@ -40,11 +40,13 @@ def check(name, fn):
 
 
 def base_brief(parts=("bumper", "step"), units=None, tiers=("exact", "environment"),
-               slots=1):
+               slots=1, backup=0):
+    # backup 默认 0：多数单测只测主槽，不触发备选补抓；备选用例显式传 backup=4
     return {
         "brief_id": "b-test",
         "request": {"class": "沙漠牵引车",
-                    "page_budget": {"vehicle_slots": slots}},
+                    "page_budget": {"vehicle_slots": slots,
+                                    "backup_slots": backup}},
         "part_requirements": [
             {"part": p, "label": p, "location": "x", "design_relevance": "strong",
              "views": ["front"], "accept": "A", "mechanism": []}
@@ -587,7 +589,7 @@ def test_delivery_required_follows_user_slots():
 
 def test_delivery_backup_four_by_priority():
     """备选固定 4 台：从候选池按 intent_rank 取，不额外检索。"""
-    b = base_brief(parts=("bumper",), slots=1)
+    b = base_brief(parts=("bumper",), slots=1, backup=4)
     ext = [{"target_id": f"t{i}", "model": f"m{i}", "parts": ["bumper"],
             "intent_rank": i, "role": "primary" if i == 1 else "backup"}
            for i in range(1, 7)]
@@ -608,7 +610,7 @@ def test_delivery_backup_four_by_priority():
 
 def test_delivery_backup_short_is_visible():
     """候选池不够 4 台时，要显式报 backup.short，不能假装满额。"""
-    b = base_brief(parts=("bumper",), slots=1)
+    b = base_brief(parts=("bumper",), slots=1, backup=4)
     ext = [{"target_id": f"t{i}", "model": f"m{i}", "parts": ["bumper"],
             "intent_rank": i} for i in (1, 2)]
     w = {"external": {"u-exact": ext},
@@ -618,6 +620,36 @@ def test_delivery_backup_short_is_visible():
         summary, _ = run_engine(b, w, root=td)
         bk = summary["delivery"]["backup"]
         assert bk["delivered"] == 1 and bk["short"] == 3 and bk["models"] == ["t2"], bk
+
+
+def test_backup_excludes_models_without_images():
+    """备选必须有图：没抓到图的车型不进备选，即使意向名次更高。"""
+    b = base_brief(parts=("bumper",), slots=1, backup=4)
+    ext = [{"target_id": f"t{i}", "model": f"m{i}", "parts": ["bumper"],
+            "intent_rank": i} for i in range(1, 8)]
+    w = {"external": {"u-exact": ext},
+         "assets": {f"t{i}": {"bumper": [asset(f"a{i}")]} for i in range(1, 7)},
+         "verify": {f"a{i}": ok() for i in range(1, 7)}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        bk = summary["delivery"]["backup"]
+        assert "t7" not in bk["models"], bk        # t7 没有任何图
+        assert bk["delivered"] == 4 and bk["images"] == 4, bk
+
+
+def test_backup_short_does_not_fail_the_run():
+    """备选补抓不到图时，最多补 3 轮后 DONE + short，不能把成功的 12/12 变成 FAILED。"""
+    b = base_brief(parts=("bumper",), slots=1, backup=4)
+    w = {"external": {"u-exact": [target("t1", ["bumper"])]},
+         "assets": {"t1": {"bumper": [asset("a1")]}},
+         "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        assert summary["state"] == "DONE", summary["state"]
+        bk = summary["delivery"]["backup"]
+        assert bk["delivered"] == 0 and bk["short"] == 4, bk
+        refills = [d for d in summary["decisions"] if d.get("action") == "backup_refill"]
+        assert len(refills) == 3, refills
 
 
 if __name__ == "__main__":
@@ -652,6 +684,8 @@ if __name__ == "__main__":
     check("交付台数跟随用户输入", test_delivery_required_follows_user_slots)
     check("备选固定 4 台按优先级", test_delivery_backup_four_by_priority)
     check("备选不足要显式报短", test_delivery_backup_short_is_visible)
+    check("备选排除无图车型", test_backup_excludes_models_without_images)
+    check("备选补抓不把 run 变 FAILED", test_backup_short_does_not_fail_the_run)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))
