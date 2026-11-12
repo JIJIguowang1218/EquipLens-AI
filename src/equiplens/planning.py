@@ -12,10 +12,39 @@
 """
 from __future__ import annotations
 
+import math
 import re
 
 # 覆盖维度：查询只描述“工况/类目/构型/市场段”，不写品牌名单
 CORE_DIMENSIONS = ("base", "model", "environment")
+
+# 候选池下限系数：交付 = slots + backup，且有图率约 75%，所以要 1.6 倍余量
+POOL_FACTOR = 1.6
+
+
+def pool_requirement(slots, backup: int = 4, factor: float = POOL_FACTOR) -> int:
+    """主槽 + 备选所需的最少候选池（含无图余量）。
+
+    依据（2026-11-12 实测）：发现 26 台时有图约 19 台（73%）；12 主 + 4 备
+    需要 16 台有图，池子 < 26 就会在备选上 short。
+    """
+    try:
+        slots = int(slots or 0)
+        backup = int(backup or 0)
+    except (TypeError, ValueError):
+        return 0
+    if slots <= 0:
+        return 0
+    return int(math.ceil(float(factor) * (slots + backup)))
+
+
+def pool_warning(count, slots, backup: int = 4) -> str:
+    """候选池不足时返回一句告警；够则返回空串。"""
+    need = pool_requirement(slots, backup)
+    if need and int(count or 0) < need:
+        return (f"候选池 {count} < 建议 {need}（1.6×({slots}+{backup})）："
+                f"按当前有图率可能凑不齐备选，建议扩池或接受 short")
+    return ""
 INTERNATIONAL_HINTS = ("进口", "国际品牌", "海外", "欧美", "俄系")
 
 

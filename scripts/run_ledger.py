@@ -124,6 +124,10 @@ def _run_metrics(path: Path, summary: dict | None, state: dict | None) -> dict:
             b = delivery.get("backup") or {}
             if b:
                 metrics["backup"] = f"{b.get('delivered')}/{b.get('required')}"
+            un = delivery.get("unavailable") or []
+            if un:
+                import collections as _c
+                metrics["unavailable"] = dict(_c.Counter(x.get("reason") for x in un))
         coverage = summary.get("coverage") or {}
         if coverage:
             metrics["coverage"] = {k: f"{v.get('accepted')}/{v.get('quota')}"
@@ -137,7 +141,11 @@ def _run_metrics(path: Path, summary: dict | None, state: dict | None) -> dict:
         ok = [r for r in rows if r.get("ok")]
         metrics["images"] = len({r.get("sha1") for r in ok})
         metrics["gate_pass"] = len({r.get("sha1") for r in ok if r.get("gate_pass")})
-        metrics["download_failed"] = sum(1 for r in rows if not r.get("ok"))
+        failed_rows = [r for r in rows if not r.get("ok")]
+        metrics["download_failed"] = len(failed_rows)
+        blocked = sum(1 for r in failed_rows if r.get("error") == "domain_blocked")
+        if blocked:
+            metrics["domain_blocked"] = blocked
     api = path / "api_log.jsonl"
     if api.exists():
         rows = _read_jsonl(api)

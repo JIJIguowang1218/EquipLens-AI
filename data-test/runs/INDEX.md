@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-12T15:45:37 · 共 70 条 · 待补人工结论 32 条
+> 生成时间：2026-11-12T16:10:25 · 共 73 条 · 待补人工结论 35 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -63,6 +63,9 @@
 | other | `verify-backup-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-backup-20261112/summary.json) |
 | other | `verify-backup2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=84 · gate_pass=79 · degraded=8 | [—](data-test/runs/verify-backup2-20261112/audit.html) |
 | other | `verify-contract-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=66 · gate_pass=61 · degraded=8 | [—](data-test/runs/verify-contract-20261112/audit.html) |
+| other | `verify-yield-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=84 · gate_pass=79 · degraded=8 | [—](data-test/runs/verify-yield-20261112/summary.json) |
+| other | `verify-yield2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield2-20261112/summary.json) |
+| other | `verify-yield3-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield3-20261112/audit.html) |
 
 ## 空目录 / 归档
 

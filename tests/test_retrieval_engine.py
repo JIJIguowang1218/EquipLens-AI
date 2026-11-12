@@ -652,6 +652,73 @@ def test_backup_short_does_not_fail_the_run():
         assert len(refills) == 3, refills
 
 
+def test_live_fetch_early_stop_when_all_downloads_fail():
+    """一台车连续下载硬失败时早停，不把整批候选全部试完。"""
+    from equiplens import imagesearch
+    from equiplens.retrieval_engine.web import EARLY_STOP_FAILS
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",))
+    world = WebWorld({}, {"bumper": part}, citation_check=False)
+    t = Target(target_id="t1", model="m1", source="plan", tier="exact",
+               parts=("bumper",), unit_id="u-exact")
+    hits = [{"url": f"https://dead{i}.example/a.jpg", "title": "m1",
+             "channel": "360"} for i in range(20)]
+    old_search, old_dl = imagesearch.search_images_hd, imagesearch._download_and_gate
+    imagesearch.search_images_hd = lambda *a, **k: (hits, [{"q": "m1"}])
+    imagesearch._download_and_gate = lambda hit, health=None: {
+        "hit": hit, "data": None, "gate": None, "error": "http 403", "tries": 1}
+    try:
+        assets = world.live_fetch(t, "bumper")
+    finally:
+        imagesearch.search_images_hd = old_search
+        imagesearch._download_and_gate = old_dl
+    st = world.fetch_stats["t1"]
+    assert assets == [], assets
+    assert st["early_stop"] is True, st
+    assert st["failed"] == EARLY_STOP_FAILS, st
+    assert world.download_stats()["early_stop_models"] == 1
+
+
+def test_delivery_explains_unavailable_reasons():
+    """未交付候选要能说清为什么：有图但没入选 / 无命中 / 下载全失败。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    ext = [{"target_id": "t1", "model": "m1", "parts": ["bumper"], "intent_rank": 1},
+           {"target_id": "t2", "model": "m2", "parts": ["bumper"], "intent_rank": 2}]
+    w = {"external": {"u-exact": ext},
+         "assets": {"t1": {"bumper": [asset("a1")]},
+                    "t2": {"bumper": [asset("a2")]}},
+         "verify": {"a1": ok(), "a2": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        un = {r["model"]: r["reason"] for r in summary["delivery"]["unavailable"]}
+        assert un.get("t2") == "not_delivered", un
+
+
+def test_blocked_hosts_trigger_early_stop():
+    """整批结果都来自被拉黑的图床时，也要早停（跳过不再无限继续）。"""
+    from equiplens import imagesearch
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",))
+    world = WebWorld({}, {"bumper": part}, citation_check=False)
+    t = Target(target_id="t1", model="m1", source="plan", tier="exact",
+               parts=("bumper",), unit_id="u-exact")
+    hits = [{"url": f"https://dead.example/{i}.jpg", "title": "m1"} for i in range(20)]
+    old_search, old_fetch = imagesearch.search_images_hd, imagesearch._fetch_image
+    imagesearch.search_images_hd = lambda *a, **k: (hits, [{"q": "m1"}])
+
+    def _hard_fail(url, referer):
+        raise ValueError("http 403")
+
+    imagesearch._fetch_image = _hard_fail
+    try:
+        world.live_fetch(t, "bumper")
+    finally:
+        imagesearch.search_images_hd = old_search
+        imagesearch._fetch_image = old_fetch
+    st = world.fetch_stats["t1"]
+    assert st["early_stop"] is True, st
+    assert st["failed"] == 3, st          # 同域名，3 次后拉黑
+    assert st["blocked"] == 5, st         # 凑满 8 次连续失败后早停，其余不再尝试
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -686,6 +753,9 @@ if __name__ == "__main__":
     check("备选不足要显式报短", test_delivery_backup_short_is_visible)
     check("备选排除无图车型", test_backup_excludes_models_without_images)
     check("备选补抓不把 run 变 FAILED", test_backup_short_does_not_fail_the_run)
+    check("下载全失败时目标级早停", test_live_fetch_early_stop_when_all_downloads_fail)
+    check("缺图原因可解释", test_delivery_explains_unavailable_reasons)
+    check("拉黑图床触发早停", test_blocked_hosts_trigger_early_stop)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

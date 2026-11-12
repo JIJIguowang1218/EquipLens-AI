@@ -468,6 +468,37 @@ class RetrievalEngine:
         state["finished"] = True
 
     # ---------------------------------------------------------------- summary
+    def _unavailable(self, state: dict) -> list[dict]:
+        """未交付/未入选的候选为什么没图：no_hits / all_download_failed /
+        gate_or_verify_rejected / not_fetched。"""
+        accepted = {tid for u in state["units"].values()
+                    for tid in (u.get("accepted_targets") or [])}
+        stats = getattr(self.world, "fetch_stats", {}) or {}
+        assets = state.get("assets") or {}
+        rows: list[dict] = []
+        for tid in (state.get("targets") or {}):
+            if tid in accepted:
+                continue
+            s = stats.get(tid) or {}
+            has_img = any((v or []) for v in (assets.get(tid) or {}).values())
+            hits = int(s.get("hits", 0) or 0)
+            downloaded = int(s.get("downloaded", 0) or 0)
+            if not s:
+                reason = "not_delivered" if has_img else "not_fetched"
+            elif hits == 0:
+                reason = "no_hits"
+            elif downloaded == 0:
+                reason = "all_download_failed"
+            elif not has_img:
+                reason = "gate_or_verify_rejected"
+            else:
+                reason = "not_delivered"
+            rows.append({"model": tid, "reason": reason, "hits": hits,
+                         "downloaded": downloaded,
+                         "blocked": int(s.get("blocked", 0) or 0)})
+        rows.sort(key=lambda r: (r["reason"], -r["hits"]))
+        return rows
+
     def _backup_priority(self, state: dict, tid: str) -> tuple:
         """备选排序：有 accepted 图优先 → pinned → role → intent_rank。"""
         t = (state.get("targets") or {}).get(tid) or {}
@@ -545,6 +576,7 @@ class RetrievalEngine:
                                            if not any((v or []) for v in
                                                       (by_target.get(m) or {}).values())],
                        "short": max(0, backup_required - len(backup_models))},
+            "unavailable": self._unavailable(state),
             "status": "complete" if accepted >= target else "short",
         }
 
@@ -569,6 +601,8 @@ class RetrievalEngine:
                 for uid, u in state["units"].items()
             },
             "budget_used": dict(state.get("budget_used") or {}),
+            "downloads": (self.world.download_stats()
+                          if hasattr(self.world, "download_stats") else {}),
             "decisions": list(state.get("decisions") or []),
             "state_path": str(self.store.state_path),
             "events_path": str(self.store.events_path),

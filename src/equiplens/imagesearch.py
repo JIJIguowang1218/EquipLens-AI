@@ -605,14 +605,62 @@ def _fetch_image(url: str, referer: str) -> bytes:
     return data
 
 
-def _download_and_gate(hit: dict) -> dict:
+class DomainHealth:
+    """按 host 记录下载硬失败（403/401/404/DNS/连接），连续 N 次即拉黑。
+
+    背景（2026-11-10 E20/T48）：失败 URL 阶梯重放 0/12，同 URL 重试无收益；
+    反复请求同一批死图床只会烧时间。拉黑后直接跳过，把尝试预算让给别的候选。
+    """
+
+    HARD_HINTS = ("http 403", "http 401", "http 404", "getaddrinfo",
+                  "nameresolution", "name resolution", "connection",
+                  "timed out", "timeout", "ssl")
+
+    def __init__(self, threshold: int = 3):
+        self.threshold = max(1, int(threshold))
+        self.fails: dict[str, int] = {}
+        self.blocked: set[str] = set()
+
+    @staticmethod
+    def host(url: str) -> str:
+        try:
+            from urllib.parse import urlparse
+            return (urlparse(url or "").hostname or "").lower()
+        except ValueError:
+            return ""
+
+    def is_blocked(self, url: str) -> bool:
+        return self.host(url) in self.blocked
+
+    def record(self, url: str, error) -> None:
+        h = self.host(url)
+        if not h:
+            return
+        text = str(error or "").lower()
+        if not any(k in text for k in self.HARD_HINTS):
+            return
+        self.fails[h] = self.fails.get(h, 0) + 1
+        if self.fails[h] >= self.threshold:
+            self.blocked.add(h)
+
+    def stats(self) -> dict:
+        return {"blocked_hosts": sorted(self.blocked),
+                "fail_counts": dict(sorted(self.fails.items()))}
+
+
+def _download_and_gate(hit: dict, health: "DomainHealth | None" = None) -> dict:
     """下载 + 两段式门卫。
 
     候选顺序：大图后缀（`!1200`）→ 原 URL → 去后缀裸图；
     每档再试 Referer（来源 → image.so.com → 无），最多 6 次，覆盖 403/404/超时。
+
+    `health`：按 host 学习的失败表；已拉黑的域名直接跳过（不消耗 tries）。
     """
     out = {"hit": hit, "data": None, "gate": None, "error": None,
            "url_used": hit.get("url", ""), "upgraded": False, "tries": 0}
+    if health is not None and health.is_blocked(hit.get("url", "")):
+        out["error"] = "domain_blocked"
+        return out
     referer = (hit.get("referer")
                or CHANNEL_REFERERS.get(hit.get("channel", ""))
                or "https://image.so.com/")
@@ -661,6 +709,8 @@ def _download_and_gate(hit: dict) -> dict:
             return out
     out["tries"] = tries
     out["error"] = str(last_err)
+    if health is not None:
+        health.record(hit.get("url", ""), last_err)
     return out
 
 

@@ -32,6 +32,12 @@ task-brief@v2 (API)
 - 备选 4 台在**提交阶段**按优先级取（有核验图 > 有任意图；再按 pinned / 规划角色 / 意向名次），**没有图的车型不进备选**；
 - **缺图不可交付（P0）**：主槽满但备选有图数 < 4 时，`GAP_CHECK` 把"备选缺口"当成 gap，从**既有 plan 池**继续抓（不新增规划、不重跑 planner），最多 3 轮；plan 耗尽才 `backup.short`；
 - 补抓轮不经过主槽 FILL、也不受主检索 `max_queries` 闸门限制（否则会把已满的 12/12 误判成 FAILED）；
+- **图片可得性（2026-11-12）**：按 host 学习下载失败（403/404/DNS/连接），连续 3 次即拉黑、后续直接跳过；
+  单个目标连续 8 张硬失败即早停（把预算让给下一个候选）；
+- **候选池下限**：`planning.pool_requirement = ceil(1.6 × (slots + backup))`；12 主 + 4 备 → 建议 ≥26 个候选，
+  不足时 `plan_candidates`/`rank_plan` 打 WARN 并写入 `plan.pool`（不阻塞，但可审计）；
+- **缺图归因**：`summary.delivery.unavailable` 逐台给出 `no_hits / all_download_failed / gate_or_verify_rejected / not_delivered / not_fetched`，
+  `summary.downloads` 给出 hits/downloaded/failed/blocked/gate_pass/拉黑域名。
 - 审计页对入选备选显示「备选 · 已入选」。
 
 代码位置总索引见 `docs/CODE-INDEX.md`。

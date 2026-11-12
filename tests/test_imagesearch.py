@@ -206,6 +206,21 @@ def test_upgrade_sohu_url():
     assert up(u.replace("w_640", "w_1280")) is None
 
 
+def test_domain_health_blocks_after_threshold():
+    """连续 N 次 403/DNS 后拉黑该 host，不再浪费下载尝试。"""
+    h = imagesearch.DomainHealth(threshold=3)
+    for i in range(3):
+        h.record(f"https://dead.example/{i}.jpg", "http 403")
+    assert h.is_blocked("https://dead.example/x.jpg")
+    out = imagesearch._download_and_gate(
+        {"url": "https://dead.example/x.jpg", "title": "t"}, health=h)
+    assert out["error"] == "domain_blocked" and out["tries"] == 0, out
+    # 软错误（如图片过小）不计入拉黑
+    h2 = imagesearch.DomainHealth(threshold=2)
+    h2.record("https://ok.example/a.jpg", "图片过小")
+    assert not h2.is_blocked("https://ok.example/b.jpg")
+
+
 if __name__ == "__main__":
     check("相关性护栏", test_relevance_guard)
     check("构型/品牌/非车污染护栏", test_config_and_brand_guard)
@@ -220,6 +235,7 @@ if __name__ == "__main__":
     check("下载候选阶梯", test_download_candidates)
     check("图集页抽图", test_extract_page_images)
     check("搜狐 w_1280 升图", test_upgrade_sohu_url)
+    check("死图床拉黑", test_domain_health_blocks_after_threshold)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

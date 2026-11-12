@@ -21,6 +21,8 @@ try:
 except Exception:  # noqa: BLE001
     pass
 
+from equiplens.planning import pool_requirement, pool_warning  # noqa: E402
+
 KEY_FILE = Path.home() / ".equiplens" / "deepseek.env"
 
 
@@ -60,6 +62,9 @@ def main(argv=None) -> int:
     if slots <= 0:
         raise SystemExit("brief 没有 vehicle_slots/quota，无法确定主交付台数；用 --slots 指定")
     backup = max(0, int(args.backup))
+    warn = pool_warning(len(cands), slots, backup)
+    if warn:
+        print("WARN " + warn, file=sys.stderr)
     compact = [{
         "model": c.get("model"), "identity_kind": c.get("identity_kind"),
         "reason": (c.get("reason") or "")[:160],
@@ -75,9 +80,7 @@ def main(argv=None) -> int:
         "4) 不要编造候选，不要用图片质量/分辨率（你还没看到图）；\n"
         "5) 输出 JSON：{\"ranking\":[{\"model\":\"\",\"band\":\"must|strong|possible|weak\","
         "\"reason\":\"为什么值得先看，引用候选的文本信息\",\"role\":\"primary|backup|pool\"}]}；\n"
-        f"   前 {slots} 个 primary，接着 {backup} 个 backup，其余 pool。
-
-"
+        f"   前 {slots} 个 primary，接着 {backup} 个 backup，其余 pool。\n\n"
         f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
         f"候选：{json.dumps(compact, ensure_ascii=False)}"
     )
@@ -128,6 +131,8 @@ def main(argv=None) -> int:
         else:
             c["role"] = "pool"
     plan["candidates"] = order
+    plan["pool"] = {"count": len(cands), "required": pool_requirement(slots, backup),
+                    "ok": not warn, "warning": warn}
     plan["ranking"] = {"model": args.model, "pins": pins,
                        "slots": slots, "backup": backup,
                        "primary": sum(1 for c in order if c.get("role") == "primary"),

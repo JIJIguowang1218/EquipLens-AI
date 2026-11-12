@@ -149,6 +149,16 @@ def test_coverage_reports_missing_and_intl():
     assert cov["international_covered"] is True, cov
 
 
+def test_pool_requirement_guard():
+    """候选池下限：1.6×(slots+backup)；12 主 + 4 备 => 26。"""
+    from equiplens import planning
+    assert planning.pool_requirement(12, 4) == 26, planning.pool_requirement(12, 4)
+    assert planning.pool_requirement(8, 4) == 20
+    assert planning.pool_requirement(0, 4) == 0
+    assert planning.pool_warning(26, 12, 4) == ""
+    assert "26" in planning.pool_warning(20, 12, 4)
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -159,6 +169,7 @@ if __name__ == "__main__":
     check("车型身份：同款合并/同品牌不并", test_model_identity_not_brand)
     check("候选归并：只并同款", test_merge_dedupes_same_model_only)
     check("覆盖报告：缺口/国际", test_coverage_reports_missing_and_intl)
+    check("候选池下限守卫", test_pool_requirement_guard)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

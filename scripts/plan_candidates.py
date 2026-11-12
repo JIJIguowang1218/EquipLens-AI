@@ -33,6 +33,7 @@ except Exception:  # noqa: BLE001
 
 from equiplens.planning import (build_query_plan, coverage_report,  # noqa: E402
                                 dedupe_stats, merge_candidates,
+                                pool_requirement, pool_warning,
                                 validate_extraction)
 
 API = "https://api.deepseek.com"
@@ -148,6 +149,14 @@ def main(argv=None) -> int:
 
     merged_all = merge_candidates(extracted)
     candidates = merged_all[:args.limit]
+    page_budget = (brief.get("request") or {}).get("page_budget") or {}
+    slots = int(page_budget.get("vehicle_slots") or 0)
+    backup = page_budget.get("backup_slots")
+    backup = 4 if backup is None else int(backup)
+    need = pool_requirement(slots, backup)
+    warn = pool_warning(len(candidates), slots, backup)
+    if warn:
+        print("WARN " + warn, file=sys.stderr)
     plan = {
         "brief_id": brief.get("brief_id"),
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
@@ -156,6 +165,9 @@ def main(argv=None) -> int:
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,
+        "pool": {"count": len(candidates), "required": need,
+                 "slots": slots, "backup": backup, "ok": not warn,
+                 "warning": warn},
         "coverage": coverage_report(query_plan, candidates,
                                      slots=((brief.get("request") or {}).get("page_budget") or {}).get("vehicle_slots")),
         "dedupe": dedupe_stats(extracted, candidates),
@@ -175,7 +187,9 @@ def main(argv=None) -> int:
                       "candidates": len(candidates),
                       "dropped_no_source": plan["dropped_without_valid_source"],
                       "dropped_invalid": plan["dropped_invalid_sources"],
-                      "coverage_missing": plan["coverage"]["missing"]},
+                      "coverage_missing": plan["coverage"]["missing"],
+                      "pool_ok": plan["pool"]["ok"],
+                      "pool_required": plan["pool"]["required"]},
                      ensure_ascii=False))
     print("out:", out)
     return 0

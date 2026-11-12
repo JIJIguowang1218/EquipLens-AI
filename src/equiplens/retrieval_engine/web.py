@@ -20,6 +20,9 @@ from typing import Callable
 
 from .contracts import Asset, PartRequirement, Target, Verification
 
+# 目标级早停：同一台车连续这么多张下载硬失败（403/死链）就放弃该台
+EARLY_STOP_FAILS = 8
+
 
 class NullLibraryAdapter:
     """网页-only 模式的空库：让状态机以为库内没有候选。"""
@@ -176,6 +179,9 @@ class WebWorld:
         self.router = router
         # 实际发出的搜索请求数（一次 search 调用可能展开成多条查询，如 高清/大图）
         self.query_count = 0
+        # 下载健康（按 host 学习拉黑）与每目标的抓取统计
+        self._health = None
+        self.fetch_stats: dict[str, dict] = {}
 
     def _count_queries(self, diag) -> None:
         """按诊断条目数累加真实查询数；无诊断时按 1 次计。"""
@@ -184,6 +190,18 @@ class WebWorld:
         except TypeError:
             n = 1
         self.query_count += max(1, int(n))
+
+    def download_stats(self) -> dict:
+        """本次 run 的下载质量统计（供 summary/审核页解释“为什么没图”）。"""
+        agg = {"hits": 0, "downloaded": 0, "failed": 0, "blocked": 0,
+               "gate_pass": 0, "early_stop_models": 0}
+        for d in self.fetch_stats.values():
+            for k in ("hits", "downloaded", "failed", "blocked", "gate_pass"):
+                agg[k] += int(d.get(k, 0) or 0)
+            agg["early_stop_models"] += 1 if d.get("early_stop") else 0
+        agg.update(self._health.stats() if self._health else
+                   {"blocked_hosts": [], "fail_counts": {}})
+        return agg
 
     def library_targets(self, unit) -> list[Target]:
         return self.library.targets(unit)
@@ -541,16 +559,53 @@ class WebWorld:
             self.image_dir.mkdir(parents=True, exist_ok=True)
             log_path = self.image_dir.parent / "fetch_log.jsonl"
 
+        if self._health is None:
+            self._health = imagesearch.DomainHealth()
+        stats = self.fetch_stats.setdefault(
+            target.target_id, {"hits": 0, "downloaded": 0, "failed": 0,
+                               "blocked": 0, "gate_pass": 0, "early_stop": False})
+        stats["hits"] += len(hits)
+        if stats.get("early_stop"):
+            # 该目标已判定“整批结果都拿不到图”，后续部件不再尝试
+            return []
         out: list[Asset] = []
+        # 连续失败跨部件累计（同一台车不同部件共享一个计数）
+        streak = int(stats.get("streak", 0) or 0)
         for hit in hits:
             url_key = hit.get("url", "")
             if url_key in self._fetch_cache:
                 res = self._fetch_cache[url_key]
+            elif self._health.is_blocked(url_key):
+                stats["blocked"] += 1
+                streak += 1
+                stats["streak"] = streak
+                if log_path:
+                    self._append_log(log_path, {
+                        "model": target.model, "part": part, "url": url_key,
+                        "title": hit.get("title", ""), "ok": False,
+                        "error": "domain_blocked",
+                        "part_query": getattr(self, "_part_query_used", ""),
+                    })
+                # 被拉黑的图床同样计入“连续失败”：整批结果都来自死图床时，
+                # 这台车已经没有可下的图，早点放弃换下一个候选。
+                if streak >= EARLY_STOP_FAILS and stats["downloaded"] == 0:
+                    stats["early_stop"] = True
+                    if log_path:
+                        self._append_log(log_path, {
+                            "model": target.model, "part": part, "ok": False,
+                            "error": f"early_stop_after_{streak}_failures",
+                            "part_query": getattr(self, "_part_query_used", ""),
+                        })
+                    break
+                continue
             else:
-                res = imagesearch._download_and_gate(hit)
+                res = imagesearch._download_and_gate(hit, self._health)
                 self._fetch_cache[url_key] = res
             data = res.get("data")
             if res.get("error") or not data:
+                stats["failed"] += 1
+                streak += 1
+                stats["streak"] = streak
                 if log_path:
                     self._append_log(log_path, {
                         "model": target.model, "part": part,
@@ -560,6 +615,17 @@ class WebWorld:
                         "upgraded": res.get("upgraded"),
                         "part_query": getattr(self, "_part_query_used", ""),
                     })
+                # 目标级早停：该车连续多张下载硬失败（403/死链），
+                # 继续试只是烧时间；把预算让给下一个候选（loop 会补抓）。
+                if streak >= EARLY_STOP_FAILS and stats["downloaded"] == 0:
+                    stats["early_stop"] = True
+                    if log_path:
+                        self._append_log(log_path, {
+                            "model": target.model, "part": part, "ok": False,
+                            "error": f"early_stop_after_{streak}_failures",
+                            "part_query": getattr(self, "_part_query_used", ""),
+                        })
+                    break
                 continue
             pre = res.get("prefilter") or {}
             g = res.get("gate") or {}
@@ -599,9 +665,13 @@ class WebWorld:
                         "upgraded": res.get("upgraded"),
                         "part_query": getattr(self, "_part_query_used", ""),
                     })
+            stats["downloaded"] += 1
+            streak = 0
+            stats["streak"] = 0
             # 分辨率不再作为放行条件：通过两段式门卫的图都交给 loop/人审
             if not a.get("pass"):
                 continue
+            stats["gate_pass"] += 1
             out.append(Asset(
                 asset_id=asset_id,
                 target_id=target.target_id,
