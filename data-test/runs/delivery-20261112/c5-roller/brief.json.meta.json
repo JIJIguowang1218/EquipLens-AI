@@ -1,0 +1,336 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-12T17:05:47",
+ "raw_input": "单钢轮振动压路机（机罩、ROPS 驾驶室框架、钢轮挡泥板、扶手踏板、灯具后视镜）；道路施工工况；单钢轮；14 台",
+ "brief_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c5-roller\\brief.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2482,
+  "completion_tokens": 9123,
+  "total_tokens": 11605,
+  "prompt_tokens_details": {
+   "cached_tokens": 1920
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 7340
+  },
+  "prompt_cache_hit_tokens": 1920,
+  "prompt_cache_miss_tokens": 562
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "单钢轮振动压路机",
+   "environment": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照）",
+   "base_platform": "自走式单钢轮振动压路机底盘",
+   "configuration": "单钢轮；ROPS 驾驶室/操作台；后置发动机机罩",
+   "design_questions": [
+    "机罩在道路施工粉尘、散热与维修开启约束下，造型、分缝和表面处理如何组织？",
+    "ROPS 驾驶室框架如何兼顾安全结构、视野、登车人机与法规防护？",
+    "钢轮挡泥板、扶手踏板、灯具与后视镜在道路施工工况下如何协同防护、法规与可维护性？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前部钢轮与车架区域",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "整机侧面（机罩-驾驶室-钢轮关系）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后部机罩与发动机舱区域",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "cmf",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "roof",
+    "label": "ROPS 顶护与灯具安装区域",
+    "views": [
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "regulation",
+     "function_ergonomics"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_engine_hood",
+    "label": "机罩",
+    "kind": "part",
+    "location": "后部发动机舱上方及侧面",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "机罩体量与分缝",
+     "散热进气/排热开口",
+     "开启方式与锁止",
+     "涂装与耐候表面"
+    ],
+    "why": "提供机罩体量、分缝、散热开口、开启维护和涂装耐候证据，支撑道路施工粉尘与散热约束下的造型判断。"
+   },
+   {
+    "part": "custom_rops_cab_frame",
+    "label": "ROPS 驾驶室框架",
+    "kind": "function",
+    "location": "驾驶室/操作台外围与顶部",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail",
+     "interior"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "框架断面与节点",
+     "立柱与顶护连接",
+     "驾驶室视野与门洞",
+     "安全防护与法规标识"
+    ],
+    "why": "提供 ROPS 框架断面、连接节点、顶护整合、视野与法规防护证据，判断安全结构与造型一体化程度。"
+   },
+   {
+    "part": "custom_drum_fender",
+    "label": "钢轮挡泥板",
+    "kind": "part",
+    "location": "前钢轮上方及两侧",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "遮挡范围与离地间隙",
+     "板金分块与安装点",
+     "泥污/水花导流",
+     "可更换磨损件"
+    ],
+    "why": "提供钢轮挡泥板覆盖范围、分块、安装与泥污导流证据，支撑道路施工环境下的防护与可维护性判断。"
+   },
+   {
+    "part": "custom_handrail",
+    "label": "扶手",
+    "kind": "function",
+    "location": "驾驶室登车侧/走台",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "扶手高度与抓握路径",
+     "连接节点与刚度",
+     "防滑/防泥污",
+     "与踏板和门洞关系"
+    ],
+    "why": "提供登车抓握路径、扶手连接刚度和泥污环境下可维护性证据，判断人机与结构细节。"
+   },
+   {
+    "part": "step",
+    "label": "踏板",
+    "kind": "function",
+    "location": "驾驶室登车侧/走台",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "踏步高度与深度",
+     "防滑面与排水/排泥",
+     "支架连接与刚度",
+     "与扶手和门洞关系"
+    ],
+    "why": "提供踏步尺寸、防滑、排泥和支架连接证据，支撑道路施工泥污工况下登车人机判断。"
+   },
+   {
+    "part": "headlamp",
+    "label": "灯具与灯罩防护",
+    "kind": "part",
+    "location": "前部/驾驶室顶部及后部工作照明位",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "environment_protection",
+     "structure"
+    ],
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "灯具布置与照射方向",
+     "灯罩/护网防护",
+     "安装支架与减振",
+     "法规灯光与标识"
+    ],
+    "why": "提供灯具布置、护罩、支架减振和法规灯光证据，判断道路施工多光照与振动环境下的灯具防护。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜",
+    "kind": "function",
+    "location": "驾驶室两侧/前部视野位",
+    "part_family": "function_attachment",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "regulation",
+     "structure"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "镜面位置与视野",
+     "支架调节与锁止",
+     "减振与防碰",
+     "法规视野要求"
+    ],
+    "why": "提供后视镜位置、调节锁止、支架减振和法规视野证据，判断驾驶室框架周边的视野与人机协同。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.base_platform",
+    "value": "自走式单钢轮振动压路机底盘",
+    "why": "用户只说明单钢轮振动压路机，按常见总体布置推断为自走式单钢轮底盘。",
+    "confidence": 0.75
+   },
+   {
+    "field": "request.configuration",
+    "value": "单钢轮；ROPS 驾驶室/操作台；后置发动机机罩",
+    "why": "ROPS 驾驶室框架与机罩并列出现，按道路施工单钢轮压路机常见配置推断。",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.environment",
+    "value": "道路施工含粉尘、沥青/水泥污染、户外振动与多光照",
+    "why": "由“道路施工工况”补全对防护、法规和可维护性有影响的环境因素。",
+    "confidence": 0.7
+   },
+   {
+    "field": "quantity",
+    "value": "14台按设备批量/样本数量理解，不转化为检索配额",
+    "why": "输出禁止编 page_budget/quota；该数字不改变设计对象与设计维度判断。",
+    "confidence": 0.8
+   },
+   {
+    "field": "parts[].part",
+    "value": "机罩、ROPS 框架、钢轮挡泥板、扶手使用 custom_*；踏板、灯具、后视镜归一为已知键",
+    "why": "参考词表未覆盖或在单钢轮语境下语义不完全对应，保留原词并标记 custom/new；已覆盖项使用 known。",
+    "confidence": 0.9
+   }
+  ],
+  "negative": [
+   "不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。",
+   "不分析未点名的振动轮内部、液压系统、发动机总成和传动系统。",
+   "不补入进气格栅、保险杠、侧防护栏、下护板等未提及部件。",
+   "不把“14台”解释为页预算或检索配额。",
+   "不输出 page_budget/research_units/quota/tiers/budget/strategy_ref。"
+  ]
+ },
+ "duration_ms": 55545
+}

@@ -1,0 +1,333 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-164301",
+  "state": "FAILED",
+  "slots": {
+    "target": 10,
+    "accepted": 9,
+    "filled": false
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 9,
+    "missing": 1,
+    "degraded": 6,
+    "degraded_targets": [
+      "泰安五岳 油田专用全驱牵引车（6×6）",
+      "HOWO 6×6 全驱牵引车（TX/TH7/T7H 系列，如 ZZ4257V455GF1）",
+      "Zetros 4051 AS 6×6牵引车",
+      "FAW J6P 6×6 重型牵引车",
+      "陕汽通力 6×6 全驱沙漠车（可改装油田专用车）",
+      "Zetros 6×6 tractor-head"
+    ],
+    "citation_only": 1,
+    "citation_only_targets": [
+      "FAW J6P 6×6 重型牵引车"
+    ],
+    "bonus": {
+      "models": 1,
+      "images": 5
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 1,
+      "models": [
+        "J6P 6×6 重型牵引车"
+      ],
+      "images": 5,
+      "no_image_models": [],
+      "short": 3
+    },
+    "unavailable": [
+      {
+        "model": "泰安五岳油田专用全驱牵引车（TAZ4922）",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "6×6 油田专用全驱牵引车",
+        "reason": "no_hits",
+        "hits": 0,
+        "downloaded": 0,
+        "blocked": 0
+      },
+      {
+        "model": "J6P 6×6 重型牵引车",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      }
+    ],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 2,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "泰安五岳 油田专用全驱牵引车（6×6）",
+      "HOWO 6×6 全驱牵引车（TX/TH7/T7H 系列，如 ZZ4257V455GF1）",
+      "SHACMAN F3000 6×6 牵引车",
+      "Zetros 4051 AS 6×6牵引车",
+      "SHACMAN X3000 6×6 牵引车头",
+      "FAW J6P 6×6 重型牵引车",
+      "陕汽通力 6×6 全驱沙漠车（可改装油田专用车）"
+    ],
+    "u-env": [
+      "HOWO 6×6全驱牵引车",
+      "Zetros 6×6 tractor-head"
+    ]
+  },
+  "budget_used": {
+    "queries": 51,
+    "models": 12,
+    "fetches": 235,
+    "verifies": 235
+  },
+  "downloads": {
+    "hits": 300,
+    "downloaded": 265,
+    "failed": 35,
+    "blocked": 0,
+    "gate_pass": 240,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "admin.cvworld.cn": 1,
+      "autoline.sk": 1,
+      "img.365128.com": 1,
+      "img005.hc360.cn": 1,
+      "photos.renhe.cn": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T16:45:30"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T16:45:30"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T16:45:57"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/10，池中仍有候选",
+      "ts": "2026-11-12T16:47:36"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 2 个",
+      "ts": "2026-11-12T16:47:51"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T16:48:25"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:48:25"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T16:48:25"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T16:48:26"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 9/10，池中仍有候选",
+      "ts": "2026-11-12T16:49:06"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:49:06"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-12T16:49:06"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:45:30"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 27568,
+      "at": "2026-11-12T16:45:57"
+    },
+    {
+      "state": "FETCH",
+      "ms": 99098,
+      "at": "2026-11-12T16:47:36"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-12T16:47:36"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:47:36"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:47:36"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 14331,
+      "at": "2026-11-12T16:47:51"
+    },
+    {
+      "state": "FETCH",
+      "ms": 34075,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:48:25"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 1695,
+      "at": "2026-11-12T16:48:26"
+    },
+    {
+      "state": "FETCH",
+      "ms": 39910,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-12T16:49:06"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 8,
+      "at": "2026-11-12T16:49:06"
+    }
+  ],
+  "elapsed_ms": 216687,
+  "state_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c1-desert-tractor\\run\\state.json",
+  "events_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c1-desert-tractor\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c1-desert-tractor\\run\\evidence.json"
+}

@@ -1,0 +1,978 @@
+{
+ "brief_id": "auto-20261112-170547",
+ "created_at": "2026-11-12T17:08:26",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 83,
+ "candidates": [
+  {
+   "model": "BW226D-5CL",
+   "brand": "宝马格",
+   "reason": "结果明确为双驱单钢轮压路机，26吨级，适配高速道路、市政基建、大型填方；摘要未明确ROPS/后置机罩，需按页面核实。",
+   "sources": [
+    "https://community.b-china.cn/product/info/13336"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/BW226D5CL",
+   "identity_kind": "code",
+   "model_variants": [
+    "BW226D-5CL"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS225JIV",
+   "brand": "徐工",
+   "reason": "结果明确为机械驱动单钢轮振动压路机，适合高等级公路、机场、港口、堤坝及工业建筑工地压实；摘要未明确ROPS/后置机罩。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail.jsp?id=120905"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS225JIV",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS225JIV"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS225S",
+   "brand": "徐工",
+   "reason": "结果明确为单钢轮压路机/自行式重型振动压路机，适用于高等级公路、机场、港口、堤坝及工业建筑工地基础层与填方压实；摘要未明确ROPS/后置机罩。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-125215.htm"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS225S",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS225S"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS143J",
+   "brand": "徐工",
+   "reason": "结果明确为14吨单钢轮振动压路机，适用于高速公路等大型工程压实；摘要未明确ROPS/后置机罩。",
+   "sources": [
+    "https://www.xcmgmachinery.com/zh/portfolio-item/xs143j/7"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS143J",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS143J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG520A9/LG520B9",
+   "brand": "龙工",
+   "reason": "结果明确为机械驱动单钢轮振动压路机，详情提到大视野驾驶室、前后多光源照明，适配道路/夜间施工；摘要未明确ROPS。",
+   "sources": [
+    "https://shop.zgong.com/sale/detail-2571458.html",
+    "http://www.lonkingsh.cn/product-details?brd=1&product_category=8&product_id=21",
+    "http://m.zglonking.com/adp/product_442.html"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LG520A9",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG520A9/LG520B9"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "L652C9",
+   "brand": "龙工",
+   "reason": "结果标题明确为龙工22吨级单钢轮振动压路机，摘要列出L652C9并提驾驶更舒适、安全更稳定；摘要未明确ROPS/后置机罩。",
+   "sources": [
+    "https://www.lonking.cn/news/dtnews-detail-8537.htm"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/L652C9",
+   "identity_kind": "generic",
+   "model_variants": [
+    "L652C9"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LTS208H",
+   "brand": "路通重工",
+   "reason": "结果明确为LTS208H轮胎驱动单钢轮振动压路机，适用于市政道路、公路维护、建筑施工等基础和路面压实；摘要未明确ROPS/后置机罩。",
+   "sources": [
+    "http://www.zchui.com/productDetail/6434278.html",
+    "http://www.zchui.com/productDetail/6506175.html"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LTS208H",
+   "identity_kind": "code",
+   "model_variants": [
+    "LTS208H"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "SRM218",
+   "brand": "万邦股份",
+   "reason": "结果明确为万邦股份SRM218单钢轮振动压路机，参数页给出18吨级整机参数；摘要未明确ROPS/后置机罩及具体工况。",
+   "sources": [
+    "https://m.d1cm.com/product/wbest010/106343/canshu/"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/SRM218",
+   "identity_kind": "code",
+   "model_variants": [
+    "SRM218"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA510PD",
+   "brand": "Dynapac/戴纳派克",
+   "reason": "单钢轮振动压路机，参数表明确给出“装有ROPS时的工作重量”，符合单钢轮+ROPS构型要求。",
+   "sources": [
+    "https://dynapac.com/cn/products/compaction/dynapac-ca510pd"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CA510PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA510PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA610D",
+   "brand": "Dynapac/戴纳派克",
+   "reason": "单钢轮振动压路机，参数表含“装有ROPS时的工作重量”，属于单钢轮且可配ROPS的压路机。",
+   "sources": [
+    "https://dynapac.com.br/cn/products/compaction/ca610d",
+    "https://dynapac.com/cn/products/compaction/dynapac-ca610d"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CA610D",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA610D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "CA600PD",
+   "brand": "Dynapac/戴纳派克",
+   "reason": "单钢轮振动压路机，参数表含“装有ROPS时的工作重量”，与任务单单钢轮、ROPS要求一致。",
+   "sources": [
+    "https://dynapac.com.br/cn/products/compaction/ca600pd"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CA600PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA600PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA260D-II",
+   "brand": "Dynapac/戴纳派克",
+   "reason": "单钢轮振动压路机，参数表明确给出“装有ROPS时的工作重量”，可作为单钢轮ROPS机型候选。",
+   "sources": [
+    "https://dynapac.com.br/cn/products/compaction/ca260d-ii"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CA260DII",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA260D-II"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CV83PDU/CV123PDU",
+   "brand": "徐工",
+   "reason": "结果明确为单钢轮压路机，并配有ROPS/FOPS驾驶室，符合单钢轮+ROPS驾驶室构型。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzA4MzAxOTkxMQ==&mid=2652701247&idx=3&sn=745b6a2395a77c7c95d227f7d042c006",
+    "http://jker.cn/article/4270.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CV123PDU",
+   "identity_kind": "code",
+   "model_variants": [
+    "CV83PDU/CV123PDU",
+    "CV83PDU / CV123PDU"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "environment",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "XS143",
+   "brand": "徐工",
+   "reason": "全液压单钢轮压路机，结果明确“标配ROPS/FORPS驾驶室”，符合单钢轮及ROPS驾驶室要求。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/XS143.htm",
+    "https://product.21-sun.com/search/%e5%be%90%e5%b7%a5_0_0_40.htm#1"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XS143",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS143"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 车型 品牌 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "HC 100i / HC 130i G-Tier",
+   "brand": "Hamm（维特根集团）",
+   "reason": "结果明确为新型单钢轮压路机，重量等级11–13 t，可选光轮或凸块轮，属于单钢轮振动压路机，适用于道路施工压实工况。",
+   "sources": [
+    "https://www.wirtgen-group.com/zh-cn/news/hamm/hc-100i-hc-130i-g-tier-compactors/"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/HC100IHC130IGTIER",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HC 100i / HC 130i G-Tier",
+    "HC 100i–HC 130i G-Tier"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "RS8140",
+   "brand": "山东临工（SDLG）",
+   "reason": "结果明确为机械式单钢轮振动压路机，重型自行式，适用于高等级公路等道路施工；摘要提到发动机罩可一键开启，符合机罩构型。",
+   "sources": [
+    "https://shop.hbzhan.com/sale/detail-17785299.html",
+    "https://shop.hbzhan.com/sale/detail-15981864.html",
+    "https://www.tiebimall.com/proDetail/RS8140.shtm"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/RS8140",
+   "identity_kind": "code",
+   "model_variants": [
+    "RS8140"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "english",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "CA55 / CA65 / CA70 犀牛系列",
+   "brand": "戴纳派克（Dynapac）",
+   "reason": "结果明确为犀牛系列单钢轮振动压路机，操作重量覆盖18–22吨，用于道路基础建设等土方压实。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202311/486484994236127125.html"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/CA55CA65CA70犀牛系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CA55 / CA65 / CA70 犀牛系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA25PD RHINO",
+   "brand": "戴纳派克（Dynapac）",
+   "reason": "结果标题明确为SINGLE DRUM VIBRATORY ROLLERS，属于单钢轮振动压路机，可用于道路压实。",
+   "sources": [
+    "https://construction.altg.com/catalog/asphalt-paving-roads-highways/compaction/single-drum-vibratory-rollers/ca25pd-rhino/"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/CA25PDRHINO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CA25PD RHINO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SEM518",
+   "brand": "山工机械（SEM）",
+   "reason": "结果明确为山工机械SEM518单钢轮压路机，摘要提到振动系统及尾部进风冷却，符合单钢轮压路机后置发动机散热/机罩相关构型。",
+   "sources": [
+    "http://dealer.lmjx.net/13571/products/p24708.html#ct"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/SEM518",
+   "identity_kind": "code",
+   "model_variants": [
+    "SEM518"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 卡车 车型 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA610D-8",
+   "brand": "戴纳派克",
+   "reason": "来源为戴纳派克CA610D-8单钢轮振动压路机，面向道路建设等工况，参数列有“装有ROPS时的工作重量”，可对应ROPS配置。",
+   "sources": [
+    "http://dynapac.brand.lmjx.net/zdylj/MzgyOTk=/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/CA610D8",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA610D-8"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG520D",
+   "brand": "龙工",
+   "reason": "来源明确为龙工LG520D全液压单钢轮振动压路机，并提到发动机后机罩可助力开启，贴合后置发动机机罩构型。",
+   "sources": [
+    "http://sxsjj.org.cn/channel/?88-2.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/LG520D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG520D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS203J/XS223J",
+   "brand": "徐工",
+   "reason": "来源标题/正文为徐工XS203J机械单钢轮振动压路机，正文含XS203J/XS223J，机罩采用流线型设计，单钢轮道路压实构型相符。",
+   "sources": [
+    "http://www.xcmg-roller.com/news/1-86.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/XS203J",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS203J/XS223J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "RS6200",
+   "brand": "临工",
+   "reason": "来源为临工RS6200单钢轮压路机，液压单驱重型自行式，适用于高等级公路等压实；单钢轮构型相符。",
+   "sources": [
+    "https://product.d1cm.com/sdlg005/112747/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/RS6200",
+   "identity_kind": "code",
+   "model_variants": [
+    "RS6200"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BW 213 DH+P-5",
+   "brand": "BOMAG",
+   "reason": "来源称其为BOMAG单钢轮压路机，重型机型，适用于道路等土方压实；单钢轮构型相符，摘要未展开ROPS/机罩细节。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/bomag/product-23411-2683808.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/BW213",
+   "identity_kind": "code",
+   "model_variants": [
+    "BW 213 DH+P-5"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 truck brands -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA250PD",
+   "brand": "戴纳派克（Dynapac）",
+   "reason": "结果页为单钢轮振动压路机，11.6t级，技术参数含ROPS工作重量，可用于道路基础压实。",
+   "sources": [
+    "https://dynapac.com.br/cn/products/compaction/ca250pd"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CA250PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA250PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CA500PD",
+   "brand": "戴纳派克（Dynapac）",
+   "reason": "结果页为单钢轮振动压路机，15.8t级，技术参数含ROPS工作重量；结果标注已停产但车型信息仍匹配。",
+   "sources": [
+    "https://dynapac.com.br/cn/products/compaction/ca500pd"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CA500PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA500PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG526A9",
+   "brand": "龙工",
+   "reason": "结果页明确为机械驱动单钢轮振动压路机，并写明发动机后机罩可助力开启，贴合后置机罩构型。",
+   "sources": [
+    "http://www.lonkingsh.cn/product-details?product_id=23&brd=1#740c"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/LG526A9",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG526A9"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HC228 i D",
+   "brand": "Hamm",
+   "reason": "来源标注为单钢轮，并强调符合人机工程学的驾驶台及对机器和周围施工环境的视野，匹配单钢轮与操作台/视野需求。",
+   "sources": [
+    "http://henanweilu.com/display/86362.html"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/HC228",
+   "identity_kind": "code",
+   "model_variants": [
+    "HC228 i D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "RS7220",
+   "brand": "山东临工",
+   "reason": "来源明确为全液压双驱单钢轮振动压路机，发动机罩流线型且可一键开启，并说明适合恶劣工况，匹配单钢轮与机罩维护需求。",
+   "sources": [
+    "https://m.china-mcc.com/prod_show-38562.html"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/RS7220",
+   "identity_kind": "code",
+   "model_variants": [
+    "RS7220"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "8208T",
+   "brand": "常林",
+   "reason": "来源明确为常林8208T机械式高端型单钢轮压路机，属于单钢轮压路机车型，可作为单钢轮底盘候选。",
+   "sources": [
+    "https://product.d1cm.com/hamm001/102356/"
+   ],
+   "source_query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/8208T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8208T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况（粉尘、沥青/水泥污染、户外振动、多光照） 工程车 单钢轮；ROPS 驾驶室/操作台；后置发动机机罩 -\"不扩展到双钢轮振动压路机、轮胎压路机或摊铺机。\" -\"不把“14台”解释为页预算或检索配额。\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "pool": {
+  "count": 30,
+  "required": 29,
+  "slots": 14,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 15
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 30,
+  "slots": 14,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 44,
+  "unique": 30,
+  "removed": 14,
+  "generic": 5
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

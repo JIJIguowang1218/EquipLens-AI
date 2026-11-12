@@ -1,0 +1,340 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-170547",
+  "state": "DONE",
+  "slots": {
+    "target": 14,
+    "accepted": 14,
+    "filled": true
+  },
+  "delivery": {
+    "required": 14,
+    "delivered": 14,
+    "missing": 0,
+    "degraded": 3,
+    "degraded_targets": [
+      "CV83PDU/CV123PDU",
+      "LG520A9/LG520B9",
+      "CA260D-II"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "CV83PDU/CV123PDU",
+      "LG520A9/LG520B9"
+    ],
+    "bonus": {
+      "models": 4,
+      "images": 12
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "models": [
+        "CA250PD",
+        "XS225JIV",
+        "CA600PD",
+        "CA500PD"
+      ],
+      "images": 12,
+      "no_image_models": [],
+      "short": 0
+    },
+    "unavailable": [
+      {
+        "model": "HC228 i D",
+        "reason": "gate_or_verify_rejected",
+        "hits": 42,
+        "downloaded": 28,
+        "blocked": 0
+      },
+      {
+        "model": "CA600PD",
+        "reason": "not_delivered",
+        "hits": 42,
+        "downloaded": 28,
+        "blocked": 7
+      },
+      {
+        "model": "CA250PD",
+        "reason": "not_delivered",
+        "hits": 42,
+        "downloaded": 35,
+        "blocked": 0
+      },
+      {
+        "model": "CA500PD",
+        "reason": "not_delivered",
+        "hits": 42,
+        "downloaded": 35,
+        "blocked": 0
+      },
+      {
+        "model": "XS225JIV",
+        "reason": "not_delivered",
+        "hits": 14,
+        "downloaded": 7,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 9,
+      "accepted": 9,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 5,
+      "accepted": 5,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "XS143",
+      "CV83PDU/CV123PDU",
+      "CA610D-8",
+      "LG520D",
+      "RS7220",
+      "RS8140",
+      "LG526A9",
+      "LG520A9/LG520B9",
+      "SEM518"
+    ],
+    "u-env": [
+      "XS203J/XS223J",
+      "CA510PD",
+      "CA260D-II",
+      "BW226D-5CL",
+      "CA610D"
+    ]
+  },
+  "budget_used": {
+    "queries": 69,
+    "models": 19,
+    "fetches": 413,
+    "verifies": 413
+  },
+  "downloads": {
+    "hits": 714,
+    "downloaded": 588,
+    "failed": 119,
+    "blocked": 7,
+    "gate_pass": 420,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "www.cn357.com"
+    ],
+    "fail_counts": {
+      "fd.co188.com": 1,
+      "img.china.alibaba.com": 1,
+      "img.chinacar.com.cn": 1,
+      "img002.hc360.cn": 1,
+      "img007.hc360.cn": 1,
+      "img09.hc360.cn": 1,
+      "img2.cehome.com": 1,
+      "p14.go007.com": 1,
+      "resource.21-sun.com": 1,
+      "static.cmo2o.com": 1,
+      "static.zujuan.xkw.com": 1,
+      "www.360trucks.cn": 1,
+      "www.chinatruck.org": 2,
+      "www.cn357.com": 3
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T17:09:17"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/14，池中仍有候选",
+      "ts": "2026-11-12T17:09:17"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 9 个",
+      "ts": "2026-11-12T17:10:16"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 9/14，池中仍有候选",
+      "ts": "2026-11-12T17:13:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T17:13:32"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T17:13:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 5 个",
+      "ts": "2026-11-12T17:14:26"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 13/14，池中仍有候选",
+      "ts": "2026-11-12T17:16:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 5 个",
+      "ts": "2026-11-12T17:16:21"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 14/14 已满",
+      "ts": "2026-11-12T17:17:09"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T17:09:17"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 59276,
+      "at": "2026-11-12T17:10:16"
+    },
+    {
+      "state": "FETCH",
+      "ms": 196009,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T17:13:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 53569,
+      "at": "2026-11-12T17:14:26"
+    },
+    {
+      "state": "FETCH",
+      "ms": 109225,
+      "at": "2026-11-12T17:16:15"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T17:16:15"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T17:16:15"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T17:16:15"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 6236,
+      "at": "2026-11-12T17:16:21"
+    },
+    {
+      "state": "FETCH",
+      "ms": 47924,
+      "at": "2026-11-12T17:17:09"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-12T17:17:09"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T17:17:09"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T17:17:09"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-12T17:17:09"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 14,
+      "at": "2026-11-12T17:17:09"
+    }
+  ],
+  "elapsed_ms": 472257,
+  "state_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c5-roller\\run\\state.json",
+  "events_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c5-roller\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c5-roller\\run\\evidence.json"
+}

@@ -1,0 +1,402 @@
+{
+ "brief_id": "auto-20261112-164934",
+ "created_at": "2026-11-12T16:50:20",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "港口集装箱堆场：高盐雾/潮湿腐蚀、粉尘、频繁往复作业、箱体与设备间偶发碰撞、夜间强照明作业 港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "港口集装箱堆场：高盐雾/潮湿腐蚀、粉尘、频繁往复作业、箱体与设备间偶发碰撞、夜间强照明作业 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 卡车 车型 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "港口集装箱堆场：高盐雾/潮湿腐蚀、粉尘、频繁往复作业、箱体与设备间偶发碰撞、夜间强照明作业 工程车 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "error": "JSONDecodeError"
+  }
+ ],
+ "search_results": 42,
+ "candidates": [
+  {
+   "model": "标准型正面吊",
+   "brand": "合力（安徽合力/HELI）",
+   "reason": "港机系列正面吊整机产品页，明确为集装箱正面吊运机；配重、驾驶室、车架与伸缩臂架+吊具构成与任务单构型（后置配重、前置臂架与吊具、驾驶室位于车体前上部）一致；采用重载驱动桥、湿式制动与进口动力，适合港口堆场频繁往复作业；页面未标注轴数，4×2 需另行核实。",
+   "sources": [
+    "https://ln.helichina.com/m/pd_display.php?id=26",
+    "http://product.helichina.com/product/26"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/标准型正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "标准型正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "候选文本明确为“港机系列正面吊整机产品页”，且配重、驾驶室、车架与伸缩臂架+吊具的构成与任务单“后置配重、前置臂架与吊具、驾驶室位于车体前上部”一致；还提到重载驱动桥、湿式制动与进口动力，适合港口堆场频繁往复作业。页面未标注轴数，4×2 需另行核实，但整体匹配度最高，值得优先抓图。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "CRS450Z5",
+   "brand": "大连（供应商页面标注“大连正面吊运机”，品牌未明确）",
+   "reason": "结果中明确出现型号 CRS450Z5 集装箱正面吊运机，由工程机械底盘、伸缩臂架、集装箱吊具三部分组成，底盘含发动机、变速箱、前桥后桥、转向系统、驾驶室、车架、配重，与任务单“后置配重+前置臂架吊具+驾驶室在车体前上部”构型对应；适用于码头、堆场水平运输与堆叠。品牌名称在结果中未直接给出，仅按页面标题推断，需进一步核实。",
+   "sources": [
+    "https://www.56chp.cn/Site/product_detail/mi/15044/id/19181.html",
+    "https://m.gkzhan.com/chanpin/9118729.html"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CRS450Z5",
+   "identity_kind": "code",
+   "model_variants": [
+    "CRS450Z5",
+    "CRS450Z5 集装箱正面吊运机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "候选文本给出明确型号，并说明由工程机械底盘、伸缩臂架、集装箱吊具三部分组成，底盘含发动机、变速箱、前桥后桥、转向系统、驾驶室、车架、配重，与任务单构型对应；适用于码头、堆场水平运输与堆叠。品牌名称需核实，但结构描述具体，适合作为优先整机样本。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "G系列 RSH4531-VO5",
+   "brand": "合力（HELI）",
+   "reason": "产品参数页给出具体设备型号 RSH4531-VO5（G系列正面吊运机），含整车质量、发动机功率、最大起重量等整机参数，属可对标的港口正面吊整机；构型为专用底盘+伸缩臂架+吊具+配重。",
+   "sources": [
+    "https://product.d1cm.com/heli005/118688/canshu/"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/RSH4531VO5",
+   "identity_kind": "code",
+   "model_variants": [
+    "G系列 RSH4531-VO5",
+    "G系列集装箱正面吊运机（如 RSH4531-VO5）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为具体设备型号 RSH4531-VO5（G系列正面吊运机），含整车质量、发动机功率、最大起重量等整机参数，且构型为专用底盘+伸缩臂架+吊具+配重，适合作为港口正面吊整机对标样本；4×2 与驾驶室布置仍需按图纸核实。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "重型正面吊",
+   "brand": "合力（上海合力叉车/HELI）",
+   "reason": "品牌方“重型正面吊”整机页，属集装箱正面吊港机系列，强调欧洲设计标准、重载驱动桥与大承载，适配港口集装箱堆场重箱工况；同一底盘+臂架+吊具上装构型，驾驶室前上部布置需以图纸核实。",
+   "sources": [
+    "https://www.heli.com.cn/Products_detail/212.html"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/重型正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重型正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为品牌方“重型正面吊”整机页，强调欧洲设计标准、重载驱动桥与大承载，适配港口集装箱堆场重箱工况；同一底盘+臂架+吊具上装构型与任务单方向一致，适合优先看重载工况下的外罩、配重罩与走台护栏关系。驾驶室前上部布置需以图纸核实。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "G系列 RSH4532-VO",
+   "brand": "合力（HELI）",
+   "reason": "同一参数表内的另一具体型号 RSH4532-VO，与 RSH4531-VO5 同属合力 G 系列集装箱正面吊运机，整机参数完整，属堆场用正面吊整机候选。",
+   "sources": [
+    "https://product.d1cm.com/heli005/118688/canshu/"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/RSH4532VO",
+   "identity_kind": "code",
+   "model_variants": [
+    "G系列 RSH4532-VO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为同一参数表内的另一具体型号 RSH4532-VO，与 RSH4531-VO5 同属合力 G 系列集装箱正面吊运机，整机参数完整，属堆场用正面吊整机候选；可用于区分同系列吨位/配置差异，值得优先抓取以做差异样本。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "标准型正面吊（港机系列）",
+   "brand": "合力 Heli",
+   "reason": "合力官网港机系列产品页明确列出“标准型正面吊”，属于正面吊专用整机平台（工程机械底盘 + 伸缩臂架 + 集装箱吊具 + 配重），与港口集装箱堆场用途一致；页面参数未给出轴距/轴数信息，4×2 构型需在询价时确认。",
+   "sources": [
+    "https://ln.helichina.com/m/pd_display.php?id=26",
+    "http://product.helichina.com/product/26"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/标准型正面吊港机系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "标准型正面吊（港机系列）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "候选文本说明合力官网港机系列产品页明确列出“标准型正面吊”，属于正面吊专用整机平台（工程机械底盘+伸缩臂架+集装箱吊具+配重），与港口集装箱堆场用途一致；页面参数未给出轴距/轴数，4×2 需确认。因与“标准型正面吊”信息重叠，排序放在较后作为交叉核实样本。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "G系列 RSHD4531-A19LLiG2",
+   "brand": "合力（HELI）",
+   "reason": "参数表第三个具体型号 RSHD4531-A19LLiG2（整机质量更大），同属正面吊运机整机，可用于区分吨位/配置梯度；构型与任务单一致方向，零部件适配（外罩、配重罩、走台护栏、踏步、灯具护罩）需按该型号结构核实。",
+   "sources": [
+    "https://product.d1cm.com/heli005/118688/canshu/"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/RSHD4531A19LLIG2",
+   "identity_kind": "code",
+   "model_variants": [
+    "G系列 RSHD4531-A19LLiG2",
+    "G系列正面吊（RSH4531-VO5 / RSH4532-VO / RSHD4531-A19LLiG2）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 车型 品牌 -\"不做具体品牌/型号猜测与竞品对标结论\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为参数表第三个具体型号 RSHD4531-A19LLiG2，整机质量更大，同属正面吊运机整机，可用于区分吨位/配置梯度；外罩、配重罩、走台护栏、踏步、灯具护罩需按该型号结构核实，适合作为系列补充样本。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "集装箱正面吊（无具体型号，销售页）",
+   "brand": "万全（万全港口起重机）",
+   "reason": "销售页标题即为“万全港口起重机集装箱正面吊”，描述其由工程机械底盘（含驾驶室、车架、配重）、伸缩臂架、集装箱吊具三部分构成，符合正面吊整机构型；因来源未给型号与底盘参数，仅作潜在整机供应商候选。",
+   "sources": [
+    "http://www.chinacrane.net/sell/show-484169.html"
+   ],
+   "source_query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/集装箱正面吊无具体型号销售页",
+   "identity_kind": "generic",
+   "model_variants": [
+    "集装箱正面吊（无具体型号，销售页）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方 truck brands -\"不做具体品牌/型号猜测与竞品对标结论\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "候选文本仅说明销售页标题为“万全港口起重机集装箱正面吊”，描述其由工程机械底盘（含驾驶室、车架、配重）、伸缩臂架、集装箱吊具三部分构成，符合正面吊整机构型；但未给型号与底盘参数，信息量最低，仅作潜在整机供应商候选，建议最后再看。",
+   "role": "primary",
+   "intent_rank": 8
+  }
+ ],
+ "pool": {
+  "count": 8,
+  "required": 23,
+  "ok": false,
+  "warning": "候选池 8 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 4
+   }
+  },
+  "missing": [
+   "base",
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 8,
+  "slots": 10,
+  "pool_shortfall": 2
+ },
+ "dedupe": {
+  "input": 15,
+  "unique": 8,
+  "removed": 7,
+  "generic": 4
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 0,
+  "primary": 8
+ }
+}

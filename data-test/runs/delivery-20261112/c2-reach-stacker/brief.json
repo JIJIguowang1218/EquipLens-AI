@@ -1,0 +1,308 @@
+{
+ "brief_id": "auto-20261112-164934",
+ "request": {
+  "raw": "港口集装箱正面吊（驾驶室外罩、配重罩、走台护栏、登车踏步、灯具护罩）；港口堆场工况；4×2 底盘；10 台",
+  "class": "港口集装箱正面吊（reach stacker，集装箱正面吊运机）",
+  "environment": {
+   "value": "港口集装箱堆场：高盐雾/潮湿腐蚀、粉尘、频繁往复作业、箱体与设备间偶发碰撞、夜间强照明作业",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "正面吊专用底盘（前桥承载+后桥转向、伸缩臂架+吊具上装、后置配重），非公路卡车基型",
+   "confidence": 0.8
+  },
+  "configuration": "4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 10,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "request.class",
+   "value": "集装箱正面吊运机（reach stacker），非通用重型卡车/牵引车",
+   "why": "用户原词为“港口集装箱正面吊”，属港口堆场专用起重搬运设备，基型与构型不同于公路卡车",
+   "confidence": 0.9
+  },
+  {
+   "field": "request.configuration",
+   "value": "按用户给定 4×2 底盘理解（前桥驱动承载、后桥转向），不额外推演轴数与轮胎布置",
+   "why": "正面吊常见多轴/大轮胎布置，用户给出 4×2，可能与实际产品有出入，需确认",
+   "confidence": 0.55
+  },
+  {
+   "field": "request.environment",
+   "value": "以“高盐雾潮湿 + 粉尘 + 频繁碰撞 + 冲洗清洁”为工况主特征",
+   "why": "用户只给“港口堆场工况”，防腐与碰撞防护是基于港口环境的推断，需确认是否为沿海港区",
+   "confidence": 0.7
+  },
+  {
+   "field": "parts[custom_cab_shell].part_family",
+   "value": "暂按钣金覆盖件（sheet_metal）分析，实际可能为玻璃钢/复合材料外罩",
+   "why": "材质未在输入中给出，直接影响分缝方式与表面处理维度权重",
+   "confidence": 0.45
+  },
+  {
+   "field": "parts[custom_counterweight_cover]",
+   "value": "理解为“配重块的外包覆罩壳”，而非配重本体结构",
+   "why": "用户用词为“罩”，按外观覆盖件处理；若指配重本体则制造与结构维度权重要调整",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts[custom_walkway_guardrail].part",
+   "value": "作为新型件处理，与词表 side_guard（侧防护栏）区分：后者为法规侧防护，本项为走台检修护栏",
+   "why": "功能与法规依据不同，混用会检到错误证据",
+   "confidence": 0.75
+  },
+  {
+   "field": "scope",
+   "value": "本次不涉及臂架、吊具（spreader）、伸缩机构与底盘传动等上装/底盘功能件",
+   "why": "用户未点名，按不扩范围原则排除",
+   "confidence": 0.8
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "驾驶室外罩",
+    "配重罩",
+    "走台护栏",
+    "灯具护罩"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_cab_shell",
+   "label": "驾驶室外罩",
+   "kind": "part",
+   "location": "车体前上部，臂架侧上方，驾驶室外围覆盖件（含侧围、顶围、前围外观面）",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "hero_45",
+    "side",
+    "front",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "玻璃钢/钣金覆盖件分块",
+    "大面分缝与包边",
+    "视窗与立柱断面"
+   ],
+   "why": "驾驶室外罩是正面吊唯一集中体现家族造型语言的大面，同时其分缝、视窗与立柱断面直接决定四面作业视野；可提供“覆盖件分块方式、面与面过渡、涂层与清洗耐蚀”的可比证据。"
+  },
+  {
+   "part": "custom_counterweight_cover",
+   "label": "配重罩",
+   "kind": "part",
+   "location": "车体后部，配重块外包覆罩壳（后围与后侧转角）",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "manufacturing",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "厚板折弯/焊接罩壳",
+    "铸造配重与罩壳结合",
+    "后部碰撞与倒车防护"
+   ],
+   "why": "配重罩是车尾最大的体量面，既是配重功能件的外化，也是倒车与箱体碰撞的第一道防护；可提供“大块体量如何分缝、折弯/焊接工艺如何约束外观、腐蚀与积尘如何避免”的证据。"
+  },
+  {
+   "part": "custom_walkway_guardrail",
+   "label": "走台护栏",
+   "kind": "function",
+   "location": "车体侧上部走台（检修通道）周边，含立杆、横杆、踢脚板与连接座",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "管/型材框架 + 螺栓连接座",
+    "节点与端头处理",
+    "踢脚板与防坠"
+   ],
+   "why": "走台护栏把“安全可达”落到具体节点：立杆间距、连接座做法、端头封口与防腐处理，是判断该产品人机与结构是否成熟的关键证据，也能说明护栏与驾驶室外罩、配重罩的界面分缝关系。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "part",
+   "location": "车体侧面、驾驶室下方至走台之间的登车路径（含踏板、扶手/把手、支撑支架）",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "cross_vehicle",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "冲压/折弯踏板 + 防滑面",
+    "踏板排水与防积尘",
+    "支架与车体连接"
+   ],
+   "why": "登车踏步是可跨品类比较的功能件（港口机械、工程车通用），可提供“踏板防滑做法、排水开口、支架连接与防腐”的直接证据，用于校核正面吊登车路径的合理性与可制造性。"
+  },
+  {
+   "part": "custom_lamp_guard",
+   "label": "灯具护罩",
+   "kind": "function",
+   "location": "前部（臂架侧/前照与作业灯）与后部（配重罩上工作灯、尾灯）灯具外围护罩",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "manufacturing",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "rear",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "折弯钢板/注塑护罩与灯体间隙",
+    "螺栓可拆更换",
+    "碰撞防护与开口遮光角"
+   ],
+   "why": "灯具护罩是“防护不能牺牲法规可见性”的典型冲突点：护罩开口、遮光角、可拆性与防腐处理，可直接佐证该产品在堆场碰撞与冲洗工况下的细节完成度。注意与现有词表 headlamp（大灯与灯罩防护）为近邻概念，本项涵盖前后多处作业灯护罩。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "港口集装箱正面吊（reach stacker，集装箱正面吊运机） 4×2 底盘（用户给定），后置配重、前置臂架与吊具，驾驶室位于车体前上部、臂架侧上方",
+   "parts": [
+    "custom_cab_shell",
+    "custom_counterweight_cover",
+    "custom_walkway_guardrail",
+    "step",
+    "custom_lamp_guard"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "港口集装箱堆场：高盐雾/潮湿腐蚀、粉尘、频繁往复作业、箱体与设备间偶发碰撞、夜间强照明作业 工程车",
+   "parts": [
+    "custom_cab_shell",
+    "custom_counterweight_cover",
+    "custom_walkway_guardrail",
+    "step",
+    "custom_lamp_guard"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "不补充用户未提及的部件（进气格栅、保险杠、后视镜、遮阳板、翼子板/轮拱、下护板、品牌标识区、涂装分色方案等）",
+  "不把“驾驶室外罩”拆解为格栅/大灯/前围等子件，除非用户后续点名",
+  "不将检索范围扩展到公路重卡驾驶室或汽车起重机上车驾驶室，除非作为明确标注的跨品类借用证据",
+  "不做具体品牌/型号猜测与竞品对标结论",
+  "不输出 page_budget / research_units / quota / tiers / budget / strategy_ref 等由代码生成的字段",
+  "不评估成本、交期、供应链与商务条款（10 台为采购规模信息，不影响设计维度判断）",
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "模型"
+ ],
+ "strategy_ref": "default@v1"
+}

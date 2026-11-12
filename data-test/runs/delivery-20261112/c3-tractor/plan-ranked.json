@@ -1,0 +1,519 @@
+{
+ "brief_id": "auto-20261112-165410",
+ "created_at": "2026-11-12T16:55:40",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "农田复合作业：耕整/播种等田间作业 + 道路运输转场；扬尘、泥水、秸秆缠绕、日晒雨淋 大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "农田复合作业：耕整/播种等田间作业 + 道路运输转场；扬尘、泥水、秸秆缠绕、日晒雨淋 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 卡车 车型",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "农田复合作业：耕整/播种等田间作业 + 道路运输转场；扬尘、泥水、秸秆缠绕、日晒雨淋 工程车 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 58,
+ "candidates": [
+  {
+   "model": "TT2004",
+   "brand": "潍坊泰山",
+   "reason": "结果明确为200马力、四轮驱动(4×4)，并列出PTO八键、转速760/850及前后配重300kg/240kg，和任务单后置动力输出、前置配重构型高度相关。",
+   "sources": [
+    "https://www.weifangtaishan.com/product/18.html",
+    "https://www.weifangtaishan.com/products_details/33.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/TT2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "TT2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "文本明确为200马力、四轮驱动4×4，并列出PTO及前后配重300kg/240kg，与任务单的后置动力输出、前置配重块组和200–300hp级4×4构型高度相关。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "T2004",
+   "brand": "纽荷兰",
+   "reason": "结果页面为纽荷兰T2004轮式拖拉机，并提及四柱驾驶室、三速PTO与后悬挂系统，符合农田复合作业所需的后置动力输出/悬挂构型方向。",
+   "sources": [
+    "https://www.newholland-china.cn/T2004/"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/T2004",
+   "identity_kind": "generic",
+   "model_variants": [
+    "T2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "文本为纽荷兰T2004轮式拖拉机，提及四柱驾驶室、三速PTO与后悬挂系统，直接对应驾驶室/后视镜支架、后置动力输出和农田复合作业方向。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "XT3004-N（TK系列260～300马力）",
+   "brand": "耕昂",
+   "reason": "结果标注TK系列260～300马力、驱动方式4驱，并有动力输出轴转速信息，符合200–300 hp级四驱大马力轮式拖拉机候选；悬挂/配重细节需页面复核。",
+   "sources": [
+    "https://www.nongji1688.com/sell/show-5472843.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XT3004N",
+   "identity_kind": "code",
+   "model_variants": [
+    "XT3004-N（TK系列260～300马力）",
+    "XT3004-N（TK系列）",
+    "XT3004-N"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本标注TK系列260～300马力、4驱并有动力输出轴转速信息，处于任务单200–300hp级上界，适合作为大马力4×4代表车型优先复核。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "OPTUM3004",
+   "brand": "凯斯",
+   "reason": "结果明确为300hp、四轮驱动轮式拖拉机，并提到可选前动力输出、前悬挂及复式作业应用，处于任务单200–300 hp级上界，可作候选。",
+   "sources": [
+    "https://wd.nongji360.com/product/view?id=108173&dmname=shop71133168"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/OPTUM3004",
+   "identity_kind": "code",
+   "model_variants": [
+    "OPTUM3004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本明确300hp、四轮驱动，并提到可选前动力输出、前悬挂及复式作业应用，虽处200–300hp上界，但对复合作业和前部配置关系有参考价值。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "悍沃2004",
+   "brand": "悍沃",
+   "reason": "结果标明配套功率200马力、整机型式4×4四轮驱动，符合任务单的4×4与200–300 hp级轮式拖拉机要求。",
+   "sources": [
+    "https://a.nongjitong.com/dealer/kaideruixin/507967.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/悍沃2004",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍沃2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本标明配套功率200马力、整机型式4×4四轮驱动，直接匹配任务单的200hp级与4×4轮式拖拉机基础构型。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "2004",
+   "brand": "悍沃",
+   "reason": "结果明确整机型式为4×4四轮驱动，配套功率200马力，属于200–300 hp级农用轮式拖拉机候选。",
+   "sources": [
+    "https://a.nongjitong.com/dealer/kaideruixin/507967.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/2004",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确整机型式4×4四轮驱动、配套功率200马力，参数匹配明确；但型号信息较泛，需与其他2004系列做差异化复核。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "RG2004",
+   "brand": "瑞泽富沃",
+   "reason": "结果明确为200马力、四轮驱动、4×4轮式、一般农业用，符合大马力农用轮式拖拉机及四驱构型。",
+   "sources": [
+    "https://www.nongjitong.com/product/ruize_rz2004_roller_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/RG2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "RG2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本明确200马力、四轮驱动、4×4轮式且为一般农业用，符合大马力农用轮式拖拉机和农田复合作业背景。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "LT2004",
+   "brand": "雷泰",
+   "reason": "结果明确为200马力四轮驱动型轮式拖拉机，属于200–300 hp级四驱农用轮式拖拉机候选。",
+   "sources": [
+    "http://www.sdltnz.com/article/read/95.html/lng=cn"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/LT2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "LT2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本明确200马力四轮驱动型轮式拖拉机，属于200–300hp级四驱农用轮式拖拉机，可作为200hp主力参照。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "XQ2004",
+   "brand": "金大丰",
+   "reason": "检索参数明确为200马力、四轮驱动轮式拖拉机，符合200–300 hp级和4×4基础构型候选。",
+   "sources": [
+    "https://toutiao.nongjitong.com/product/sdjindafeng_xq2004_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XQ2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "XQ2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本明确200马力、四轮驱动轮式拖拉机，符合200–300hp级和4×4基础构型，适合作为同功率段差异化候选。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "YHX2004",
+   "brand": "黄海金马",
+   "reason": "检索参数明确为200马力、四轮驱动轮式拖拉机，属于200–300 hp级大马力农用轮式拖拉机候选；摘要未展开三点悬挂/配重细节，需页面复核。",
+   "sources": [
+    "https://toutiao.nongjitong.com/product/huanghaijinma_yhx2004_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/YHX2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "YHX2004",
+    "YHX2004（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确200马力、四轮驱动轮式拖拉机，属于目标功率段与4×4构型；但摘要未展开三点悬挂/配重细节，需页面复核后再定优先级。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "FJ2004",
+   "brand": "丰疆",
+   "reason": "结果明确为2004轮式拖拉机、四驱动型，采用大马力发动机，符合200–300 hp级4×4农用轮式拖拉机候选。",
+   "sources": [
+    "https://www.gkzhan.com/st258142/product_13909273.html"
+   ],
+   "source_query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/FJ2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "FJ2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组 车型 品牌"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机（200–300 hp 级农用轮式拖拉机） 4×4（四轮驱动），后置三点悬挂 + 动力输出，前置配重块组"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "文本说明为2004轮式拖拉机、四驱动型并采用大马力发动机，方向匹配；但相较其他候选未明确200马力数值与配重/PTO细节，先列备选复核。",
+   "role": "backup",
+   "intent_rank": 11
+  }
+ ],
+ "pool": {
+  "count": 11,
+  "required": 23,
+  "ok": false,
+  "warning": "候选池 11 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 7
+   }
+  },
+  "missing": [
+   "base",
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 11,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 23,
+  "unique": 11,
+  "removed": 12,
+  "generic": 3
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 1,
+  "primary": 10
+ }
+}

@@ -1,0 +1,549 @@
+{
+ "brief_id": "auto-20261112-170006",
+ "created_at": "2026-11-12T17:01:07",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "仓储物流：室内平整混凝土地面、货架通道（常为窄通道）、人车混流、频繁起停与装卸；无沙尘、无涉水、无强辐射、无越野冲击 电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "仓储物流：室内平整混凝土地面、货架通道（常为窄通道）、人车混流、频繁起停与装卸；无沙尘、无涉水、无强辐射、无越野冲击 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 卡车 车型",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "仓储物流：室内平整混凝土地面、货架通道（常为窄通道）、人车混流、频繁起停与装卸；无沙尘、无涉水、无强辐射、无越野冲击 工程车 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 44,
+ "candidates": [
+  {
+   "model": "EA系列 E25A",
+   "brand": "加力",
+   "reason": "电动四轮平衡重式叉车，前轮驱动后轮转向，强调窄通道适用性和小转弯半径，匹配仓储物流窄通道工况。",
+   "sources": [
+    "http://www.jialift.cn/product/253.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/EA系列E25A",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EA系列 E25A",
+    "EA系列（E25A）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本明确为“电动四轮平衡重式叉车，前轮驱动后轮转向”，并强调“窄通道适用性和小转弯半径”，与仓储物流窄通道、频繁起停工况最直接匹配；四轮平衡重构型也贴合护顶架、配重罩、侧板等设计对象。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "CPD15QA",
+   "brand": "无锡大隆",
+   "reason": "结果为四支点平衡重座式全电动叉车，应用于仓库、货架货物存取等场景。",
+   "sources": [
+    "http://news.soo56.com/news/20081224/16259m1_0.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/CPD15QA",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD15QA"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本为“四支点平衡重座式全电动叉车”，应用于“仓库、货架货物存取”，四支点/座式/平衡重与任务单底盘和护顶架独立框架假设高度一致，适合作为仓储主流车型先看。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "KLA-I",
+   "brand": "Jiangsu Keli Machinery（Keli）",
+   "reason": "结果标注为坐驾式、4轮、平衡重式电动叉车，用于仓库货盘，产品介绍为电动平衡重式四轮叉车。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/jiangsu-keli-machinery-co-ltd/product-245992-2613812.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/KLAI",
+   "identity_kind": "generic",
+   "model_variants": [
+    "KLA-I"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本标注“坐驾式、4轮、平衡重式电动叉车，用于仓库货盘”，并介绍为“电动平衡重式四轮叉车”，配置与仓储物流工况和任务单四轮平衡重座驾式要求吻合。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "EA系列",
+   "brand": "加力（JIALIFT）",
+   "reason": "结果标题为电动四轮平衡重式叉车，描述用于仓库、配送中心等，并提到适用于狭窄通道、转弯半径小。",
+   "sources": [
+    "http://www.jialift.cn/product/253.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/EA系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EA系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本标题为“电动四轮平衡重式叉车”，描述用于“仓库、配送中心”，并提到“适用于狭窄通道、转弯半径小”，对窄通道仓储工况有直接代表性，可作为EA系列泛型参考。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "EL16PRO",
+   "brand": "比亚迪",
+   "reason": "结果明确为1.6吨四支点平衡重座驾式电动叉车，采用四轮底盘，适合仓储堆垛及室内外搬运。",
+   "sources": [
+    "https://www.bydfork.com/cn/product/list_1_7/"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/EL16PRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL16PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为“1.6吨四支点平衡重座驾式电动叉车，采用四轮底盘”，适合“仓储堆垛及室内外搬运”，吨位轻、四支点座驾式，适合仓储通道与登车踏板、侧板等细节设计参考。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "EL20",
+   "brand": "比亚迪",
+   "reason": "结果明确为2吨四支点平衡重座驾式电动叉车，四轮底盘，兼顾室内仓储堆垛与厂区转运。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzY5NjQwNDU4Mg==&mid=2247483831&idx=1&sn=11f70a20ba6d118e514ad687025e6f43",
+    "https://www.bydfork.com/cn/product/list_1_7/"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/EL20",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL20"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为“2吨四支点平衡重座驾式电动叉车，四轮底盘”，兼顾“室内仓储堆垛与厂区转运”，可代表中等吨位仓储主力车型，与任务单四轮平衡重基础平台一致。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "EL18PRO",
+   "brand": "比亚迪",
+   "reason": "结果明确为1.8吨四支点平衡重座驾式电动叉车，四轮底盘，适配仓库堆垛与室内外多工况。",
+   "sources": [
+    "https://www.hnbydforklift.com/forklift/el18pro",
+    "http://mp.weixin.qq.com/s?__biz=MzY5NjQwNDU4Mg==&mid=2247483831&idx=2&sn=f8a6cf7b5d0b1255a7b91b07e23794dd"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/EL18PRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL18PRO",
+    "EL18-PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为“1.8吨四支点平衡重座驾式电动叉车，四轮底盘”，适配“仓库堆垛与室内外多工况”；与EL16PRO/EL20同族且吨位接近，差异性稍弱，故作为后备优先。",
+   "role": "backup",
+   "intent_rank": 7
+  },
+  {
+   "model": "SCF 6040 series",
+   "brand": "皇冠（CROWN）",
+   "reason": "结果标注为坐驾式、4轮、平衡重式电动叉车，并说明SC系列为四轮平衡重叉车。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/crown/product-9227-1670194.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/SCF6040",
+   "identity_kind": "code",
+   "model_variants": [
+    "SCF 6040 series"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本标注“坐驾式、4轮、平衡重式电动叉车”，并说明“SC系列为四轮平衡重叉车”，构型匹配，但仓储窄通道与具体应用信息较少，适合作为构型补充后备。",
+   "role": "backup",
+   "intent_rank": 8
+  },
+  {
+   "model": "EL30",
+   "brand": "比亚迪",
+   "reason": "3.0吨级四支点座驾式电动平衡重叉车，四轮底盘，可用于仓库高位堆垛及场内重货转运。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzY5NjQwNDU4Mg==&mid=2247483788&idx=4&sn=eef8f61b546d201363288400221cc820"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/EL30",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL30"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为“3.0吨级四支点座驾式电动平衡重叉车，四轮底盘”，可用于“仓库高位堆垛及场内重货转运”；构型匹配但吨位偏重，窄通道仓储代表性弱于1.5-2吨级，故后备。",
+   "role": "backup",
+   "intent_rank": 9
+  },
+  {
+   "model": "EL35",
+   "brand": "比亚迪",
+   "reason": "3.5吨级四支点座驾式电动叉车，四轮配重车身，适用于仓库堆垛与厂区重货搬运，构型与任务单一致。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el35"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/EL35",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL35"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为“3.5吨级四支点座驾式电动叉车，四轮配重车身”，适用于“仓库堆垛与厂区重货搬运”，构型与任务单一致；但重载属性偏离窄通道仓储主流，作为后备。",
+   "role": "backup",
+   "intent_rank": 10
+  },
+  {
+   "model": "XCB35",
+   "brand": "徐工（XCMG）",
+   "reason": "结果标注为坐驾式、4轮、平衡重式电动叉车，应用于仓库、室内等场景，载荷3.5吨。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/xcmg/product-50713-2646389.html"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/XCB35",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XCB35"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部 truck brands"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "候选文本标注“坐驾式、4轮、平衡重式电动叉车”，应用于“仓库、室内等场景”，但载荷“3.5吨”，相对任务单仓储窄通道工况偏重，优先度低于中小吨位车型。",
+   "role": "pool",
+   "intent_rank": 11
+  },
+  {
+   "model": "CPD40-35B",
+   "brand": "扬子（YANGZI）",
+   "reason": "检索结果为电动叉车4吨四轮座驾式平衡重堆高装卸搬运车，型号CPD40-35B，符合四轮平衡重坐驾式电动叉车基本构型。",
+   "sources": [
+    "https://www.vipmro.com/product/82127178"
+   ],
+   "source_query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/CPD4035B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD40-35B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车（四轮平衡重式，仓储物流用） 四轮、平衡重式、坐驾式（假设）；护顶架四立柱独立框架，配重罩位于后部"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "候选文本为“电动叉车4吨四轮座驾式平衡重堆高装卸搬运车”，基本构型符合四轮平衡重坐驾式，但4吨级偏重，与仓储窄通道、人车混流和频繁起停的代表性较弱，放入候选池。",
+   "role": "pool",
+   "intent_rank": 12
+  }
+ ],
+ "pool": {
+  "count": 12,
+  "required": 16,
+  "ok": false,
+  "warning": "候选池 12 < 建议 16（1.6×(6+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 8
+   }
+  },
+  "missing": [
+   "base",
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 12,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 24,
+  "unique": 12,
+  "removed": 12,
+  "generic": 11
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 6,
+  "backup": 4,
+  "primary": 6
+ }
+}

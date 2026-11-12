@@ -26,6 +26,7 @@
 | E31/T59 code prefilter | 360+code prefilter 完整 loop：12/12 构成不变，accepted 236→224；无 target 丢失 | `data-test/runs/loop-code-prefilter-20261112/` | `--code-prefilter`、`web._code_ok` | 待提交 |
 | E32/T60 补位与专门来源 | 360+Baidu 定向补位试跑：missing rank2/4 的 Baidu query 0 accepted；360che 反爬、lmjx 超时，专门来源初测失败 | `data-test/runs/loop-platform-360-20261112/BACKFILL-ANALYSIS.md`、`data-test/evals/special-source-test-20261112.md` | `scripts/backfill_baidu.py` | 待提交 |
 | E33/T61 P0 交付不变量 | 全局 asset 去重/attempts/part_only 软标记；hard overview 10/12 或 composition 变差，弃用；P0c 12/12 baseline | `data-test/runs/loop-p0c-20261112/P0-REVIEW.md`；`loop-p0/p0b` 为失败试验 | `retrieval_engine/{engine,contracts,web,cli}.py` | 待提交 |
+| E34 交付泛化测试（5 输入） | 10/10/10/6/14 槽：9/10、7/10、8/10、6/6、14/14；备选 1/0/1/2/4。根因是 planner 产出不足（候选 12/8/11/12/30 vs 需 23/23/23/16/29），不是检索执行 | `data-test/runs/delivery-20261112/`（SUMMARY.md、各 case 的 DELIVERY.md） | `scripts/run_delivery_suite.py`、`summarize_delivery_suite.py`、`build_delivery_manifest.py` | 待提交 |
 | 收口：Recovery/扩源 | 停止叠策略，不接生产；当前是 Query+Source，Platform 未测；class vs alias p≈0.726 不显著；C holdout 0/6 | `docs/recovery-strategy-closeout.md`；E17b/E19–E27 数据 | 相关 probe 脚本仅实验用 | `b15dc8d` 后收口 |
 | LangGraph 迁移评估 | 暂不全量迁移；先扩源/恢复；分支/feature flag/并行回归 | `docs/langgraph-migration-plan.md` | 待启动 | `1787605` |
 | generic 只标不删 | 12/12，3 generic 交付，82 图；无删除 | `data-test/runs/loop-generic-test-20261111/`、`audit.html` | `scripts/render_fetch_audit.py` | `70970ad` |

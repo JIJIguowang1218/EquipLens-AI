@@ -1,0 +1,276 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-164934",
+  "state": "FAILED",
+  "slots": {
+    "target": 10,
+    "accepted": 7,
+    "filled": false
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 7,
+    "missing": 3,
+    "degraded": 4,
+    "degraded_targets": [
+      "G系列 RSH4531-VO5",
+      "G系列 RSH4532-VO",
+      "标准型正面吊（港机系列）",
+      "集装箱正面吊（无具体型号，销售页）"
+    ],
+    "citation_only": 0,
+    "citation_only_targets": [],
+    "bonus": {
+      "models": 0,
+      "images": 0
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 0,
+      "models": [],
+      "images": 0,
+      "no_image_models": [],
+      "short": 4
+    },
+    "unavailable": [
+      {
+        "model": "G系列 RSHD4531-A19LLiG2",
+        "reason": "gate_or_verify_rejected",
+        "hits": 30,
+        "downloaded": 10,
+        "blocked": 0
+      }
+    ],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 6,
+      "filled": false
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 1,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-exact",
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "标准型正面吊",
+      "CRS450Z5",
+      "G系列 RSH4531-VO5",
+      "重型正面吊",
+      "G系列 RSH4532-VO",
+      "标准型正面吊（港机系列）"
+    ],
+    "u-env": [
+      "集装箱正面吊（无具体型号，销售页）"
+    ]
+  },
+  "budget_used": {
+    "queries": 30,
+    "models": 8,
+    "fetches": 105,
+    "verifies": 105
+  },
+  "downloads": {
+    "hits": 180,
+    "downloaded": 140,
+    "failed": 40,
+    "blocked": 0,
+    "gate_pass": 125,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "fs10.chuandong.com": 1,
+      "img.china.alibaba.com": 1,
+      "img5.pcpop.com": 1,
+      "img79.zgong.com": 1,
+      "www.cn357.com": 1,
+      "www.qx100.com": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T16:50:37"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T16:50:37"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T16:51:02"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/10，池中仍有候选",
+      "ts": "2026-11-12T16:53:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:53:32"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T16:53:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 1 个",
+      "ts": "2026-11-12T16:53:33"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T16:53:42"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:53:42"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-12T16:53:42"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:50:37"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 24512,
+      "at": "2026-11-12T16:51:02"
+    },
+    {
+      "state": "FETCH",
+      "ms": 150156,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:53:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 751,
+      "at": "2026-11-12T16:53:33"
+    },
+    {
+      "state": "FETCH",
+      "ms": 9050,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-12T16:53:42"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 10,
+      "at": "2026-11-12T16:53:42"
+    }
+  ],
+  "elapsed_ms": 184480,
+  "state_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c2-reach-stacker\\run\\state.json",
+  "events_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c2-reach-stacker\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c2-reach-stacker\\run\\evidence.json"
+}

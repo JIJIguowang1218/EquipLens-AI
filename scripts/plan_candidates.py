@@ -111,7 +111,7 @@ def main(argv=None) -> int:
     backup = 4 if backup is None else int(backup)
     limits = auto_limits(slots, backup, n_queries=len(query_plan),
                          per_query=args.per_query, limit=args.limit)
-    per_query = limits["per_query"]
+    extract_n = limits["per_query"]   # 每条查询最多抽几个（标量，别和下面的结果列表重名）
 
     all_results: list[dict] = []
     per_query: list[dict] = []
@@ -132,14 +132,14 @@ def main(argv=None) -> int:
         all_results.extend(res)
         if res:
             try:
-                got, usage = extract(key, brief, meta, res, per_query)
+                got, usage = extract(key, brief, meta, res, extract_n)
                 api_rows.append({"api": "chat", "model": "deepseek-flash",
                                  "query_id": meta["query_id"],
                                  "prompt_tokens": usage.get("prompt_tokens"),
                                  "completion_tokens": usage.get("completion_tokens"),
                                  "billable": True})
                 rows, stats = validate_extraction(
-                    got, {str(r.get("url") or "") for r in res}, meta, per_query)
+                    got, {str(r.get("url") or "") for r in res}, meta, extract_n)
                 row.update(stats)
                 extracted.extend(rows)
             except Exception as e:  # noqa: BLE001
@@ -172,7 +172,7 @@ def main(argv=None) -> int:
         "candidates": candidates,
         "pool": {"count": len(candidates), "required": need,
                  "slots": slots, "backup": backup,
-                 "per_query": per_query, "limit": limits["limit"],
+                 "per_query": extract_n, "limit": limits["limit"],
                  "ok": not warn, "warning": warn},
         "coverage": coverage_report(query_plan, candidates,
                                      slots=((brief.get("request") or {}).get("page_budget") or {}).get("vehicle_slots")),

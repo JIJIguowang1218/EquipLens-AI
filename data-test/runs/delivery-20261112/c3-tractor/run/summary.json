@@ -1,0 +1,326 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-165410",
+  "state": "FAILED",
+  "slots": {
+    "target": 10,
+    "accepted": 8,
+    "filled": false
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 8,
+    "missing": 2,
+    "degraded": 2,
+    "degraded_targets": [
+      "TT2004",
+      "XT3004-N（TK系列260～300马力）"
+    ],
+    "citation_only": 1,
+    "citation_only_targets": [
+      "TT2004"
+    ],
+    "bonus": {
+      "models": 1,
+      "images": 1
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 1,
+      "models": [
+        "2004"
+      ],
+      "images": 1,
+      "no_image_models": [],
+      "short": 3
+    },
+    "unavailable": [
+      {
+        "model": "XQ2004",
+        "reason": "gate_or_verify_rejected",
+        "hits": 15,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "LT2004",
+        "reason": "gate_or_verify_rejected",
+        "hits": 5,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "2004",
+        "reason": "not_delivered",
+        "hits": 5,
+        "downloaded": 5,
+        "blocked": 0
+      }
+    ],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 1,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "TT2004",
+      "T2004",
+      "XT3004-N（TK系列260～300马力）",
+      "OPTUM3004",
+      "悍沃2004",
+      "RG2004",
+      "FJ2004"
+    ],
+    "u-env": [
+      "YHX2004"
+    ]
+  },
+  "budget_used": {
+    "queries": 33,
+    "models": 11,
+    "fetches": 150,
+    "verifies": 150
+  },
+  "downloads": {
+    "hits": 215,
+    "downloaded": 200,
+    "failed": 15,
+    "blocked": 0,
+    "gate_pass": 150,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "img77.nongjx.com": 1,
+      "static.cnmasike.com": 1,
+      "www.examw.com": 1
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-12T16:56:02"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-12T16:56:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-12T16:56:33"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/10，池中仍有候选",
+      "ts": "2026-11-12T16:57:48"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 1 个",
+      "ts": "2026-11-12T16:57:49"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-12T16:58:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:58:02"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-12T16:58:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-12T16:58:13"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 8/10，池中仍有候选",
+      "ts": "2026-11-12T16:59:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-12T16:59:32"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，报缺口",
+      "ts": "2026-11-12T16:59:32"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:56:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 30877,
+      "at": "2026-11-12T16:56:33"
+    },
+    {
+      "state": "FETCH",
+      "ms": 75096,
+      "at": "2026-11-12T16:57:48"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-12T16:57:48"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:57:48"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:57:48"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 476,
+      "at": "2026-11-12T16:57:49"
+    },
+    {
+      "state": "FETCH",
+      "ms": 13676,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:58:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 10626,
+      "at": "2026-11-12T16:58:13"
+    },
+    {
+      "state": "FETCH",
+      "ms": 78717,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-12T16:59:32"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 10,
+      "at": "2026-11-12T16:59:32"
+    }
+  ],
+  "elapsed_ms": 209479,
+  "state_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c3-tractor\\run\\state.json",
+  "events_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c3-tractor\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\delivery-20261112\\c3-tractor\\run\\evidence.json"
+}
