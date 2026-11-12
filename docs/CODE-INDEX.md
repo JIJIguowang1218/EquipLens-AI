@@ -34,6 +34,7 @@
 | 评测 | `scripts/eval_task_brief.py`、`data-test/evals/` |
 | 台账 | `scripts/run_ledger.py`、`data-test/runs/INDEX.md` |
 | 交付清单/监控 | `scripts/build_delivery_manifest.py`（DELIVERY.md/json）、`src/equiplens/pricing.py` |
+| 去重人工审核 | `scripts/build_dedupe_review.py`（生成可离线打开的 review.html） |
 | 死图床监测 | `scripts/monitor_bad_domains.py`（只统计，不参与生产） |
 | 交付测试套件 | `scripts/run_delivery_suite.py`、`scripts/summarize_delivery_suite.py` |
 
