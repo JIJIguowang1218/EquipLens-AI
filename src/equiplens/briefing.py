@@ -28,14 +28,16 @@ ALLOWED_AXES = ("form_gesture", "proportion", "structure", "cmf",
                 "regulation", "manufacturing")
 REGION_VIEWS = {"front_face": ["front", "hero_45"], "side": ["side", "hero_45"],
                 "rear": ["rear", "side"], "roof": ["side", "hero_45"]}
-DEFAULT_NEGATIVE = ("客车", "SUV", "房车", "多车拼图", "内饰", "模型")
+DEFAULT_NEGATIVE = ("客车", "SUV", "房车", "多车拼图", "内饰", "广告")
 SKILL_VERSION = "task-brief@v2"
 FORMAT_ONLY_PROMPT = """你是工程车检索任务单解析器。只输出 JSON，不要解释。
 字段：request{class, environment, base_platform, configuration, design_questions[]}；
 regions[{region, label, views[], design_axes[]}]；
 parts[{part, label, kind, location, part_family, taxonomy_status, relation_axis,
        design_axes[], views[], design_relevance, accept, mechanism[], why}]；
-assumptions[{field, value, why, confidence}]；negative[]。
+assumptions[{field, value, why, confidence}]；negative[]：
+  **只能写不超过 6 个字的排除词**（如 客车/SUV/多车拼图/内饰/广告），
+  不得写句子、规则或说明；不要写“模型/品牌/车型”这类会误伤的词。
 views 只能取 front/hero_45/side/rear/interior/detail；
 design_axes 只能取 form_gesture/proportion/structure/cmf/function_ergonomics/
 environment_protection/regulation/manufacturing。
@@ -215,11 +217,13 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
                         "why": f"规则：exact {exact_quota} + environment {env_quota}",
                         "confidence": 1.0})
 
-    negative = []
-    for x in _as_list(payload.get("negative")) + list(DEFAULT_NEGATIVE):
-        x = _clean(x)
-        if x and x not in negative:
-            negative.append(x)
+    # negative 只允许短排除词：LLM 容易写成整句规则，拼进 query 会让搜索 0 结果
+    from .planning import negative_terms as _neg_terms
+    negative: list[str] = []
+    for x in list(_as_list(payload.get("negative"))) + list(DEFAULT_NEGATIVE):
+        for t in _neg_terms({"negative": [x]}):
+            if t not in negative:
+                negative.append(t)
 
     created = now or time.strftime("%Y%m%d-%H%M%S")
     brief = {

@@ -218,20 +218,30 @@ def top_up_queries(brief: dict, existing: list[str] | None = None,
 
 
 def negative_terms(brief: dict) -> list[str]:
-    """只取适合放进搜索 query 的短负词；长句/指令不要拼进 query。
+    """只取适合放进搜索 query 的**短排除词**；句子/指令会毁掉查询。
 
-    2026-11-11：task-brief 的 negative 可能写成“不要把前脸拆成……”这类指令，
-    直接拼进 360 query 会把所有查询变成 0 结果（新 brief 实测）。
+    2026-11-12 复现：新 brief 的 negative 里混进了
+    「不引入具体品牌/型号或“同系列”作为设计理由。」这类指令（23 字，旧过滤器放过），
+    被拼进每条 query 后，沙漠牵引车候选从 22 掉到 11。
     """
-    out = []
-    for x in (brief.get("negative") or [])[:4]:
-        t = normalize_text(x)
-        if not t or len(t) > 24:
+    banned = ("不", "勿", "禁止", "避免", "必须", "请", "作为", "理由", "分析",
+              "取证", "输出", "字段", "配额", "预算", "单元", "用户", "点名",
+              "仅", "除非", "标注", "拆", "扩展", "补充", "跨")
+    meta = {"模型", "品牌", "型号", "车型", "汽车", "卡车", "车", "图片", "素材"}
+    out: list[str] = []
+    for x in (brief.get("negative") or [])[:8]:
+        t = normalize_text(x).strip("“”\"'")
+        if not t or len(t) > 8:
             continue
-        if any(m in t for m in ("不要", "不得", "禁止", "避免", "必须", "请")):
+        if any(b in t for b in banned):
             continue
-        out.append(t)
-    return out
+        if t in meta:
+            continue
+        if re.search(r"[，。；、,;:/]", t):
+            continue
+        if t not in out:
+            out.append(t)
+    return out[:4]
 
 
 def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:
@@ -254,13 +264,15 @@ def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:
             rows.append({"query_id": query_id, "dimension": dimension,
                          "query": q, "purpose": purpose})
 
+    # 关键：短 ≠ 相同。每类查询要有不同的“检索意图”，否则 360 返回同一批结果，
+    # 去重后候选会塌缩（2026-11-12 实测：查询高度重合时 30 条抽取只剩 9 台车）。
     add("base", "q-base", short_text(" ".join(x for x in (env, klass, conf) if x), 34),
         "工况 + 类目 + 构型")
-    add("model", "q-model", short_text(f"{klass} {conf} 车型", 30),
+    add("model", "q-model", short_text(f"{klass} {conf} 车型 品牌", 30),
         "车型候选主查询")
-    add("environment", "q-env", short_text(f"{env} {conf} 工程车", 30),
+    add("environment", "q-env", short_text(f"{env} {conf} 卡车 车型", 30),
         "邻域工况/上装")
-    add("english", "q-en", short_text(f"{klass} {conf} truck", 30),
+    add("english", "q-en", short_text(f"{klass} {conf} truck brands", 30),
         "英文品牌兜底")
 
     for unit in brief.get("research_units") or []:

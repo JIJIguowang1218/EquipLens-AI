@@ -230,6 +230,18 @@ def test_merge_rules_from_human_verdicts():
     assert "6×6沙漠卡车" not in models
 
 
+def test_negative_terms_only_short_words():
+    """negative 只允许短排除词；整句指令/元词会毁掉查询（2026-11-12 复现）。"""
+    from equiplens import planning
+    old = {"negative": ["客车", "SUV", "多车拼图", "内饰", "广告"]}
+    assert planning.negative_terms(old) == ["客车", "SUV", "多车拼图", "内饰"]
+    bad = {"negative": [
+        "不引入具体品牌/型号或“同系列”作为设计理由。",
+        "不分析用户未点名的进气格栅、后视镜",
+        "模型", "客车"]}
+    assert planning.negative_terms(bad) == ["客车"], planning.negative_terms(bad)
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -243,6 +255,7 @@ if __name__ == "__main__":
     check("候选池下限守卫", test_pool_requirement_guard)
     check("查询压缩与补查询", test_short_query_builder)
     check("人审后的合并规则", test_merge_rules_from_human_verdicts)
+    check("negative 只收短词", test_negative_terms_only_short_words)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))
