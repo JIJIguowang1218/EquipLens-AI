@@ -129,10 +129,12 @@ def main(argv=None) -> int:
     base = Path(args.base)
     cases = sorted([d for d in base.iterdir() if (d / "brief.json").exists()])
     rows = [collect(c) for c in cases]
-    (base / "SUMMARY.json").write_text(
+    # 用 SUITE-SUMMARY 前缀：Windows 大小写不敏感，SUMMARY.json 会被 run_ledger
+    # 误当成 run 的 summary.json 读取（2026-11-12 踩过）
+    (base / "SUITE-SUMMARY.json").write_text(
         json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
-    (base / "SUMMARY.md").write_text(render(rows), encoding="utf-8")
-    print(f"cases={len(rows)} -> {base/'SUMMARY.md'}")
+    (base / "SUITE-SUMMARY.md").write_text(render(rows), encoding="utf-8")
+    print(f"cases={len(rows)} -> {base/'SUITE-SUMMARY.md'}")
     return 0
 
 

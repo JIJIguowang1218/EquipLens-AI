@@ -13,7 +13,9 @@
 > 2. `docs/v1-retrieval-convergence-decision.md`（为什么停止扩源）
 > 3. `docs/EXPERIMENTS-INDEX.md`（实验→数据→脚本→commit）
 > 4. `docs/DEPENDENCIES.md`（依赖/模型/key/DB）
-> 5. `docs/OPTIMIZATION-METRICS.md` + `data-test/evals/METRICS.csv`（优化统计边界）
+> 5. `docs/DATA-CHANGELOG.md`（哪些数据被重算、哪些结论作废、测试文件改了什么）
+> 6. `docs/killed-strategies.md`（已毙策略，别重复提）
+> 7. `docs/OPTIMIZATION-METRICS.md` + `data-test/evals/METRICS.csv`（优化统计边界）
 >
 > ## ⚠️ 新会话第一件事
 >
@@ -23,25 +25,72 @@
 > - 放置位置：`~/.equiplens/deepseek.env`
 >   （Windows：`C:\Users\<用户名>\.equiplens\deepseek.env`）
 > - 内容一行：`DEEPSEEK_API_KEY=sk-...`
-> - 同一个 key 同时用于 Chat / Search / Fetch；按**成功调用**计费 $0.75/1000 次
+> - 同一个 key 同时用于 Chat / Search / Fetch；
+> - 计价以官网为准（`src/equiplens/pricing.py`）：`deepseek-flash` 输入 ¥2/¥1、输出 ¥8/¥4 每百万 tokens（峰/谷）；
+>   Search/Fetch 各 ¥5/1000 次成功请求；峰时=北京时间周一至周五 9:00–12:00、14:00–18:00，其余空闲；
 > - 没有 key 时：门卫/抓取测试仍可跑（本地 CLIP 不花钱），但 `scripts/plan_candidates.py`、引用核验、重规划全部不可用；跑 loop 需加 `--no-citation`，且不能用 `--plan`
-> - 单轮 12 槽实测成本：规划 $0.005 + 引用核验 $0.019 ≈ **$0.024**
+> - 单轮 12 槽实测：约 ¥0.3–0.5（含规划/引用核验/抓取），5 输入合计约 ¥2.06（峰时）
 
 
-## 0.0 当前进度与下一步（2026-11-12）
+## 0.0 当前进度与下一步（2026-11-12 交接版）
 
-- 检索 v1 收敛：停止 Query/Source/Platform 扩源；normal 默认 360 优先，relevant 不足时百度/Bing 兜底（口径以 `imagesearch.search_images_ex` 代码为准）。
-- P0：asset 去重、attempt 日志、`part_only` 软标记、code prefilter 可选；
-  hard overview 已否（10/12 或 composition 变差），`loop-p0c` 12/12 保持 baseline composition。
-- Platform 完整 loop 对照失败：Baidu union 丢 HF8066、unknown 暴增；只保留 opt-in/降级候选，不默认。
-- code prefilter 独立验证：12/12 构成不变，accepted 236→224；可选。
-- 360+Baidu 定向补位试跑未命中；专门来源 360che 反爬、lmjx 超时，暂不接。
-- 下一步：
-  1. 第一次用户交付（N 主 + 4 备，N = 用户输入槽数；beta + 人审）；
-  2. feedback router + 短期 session；
-  3. LangGraph 只做 feedback/session spike，不重写核心；
-  4. 不恢复已收口扩源策略；不把 fixture/预制 brief 当用户输入。
+**位置**：检索 v1 已收敛；交付链路（5 输入泛化测试）已跑通；**第一次正式用户交付尚未发出**。
 
+### 已完成（本阶段）
+
+- 交付口径：**N 主（用户输入 `page_budget.vehicle_slots`）+ 4 备**；备选必须有图，不够从既有 plan 池补抓（不新增规划）；
+- **降级兜底**：所有层级/候选耗尽后，用 unknown/低清/泛称图把槽填满并标 `degraded_fill`（底线：不能缺交付）；
+- **台账语义**：`auto_conclusion` 与人工 `conclusion` 分离，`needs_review` 只认人工结论（旧 55 条已迁移）；
+- **可观测**：每状态耗时（`summary.timings`）、DeepSeek 峰谷定价（`pricing.py`）、三层交付清单（`DELIVERY.md`）；
+- **图片可得性**：单轮内按 host 拉黑（连续 3 次）、目标级早停（连续 8 次失败）、长期死图床监测（只统计，不参与生产）；
+- **去重**：按人审收紧（多码拆分、泛称去括号、品牌前缀、牵引车头归一）；人审页 `scripts/build_dedupe_review.py`；
+- **查询**：`negative` 只收 ≤8 字短词；恢复查询意图差异（车型品牌 / 卡车车型 / truck brands / unit scope）。
+
+### 最新权威数据：`delivery-20261112-clean`（2026-11-12，n=1）
+
+| 输入 | 槽位 | 候选 | 有图 | 交付 | 备选 |
+|---|---:|---:|---:|---:|---:|
+| 沙漠牵引车 | 10 | 17 | 11 | 9/10 | 2/4 |
+| 港口正面吊 | 10 | 16 | 12 | 10/10 | 2/4 |
+| 轮式拖拉机 | 10 | 27 | 17 | 10/10 | 4/4 |
+| 电动叉车 | 6 | 24 | 10 | 6/6 | 4/4 |
+| 单钢轮压路机 | 14 | 36 | 23 | 14/14 | 4/4 |
+
+合计：主 **49/50**、备选 **16/20**、峰值成本 **¥2.064**（谷约 ¥1.46）。同代码 c1 另一次为 10/10 + 3/4 → **±1 波动，n=1 不可当回归**。
+
+### 下一步（按顺序）
+
+1. **negative A/B（最高优先，产品负责人 11-12 提出）**：同一批 brief/plan，两臂“with vs without `-"…"`”，只改 `build_query_plan` 的拼接开关（建议 CLI `--no-negative`），不改 brief；
+   指标：候选数 / 有图数 / 交付 / 备选 / degraded / 成本 / 耗时；
+   判据：无显著收益或有害 → **删掉 negative**，只保留 `_relevant` + 门卫；
+2. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
+3. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机，不急着上 LangGraph）；
+4. 分析模块整体测试（先测 brief→prompt→schema 传递，再做“有/无前置预分析”A/B）；
+5. 知识库（人审准入 + 库内优先召回）；
+6. LangGraph 只做 feedback/session spike → 后端事件流收敛 → 前端 S0–S3 接真实数据。
+
+### 整体计划（产品负责人 2026-11-12 定）
+
+| 阶段 | 目标 | 状态 |
+|---|---|---|
+| ① 交付验收 | 线性链路端到端质量验收（本文档的 5 输入测试） | ✅ 已跑，待正式交付 |
+| ② 意图识别 | 反馈 → 意图 → 回溯节点（改 query / plan / tier / fill） | 待开工 |
+| ③ 分析模块 | 交付链路信息传递 + 前置预分析价值 A/B | 待开工 |
+| ④ 知识库 | 分析/证据经人审沉淀，库内优先召回 | 待设计 |
+| ⑤ LangGraph | 只包 session/feedback，核心状态机不动 | 待 spike |
+| ⑥ 后端收敛 | events.jsonl → SSE/API | 未开始 |
+| ⑦ 前端 | S0–S3 接真实数据 | 未开始 |
+
+### 当前已知风险
+
+- 沙漠牵引车有图候选 11–13 台 < 14 台需求 → 备选经常 short；不要靠换源解决（政策禁止），先看 negative A/B 与 topup 结果；
+- `q1/q12` 两套结果受 brief negative 污染，**结论作废**，仅存档；
+- `negative` 的必要性从未 A/B 验证（见 §0.3 与 `DATA-CHANGELOG`）；
+- 降级兜底已实现，但在 c1 未触发（所有有图候选都 accepted）；真实“unknown 占槽”只在单测覆盖。
+
+### 本次交接的改动/数据变更
+
+见 [`DATA-CHANGELOG.md`](DATA-CHANGELOG.md)：台账重写、run 产物重算、作废实验、测试文件改动、图片不同步清单。
 
 ### 0.0.1 新对话/新设备：实验记录模板（必须）
 
@@ -86,21 +135,43 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
   - `crawl4ai`：旧渠道实验用；当前 loop 不依赖
 - **不需要** pytest：所有测试是 `check()` 脚本，失败退出码 1。
 
-### 2) 自检 + 全量测试（约 2–4 分钟，除模型首次加载外不联网）
+### 2) 自检 + 全量测试（约 3–5 分钟，除模型首次加载外不联网）
 
 ```bash
-PYTHONPATH=src python scripts/check_env.py             # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check    # run 台账完整性（缺 RUN.json 会报）
-PYTHONPATH=src python tests/test_planning.py           # 9/9（planner 纯函数）
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 28/28
-PYTHONPATH=src python tests/test_imagesearch.py        # 13/13（全 monkeypatch，不联网）
-PYTHONPATH=src python tests/test_gate.py               # 11/11（首次会加载 CLIP，约 59MB）
-PYTHONPATH=src python tests/test_run_ledger.py         # 7/7（含 needs_review 不变量）
+PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（68+ 条，0 issue）
+PYTHONPATH=src python tests/test_planning.py            # 13/13
+PYTHONPATH=src python tests/test_retrieval_engine.py    # 38/38
+PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）
+PYTHONPATH=src python tests/test_gate.py                # 11/11（首次加载 CLIP ~59MB）
+PYTHONPATH=src python tests/test_briefing.py            # 5/5
+PYTHONPATH=src python tests/test_run_ledger.py          # 7/7
+PYTHONPATH=src python tests/test_association.py         # 12/12
+PYTHONPATH=src python tests/test_pricing.py             # 4/4（峰谷计价）
+PYTHONPATH=src python tests/test_delivery_manifest.py   # 3/3（依赖仓库内 run 产物）
+PYTHONPATH=src python tests/test_bad_domains.py         # 3/3
+PYTHONPATH=src python tests/test_dedupe_review.py       # 2/2
 ```
 
-预期结果：`planning: 9/9`、`retrieval_engine: 28/28`、`imagesearch: 13/13`、`gate: 11/11`、`run_ledger: 7/7`。
+预期：除 `test_gate` 首次加载模型外全部秒级；合计 105+ 断言全绿。
+历史遗留失败（与本轮无关）：`test_analysis` 11/14、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 是空库）。
 
-历史遗留失败（与本轮无关，换机器仍可能看到）：`test_analysis` 11/14、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 是空库）。
+**交付链路冒烟（需要 key，约 2–3 分钟/条）**：
+
+```bash
+# 1) brief（API 生成，不允许手写）
+PYTHONPATH=src python scripts/build_brief.py --input "沙漠牵引车（前保险杠、侧防护栏、登车踏步、大灯、前轮拱）；沙漠/油田工况；6×6；10 台"   --class "沙漠牵引车" --slots 10 --out /tmp/demo/brief.json
+# 2) plan + 排序（API；--topup 2 为默认）
+PYTHONPATH=src python scripts/plan_candidates.py --brief /tmp/demo/brief.json --out /tmp/demo/plan.json
+PYTHONPATH=src python scripts/rank_plan.py --plan /tmp/demo/plan.json --brief /tmp/demo/brief.json --out /tmp/demo/plan-ranked.json
+# 3) loop（空库、只用 plan）
+PYTHONPATH=src python -m equiplens.retrieval_engine --brief /tmp/demo/brief.json --web-only   --plan /tmp/demo/plan-ranked.json --run-root /tmp/demo --run-id run
+# 4) 交付清单 + 审核页
+PYTHONPATH=src python scripts/render_fetch_audit.py /tmp/demo/run
+PYTHONPATH=src python scripts/build_delivery_manifest.py --run /tmp/demo/run --brief /tmp/demo/brief.json --plan /tmp/demo/plan-ranked.json
+```
+
+产物：`/tmp/demo/run/{state,summary,timings?}.json`、`DELIVERY.md/json`、`audit.html`、`images/`。
 
 ### 3) 跑一轮完整检索（含在线规划）
 

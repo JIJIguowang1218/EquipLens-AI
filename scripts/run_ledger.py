@@ -208,8 +208,14 @@ def build_record(path: Path) -> dict:
     summary = _read_json(path / "summary.json")
     state = _read_json(path / "state.json")
     plan = _read_json(path / "plan.json")
+    # Windows 大小写不敏感：目录里的 SUMMARY.json 可能被解析成 list（套件汇总），
+    # 不是 run 的 summary。只接受 dict。
+    summary = summary if isinstance(summary, dict) else None
+    state = state if isinstance(state, dict) else None
+    plan = plan if isinstance(plan, dict) else None
     children = [d for d in sorted(path.iterdir()) if d.is_dir() and (d / "plan.json").exists()]
     existing = _read_json(path / "RUN.json") or {}
+    existing = existing if isinstance(existing, dict) else {}
 
     if plan:
         kind = "plan"

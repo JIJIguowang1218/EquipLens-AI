@@ -13,6 +13,8 @@
 - 文档：`docs/**`
 - 评测结论/数据：`data-test/evals/**`
 - run 的轻量轨迹：`data-test/runs/**/state.json`、`summary.json`、`fetch_log.jsonl`、`events.jsonl`、`audit.html`、`RUN.json`
+- 交付与监控产物：`DELIVERY.md/json`、`SUITE.json`、`SUITE-SUITE-SUMMARY.md`、`dedupe-review.html`、`data-test/evals/bad-domains-monitor.*`
+- 台账：`data-test/runs/INDEX.json/md`（由 `run_ledger.py` 生成；语义见 `DATA-CHANGELOG.md`）
 - 测试夹具：`data-test/retrieval-fixtures-20261109/**`（P1 测试必需）
 - 人工审核页：部分 `review.html` + 其中跟踪的缩略图
 
@@ -21,7 +23,7 @@
 - API key：`~/.equiplens/deepseek.env`（仓库外；新电脑必须自备）
 - Python venv、`__pycache__`
 - UForm3 模型缓存（首次运行自动下载，约 59MB）
-- 大多数 `data-test/runs/**/images/` 原图（版权/体积）
+- 大多数 `data-test/runs/**/images/` 原图（版权/体积）；`.gitignore` 规则 `data-test/runs/**/images/`
 - `data-test/equiplens.db`、`data-test/ab-images/`、`data-test/ui-fixtures/`
 - `tmp/`、输出视频/PPT 中间产物
 
@@ -36,6 +38,13 @@
 - 正式实验按 `HANDOFF.md` 0.0.1 的 KPI 模板记录；
 - 初始 vs 最终只按 `docs/INITIAL-VS-FINAL.md` 的受控口径比较；
 - 不要把候选级 precision、run 级 delivery、case 级 PASS 混成一个数字。
+
+## 已知的“重算/作废”数据（换机器前必读）
+
+- `delivery-20261112`、`-q1`、`-q12`：brief negative 污染，**交付结论作废**，仅存档；
+- `delivery-20261112-clean`：修复后权威基线；
+- 多个 `RUN.json` 在 2026-11-12 被 `run_ledger.py` 重写（机器结论移入 `auto_conclusion`）；
+- 详见 `docs/DATA-CHANGELOG.md`。
 
 ## 新电脑缺什么
 

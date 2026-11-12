@@ -29,11 +29,17 @@
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 28/28，需 test fixtures
-PYTHONPATH=src python tests/test_imagesearch.py        # 13/13
-PYTHONPATH=src python tests/test_planning.py           # 9/9
-PYTHONPATH=src python scripts/run_ledger.py --check     # 68 records，0 issue
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 38/38，需 test fixtures
+PYTHONPATH=src python tests/test_imagesearch.py        # 14/14
+PYTHONPATH=src python tests/test_planning.py           # 13/13
+PYTHONPATH=src python scripts/run_ledger.py --check     # 68+ records，0 issue
 ```
+
+## 新机器接续
+
+- 步骤：`docs/HANDOFF.md` §0.1（30 分钟接续）；
+- 数据/测试文件哪些被重算、哪些结论作废：`docs/DATA-CHANGELOG.md`；
+- 计价：`src/equiplens/pricing.py`（峰/谷 + Search/Fetch 按次）。
 
 ## 数据库
 

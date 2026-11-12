@@ -165,9 +165,16 @@ task-brief@v2 (API)
 - code prefilter 独立对照：`loop-code-prefilter-20261112`，12/12 构成不变。
 - **备选补抓回归（2026-11-12）**：`verify-backup2-20261112`，12/12（构成与 baseline 完全一致）+ 备选 **4/4、20 图**；
   一轮补抓新增 6 个候选（plan 26 台用尽），`queries 114 / models 26 / fetches 316`；
+- **5 输入交付（权威，2026-11-12）**：`delivery-20261112-clean`，主 49/50、备选 16/20、峰值成本 ¥2.064；
+  5 个类目分别 9/10、10/10、10/10、6/6、14/14（c1 另一次 10/10 → ±1 波动）；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
   `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。
+
+## 7.5 交接与数据变更
+
+- 换机器：`docs/HANDOFF.md` §0.1 + `docs/DEPENDENCIES.md`；
+- 哪些 run 被重算、哪些结论作废、测试文件改了什么：`docs/DATA-CHANGELOG.md`。
 
 ## 8. 测试保真规则（2026-11-12 加）
 

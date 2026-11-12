@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-12T16:10:25 · 共 73 条 · 待补人工结论 35 条
+> 生成时间：2026-11-12T22:03:22 · 共 80 条 · 待补人工结论 42 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -60,6 +60,13 @@
 | text-retrieval | `run-suicheche-blind-v3` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v3](data-test/runs/run-suicheche-blind-v3/REPORT.md) |
 | text-retrieval | `run-suicheche-profile` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-profile](data-test/runs/run-suicheche-profile/REPORT.md) |
 | other | `source-expansion-briefs-20261111` | plan-set | 2026-11-11 | — | — | — |
+| other | `delivery-20261112` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-clean` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-intentfix` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-mergefix` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-negfix` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-q1` | plan-set | 2026-11-12 | — | — | — |
+| other | `delivery-20261112-q12` | plan-set | 2026-11-12 | — | — | — |
 | other | `verify-backup-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-backup-20261112/summary.json) |
 | other | `verify-backup2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=84 · gate_pass=79 · degraded=8 | [—](data-test/runs/verify-backup2-20261112/audit.html) |
 | other | `verify-contract-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=66 · gate_pass=61 · degraded=8 | [—](data-test/runs/verify-contract-20261112/audit.html) |
