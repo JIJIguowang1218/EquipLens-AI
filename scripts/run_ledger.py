@@ -156,6 +156,41 @@ def _plan_metrics(plan: dict) -> dict:
     }
 
 
+def _looks_auto(text: str, record: dict) -> bool:
+    """判断一条结论是不是旧版台账自动生成的（用于迁移）。"""
+    t = (text or "").strip()
+    if not t:
+        return False
+    status = str(record.get("status") or "")
+    if status and t == status:
+        return True
+    if t == "无结论":
+        return True
+    if status and re.fullmatch(rf"{re.escape(status)} \d+/\d+（degraded=[^）]*）", t):
+        return True
+    if re.fullmatch(r"候选 \S+ / 查询 \S+ / 去重移除 \S+", t):
+        return True
+    if re.fullmatch(r"\d+ 个 plan", t):
+        return True
+    return False
+
+
+def _auto_conclusion(record: dict, kind: str, plan_count: int) -> str:
+    """机器统计出的摘要。**不是**人工结论，只写 auto_conclusion。"""
+    m = record.get("metrics") or {}
+    if kind == "run":
+        if m.get("delivery"):
+            return f"{record['status']} {m['delivery']}（degraded={m.get('degraded', '?')}）"
+        return record["status"] or "无结论"
+    if kind == "plan":
+        removed = m.get("dedupe_removed")
+        return (f"候选 {m.get('candidates', '?')} / 查询 {m.get('queries', '?')}"
+                f" / 去重移除 {removed if removed is not None else '—'}")
+    if kind == "plan-set":
+        return f"{plan_count} 个 plan"
+    return ""
+
+
 def build_record(path: Path) -> dict:
     name = path.name
     mtime = path.stat().st_mtime
@@ -195,30 +230,33 @@ def build_record(path: Path) -> dict:
         "audit": "data-test/runs/" + name + "/audit.html"
                  if (path / "audit.html").exists() else "",
         "conclusion": existing.get("conclusion", ""),
-        "needs_review": not bool(existing.get("conclusion")),
+        "auto_conclusion": existing.get("auto_conclusion", ""),
+        "conclusion_source": existing.get("conclusion_source", ""),
         "generated_by": "scripts/run_ledger.py",
     }
     if kind == "plan-set":
         record["plans"] = [d.name for d in children]
         record["metrics"] = {"plans": len(children)}
-    if report and not record["conclusion"]:
-        record["conclusion"] = _conclusion_from_report(report)
+    # 旧版台账把机器统计写进 conclusion，然后用它把 needs_review 清成 false。
+    # 迁移：可识别的机器结论移到 auto_conclusion；conclusion 只留人工/报告来源。
+    if record["conclusion"] and _looks_auto(record["conclusion"], record):
+        record["auto_conclusion"] = record["auto_conclusion"] or record["conclusion"]
+        record["conclusion"] = ""
+    if record["conclusion"]:
+        record["conclusion_source"] = record.get("conclusion_source") or "stored"
+    elif report:
+        text = _conclusion_from_report(report)
+        if text:
+            record["conclusion"] = text
+            record["conclusion_source"] = "report"
     if not record["conclusion"]:
-        m = record.get("metrics") or {}
-        if kind == "run":
-            if m.get("delivery"):
-                record["conclusion"] = f"{record['status']} {m['delivery']}（degraded={m.get('degraded', '?')}）"
-            else:
-                record["conclusion"] = record["status"] or "无结论"
-        elif kind == "plan":
-            removed = m.get("dedupe_removed")
-            record["conclusion"] = (f"候选 {m.get('candidates', '?')} / 查询 {m.get('queries', '?')}"
-                                    f" / 去重移除 {removed if removed is not None else '—'}")
-        elif kind == "plan-set":
-            record["conclusion"] = f"{len(children)} 个 plan"
+        record["auto_conclusion"] = record["auto_conclusion"] or _auto_conclusion(
+            record, kind, len(children))
+        record["conclusion_source"] = record["conclusion_source"] or "auto"
+    # 待复核 = 没有人工结论；机器摘要不能自证已复核。
     record["needs_review"] = not bool(record["conclusion"])
-    # 只保留人工写的结论/备注；metrics/status 每次扫描重算，避免旧值覆盖新值
-    for key in ("conclusion", "notes"):
+    # 只保留人工写的备注；conclusion 已在上面按来源处理过，不能再用旧值覆盖。
+    for key in ("notes",):
         if existing.get(key):
             record[key] = existing[key]
     for key in ("report", "summary", "audit"):
@@ -276,7 +314,7 @@ def write_index(records: list[dict]) -> None:
         "> 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion`"
         " 或 `REPORT.md`。",
         f"> 生成时间：{payload['generated_at']} · 共 {len(records)} 条"
-        f" · 待补结论 {payload['counts']['needs_review']} 条",
+        f" · 待补人工结论 {payload['counts']['needs_review']} 条",
         "",
         "| 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |",
         "|---|---|---|---|---|---|---|",

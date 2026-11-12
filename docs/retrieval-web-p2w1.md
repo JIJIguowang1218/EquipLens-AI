@@ -107,7 +107,7 @@ PYTHONPATH=src python -m equiplens retrieval-run \
 
 ### 重要规则
 
-网页结果写进 `image_evidence` 时是 **`candidate`（E1 / identity=probable / origin=unknown）**，不是 `verified`。只有三证核验通过后，才能升级为可信库。
+网页结果写进 `image_evidence` 时是 **`candidate`（E1 / identity=probable / origin=unknown）**，不是 `verified`。只有**身份核验**达到 confirmed/probable 并人审通过，才能升级为可信库（可见性/原厂已归档，K1/K2）。
 
 ## 6. 下一步 P2-W2
 

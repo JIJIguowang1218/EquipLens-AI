@@ -1,4 +1,4 @@
-"""搜索渠道（Bing 中国图片搜索端点）：对齐产品负责人"百度图片"人肉检索工作流。
+"""搜索渠道（主通道 360 图片；百度/Bing 仅在 360 结果不足时兜底）。
 
 按"品牌+型号"查询词搜图 → 候选图下载 → 门卫过滤 → 入库。
 证据等级: 搜索词声称型号 = co_occurrence_only(弱关联 T3)，provisional 挂载待人工确认——
@@ -389,8 +389,9 @@ def _search_baidu(query: str, limit: int) -> tuple[list[dict], str]:
                                   "Referer": "https://image.baidu.com/"},
                          timeout=20)
         d = json.loads(r.text.replace("\\'", "'"))
-    except Exception:  # noqa: BLE001
-        return out
+    except Exception as e:  # noqa: BLE001
+        # 必须返回 (hits, status)：调用方按元组解包，返回 list 会炸成 error:ValueError
+        return out, f"error:{type(e).__name__}"
     for item in d.get("data", []):
         url = item.get("objURL") or item.get("hoverURL") or ""
         if not url.startswith("http"):

@@ -109,6 +109,8 @@ def new_state(brief, *, run_id: str) -> dict[str, Any]:
         "final_state": "",
         "units": units,
         "decisions": [],
+        "attempts": {},
+        "replans": 0,
         "budget_used": {"queries": 0, "models": 0, "fetches": 0, "verifies": 0},
         "coverage": {},
         "gaps": [],

@@ -47,8 +47,8 @@ task-brief@v2 (API)
 已实现：
 
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
-- 每个 target 的 fetch/verify/filled attempt 写入 `state.attempts`；
-- `part_only` 标记（临时，职责待上移）：有 scene 元数据、但没有 `scene=single_vehicle` 的 target 标记 `part_only=True`；**长期应由 VERIFY/gate 计算 delivery_scope，FILL 只消费**，见 `docs/fill-responsibility-audit.md`；
+- 每个 target 的 fetch/verify/filled/`assets` attempt 写入 `state.attempts`（`assets` 为真实入库资产数，2026-11-12 修复此前恒 0）；
+- `part_only` 标记（临时，职责待上移）：有 scene 元数据、但没有 `scene=single_vehicle` 的 target 标记 `part_only=True`；**长期应由 VERIFY/gate 计算 delivery_scope，FILL 只消费**，见 `docs/fill-responsibility-audit.md`。该字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + `schemas/retrieval-state.schema.json`），不再只是裸 key；
 - code prefilter（可选，`--code-prefilter`）：code target 且 title code 明确不一致时下载前拒绝。
 
 **未采用**：
@@ -62,7 +62,7 @@ task-brief@v2 (API)
 
 ### 生产默认
 
-- 360 平台；
+- 360 平台（**通道口径以代码为准**：`imagesearch.search_images_ex` 先取 360；360 的 relevant 数不足 `limit` 时依次用百度、Bing 兜底。百度在 2026-11-12 修复过一次返回类型 bug，修复后确实会参与兜底。`--platform-extra baidu` 是另一条独立实验路径，默认关）；
 - gate v4 + RuleVerifier；
 - intent rank；
 - 12 槽；
@@ -83,6 +83,17 @@ task-brief@v2 (API)
 - specialized source 直接 harvest（360che 反爬、lmjx 超时）。
 
 详见 `docs/recovery-strategy-closeout.md`、`docs/v1-retrieval-convergence-decision.md`。
+
+**已毙/归档策略逐条判决（含"不许再提"清单）见 [`docs/killed-strategies.md`](killed-strategies.md)**。
+2026-11-12 新增判决：三证②部件-可见性归档（挪到人机交互）、三证③改装-原厂毙、
+`data/retrieval_strategies.json` 与 `--strategy` 删除（加载后从不消费）。
+
+### 已归档、不再读取的配置（2026-11-12）
+
+- `Brief.stop_rules` / `Brief.negative` / `Brief.strategy_ref`：**只解析、不消费**；schema 保留仅为兼容旧 brief；
+- unit 级 `budget` / `stop`：同上；
+- `.env` 的 `LLM_MONTHLY_BUDGET_CNY`、`LLM_MAX_IMAGES_PER_CALL`：代码无引用，已从 `.env` 删除；
+- 停止条件实际由代码决定：tier 耗尽、槽位满、`budget.max_queries`。注意该键名是历史命名，**实际约束的是累计候选车型数**（`budget_used.models`）；`budget_used.queries` 是真实搜索请求数，目前只做成本/延迟观测，不参与停止判断（2026-11-12）。
 
 ## 5. 数据与“不许假信息”规则
 
@@ -107,6 +118,9 @@ task-brief@v2 (API)
 - P0 硬 overview 试验：`loop-p0-20261112` 10/12（已放弃硬规则）；
 - 平台对照：`loop-platform-{360,baidu,baidu-filtered}-20261112`，Platform 不接入；
 - code prefilter 独立对照：`loop-code-prefilter-20261112`，12/12 构成不变。
+- **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
+  `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
+  `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。
 
 ## 8. 测试保真规则（2026-11-12 加）
 

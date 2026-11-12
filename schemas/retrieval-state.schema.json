@@ -1,32 +1,243 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "EquipLens retrieval run state v0.1",
-  "type": "object",
-  "required": ["run_id", "brief_id", "state", "finished", "units",
-               "coverage", "decisions", "budget_used"],
-  "properties": {
-    "run_id": {"type": "string", "minLength": 1},
-    "brief_id": {"type": "string", "minLength": 1},
-    "state": {
-      "enum": ["BRIEF_READY", "LIBRARY_SEARCH", "FETCH", "VERIFY", "FILL",
-               "GAP_CHECK", "EXTERNAL_DISCOVER", "DEGRADE", "DONE",
-               "FAILED", "WRITEBACK"]
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "title": "EquipLens retrieval run state v0.1",
+ "type": "object",
+ "required": [
+  "run_id",
+  "brief_id",
+  "state",
+  "finished",
+  "units",
+  "coverage",
+  "decisions",
+  "budget_used"
+ ],
+ "properties": {
+  "run_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "brief_id": {
+   "type": "string",
+   "minLength": 1
+  },
+  "state": {
+   "enum": [
+    "BRIEF_READY",
+    "LIBRARY_SEARCH",
+    "FETCH",
+    "VERIFY",
+    "FILL",
+    "GAP_CHECK",
+    "EXTERNAL_DISCOVER",
+    "DEGRADE",
+    "DONE",
+    "FAILED",
+    "WRITEBACK"
+   ]
+  },
+  "final_state": {
+   "enum": [
+    "",
+    "DONE",
+    "FAILED"
+   ]
+  },
+  "finished": {
+   "type": "boolean"
+  },
+  "round": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "tier_index": {
+   "type": "integer",
+   "minimum": 0
+  },
+  "tier_tried": {
+   "type": "boolean"
+  },
+  "library_done": {
+   "type": "boolean"
+  },
+  "units": {
+   "type": "object"
+  },
+  "targets": {
+   "type": "object",
+   "description": "target_id -> Target.to_dict()；part_only 是 FILL 打的软标记",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "target_id": {
+      "type": "string"
+     },
+     "model": {
+      "type": "string"
+     },
+     "source": {
+      "type": "string"
+     },
+     "tier": {
+      "type": "string"
+     },
+     "parts": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "unit_id": {
+      "type": "string"
+     },
+     "unit_ids": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "citation_ok": {
+      "type": "boolean"
+     },
+     "query": {
+      "type": "string"
+     },
+     "identity_kind": {
+      "type": "string"
+     },
+     "intent_rank": {
+      "type": "integer"
+     },
+     "intent_band": {
+      "type": "string"
+     },
+     "intent_reason": {
+      "type": "string"
+     },
+     "role": {
+      "type": "string"
+     },
+     "pinned": {
+      "type": "boolean"
+     },
+     "part_only": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "assets": {
+   "type": "object"
+  },
+  "asset_meta": {
+   "type": "object"
+  },
+  "attempts": {
+   "type": "object",
+   "description": "target_id -> fetch/verify/fill 尝试计数（P0 可解释性）",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "fetched": {
+      "type": "boolean"
+     },
+     "assets": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "verified": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "accepted": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "filled": {
+      "type": "boolean"
+     }
+    }
+   }
+  },
+  "verifications": {
+   "type": "object"
+  },
+  "coverage": {
+   "type": "object"
+  },
+  "decisions": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "budget_used": {
+   "type": "object",
+   "description": "queries=实际发出的搜索请求数（含查询阶梯）；models=累计发现的候选车型数",
+   "properties": {
+    "queries": {
+     "type": "integer",
+     "minimum": 0
     },
-    "final_state": {"enum": ["", "DONE", "FAILED"]},
-    "finished": {"type": "boolean"},
-    "round": {"type": "integer", "minimum": 0},
-    "tier_index": {"type": "integer", "minimum": 0},
-    "tier_tried": {"type": "boolean"},
-    "library_done": {"type": "boolean"},
-    "units": {"type": "object"},
-    "targets": {"type": "object"},
-    "assets": {"type": "object"},
-    "asset_meta": {"type": "object"},
-    "attempts": {"type": "object"},
-    "verifications": {"type": "object"},
-    "coverage": {"type": "object"},
-    "decisions": {"type": "array", "items": {"type": "object"}},
-    "budget_used": {"type": "object"},
-    "assumptions": {"type": "array", "items": {"type": "object"}}
+    "models": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "fetches": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "verifies": {
+     "type": "integer",
+     "minimum": 0
+    }
+   }
+  },
+  "assumptions": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "active_source": {
+   "type": "string"
+  },
+  "active_targets": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "pending_assets": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "verified_assets": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "gaps": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "updated_at": {
+   "type": "string"
+  },
+  "replans": {
+   "type": "integer",
+   "minimum": 0
   }
+ }
 }

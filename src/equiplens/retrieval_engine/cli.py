@@ -22,7 +22,7 @@ import time
 from pathlib import Path
 
 from .adapters import FakeWorld
-from .contracts import load_brief, load_strategy
+from .contracts import load_brief
 from .engine import RetrievalEngine
 from .evidence import EvidenceStore
 from .web import WebWorld
@@ -44,7 +44,6 @@ def main(argv=None) -> int:
                         help="Tavily API key（也可用 TAVILY_API_KEY 环境变量）")
     parser.add_argument("--run-root", default="data-test/runs")
     parser.add_argument("--run-id", default=None)
-    parser.add_argument("--strategy", default="data/retrieval_strategies.json")
     parser.add_argument("--evidence-db", default=None,
                         help="写入 image_evidence 的 SQLite 路径（可选）")
     parser.add_argument("--plan", default=None,
@@ -101,18 +100,13 @@ def main(argv=None) -> int:
             parser.error("非 --web-only 需要 --fixtures")
         world = FakeWorld.from_file(args.fixtures)
 
-    strategy = None
-    if Path(args.strategy).exists():
-        strategy = load_strategy(args.strategy, brief.strategy_ref)
-
     writer = None
     if args.evidence_db:
         store = EvidenceStore(args.evidence_db)
         writer = lambda rows: store.write_rows(run_id, rows)  # noqa: E731
 
     engine = RetrievalEngine(brief, world, run_root=args.run_root,
-                             run_id=run_id, strategy=strategy,
-                             evidence_writer=writer)
+                             run_id=run_id, evidence_writer=writer)
     summary = engine.run()
     if args.evidence_db:
         summary["evidence_db"] = args.evidence_db

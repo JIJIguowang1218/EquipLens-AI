@@ -32,7 +32,7 @@
 | `BRIEF_READY` | 校验任务单/预算 |
 | `LIBRARY_SEARCH` | 先查库内已有素材 |
 | `FETCH` | 抓取/下载/去重/门卫 |
-| `VERIFY` | 三证核验（身份/可见性/原厂），不通过不占槽 |
+| `VERIFY` | **身份核验**（confirmed / probable / unknown），不通过不占槽。（② 可见性 / ③ 原厂已归档，见 `docs/killed-strategies.md` K1/K2） |
 | `FILL` | 占槽 / 备选 / 族去重 |
 | `GAP_CHECK` | 算全局覆盖：够→DONE；缺口→`EXTERNAL_DISCOVER`；本层耗尽→`DEGRADE` |
 | `EXTERNAL_DISCOVER` | **缺口出现时才去找**车型/来源/查询目标 |

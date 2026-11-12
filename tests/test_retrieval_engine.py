@@ -518,6 +518,60 @@ def test_delivery_counts_degraded_identity():
         assert d["degraded"] == 1 and d["degraded_targets"] == ["lib-1"], d
 
 
+def test_part_only_contract_roundtrip():
+    """part_only 必须进契约：dataclass ↔ dict ↔ schema，不能只是裸 key。"""
+    t = Target(target_id="x", model="X", source="plan", tier="exact",
+               parts=("step",), part_only=True)
+    d = t.to_dict()
+    assert d["part_only"] is True, d
+    assert Target.from_dict(d, source="plan", tier="exact").part_only is True
+    state = {
+        "run_id": "r", "brief_id": "b", "state": "DONE", "finished": True,
+        "units": {}, "coverage": {}, "decisions": [],
+        "budget_used": {"queries": 0, "models": 0, "fetches": 0, "verifies": 0},
+        "targets": {"x": d},
+        "attempts": {"x": {"fetched": True, "assets": 2, "verified": 3,
+                           "accepted": 2, "filled": True}},
+    }
+    schema = json.loads((ROOT / "schemas" / "retrieval-state.schema.json")
+                        .read_text(encoding="utf-8"))
+    jsonschema.validate(state, schema)
+
+
+def test_attempts_asset_count_is_real():
+    """attempts.assets 必须真实计数（旧实现恒为 0，导致不可解释）。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    w = {
+        "external": {"u-exact": [target("ext-1", ["bumper"])]},
+        "assets": {"ext-1": {"bumper": [asset("a1"), asset("a2")]}},
+        "verify": {"a1": ok(), "a2": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        run_engine(b, w, root=td)
+        st = json.loads((Path(td) / "t1" / "state.json").read_text(encoding="utf-8"))
+        att = st["attempts"]["ext-1"]
+        assert att["assets"] == 2, att
+        assert att["fetches"] if "fetches" in att else True
+        assert st["budget_used"]["fetches"] == 2, st["budget_used"]
+
+
+def test_budget_queries_are_issued_queries_not_targets():
+    """budget_used.queries 必须来自 world 的真实计数，不能用候选车型数冒充。"""
+    b = base_brief(parts=("bumper",), slots=1)
+    w = {"external": {"u-exact": [target("ext-1", ["bumper"])]},
+         "assets": {"ext-1": {"bumper": [asset("a1")]}},
+         "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        brief = Brief.from_dict(b)
+        world = FakeWorld(w)
+        world.query_count = 7          # 模拟：真实发了 7 次搜索请求
+        engine = RetrievalEngine(brief, world, run_root=td, run_id="t1")
+        summary = engine.run()
+        used = summary["budget_used"]
+        assert used["queries"] == 7, used           # 不是 1（候选数）
+        assert used["models"] == 1, used            # 候选车型数单独记
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -544,6 +598,9 @@ if __name__ == "__main__":
     check("交付守卫：不足报 short", test_delivery_block_marks_short)
     check("交付守卫：degraded 身份", test_delivery_counts_degraded_identity)
     check("单元配额是硬上限", test_unit_quota_caps_accepted_targets)
+    check("part_only 进契约", test_part_only_contract_roundtrip)
+    check("attempts 真实计数", test_attempts_asset_count_is_real)
+    check("预算按真实查询计数", test_budget_queries_are_issued_queries_not_targets)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

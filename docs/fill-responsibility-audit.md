@@ -14,7 +14,7 @@ P0 把 scene/overview 规则塞进 `_state_fill`，是职责错位，不应作�
 | 状态 | 目的 |
 |---|---|
 | FILL | **占槽/备选/族去重** |
-| VERIFY | 三证核验（身份/可见性/原厂）；不通过不占槽 |
+| VERIFY | **身份核验**（confirmed/probable/unknown）；不通过不占槽。（② 可见性 / ③ 原厂已归档，见 `docs/killed-strategies.md` K1/K2） |
 
 FILL 只应该消费“哪些 target 有资格”，不应该自己判断“图是整车还是局部”。
 

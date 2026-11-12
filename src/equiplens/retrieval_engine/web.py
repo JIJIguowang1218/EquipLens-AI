@@ -117,7 +117,10 @@ class RuleVerifier:
         return Verification(
             accepted=accepted,
             identity=identity,
-            visibility="full" if asset.width else "unknown",
+            # ② 部件-可见性 / ③ 改装-原厂 已于 2026-11-12 归档
+            # （见 docs/killed-strategies.md）：不再计算，也不再用“有宽高”冒充可见性。
+            # 字段保留只是为了兼容旧 evidence 记录，值为 unknown。
+            visibility="unknown",
             origin="unknown",
             grade=grade if accepted else "",
             defects=tuple(defects),
@@ -171,6 +174,16 @@ class WebWorld:
         self.fetch_fn = fetch_fn or self.live_fetch
         self.verifier = verifier or RuleVerifier(parts, min_width=min_width)
         self.router = router
+        # 实际发出的搜索请求数（一次 search 调用可能展开成多条查询，如 高清/大图）
+        self.query_count = 0
+
+    def _count_queries(self, diag) -> None:
+        """按诊断条目数累加真实查询数；无诊断时按 1 次计。"""
+        try:
+            n = len(diag) if isinstance(diag, (list, tuple)) else 1
+        except TypeError:
+            n = 1
+        self.query_count += max(1, int(n))
 
     def library_targets(self, unit) -> list[Target]:
         return self.library.targets(unit)
@@ -486,6 +499,8 @@ class WebWorld:
             variants = imagesearch.query_variants(key, target.model)
             hits = []
             for q in variants:
+                _diag = None
+                self._part_query_used = q
                 if self.router is not None:
                     got, _diag = self.router.search(q, 6, target.model)
                 else:
@@ -494,6 +509,7 @@ class WebWorld:
                     else:
                         got, _diag = imagesearch.search_images_hd(
                             q, limit=6, model=target.model)
+                self._count_queries(_diag)
                 got = self._filter_code(target, got)
                 hits = got or hits
                 if hits:
@@ -503,6 +519,8 @@ class WebWorld:
                 req = self.parts.get(part)
                 if req is not None and getattr(req, "label", ""):
                     pq = f"{req.label} {target.query}".strip()
+                    _diag = None
+                    self._part_query_used = pq
                     if self.router is not None:
                         got, _diag = self.router.search(pq, 6, target.model)
                     else:
@@ -511,6 +529,7 @@ class WebWorld:
                         else:
                             got, _diag = imagesearch.search_images_hd(
                                 pq, limit=6, model=target.model)
+                    self._count_queries(_diag)
                     got = self._filter_code(target, got)
                     if got:
                         hits = got

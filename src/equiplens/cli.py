@@ -178,15 +178,19 @@ def main(argv=None):
     p.add_argument("--tavily-key", default=None, help="Tavily API key")
     p.add_argument("--run-root", default="data-test/runs")
     p.add_argument("--run-id", default=None)
-    p.add_argument("--strategy", default="data/retrieval_strategies.json")
+    p.add_argument("--plan", default=None, help="候选规划池 JSON（生产必填，配合 --web-only）")
+    p.add_argument("--pin", default="", help="逗号分隔：强制优先的车型关键词")
+    p.add_argument("--platform-extra", default="", choices=["", "baidu"],
+                   help="平台层实验：baidu=360+Baidu")
+    p.add_argument("--code-prefilter", action="store_true", help="实验：code 不一致时下载前拒绝")
+    p.add_argument("--no-citation", action="store_true", help="跳过引用核验")
     p.add_argument("--evidence-db", default=None)
     p.add_argument("--json", action="store_true")
 
     args = parser.parse_args(argv)
     if args.command == "retrieval-run":
         from .retrieval_engine.cli import main as retrieval_main
-        argv2 = ["--brief", args.brief,
-                 "--run-root", args.run_root, "--strategy", args.strategy]
+        argv2 = ["--brief", args.brief, "--run-root", args.run_root]
         if args.fixtures:
             argv2 += ["--fixtures", args.fixtures]
         if args.web_only:
@@ -197,6 +201,16 @@ def main(argv=None):
             argv2 += ["--searxng", args.searxng]
         if args.tavily_key:
             argv2 += ["--tavily-key", args.tavily_key]
+        if args.plan:
+            argv2 += ["--plan", args.plan]
+        if args.pin:
+            argv2 += ["--pin", args.pin]
+        if args.platform_extra:
+            argv2 += ["--platform-extra", args.platform_extra]
+        if args.code_prefilter:
+            argv2.append("--code-prefilter")
+        if args.no_citation:
+            argv2.append("--no-citation")
         if args.evidence_db:
             argv2 += ["--evidence-db", args.evidence_db]
         if args.run_id:

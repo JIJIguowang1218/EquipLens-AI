@@ -30,12 +30,15 @@
 | `brief_id` | 本次用的任务单 id |
 | `git_commit` | 生成台账时的代码提交 |
 | `metrics` | 交付、图数、门卫、degraded、API 成本等 |
-| `conclusion` | **一句话结论**（人工补，索引会优先显示） |
+| `conclusion` | **一句话结论**（人工写：RUN.json 或 REPORT.md 的「结论」段；索引优先显示） |
+| `conclusion_source` | `stored`（RUN.json 里原有的结论）/ `report`（从 REPORT.md 抽的）/ `auto`（机器统计） |
+| `auto_conclusion` | 机器按 status/metrics 生成的摘要，**不算人工结论** |
 | `report` / `audit` / `summary` | 证据路径 |
-| `needs_review` | 还没写结论 |
+| `needs_review` | **还没有人工结论**（= `conclusion` 为空；机器摘要不会把它清成 false） |
 
 **结论写在哪**：优先改 `RUN.json.conclusion`（一句话），详细过程写 `REPORT.md`。
 `INDEX.md / INDEX.json` 是生成物，不要手改。
+> 注意：`auto_conclusion` 是机器统计，不能当复核结论；要清掉 `needs_review` 必须写 `conclusion` 或 REPORT.md 的「结论」段。
 
 ## 3. 命令
 

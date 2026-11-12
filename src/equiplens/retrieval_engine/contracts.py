@@ -183,6 +183,8 @@ class Target:
     intent_reason: str = ""
     role: str = ""            # primary / backup / pool
     pinned: bool = False      # 用户指定必须保留
+    part_only: bool = False   # FILL 打的软标记：有 scene 元数据但没有 single_vehicle
+                              # （2026-11-12 决策：只标记、不拒绝；见 docs/P0-REVIEW）
 
     @classmethod
     def from_dict(cls, data: dict, *, source: str, tier: str) -> "Target":
@@ -202,6 +204,7 @@ class Target:
             intent_reason=str(data.get("intent_reason") or ""),
             role=str(data.get("role") or ""),
             pinned=bool(data.get("pinned")),
+            part_only=bool(data.get("part_only")),
         )
 
     def to_dict(self) -> dict:
@@ -221,6 +224,7 @@ class Target:
             "intent_reason": self.intent_reason,
             "role": self.role,
             "pinned": self.pinned,
+            "part_only": self.part_only,
         }
 
 
@@ -372,10 +376,3 @@ def load_brief(path: str | Path) -> Brief:
     return Brief.from_dict(data)
 
 
-def load_strategy(path: str | Path, ref: str | None = None) -> dict:
-    data = json.loads(Path(path).read_text(encoding="utf-8"))
-    ref = ref or data.get("default")
-    strategies = data.get("strategies") or {}
-    if ref not in strategies:
-        raise ValueError(f"未知策略 {ref}; 可选: {', '.join(strategies)}")
-    return dict(strategies[ref])

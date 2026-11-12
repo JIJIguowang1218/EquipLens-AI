@@ -19,7 +19,7 @@
   - `schemas/task-brief-v3.schema.json`
   - `schemas/retrieval-state.schema.json`
   - `schemas/retrieval-event.schema.json`
-- 策略骨架：`data/retrieval_strategies.json`（tier/channel/query ladder/stop/cross/verification 的默认值，P3–P5 再替换）；
+- ~~策略骨架：`data/retrieval_strategies.json`~~（**2026-11-12 已删除**：加载后从不消费，属死配置，见 `docs/killed-strategies.md` K14）；
 - 证据表契约：`db/retrieval_tables.sql`（`image_evidence`、`asset_part_feasibility`，P2 才接入）；
 - 适配器协议 + 夹具实现：`LibraryAdapter` / `SearchAdapter` / `FetchAdapter` / `Verifier`。
 
@@ -47,7 +47,7 @@
 | `schemas/task-brief-v3.schema.json` | 任务单契约 |
 | `schemas/retrieval-state.schema.json` | 状态契约 |
 | `schemas/retrieval-event.schema.json` | 事件契约 |
-| `data/retrieval_strategies.json` | 策略骨架 |
+| ~~`data/retrieval_strategies.json`~~ | 已删除（K14，死配置） |
 | `db/retrieval_tables.sql` | 证据表 DDL（P2 用） |
 
 ---

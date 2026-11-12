@@ -14,13 +14,12 @@ from .state import RunStore, new_state, record_decision
 
 class RetrievalEngine:
     def __init__(self, brief: Brief, world: Any, *, run_root: str | Path,
-                 run_id: str, strategy: dict | None = None,
+                 run_id: str,
                  evidence_writer=None, max_steps: int = 200):
         self.brief = brief
         self.world = world
         self.store = RunStore(run_root, run_id)
         self.run_id = run_id
-        self.strategy = strategy or {}
         self.evidence_writer = evidence_writer
         self.max_steps = max_steps
         self.handlers = {
@@ -182,6 +181,7 @@ class RetrievalEngine:
             att = state.setdefault("attempts", {}).setdefault(tid, {})
             att["fetched"] = True
             att.setdefault("assets", 0)
+            added = 0
             for part in target_obj.parts:
                 for asset in self.world.fetch(target_obj, part):
                     key = f"{asset.asset_id}:{part}"
@@ -192,8 +192,11 @@ class RetrievalEngine:
                     state.setdefault("asset_meta", {})[asset.asset_id] = asset.to_dict()
                     state.setdefault("assets", {}).setdefault(tid, {}) \
                         .setdefault(part, []).append(asset.asset_id)
+                    added += 1
                     state["budget_used"]["fetches"] = \
                         int(state["budget_used"].get("fetches", 0)) + 1
+            # 可解释性：记录这台车真正抓到并入库的资产数（旧实现恒为 0）
+            att["assets"] = int(att.get("assets", 0)) + added
         state["state"] = "VERIFY"
 
     def _state_verify(self, state: dict) -> None:
@@ -201,14 +204,9 @@ class RetrievalEngine:
         remaining = [a for a in state.get("pending_assets") or []
                      if f"{a['asset_id']}:{a['part']}" not in verified]
         for row in remaining:
-            # 必须带上 title/model：否则 RuleVerifier 的型号/构型校验会被静默跳过
-            asset = Asset(asset_id=row["asset_id"], target_id=row["target_id"],
-                          part=row["part"], view=row.get("view", ""),
-                          width=int(row.get("width") or 0),
-                          height=int(row.get("height") or 0),
-                          url=row.get("url", ""),
-                          title=row.get("title", ""),
-                          model=row.get("model", ""))
+            # 必须带上 title/model：否则 RuleVerifier 的型号/构型校验会被静默跳过；
+            # 用 from_dict 反序列化，避免手工重建丢掉 scene/overview/channel/status。
+            asset = Asset.from_dict(row, target_id=row["target_id"], part=row["part"])
             v = self.world.verify(asset, asset.part)
             key = f"{asset.asset_id}:{asset.part}"
             state["verifications"][key] = v.to_dict()
@@ -321,10 +319,14 @@ class RetrievalEngine:
         state["state"] = "DEGRADE"
 
     def _state_external_discover(self, state: dict) -> None:
+        # 历史键名：brief.budget.max_queries 实际约束的是“累计发现的候选车型数”
+        # （旧实现 queries 计数就是 len(targets)）。真实搜索请求数见
+        # budget_used.queries，只做成本观测，不改停止行为（2026-11-12）。
         cap = self._budget_cap("max_queries")
-        if cap is not None and int(state["budget_used"].get("queries", 0)) >= cap:
+        used_models = int(state["budget_used"].get("models", 0))
+        if cap is not None and used_models >= cap:
             record_decision(state, at="EXTERNAL_DISCOVER", action="budget_exhausted",
-                            reason=f"queries {state['budget_used']['queries']} >= {cap}")
+                            reason=f"models {used_models} >= {cap}（brief.budget.max_queries）")
             state["state"] = "FAILED"
             return
         gaps = self._gaps(state)
@@ -347,8 +349,9 @@ class RetrievalEngine:
         state["active_source"] = f"external:{self._tier_name(state)}"
         state["active_targets"] = [t.target_id for t in targets]
         state["tier_tried"] = True
-        state["budget_used"]["queries"] = \
-            int(state["budget_used"].get("queries", 0)) + len(targets)
+        # queries = 实际发出的搜索请求数（world 维护，含查询阶梯）；
+        # 旧实现把“候选车型数”当查询数，导致 max_queries 口径错、KPI 不可信。
+        state["budget_used"]["queries"] = int(getattr(self.world, "query_count", 0))
         state["budget_used"]["models"] = \
             int(state["budget_used"].get("models", 0)) + len(targets)
         record_decision(state, at="EXTERNAL_DISCOVER", action="discover",

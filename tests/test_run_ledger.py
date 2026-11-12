@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,11 +60,65 @@ def test_index_complete():
     assert (ROOT / "data-test" / "runs" / "README.md").exists()
 
 
+def _tmp_run(summary=None, run_json=None):
+    td = tempfile.TemporaryDirectory()
+    p = Path(td.name)
+    if summary is not None:
+        (p / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+    if run_json is not None:
+        (p / "RUN.json").write_text(json.dumps(run_json), encoding="utf-8")
+    return td, p
+
+
+def test_auto_conclusion_keeps_needs_review():
+    """机器摘要不能自证已复核：没有人工结论时 needs_review 必须为 True。"""
+    td, p = _tmp_run(summary={"state": "DONE",
+                              "delivery": {"required": 12, "delivered": 12, "degraded": 8}})
+    try:
+        rec = ledger.build_record(p)
+        assert rec["conclusion"] == "", rec
+        assert rec["auto_conclusion"].startswith("DONE 12/12"), rec
+        assert rec["needs_review"] is True, rec
+        assert rec["conclusion_source"] == "auto", rec
+    finally:
+        td.cleanup()
+
+
+def test_manual_conclusion_clears_needs_review():
+    td, p = _tmp_run(summary={"state": "DONE"},
+                     run_json={"conclusion": "人工复核：12/12 可用"})
+    try:
+        rec = ledger.build_record(p)
+        assert rec["conclusion"] == "人工复核：12/12 可用", rec
+        assert rec["needs_review"] is False, rec
+        assert rec["conclusion_source"] == "stored", rec
+    finally:
+        td.cleanup()
+
+
+def test_legacy_auto_conclusion_migrates():
+    """旧版 RUN.json 里的机器摘要要迁移到 auto_conclusion，并重新标待复核。"""
+    td, p = _tmp_run(
+        summary={"state": "DONE",
+                 "delivery": {"required": 12, "delivered": 12, "degraded": 8}},
+        run_json={"conclusion": "DONE 12/12（degraded=8）", "needs_review": False})
+    try:
+        rec = ledger.build_record(p)
+        assert rec["conclusion"] == "", rec
+        assert rec["auto_conclusion"] == "DONE 12/12（degraded=8）", rec
+        assert rec["needs_review"] is True, rec
+    finally:
+        td.cleanup()
+
+
 if __name__ == "__main__":
     check("阶段映射", test_stage_mapping)
     check("run 记录含指标/结论", test_run_record_has_metrics_and_conclusion)
     check("plan-set 记录", test_plan_set_record)
     check("索引覆盖所有非空 run", test_index_complete)
+    check("机器摘要不抵人工结论", test_auto_conclusion_keeps_needs_review)
+    check("人工结论关闭待复核", test_manual_conclusion_clears_needs_review)
+    check("旧机器结论迁移", test_legacy_auto_conclusion_migrates)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

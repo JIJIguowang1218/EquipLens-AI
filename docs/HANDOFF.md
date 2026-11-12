@@ -30,7 +30,7 @@
 
 ## 0.0 当前进度与下一步（2026-11-12）
 
-- 检索 v1 收敛：停止 Query/Source/Platform 扩源；normal 默认仍是 360。
+- 检索 v1 收敛：停止 Query/Source/Platform 扩源；normal 默认 360 优先，relevant 不足时百度/Bing 兜底（口径以 `imagesearch.search_images_ex` 代码为准）。
 - P0：asset 去重、attempt 日志、`part_only` 软标记、code prefilter 可选；
   hard overview 已否（10/12 或 composition 变差），`loop-p0c` 12/12 保持 baseline composition。
 - Platform 完整 loop 对照失败：Baidu union 丢 HF8066、unknown 暴增；只保留 opt-in/降级候选，不默认。
@@ -66,7 +66,7 @@ cost_usd, latency_sec, source, caveat
 ```bash
 git clone ssh://git@ssh.github.com:443/JIJIguowang1218/EquipLens-AI.git
 cd EquipLens-AI
-git log --oneline -1        # 应为 41108d0 或更新
+git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 ```
 
 - Python **3.11**（本项目在 3.11.5 上验证；不要用 3.13）
@@ -91,13 +91,14 @@ git log --oneline -1        # 应为 41108d0 或更新
 ```bash
 PYTHONPATH=src python scripts/check_env.py             # Python/依赖/key/模型/文件自检
 PYTHONPATH=src python scripts/run_ledger.py --check    # run 台账完整性（缺 RUN.json 会报）
-PYTHONPATH=src python tests/test_planning.py           # 8/8（planner 纯函数）
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 20/20
-PYTHONPATH=src python tests/test_imagesearch.py        # 12/12（全 monkeypatch，不联网）
+PYTHONPATH=src python tests/test_planning.py           # 9/9（planner 纯函数）
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 28/28
+PYTHONPATH=src python tests/test_imagesearch.py        # 13/13（全 monkeypatch，不联网）
 PYTHONPATH=src python tests/test_gate.py               # 11/11（首次会加载 CLIP，约 59MB）
+PYTHONPATH=src python tests/test_run_ledger.py         # 7/7（含 needs_review 不变量）
 ```
 
-预期结果：`planning: 8/8`、`retrieval_engine: 20/20`、`imagesearch: 12/12`、`gate: 11/11`。
+预期结果：`planning: 9/9`、`retrieval_engine: 28/28`、`imagesearch: 13/13`、`gate: 11/11`、`run_ledger: 7/7`。
 
 历史遗留失败（与本轮无关，换机器仍可能看到）：`test_analysis` 11/14、`test_query` Q-10、`test_workflow` W-10（后两个因 `data-test/equiplens.db` 是空库）。
 
@@ -195,6 +196,10 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 7. **下载失败仍高**：v2 有 56 行失败（403/404/防盗链），集中在经销商/B2B 图床；要不要加通道/域名黑名单待定。
 
 ## 0.4 本轮新增的“不要误判”边界
+
+- **已毙/归档策略先查 [`docs/killed-strategies.md`](killed-strategies.md)**：三证②可见性已归档（挪到人机交互）、三证③原厂已毙、`retrieval_strategies.json` 已删；再提之前先看判决。
+- **通道口径以代码为准**：360 优先，relevant 不足时百度/Bing 兜底（`search_images_ex`）；不是"360 独占"。
+- **`budget_used.queries` 是真实搜索请求数**（含查询阶梯）；`budget_used.models` 才是累计候选车型数，也是 `brief.budget.max_queries` 实际约束的量。
 
 - **分辨率不参与淘汰**：门卫预筛下限 320（不是 800）；`res_standard`（≥800）/`res_high`（≥1200）/`reference_candidate` 都只是标签。低清只记 `low_resolution` warning。
 - **“过门卫”≠“交付”**：过门卫=预筛+CLIP；进交付包=车型占槽且图写进 `state.assets`；已核验=另有 accepted 的 `verifications` 记录。审核页四档就是这三个口径。
@@ -298,7 +303,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 1. **筛选线收口（已评估，不再调参）**：边界 9 张人工确认 → 门卫 0 阈值合理；CDN 升图收益 10/13；来源页回访净收益不明确。筛选侧到此为止，只保留金标回归。
 2. ~~**打通最小 loop（手写任务单）**~~ ✅ 2026-11-10：M1 跑通 DONE 3/3，暴露并修复 2 个结构 bug；下一步是让 `EXTERNAL_DISCOVER` 真的“发现”候选（而不是吃 `--models`），并把证据落库。
 3. **扩源（按 loop 暴露的缺口做）**：不先盲扩；loop 说缺“吊车/矿卡/部件特写”再补对应源，E5 实验留作方法。
-4. **L1.5 M0–M2**：把 brief 从手写变成生成（`data/part_axes.json`、`part_views.json`、`env_relevance`、`coverage()`、惰性放闸）。
+4. ~~**L1.5 M0–M2**~~（历史）：brief 已由 `build_brief.py` 生成；`part_views.json` 已于 2026-11-11 毙掉（K3），`part_axes.json` 不建静态表（K4），见 `docs/killed-strategies.md`。
 5. **P3 库内检索 / P4 部件级视觉**：`asset_part_feasibility` + 人工录入；100 张标注对比 CLIP/SigLIP2/DINOv3。
 6. **UI 恢复条件**：产品负责人评审 v3.3 通过，且主体功能能产出真实清单/图片后再接；React 工程暂不启动。
 
@@ -316,7 +321,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 - `docs/ui-hifi-dark/shots/` 仍是 v2 截图（当时用真实现拍渲染）；v3.x 需在含 `data-test/ab-images/` 的机器上重出。
 - 右栏漏光靠 `.rrow::after`（`z-index:-1` + `blur`），不拦截点击；主图卡不参与发光。
 - **本 checkout 的 `data-test/equiplens.db` 是空库（0 资产）**；诊断文档里的 63 台/629 图是历史口径，真实素材需在含图机器上确认。
-- **L1.5 只有设计**：`data/part_axes.json`、`data/part_views.json` 尚未创建，`coverage()`/惰性放闸未实现；不要按设计稿误以为已可跑。
+- **L1.5 只剩设计**：`part_views.json` 已毙（K3）、`part_axes.json` 不建静态表（K4）；brief 已 API 化，但 `coverage()`/惰性放闸未实现；不要按设计稿误以为已可跑。
 - **分析模块未验收**：“能有效分析”目前是主观判断，缺金标评测；在把它当“证据裁判”前必须先做 50 张校准（见 review §3.5）。
 - **视角不可当门槛**：`classify_view` 的 top1−top2 中位数 ~0.003（6 个标签几乎同分）；它只输出 `exterior_hint`，主图挑选仍需人工/后续视觉模型。
 - **门卫单标签 verdict 在 ±0.001 上会翻转**：53 张同字节重评里 3 张由过变拒（2 拼图 + 1 内饰），其中 1 张只是边界（±0.001）；下一步做阈值扫掠，不要继续加标签硬调。

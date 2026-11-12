@@ -29,10 +29,10 @@
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 25/25，需 test fixtures
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 28/28，需 test fixtures
 PYTHONPATH=src python tests/test_imagesearch.py        # 13/13
 PYTHONPATH=src python tests/test_planning.py           # 9/9
-PYTHONPATH=src python scripts/run_ledger.py --check     # 67 records
+PYTHONPATH=src python scripts/run_ledger.py --check     # 68 records，0 issue
 ```
 
 ## 数据库

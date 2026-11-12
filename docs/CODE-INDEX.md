@@ -2,6 +2,7 @@
 
 更新：2026-11-12  
 原则：先读 `CURRENT-ARCHITECTURE.md`，再按本索引找代码；实验脚本不能当生产入口。
+已毙/归档策略见 `docs/killed-strategies.md`（三证②③、part_views、stategy 文件等）。
 
 ## 1. 项目怎么管代码
 

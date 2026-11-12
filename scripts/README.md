@@ -2,6 +2,10 @@
 
 从 `tmp/`（gitignore 临时区）迁入，随仓库同步，供新会话复跑与审计。
 
+> **生产入口（不是实验脚本）**：`build_brief.py`（任务单）、`plan_candidates.py`（候选规划）、
+> `rank_plan.py`（12+2 意向排序）、`render_fetch_audit.py`（审核页）、`run_ledger.py`（run 台账）。
+> 下面表里的是实验/诊断脚本，只能复现，不能当默认入口（见 `docs/CODE-INDEX.md` §2/§4）。
+
 | 脚本 | 用途 |
 |---|---|
 | `run_roster_crawl.py` | T18-roster 首跑：4 类目 39 车型语料采集 |
