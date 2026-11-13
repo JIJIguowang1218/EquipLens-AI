@@ -1,5 +1,9 @@
 # 优先级占槽与 HF8066 丢失（2026-11-12）
 
+> 2026-11-13 更新：`_fill_pass` 已允许“本 unit 满时借其它 unit 空槽”，
+> 第 5 条的“配额满即停”不再是绝对边界；正选优先级仍决定尝试顺序。见
+> `docs/delivery-audit-20261113.md`。
+
 ## 现象
 
 - 360 baseline：HF8066（intent rank 6，primary）有 assets、verifier accepted、占槽；

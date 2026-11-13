@@ -1,6 +1,6 @@
 # 远程同步清单（新电脑接手）
 
-更新：2026-11-12
+更新：2026-11-13
 
 ## 会同步（git）
 
@@ -14,6 +14,9 @@
 - 评测结论/数据：`data-test/evals/**`
 - run 的轻量轨迹：`data-test/runs/**/state.json`、`summary.json`、`fetch_log.jsonl`、`events.jsonl`、`audit.html`、`RUN.json`
 - 交付与监控产物：`DELIVERY.md/json`、`SUITE.json`、`SUITE-SUITE-SUMMARY.md`、`dedupe-review.html`、`data-test/evals/bad-domains-monitor.*`
+- 2026-11-13 实验数据：`data-test/runs/ab-negative-20261113/`（含 `SEARCH-LEVEL.json`、
+  `AUDIT-DELIVERY-TIMING.md`、`DELIVERY-AUDIT.json`）、`ab-plan-concurrency-20261113/`、
+  `ab-rank-20261113/`、`verify-fillfix-20261113/`；这些目录的 `images/` 仍不同步
 - 台账：`data-test/runs/INDEX.json/md`（由 `run_ledger.py` 生成；语义见 `DATA-CHANGELOG.md`）
 - 测试夹具：`data-test/retrieval-fixtures-20261109/**`（P1 测试必需）
 - 人工审核页：部分 `review.html` + 其中跟踪的缩略图

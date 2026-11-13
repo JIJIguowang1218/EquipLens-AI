@@ -1,6 +1,6 @@
 # 代码位置索引（封装前）
 
-更新：2026-11-12  
+更新：2026-11-13  
 原则：先读 `CURRENT-ARCHITECTURE.md`，再按本索引找代码；实验脚本不能当生产入口。
 已毙/归档策略见 `docs/killed-strategies.md`（三证②③、part_views、stategy 文件等）。
 
@@ -21,9 +21,9 @@
 | 职责 | 代码 |
 |---|---|
 | brief 生成 | `src/equiplens/briefing.py`、`scripts/build_brief.py`、`skills/task-brief/SKILL.md` |
-| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py` |
-| 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py` |
-| 检索 loop | `src/equiplens/retrieval_engine/engine.py` |
+| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 1） |
+| 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
+| 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |
 | 平台/抓取/核验 | `src/equiplens/retrieval_engine/web.py`、`src/equiplens/imagesearch.py` |
 | 契约/状态 | `src/equiplens/retrieval_engine/contracts.py`、`state.py` |
 | CLI | `src/equiplens/retrieval_engine/cli.py`、`__main__.py` |
@@ -52,6 +52,10 @@
 
 ## 4. 实验脚本（不得默认进生产）
 
+- `scripts/ab_negative.py`：negative with/without A/B（2026-11-13）
+- `scripts/ab_plan_concurrency.py`：plan 串行 vs 并发（A 测试）
+- `scripts/ab_rank.py`：LLM rank vs 确定性排序小 A/B
+- `scripts/bench_download_concurrency.py`：下载并发基准（不改 loop）
 - `scripts/probe_platforms.py`
 - `scripts/probe_class_query.py`
 - `scripts/probe_source_expansion.py`
@@ -69,9 +73,9 @@
 | 测试 | 覆盖 |
 |---|---|
 | `tests/test_briefing.py` | brief API/组装 |
-| `tests/test_planning.py` | 查询计划/候选归并 |
-| `tests/test_retrieval_engine.py` | 状态机/配额/fill/code prefilter |
+| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter（40） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
+| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏（14） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
 | `tests/test_analysis.py` | 分析（历史有失败，需单独看） |

@@ -6,6 +6,18 @@
 | 当前阶段 | **检索 v1 收敛：P0 交付不变量 + 第一次用户交付准备**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准；扩源线已收口。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | 见 `git log -1`；工作树状态以 git 为准。整体框架/生产/实验边界见 `docs/CURRENT-ARCHITECTURE.md`。 |
+| 工作树提醒 | **2026-11-13 本轮文档修改尚未提交**（等产品负责人确认）；提交/推送前，另一台电脑看不到这些更新。 |
+
+> 换机/接续只需读 **§0.0（进度与下一步）** 和 **§0.1（30 分钟环境）**；
+> §1 之后是历史记录，不必通读。
+
+### 提交约定（2026-11-13 定）
+
+- 阶段性任务完成、准备进入下一阶段时，**自动提交上一阶段**，不把半成品留到下一阶段；
+- 使用 Conventional Commits：`feat:` 新能力、`fix:` 修缺陷、`refactor:` 不改行为的重构、
+  `docs:` 文档/索引、`test:` 测试、`chore:` 环境/依赖/杂项；
+- 标题只写“改了什么”（一句话），正文放关键数据/证据；一个 commit 只做一类事；
+- 提交前跑 `python scripts/scan_secrets.py`；不提交 `~/.equiplens/deepseek.env`。
 
 > ## ⚠️ 新会话先读
 >
@@ -32,7 +44,7 @@
 > - 单轮 12 槽实测：约 ¥0.3–0.5（含规划/引用核验/抓取），5 输入合计约 ¥2.06（峰时）
 
 
-## 0.0 当前进度与下一步（2026-11-12 交接版）
+## 0.0 当前进度与下一步（2026-11-13 交接版）
 
 **位置**：检索 v1 已收敛；交付链路（5 输入泛化测试）已跑通；**第一次正式用户交付尚未发出**。
 
@@ -64,6 +76,10 @@
 
 合计：主 **49/50**、备选 **16/20**、峰值成本 **¥2.064**（谷约 ¥1.46）。同代码 c1 另一次为 10/10 + 3/4 → **±1 波动，n=1 不可当回归**。
 
+> 注意：这份 baseline 是**填槽修复前**的数据（c1 9/10 正是 unit 锁死）。
+> 修复后用原 plan 复跑 c2：8+2→10+0、9+4→10+4；**完整 5 case 尚未复跑**，
+> 不能把 49/50 当修复后的最终数字。
+
 ### negative A/B 结论（2026-11-13，已完成）
 
 - 数据：`data-test/runs/ab-negative-20261113/`（5 brief × with/without，10 次真实 loop）；
@@ -76,14 +92,31 @@
 - 审计中发现的更高优先问题：`normalize_query` 给叉车/压路机也拼 `6x6`（白跑一档搜索）；
   rank 阶段 LLM 用量未记账；多处死配置（`page_budget.total`、`budget.max_rounds` 等）。
 
+### 环境与依赖（换机必看，2026-11-13）
+
+- Python **3.11**；`pip install -r requirements.txt`；**本轮没有新增第三方依赖**
+  （并发用标准库 `ThreadPoolExecutor`）；
+- DeepSeek key：`~/.equiplens/deepseek.env`（仓库外，另一台已有）；
+- 门卫模型 UForm3 首次自动下载（约 59MB，`hf-mirror`）；测试夹具 `data-test/retrieval-fixtures-20261109/` 已在仓库；
+- 新增可选开关（默认关，不影响旧命令）：
+  `plan_candidates.py --concurrency N`、`rank_plan.py --deterministic`；
+  新实验脚本 `scripts/ab_plan_concurrency.py`、`ab_rank.py`、`bench_download_concurrency.py`；
+- 自检：`check_env.py`；测试数 `retrieval_engine 40/40`、`planning 14/14`；
+  全量除 `test_analysis` 11/14 既有失败外全绿；
+- 新实验数据：`data-test/runs/{ab-plan-concurrency,ab-rank,verify-fillfix}-20261113/`，
+  `images/` 不同步，换机后审核页可能缺图（重跑或从原机拷）。
+
 ### 下一步（按顺序）
 
-1. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
-2. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机，不急着上 LangGraph）；
-3. 分析模块整体测试（先测 brief→prompt→schema 传递，再做“有/无前置预分析”A/B）；
-4. 知识库（人审准入 + 库内优先召回）；
-5. LangGraph 只做 feedback/session spike → 后端事件流收敛 → 前端 S0–S3 接真实数据；
-6. 技术债（不阻塞交付）：修 `normalize_query` 的 6x6 外溢、补 rank 成本记账、清理死配置。
+1. **组合回归（最高优先）**：填槽修复 + `plan_candidates --concurrency 4`，
+   用 clean 的 5 份 brief 跑完整链路；确认主交付 ≥49/50（预期 c1/c2 到 10/10）、
+   备选不退化、成本/耗时在噪声内；约 25–30 min、峰时 ¥2 左右；
+2. 回归通过后再拍板：plan 并发是否默认 4；rank 是否切确定性（当前 2 case 仅持平）；
+3. 下载并发接入 loop（4 路 + per-host 限流 + `DomainHealth` 锁），再跑 c5 对照；
+4. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
+5. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机）；
+6. 分析模块整体测试 → 知识库 → LangGraph spike → 后端/前端；
+7. 技术债（不阻塞交付）：`normalize_query` 的 6x6 外溢、rank 成本记账、死配置清理。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 
@@ -125,7 +158,7 @@ cost_usd, latency_sec, source, caveat
 没有这些字段的实验，只能算探索，不能拿来做“优化提升”统计。  
 初始 vs 最终的边界见 `docs/INITIAL-VS-FINAL.md`。
 
-## 0.1 换电脑 30 分钟接续（2026-11-10）
+## 0.1 换电脑 30 分钟接续（2026-11-13）
 
 ### 1) 拉代码与 Python
 
@@ -153,7 +186,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 - 依赖说明（`requirements.txt`）：
   - `pillow` 图片解码；`jsonschema` 契约校验
   - `uform[onnx]`：门卫模型 `unum-cloud/uform3-image-text-english-small`（约 **59MB**，首次运行自动下载，`gate.py` 已默认 `HF_ENDPOINT=https://hf-mirror.com`）
-  - `torch` + `transformers`：Chinese-CLIP 探针（旧线，跑当前 loop 不必须，但 requirements 里保留；装 CPU 版，别拉 CUDA）
+  - `torch` + `transformers`：Chinese-CLIP 探针（旧线，跑当前 loop 不必须；`requirements.txt` 里是注释状态，需要时再装 CPU 版）
   - `crawl4ai`：旧渠道实验用；当前 loop 不依赖
 - **不需要** pytest：所有测试是 `check()` 脚本，失败退出码 1。
 
@@ -161,9 +194,9 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（68+ 条，0 issue）
-PYTHONPATH=src python tests/test_planning.py            # 13/13
-PYTHONPATH=src python tests/test_retrieval_engine.py    # 38/38
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（81+ 条，0 issue）
+PYTHONPATH=src python tests/test_planning.py            # 14/14
+PYTHONPATH=src python tests/test_retrieval_engine.py    # 40/40
 PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）
 PYTHONPATH=src python tests/test_gate.py                # 11/11（首次加载 CLIP ~59MB）
 PYTHONPATH=src python tests/test_briefing.py            # 5/5
@@ -219,7 +252,7 @@ PYTHONPATH=src python -m equiplens.retrieval_engine \
 PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-global-v2b
 ```
 
-- 单轮 12 槽约 **8–12 分钟**、成本 **≈$0.02–0.03**
+- 单轮 12 槽约 **5–10 分钟**、峰时 **¥0.3–0.5**（计价见 `pricing.py`）
 - `--web-only` 会走 `NullLibraryAdapter`（库内 0 候选），不会读历史数据
 - 想复现 T38 的 12/12，用 `loop-m1b-global-v2` 的同一 plan；**新 run 必须换 run_id + 新目录**（隔离要求）
 

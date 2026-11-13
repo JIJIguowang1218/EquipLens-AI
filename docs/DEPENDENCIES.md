@@ -1,6 +1,6 @@
 # 依赖与运行环境
 
-更新：2026-11-12
+更新：2026-11-13
 
 ## 必需
 
@@ -11,6 +11,8 @@
   DEEPSEEK_API_KEY=sk-...
   ```
   没有 key 时：只能跑门卫/本地抓取/部分测试；规划、引用核验、重规划不可用。
+- 并发（2026-11-13 起）：只用标准库 `concurrent.futures.ThreadPoolExecutor`，
+  **没有新增第三方依赖**；`requirements.txt` 未变。
 
 ## 模型
 
@@ -29,10 +31,10 @@
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 38/38，需 test fixtures
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 40/40，需 test fixtures
 PYTHONPATH=src python tests/test_imagesearch.py        # 14/14
-PYTHONPATH=src python tests/test_planning.py           # 13/13
-PYTHONPATH=src python scripts/run_ledger.py --check     # 68+ records，0 issue
+PYTHONPATH=src python tests/test_planning.py           # 14/14
+PYTHONPATH=src python scripts/run_ledger.py --check     # 81+ records，0 issue
 ```
 
 ## 新机器接续

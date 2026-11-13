@@ -1,6 +1,6 @@
 # 当前整体技术框架（单一事实源）
 
-更新：2026-11-12  
+更新：2026-11-13  
 用途：任何打包/封装/新会话先读这里，避免把旧策略、fixture、预置假数据带进产品。
 
 ## 1. 当前产品阶段
@@ -71,6 +71,9 @@ task-brief@v2 (API)
 - **降级兜底已实现（2026-11-12）**：正常 FILL 只用 accepted 图；等所有层级/候选耗尽后，
   `DEGRADE` 调 `_degraded_fill` 用任意过门卫的图把槽填满，target 标 `degraded_fill`，
   `delivery.degraded_fill` 列出这些车；只有“连图都没有”才会 short/FAILED。
+- **正选优先、跨 unit 借位（2026-11-13）**：`u-exact` 满后，其名下有图车可填 `u-env` 空槽；
+  `DEGRADE` 兜底忽略 unit 边界；`delivered < N` 时，有图车不再先算作备选。
+  复跑 c2 原 plan：8+2→10+0、9+4→10+4。
 - 全局 asset 去重：已占槽 target 用过的 asset 不再给其他 target 占槽；
 - 每个 target 的 fetch/verify/filled/`assets` attempt 写入 `state.attempts`（`assets` 为真实入库资产数，2026-11-12 修复此前恒 0）；
 - `part_only` 标记（**2026-11-12 定案：只作审计/排序信号，不参与交付门槛、不拦截、不再作为待拍板项**）：`scene` 是门卫侧标签（single_vehicle / multi_vehicle / part），用于区分整车/多车/局部；FILL 只从 scene 派生这个标记。字段已进 `Target` 契约（dataclass + `to_dict`/`from_dict` + schema）。是否把交付资格上移到 VERIFY 属内部重构，不是阻塞项；
@@ -157,7 +160,7 @@ task-brief@v2 (API)
 
 > `part_only` 已于 2026-11-12 定案（只标记、不拦交付），不再列为待决项。
 
-## 7. 当前状态快照（2026-11-12）
+## 7. 当前状态快照（2026-11-13）
 
 - 最新完整 normal run：`loop-p0c-20261112`，12/12，degraded 8，citation_only 1；
 - P0 硬 overview 试验：`loop-p0-20261112` 10/12（已放弃硬规则）；
