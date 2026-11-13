@@ -158,3 +158,14 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - 复盘文档：`docs/query-kill-chain-20261113.md`（判死链 9 项、品牌表来源 `c44e0e3`、
   去表化替代方案）。
 - 未跑检索实验；未改任何既有 run 数据。
+
+### 14. 判死链去表化修复（2026-11-14）
+
+- `normalize_query`：型号码改为在**原始串**上抽取（括号内码不再丢）；纯描述名去构型/驱动词后截短；
+- `alias_query`：无品牌/车系/型号时返回空（不再生成“牵引车/卡车”噪声查询）；
+- `_brand_group`：开头词优先、括号外子串匹配、拉丁车系可作兜底（修“把沃尔沃发动机当品牌”）；
+- `RuleVerifier`：新增“拉丁车系 + 构型”双证据 → probable，不再要求品牌表命中；
+- 离线回放（不联网）：1135 车型 993 个查询键变化；76 个括号码全部修复；4337 条命中中
+  旧放行→新拒绝 **0**；4456 个 unknown 资产 382 个可升级（8.6%）。
+- 测试：`imagesearch 16/16`、`retrieval_engine 44/44`；**未跑检索 loop**，未改既有 run 数据。
+- 文档：`docs/query-kill-chain-20261113.md`；复现：`scripts/evaluate_kill_chain_offline.py`。
