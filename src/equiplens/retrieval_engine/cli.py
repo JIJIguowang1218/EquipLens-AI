@@ -95,7 +95,8 @@ def main(argv=None) -> int:
             # 记录这一轮 plan/rank 的产出方式，供 summary.config 做横向对比
             plan_meta = {
                 "concurrency": plan_doc.get("concurrency"),
-                "rank_method": ((plan_doc.get("ranking") or {}).get("method")),
+                "rank_method": ((plan_doc.get("ranking") or {}).get("method")
+                                or ("llm" if plan_doc.get("ranking") else None)),
                 "created_at": plan_doc.get("created_at"),
             }
         world = WebWorld(models or None, brief.parts_by_key, router=router,

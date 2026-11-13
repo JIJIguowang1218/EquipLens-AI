@@ -668,6 +668,9 @@ class WebWorld:
                         hits = got
                         self._part_query_used = pq
             self._search_cache[cache_key] = hits
+        if not self._part_query_used:
+            # 缓存命中时没有走检索阶梯，用主查询键补记来源档位
+            self._part_query_used = key
 
         log_path = None
         if self.image_dir:
