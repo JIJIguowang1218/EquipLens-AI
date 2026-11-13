@@ -177,3 +177,14 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - 端到端（冻结 plan，只改代码）：c1 9/10→**10/10**（备选 2→1、degraded 8→9）；
   c2 10/10、备选 2→**3**、degraded 6；数据 `data-test/runs/p2-identity-20261114/`；
 - 新增机制待尝试清单：`docs/backlog-mechanisms-20261114.md`（A/B/C/D/E 五组，含冻结/解冻协议）。
+
+### 16. 调研与落地测试（2026-11-14）
+
+- 调研报告 3 份：`docs/research/{rag-candidates,entity-matching,retrieval-eval}-20261114.md`，
+  索引 `docs/research/README.md`；结论进入 `docs/backlog-mechanisms-20261114.md` F1–F7。
+- **Gleaning 补抽已测**：5 份 brief、每份 8 查询 ×2 抽取，新增候选 **0** → 不采纳
+  （输入是标题+280 字摘要，不是全文；代码保留 `--glean` 默认 0）。
+- **归一化 key 去重已离线测**：96 份 plan / 2140 候选，19 组重复（0.9%）、15 份 plan 受影响；
+  当前簇内多码 0 例；模糊合并会误并 `XS143J`/`XS143` → 只做归一化展示/去重，保留型号码硬校验。
+- **search_key 正式启用**（仅末档兜底）：前三档 0 命中才触发，`query_tier` 可监控。
+- 本轮只跑 plan/离线分析，未跑检索 loop；`planning 15/15`、`retrieval_engine 47/47`。
