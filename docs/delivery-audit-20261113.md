@@ -52,3 +52,18 @@ c2 with 的 2 台剩余有图车（XCMG、G 系列）都有 `accepted=probable` 
 不是本轮新引入：baseline c1 同样 9/10、11 张图、`u-env 2/3`。
 12 槽历史 run（`loop-p0c`、`verify-backup2`）两个 unit 都是 8/8 + 4/4，所以没暴露。
 属于长期隐性缺陷，被本轮 `u-env` 只出 1 台有图放大成 8/10。
+
+## 6. 修复与验证（2026-11-13）
+
+代码：`engine._fill_pass` 允许“本 unit 满/无图时借其它 unit 空槽”；
+`_delivery` 在正选未满时不再把有图车算作备选。
+
+用修复后的引擎、**复用原 plan** 复跑 c2 两臂（`data-test/runs/verify-fillfix-20261113/`）：
+
+| run | 修复前 | 修复后 |
+|---|---|---|
+| c2 with | 8 正 + 2 备 | **10 正 + 0 备** |
+| c2 without | 9 正 + 4 备 | **10 正 + 4 备（满）** |
+
+与离线模拟完全一致；没有重新抓图、没有改 plan。
+

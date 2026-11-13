@@ -248,14 +248,27 @@ class RetrievalEngine:
 
     def _fill_pass(self, state: dict, ordered: list[tuple], used_assets: set[str],
                    *, allow_degraded: bool) -> None:
+        """占槽：优先本 unit；本 unit 满/无可用图时，允许借其它 unit 的空槽。
+
+        2026-11-13 修复：此前 unit 配额是硬边界，`u-exact` 满了以后它名下的
+        有图车不能再填 `u-env`，导致“正选空着、备选有人”，降级兜底也补不进。
+        P0 原则是正选优先，unit 配额只是检索分层，不应阻塞交付。
+        """
         for _idx, (tid, target) in ordered:
             already = any(tid in u["accepted_targets"]
                           for u in state["units"].values())
             if already:
                 continue
-            for uid in target.get("unit_ids") or [target.get("unit_id")]:
+            own = list(dict.fromkeys(
+                target.get("unit_ids") or [target.get("unit_id")]))
+            units = [uid for uid in own if uid]
+            units += [uid for uid in state["units"] if uid not in units]
+            for uid in units:
                 unit = state["units"].get(uid)
                 if not unit:
+                    continue
+                quota = int(unit.get("quota") or 0) or 10 ** 9
+                if len(unit["accepted_targets"]) >= quota:
                     continue
                 avail = [aid for part in unit["parts"]
                          for aid in state.get("assets", {}).get(tid, {}).get(part, [])
@@ -272,20 +285,16 @@ class RetrievalEngine:
                     ]
                     if not chosen and target.get("citation_ok"):
                         chosen = avail
-                ok = bool(chosen)
-                if ok:
-                    meta = state.get("asset_meta") or {}
-                    known = [aid for aid in chosen if aid in meta]
-                    has_scene_meta = any(bool(meta[aid].get("scene")) for aid in known)
-                    if has_scene_meta and not any(
-                            meta[aid].get("scene") == "single_vehicle" for aid in known):
-                        target["part_only"] = True
-
-                quota = int(unit.get("quota") or 0) or 10 ** 9
+                if not chosen:
+                    continue
                 if self._global_accepted(state) >= self._slot_target():
                     return
-                if not ok or len(unit["accepted_targets"]) >= quota:
-                    continue
+                known = [aid for aid in chosen if aid in (state.get("asset_meta") or {})]
+                meta = state.get("asset_meta") or {}
+                has_scene_meta = any(bool(meta[aid].get("scene")) for aid in known)
+                if has_scene_meta and not any(
+                        meta[aid].get("scene") == "single_vehicle" for aid in known):
+                    target["part_only"] = True
                 unit["accepted_targets"].append(tid)
                 used_assets.update(chosen)
                 att = state.setdefault("attempts", {}).setdefault(tid, {})
@@ -293,6 +302,7 @@ class RetrievalEngine:
                 if allow_degraded:
                     target["degraded_fill"] = True
                     att["degraded_fill"] = True
+                break
 
     def _state_fill(self, state: dict) -> None:
         """正常占槽：accepted 图（或 citation_ok + 有图）。
@@ -607,7 +617,10 @@ class RetrievalEngine:
         # 备选交付：固定 backup_slots 台（默认 4），只在提交阶段从候选池按优先级取，
         # 不额外检索/规划（2026-11-12 产品要求）。
         backup_required = self.brief.backup_slots
-        backup_models = pool_models[:backup_required]
+        # 正选优先：正选没满时，有图车不得先算进备选（2026-11-13 修复）。
+        # 正常情况下跨 unit 借位后 accepted 已满；这里只做最后一道守卫。
+        backup_models = (pool_models[:backup_required]
+                         if accepted >= target else [])
         backup_images = sum(len({a for v in (by_target.get(m) or {}).values()
                                  for a in (v or [])}) for m in backup_models)
         return {

@@ -91,6 +91,20 @@
   `degraded_fill` 被执行但被 unit 配额挡住；
 - 不改任何 run 数据；修复代码在后续 commit（E40/E41）。
 
+### 9. 填槽修复与并发实验（2026-11-13）
+
+- 修复 `engine._fill_pass`：本 unit 满时允许借其它 unit 空槽；`_delivery` 正选未满时
+  不把有图车算作备选；
+- 验证 `data-test/runs/verify-fillfix-20261113/`：复用原 plan 复跑 c2 两臂，
+  8+2→**10+0**、9+4→**10+4**；
+- A 测试 `data-test/runs/ab-plan-concurrency-20261113/`：plan 串行 518.3 s →
+  4 路并发 155.3 s（3.34×），`plan_candidates.py --concurrency` 默认仍 1；
+- rank A/B `data-test/runs/ab-rank-20261113/`：LLM vs 确定性交付一致，
+  确定性 rank 省 20–40 s；`rank_plan.py --deterministic` 仅实验开关；
+- 下载基准 `data-test/runs/ab-negative-20261113/c5-roller/DOWNLOAD-CONCURRENCY.json`：
+  4 路 2.9×、8 路 3.1×；未改生产 loop；
+- 新增 `docs/concurrency-experiments-20261113.md`。
+
 ### 6. 复核方法（新机器上可自检）
 
 ```bash

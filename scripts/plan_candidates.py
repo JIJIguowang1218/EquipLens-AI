@@ -20,6 +20,7 @@ import json
 import os
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import requests
@@ -90,6 +91,45 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
     return json.loads(data["choices"][0]["message"]["content"]), (data.get("usage") or {})
 
 
+def run_query(key: str, brief: dict, meta: dict, want: int,
+              sleep_s: float = 0.3) -> dict:
+    """一条查询 = 1 次 Search + 1 次抽取；只依赖本查询自己的结果（可并发）。"""
+    q = meta["query"]
+    api: list[dict] = []
+    extracted: list[dict] = []
+    t0 = time.time()
+    try:
+        res = search(key, q, 20)
+    except Exception as e:  # noqa: BLE001
+        print(f"search fail {q}: {type(e).__name__}")
+        res = []
+    row = {**meta, "results": len(res)}
+    api.append({"api": "search", "query_id": meta["query_id"],
+                "dimension": meta["dimension"], "query": q,
+                "results": len(res), "billable": bool(res),
+                "ms": round((time.time() - t0) * 1000),
+                "cost_usd": 0.00075 if res else 0})
+    if res:
+        t1 = time.time()
+        try:
+            got, usage = extract(key, brief, meta, res, want)
+            api.append({"api": "chat", "model": "deepseek-flash",
+                        "query_id": meta["query_id"],
+                        "prompt_tokens": usage.get("prompt_tokens"),
+                        "completion_tokens": usage.get("completion_tokens"),
+                        "ms": round((time.time() - t1) * 1000),
+                        "billable": True})
+            rows, stats = validate_extraction(
+                got, {str(r.get("url") or "") for r in res}, meta, want)
+            row.update(stats)
+            extracted.extend(rows)
+        except Exception as e:  # noqa: BLE001
+            print("extract fail", meta["query_id"], type(e).__name__, str(e)[:160])
+            row.update({"kept": 0, "error": type(e).__name__})
+    time.sleep(sleep_s)
+    return {"row": row, "api": api, "extracted": extracted, "res": res}
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--brief", required=True)
@@ -104,6 +144,8 @@ def main(argv=None) -> int:
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     ap.add_argument("--no-negative", action="store_true",
                     help="A/B 用：查询不追加 -\"短词\"（brief 不变，其余逐字相同）")
+    ap.add_argument("--concurrency", type=int, default=1,
+                    help="查询并发数；1=串行（默认，保持生产行为）")
     args = ap.parse_args(argv)
 
     key = load_key()
@@ -122,36 +164,22 @@ def main(argv=None) -> int:
     per_query: list[dict] = []
     api_rows: list[dict] = []
     extracted: list[dict] = []
-    for meta in query_plan:
-        q = meta["query"]
-        try:
-            res = search(key, q, 20)
-        except Exception as e:  # noqa: BLE001
-            print(f"search fail {q}: {type(e).__name__}")
-            res = []
-        row = {**meta, "results": len(res)}
-        api_rows.append({"api": "search", "query_id": meta["query_id"],
-                         "dimension": meta["dimension"], "query": q,
-                         "results": len(res), "billable": bool(res),
-                         "cost_usd": 0.00075 if res else 0})
-        all_results.extend(res)
-        if res:
-            try:
-                got, usage = extract(key, brief, meta, res, extract_n)
-                api_rows.append({"api": "chat", "model": "deepseek-flash",
-                                 "query_id": meta["query_id"],
-                                 "prompt_tokens": usage.get("prompt_tokens"),
-                                 "completion_tokens": usage.get("completion_tokens"),
-                                 "billable": True})
-                rows, stats = validate_extraction(
-                    got, {str(r.get("url") or "") for r in res}, meta, extract_n)
-                row.update(stats)
-                extracted.extend(rows)
-            except Exception as e:  # noqa: BLE001
-                print("extract fail", meta["query_id"], type(e).__name__, str(e)[:160])
-                row.update({"kept": 0, "error": type(e).__name__})
-        per_query.append(row)
-        time.sleep(0.3)
+
+    def run_batch(batch: list[dict]) -> list[dict]:
+        if int(args.concurrency or 1) > 1:
+            with ThreadPoolExecutor(max_workers=int(args.concurrency)) as ex:
+                return list(ex.map(
+                    lambda m: run_query(key, brief, m, extract_n), batch))
+        return [run_query(key, brief, m, extract_n) for m in batch]
+
+    def absorb(outs: list[dict]) -> None:
+        for out in outs:
+            per_query.append(out["row"])
+            api_rows.extend(out["api"])
+            all_results.extend(out["res"])
+            extracted.extend(out["extracted"])
+
+    absorb(run_batch(query_plan))
 
     topup_rows: list[dict] = []
     extras: list[dict] = []
@@ -160,37 +188,9 @@ def main(argv=None) -> int:
         if len(merged_so_far) < limits["need"]:
             extras = top_up_queries(brief, [q["query"] for q in query_plan],
                                     max_extra=min(2, int(args.topup)))
-            for meta in extras:
-                q = meta["query"]
-                try:
-                    res = search(key, q, 20)
-                except Exception as e:  # noqa: BLE001
-                    print(f"topup search fail {q}: {type(e).__name__}")
-                    res = []
-                row = {**meta, "results": len(res)}
-                api_rows.append({"api": "search", "query_id": meta["query_id"],
-                                 "dimension": meta["dimension"], "query": q,
-                                 "results": len(res), "billable": bool(res),
-                                 "cost_usd": 0.00075 if res else 0})
-                all_results.extend(res)
-                if res:
-                    try:
-                        got, usage = extract(key, brief, meta, res, extract_n)
-                        api_rows.append({"api": "chat", "model": "deepseek-flash",
-                                         "query_id": meta["query_id"],
-                                         "prompt_tokens": usage.get("prompt_tokens"),
-                                         "completion_tokens": usage.get("completion_tokens"),
-                                         "billable": True})
-                        rows, stats = validate_extraction(
-                            got, {str(r.get("url") or "") for r in res}, meta, extract_n)
-                        row.update(stats)
-                        extracted.extend(rows)
-                    except Exception as e:  # noqa: BLE001
-                        print("topup extract fail", meta["query_id"], type(e).__name__, str(e)[:160])
-                        row.update({"kept": 0, "error": type(e).__name__})
-                per_query.append(row)
-                topup_rows.append(row)
-                time.sleep(0.3)
+            outs = run_batch(extras)
+            absorb(outs)
+            topup_rows = [o["row"] for o in outs]
 
     seen: set[str] = set()
     uniq: list[dict] = []
@@ -211,6 +211,7 @@ def main(argv=None) -> int:
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "model": "deepseek-flash",
         "planner_version": "v2-provenance",
+        "concurrency": int(args.concurrency or 1),
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,

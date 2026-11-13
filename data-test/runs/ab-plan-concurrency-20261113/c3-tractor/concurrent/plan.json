@@ -1,0 +1,894 @@
+{
+ "brief_id": "auto-20261112-211042",
+ "created_at": "2026-11-13T17:28:50",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "农田/复合作业 工程车 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 95,
+ "candidates": [
+  {
+   "model": "东方红-1604/1804",
+   "brand": "中国一拖（东方红）",
+   "reason": "结果明确为大马力轮式拖拉机，配套前驱动桥、全封闭驾驶室，适合农田作业与复合作业场景。",
+   "sources": [
+    "http://m.ytogroup.com/cpzx/nyjx/lstljxl/201611/t20161129_114742.html",
+    "https://camda.cn/message/2017/32716.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/东方红16041804",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东方红-1604/1804",
+    "1604/1804"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东方红-LX2004",
+   "brand": "中国一拖（东方红）",
+   "reason": "结果标注为大马力轮式拖拉机，配套国外知名前桥，速度范围宽，适合农田作业。",
+   "sources": [
+    "http://cn.newmaker.com/pro_94300.html",
+    "http://www.m.newmaker.com/product-detail-94300.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "东方红-LX2004",
+    "LX2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东方红-LX2204",
+   "brand": "中国一拖（东方红）",
+   "reason": "结果标注为大马力轮式拖拉机，配套国外知名前桥，农田作业效率高。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAxNTIxNjkxNg==&mid=2650382179&idx=5&sn=a7b0dc08f40f4e7eea8c9d608bb3067b"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "东方红-LX2204",
+    "LX2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TT1604（G4）",
+   "brand": "潍坊泰山",
+   "reason": "结果明确为四轮驱动大马力农田拖拉机，匹配大功率发动机，适合作业范围广。",
+   "sources": [
+    "https://www.weifangtaishan.com/new/31.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/TT1604",
+   "identity_kind": "code",
+   "model_variants": [
+    "TT1604（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "KD2204",
+   "brand": "联发凯迪",
+   "reason": "结果为大马力轮式拖拉机，满足农艺作业并兼顾运输，符合农田/复合作业需求。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5441459.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/KD2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "KD2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JC2104",
+   "brand": "骥驰",
+   "reason": "结果为农业用四轮驱动轮式拖拉机，采用4×4×（1＋1）变速箱，可满足田间作业与运输作业。",
+   "sources": [
+    "https://item.nongji360.com/88364",
+    "https://wd.nongji360.com/product/view?id=88364&dmname=shop23461934"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/JC2104",
+   "identity_kind": "code",
+   "model_variants": [
+    "JC2104"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "1654",
+   "brand": "悍沃",
+   "reason": "结果为大马力轮式拖拉机，采用四轮驱动湿式离合器及进口前驱动桥，适合农田复合作业。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5436466.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/1654",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1654"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "2104",
+   "brand": "雷木",
+   "reason": "结果为大马力轮式拖拉机，配备强化型前桥、16前进档/16倒退档，农田作业效率高。",
+   "sources": [
+    "http://item.nongji360.com/61054"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/2104",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2104"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "2204",
+   "brand": "雷木",
+   "reason": "结果为雷木2204轮式拖拉机，配加大强化型前桥、16F/16R档位，定位大马力农田作业拖拉机。",
+   "sources": [
+    "http://adev.nongjitong.com/Item/429078.aspx",
+    "http://xkzj.com.cn/index.php?p=productsshow&id=244&lanmu=2&c_id=52"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/2204",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "PH2304",
+   "brand": "五征雷诺曼",
+   "reason": "结果明确为五征雷诺曼PH2304轮式拖拉机，配Carraro前驱动桥及电液控制前驱动换档，符合4×4前驱动桥构型。",
+   "sources": [
+    "https://www.camda.cn/message/2018/33824.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/PH2304",
+   "identity_kind": "code",
+   "model_variants": [
+    "PH2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "M1654",
+   "brand": "雷沃欧豹",
+   "reason": "结果为165马力轮式拖拉机，采用CARRARO前驱动桥和万向节前驱动轴，适合农田复合作业候选。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5405004.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/M1654",
+   "identity_kind": "code",
+   "model_variants": [
+    "M1654"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "1504",
+   "brand": "昊田",
+   "reason": "结果明确为昊田1504大马力轮式拖拉机，驱动形式为四轮驱动，适用于不同农艺需求。",
+   "sources": [
+    "https://www.nongjx.com/st132831/product_2904448.html",
+    "https://wd.nongji360.com/product/view?id=61044&type=20"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/1504",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1504"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "TN1454",
+   "brand": "天拖",
+   "reason": "结果参数页给出天拖TN1454型大马力轮式拖拉机，型式4×4、14F+7R，符合4×4大马力轮式拖拉机候选。",
+   "sources": [
+    "https://www.aichehome.com/wjjdetails/38090.htm"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/TN1454",
+   "identity_kind": "code",
+   "model_variants": [
+    "TN1454"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "OPTUM2704",
+   "brand": "凯斯",
+   "reason": "结果明确为凯斯OPTUM2704无级变速轮式拖拉机，四轮驱动、270hp，并面向翻地、深松及复式作业。",
+   "sources": [
+    "https://wd.nongji360.com/product/view?id=108172&dmname=shop71133168"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/OPTUM2704",
+   "identity_kind": "code",
+   "model_variants": [
+    "OPTUM2704"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "6170R",
+   "brand": "John Deere",
+   "reason": "结果为John Deere 6170R轮式拖拉机，190马力、全轮驱动、三点悬挂，符合大马力4×4农田作业候选。",
+   "sources": [
+    "https://agroline.cn/-/sale/wheel-tractors/John-Deere/6170R-AP-met-Lucht-en-Fronthef--26111110400900530200"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/6170R",
+   "identity_kind": "generic",
+   "model_variants": [
+    "6170R"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EQ2061E 4×4 1.5吨越野卡车",
+   "brand": "东风",
+   "reason": "结果明确写到它是EQ2081派生的4×4型1.5吨级运兵/运货卡车；它采用前置发动机、长头驾驶室和整体桥结构，是结果中与“4×4前置发动机、田间道路转场、复合作业运载”最接近的整车平台形态。但它是军用越野卡车，并非拖拉机；其是否适用于农田和复合工况下的附件布置，仍需另行核对。",
+   "sources": [
+    "http://www.hlqcv.com/shop/content/show/id/90.html",
+    "http://mp.weixin.qq.com/s?__biz=MzA4MjIwNzUxMA==&mid=2648218726&idx=1&sn=8e92d9f6da80997db1de9d6c55a8a72e"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/EQ2061E",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ2061E 4×4 1.5吨越野卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "EQ1093F6D 4×4 5吨卡车",
+   "brand": "东风",
+   "reason": "结果给出了东风生产的EQ1093F6D 4×4 5吨卡车，并指出该车外观与东风的发动机罩盖式商用卡车相似；它属于4×4前置发动机、带发动机罩的载货底盘，可作为“4×4+农田/道路混合运输”场景的候选参照车型。但它是公路及军用运输卡车，且未给出超速前驱动桥信息。",
+   "sources": [
+    "http://www.hlqcv.com/shop/content/show/id/90.html",
+    "http://mp.weixin.qq.com/s?__biz=MzA4MjIwNzUxMA==&mid=2648218726&idx=1&sn=8e92d9f6da80997db1de9d6c55a8a72e"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/EQ1093F6D",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ1093F6D 4×4 5吨卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "T-Way AD190T43WH-3800 AT Chassis Cabin",
+   "brand": "IVECO",
+   "reason": "结果给出的参数中包含驱动型式All-Wheel Drive、轴数2、轴配置4x4、430HP柴油、自动变速箱，以及底盘驾驶室（Chassis Cabin）形态，符合“4×4前置发动机底盘、可用于上装改造作业车”的构型要求；马力段也接近“大马力”。但该车是欧系公路及工程底盘，没有农田复合工况与超速前桥的直接证据。",
+   "sources": [
+    "https://autoline24.ca/-/sale/chassis-trucks/IVECO/T-Way-AD190T43WH-3800-AT-Chassis-Cabin-2-units--26111216041367574900"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "code/AD190T43WH3800",
+   "identity_kind": "code",
+   "model_variants": [
+    "T-Way AD190T43WH-3800 AT Chassis Cabin"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO 4x4 Pick-up（ICU型）",
+   "brand": "中国重汽（SINOTRUK）",
+   "reason": "结果中的底盘品牌与车型条目明确列出“Chassis Brand:SINOTRUK HOWO … Type:Pick-up 4x4 ICU”，是结果里少数明确标注4×4的整车条目，可对应4×4前置发动机、多用途田间及道路转场的候选平台。但它是皮卡类底盘，承载与附件安装空间有限，且信息粒度很粗。",
+   "sources": [
+    "https://autoline24.cn/img/pdf/a/7/1790560722530286342/Manten%20company%20profile.pdf#4"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO 4x4 Pick-up（ICU型）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "锋坦Frontier Pro 四驱版（2.0T/2.3T）",
+   "brand": "（锋坦）Frontier Pro",
+   "reason": "结果配置表显示该车驱动方式为“前置四驱”，四驱形式为“分时四驱（带适时四驱功能）”，车身形式为4门5座皮卡，属于4×4前置发动机、可用于田间及道路混合出行的车型，也可作为对照参考。但它本质上是乘用化皮卡，与“大马力轮式拖拉机底盘+后三点悬挂”的任务单环境相差较远，因此只宜作弱相关候选。",
+   "sources": [
+    "https://auto.news18a.com/7315/param.html"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/锋坦FRONTIERPRO四驱版",
+   "identity_kind": "generic",
+   "model_variants": [
+    "锋坦Frontier Pro 四驱版（2.0T/2.3T）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "雷诺曼PH2304",
+   "brand": "五征",
+   "reason": "2304大马力轮式拖拉机，配Carraro前驱动桥、全封闭驾驶室，符合农田复合作业的大马力四驱拖拉机方向。",
+   "sources": [
+    "https://www.camda.cn/message/2018/33824.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/雷诺曼PH2304",
+   "identity_kind": "generic",
+   "model_variants": [
+    "雷诺曼PH2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TT1600",
+   "brand": "潍坊泰山",
+   "reason": "结果明确为四轮驱动(4×4)、160马力大马力轮式拖拉机，配六缸发动机，适合农田复合作业。",
+   "sources": [
+    "https://www.weifangtaishan.com/news_details/11.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/TT1600",
+   "identity_kind": "code",
+   "model_variants": [
+    "TT1600",
+    "TT1600（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "M1654-G",
+   "brand": "雷沃",
+   "reason": "TG系列165马力拖拉机，采用Carraro前驱动桥与万向节驱动轴，符合大马力四驱轮式拖拉机底盘方向。",
+   "sources": [
+    "https://www.camda.cn/message/2017/32911.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/M1654G",
+   "identity_kind": "code",
+   "model_variants": [
+    "M1654-G"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Luzhong1804",
+   "brand": "Luzhong（鲁中）",
+   "reason": "结果标注180HP 4WD轮式拖拉机，属大马力四驱农田拖拉机，可作为候选车型。",
+   "sources": [
+    "https://cautop.com/mall/show-1513532.html#sendinquiry"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/LUZHONG1804",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Luzhong1804"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JC1804(G4)",
+   "brand": "骥驰",
+   "reason": "轮式拖拉机，整机参数明确为4×4四轮驱动，用途为一般农业用，符合大马力农田作业场景。",
+   "sources": [
+    "http://www.jiamusijichi.com/index.php?m=wap&a=show_pic&catid=23&id=46"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/JC1804",
+   "identity_kind": "code",
+   "model_variants": [
+    "JC1804(G4)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "1604",
+   "brand": "雷木",
+   "reason": "160马力轮式拖拉机，驱动形式为四轮驱动，适合农田复合作业，符合大马力4×4轮式拖拉机候选。",
+   "sources": [
+    "http://toutiao.nongjitong.com/product/leimu1604_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/1604",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1604"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "1804/1604",
+   "brand": "LEIMU",
+   "reason": "检索结果明确为轮式拖拉机，标注驱动方式4×4，配潍柴/玉柴增压中冷发动机，具备双作用离合器、全液压转向、双速PTO等配置，符合大马力轮式拖拉机、农田/复合作业及4×4（MFWD）构型；可用于发动机罩侧板、前配重罩、挡泥板、登车踏步、后视镜支架等覆盖件/支架选型检索。",
+   "sources": [
+    "https://www.nongjx.com/st113907/product_2554811.html"
+   ],
+   "source_query": "农田/复合作业 工程车 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/18041604",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1804/1604"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "农田/复合作业 工程车 4×4 等速/超速前 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 27
+ },
+ "pool": {
+  "count": 27,
+  "required": 23,
+  "slots": 10,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 9
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 27,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 38,
+  "unique": 27,
+  "removed": 11,
+  "generic": 11
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

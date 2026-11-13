@@ -47,6 +47,8 @@ def main(argv=None) -> int:
                     help="主交付台数；默认取 brief.request.page_budget.vehicle_slots")
     ap.add_argument("--backup", type=int, default=4, help="备选台数（默认 4）")
     ap.add_argument("--model", default="deepseek-flash")
+    ap.add_argument("--deterministic", action="store_true",
+                    help="A/B 用：不调 LLM，按来源数/维度/身份做确定性排序")
     args = ap.parse_args(argv)
     plan = json.loads(Path(args.plan).read_text(encoding="utf-8"))
     brief = json.loads(Path(args.brief).read_text(encoding="utf-8"))
@@ -70,6 +72,48 @@ def main(argv=None) -> int:
         "reason": (c.get("reason") or "")[:160],
         "source_queries": [q.get("query") for q in (c.get("source_queries") or [])][:3],
     } for c in cands]
+
+    if args.deterministic:
+        # A/B 基线：不调 LLM。用“被几条查询共同发现 + 来源维度 + 身份类型”排序，
+        # 只作为 rank 的对照，不改变 plan 内容。
+        dim_rank = {"base": 0, "model": 1, "unit": 2, "environment": 3, "english": 4}
+        kind_rank = {"code": 0, "series": 1, "generic": 2}
+
+        def _key(c):
+            dims = c.get("dimensions") or []
+            d = min([dim_rank.get(x, 9) for x in dims] or [9])
+            return (0 if any(p and p in c["model"].lower() for p in pins) else 1,
+                    -int(c.get("source_count") or 0), d,
+                    kind_rank.get(c.get("identity_kind"), 3), c["model"])
+
+        order = sorted(cands, key=_key)
+        ranking = []
+        for i, c in enumerate(order, 1):
+            role = "primary" if i <= slots else ("backup" if i <= slots + backup else "pool")
+            band = "must" if i <= slots else ("strong" if i <= slots + backup else "weak")
+            c["intent_band"] = band
+            c["intent_reason"] = "确定性排序：来源数/维度/身份"
+            c["role"] = "primary" if c.get("pinned") else role
+            c["intent_rank"] = i
+            ranking.append({"model": c["model"], "band": band,
+                            "reason": c["intent_reason"], "role": c["role"]})
+        plan["candidates"] = order
+        plan["pool"] = {"count": len(cands),
+                        "required": pool_requirement(slots, backup),
+                        "ok": not warn, "warning": warn}
+        plan["ranking"] = {"method": "deterministic", "pins": pins,
+                           "slots": slots, "backup": backup,
+                           "primary": sum(1 for c in order if c.get("role") == "primary"),
+                           "backup": sum(1 for c in order if c.get("role") == "backup"),
+                           "rows": ranking}
+        out = Path(args.out or Path(args.plan).with_name("plan-ranked.json"))
+        out.write_text(json.dumps(plan, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(json.dumps({"out": str(out), "method": "deterministic",
+                          "candidates": len(order),
+                          "primary": plan["ranking"]["primary"],
+                          "backup": plan["ranking"]["backup"]}, ensure_ascii=False))
+        return 0
+
     prompt = (
         "你是工程车设计检索的规划助手。下面是一个任务单和候选车型（只有文本信息，"
         "没有图片）。请只依据文本，给候选排序，选出最值得优先抓图/交付的车型。\n"

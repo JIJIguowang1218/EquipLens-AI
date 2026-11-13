@@ -170,6 +170,10 @@ task-brief@v2 (API)
 - **negative A/B（2026-11-13）**：`ab-negative-20261113`，with/without 均 48/50 主 + 18/20 备，
   交付零差异；30 条查询回放 20 条完全相同、平均 1.6/20 URL 变化；同配置重跑自带
   49/50↔48/50、16/20↔18/20、成本 ±12% 的噪声 → **negative 收益未证实，按规则保留**；
+- **填槽修复（2026-11-13）**：`_fill_pass` 允许跨 unit 借位，`_delivery` 正选未满不算备选；
+  `verify-fillfix-20261113` 复用原 plan 复跑 c2：8+2→10+0、9+4→10+4；
+- **并发实验（2026-11-13）**：plan `--concurrency 4` 5 brief 518→155 s（3.34×，默认仍 1）；
+  下载 4 路基准 2.9×（未接 loop）；LLM rank vs 确定性两 case 交付一致，确定性省 20–40 s；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
   `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。

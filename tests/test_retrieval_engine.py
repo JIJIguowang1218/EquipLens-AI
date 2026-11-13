@@ -753,6 +753,54 @@ def test_degraded_fill_when_tiers_exhausted():
         assert any(x.get("action") == "degraded_fill" for x in summary["decisions"])
 
 
+def test_cross_unit_fill_does_not_leave_primary_short():
+    """正选优先：u-exact 满了以后，其名下有图车要能借 u-env 的空槽。
+
+    2026-11-13 修复前：unit 配额 + 冻结 unit_ids 让这类车只能进备选，
+    正选空着；修复后 delivered 必须等于 2。
+    """
+    units = [
+        {"unit_id": "u-exact", "tier": "exact", "scope": "沙漠牵引车",
+         "parts": ["bumper"], "quota": 1, "budget": {}, "stop": ""},
+        {"unit_id": "u-env", "tier": "environment", "scope": "沙漠环境",
+         "parts": ["bumper"], "quota": 1, "budget": {}, "stop": ""},
+    ]
+    b = base_brief(parts=("bumper",), units=units, slots=2, backup=0,
+                   tiers=("exact", "environment"))
+    w = {
+        "external": {"u-exact": [target("t1", ["bumper"]),
+                                 target("t2", ["bumper"])]},
+        "assets": {"t1": {"bumper": [asset("a1")]},
+                   "t2": {"bumper": [asset("a2")]}},
+        "verify": {"a1": ok(), "a2": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert summary["state"] == "DONE", summary
+        assert d["delivered"] == 2 and d["status"] == "complete", d
+        accepted = {tid for u in summary["accepted_targets"].values() for tid in u}
+        assert accepted == {"t1", "t2"}, accepted
+
+
+def test_short_primary_does_not_masquerade_as_backup():
+    """正选没满时，有图车不能被算成备选（先正选后备选）。"""
+    b = base_brief(parts=("bumper",), slots=2, backup=1)
+    b["research_units"][0]["quota"] = 1
+    w = {
+        "external": {"u-exact": [target("t1", ["bumper"]),
+                                 target("t2", ["bumper"])]},
+        "assets": {"t1": {"bumper": [asset("a1")]},
+                   "t2": {"bumper": [asset("a2")]}},
+        "verify": {"a1": ok(), "a2": ok()},
+    }
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["delivered"] == 1 and d["missing"] == 1, d
+        assert d["backup"]["delivered"] == 0, d
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -779,6 +827,8 @@ if __name__ == "__main__":
     check("交付守卫：不足报 short", test_delivery_block_marks_short)
     check("交付守卫：degraded 身份", test_delivery_counts_degraded_identity)
     check("单元配额是硬上限", test_unit_quota_caps_accepted_targets)
+    check("跨 unit 借位：正选不空", test_cross_unit_fill_does_not_leave_primary_short)
+    check("正选未满不算备选", test_short_primary_does_not_masquerade_as_backup)
     check("part_only 进契约", test_part_only_contract_roundtrip)
     check("attempts 真实计数", test_attempts_asset_count_is_real)
     check("预算按真实查询计数", test_budget_queries_are_issued_queries_not_targets)
