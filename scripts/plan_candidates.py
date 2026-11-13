@@ -61,21 +61,41 @@ def search(key: str, query: str, count: int = 20) -> list[dict]:
 
 
 def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
-            want: int = 6) -> tuple[dict, dict]:
-    """只从**这一条查询**的结果里抽候选，避免跨查询混池。"""
+            want: int = 6, mode: str = "model") -> tuple[dict, dict]:
+    """只从**这一条查询**的结果里抽候选，避免跨查询混池。
+
+    mode="model"：只抽“车型”（品牌 + 车系/型号），旧口径；
+    mode="wide"：枚举结果里出现的所有具体型号/写法（同一车系不同型号码也算），
+                 宁多勿少——用去重环节再收，解决“抽取召回偏低”。
+    """
     compact = [{"title": r.get("title", ""), "url": r.get("url", ""),
                 "summary": (r.get("summary") or r.get("snippet") or "")[:280]}
                for r in results]
+    if mode == "wide":
+        task = (
+            f"请只从这些结果里**尽可能穷尽**地抽出候选车型，最多 {max(want * 2, want)} 个，要求：\n"
+            "1) 一条结果里如果出现多个具体车型/型号（同一车系不同型号码、不同写法），分别列出；\n"
+            "2) 宁多勿少：只要结果里明确写了品牌+车系/型号就列，不要因为“和任务单不完全相符”而丢弃；\n"
+            "3) 只能从给出的结果里推断，不允许凭记忆补充；\n"
+            "4) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
+            "5) 同一车型不要重复；\n"
+            "6) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+        )
+    else:
+        task = (
+            f"请只从这些结果里抽最多 {want} 个候选车型（品牌 + 车系/型号），要求：\n"
+            "1) 只能从给出的结果里推断，不允许凭记忆补充；\n"
+            "2) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
+            "3) 同一车型只给一次；与任务单环境/构型不符的不要；\n"
+            "4) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+        )
     prompt = (
         "你是工程车/重卡检索规划助手。下面是一组关于查询"
         f"「{query_meta['query']}」的检索结果。\n"
-        f"请只从这些结果里抽最多 {want} 个候选车型（品牌 + 车系/型号），要求：\n"
-        "1) 只能从给出的结果里推断，不允许凭记忆补充；\n"
-        "2) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
-        "3) 同一车型只给一次；与任务单环境/构型不符的不要；\n"
-        "4) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
-        "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
-        f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
+        + task
+        + f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
         f"检索结果：{json.dumps(compact, ensure_ascii=False)}"
     )
     r = requests.post(f"{API}/chat/completions",
@@ -92,7 +112,7 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
 
 
 def run_query(key: str, brief: dict, meta: dict, want: int,
-              sleep_s: float = 0.3) -> dict:
+              sleep_s: float = 0.3, mode: str = "model") -> dict:
     """一条查询 = 1 次 Search + 1 次抽取；只依赖本查询自己的结果（可并发）。"""
     q = meta["query"]
     api: list[dict] = []
@@ -112,7 +132,7 @@ def run_query(key: str, brief: dict, meta: dict, want: int,
     if res:
         t1 = time.time()
         try:
-            got, usage = extract(key, brief, meta, res, want)
+            got, usage = extract(key, brief, meta, res, want, mode=mode)
             api.append({"api": "chat", "model": "deepseek-flash",
                         "query_id": meta["query_id"],
                         "prompt_tokens": usage.get("prompt_tokens"),
@@ -140,6 +160,8 @@ def main(argv=None) -> int:
                     help="候选池不足时追加的查询数（默认 2，0=关闭；最多 2）")
     ap.add_argument("--per-query", type=int, default=0,
                     help="每条查询最多抽几个候选；0=按目标池/查询数自动")
+    ap.add_argument("--extract-mode", default="model", choices=["model", "wide"],
+                    help="抽取口径：model=只抽车型（默认）；wide=枚举结果里所有具体型号（P1 实验）")
     ap.add_argument("--extra-query", action="append", default=[],
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     ap.add_argument("--no-negative", action="store_true",
@@ -169,8 +191,10 @@ def main(argv=None) -> int:
         if int(args.concurrency or 1) > 1:
             with ThreadPoolExecutor(max_workers=int(args.concurrency)) as ex:
                 return list(ex.map(
-                    lambda m: run_query(key, brief, m, extract_n), batch))
-        return [run_query(key, brief, m, extract_n) for m in batch]
+                    lambda m: run_query(key, brief, m, extract_n,
+                                        mode=args.extract_mode), batch))
+        return [run_query(key, brief, m, extract_n, mode=args.extract_mode)
+                for m in batch]
 
     def absorb(outs: list[dict]) -> None:
         for out in outs:
@@ -212,6 +236,7 @@ def main(argv=None) -> int:
         "model": "deepseek-flash",
         "planner_version": "v2-provenance",
         "concurrency": int(args.concurrency or 1),
+        "extract_mode": args.extract_mode,
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,
