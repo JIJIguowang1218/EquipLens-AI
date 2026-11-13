@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-13T20:41:45 · 共 87 条 · 待补人工结论 45 条
+> 生成时间：2026-11-14T02:33:59 · 共 100 条 · 待补人工结论 58 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -45,6 +45,12 @@
 | gate | `loop-code-prefilter-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=67 · gate_pass=62 · degraded=8 · $0.01725 | [—](data-test/runs/loop-code-prefilter-20261112/summary.json) |
 | gate | `loop-platform-baidu-filtered-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=59 · gate_pass=55 · degraded=8 · $0.01725 | [—](data-test/runs/loop-platform-baidu-filtered-20261112/audit.html) |
 | engine | `p1-demo` | run | 2026-11-09 | DONE | — | [—](data-test/runs/p1-demo/summary.json) |
+| engine | `p1-base-20261113` | plan-set | 2026-11-13 | — | — | — |
+| engine | `p1-base-n1-20261113` | plan-set | 2026-11-13 | — | — | — |
+| engine | `p1-base-n2-20261113` | plan-set | 2026-11-13 | — | — | — |
+| engine | `p1-wide-20261113` | plan-set | 2026-11-13 | — | — | — |
+| engine | `p1-wide-n1-20261113` | plan-set | 2026-11-13 | — | — | — |
+| engine | `p1-wide-n2-20261113` | plan-set | 2026-11-13 | — | — | — |
 | text-retrieval | `run-budget-q1` | run | 2026-10-23 | — | — | [文本检索运行 run-budget-q1](data-test/runs/run-budget-q1/REPORT.md) |
 | text-retrieval | `run-budget-q1-bing` | run | 2026-10-23 | — | — | [文本检索运行 run-budget-q1-bing](data-test/runs/run-budget-q1-bing/REPORT.md) |
 | text-retrieval | `run-budget-q10` | run | 2026-10-23 | — | — | [文本检索运行 run-budget-q10](data-test/runs/run-budget-q10/REPORT.md) |
@@ -74,6 +80,9 @@
 | other | `verify-yield2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield2-20261112/summary.json) |
 | other | `verify-yield3-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield3-20261112/audit.html) |
 | other | `delivery-20261113-regress` | plan-set | 2026-11-13 | — | — | — |
+| other | `p3-searchkey-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p4-glean-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p5-slots-20261114` | plan-set | 2026-11-14 | — | — | — |
 
 ## 空目录 / 归档
 
@@ -83,6 +92,10 @@
 - `delivery-20261113-fillfix-c1` → empty（未删除，仅标记）
 - `delivery-20261113-planvar` → empty（未删除，仅标记）
 - `filter-98-20261109` → empty（未删除，仅标记）
+- `p0-fallback-20261113` → empty（未删除，仅标记）
+- `p1-wide-loop-20261113` → empty（未删除，仅标记）
+- `p2-identity-20261114` → empty（未删除，仅标记）
+- `p2b-tier-20261114` → empty（未删除，仅标记）
 - `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）
 - `source-expansion-class-query-20261111` → empty（未删除，仅标记）

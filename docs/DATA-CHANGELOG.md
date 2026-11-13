@@ -188,3 +188,12 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   当前簇内多码 0 例；模糊合并会误并 `XS143J`/`XS143` → 只做归一化展示/去重，保留型号码硬校验。
 - **search_key 正式启用**（仅末档兜底）：前三档 0 命中才触发，`query_tier` 可监控。
 - 本轮只跑 plan/离线分析，未跑检索 loop；`planning 15/15`、`retrieval_engine 47/47`。
+
+### 17. 健康检查修复（2026-11-14）
+
+- `test_delivery_manifest`：「图片存在才校验数量」——`images/` 是 gitignore 的，
+  新 clone 无文件时只校验结构，避免把“没同步图片”误判成代码回归（现 3/3）。
+- 台账补录 9 个新 plan-set 目录的 `RUN.json`：`run_ledger --check` 从 9 issue → **100 条 0 issue**；
+  HANDOFF/DEPENDENCIES 口径同步为 100。
+- 已知历史遗留：`EXPERIMENTS-INDEX` 有 7 个编号重复（E17/E19/E24/E27/E34/E35/E37 各出现两行），
+  属于早期编号冲突；不改编号（会破坏引用），后续新实验继续用 E59+。

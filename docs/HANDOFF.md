@@ -213,7 +213,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（87 条，0 issue）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（100 条，0 issue）
 PYTHONPATH=src python tests/test_planning.py            # 14/14
 PYTHONPATH=src python tests/test_retrieval_engine.py    # 40/40
 PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）
