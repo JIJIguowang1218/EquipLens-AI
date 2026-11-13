@@ -282,7 +282,7 @@ def main(argv=None) -> int:
         merged_so_far = merge_candidates(extracted)
         if len(merged_so_far) < limits["need"]:
             extras = top_up_queries(brief, [q["query"] for q in query_plan],
-                                    max_extra=min(2, int(args.topup)))
+                                    max_extra=max(0, min(4, int(args.topup))))
             outs = run_batch(extras)
             absorb(outs)
             topup_rows = [o["row"] for o in outs]

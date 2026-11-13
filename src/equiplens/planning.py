@@ -204,9 +204,11 @@ def top_up_queries(brief: dict, existing: list[str] | None = None,
     if not klass:
         return []
     existing_norm = {normalize_text(x) for x in (existing or [])}
-    pool = [f"{klass} {conf} 实车", f"{klass} {conf} 厂家"]
+    pool = [f"{klass} {conf} 实车", f"{klass} {conf} 厂家",
+            f"{klass} {conf} 图集", f"{klass} {conf} 参数",
+            f"{klass} {conf} 评测"]
     out: list[dict] = []
-    for q in pool:
+    for q in pool[:max(0, int(max_extra or 0))]:
         q = normalize_text(q)
         if not q or q in existing_norm:
             continue
