@@ -69,9 +69,9 @@ def target(tid, parts):
     return {"target_id": tid, "model": tid, "parts": list(parts)}
 
 
-def asset(aid, view="front", scene="", overview=False):
+def asset(aid, view="front", scene="", overview=False, tier=""):
     return {"asset_id": aid, "view": view, "width": 1600, "height": 900,
-            "scene": scene, "overview": overview}
+            "scene": scene, "overview": overview, "query_tier": tier}
 
 
 def ok(grade="E2"):
@@ -879,6 +879,34 @@ def test_identity_evidence_without_brand_table():
     assert verifier.verify(weak, "bumper").identity == "unknown"
 
 
+def test_fallback_assets_only_fill_degraded():
+    """回退来源（part_fallback）的图不得进正式槽，只能由 DEGRADE 兜底使用。"""
+    b = base_brief(parts=("bumper",), slots=1, tiers=("exact",), backup=0)
+    w = {"external": {"u-exact": [target("t1", ["bumper"])]},
+         "assets": {"t1": {"bumper": [asset("a1", tier="part_fallback")]}},
+         "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["delivered"] == 1, d
+        assert d["degraded_fill"] == ["t1"], d
+        assert d["query_tiers"].get("part_fallback") == 1, d
+
+
+def test_fallback_assets_excluded_from_backup():
+    """只有回退来源图的车型不能当备选（备选也是交付物）。"""
+    b = base_brief(parts=("bumper",), slots=1, tiers=("exact",), backup=1)
+    w = {"external": {"u-exact": [target("t1", ["bumper"]), target("t2", ["bumper"])]},
+         "assets": {"t1": {"bumper": [asset("a1", tier="exact")]},
+                    "t2": {"bumper": [asset("a2", tier="part_fallback")]}},
+         "verify": {"a1": ok(), "a2": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        summary, _ = run_engine(b, w, root=td)
+        d = summary["delivery"]
+        assert d["delivered"] == 1, d
+        assert d["backup"]["models"] == [], d["backup"]
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -922,6 +950,8 @@ if __name__ == "__main__":
     check("查询只保留显式构型", test_normalize_query_keeps_only_explicit_drive_config)
     check("图片来源分级进契约", test_asset_query_tier_roundtrip)
     check("未知品牌靠双证据判 probable", test_identity_evidence_without_brand_table)
+    check("回退图只进 degraded", test_fallback_assets_only_fill_degraded)
+    check("回退图不进备选", test_fallback_assets_excluded_from_backup)
     check("节点耗时记录", test_summary_records_step_timings)
     check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]

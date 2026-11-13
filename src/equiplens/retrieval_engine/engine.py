@@ -12,6 +12,11 @@ from typing import Any
 from .contracts import Asset, Brief, ResearchUnit, Target, Verification
 from .state import RunStore, new_state, record_decision
 
+# 回退来源的图（部件名兜底/类目回退）只能进 degraded，不参与正式槽与备选
+FALLBACK_TIERS = {"part_fallback", "class_fallback"}
+# 交付里 degraded 占比告警线（只告警，不阻止交付）
+DEGRADED_RATIO_WARN = 0.5
+
 
 class RetrievalEngine:
     def __init__(self, brief: Brief, world: Any, *, run_root: str | Path,
@@ -273,6 +278,12 @@ class RetrievalEngine:
                 avail = [aid for part in unit["parts"]
                          for aid in state.get("assets", {}).get(tid, {}).get(part, [])
                          if aid not in used_assets]
+                _meta = state.get("asset_meta") or {}
+
+                def _primary_tier(aid: str) -> bool:
+                    """回退来源（part_fallback/class_fallback）的图只能进 degraded。"""
+                    return (_meta.get(aid) or {}).get("query_tier") not in FALLBACK_TIERS
+
                 chosen: list[str] = []
                 if allow_degraded:
                     chosen = avail          # 兜底：过了门卫即可，身份/清晰度可能不达标
@@ -281,10 +292,10 @@ class RetrievalEngine:
                         aid for part in unit["parts"]
                         for aid in state.get("assets", {}).get(tid, {}).get(part, [])
                         if state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
-                        and aid not in used_assets
+                        and aid not in used_assets and _primary_tier(aid)
                     ]
                     if not chosen and target.get("citation_ok"):
-                        chosen = avail
+                        chosen = [aid for aid in avail if _primary_tier(aid)]
                 if not chosen:
                     continue
                 if self._global_accepted(state) >= self._slot_target():
@@ -604,11 +615,19 @@ class RetrievalEngine:
             if (state["targets"].get(tid) or {}).get("degraded_fill"):
                 degraded_fill.append(tid)
         missing = max(0, target - accepted)
-        # 备选池 = 未占槽且**至少有一张可用图**的候选车型（缺图不可交付，P0）
+        _meta = state.get("asset_meta") or {}
+
+        def _has_primary_tier(tid: str) -> bool:
+            return any((_meta.get(aid) or {}).get("query_tier") not in FALLBACK_TIERS
+                       for items in (by_target.get(tid) or {}).values()
+                       for aid in (items or []))
+
+        # 备选池 = 未占槽且**至少有一张可用图**的候选车型（缺图不可交付，P0）；
+        # 回退来源的图不算"可用"（同 B1：只进 degraded）。
         pool_models = sorted(
             (tid for tid in (state.get("targets") or {})
              if tid not in accepted_ids
-             and any((v or []) for v in (by_target.get(tid) or {}).values())),
+             and _has_primary_tier(tid)),
             key=lambda tid: self._backup_priority(state, tid))
         bonus_models = [m for m in pool_models
                         if any((v or []) for v in (by_target.get(m) or {}).values())]
@@ -628,6 +647,8 @@ class RetrievalEngine:
             "delivered": accepted,
             "missing": missing,
             "degraded": degraded,
+            "degraded_ratio": round(degraded / accepted, 3) if accepted else 0.0,
+            "degraded_warn": bool(accepted and degraded / accepted > DEGRADED_RATIO_WARN),
             "degraded_targets": degraded_targets,
             "citation_only": len(citation_only),
             "citation_only_targets": citation_only,
