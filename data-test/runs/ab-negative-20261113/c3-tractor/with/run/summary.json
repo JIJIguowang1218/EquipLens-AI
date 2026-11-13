@@ -1,0 +1,338 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-211042",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 4,
+    "degraded_targets": [
+      "TT1600（G4）",
+      "TG1654 / M1654-G",
+      "东方红1604/1804",
+      "悍沃1654"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "TT1600（G4）",
+      "TG1654 / M1654-G"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 5,
+      "images": 17
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "东方红-LX2204系列",
+        "雷木1604",
+        "M1654",
+        "东方红LX2004"
+      ],
+      "images": 15,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "unavailable": [
+      {
+        "model": "TT1604（G4）",
+        "reason": "gate_or_verify_rejected",
+        "hits": 30,
+        "downloaded": 15,
+        "blocked": 0
+      },
+      {
+        "model": "东方红LX2204",
+        "reason": "gate_or_verify_rejected",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "东方红-LX2204系列",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "雷木1604",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "M1654",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "东方红LX2004",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "雷木1504",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "雷诺曼 PH2304",
+      "TT1600（G4）",
+      "TG1654 / M1654-G",
+      "1804",
+      "东方红1604/1804",
+      "东方红-LX2004",
+      "KAT2204"
+    ],
+    "u-env": [
+      "JC2104",
+      "悍沃1654",
+      "OPTUM2704"
+    ]
+  },
+  "budget_used": {
+    "queries": 57,
+    "models": 17,
+    "fetches": 275,
+    "verifies": 275
+  },
+  "downloads": {
+    "hits": 465,
+    "downloaded": 425,
+    "failed": 40,
+    "blocked": 0,
+    "gate_pass": 375,
+    "early_stop_models": 0,
+    "blocked_hosts": [],
+    "fail_counts": {
+      "file.mainongji.com": 1,
+      "gd-hbimg.huaban.com": 1,
+      "i00.c.aliimg.com": 1,
+      "img003.hc360.cn": 1,
+      "www.cn357.com": 2
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-13T14:55:44"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-13T14:55:44"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-13T14:56:08"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-13T14:57:07"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-13T14:57:07"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-13T14:57:07"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-13T14:57:14"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 4 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-13T14:57:40"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 7 个候选",
+      "ts": "2026-11-13T14:58:20"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 10/10 已满",
+      "ts": "2026-11-13T14:59:42"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-13T14:55:44"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 23809,
+      "at": "2026-11-13T14:56:08"
+    },
+    {
+      "state": "FETCH",
+      "ms": 59395,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-13T14:57:07"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 6928,
+      "at": "2026-11-13T14:57:14"
+    },
+    {
+      "state": "FETCH",
+      "ms": 25350,
+      "at": "2026-11-13T14:57:40"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-13T14:57:40"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-13T14:57:40"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-13T14:57:40"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 40517,
+      "at": "2026-11-13T14:58:20"
+    },
+    {
+      "state": "FETCH",
+      "ms": 81631,
+      "at": "2026-11-13T14:59:42"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-13T14:59:42"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-13T14:59:42"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-13T14:59:42"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 11,
+      "at": "2026-11-13T14:59:42"
+    }
+  ],
+  "elapsed_ms": 237643,
+  "state_path": "data-test\\runs\\ab-negative-20261113\\c3-tractor\\with\\run\\state.json",
+  "events_path": "data-test\\runs\\ab-negative-20261113\\c3-tractor\\with\\run\\events.jsonl",
+  "evidence_path": "data-test\\runs\\ab-negative-20261113\\c3-tractor\\with\\run\\evidence.json"
+}

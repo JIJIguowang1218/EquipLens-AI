@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """候选规划核心测试（不联网、不调 LLM）。"""
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -230,6 +231,19 @@ def test_merge_rules_from_human_verdicts():
     assert "6×6沙漠卡车" not in models
 
 
+def test_no_negative_is_suffix_only():
+    """A/B 开关只去掉 -"短词" 后缀，查询文本其余部分逐字相同。"""
+    from equiplens import planning
+    b = brief()
+    with_neg = planning.build_query_plan(b)
+    without = planning.build_query_plan(b, use_negative=False)
+    assert [q["query_id"] for q in with_neg] == [q["query_id"] for q in without]
+    strip = re.compile(r' -"[^"]*"')
+    for a, c in zip(with_neg, without):
+        assert strip.sub("", a["query"]).strip() == c["query"].strip(), (a, c)
+        assert "-" not in c["query"], c["query"]
+
+
 def test_negative_terms_only_short_words():
     """negative 只允许短排除词；整句指令/元词会毁掉查询（2026-11-12 复现）。"""
     from equiplens import planning
@@ -246,6 +260,7 @@ if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
     check("长负词不进 query", test_long_negative_not_in_query)
+    check("A/B：no-negative 只去后缀", test_no_negative_is_suffix_only)
     check("查询计划：构型不重复", test_config_not_duplicated_in_unit_scope)
     check("抽取校验：拒绝跨查询 URL", test_validate_rejects_foreign_urls)
     check("候选归并：保留来源", test_merge_keeps_provenance)

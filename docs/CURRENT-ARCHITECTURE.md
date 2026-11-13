@@ -167,6 +167,9 @@ task-brief@v2 (API)
   一轮补抓新增 6 个候选（plan 26 台用尽），`queries 114 / models 26 / fetches 316`；
 - **5 输入交付（权威，2026-11-12）**：`delivery-20261112-clean`，主 49/50、备选 16/20、峰值成本 ¥2.064；
   5 个类目分别 9/10、10/10、10/10、6/6、14/14（c1 另一次 10/10 → ±1 波动）；
+- **negative A/B（2026-11-13）**：`ab-negative-20261113`，with/without 均 48/50 主 + 18/20 备，
+  交付零差异；30 条查询回放 20 条完全相同、平均 1.6/20 URL 变化；同配置重跑自带
+  49/50↔48/50、16/20↔18/20、成本 ±12% 的噪声 → **negative 收益未证实，按规则保留**；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
   `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。

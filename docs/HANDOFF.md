@@ -2,7 +2,7 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-12** |
+| 更新日期 | **2026-11-13** |
 | 当前阶段 | **检索 v1 收敛：P0 交付不变量 + 第一次用户交付准备**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准；扩源线已收口。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | 见 `git log -1`；工作树状态以 git 为准。整体框架/生产/实验边界见 `docs/CURRENT-ARCHITECTURE.md`。 |
@@ -58,16 +58,26 @@
 
 合计：主 **49/50**、备选 **16/20**、峰值成本 **¥2.064**（谷约 ¥1.46）。同代码 c1 另一次为 10/10 + 3/4 → **±1 波动，n=1 不可当回归**。
 
+### negative A/B 结论（2026-11-13，已完成）
+
+- 数据：`data-test/runs/ab-negative-20261113/`（5 brief × with/without，10 次真实 loop）；
+- 结果：两臂 **48/50 主 + 18/20 备**，完全持平；without 成本 +¥0.27（主要是多下载图）；
+- 搜索层回放 30 条查询：20 条结果完全相同，平均 1.6/20 URL 变化；
+- **同配置重跑噪声**：clean baseline vs 本次 with 为 49/50→48/50、16/20→18/20、成本 ±12%，
+  A/B 的 0 差异小于噪声带；
+- 判定：按预注册规则（持平 + 成本未降）**保留 negative，但记录“收益未证实”**；
+  详见 `docs/negative-ab-20261113.md`；
+- 审计中发现的更高优先问题：`normalize_query` 给叉车/压路机也拼 `6x6`（白跑一档搜索）；
+  rank 阶段 LLM 用量未记账；多处死配置（`page_budget.total`、`budget.max_rounds` 等）。
+
 ### 下一步（按顺序）
 
-1. **negative A/B（最高优先，产品负责人 11-12 提出）**：同一批 brief/plan，两臂“with vs without `-"…"`”，只改 `build_query_plan` 的拼接开关（建议 CLI `--no-negative`），不改 brief；
-   指标：候选数 / 有图数 / 交付 / 备选 / degraded / 成本 / 耗时；
-   判据：无显著收益或有害 → **删掉 negative**，只保留 `_relevant` + 门卫；
-2. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
-3. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机，不急着上 LangGraph）；
-4. 分析模块整体测试（先测 brief→prompt→schema 传递，再做“有/无前置预分析”A/B）；
-5. 知识库（人审准入 + 库内优先召回）；
-6. LangGraph 只做 feedback/session spike → 后端事件流收敛 → 前端 S0–S3 接真实数据。
+1. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
+2. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机，不急着上 LangGraph）；
+3. 分析模块整体测试（先测 brief→prompt→schema 传递，再做“有/无前置预分析”A/B）；
+4. 知识库（人审准入 + 库内优先召回）；
+5. LangGraph 只做 feedback/session spike → 后端事件流收敛 → 前端 S0–S3 接真实数据；
+6. 技术债（不阻塞交付）：修 `normalize_query` 的 6x6 外溢、补 rank 成本记账、清理死配置。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 
@@ -83,9 +93,10 @@
 
 ### 当前已知风险
 
-- 沙漠牵引车有图候选 11–13 台 < 14 台需求 → 备选经常 short；不要靠换源解决（政策禁止），先看 negative A/B 与 topup 结果；
+- 沙漠牵引车有图候选 11–16 台 < 14 台需求 → 备选经常 short；不要靠换源解决（政策禁止），
+  先看 topup/降级；negative A/B 已做完，未证明能改善；
 - `q1/q12` 两套结果受 brief negative 污染，**结论作废**，仅存档；
-- `negative` 的必要性从未 A/B 验证（见 §0.3 与 `DATA-CHANGELOG`）；
+- `negative` 已做 A/B（2026-11-13）：交付持平、搜索层 2/3 查询无差异；按规则保留但**收益未证实**；
 - 降级兜底已实现，但在 c1 未触发（所有有图候选都 accepted）；真实“unknown 占槽”只在单测覆盖。
 
 ### 本次交接的改动/数据变更

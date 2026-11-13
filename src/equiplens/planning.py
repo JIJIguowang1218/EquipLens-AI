@@ -244,17 +244,22 @@ def negative_terms(brief: dict) -> list[str]:
     return out[:4]
 
 
-def build_query_plan(brief: dict, extra: list[str] | None = None) -> list[dict]:
+def build_query_plan(brief: dict, extra: list[str] | None = None, *,
+                     use_negative: bool = True) -> list[dict]:
     """任务单 → 查询计划（每条带 query_id / dimension / purpose）。
 
     `extra` 只用于覆盖实验，必须是“市场段/工况”描述，不允许写品牌名单。
+
+    `use_negative=False` 只用于 A/B：查询文本与默认路径**逐字相同**，只是
+    不追加 `-"短词"` 后缀；brief 本身不改（仍是同一份任务单）。
     """
     req = brief.get("request") or {}
     # 只取短词：长描述直接拼 query 会让搜索 0 结果（2026-11-12 交付测试复现）
     env = short_text((req.get("environment") or {}).get("value"), 14)
     klass = short_text(req.get("class"), 18)
     conf = short_text(req.get("configuration"), 10)
-    neg = " ".join(f'-"{x}"' for x in negative_terms(brief))
+    neg = (" ".join(f'-"{x}"' for x in negative_terms(brief))
+           if use_negative else "")
 
     rows: list[dict] = []
 

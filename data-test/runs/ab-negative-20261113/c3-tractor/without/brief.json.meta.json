@@ -1,0 +1,267 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-12T21:10:42",
+ "raw_input": "大马力轮式拖拉机（发动机罩侧板、前配重罩、挡泥板、登车踏步、后视镜支架）；农田/复合作业；4×4；10 台",
+ "brief_path": "data-test\\runs\\delivery-20261112-clean\\c3-tractor\\brief.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2479,
+  "completion_tokens": 5169,
+  "total_tokens": 7648,
+  "prompt_tokens_details": {
+   "cached_tokens": 2304
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 2324
+  },
+  "prompt_cache_hit_tokens": 2304,
+  "prompt_cache_miss_tokens": 175
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "大马力轮式拖拉机",
+   "environment": "农田/复合作业（耕整、播种、运输混合；多尘、泥污、作物残茬、频繁上下车、田间道路转场）",
+   "base_platform": "4×4（MFWD）前置发动机轮式拖拉机底盘：前小轮后大轮、中后置驾驶室、后三点悬挂",
+   "configuration": "4×4 等速/超速前驱动桥，发动机前置纵向布置，驾驶室偏后",
+   "design_questions": [
+    "侧面体量（发动机罩侧板—挡泥板—登车踏步）如何形成跨马力段可继承的家族化姿态，同时满足多尘/泥污工况下的进气散热、排尘与自清洁？",
+    "前配重罩如何与发动机罩前脸形成收头关系，并兼容配重块增减、前拖挂/前PTO 等接口与灯具法规？",
+    "挡泥板、登车踏步、后视镜支架在作物残茬刮擦、泥水飞溅、整机振动与频繁上下车工况下，采用什么结构、分缝与人机做法？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "side",
+    "label": "侧面整体（发动机罩侧板、挡泥板、踏步的连续体量与分缝序列）",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ]
+   },
+   {
+    "region": "front_face",
+    "label": "前脸整体（前配重罩与发动机罩前部收头、灯具与前拖挂开口关系）",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "regulation"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_hood_side_panel",
+    "label": "发动机罩侧板",
+    "kind": "part",
+    "location": "前部侧向（发动机罩左右侧板，含进气/散热开缝与检修口）",
+    "part_family": "sheet_metal_or_smc_panel",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "板面折线与分缝走向决定侧面体量是否连续、是否与前配重罩/挡泥板形成同一家族语言",
+     "进气/散热开缝的位置、阵列与格栅化处理（开孔率、导流、防尘网）体现多尘工况防护",
+     "侧板开启方式（整体上翻/分片拆卸）与铰点、锁扣、密封条节点",
+     "大面积板件的成型工艺（钣金折弯+焊接 vs SMC/注塑）对分缝与圆角的约束"
+    ],
+    "why": "它是侧向体量面积最大的曲面/板面，同时承担进气散热与防尘功能，能同时提供造型语言（折线、体量、家族特征）与结构分缝、环境防护三类证据，是判断该马力段造型与技术路线的主要载体。"
+   },
+   {
+    "part": "custom_front_weight_cover",
+    "label": "前配重罩",
+    "kind": "part",
+    "location": "最前端（前配重支架/配重块外侧的造型罩盖及前脸收头）",
+    "part_family": "sheet_metal_or_cast_cover",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "前脸收头方式：配重罩与发动机罩的搭接/嵌合/留缝，决定正面体量与视觉重心",
+     "配重块增减的通过性：开口尺寸、拆装通道、紧固件可达性",
+     "与前拖挂点、前PTO、前灯组、牌照/反光标识的相对位置关系",
+     "罩盖自身固定与快拆结构、抗振与抗冲击（田间碰撞、装载机具）"
+    ],
+    "why": "这是该品类特有的功能件兼造型端头：既决定正面的家族化收头，又直接约束配重配置与前部接口布置，是判断“造型是否被功能绑架”的关键证据点。"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "挡泥板（前后翼子板/轮拱，含后轮大包覆挡泥板与延伸挡泥皮）",
+    "kind": "part",
+    "location": "侧下部四轮处（前轮拱与后轮大挡泥板，后挡泥板常兼作登车平台基座）",
+    "part_family": "polymer_molding_or_sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection",
+     "function_ergonomics"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "轮拱与轮胎的间隙、包角、离地高度：泥污与残茬排出、避免堵塞",
+     "前后挡泥板的体量对比与造型衔接（与前小轮后大轮的轮径差配合）",
+     "挡泥板与踏步、扶手、后悬挂/提升杆的空间关系（兼作登车平台时的人机与防滑）",
+     "材料与成型（注塑/滚塑/钣金+加强筋）、分片与维修拆装"
+    ],
+    "why": "挡泥板是轮式拖拉机侧面比例的主导元素（后轮大包覆），且直接暴露在泥水、残茬、喷药飘移环境下，能提供比例关系、防护形态与人机（兼登车平台）三类证据，是该品类区别于其他工程车最显著的造型线索。"
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "kind": "function",
+    "location": "侧面驾驶室入口下方至后挡泥板平台（多级踏步+扶手/踏板支架）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "cross_vehicle",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "detail",
+     "side",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "踏步级数、级高/级深、踏板倾角与登车动线（着地—跨步—入舱）",
+     "防滑面处理与自清洁（镂空/格栅/斜置排泥，避免泥块堆积）",
+     "踏板支架与车架的连接节点、悬臂长度、抗振与抗踩踏刚度",
+     "与挡泥板、燃油箱、扶手、门把手的相对位置与间隙"
+    ],
+    "why": "踏步是高频人机件，其形态由登车动线与泥污自清洁共同决定；作为功能件可跨品类比较做法（工程车/拖拉机/农机），但需按拖拉机“高入口、后挡泥板作平台”的布置重新筛选，故为条件性跨类参考。"
+   },
+   {
+    "part": "mirror",
+    "label": "后视镜支架（后视镜臂/支架及减振、折叠节点）",
+    "kind": "part",
+    "location": "驾驶室前上角/A 柱外侧（左右对称，含长悬臂外伸至后轮外侧视野）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "cross_vehicle",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing",
+     "regulation"
+    ],
+    "views": [
+     "detail",
+     "hero_45",
+     "side"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "悬臂形式（管/型材/铸铝）与截面变化、根部加强节点与减振垫",
+     "外伸长度与镜面位置：满足后轮/机具视野，同时控制整车宽度与刮擦风险",
+     "折叠/翻转或碰撞避让机构（树枝、机具、运输限宽）",
+     "与 A 柱/顶棚的连接方式、装配可调性与线束（电动镜时）"
+    ],
+    "why": "支架是窄而长的悬臂结构件，能提供“造型细部+结构节点+法规视野/限宽”的交叉证据；但其形态强依赖驾驶室基型与整车宽度法规，故列为条件性参考，需按目标市场的宽度限值筛选。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "按通用大马力轮式拖拉机（非窄轮距 row-crop 专用、非履带）处理",
+    "why": "输入只给“大马力轮式拖拉机”，未给马力段与用途细分；窄轮距/果园型会显著改变挡泥板与踏步形态",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.base_platform",
+    "value": "4×4 MFWD：发动机前置纵向、中后置驾驶室、后三点悬挂、前小轮后大轮",
+    "why": "该品类主流布置；用户已明确 4×4",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.environment",
+    "value": "农田/复合作业＝耕整+播种+运输混合，多尘、泥污、作物残茬、频繁上下车与道路转场",
+    "why": "“复合作业”未细化机具与季节，按通用农田混合工况取防护与人机需求包络",
+    "confidence": 0.6
+   },
+   {
+    "field": "parts.custom_front_weight_cover",
+    "value": "理解为前配重支架/配重块外侧的造型罩盖（含前脸收头），而非配重块本体",
+    "why": "“前配重罩”可指罩盖或配重块护罩两种做法，铸铁配重本体的铸造工艺不在本次造型/结构分析范围",
+    "confidence": 0.45
+   },
+   {
+    "field": "parts.mirror",
+    "value": "聚焦后视镜总成中的支架/悬臂与折叠减振节点，不扩展镜面光学与镜壳细节",
+    "why": "用户点名“后视镜支架”，关注点在结构连接而非镜面",
+    "confidence": 0.6
+   },
+   {
+    "field": "manufacturing.scale",
+    "value": "按小批量（10 台量级）判断：优先钣金折弯/型材+焊接、滚塑或手糊 SMC，避免大吨位注塑模具",
+    "why": "输入含“10 台”，若为项目/小批定制，工艺约束会直接改变分缝与圆角做法；若实为年产纲领则结论需翻转",
+    "confidence": 0.4
+   }
+  ],
+  "negative": [
+   "不扩展用户未点名的前脸细分件：进气格栅、大灯与灯罩、保险杠、品牌标识区、涂装与分色方案",
+   "不扩展驾驶室内部（仪表台、座椅、操纵件、内饰 CMF）与顶盖/导流",
+   "不扩展动力传动与底盘功能件（发动机、变速箱、前桥、液压、三点悬挂、下护板）",
+   "不把“挡泥板”拆成挡泥皮/挡泥板支架等子件，除非后续确认需要",
+   "不跨品类到履带拖拉机、联合收割机、工程自卸车/牵引车做同级对标（踏步、后视镜支架仅在 cross_vehicle 轴下作为条件性功能件参考，不视为同构型证据）",
+   "不以“同系列/相似车型”作为检索理由，不猜测具体型号或马力数值"
+  ]
+ },
+ "duration_ms": 35788
+}

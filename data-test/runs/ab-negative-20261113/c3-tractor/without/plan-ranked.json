@@ -1,0 +1,936 @@
+{
+ "brief_id": "auto-20261112-211042",
+ "created_at": "2026-11-13T15:01:14",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "农田/复合作业 4×4 等速/超速前 卡车 车型",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "大马力轮式拖拉机 4×4 等速/超速前驱",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "农田/复合作业 工程车 4×4 等速/超速前",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 99,
+ "candidates": [
+  {
+   "model": "KAT2204",
+   "brand": "KAT",
+   "reason": "结果页技术参数明确驱动形式为4x4，发动机净功率162kW(220HP)，属于大马力4×4轮式拖拉机候选。",
+   "sources": [
+    "http://xkzj.com.cn/index.php?p=productsshow&id=244&lanmu=2&c_id=52"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/KAT2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "KAT2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "结果页技术参数明确驱动形式为4x4、发动机净功率162kW(220HP)，与4×4大马力农田/复合作业最直接匹配，前部/前桥关系也适合发动机罩侧板与前配重罩参考。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "PH2304",
+   "brand": "五征雷诺曼",
+   "reason": "2304大马力轮式拖拉机，采用Carraro前驱动桥，40F+40R档位，适配农田/运输复合作业。",
+   "sources": [
+    "https://www.camda.cn/message/2018/33824.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/PH2304",
+   "identity_kind": "code",
+   "model_variants": [
+    "PH2304",
+    "雷诺曼 PH2304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "2304大马力轮式拖拉机，采用Carraro前驱动桥、40F+40R档位，适配农田/运输复合作业；前驱动桥与发动机罩、前配重罩、挡泥板区域关系强。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "LX2204",
+   "brand": "东方红",
+   "reason": "结果明确为东方红LX2204系列大马力轮式拖拉机，配套前桥并面向农田作业，适合作为大马力4×4候选；具体四驱配置需详情页复核。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAxNTIxNjkxNg==&mid=2650382179&idx=5&sn=a7b0dc08f40f4e7eea8c9d608bb3067b"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/LX2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为东方红LX2204系列大马力轮式拖拉机，配套前桥并面向农田作业，适合作为大马力4×4候选；四驱配置需详情页复核但仍应优先看。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "LEIMU-2204",
+   "brand": "LEIMU",
+   "reason": "大马力轮式拖拉机：潍柴道依茨增压中冷发动机、特制加大强化型前桥（扭矩增大一倍）、16F/16R同步器侧置梭式换挡、全封闭驾驶室（空调），适合农田复合作业与频繁转场；加大强化前桥与4×4等速/超速前驱动桥任务单方向一致，但页面未直接写明驱动形式，需二次核验。",
+   "sources": [
+    "https://www.nongjx.com/st113907/product_2554809.html"
+   ],
+   "source_query": "农田/复合作业 工程车 4×4 等速/超速前",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/LEIMU2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "LEIMU-2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "农田/复合作业 工程车 4×4 等速/超速前"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "大马力轮式拖拉机，潍柴道依茨增压中冷发动机、特制加大强化型前桥、16F/16R梭式换挡、全封闭驾驶室，适合农田复合作业与频繁转场，前桥关系前部造型。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "JC2104",
+   "brand": "骥驰",
+   "reason": "农业用四轮驱动轮式拖拉机，采用4×4×（1＋1）变速箱，双速动力输出，可满足田间作业与运输作业。",
+   "sources": [
+    "https://item.nongji360.com/88364",
+    "https://wd.nongji360.com/product/view?id=88364&dmname=shop23461934"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/JC2104",
+   "identity_kind": "code",
+   "model_variants": [
+    "JC2104"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "农业用四轮驱动轮式拖拉机，采用4×4×（1＋1）变速箱、双速动力输出，可满足田间作业与运输作业，4×4和复合作业匹配明确。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "OPTUM2704",
+   "brand": "凯斯",
+   "reason": "270hp四轮驱动轮式拖拉机，支持前悬挂/复式作业，匹配大马力复合作业需求。",
+   "sources": [
+    "https://wd.nongji360.com/product/view?id=108172&dmname=shop71133168"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/OPTUM2704",
+   "identity_kind": "code",
+   "model_variants": [
+    "OPTUM2704"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "270hp四轮驱动轮式拖拉机，支持前悬挂/复式作业，是大马力复合作业的代表性高端构型，适合优先抓取整机与前部附件关系。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "2204",
+   "brand": "雷木",
+   "reason": "2204大马力轮式拖拉机，配加强型前桥、16F/16R档位，适合重负荷农田作业。",
+   "sources": [
+    "http://adev.nongjitong.com/Item/429078.aspx"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/2204",
+   "identity_kind": "generic",
+   "model_variants": [
+    "2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "2204大马力轮式拖拉机，配加强型前桥、16F/16R档位，适合重负荷农田作业；加强型前桥与发动机罩、前配重罩区域相关。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "LX2004",
+   "brand": "东方红（中国一拖）",
+   "reason": "大马力轮式拖拉机，配套国外知名前桥，最高速度37km/h，农田作业效率高，符合4×4大马力农田/复合作业平台方向。",
+   "sources": [
+    "http://cn.newmaker.com/pro_94300.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX2004",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX2004"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    },
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "大马力轮式拖拉机，配套国外知名前桥，最高速度37km/h，农田作业效率高，符合4×4大马力农田/复合作业平台方向。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "TT1604（G4）",
+   "brand": "潍坊泰山",
+   "reason": "四轮驱动大马力农田拖拉机，16F+8R挡位，可配套多种农具，适合多种农田作业。",
+   "sources": [
+    "https://www.weifangtaishan.com/new/31.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/TT1604",
+   "identity_kind": "code",
+   "model_variants": [
+    "TT1604（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "四轮驱动大马力农田拖拉机，16F+8R挡位，可配套多种农具，适合多种农田作业，4×4与多农具复合作业匹配。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "1654",
+   "brand": "悍沃",
+   "reason": "轮式拖拉机，配进口前驱动桥及四轮驱动湿式离合器，16+16梭式换挡，适合高效农田作业。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5436466.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/1654",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1654",
+    "悍沃1654"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "轮式拖拉机，配进口前驱动桥及四轮驱动湿式离合器，16+16梭式换挡，适合高效农田作业；四驱和进口前桥信息较明确。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "M1654",
+   "brand": "雷沃欧豹",
+   "reason": "165马力六缸轮式拖拉机，采用CARRARO前驱动桥，适合农田作业及转场运输。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5405004.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/M1654",
+   "identity_kind": "code",
+   "model_variants": [
+    "M1654"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "165马力六缸轮式拖拉机，采用CARRARO前驱动桥，适合农田作业及转场运输；与1654/PH2304同族，作前桥与前部造型备份参考。",
+   "role": "backup",
+   "intent_rank": 11
+  },
+  {
+   "model": "KD2204",
+   "brand": "联发凯迪",
+   "reason": "大马力轮式拖拉机，6缸增压中冷发动机，档位多、速度范围宽，满足农艺作业并兼顾运输，符合复合作业场景。",
+   "sources": [
+    "https://m.nongji1688.com/sell/show-5441459.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/KD2204",
+   "identity_kind": "code",
+   "model_variants": [
+    "KD2204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "大马力轮式拖拉机，6缸增压中冷发动机，档位多、速度范围宽，满足农艺作业并兼顾运输；四驱未明写，作高马力复合作业备份。",
+   "role": "backup",
+   "intent_rank": 12
+  },
+  {
+   "model": "JC1804(G4)（参数表标注JC1854）",
+   "brand": "骥驰",
+   "reason": "结果页整机参数型式标注4×4四轮驱动，用途为一般农业用，属于大马力轮式拖拉机候选；页面标题与参数表型号存在差异，已按来源保留。",
+   "sources": [
+    "http://www.jiamusijichi.com/index.php?m=wap&a=show_pic&catid=23&id=46"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/JC1804",
+   "identity_kind": "code",
+   "model_variants": [
+    "JC1804(G4)（参数表标注JC1854）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "整机参数型式标注4×4四轮驱动，用途为一般农业用，属于大马力轮式拖拉机候选；标题与参数表型号有差异，适合作复核备份。",
+   "role": "backup",
+   "intent_rank": 13
+  },
+  {
+   "model": "TT1600（G4）",
+   "brand": "潍坊泰山",
+   "reason": "结果明确为四轮驱动（4×4）大马力轮式拖拉机，配东方红国四六缸发动机，适合农田作业。",
+   "sources": [
+    "https://www.weifangtaishan.com/news_details/11.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/TT1600",
+   "identity_kind": "code",
+   "model_variants": [
+    "TT1600（G4）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为四轮驱动（4×4）大马力轮式拖拉机，配国四六缸发动机，适合农田作业；信息量较少，作4×4明确型备份。",
+   "role": "backup",
+   "intent_rank": 14
+  },
+  {
+   "model": "东方红-1604/1804",
+   "brand": "东方红（中国一拖）",
+   "reason": "结果页明确称其为大马力轮式拖拉机，并提到名牌前驱动桥、全封闭驾驶室和农田作业适用，符合4×4大马力轮式拖拉机候选方向。",
+   "sources": [
+    "https://camda.cn/message/2017/32716.html",
+    "http://m.ytogroup.com/cpzx/nyjx/lstljxl/201611/t20161129_114742.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/东方红16041804",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东方红-1604/1804"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果页明确称其为大马力轮式拖拉机，并提到名牌前驱动桥、全封闭驾驶室和农田作业适用；型号为1604/1804合并，适合进池补充代表性。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "Luzhong1804",
+   "brand": "山东潍坊鲁中拖拉机",
+   "reason": "结果明确为180HP 4WD轮式拖拉机，属大马力四驱农用拖拉机，可作为候选车型。",
+   "sources": [
+    "https://cautop.com/mall/show-1513532.html#sendinquiry"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/LUZHONG1804",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Luzhong1804"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为180HP 4WD轮式拖拉机，属大马力四驱农用拖拉机；与头部候选重复度较高，进池作180马力级补充。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "雷木1604",
+   "brand": "雷木",
+   "reason": "结果页参数明确驱动形式为四轮驱动，配套功率160马力，属于大马力轮式拖拉机候选。",
+   "sources": [
+    "http://toutiao.nongjitong.com/product/leimu1604_tractor.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前驱",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/雷木1604",
+   "identity_kind": "generic",
+   "model_variants": [
+    "雷木1604"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "参数明确驱动形式为四轮驱动，配套功率160马力，属于大马力轮式拖拉机候选；信息较简，进池补充160马力级。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "TG系列 M1654-G",
+   "brand": "雷沃",
+   "reason": "结果为165马力轮式拖拉机，采用Carraro前驱动桥和前驱动万向节驱动轴，符合大马力4×4农田作业方向。",
+   "sources": [
+    "https://www.camda.cn/message/2017/32911.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/M1654G",
+   "identity_kind": "code",
+   "model_variants": [
+    "TG系列 M1654-G"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "165马力轮式拖拉机，采用Carraro前驱动桥和前驱动万向节驱动轴，符合大马力4×4农田作业方向；与M1654关系近，进池备份。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "1504",
+   "brand": "雷木",
+   "reason": "四轮驱动、150hp轮式拖拉机，配备加大强化型前桥，16个前进档/8个倒退档，速度范围宽，适合农田作业。",
+   "sources": [
+    "https://wd.nongji360.com/product/view?id=61044&type=20",
+    "https://www.nongjx.com/st132831/product_2904448.html",
+    "https://www.nongjx.com/st123125/product_2589585.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/1504",
+   "identity_kind": "generic",
+   "model_variants": [
+    "1504",
+    "昊田1504"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    },
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    },
+    {
+     "query_id": "q-en",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 truck bran"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "possible",
+   "intent_reason": "四轮驱动、150hp轮式拖拉机，配备加大强化型前桥，16个前进档/8个倒退档，速度范围宽，适合农田作业；马力段低于头部候选。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "TN1454",
+   "brand": "天拖",
+   "reason": "参数明确为4×4、100-160马力轮式拖拉机，符合大马力四驱农田作业底盘。",
+   "sources": [
+    "https://www.aichehome.com/wjjdetails/38090.htm"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/TN1454",
+   "identity_kind": "code",
+   "model_variants": [
+    "TN1454"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "参数明确为4×4、100-160马力轮式拖拉机，符合大马力四驱农田作业底盘，但功率段与信息详细度不足以进入前14。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "LEIMU-1804/1604",
+   "brand": "LEIMU",
+   "reason": "结果中唯一属于大马力轮式拖拉机品类的在售车系：配潍柴/玉柴增压中冷发动机、双作用离合器、侧置梭式换挡、全液压转向、后置双速PTO（760/850、540/1000），与农田/复合作业（耕整、播种、运输混合）及前置发动机、驾驶室偏后的构型相符；页面未明确标注4×4及等速/超速前桥，需按任务单再核验前桥型式。其余结果多为四不像工程翻斗运输车，非轮式拖拉机底盘，已排除。",
+   "sources": [
+    "https://www.nongjx.com/st113907/product_2554811.html"
+   ],
+   "source_query": "农田/复合作业 工程车 4×4 等速/超速前",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/LEIMU1804",
+   "identity_kind": "code",
+   "model_variants": [
+    "LEIMU-1804/1604"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "农田/复合作业 工程车 4×4 等速/超速前"
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "属于大马力轮式拖拉机，配潍柴/玉柴增压中冷发动机、双作用离合器、侧置梭式换挡、全液压转向、后置双速PTO；页面未明确4×4，进池待核验。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "LX2204系列",
+   "brand": "东方红（中国一拖）",
+   "reason": "大马力轮式拖拉机，档位多、速度范围宽，面向农田作业，全封闭驾驶室，符合大马力农田复合作业需求。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzAxNTIxNjkxNg==&mid=2650382179&idx=5&sn=a7b0dc08f40f4e7eea8c9d608bb3067b"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/LX2204系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LX2204系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "大马力轮式拖拉机，档位多、速度范围宽，面向农田作业，全封闭驾驶室；与LX2204同族，重复度高，进池作系列补充。",
+   "role": "pool",
+   "intent_rank": 22
+  },
+  {
+   "model": "Arion 4.150",
+   "brand": "Claas",
+   "reason": "整组检索结果中唯一与任务单“大马力轮式拖拉机”类别一致的车型：中型段拖拉机，4 缸 4.5L 发动机、120–150 PS 功率段（4.150 为顶配，Dynamic Power 额外 +10 PS），属农田/复合作业可用的轮式拖拉机平台；其余结果多为 4×4 越野卡车、皮卡、轻卡/中重卡或行业新闻，构型（前小轮后大轮、中后置驾驶室、后三点悬挂的 MFWD 拖拉机底盘）与任务单不符。注意：该来源仅",
+   "sources": [
+    "https://www.topagrar.com/technik/news/claas-arion-4150-high-end-furs-mittlere-segment-20031008.html"
+   ],
+   "source_query": "农田/复合作业 4×4 等速/超速前 卡车 车型",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/ARION4150",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Arion 4.150"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "农田/复合作业 4×4 等速/超速前 卡车 车型"
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "中型段拖拉机，4缸4.5L、120–150 PS，属农田/复合作业可用轮式拖拉机平台；但马力段和4×4明确度弱于头部候选。",
+   "role": "pool",
+   "intent_rank": 23
+  },
+  {
+   "model": "LX1204",
+   "brand": "东方红",
+   "reason": "四轮驱动型轮式拖拉机，面向农田作业和运输等场景，符合大马力轮式底盘方向。",
+   "sources": [
+    "https://m.gkzhan.com/chanpin/14270997.html"
+   ],
+   "source_query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/LX1204",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX1204"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前 车型 品牌"
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "四轮驱动型轮式拖拉机，面向农田作业和运输，但120马力级偏小，信息较少，作为低功率段补充。",
+   "role": "pool",
+   "intent_rank": 24
+  },
+  {
+   "model": "LX1004/1104/1204/1254/1304",
+   "brand": "东方红（中国一拖）",
+   "reason": "四轮驱动型轮式拖拉机系列，动力强劲、档位多、速度范围宽，广泛用于农田作业和运输，符合大马力4×4作业场景。",
+   "sources": [
+    "https://m.gkzhan.com/chanpin/14270997.html"
+   ],
+   "source_query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LX1004",
+   "identity_kind": "code",
+   "model_variants": [
+    "LX1004/1104/1204/1254/1304",
+    "东方红-LX1004/1104/1204/1254/1304"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "农田/复合作业 大马力轮式拖拉机 4×4 等速/超速前"
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "大马力轮式拖拉机 4×4 等速/超速前驱"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "四轮驱动型轮式拖拉机系列，动力强劲、档位多、速度范围宽，可用于农田和运输；型号跨100–130马力，且为多型号合并，优先级最低。",
+   "role": "pool",
+   "intent_rank": 25
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 25
+ },
+ "pool": {
+  "count": 25,
+  "required": 23,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 10
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 25,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 35,
+  "unique": 25,
+  "removed": 10,
+  "generic": 8
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 4,
+  "primary": 10
+ }
+}

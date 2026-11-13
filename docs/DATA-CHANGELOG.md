@@ -69,6 +69,18 @@
 - **防复发**：新增 `scripts/scan_secrets.py`（扫 git 跟踪文件：WeChat AppID / `sk-` / GitHub PAT / AWS key / 私钥头）
   与 `tests/test_no_secrets.py`；提交前跑一遍。
 
+### 7. negative A/B 数据（2026-11-13）
+
+- 新增 `data-test/runs/ab-negative-20261113/`：5 个 case × with/without，
+  brief 复用 `delivery-20261112-clean`，loop 为真实执行（10 次）；
+- 内容：`AB.json`、`AB-SUMMARY.md`、`SEARCH-LEVEL.json`、每个 case 的
+  `QUERY-DIFF.json`、`with/`、`without/`（各含 plan/rank/run/audit）；
+- `images/` 照旧不入库；`data-test/runs/INDEX.md` 由 `run_ledger.py` 重新生成；
+- 结论与限制见 `docs/negative-ab-20261113.md`；E38 已登记；
+- **不改生产默认**：`negative` 保留，`build_query_plan(use_negative=False)` 仅 A/B 开关；
+- 新增：`scripts/ab_negative.py`、`scripts/plan_candidates.py --no-negative`、
+  `tests/test_planning.py` 的“只去后缀”用例。
+
 ### 6. 复核方法（新机器上可自检）
 
 ```bash

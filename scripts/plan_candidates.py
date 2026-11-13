@@ -102,11 +102,14 @@ def main(argv=None) -> int:
                     help="每条查询最多抽几个候选；0=按目标池/查询数自动")
     ap.add_argument("--extra-query", action="append", default=[],
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
+    ap.add_argument("--no-negative", action="store_true",
+                    help="A/B 用：查询不追加 -\"短词\"（brief 不变，其余逐字相同）")
     args = ap.parse_args(argv)
 
     key = load_key()
     brief = json.loads(Path(args.brief).read_text(encoding="utf-8"))
-    query_plan = build_query_plan(brief, args.extra_query)
+    query_plan = build_query_plan(brief, args.extra_query,
+                                  use_negative=not args.no_negative)
     page_budget = (brief.get("request") or {}).get("page_budget") or {}
     slots = int(page_budget.get("vehicle_slots") or 0)
     backup = page_budget.get("backup_slots")
