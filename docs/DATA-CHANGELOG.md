@@ -81,6 +81,16 @@
 - 新增：`scripts/ab_negative.py`、`scripts/plan_candidates.py --no-negative`、
   `tests/test_planning.py` 的“只去后缀”用例。
 
+### 8. 交付缺口/耗时审计（2026-11-13）
+
+- 新增 `data-test/runs/ab-negative-20261113/AUDIT-DELIVERY-TIMING.md`、
+  `DELIVERY-AUDIT.json`、`README.md`：逐 run 的规划/有图/交付/缺口统计与
+  plan/rank/loop/FETCH/DISCOVER 耗时；
+- 新增 `docs/delivery-audit-20261113.md`：unit 配额锁死的根因与修复方向；
+- 结论：4 个正选缺口 run 全部"有图 ≥ N"，不是取图能力问题；
+  `degraded_fill` 被执行但被 unit 配额挡住；
+- 不改任何 run 数据；修复代码在后续 commit（E40/E41）。
+
 ### 6. 复核方法（新机器上可自检）
 
 ```bash
