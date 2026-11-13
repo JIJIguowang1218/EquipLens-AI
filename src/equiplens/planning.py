@@ -300,6 +300,26 @@ def build_query_plan(brief: dict, extra: list[str] | None = None, *,
     return plan
 
 
+SLOT_FIELDS = ("brand", "series", "model_code", "config")
+
+
+def derive_search_key(slots: dict, model: str = "") -> str:
+    """用结构化槽位派生检索键（无槽位时从车型名兜底）。
+
+    优先级：型号码 > 车系 > 品牌；再拼构型。返回空串表示“没把握”。
+    """
+    s = {k: normalize_text((slots or {}).get(k)) for k in SLOT_FIELDS}
+    conf = s["config"].lower().replace("×", "x")
+    if conf not in ("6x6", "8x8", "4x4", "8x4", "6x4", "4x2", "6x2"):
+        conf = ""
+    code = s["model_code"]
+    if not code:
+        m = re.search(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", model or "")
+        code = m.group(0) if m else ""
+    base = code or s["series"] or s["brand"]
+    return " ".join(x for x in (base, conf) if x).strip()[:40]
+
+
 def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
                         limit: int = 6) -> tuple[list[dict], dict]:
     """校验 LLM 从**单条查询**抽出的候选。
@@ -326,11 +346,16 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
             dropped_no_source += 1
             continue
         seen.add(key)
+        slots = {k: normalize_text((cand.get("slots") or {}).get(k))
+                 for k in SLOT_FIELDS}
+        sk = normalize_text(cand.get("search_key"))[:40] or derive_search_key(slots, model)
         rows.append({
             "model": model,
-            "brand": normalize_text(cand.get("brand")),
-            # 抽取阶段顺带给出的检索键（品牌/车系/码+构型），来自同一批来源文本
-            "search_key": normalize_text(cand.get("search_key"))[:40],
+            "brand": normalize_text(cand.get("brand")) or slots.get("brand", ""),
+            "slots": slots,
+            # 抽取阶段顺带给出的检索键（品牌/车系/码+构型），来自同一批来源文本；
+            # 没给就用槽位派生（见 derive_search_key）
+            "search_key": sk,
             "reason": normalize_text(cand.get("reason"))[:200],
             "sources": valid,
             "source_query": query_meta["query"],
@@ -408,6 +433,10 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             if not old or (re.search(r"[A-Za-z]{1,4}\d{3,}", sk)
                            and not re.search(r"[A-Za-z]{1,4}\d{3,}", old)):
                 cur["search_key"] = sk
+        cur_slots = cur.setdefault("slots", {})
+        for k in SLOT_FIELDS:
+            if not cur_slots.get(k) and (item.get("slots") or {}).get(k):
+                cur_slots[k] = item["slots"][k]
         cur["source_count"] = len(cur["sources"])
 
     for item in items:

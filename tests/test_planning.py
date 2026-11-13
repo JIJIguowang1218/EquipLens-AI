@@ -275,6 +275,28 @@ def test_search_key_survives_validation_and_merge():
     assert "ZZ4257" in merged[0]["search_key"], merged[0]
 
 
+def test_slots_derive_search_key_and_merge():
+    """结构化槽位要能派生 search_key，合并时补齐缺失槽位。"""
+    meta = {"query_id": "q-base", "dimension": "base", "query": "沙漠牵引车"}
+    rows, _ = planning.validate_extraction(
+        {"candidates": [{"model": "豪沃 TX 6×6 牵引车", "sources": ["https://ok/1"],
+                         "slots": {"brand": "豪沃", "series": "TX",
+                                   "model_code": "ZZ4257", "config": "6×6"}}]},
+        {"https://ok/1"}, meta, limit=6)
+    assert rows[0]["search_key"] == "ZZ4257 6x6", rows[0]
+    assert rows[0]["slots"]["config"] == "6×6"
+    a = {"model": "Zetros 4051 6×6", "sources": ["u1"], "source_query": "q1",
+         "source_query_id": "q-base", "dimension": "base",
+         "search_key": "", "slots": {"series": "Zetros"}}
+    b = {"model": "Zetros 4051 AS 6×6", "sources": ["u2"], "source_query": "q2",
+         "source_query_id": "q-model", "dimension": "model",
+         "search_key": "", "slots": {"config": "6x6", "model_code": ""}}
+    merged = planning.merge_candidates([a, b])
+    assert len(merged) == 1, merged
+    assert merged[0]["slots"].get("series") == "Zetros", merged[0]
+    assert merged[0]["slots"].get("config") == "6x6", merged[0]
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -291,6 +313,7 @@ if __name__ == "__main__":
     check("人审后的合并规则", test_merge_rules_from_human_verdicts)
     check("negative 只收短词", test_negative_terms_only_short_words)
     check("search_key 过校验/合并", test_search_key_survives_validation_and_merge)
+    check("槽位派生 key/合并补齐", test_slots_derive_search_key_and_merge)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

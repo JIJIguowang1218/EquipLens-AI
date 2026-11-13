@@ -81,8 +81,11 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
             "5) 同一车型不要重复；\n"
             "6) 每条候选给一个 `search_key`：可用于图片检索的短键（品牌/车系/型号码 + 构型），\n"
             "   必须来自结果文本，不要编造；没把握就留空；\n"
-            "7) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"search_key\":\"\","
-            "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+            "7) 同时给结构化槽位 `slots`：brand/series/model_code/config（只写结果里出现的；\n"
+            "   config 只写驱动形式 6x6/8x8/4x4/6x4/4x2 等；没有就空字符串）；\n"
+            "8) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "\"slots\":{\"brand\":\"\",\"series\":\"\",\"model_code\":\"\",\"config\":\"\"},"
+            "\"search_key\":\"\",\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
         )
     else:
         task = (
@@ -92,8 +95,11 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
             "3) 同一车型只给一次；与任务单环境/构型不符的不要；\n"
             "4) 每条候选给一个 `search_key`：可用于图片检索的短键（品牌/车系/型号码 + 构型），\n"
             "   必须来自结果文本，不要编造；没把握就留空；\n"
-            "5) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"search_key\":\"\","
-            "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+            "5) 同时给结构化槽位 `slots`：brand/series/model_code/config（只写结果里出现的；\n"
+            "   config 只写驱动形式 6x6/8x8/4x4/6x4/4x2 等；没有就空字符串）；\n"
+            "6) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "\"slots\":{\"brand\":\"\",\"series\":\"\",\"model_code\":\"\",\"config\":\"\"},"
+            "\"search_key\":\"\",\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
         )
     prompt = (
         "你是工程车/重卡检索规划助手。下面是一组关于查询"
@@ -115,8 +121,45 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
     return json.loads(data["choices"][0]["message"]["content"]), (data.get("usage") or {})
 
 
+def glean_extract(key: str, brief: dict, query_meta: dict, results: list[dict],
+                  existing: list[str], want: int) -> tuple[dict, dict]:
+    """Gleaning 补抽：同一批结果，告诉模型“你已经抽了这些，还漏了什么”。
+
+    参考 GraphRAG 的多轮实体抽取：第 1 轮补抽收益最大；这里只加 1 轮。
+    """
+    compact = [{"title": r.get("title", ""), "url": r.get("url", ""),
+                "summary": (r.get("summary") or r.get("snippet") or "")[:280]}
+               for r in results]
+    prompt = (
+        "你是工程车/重卡检索规划助手。下面是一组检索结果，以及上一轮已经抽出的车型。\n"
+        f"上一轮已抽：{json.dumps(existing[:40], ensure_ascii=False)}\n"
+        "很多车型被漏掉了。请只从下面的结果里补全遗漏的候选车型"
+        f"（最多 {want} 个），要求：\n"
+        "1) 不要重复上一轮已抽的车型；\n"
+        "2) 只能从给出的结果里推断，不允许凭记忆补充；\n"
+        "3) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
+        "4) 每条候选给一个 `search_key`（品牌/车系/型号码 + 构型，来自结果文本）；\n"
+        "5) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"search_key\":\"\","
+        "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+        f"任务单：{json.dumps(brief.get('request', {}), ensure_ascii=False)}\n"
+        f"检索结果：{json.dumps(compact, ensure_ascii=False)}"
+    )
+    r = requests.post(f"{API}/chat/completions",
+                      headers={"Authorization": f"Bearer {key}",
+                               "Content-Type": "application/json"},
+                      json={"model": "deepseek-flash",
+                            "messages": [{"role": "user", "content": prompt}],
+                            "response_format": {"type": "json_object"},
+                            "temperature": 0},
+                      timeout=180)
+    r.raise_for_status()
+    data = r.json()
+    return (json.loads(data["choices"][0]["message"]["content"]),
+            (data.get("usage") or {}))
+
+
 def run_query(key: str, brief: dict, meta: dict, want: int,
-              sleep_s: float = 0.3, mode: str = "model") -> dict:
+              sleep_s: float = 0.3, mode: str = "model", glean: int = 0) -> dict:
     """一条查询 = 1 次 Search + 1 次抽取；只依赖本查询自己的结果（可并发）。"""
     q = meta["query"]
     api: list[dict] = []
@@ -147,6 +190,26 @@ def run_query(key: str, brief: dict, meta: dict, want: int,
                 got, {str(r.get("url") or "") for r in res}, meta, want)
             row.update(stats)
             extracted.extend(rows)
+            # Gleaning：同一批结果再抽一轮“漏掉的”
+            for _ in range(max(0, int(glean or 0))):
+                have = [x.get("model") for x in extracted]
+                try:
+                    got2, usage2 = glean_extract(key, brief, meta, res, have, want)
+                    api.append({"api": "chat", "model": "deepseek-flash",
+                                "query_id": meta["query_id"], "glean": True,
+                                "prompt_tokens": usage2.get("prompt_tokens"),
+                                "completion_tokens": usage2.get("completion_tokens"),
+                                "billable": True})
+                    rows2, _ = validate_extraction(
+                        got2, {str(r.get("url") or "") for r in res}, meta, want)
+                    seen = {candidate_key(x.get("model") or "") for x in extracted}
+                    added = [x for x in rows2
+                             if candidate_key(x.get("model") or "") not in seen]
+                    row["glean_added"] = int(row.get("glean_added", 0)) + len(added)
+                    extracted.extend(added)
+                except Exception as e:  # noqa: BLE001
+                    print("glean fail", meta["query_id"], type(e).__name__, str(e)[:120])
+                    row["glean_error"] = type(e).__name__
         except Exception as e:  # noqa: BLE001
             print("extract fail", meta["query_id"], type(e).__name__, str(e)[:160])
             row.update({"kept": 0, "error": type(e).__name__})
@@ -166,6 +229,8 @@ def main(argv=None) -> int:
                     help="每条查询最多抽几个候选；0=按目标池/查询数自动")
     ap.add_argument("--extract-mode", default="model", choices=["model", "wide"],
                     help="抽取口径：model=只抽车型（默认）；wide=枚举结果里所有具体型号（P1 实验）")
+    ap.add_argument("--glean", type=int, default=0,
+                    help="Gleaning 补抽轮数（0=关闭；1=同一批结果再问一次“漏了什么”）")
     ap.add_argument("--extra-query", action="append", default=[],
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     ap.add_argument("--no-negative", action="store_true",
@@ -196,8 +261,10 @@ def main(argv=None) -> int:
             with ThreadPoolExecutor(max_workers=int(args.concurrency)) as ex:
                 return list(ex.map(
                     lambda m: run_query(key, brief, m, extract_n,
-                                        mode=args.extract_mode), batch))
-        return [run_query(key, brief, m, extract_n, mode=args.extract_mode)
+                                        mode=args.extract_mode,
+                                        glean=args.glean), batch))
+        return [run_query(key, brief, m, extract_n, mode=args.extract_mode,
+                          glean=args.glean)
                 for m in batch]
 
     def absorb(outs: list[dict]) -> None:
@@ -241,6 +308,8 @@ def main(argv=None) -> int:
         "planner_version": "v2-provenance",
         "concurrency": int(args.concurrency or 1),
         "extract_mode": args.extract_mode,
+        "glean": {"rounds": int(args.glean or 0),
+                  "added": sum(int(q.get("glean_added", 0) or 0) for q in per_query)},
         "queries": per_query,
         "search_results": len(uniq),
         "candidates": candidates,
