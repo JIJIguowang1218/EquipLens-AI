@@ -59,11 +59,11 @@
 | # | 机制 | 来源 | 状态 | 成本 | 风险 |
 |---|---|---|---|---|---|
 | F1 | **Gleaning 补抽一轮**（“很多车型被漏了，请补全”） | GraphRAG ch8 | **已测，否决**：5 brief 新增 0（短摘要无新信息；代码保留 `--glean` 默认 0） | 低（抽取 ×2） | 已排除：输入不是全文 |
-| F2 | **结构化槽位输出**（brand/series/code/config/evidence_span） | Haystack Query Decomposition、RAGFlow | 未测（下一轮） | 低（schema+容错） | 低：可空不可缺 |
+| F2 | **结构化槽位输出**（brand/series/code/config/evidence_span） | Haystack Query Dec.、RAGFlow | **已测，采纳**：槽位覆盖 94.5%，码一致 55/56、构型 26/26 | 低（schema+容错） | 低：可空不可缺 |
 | F3 | 归一化 key（大小写/全角/标点/别名） | GraphRAG ch9 | **已离线评估**：19 组重复/96 plan（0.9%），可做但要身份类型+型号码护栏 | 低（纯函数） | 中：直并会误并 generic/code |
-| F4 | Fellegi–Sunter 加权去重（三档阈值；数字冲突判负） | Splink | 后置 | 中 | 中：先有槽位字段 |
-| F5 | RRF 融合多路召回（`Σ1/(k+rank)`） | Vespa | 可试 | 低（几十行） | 低：需要固定评估集 |
-| F6 | **冻结 query 快照集 + 固定池深度 + bootstrap CI** | TREC/BEIR/UMBRELA | **最高优先** | 中（一次人工） | 低：一次性投入 |
+| F4 | Fellegi–Sunter 加权去重（三档阈值；数字冲突判负） | Splink | 后置（槽位已就绪，待标注） | 中 | 中：先有几十条人工判定 |
+| F5 | RRF 融合多路召回（`Σ1/(k+rank)`） | Vespa | 后置（依赖 F6 评估集） | 低（几十行） | 低：需要固定评估集 |
+| F6 | **冻结 query 快照集 + 固定池深度 + bootstrap CI** | TREC/BEIR/UMBRELA | **骨架已实现**（`eval_plan_snapshot.py`）；5 case 太窄 | 中（一次人工） | 低：需要扩到 ≥3 重复 + 8–10 brief |
 | F7 | 静默失败分类（含错图率） | SIGIR'26 综述 | 加入人工抽样 | 低 | 低：指标定义要固定 |
 
 **明确不采纳**：整套 RAG/向量库框架、品牌词表、无条件多路改写（A3 已实测会变差）。
