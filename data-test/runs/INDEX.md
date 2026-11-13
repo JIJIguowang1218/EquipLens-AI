@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-12T22:03:22 · 共 80 条 · 待补人工结论 42 条
+> 生成时间：2026-11-13T19:40:54 · 共 84 条 · 待补人工结论 42 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -76,12 +76,16 @@
 
 ## 空目录 / 归档
 
+- `ab-negative-20261113` → empty（未删除，仅标记）
+- `ab-plan-concurrency-20261113` → empty（未删除，仅标记）
+- `ab-rank-20261113` → empty（未删除，仅标记）
 - `filter-98-20261109` → empty（未删除，仅标记）
 - `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）
 - `source-expansion-class-query-20261111` → empty（未删除，仅标记）
 - `source-expansion-funnel-20261111` → empty（未删除，仅标记）
 - `source-expansion-probe-20261111` → empty（未删除，仅标记）
+- `verify-fillfix-20261113` → empty（未删除，仅标记）
 - `web-reassess-20261109` → empty（未删除，仅标记）
 - `web-smoke-20261109` → empty（未删除，仅标记）
 - `web-smoke-harvest1-20261109` → empty（未删除，仅标记）

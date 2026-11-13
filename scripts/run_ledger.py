@@ -237,10 +237,12 @@ def build_record(path: Path) -> dict:
         "run_id": name,
         "kind": kind,
         "stage": _stage(name),
-        "date": _date(name, mtime, summary, state),
+        # 记录“这轮 run 发生在哪天/哪个 commit”：RUN.json 的值优先。
+        # 否则每次重建索引都会把所有历史 run 改写成“生成时的 HEAD / 目录 mtime”。
+        "date": existing.get("date") or _date(name, mtime, summary, state),
         "status": (summary or {}).get("state") or (state or {}).get("final_state") or "",
         "brief_id": (summary or {}).get("brief_id") or "",
-        "git_commit": _git_commit(),
+        "git_commit": existing.get("git_commit") or _git_commit(),
         "metrics": _plan_metrics(plan) if plan else _run_metrics(path, summary, state),
         "report": str(report.relative_to(ROOT)) if report else "",
         "summary": "data-test/runs/" + name + "/summary.json" if summary else "",

@@ -111,6 +111,18 @@ def test_legacy_auto_conclusion_migrates():
         td.cleanup()
 
 
+def test_run_date_and_commit_are_preserved():
+    """重建索引时不得把历史 run 的 date/git_commit 改写成“生成时的 HEAD/mtime”。"""
+    td, p = _tmp_run(summary={"state": "DONE"},
+                     run_json={"date": "2026-11-02", "git_commit": "abc1234"})
+    try:
+        rec = ledger.build_record(p)
+        assert rec["date"] == "2026-11-02", rec
+        assert rec["git_commit"] == "abc1234", rec
+    finally:
+        td.cleanup()
+
+
 if __name__ == "__main__":
     check("阶段映射", test_stage_mapping)
     check("run 记录含指标/结论", test_run_record_has_metrics_and_conclusion)
@@ -119,6 +131,7 @@ if __name__ == "__main__":
     check("机器摘要不抵人工结论", test_auto_conclusion_keeps_needs_review)
     check("人工结论关闭待复核", test_manual_conclusion_clears_needs_review)
     check("旧机器结论迁移", test_legacy_auto_conclusion_migrates)
+    check("run 日期/提交不被重写", test_run_date_and_commit_are_preserved)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))
