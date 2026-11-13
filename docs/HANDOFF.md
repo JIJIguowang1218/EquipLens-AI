@@ -80,6 +80,23 @@
 > 修复后用原 plan 复跑 c2：8+2→10+0、9+4→10+4；**完整 5 case 尚未复跑**，
 > 不能把 49/50 当修复后的最终数字。
 
+### 组合回归（2026-11-13，填槽修复 + plan 并发 4）
+
+- 数据：`data-test/runs/delivery-20261113-regress/`——复用 clean 的 5 份**冻结 brief**，
+  plan 用 `--concurrency 4` 重跑，loop 端串行；跑法见新增开关
+  `run_delivery_suite.py --reuse-brief --concurrency 4`。
+- 结果：主 **48/50**、备选 **15/20**、峰值成本合计 **¥2.093**、loop 合计 2537 s
+  （基线 1739 s，本次 FETCH 明显变慢，与代码无关）。
+- 逐 case：c1 **8/10 + 0/4**（基线 9/10+2/4）、c2 10/10 + **3/4**（基线 2/4）、
+  c3 10/10+4/4、c4 6/6+4/4、c5 14/14+4/4。
+- 归因：c1 退化来自 **plan 候选池缩到 12**（基线 17），不是填槽修复——
+  用 clean 原 plan 单跑 c1（`delivery-20261113-fillfix-c1/`）得 **10/10 + 1/4 DONE**，
+  修复把 1 台备选转正，方向正确。
+- 并发嫌疑已排除：c1 同 brief 现场重跑 plan，`--concurrency 1` 与 `4` **均为 19 候选**
+  （`delivery-20261113-planvar/`）；12 是搜索/LLM 轮次波动（历史 12–19），与并发无关。
+- 结论：**填槽修复保留**；plan 并发 4 未发现额外风险，但 c1 类紧供 case 需要
+  “池不足即重试/告警”的保护，再谈默认切 4。
+
 ### negative A/B 结论（2026-11-13，已完成）
 
 - 数据：`data-test/runs/ab-negative-20261113/`（5 brief × with/without，10 次真实 loop）；
@@ -108,10 +125,10 @@
 
 ### 下一步（按顺序）
 
-1. **组合回归（最高优先）**：填槽修复 + `plan_candidates --concurrency 4`，
-   用 clean 的 5 份 brief 跑完整链路；确认主交付 ≥49/50（预期 c1/c2 到 10/10）、
-   备选不退化、成本/耗时在噪声内；约 25–30 min、峰时 ¥2 左右；
-2. 回归通过后再拍板：plan 并发是否默认 4；rank 是否切确定性（当前 2 case 仅持平）；
+1. ~~组合回归~~ **已完成（2026-11-13）**：`delivery-20261113-regress`，主 48/50、备选 15/20；
+   c1 掉 1 台是 plan 池缩到 12 造成，用原 plan 隔离后填槽修复为 10/10+1/4。详见上面小节；
+2. 拍板项：plan 并发**暂不默认切 4**（先给紧供 case 加“plan 池 < required 就重试/告警”）；
+   rank 是否切确定性仍待 n≥2 样本（当前 2 case 持平）；
 3. 下载并发接入 loop（4 路 + per-host 限流 + `DomainHealth` 锁），再跑 c5 对照；
 4. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
 5. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机）；
@@ -195,7 +212,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（84 条，0 issue）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（87 条，0 issue）
 PYTHONPATH=src python tests/test_planning.py            # 14/14
 PYTHONPATH=src python tests/test_retrieval_engine.py    # 40/40
 PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）

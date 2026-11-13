@@ -121,7 +121,20 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   `tests/test_run_ledger.py::test_run_date_and_commit_are_preserved`（8/8 通过）。
 - 重建后 `INDEX.json/md`：80 → **84** 条，补进 `ab-negative-20261113`、
   `ab-plan-concurrency-20261113`、`ab-rank-20261113`、`verify-fillfix-20261113`；
+  （同日晚组合回归后再生成 → **87** 条，见 §11）
   历史 run 的日期/提交回到真实值；**未改任何 `summary.json`/`state.json`**。
 - 仍存缺口：上面 4 个套件目录没有根级 `summary.json`/`plan.json`，台账归类为 `empty`
   （有记录、无指标）；要显示指标需让 `run_ledger.py` 读 `SUITE-SUMMARY.*`，留待后续。
+
+### 11. 组合回归数据（2026-11-13，P0）
+
+- 新增 `data-test/runs/delivery-20261113-regress/`：复用 clean 的 5 份**冻结 brief**，
+  plan `--concurrency 4` 重跑、loop 串行；主 48/50、备选 15/20、峰值 ¥2.093。
+- 新增 `delivery-20261113-fillfix-c1/`：c1 用 clean 原 plan 单跑 = **10/10 + 1/4**，
+  用来隔离“填槽修复”本身（排除 plan 波动）。
+- 新增 `delivery-20261113-planvar/c1/`：同 brief 的 plan 并发 1 与 4 各跑一次，均 19 候选，
+  排除“并发导致池缩水”的嫌疑（回归里的 12 是搜索/LLM 轮次波动）。
+- `scripts/run_delivery_suite.py` 增 `--concurrency / --reuse-brief / --cases`；
+  `--reuse-brief` 不重新生成 brief，回归可复现。
+- 未改任何既有 run 数据；`images/` 照旧不入库。
 

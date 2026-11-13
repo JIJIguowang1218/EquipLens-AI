@@ -175,6 +175,10 @@ task-brief@v2 (API)
   49/50↔48/50、16/20↔18/20、成本 ±12% 的噪声 → **negative 收益未证实，按规则保留**；
 - **填槽修复（2026-11-13）**：`_fill_pass` 允许跨 unit 借位，`_delivery` 正选未满不算备选；
   `verify-fillfix-20261113` 复用原 plan 复跑 c2：8+2→10+0、9+4→10+4；
+- **组合回归（2026-11-13，填槽修复 + plan 并发 4）**：`delivery-20261113-regress`，主 48/50、
+  备选 15/20、峰值 ¥2.093；c1 掉 1 台源于 plan 池缩到 12（基线 17），用 clean 原 plan 隔离
+  （`delivery-20261113-fillfix-c1`）得 **10/10 + 1/4**；c1 计划 `--concurrency 1` 与 `4` 均为
+  19 候选（`delivery-20261113-planvar`）→ 池波动与并发无关；
 - **并发实验（2026-11-13）**：plan `--concurrency 4` 5 brief 518→155 s（3.34×，默认仍 1）；
   下载 4 路基准 2.9×（未接 loop）；LLM rank vs 确定性两 case 交付一致，确定性省 20–40 s；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
