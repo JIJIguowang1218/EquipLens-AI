@@ -1,0 +1,302 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-14T02:47:59",
+ "raw_input": "随车起重运输车（随车吊），重点看前保险杠、吊臂、支腿、货厢侧板、轮拱、登车踏板、回转支承；工程物流与设备转运工况；6×4 底盘；8 台",
+ "brief_path": "data-test\\evals\\fulltest-20261114\\h4-crane-truck\\brief.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2528,
+  "completion_tokens": 4375,
+  "total_tokens": 6903,
+  "prompt_tokens_details": {
+   "cached_tokens": 1920
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 1529
+  },
+  "prompt_cache_hit_tokens": 1920,
+  "prompt_cache_miss_tokens": 608
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "随车起重运输车（随车吊 / 卡车式起重机，二类底盘改装）",
+   "environment": "工程物流与设备转运工况：铺装与非铺装道路混合行驶、到场后频繁起吊装卸、支腿在临时/不平地面展开承压",
+   "base_platform": "6×4 重型载货汽车二类底盘（驾驶室沿用底盘厂基型，上装为专用改装）",
+   "configuration": "前置驾驶室 + 车架中后部回转支承 + 折叠/伸缩吊臂（运输状态前折或后置收纳）+ 货厢 + 左右液压支腿",
+   "design_questions": [
+    "6×4 二类底盘与上装（回转支承、支腿、货厢、吊臂基座）之间的分缝、承载与布置关系如何组织，哪些造型是底盘平台继承、哪些是随车吊特化",
+    "吊臂与支腿在「运输收纳状态」与「作业展开状态」两种姿态下的形态、截面与铰点节点如何处理",
+    "前保险杠、轮拱、登车踏板这类底盘侧/前部附件，在工程运输工况下如何兼顾防撞防护、离地与登车人机"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸整体（驾驶室基型 + 前保险杠区）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面整体（驾驶室—货厢—吊臂收纳—支腿的纵向关系）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "form_gesture",
+     "structure"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "bumper",
+    "label": "前保险杠",
+    "kind": "part",
+    "location": "front / 驾驶室前下部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "regulation",
+     "manufacturing"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "分段/分缝与雾灯、拖车钩开口的排布方式",
+     "接近角与下沿离地高度对非铺装通行的影响",
+     "折弯/冲压工艺对造型面与小圆角的约束"
+    ],
+    "why": "前保险杠是判断「底盘平台继承 vs 随车吊特化」的最直接证据：它的分段方式、开口罩壳和离地尺度能说明改装厂在多大程度上改动基型前脸，也能提供工程运输工况下的防撞与接近角证据"
+   },
+   {
+    "part": "custom_crane_boom",
+    "label": "吊臂",
+    "kind": "function",
+    "location": "上装 / 驾驶室后方至车架中后部，运输状态折叠或后置收纳",
+    "part_family": "welded_steel_structure",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "form_gesture",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "臂节截面形式（多边形/箱型）与伸缩搭接段",
+     "臂头、铰点、油缸支座的节点构造与加强板",
+     "运输收纳姿态与驾驶室、货厢前板的间隙关系"
+    ],
+    "why": "吊臂是随车吊区别于普通载货车的主体功能件，它的收纳姿态直接决定侧面整体轮廓与重心观感；节点与截面构造能提供「功能件如何被造型化处理」的结构证据，而非只提供外观风格"
+   },
+   {
+    "part": "custom_outrigger",
+    "label": "支腿",
+    "kind": "function",
+    "location": "车架左右两侧，吊机基座前后（常见前后各一对）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "function_ergonomics"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "固定支腿箱与活动支腿的搭接、锁止与油缸布置",
+     "支脚盘形式与地面承载/不平地面的适应性",
+     "与车架、货厢底架、侧防护的干涉与让位"
+    ],
+    "why": "支腿是把起吊载荷传到地面的关键接口，也是侧面最容易读到的「工程特化」元素；它能提供上装与底盘连接节点、离地间隙和展开作业状态下的布置证据，无法用普通载货车侧面图替代"
+   },
+   {
+    "part": "custom_cargo_box_side",
+    "label": "货厢侧板",
+    "kind": "part",
+    "location": "side / 车架后部上装",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "立柱间距、加强筋/压筋节奏与板面平整度",
+     "边梁、锁具、铰链等外露件对分缝的影响",
+     "涂装分色与上装/底盘色彩关系"
+    ],
+    "why": "货厢侧板占侧面视觉面积最大，是比例与分缝的主要载体；同时能反映改装厂在通用货厢与吊机让位（前后支腿、回转基座开口）之间的处理方式，提供结构与 CMF 双重证据"
+   },
+   {
+    "part": "wheel_arch",
+    "label": "轮拱（翼子板与轮拱）",
+    "kind": "part",
+    "location": "side / 前后轮位上方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "轮拱开口半径与轮胎、悬架的间隙包络",
+     "分段式/整体式翼子板的拼接与挡泥板衔接",
+     "后轮多轴布置下的轮拱节奏与货厢下沿关系"
+    ],
+    "why": "6×4 的后双轴使轮拱成为侧面比例节奏的关键；它既能提供轮胎包络与离地尺度的工程约束证据，也能说明底盘平台件在改装后是否被重新处理，但对吊装功能本身解释力有限，故列为有条件相关"
+   },
+   {
+    "part": "step",
+    "label": "登车踏板",
+    "kind": "function",
+    "location": "side / 驾驶室门下方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "踏板级数、踏步高度与防滑面处理",
+     "悬臂支架与车架/驾驶室连接方式",
+     "泥污、磕碰下的可更换性与边角处理"
+    ],
+    "why": "工程物流工况下司机上下车频繁且鞋底带泥，踏步能提供人机尺度与防滑、悬臂结构的具体证据；但它是底盘平台强继承件，造型信息量有限，故为有条件相关而非主证据"
+   },
+   {
+    "part": "custom_slewing_ring",
+    "label": "回转支承",
+    "kind": "function",
+    "location": "上装 / 车架与吊机基座之间的回转界面",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "manufacturing"
+    ],
+    "views": [
+     "detail",
+     "side"
+    ],
+    "design_relevance": "conditional",
+    "accept": "C",
+    "mechanism": [
+     "内外圈螺栓圈布置与基座法兰的对接方式",
+     "齿圈/密封的防尘防护与润滑点可达性",
+     "基座高度对吊臂收纳与货厢前板间隙的影响",
+     "安装面的加工与焊接后变形控制"
+    ],
+    "why": "回转支承多为外购标准件，本身造型价值低，但它是吊机与车架之间的唯一转动接口，能提供安装法兰、螺栓圈与基座高度的结构证据，用于判断上装布置是否合理；因此只作为细节级证据，不单独占用整体视角预算"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.configuration（吊臂形式）",
+    "value": "按折叠臂（折臂式）为主进行检索，直臂伸缩式作为并列参考",
+    "why": "用户只写「随车吊／吊臂」，未指明折臂或直臂；两者臂节截面与收纳姿态差异明显，需在检索中覆盖但以更常见的折臂式优先",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.base_platform",
+    "value": "6×4 重型二类底盘（驾驶室与车架由底盘厂提供，上装由改装厂完成）",
+    "why": "用户给出 6×4 但未说明是否专用底盘；随车吊行业普遍采用二类底盘改装，此假设决定「平台继承件」的判定范围",
+    "confidence": 0.75
+   },
+   {
+    "field": "货厢形式",
+    "value": "按栏板/仓栅类通用货厢理解侧板，厢式车作为次要参考",
+    "why": "用户只说「货厢侧板」，未说明厢体类型；不同类型侧板的分缝与压筋逻辑不同",
+    "confidence": 0.5
+   },
+   {
+    "field": "input.quantity（8 台）",
+    "value": "理解为需要检索 8 个参考车型/样本量级",
+    "why": "原始需求末尾的「8 台」含义不明，可能是参考车型数量，也可能是车队采购数量；此处按检索样本量处理，若为采购量则不影响检索任务",
+    "confidence": 0.5
+   },
+   {
+    "field": "environment 强度",
+    "value": "按常规工程物流工况处理，不叠加沙尘/寒区/高辐射等极端环境特化",
+    "why": "用户描述为「工程物流与设备转运」，属作业工况而非地域环境；因此各部件的环境敏感度按防撞、防泥、离地与地面承载来判定，不引入防沙板、涉水喉类特化件",
+    "confidence": 0.7
+   }
+  ],
+  "negative": [
+   "不要补充用户未点名的部件：进气格栅、大灯与灯罩防护、后视镜、外部遮阳板、下护板、品牌标识区、涂装方案等均不作为独立检索对象",
+   "不要把「前脸」自动拆成格栅/大灯/保险杠三件；本任务只取前保险杠与前脸整体区域",
+   "不要以履带起重机、全地面起重机、汽车起重机（上车驾驶室式）作为主证据；品类限定为二类底盘改装的随车起重运输车",
+   "不要用「同系列/相似车型」作为检索理由；每条理由必须写明能提供什么设计证据",
+   "不要输出 page_budget / research_units / quota / tiers / budget 等由代码生成的字段",
+   "不要为回转支承安排整体视角或大幅面配额，它只需细节级证据",
+   "未经确认不要假定具体品牌型号或吊机吨位"
+  ]
+ },
+ "duration_ms": 25241
+}
