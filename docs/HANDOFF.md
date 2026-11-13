@@ -6,7 +6,7 @@
 | 当前阶段 | **检索 v1 收敛：P0 交付不变量 + 第一次用户交付准备**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准；扩源线已收口。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | 见 `git log -1`；工作树状态以 git 为准。整体框架/生产/实验边界见 `docs/CURRENT-ARCHITECTURE.md`。 |
-| 工作树提醒 | **2026-11-13 本轮文档修改尚未提交**（等产品负责人确认）；提交/推送前，另一台电脑看不到这些更新。 |
+| 工作树提醒 | 2026-11-13 交接文档已随 `c11b45a` 提交并推送；工作树以 `git status` 为准（本机仅 3 个未跟踪的 run 图片目录）。 |
 
 > 换机/接续只需读 **§0.0（进度与下一步）** 和 **§0.1（30 分钟环境）**；
 > §1 之后是历史记录，不必通读。
@@ -172,6 +172,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 > 如果你手上是**旧 clone**，不要直接 `git pull`；用
 > `git fetch origin && git reset --hard origin/main`，或重新 clone。
 > 详见 `docs/DATA-CHANGELOG.md` §6.1；提交前先跑 `python scripts/scan_secrets.py`。
+> （2026-11-13 复核：本机 `7c79e6e → db16303` 为快进、26 个新提交，未受影响，无需再改 clone。）
 
 - Python **3.11**（本项目在 3.11.5 上验证；不要用 3.13）
 - Windows PowerShell 示例：
@@ -194,7 +195,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（81+ 条，0 issue）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（84 条，0 issue）
 PYTHONPATH=src python tests/test_planning.py            # 14/14
 PYTHONPATH=src python tests/test_retrieval_engine.py    # 40/40
 PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）

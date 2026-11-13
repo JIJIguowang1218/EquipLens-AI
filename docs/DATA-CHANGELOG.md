@@ -112,3 +112,16 @@ PYTHONPATH=src python scripts/run_ledger.py --check     # 应 0 issue
 PYTHONPATH=src python scripts/monitor_bad_domains.py     # 刷新死图床监测（只统计）
 PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/delivery-20261112-clean
 ```
+
+### 10. 台账口径修正（2026-11-13，P4）
+
+- 旧 `run_ledger.py` 重建索引时，用**生成时**的 HEAD 和目录 mtime 覆盖每条 run 的
+  `date`/`git_commit`：80 条历史记录被统一写成 `dec466a`，6 个 plan/diag 目录的日期被改成 2026-11-13。
+- 已改为优先读该目录 `RUN.json` 里的 `date`/`git_commit`；新增单测
+  `tests/test_run_ledger.py::test_run_date_and_commit_are_preserved`（8/8 通过）。
+- 重建后 `INDEX.json/md`：80 → **84** 条，补进 `ab-negative-20261113`、
+  `ab-plan-concurrency-20261113`、`ab-rank-20261113`、`verify-fillfix-20261113`；
+  历史 run 的日期/提交回到真实值；**未改任何 `summary.json`/`state.json`**。
+- 仍存缺口：上面 4 个套件目录没有根级 `summary.json`/`plan.json`，台账归类为 `empty`
+  （有记录、无指标）；要显示指标需让 `run_ledger.py` 读 `SUITE-SUMMARY.*`，留待后续。
+
