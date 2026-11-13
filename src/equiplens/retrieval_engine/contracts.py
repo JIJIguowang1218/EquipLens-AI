@@ -249,6 +249,10 @@ class Asset:
     status: str = ""
     scene: str = ""
     overview: bool = False
+    # 这张图的来源查询档位（待办A）：exact=窄查询精确命中，model=车型全名，
+    # alias=中文别名改写，part_fallback=部件+车型兜底。用于区分“回退来源”的图。
+    query_tier: str = ""
+    source_query: str = ""
 
     @classmethod
     def from_dict(cls, data: dict, *, target_id: str, part: str) -> "Asset":
@@ -266,6 +270,8 @@ class Asset:
             status=str(data.get("status") or ""),
             scene=str(data.get("scene") or ""),
             overview=bool(data.get("overview")),
+            query_tier=str(data.get("query_tier") or ""),
+            source_query=str(data.get("source_query") or ""),
         )
 
     def to_dict(self) -> dict:
@@ -283,6 +289,8 @@ class Asset:
             "status": self.status,
             "scene": self.scene,
             "overview": self.overview,
+            "query_tier": self.query_tier,
+            "source_query": self.source_query,
         }
 
 

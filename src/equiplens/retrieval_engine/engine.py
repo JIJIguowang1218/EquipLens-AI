@@ -645,9 +645,25 @@ class RetrievalEngine:
                                                       (by_target.get(m) or {}).values())],
                        "short": max(0, backup_required - len(backup_models))},
             "backup_short": max(0, backup_required - len(backup_models)),
+            "query_tiers": self._tier_counts(state, accepted_ids),
             "unavailable": self._unavailable(state),
             "status": "complete" if accepted >= target else "short",
         }
+
+    def _tier_counts(self, state: dict, accepted_ids: set[str]) -> dict:
+        """已交付 target 的图片按来源查询档位计数（待办A：来源可解释）。
+
+        只统计占槽车型用到的 asset；`exact` = 窄查询精确命中，`alias`/`model` 次之，
+        `part_fallback` = 部件名兜底。用于回答“这批交付有多少是回退来源”。
+        """
+        counts: dict[str, int] = {}
+        meta = state.get("asset_meta") or {}
+        for tid in accepted_ids:
+            for items in (state.get("assets", {}).get(tid) or {}).values():
+                for aid in (items or []):
+                    tier = (meta.get(aid) or {}).get("query_tier") or "unknown"
+                    counts[tier] = counts.get(tier, 0) + 1
+        return counts
 
     def _summary(self, state: dict) -> dict:
         cov = self._coverage(state)

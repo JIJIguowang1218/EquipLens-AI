@@ -583,6 +583,25 @@ class WebWorld:
         finally:
             ex.shutdown(wait=False, cancel_futures=True)
 
+    @staticmethod
+    def _query_tier(model: str, query: str) -> str:
+        """这张图来自查询阶梯的哪一档（待办A：来源分级）。
+
+        exact=窄查询（normalize_query）命中；model=车型全名；alias=中文别名改写；
+        part_fallback=部件 label + 车型兜底（今后若加类目回退，也归到这一档之后）。
+        """
+        from .. import imagesearch as _is
+        q = (query or "").strip()
+        if not q:
+            return ""
+        if q == WebWorld.normalize_query(model):
+            return "exact"
+        if q == (model or "").strip():
+            return "model"
+        if q == _is.alias_query(model):
+            return "alias"
+        return "part_fallback"
+
     def live_fetch(self, target: Target, part: str) -> list[Asset]:
         """真实 360 → 下载 → 两段式门卫 → 分层判定（视角只作 hint）。
 
@@ -753,6 +772,8 @@ class WebWorld:
                         "tries": res.get("tries"), "url_used": res.get("url_used"),
                         "upgraded": res.get("upgraded"),
                         "part_query": getattr(self, "_part_query_used", ""),
+                        "query_tier": self._query_tier(
+                            target.model, getattr(self, "_part_query_used", "")),
                     })
             stats["downloaded"] += 1
             streak = 0
@@ -775,5 +796,8 @@ class WebWorld:
                 status="gated",
                 scene=a.get("scene", ""),
                 overview=bool(a.get("overview_candidate")),
+                query_tier=self._query_tier(
+                    target.model, getattr(self, "_part_query_used", "")),
+                source_query=getattr(self, "_part_query_used", ""),
             ))
         return out

@@ -843,6 +843,21 @@ def test_normalize_query_keeps_only_explicit_drive_config():
     assert WebWorld.normalize_query("TAZ4922 6×6 油田专用全驱牵引车").lower() == "taz4922 6x6"
 
 
+def test_asset_query_tier_roundtrip():
+    """来源分级（待办A）必须进契约：dataclass ↔ dict，且档位映射正确。"""
+    from equiplens.retrieval_engine.contracts import Asset
+    m = "TAZ4922 6×6 油田专用全驱牵引车"
+    a = Asset(asset_id="a1", target_id=m, part="bumper", model=m,
+              query_tier="exact", source_query="TAZ4922 6x6")
+    d = a.to_dict()
+    b = Asset.from_dict(d, target_id=m, part="bumper")
+    assert b.query_tier == "exact" and b.source_query == "TAZ4922 6x6", d
+    from equiplens.retrieval_engine.web import WebWorld
+    assert WebWorld._query_tier(m, "TAZ4922 6x6") == "exact"
+    assert WebWorld._query_tier(m, m) == "model"
+    assert WebWorld._query_tier(m, "别的查询 6x6") == "part_fallback"
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -884,6 +899,7 @@ if __name__ == "__main__":
     check("拉黑图床触发早停", test_blocked_hosts_trigger_early_stop)
     check("并发下载保序且不重复下载", test_parallel_download_preserves_order_and_cache)
     check("查询只保留显式构型", test_normalize_query_keeps_only_explicit_drive_config)
+    check("图片来源分级进契约", test_asset_query_tier_roundtrip)
     check("节点耗时记录", test_summary_records_step_timings)
     check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]
