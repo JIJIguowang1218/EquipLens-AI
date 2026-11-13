@@ -221,6 +221,18 @@ def test_domain_health_blocks_after_threshold():
     assert not h2.is_blocked("https://ok.example/b.jpg")
 
 
+def test_descriptive_name_is_not_a_brand():
+    """描述性车名不能被当成品牌：否则该车型的所有命中都会被护栏判死（0 图）。"""
+    m = "TAZ4922 6×6 油田专用全驱牵引车"
+    assert imagesearch._brand_group(m) == (), imagesearch._brand_group(m)
+    assert imagesearch._brand_group("6×6 越野牵引头") == ()
+    assert imagesearch._relevant("x", "自动挡+6x6 重汽泰安TAZ4413油田专用牵引车", m)
+    # 真品牌仍然按品牌校验（品牌不符要拦）
+    assert not imagesearch._relevant("x", "斯堪尼亚XT 6x6 工程车", "北奔 NG80 6X6")
+    # 长描述里内嵌品牌仍能识别
+    assert imagesearch._brand_group("豪沃 TAZ4922 6×6 油田牵引车")
+
+
 if __name__ == "__main__":
     check("相关性护栏", test_relevance_guard)
     check("构型/品牌/非车污染护栏", test_config_and_brand_guard)
@@ -236,6 +248,7 @@ if __name__ == "__main__":
     check("图集页抽图", test_extract_page_images)
     check("搜狐 w_1280 升图", test_upgrade_sohu_url)
     check("死图床拉黑", test_domain_health_blocks_after_threshold)
+    check("描述性车名不当品牌", test_descriptive_name_is_not_a_brand)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

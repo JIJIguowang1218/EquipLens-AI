@@ -302,14 +302,39 @@ def _alias_in(name: str, text: str) -> bool:
     return name in text
 
 
+# 描述性词干：含这些词的词不是品牌（“油田专用全驱牵引车”“6x6 越野牵引头”）
+_DESC_STEMS = ("牵引", "挂车", "卡车", "货车", "自卸", "载货", "越野", "全驱",
+               "驱动", "专用", "运输", "工程", "起重", "油井", "矿卡", "沙漠",
+               "油田", "井场", "重型", "中型", "轻型", "底盘", "驾驶室", "特种",
+               "轮胎", "发动机", "驾驶")
+
+
+def _looks_like_brand(tok: str) -> bool:
+    """短中文词、不含描述性词干，才允许当品牌兜底。"""
+    if not tok or len(tok) > 4 or re.search(r"\d", tok):
+        return False
+    return not any(s in tok for s in _DESC_STEMS)
+
+
 def _brand_group(src: str) -> tuple[str, ...]:
-    """取车型名里的品牌别名组；不在别名表里就退回第一个非数字词。"""
+    """取车型名里的品牌别名组。
+
+    2026-11-13 修复：旧实现把“第一个非数字词”当品牌，导致描述性车名
+    （`油田专用全驱牵引车`、`6x6 越野牵引头`）被当成品牌去要求标题命中，
+    该车型所有搜索命中被相关性护栏判死 → 目标 0 图（历史 108 次 no_hits）。
+    现在只认别名表；长描述里内嵌的品牌按子串识别；兜底词必须是品牌样。
+    """
     toks = _tokens(src)
     for t in toks:
         if t in _BRAND_LOOKUP:
             return _BRAND_LOOKUP[t]
+    low = (src or "").lower()
+    if low:
+        for alias, group in _BRAND_LOOKUP.items():
+            if alias and alias in low:
+                return group
     for t in toks:
-        if not re.search(r"\d", t) and t not in GENERIC and len(t) >= 2:
+        if t not in GENERIC and _looks_like_brand(t):
             return (t,)
     return ()
 

@@ -248,18 +248,27 @@ class WebWorld:
 
     @staticmethod
     def normalize_query(model: str) -> str:
-        """长名字 → 短检索键：去掉括号说明，取型号代码（优先）+ 品牌/车系 + 6x6。"""
+        """长名字 → 短检索键：去掉括号说明，取型号代码（优先）+ 品牌。
+
+        2026-11-13 修复：旧实现无条件拼 `6x6`，叉车 `CPD30 6x6`、压路机
+        `XS202J 6x6` 这类非 6×6 类目会被带偏，搜索结果与车型无关。
+        现在只保留车型名里**本来就带的**构型词（6x6/8x8/4x4）。
+        """
         import re as _re
         s = _re.sub(r"[（(][^）)]*[）)]", " ", model or "")
         s = s.replace("×", "x").strip()
+        low = s.lower()
+        conf = next((c for c in ("6x6", "8x8", "4x4") if c in low), "")
         code = _re.search(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", s)
         if code:
             brand = _re.search(r"[一-鿿]{2,4}", s[:code.start()])
             pre = brand.group(0) if brand else ""
-            return f"{pre} {code.group(0)} 6x6".strip()
+            return " ".join(p for p in (pre, code.group(0), conf) if p).strip()
         words = [w for w in s.split() if w]
         key = " ".join(words[:3]).strip(" /,、;")
-        return key if "6x6" in key.lower() else f"{key} 6x6"
+        if conf and conf not in key.lower():
+            key = f"{key} {conf}"
+        return key
 
     def can_replan(self) -> bool:
         return bool(self.plan) and not self.has_more()
