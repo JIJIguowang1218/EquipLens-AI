@@ -149,3 +149,12 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   code_prefilter`：任何 run 都能自证并发配置，没有这一项不参与横向对比；
 - 本次只改代码与文档，**未跑检索实验**；单测 `retrieval_engine 41/41`、`imagesearch 14/14`、
   `planning 14/14` 全绿（新增“并发下载保序且不重复下载”）。
+
+### 13. 来源分级字段与判死链复盘（2026-11-13）
+
+- `Asset` 契约新增 `query_tier / source_query`（图片来源查询档位）；`asset_meta` 同步；
+  `fetch_log.jsonl` 增加 `query_tier`；`summary.delivery.query_tiers` 统计交付图来源分布。
+- 本次只改契约与记录，**不改交付判定**；`imagesearch 15/15`、`retrieval_engine 43/43`。
+- 复盘文档：`docs/query-kill-chain-20261113.md`（判死链 9 项、品牌表来源 `c44e0e3`、
+  去表化替代方案）。
+- 未跑检索实验；未改任何既有 run 数据。
