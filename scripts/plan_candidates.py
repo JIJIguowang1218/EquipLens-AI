@@ -79,7 +79,9 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
             "3) 只能从给出的结果里推断，不允许凭记忆补充；\n"
             "4) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
             "5) 同一车型不要重复；\n"
-            "6) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "6) 每条候选给一个 `search_key`：可用于图片检索的短键（品牌/车系/型号码 + 构型），\n"
+            "   必须来自结果文本，不要编造；没把握就留空；\n"
+            "7) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"search_key\":\"\","
             "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
         )
     else:
@@ -88,7 +90,9 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
             "1) 只能从给出的结果里推断，不允许凭记忆补充；\n"
             "2) 每条候选必须给出至少 1 个来源 URL，且 URL 必须来自下面结果；\n"
             "3) 同一车型只给一次；与任务单环境/构型不符的不要；\n"
-            "4) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
+            "4) 每条候选给一个 `search_key`：可用于图片检索的短键（品牌/车系/型号码 + 构型），\n"
+            "   必须来自结果文本，不要编造；没把握就留空；\n"
+            "5) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"search_key\":\"\","
             "\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
         )
     prompt = (

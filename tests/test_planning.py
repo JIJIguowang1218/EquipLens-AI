@@ -256,6 +256,25 @@ def test_negative_terms_only_short_words():
     assert planning.negative_terms(bad) == ["客车"], planning.negative_terms(bad)
 
 
+def test_search_key_survives_validation_and_merge():
+    """抽取阶段给的 search_key 要能过校验、合并时优先保留带型号码的那条。"""
+    meta = {"query_id": "q-base", "dimension": "base", "query": "沙漠牵引车"}
+    rows, _ = planning.validate_extraction(
+        {"candidates": [{"model": "TAZ4922 6×6 油田牵引车", "sources": ["https://ok/1"],
+                         "search_key": "TAZ4922 6x6"}]},
+        {"https://ok/1"}, meta, limit=6)
+    assert rows[0]["search_key"] == "TAZ4922 6x6", rows
+    a = {"model": "豪沃 6×6 牵引车", "sources": ["u1"], "source_query": "q1",
+         "source_query_id": "q-base", "dimension": "base",
+         "search_key": "豪沃 6x6"}
+    b = {"model": "豪沃 6×6 牵引车（ZZ4257）", "sources": ["u2"], "source_query": "q2",
+         "source_query_id": "q-model", "dimension": "model",
+         "search_key": "ZZ4257 6x6"}
+    merged = planning.merge_candidates([a, b])
+    assert len(merged) == 1, merged
+    assert "ZZ4257" in merged[0]["search_key"], merged[0]
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -271,6 +290,7 @@ if __name__ == "__main__":
     check("查询压缩与补查询", test_short_query_builder)
     check("人审后的合并规则", test_merge_rules_from_human_verdicts)
     check("negative 只收短词", test_negative_terms_only_short_words)
+    check("search_key 过校验/合并", test_search_key_survives_validation_and_merge)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

@@ -329,6 +329,8 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
         rows.append({
             "model": model,
             "brand": normalize_text(cand.get("brand")),
+            # 抽取阶段顺带给出的检索键（品牌/车系/码+构型），来自同一批来源文本
+            "search_key": normalize_text(cand.get("search_key"))[:40],
             "reason": normalize_text(cand.get("reason"))[:200],
             "sources": valid,
             "source_query": query_meta["query"],
@@ -400,6 +402,12 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             cur["dimensions"].append(item.get("dimension"))
         if item.get("model") not in cur["model_variants"]:
             cur["model_variants"].append(item.get("model"))
+        sk = item.get("search_key") or ""
+        if sk:
+            old = cur.get("search_key") or ""
+            if not old or (re.search(r"[A-Za-z]{1,4}\d{3,}", sk)
+                           and not re.search(r"[A-Za-z]{1,4}\d{3,}", old)):
+                cur["search_key"] = sk
         cur["source_count"] = len(cur["sources"])
 
     for item in items:

@@ -859,9 +859,22 @@ def test_asset_query_tier_roundtrip():
     b = Asset.from_dict(d, target_id=m, part="bumper")
     assert b.query_tier == "exact" and b.source_query == "TAZ4922 6x6", d
     from equiplens.retrieval_engine.web import WebWorld
-    assert WebWorld._query_tier(m, "TAZ4922 6x6") == "exact"
-    assert WebWorld._query_tier(m, m) == "model"
-    assert WebWorld._query_tier(m, "别的查询 6x6") == "part_fallback"
+    w = WebWorld({}, {})
+    assert w._query_tier(m, "TAZ4922 6x6") == "exact"
+    assert w._query_tier(m, m) == "model"
+    assert w._query_tier(m, "别的查询 6x6") == "part_fallback"
+
+
+def test_plan_search_key_becomes_target_query():
+    """plan 里的 search_key 优先作为第二段查询键（旧 plan 没有则回落派生键）。"""
+    from equiplens.retrieval_engine.web import WebWorld
+    w = WebWorld({}, {}, plan=[{"model": "豪沃 6×6 牵引车",
+                                "search_key": "HOWO ZZ4257 6x6", "sources": []}])
+    assert w._search_keys["豪沃 6×6 牵引车"] == "HOWO ZZ4257 6x6"
+    assert w._query_tier("豪沃 6×6 牵引车", "HOWO ZZ4257 6x6") == "search_key"
+    # 没有 search_key 的旧 plan：仍用 normalize_query 派生
+    w2 = WebWorld({}, {}, plan=[{"model": "TAZ4922 6×6 油田牵引车", "sources": []}])
+    assert w2._query_tier("TAZ4922 6×6 油田牵引车", "TAZ4922 6x6") == "exact"
 
 
 def test_identity_evidence_without_brand_table():
@@ -949,6 +962,7 @@ if __name__ == "__main__":
     check("并发下载保序且不重复下载", test_parallel_download_preserves_order_and_cache)
     check("查询只保留显式构型", test_normalize_query_keeps_only_explicit_drive_config)
     check("图片来源分级进契约", test_asset_query_tier_roundtrip)
+    check("search_key 驱动第二段查询", test_plan_search_key_becomes_target_query)
     check("未知品牌靠双证据判 probable", test_identity_evidence_without_brand_table)
     check("回退图只进 degraded", test_fallback_assets_only_fill_degraded)
     check("回退图不进备选", test_fallback_assets_excluded_from_backup)

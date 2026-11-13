@@ -172,6 +172,9 @@ class WebWorld:
         self._search_cache: dict[str, list] = {}
         self._fetch_cache: dict[str, dict] = {}   # url → _download_and_gate 结果
         self.plan = list(plan or [])
+        # model → 抽取阶段给出的检索键（search_key，可选；旧 plan 没有就用派生键）
+        self._search_keys = {str(c.get("model") or ""): str(c.get("search_key") or "")
+                             for c in self.plan}
         self.platform_extra = (platform_extra or "").strip().lower()
         self.code_prefilter = bool(code_prefilter)
         self.pins = [p.lower() for p in (pins or [])]
@@ -597,12 +600,11 @@ class WebWorld:
         finally:
             ex.shutdown(wait=False, cancel_futures=True)
 
-    @staticmethod
-    def _query_tier(model: str, query: str) -> str:
+    def _query_tier(self, model: str, query: str) -> str:
         """这张图来自查询阶梯的哪一档（待办A：来源分级）。
 
         exact=窄查询（normalize_query）命中；model=车型全名；alias=中文别名改写；
-        part_fallback=部件 label + 车型兜底（今后若加类目回退，也归到这一档之后）。
+        search_key=抽取阶段给出的检索键；part_fallback=部件 label + 车型兜底。
         """
         from .. import imagesearch as _is
         q = (query or "").strip()
@@ -614,6 +616,8 @@ class WebWorld:
             return "model"
         if q == _is.alias_query(model):
             return "alias"
+        if q == (self._search_keys.get(model) or ""):
+            return "search_key"
         return "part_fallback"
 
     def live_fetch(self, target: Target, part: str) -> list[Asset]:
@@ -630,6 +634,11 @@ class WebWorld:
         hits = self._search_cache.get(cache_key)
         if hits is None:
             variants = imagesearch.query_variants(key, target.model)
+            # search_key（抽取阶段给的检索键）只作为最后一档兜底：
+            # 前三档全 0 命中才用；实测它的整体命中不如派生键，但能救 0 命中的纯型号。
+            sk = self._search_keys.get(target.model) or ""
+            if sk and sk not in variants:
+                variants.append(sk)
             hits = []
             for q in variants:
                 _diag = None
