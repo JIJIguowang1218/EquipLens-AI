@@ -65,6 +65,8 @@
 | F5 | RRF 融合多路召回（`Σ1/(k+rank)`） | Vespa | 后置（依赖 F6 评估集） | 低（几十行） | 低：需要固定评估集 |
 | F6 | **冻结 query 快照集 + 固定池深度 + bootstrap CI** | TREC/BEIR/UMBRELA | **骨架已实现**（`eval_plan_snapshot.py`）；5 case 太窄 | 中（一次人工） | 低：需要扩到 ≥3 重复 + 8–10 brief |
 | F7 | 静默失败分类（含错图率） | SIGIR'26 综述 | 加入人工抽样 | 低 | 低：指标定义要固定 |
+| F8 | **评估体系落地件**：质量门（jq exit 1）/ pytest 化 / ir_measures 语义 / Label Studio 标注 | promptfoo、DeepEval、ir_measures、Label Studio | 新增（调研 2026-11-14） | 低（几十行） | 低：先有冻结集 |
+| F9 | **schema v2**：strict JSON + evidence span + source_id 白名单 + confidence 枚举 | OpenAI Structured Outputs、Instructor | 新增（调研 2026-11-14） | 低（1–2 人日） | 低：字段必填/可空要定死 |
 
 **明确不采纳**：整套 RAG/向量库框架、品牌词表、无条件多路改写（A3 已实测会变差）。
 

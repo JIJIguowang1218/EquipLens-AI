@@ -7,6 +7,8 @@
 | [rag-candidates-20261114.md](rag-candidates-20261114.md) | 多查询生成 / 候选发现 / 实体规范化 | Gleaning 补抽、结构化槽位、归一化 key、RRF 融合 |
 | [entity-matching-20261114.md](entity-matching-20261114.md) | 商品/实体匹配、去重、search_key | Fellegi–Sunter 无标注去重、闭类词自动挖掘、RapidFuzz 子集满分陷阱 |
 | [retrieval-eval-20261114.md](retrieval-eval-20261114.md) | 无标注评估、pooling、LLM judge、query drift | 冻结 query 集 + 固定池深度 + bootstrap CI、静默失败分类 |
+| [eval-systems-20261114.md](eval-systems-20261114.md) | 生产级评估/监控框架 | promptfoo 质量门（10 行）、DeepEval 的 pytest 化、ir_measures 语义、Label Studio 标注 |
+| [structured-extraction-20261114.md](structured-extraction-20261114.md) | 结构化抽取与车辆数据标准 | strict JSON schema、evidence span、source_id 白名单、confidence 枚举 |
 
 **落地状态（与实验对应）**：
 
