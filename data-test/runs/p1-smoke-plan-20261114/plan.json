@@ -1,0 +1,1158 @@
+{
+ "brief_id": "auto-20261114-032603",
+ "created_at": "2026-11-14T03:27:00",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "市政绿化喷洒 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "市政绿化喷洒 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 105,
+ "candidates": [
+  {
+   "model": "豪沃TX 4x2 绿化喷洒车（SGZ5180GPSZZ6T5）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃TX",
+    "model_code": "SGZ5180GPSZZ6T5",
+    "config": "4x2"
+   },
+   "search_key": "豪沃TX 4x2 绿化喷洒车",
+   "reason": "结果明确为豪沃TX/4x2绿化喷洒车，用于园林、路面绿化喷洒与建筑工地洒水降尘，与市政绿化+工地降尘工况及4×2二类底盘要求一致；文本给出整车型号SGZ5180GPSZZ6T5、罐体与泵站/喷洒水路功能，可对应水罐侧板、泵房侧门、喷洒布置等查看点。",
+   "sources": [
+    "https://www.hua-win.cn/products_details_2/68.html",
+    "https://www.nongjx.com/st139642/product_3199689.html",
+    "https://product.360che.com/m612/153195_param.html#1"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/SGZ5180GPSZZ6T5",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃TX 4x2 绿化喷洒车（SGZ5180GPSZZ6T5）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "重汽王牌 7系 156马力 4X2 洒水车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "王牌7系",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "重汽王牌 7系 4X2 洒水车",
+   "reason": "结果参数页显示驱动形式4X2、轴距4200mm、整车重量7.1吨、云内YNF40E2 156马力柴油机，属4×2中重型洒水车底盘平台，与任务单4×2载货汽车二类底盘相符。",
+   "sources": [
+    "https://product.360che.com/m160/40069_param.html"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/重汽王牌7系4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽王牌 7系 156马力 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田小卡之星 绿化喷洒车（CLW5040GPSB5）",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "小卡之星",
+    "model_code": "CLW5040GPSB5",
+    "config": "4×2"
+   },
+   "search_key": "福田小卡之星 绿化喷洒车 4×2",
+   "reason": "结果给出整车型号CLW5040GPSB5、底盘为福田小卡之星2底盘、驱动形式4×2（后驱）、水罐容积2.0–3.0m³、最大洒水宽度≥14m、作业速度5–20km/h，属低速市政绿化喷洒工况；另注明单排驾驶室，可支撑前脸/保险杠/轮拱等外观部位检索。",
+   "sources": [
+    "http://www.icljt.com/sashuiche/191.html"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/CLW5040GPSB5",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田小卡之星 绿化喷洒车（CLW5040GPSB5）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "凯马 凯捷 156马力 4X2 洒水车",
+   "brand": "凯马",
+   "slots": {
+    "brand": "凯马",
+    "series": "凯捷",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "凯马凯捷 4X2 洒水车",
+   "reason": "结果参数页明确驱动形式4X2、轴距4200mm、额定载重8.495吨、整车重量4.89吨等，为4×2洒水车底盘车型，底盘形式与任务单一致。",
+   "sources": [
+    "https://product.360che.com/m185/46450_param.html#1"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/凯马凯捷4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "凯马 凯捷 156马力 4X2 洒水车",
+    "凯捷 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风 4x2 8000L 洒水车（Water Spray Truck）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "Dongfeng 4x2 8000L Water Spray Truck",
+   "reason": "结果标注底盘为东风4x2、罐容6000–9000L，用途为运水与道路降尘，正对应市政道路降尘与绿化喷洒工况及4×2底盘要求。",
+   "sources": [
+    "http://www.clbjspv.com/Water-truck/showcnpc-5007-56.html",
+    "http://www.clbjspv.com/Water-truck/showcnwap-5007-56.html"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/东风4X28000L洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风 4x2 8000L 洒水车（Water Spray Truck）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "ISUZU GIGA 4x2 洒水车",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "GIGA",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "ISUZU 4x2 GIGA Water Sprinkler Truck",
+   "reason": "结果标题与摘要明确为ISUZU 4x2 GIGA洒水车（多功能绿化洒水车），用于城市道路保洁、环卫与降尘喷洒，符合4×2市政绿化喷洒定位。",
+   "sources": [
+    "http://www.bossgoo.com/product-detail/isuzu-4x2-giga-water-sprinkler-truck-63201126.html#1"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/ISUZUGIGA4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ISUZU GIGA 4x2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "FAW 4X2 洒水车（Water Sprinkler Truck）",
+   "brand": "一汽",
+   "slots": {
+    "brand": "一汽",
+    "series": "",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "FAW 4X2 Water Sprinkler Truck",
+   "reason": "结果明确为FAW 4X2洒水车，应用场景写明城市道路清洗浇洒、建筑工地降尘、绿化带与园林灌溉，与任务单市政绿化喷洒/工地降尘工况完全吻合。",
+   "sources": [
+    "https://www.fawglobal.com/faw-4x2-water-sprinkler-truck.html"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/FAW4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FAW 4X2 洒水车（Water Sprinkler Truck）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CRRC/WS05BJ160L2 5CBM 洒水车（FOTON 4×2底盘）",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "",
+    "model_code": "WS05BJ160L2",
+    "config": "4×2"
+   },
+   "search_key": "FOTON 4×2 chassis 5 CBM water sprinkler ",
+   "reason": "结果给出整车型号CRRC/WS05BJ160L2、底盘为FOTON 4×2底盘、玉柴160马力、罐容5000L（Q235A），属4×2轻型洒水车，可对比罐体与喷洒系统构型。",
+   "sources": [
+    "https://crrcvehicles.com/product/foton-5-cbm-water-sprinkler-truck-2/"
+   ],
+   "source_query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/CRRCWS05BJ160L25CBM洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CRRC/WS05BJ160L2 5CBM 洒水车（FOTON 4×2底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政绿化喷洒 洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "多利卡D9 200马力 4X2 洒水车(中汽力威牌)",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "HLW5181GSS6EQ",
+    "config": "4X2"
+   },
+   "search_key": "东风 多利卡D9 4X2 洒水车 HLW5181GSS6EQ",
+   "reason": "结果明确为4X2洒水车，含公告型号、罐体外形与轴距，适合作为市政绿化/降尘工况的前脸、水罐侧板与轮拱参考。",
+   "sources": [
+    "https://product.360che.com/m362/90731_param.html#1",
+    "https://product.360che.com/m362/90731_index.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/多利卡D94X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "多利卡D9 200马力 4X2 洒水车(中汽力威牌)",
+    "多利卡D9 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "雷萨 210马力 4X2 洒水车",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "雷萨",
+    "model_code": "HFV5160GSSBJ4",
+    "config": "4X2"
+   },
+   "search_key": "福田 雷萨 4X2 洒水车 HFV5160GSSBJ4",
+   "reason": "结果为4X2洒水车，给出车身尺寸、罐体外形与箱体容积，可用于罐体侧板、泵房与登车踏板外观参考。",
+   "sources": [
+    "https://www.yunshuren.com/product-3062.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/雷萨4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "雷萨 210马力 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "康铃K 120马力 4X2 洒水车",
+   "brand": "江淮",
+   "slots": {
+    "brand": "江淮",
+    "series": "康铃K",
+    "model_code": "HFC5040GSSK1",
+    "config": "4X2"
+   },
+   "search_key": "江淮 康铃K 4X2 洒水车 HFC5040GSSK1",
+   "reason": "结果为4X2洒水车，含整车尺寸与罐体外形，适合小型市政绿化喷洒车型的外廓与轮拱参考。",
+   "sources": [
+    "https://www.yunshuren.com/product-3176.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/康铃K4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "康铃K 120马力 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO G5X 220马力 4X2 洒水车(绿叶牌)",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO G5X",
+    "model_code": "JYJ5187GSSF",
+    "config": "4X2"
+   },
+   "search_key": "中国重汽 HOWO G5X 4X2 洒水车 JYJ5187GSSF",
+   "reason": "结果明确为4X2洒水车并给出罐体尺寸，可用于重卡底盘洒水车的前脸、保险杠与罐体侧板参考。",
+   "sources": [
+    "https://productedit.360che.com.cn/m612/153191_param.html",
+    "https://zh-cn.ceectrucks.com/howo-nx-12000l-urban-water-sprinkler-truck_p2343.html",
+    "https://product.360che.com/s32/8006_72_param.html#1"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO G5X 220马力 4X2 洒水车(绿叶牌)",
+    "HOWO NX 12000L 城市洒水车",
+    "重汽豪沃(HOWO)底盘洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "J6L 180马力 4X2 洒水车(程力威牌)",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "J6L",
+    "model_code": "CLW5181GPSC5",
+    "config": "4X2"
+   },
+   "search_key": "一汽解放 J6L 4X2 洒水车 CLW5181GPSC5",
+   "reason": "结果为4X2洒水车，含公告型号与上装品牌，适合解放J6L驾驶室前脸及水罐上装布置参考。",
+   "sources": [
+    "https://productedit.360che.com.cn/m292/73237_param.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/J6L4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J6L 180马力 4X2 洒水车(程力威牌)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "悍威(J5M) 220马力 4×2 洒水车",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "悍威(J5M)",
+    "model_code": "CA5163GSSP7K2L2E",
+    "config": "4×2"
+   },
+   "search_key": "一汽解放 悍威J5M 4×2 洒水车 CA5163GSSP7K2L2E",
+   "reason": "结果明确为4×2洒水车，含轴距、外廓尺寸与额定载重，可用于前保险杠、轮拱及罐体比例参考。",
+   "sources": [
+    "https://www.chinatruck.org/dealer/31687/product_554.html",
+    "https://m.chinatruck.org/product/truck/554_38_1.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/悍威4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍威(J5M) 220马力 4×2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "福田欧马可底盘洒水车/喷洒车(程力威牌)",
+   "brand": "程力威",
+   "slots": {
+    "brand": "程力威",
+    "series": "福田欧马可底盘",
+    "model_code": "CLW5120GPSB5",
+    "config": "4X2"
+   },
+   "search_key": "程力威 福田欧马可 4X2 绿化喷洒车 CLW5120GPSB5",
+   "reason": "结果为4X2绿化喷洒车，含公告型号与罐体尺寸，直接对应绿化喷洒工况及上装侧板、泵房布置参考。",
+   "sources": [
+    "https://productedit.360che.com.cn/s24/6171_72_param.html"
+   ],
+   "source_query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/福田欧马可底盘洒水车喷洒车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田欧马可底盘洒水车/喷洒车(程力威牌)",
+    "欧马可底盘洒水车/喷洒车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃TX绿化喷洒车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃TX",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "豪沃TX 4x2 绿化喷洒车",
+   "reason": "结果标题为豪沃TX/4x2绿化喷洒车，并说明用于园林、路面绿化喷洒和建筑工地洒水。",
+   "sources": [
+    "https://www.hua-win.cn/products_details_2/68.html"
+   ],
+   "source_query": "市政绿化喷洒 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/豪沃TX绿化喷洒车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃TX绿化喷洒车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政绿化喷洒 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田时代领航ES7绿化喷洒车",
+   "brand": "福田时代",
+   "slots": {
+    "brand": "福田时代",
+    "series": "领航ES7",
+    "model_code": "HNY5181GPSB6",
+    "config": "4×2"
+   },
+   "search_key": "福田时代领航ES7 4×2 绿化喷洒车",
+   "reason": "结果标题为福田时代 领航ES7-3950 190马力 4×2 国六 绿化喷洒车（HNY5181GPSB6）。",
+   "sources": [
+    "https://www.chinatruck.org/product/truck/40408_38_1.html"
+   ],
+   "source_query": "市政绿化喷洒 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/福田时代领航ES7绿化喷洒车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田时代领航ES7绿化喷洒车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政绿化喷洒 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "多利卡D9 4X2 洒水车（程力威牌 CLW5182GSSD6）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "CLW5182GSSD6",
+    "config": "4X2"
+   },
+   "search_key": "东风 多利卡D9 4X2 洒水车 CLW5182GSSD6",
+   "reason": "结果给出多利卡D9 210马力4X2洒水车及程力威牌整车公告CLW5182GSSD6，属4×2洒水车构型。",
+   "sources": [
+    "https://product.360che.com/m362/90594_param.html#1"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/CLW5182GSSD6",
+   "identity_kind": "code",
+   "model_variants": [
+    "多利卡D9 4X2 洒水车（程力威牌 CLW5182GSSD6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "专底系列 4X2 洒水车（程力威牌）",
+   "brand": "东风新疆",
+   "slots": {
+    "brand": "东风新疆",
+    "series": "专底系列",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "东风新疆 专底系列 4X2 洒水车",
+   "reason": "结果为东风新疆专底系列190马力4X2洒水车，上装程力威牌，符合4×2市政洒水车方向。",
+   "sources": [
+    "https://product.360che.com/m357/89272_param.html#1"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/专底系列4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "专底系列 4X2 洒水车（程力威牌）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "140系列 4X2 洒水车",
+   "brand": "东风商用车",
+   "slots": {
+    "brand": "东风商用车",
+    "series": "140系列",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "东风商用车 140系列 4X2 洒水车",
+   "reason": "结果明确为东风商用车140系列130马力4X2洒水车，程力威牌上装，属4×2洒水车。",
+   "sources": [
+    "https://www.17vin.com/vin8/12698/LGAW961H"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/140系列4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "140系列 4X2 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO 4x2 轻型洒水车 6000/8000/10000L",
+   "brand": "Sinotruk HOWO",
+   "slots": {
+    "brand": "Sinotruk HOWO",
+    "series": "",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "SINOTRUK HOWO 4x2 洒水车",
+   "reason": "结果为SINOTRUK HOWO 4x2轻型洒水车，6000/8000/10000L水罐，洒水宽度8-12m，符合4×2洒水车。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/SINOTRUK-HOWO-4x2-Light-Sprinkling-Water_1600247264973.html"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "series/HOWO/6000",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO 4x2 轻型洒水车 6000/8000/10000L"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "700P 4×2 Water Tanker",
+   "brand": "ISUZU",
+   "slots": {
+    "brand": "ISUZU",
+    "series": "700P",
+    "model_code": "",
+    "config": "4×2"
+   },
+   "search_key": "ISUZU 700P 4×2 Water Tanker",
+   "reason": "结果明确为ISUZU 700P底盘4×2水罐洒水车，适用于施工场地与市政供水，符合4×2洒水车方向。",
+   "sources": [
+    "https://cimcint.com/product/?categories=container-side-loader-semi-trailer;sprinkler;van-truck"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/700P4X2WATERTANKER",
+   "identity_kind": "generic",
+   "model_variants": [
+    "700P 4×2 Water Tanker"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Forland Ruivo Es5 4X2 绿化降尘洒水车",
+   "brand": "Foton",
+   "slots": {
+    "brand": "Foton",
+    "series": "Forland",
+    "model_code": "Ruivo Es5",
+    "config": "4X2"
+   },
+   "search_key": "Foton Forland Ruivo Es5 4X2 Dust Suppres",
+   "reason": "结果给出Foton Forland Ruivo Es5 11.5cbm 4X2 Dust Suppression Spray Greening Garden Urban Sprinkler，明确为4×2绿化降尘洒水车。",
+   "sources": [
+    "https://www.machinio.com/tanker-trucks?search=green+roads#1"
+   ],
+   "source_query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/FORLANDRUIVOES54X2绿化降尘洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Forland Ruivo Es5 4X2 绿化降尘洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "雷萨 4X2 洒水车(HFV5160GSSBJ4)",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "雷萨",
+    "model_code": "HFV5160GSSBJ4",
+    "config": "4X2"
+   },
+   "search_key": "福田 雷萨 4X2 洒水车 HFV5160GSSBJ4",
+   "reason": "结果给出福田雷萨210马力4X2洒水车及公告型号，驱动形式匹配。",
+   "sources": [
+    "https://www.yunshuren.com/product-3062.html"
+   ],
+   "source_query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/HFV5160GSSBJ4",
+   "identity_kind": "code",
+   "model_variants": [
+    "雷萨 4X2 洒水车(HFV5160GSSBJ4)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "X7 洒水车(SX5166GSSF2N18B4110)",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "X7",
+    "model_code": "SX5166GSSF2N18B4110",
+    "config": "4×2"
+   },
+   "search_key": "陕汽 X7 4×2 洒水车 SX5166GSSF2N18B4110",
+   "reason": "结果页明确X7洒水车驱动4×2，并列出公告型号，符合4×2洒水车筛选。",
+   "sources": [
+    "http://cn.sagmoto.com/prolist_1/138.html"
+   ],
+   "source_query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/SX5166GSSF2N18B4110",
+   "identity_kind": "code",
+   "model_variants": [
+    "X7 洒水车(SX5166GSSF2N18B4110)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "康瑞H2 4X2 洒水车(国六)(普罗科)",
+   "brand": "福田时代",
+   "slots": {
+    "brand": "福田时代",
+    "series": "康瑞H2",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "福田时代 康瑞H2 4X2 洒水车",
+   "reason": "结果明确为福田时代康瑞H2 115马力4X2洒水车，驱动形式与任务单一致。",
+   "sources": [
+    "https://productedit.360che.com.cn/m453/113282_index.html"
+   ],
+   "source_query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/康瑞H24X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "康瑞H2 4X2 洒水车(国六)(普罗科)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "龙V 4X2 洒水车(鑫华驰牌)",
+   "brand": "青岛解放",
+   "slots": {
+    "brand": "青岛解放",
+    "series": "龙V",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "青岛解放 龙V 4X2 洒水车",
+   "reason": "结果标题与参数均含青岛解放龙V 4X2洒水车，属于4×2底盘洒水车。",
+   "sources": [
+    "https://productedit.360che.com.cn/m282/70614_param.html"
+   ],
+   "source_query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/龙V4X2洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "龙V 4X2 洒水车(鑫华驰牌)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "悍威(J5M) 4×2 洒水车(CA5163GSSP7K2L2E)",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "悍威(J5M)",
+    "model_code": "CA5163GSSP7K2L2E",
+    "config": "4×2"
+   },
+   "search_key": "一汽解放 悍威 J5M 4×2 洒水车",
+   "reason": "结果给出悍威(J5M) 220马力4×2洒水车及公告型号，符合4×2洒水车任务单。",
+   "sources": [
+    "https://www.chinatruck.org/product/truck/554_38_1.html"
+   ],
+   "source_query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CA5163GSSP7K2L2E",
+   "identity_kind": "code",
+   "model_variants": [
+    "悍威(J5M) 4×2 洒水车(CA5163GSSP7K2L2E)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5120GPSE5NG 绿化喷洒车",
+   "brand": "程力威",
+   "slots": {
+    "brand": "程力威",
+    "series": "绿化喷洒车",
+    "model_code": "CLW5120GPSE5NG",
+    "config": ""
+   },
+   "search_key": "CLW5120GPSE5NG 绿化喷洒车",
+   "reason": "结果为程力威牌绿化喷洒车公告型号页，注明用于市政环卫、城市道路、园林清洁降尘、浇水喷洒，含前冲、高位低位喷洒与泵送系统，符合洒水/绿化喷洒车型；结果未标注驱动形式。",
+   "sources": [
+    "http://www.cnzqzd.com/sashuiche/6031.html"
+   ],
+   "source_query": "市政绿化喷洒 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/CLW5120GPSE5NG",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLW5120GPSE5NG 绿化喷洒车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政绿化喷洒 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风145多功能洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "145",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风145 多功能洒水车",
+   "reason": "结果文本明确列出“东风145多功能洒水车”，为常见中型洒水/绿化喷洒整车，具备前冲、后洒、水炮等喷洒布置，可对应泵房侧门与喷洒系统检索点；驱动形式未注明。",
+   "sources": [
+    "http://www.cnzqzd.com/sashuiche/6031.html"
+   ],
+   "source_query": "市政绿化喷洒 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/东风145多功能洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风145多功能洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政绿化喷洒 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 30
+ },
+ "pool": {
+  "count": 30,
+  "required": 16,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 10
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 30,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 46,
+  "unique": 30,
+  "removed": 16,
+  "generic": 21
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}
