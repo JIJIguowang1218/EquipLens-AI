@@ -54,6 +54,8 @@ def main(argv=None) -> int:
                         help="实验：target 有 code 且标题 code 明确不一致时，下载前拒绝")
     parser.add_argument("--platform-extra", default="", choices=["", "baidu"],
                         help="平台层实验：baidu=360+Baidu；默认只用正常通道")
+    parser.add_argument("--download-workers", type=int, default=4,
+                        help="FETCH 内并发下载数（默认 4=生产；1=串行对照臂）")
     parser.add_argument("--pin", default="",
                         help="逗号分隔的车型关键词：强制优先抓取/占槽（用户 pin）")
     parser.add_argument("--json", action="store_true", help="输出完整 JSON")
@@ -86,15 +88,25 @@ def main(argv=None) -> int:
                 SourceHealth(base / "source_health.json"),
                 SearchCache(base / "source_cache.json"))
         plan = None
+        plan_meta: dict = {}
         if args.plan:
-            plan = json.loads(Path(args.plan).read_text(encoding="utf-8")).get("candidates") or []
+            plan_doc = json.loads(Path(args.plan).read_text(encoding="utf-8"))
+            plan = plan_doc.get("candidates") or []
+            # 记录这一轮 plan/rank 的产出方式，供 summary.config 做横向对比
+            plan_meta = {
+                "concurrency": plan_doc.get("concurrency"),
+                "rank_method": ((plan_doc.get("ranking") or {}).get("method")),
+                "created_at": plan_doc.get("created_at"),
+            }
         world = WebWorld(models or None, brief.parts_by_key, router=router,
                          image_dir=Path(args.run_root) / run_id / "images",
                          plan=plan, citation_check=not args.no_citation,
+                         plan_meta=plan_meta,
                          pins=[x.strip() for x in args.pin.split(",") if x.strip()],
                          unit_quotas={u.unit_id: u.quota for u in brief.research_units},
                          platform_extra=args.platform_extra,
-                         code_prefilter=args.code_prefilter)
+                         code_prefilter=args.code_prefilter,
+                         download_workers=args.download_workers)
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")

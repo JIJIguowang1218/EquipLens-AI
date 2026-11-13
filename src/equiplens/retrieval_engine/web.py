@@ -24,6 +24,17 @@ from .contracts import Asset, PartRequirement, Target, Verification
 EARLY_STOP_FAILS = 8
 
 
+class _Done:
+    """已算好的结果，伪装成 future（workers=1 的对照臂用）。"""
+    __slots__ = ("_value",)
+
+    def __init__(self, value):
+        self._value = value
+
+    def result(self):
+        return self._value
+
+
 class NullLibraryAdapter:
     """网页-only 模式的空库：让状态机以为库内没有候选。"""
 
@@ -144,10 +155,13 @@ class WebWorld:
                  citation_check: bool = True, api_key: str | None = None,
                  pins: list[str] | None = None,
                  unit_quotas: dict[str, int] | None = None,
-                 platform_extra: str = "", code_prefilter: bool = False):
+                 platform_extra: str = "", code_prefilter: bool = False,
+                 download_workers: int = 4, plan_meta: dict | None = None):
         if isinstance(models, list):
             models = {"*": models}
         self.models = models or {}
+        self.download_workers = max(1, int(download_workers or 1))
+        self.plan_meta = dict(plan_meta or {})
         self.image_dir = Path(image_dir) if image_dir else None
         self.discover_limit = discover_limit
         self._search_cache: dict[str, list] = {}
@@ -501,6 +515,65 @@ class WebWorld:
             query, limit=8, model=model, platforms=("360", "baidu"))
         return got
 
+    def _iter_hit_results(self, hits: list[dict]):
+        """按原顺序产出 `(hit, mode, future)`，同时把下载 I/O 并发起来。
+
+        mode：
+          - `cached`：URL 已在本次 run 的下载缓存里，不重复下载；
+          - `blocked`：提交时该 host 已被拉黑，不下载；
+          - `ok`：`future` 是 `_download_and_gate` 的结果（可能失败）。
+
+        并发只发生在“下载 + 门卫”这一段；**结算严格按原顺序**在调用方单线程里做
+        （拉黑记账、连续失败早停、fetch_log、缓存与计数），所以语义与串行一致，
+        结果顺序也保持确定。窗口固定为 workers，最多多下 workers-1 张无效图。
+        """
+        from collections import deque
+        from concurrent.futures import ThreadPoolExecutor
+
+        from .. import imagesearch
+
+        workers = max(1, int(getattr(self, "download_workers", 1) or 1))
+        if workers == 1:
+            for hit in hits:
+                key = hit.get("url", "")
+                if key in self._fetch_cache:
+                    yield hit, "cached", None
+                elif self._health.is_blocked(key):
+                    yield hit, "blocked", None
+                else:
+                    yield hit, "ok", _Done(imagesearch._download_and_gate(hit, None))
+            return
+
+        ex = ThreadPoolExecutor(max_workers=workers)
+        pending: deque = deque()
+        it = iter(hits)
+        exhausted = False
+
+        def submit_until_full() -> None:
+            nonlocal exhausted
+            while len(pending) < workers and not exhausted:
+                try:
+                    hit = next(it)
+                except StopIteration:
+                    exhausted = True
+                    break
+                key = hit.get("url", "")
+                if key in self._fetch_cache:
+                    pending.append((hit, "cached", None))
+                elif self._health.is_blocked(key):
+                    pending.append((hit, "blocked", None))
+                else:
+                    pending.append((hit, "ok", ex.submit(
+                        imagesearch._download_and_gate, hit, None)))
+        try:
+            submit_until_full()
+            while pending:
+                item = pending.popleft()
+                submit_until_full()
+                yield item
+        finally:
+            ex.shutdown(wait=False, cancel_futures=True)
+
     def live_fetch(self, target: Target, part: str) -> list[Asset]:
         """真实 360 → 下载 → 两段式门卫 → 分层判定（视角只作 hint）。
 
@@ -571,11 +644,11 @@ class WebWorld:
         out: list[Asset] = []
         # 连续失败跨部件累计（同一台车不同部件共享一个计数）
         streak = int(stats.get("streak", 0) or 0)
-        for hit in hits:
+        for hit, mode, fut in self._iter_hit_results(hits):
             url_key = hit.get("url", "")
-            if url_key in self._fetch_cache:
+            if mode == "cached" or url_key in self._fetch_cache:
                 res = self._fetch_cache[url_key]
-            elif self._health.is_blocked(url_key):
+            elif mode == "blocked" or self._health.is_blocked(url_key):
                 stats["blocked"] += 1
                 streak += 1
                 stats["streak"] = streak
@@ -599,10 +672,17 @@ class WebWorld:
                     break
                 continue
             else:
-                res = imagesearch._download_and_gate(hit, self._health)
+                try:
+                    res = fut.result()
+                except Exception as e:  # noqa: BLE001
+                    res = {"hit": hit, "data": None, "gate": None,
+                           "error": str(e), "tries": 0}
                 self._fetch_cache[url_key] = res
             data = res.get("data")
             if res.get("error") or not data:
+                # 拉黑记账放到结算阶段（串行时由 _download_and_gate 内部做）：
+                # 保证并发下载不改变“连续失败/拉黑”的判定顺序。
+                self._health.record(hit.get("url", ""), res.get("error"))
                 stats["failed"] += 1
                 streak += 1
                 stats["streak"] = streak

@@ -801,6 +801,38 @@ def test_short_primary_does_not_masquerade_as_backup():
         assert d["backup"]["delivered"] == 0, d
 
 
+def test_parallel_download_preserves_order_and_cache():
+    """并发下载只并行 I/O：结果顺序、缓存/拉黑判定必须与串行一致。"""
+    from equiplens import imagesearch
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",))
+    world = WebWorld({}, {"bumper": part}, citation_check=False)
+    world.download_workers = 4
+    world._health = imagesearch.DomainHealth()
+    hits = [{"url": f"https://img{i}.example/a.jpg", "title": "m1"} for i in range(6)]
+    world._fetch_cache[hits[2]["url"]] = {"hit": hits[2], "data": b"x", "gate": {},
+                                          "error": None, "tries": 0}
+    calls = []
+
+    def fake_download(hit, health=None):
+        calls.append(hit["url"])
+        return {"hit": hit, "data": None, "gate": None, "error": "http 403",
+                "tries": 1}
+
+    old = imagesearch._download_and_gate
+    imagesearch._download_and_gate = fake_download
+    try:
+        got = []
+        for hit, mode, fut in world._iter_hit_results(hits):
+            got.append(hit["url"])
+            if mode == "ok":
+                assert fut.result()["error"] == "http 403"
+    finally:
+        imagesearch._download_and_gate = old
+    assert got == [h["url"] for h in hits], got          # 顺序与串行一致
+    assert hits[2]["url"] not in calls                   # 缓存命中不重复下载
+    assert len(calls) == 5, calls
+
+
 if __name__ == "__main__":
     check("任务单校验", test_brief_validation)
     check("Asset 保留 scene", test_asset_contract_keeps_scene)
@@ -840,6 +872,7 @@ if __name__ == "__main__":
     check("下载全失败时目标级早停", test_live_fetch_early_stop_when_all_downloads_fail)
     check("缺图原因可解释", test_delivery_explains_unavailable_reasons)
     check("拉黑图床触发早停", test_blocked_hosts_trigger_early_stop)
+    check("并发下载保序且不重复下载", test_parallel_download_preserves_order_and_cache)
     check("节点耗时记录", test_summary_records_step_timings)
     check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]

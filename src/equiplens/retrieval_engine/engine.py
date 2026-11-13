@@ -670,6 +670,13 @@ class RetrievalEngine:
                 for uid, u in state["units"].items()
             },
             "budget_used": dict(state.get("budget_used") or {}),
+            "config": {
+                "download_workers": int(getattr(self.world, "download_workers", 1) or 1),
+                "plan_concurrency": getattr(self.world, "plan_meta", {}).get("concurrency"),
+                "rank_method": getattr(self.world, "plan_meta", {}).get("rank_method"),
+                "platform_extra": getattr(self.world, "platform_extra", ""),
+                "code_prefilter": bool(getattr(self.world, "code_prefilter", False)),
+            },
             "downloads": (self.world.download_stats()
                           if hasattr(self.world, "download_stats") else {}),
             "decisions": list(state.get("decisions") or []),

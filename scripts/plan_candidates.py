@@ -144,8 +144,8 @@ def main(argv=None) -> int:
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     ap.add_argument("--no-negative", action="store_true",
                     help="A/B 用：查询不追加 -\"短词\"（brief 不变，其余逐字相同）")
-    ap.add_argument("--concurrency", type=int, default=1,
-                    help="查询并发数；1=串行（默认，保持生产行为）")
+    ap.add_argument("--concurrency", type=int, default=4,
+                    help="查询并发数；默认 4=生产（A 测试 3.3×），1=串行对照臂")
     args = ap.parse_args(argv)
 
     key = load_key()
