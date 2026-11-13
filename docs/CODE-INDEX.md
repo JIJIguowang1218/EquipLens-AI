@@ -85,7 +85,7 @@
 - `schemas/task-brief-v3.schema.json`：brief 结构
 - `schemas/retrieval-state.schema.json`：run state
 - `schemas/retrieval-event.schema.json`：events
-- `data/part_taxonomy.json`：部件词表
+- `data/part_taxonomy.json`：内置部件键（兼容/显示映射，**非准入、非命名依据**；词表外部件用可读 `custom_*`）
 - `data/source_registry.json`：来源注册
 - `data/category_profiles.json`：类目档案
 

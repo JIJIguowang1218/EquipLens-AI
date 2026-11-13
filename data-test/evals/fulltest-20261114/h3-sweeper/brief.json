@@ -1,17 +1,17 @@
 {
- "brief_id": "auto-20261114-024734",
+ "brief_id": "auto-20261114-025547",
  "request": {
   "raw": "扫路车（道路清扫车），重点看前脸、前保险杠、扫刷护罩、垃圾箱侧板、吸盘、轮拱；市政道路与园区清扫工况；4×2 底盘；6 台",
-  "class": "扫路车（道路清扫车）",
+  "class": "扫路车（道路清扫车）——市政环卫专用作业车，4×2 二类载货底盘 + 上装（垃圾箱、风机、扫刷装置、吸盘、水箱/降尘系统）",
   "environment": {
-   "value": "市政道路与园区清扫工况",
+   "value": "市政道路与园区清扫工况：铺装路面低速作业、粉尘与轻质垃圾、季节性落叶、需洒水抑尘、频繁启停与靠边作业、要求低噪音与高可视性",
    "confidence": 0.8
   },
   "base_platform": {
-   "value": "4×2 商用车底盘（驾驶室/上装基型未指定）",
+   "value": "4×2 轻型/中型二类底盘（约 4.5–12 t 级），驾驶室为量产载货驾驶室，前脸/前保险杠大体继承底盘原厂件",
    "confidence": 0.8
   },
-  "configuration": "4×2（扫刷、吸盘与垃圾箱具体布置待确认）",
+  "configuration": "中置扫刷（含侧扫刷）+ 后置（或中置）吸盘、箱体后倾卸、湿式或干式除尘（待确认）",
   "page_budget": {
    "total": 20,
    "vehicle_slots": 6,
@@ -20,48 +20,47 @@
  },
  "assumptions": [
   {
-   "field": "base_platform",
-   "value": "4×2 商用车底盘；驾驶室与上装基型未指定",
-   "why": "用户仅给出4×2，基型影响前脸/轮拱平台继承判断",
+   "field": "request.base_platform",
+   "value": "4×2 轻型/中型二类载货底盘 + 专用上装箱体",
+   "why": "用户仅给出 4×2 底盘，未给吨位与驾驶室品牌；按市政扫路车常见构型理解",
    "confidence": 0.8
   },
   {
-   "field": "configuration",
-   "value": "按常见扫路车布置理解为前/侧扫刷+中置或后置吸盘+后置垃圾箱",
-   "why": "扫路车典型构型，但用户未明确扫刷与吸盘位置",
+   "field": "request.configuration",
+   "value": "中置扫刷（含侧扫刷）+ 后置吸盘，箱体后倾卸；湿式/干式除尘未定",
+   "why": "由“扫刷护罩 + 吸盘”同时出现推断为扫刷—吸拾组合式布置；除尘方式影响侧板材质与水路件，需确认",
    "confidence": 0.6
   },
   {
-   "field": "front_face_scope",
-   "value": "前脸按驾驶室前脸+前置清扫装置/护罩接口理解",
-   "why": "扫路车前部可能带前置扫刷，需确认是否含上装前伸设备",
-   "confidence": 0.65
+   "field": "parts.custom_brush_guard.location",
+   "value": "中置扫刷护罩为主，侧扫刷护罩为辅",
+   "why": "用户未指明扫刷位置；市政扫路车以中置扫刷为主流，护罩形态差异较大，需按中置/侧置分别取证",
+   "confidence": 0.6
   },
   {
-   "field": "wheel_arch_split",
-   "value": "轮拱拆为前轮拱（底盘/驾驶室侧）与后轮拱（垃圾箱/上装侧）",
-   "why": "同名部件前后位置的设计问题不同",
+   "field": "parts.bumper.part_family",
+   "value": "以底盘原厂前保为基础，前部附加清扫/喷水接口",
+   "why": "4×2 量产驾驶室通常沿用原厂前保；用户点名可能因存在加装或改型",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts.custom_hopper_side_panel.part_family",
+   "value": "不锈钢/铝合金板 + 型材骨架（可能外露）",
+   "why": "湿式扫路车箱体常用耐蚀板材；干式或塑料箱体可能性存在，需以图证确认",
+   "confidence": 0.5
+  },
+  {
+   "field": "raw.6台",
+   "value": "车队采购/项目数量，不作为设计分析变量",
+   "why": "数量信息影响选型与配置清单，不改变造型与结构分析维度",
    "confidence": 0.7
-  },
-  {
-   "field": "brush_guard_scope",
-   "value": "扫刷护罩按侧刷/前刷的防护罩理解",
-   "why": "用户未说明具体刷位",
-   "confidence": 0.7
-  },
-  {
-   "field": "fleet_quantity",
-   "value": "6台为用户提及的采购/样本数量",
-   "why": "不进入设计维度，避免误当页数/配额",
-   "confidence": 1.0
   },
   {
    "field": "parts.new",
    "value": [
     "扫刷护罩",
     "垃圾箱侧板",
-    "吸盘",
-    "后轮拱（垃圾箱/上装侧）"
+    "吸盘"
    ],
    "why": "词表外的新部件，已保留为 custom_* 并保留原词",
    "confidence": 0.6
@@ -87,8 +86,24 @@
    ],
    "views": [
     "front",
-    "hero_45",
-    "detail"
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45"
    ],
    "accept": "C"
   }
@@ -98,14 +113,14 @@
    "part": "bumper",
    "label": "保险杠",
    "kind": "part",
-   "location": "前部（驾驶室前下端）",
+   "location": "front_lower（前脸下部，驾驶室前保险杠区域）",
    "part_family": "sheet_metal",
    "taxonomy_status": "known",
    "relation_axis": "platform",
    "design_axes": [
     "structure",
-    "environment_protection",
-    "cmf"
+    "cmf",
+    "regulation"
    ],
    "design_relevance": "strong",
    "views": [
@@ -115,20 +130,20 @@
    ],
    "accept": "A",
    "mechanism": [
-    "front_overhang",
-    "split_line",
-    "impact_protection"
+    "量产驾驶室前保的继承与改造边界（是否加高/加宽/加下延）",
+    "前清扫装置、喷水嘴、前下部防护的接口与分块",
+    "深色下部件与车身分色对离地感与前脸重心的影响"
    ],
-   "why": "看前保险杠与4×2驾驶室前脸、前置清扫装置/护罩的接口、分缝、离地和检修开口，能提供市政扫路车前部防护与清洗维护证据。"
+   "why": "能提供“平台继承件如何被工况改造”的直接证据：分块线位置、附件安装面、材料与表面处理、反光与灯光合规位置，用于判断前脸下部体量与识别性做法。"
   },
   {
-   "part": "custom_5a1c7e",
+   "part": "custom_brush_guard",
    "label": "扫刷护罩",
    "kind": "part",
-   "location": "前部/侧下部（扫刷周围）",
+   "location": "底盘下部中置/侧置（扫刷装置外罩，介于前后轮之间、贴近地面）",
    "part_family": "sheet_metal",
    "taxonomy_status": "new",
-   "relation_axis": "exact",
+   "relation_axis": "environment",
    "design_axes": [
     "structure",
     "environment_protection",
@@ -136,31 +151,31 @@
    ],
    "design_relevance": "strong",
    "views": [
-    "front",
     "side",
-    "detail"
+    "detail",
+    "hero_45"
    ],
    "accept": "A",
    "mechanism": [
-    "debris_deflection",
-    "curb_impact",
-    "brush_service_access"
+    "护罩分块与快开/翻盖方式决定刷毛更换与接地调整的可达性",
+    "护罩外形与挡尘裙边对粉尘飞扬、水花回溅的控制",
+    "与底盘纵梁、侧裙、轮拱的空间让位与离地间隙"
    ],
-   "why": "看护罩的包覆范围、分缝/骨架、离地和快拆方式，能提供防飞溅、防路缘碰撞和扫刷维护空间证据。"
+   "why": "能提供工况特化件的构造证据：折弯/滚塑/型材骨架的选择、搭接与密封方式、耐磨与易损件更换逻辑，用于判断“功能件是否被当作造型元素处理”。注意其为非词表新部件，检索需按“位置+功能+形态”描述（底盘下部护罩、扫刷外罩、抑尘罩）。"
   },
   {
-   "part": "custom_9d3b2f",
+   "part": "custom_hopper_side_panel",
    "label": "垃圾箱侧板",
    "kind": "part",
-   "location": "后部上装左侧/右侧",
+   "location": "上装箱体侧面（驾驶室后方至尾部的箱体侧围，含后轮处让位与卸料门分缝）",
    "part_family": "sheet_metal",
    "taxonomy_status": "new",
    "relation_axis": "exact",
    "design_axes": [
-    "proportion",
     "structure",
     "cmf",
-    "function_ergonomics"
+    "form_gesture",
+    "regulation"
    ],
    "design_relevance": "strong",
    "views": [
@@ -170,51 +185,51 @@
    ],
    "accept": "A",
    "mechanism": [
-    "side_panel_ratio",
-    "stiffener_layout",
-    "door_hatch"
+    "板面分缝、加强筋/压筋节奏与型材骨架外露与否决定侧视秩序",
+    "板材与涂装（不锈钢本色/铝板/漆面、分色带）对耐腐蚀与清洁感的表达",
+    "箱体高度与驾驶室高度、轮拱位置构成的比例关系"
    ],
-   "why": "看垃圾箱侧板的体量比例、加强筋/分缝、检修门与轮拱切口关系，能提供上装侧面造型、刚度和清洗维护证据。"
+   "why": "能提供整车侧视主体体量的证据：分缝体系、加强筋语言、材质与分色策略、法规标识区位置，是判断上装造型与量产工艺（折弯/点焊/铆接）约束的核心对象。"
   },
   {
-   "part": "custom_c4e8a1",
+   "part": "custom_suction_nozzle",
    "label": "吸盘",
    "kind": "function",
-   "location": "底盘下部/中后部",
+   "location": "底盘后下部（或中置），贴近地面的负压吸拾装置，随作业升降",
    "part_family": "function_attachment",
    "taxonomy_status": "new",
-   "relation_axis": "exact",
+   "relation_axis": "environment",
    "design_axes": [
-    "function_ergonomics",
     "structure",
-    "environment_protection"
+    "environment_protection",
+    "function_ergonomics"
    ],
-   "design_relevance": "strong",
+   "design_relevance": "conditional",
    "views": [
-    "detail",
+    "rear",
     "side",
-    "rear"
+    "detail"
    ],
    "accept": "A",
    "mechanism": [
-    "ground_clearance",
-    "wear_part_replacement",
-    "suction_sealing"
+    "吸口截面、裙边/胶条与升降机构决定贴合与吸拾效率",
+    "与后轮、箱体尾部的空间关系影响离去角与后悬长度",
+    "耐磨衬板、快拆结构对维护可达性的影响"
    ],
-   "why": "看吸盘总成的离地、密封/耐磨件、升降/快换接口和与垃圾箱连接，能提供清扫功能可靠性与维护证据。"
+   "why": "造型曝光度有限（主要见于侧后与仰视），但能提供后下部体量、后悬与离地间隙、橡胶/耐磨件外露程度的证据，用于判断整车比例与后部收尾方式；不作为外观风格的主证据。"
   },
   {
    "part": "wheel_arch",
    "label": "翼子板与轮拱",
    "kind": "part",
-   "location": "前轴两侧",
+   "location": "前转向轮（驾驶室侧）与后驱动轮（与上装箱体侧板/侧裙交界）",
    "part_family": "sheet_metal",
    "taxonomy_status": "known",
    "relation_axis": "platform",
    "design_axes": [
     "proportion",
     "structure",
-    "manufacturing"
+    "cmf"
    ],
    "design_relevance": "strong",
    "views": [
@@ -224,52 +239,24 @@
    ],
    "accept": "A",
    "mechanism": [
-    "tire_clearance",
-    "wheel_opening_ratio",
-    "cab_body_transition"
+    "轮拱开口尺寸、圆角与轮心高度决定离地感与整车姿态",
+    "后轮拱与箱体侧板的包覆/让位/挡泥板衔接方式",
+    "黑色塑料件、涂装分色或金属包边对侧面视觉分段的切割"
    ],
-   "why": "看前轮拱的开口比例、与驾驶室/保险杠/踏步的衔接和防飞溅，能提供底盘平台继承与城市低速工况证据。"
-  },
-  {
-   "part": "custom_2f6b8d",
-   "label": "后轮拱（垃圾箱/上装侧）",
-   "kind": "part",
-   "location": "后轴两侧/垃圾箱侧下部",
-   "part_family": "sheet_metal",
-   "taxonomy_status": "new",
-   "relation_axis": "exact",
-   "design_axes": [
-    "proportion",
-    "structure",
-    "environment_protection"
-   ],
-   "design_relevance": "strong",
-   "views": [
-    "side",
-    "hero_45",
-    "detail"
-   ],
-   "accept": "A",
-   "mechanism": [
-    "wheel_opening_ratio",
-    "hopper_side_integration",
-    "debris_spray"
-   ],
-   "why": "看后轮拱与垃圾箱侧板的切口、分缝和防飞溅，能提供上装侧面比例、刚度与维护证据。"
+   "why": "能提供“底盘平台轮拱 → 上装侧围过渡”的关键接口证据，以及轮径与箱体高度、离地间隙形成的比例关系；前轮拱可反映驾驶室平台继承程度，后轮拱反映上装设计自由度。"
   }
  ],
  "research_units": [
   {
    "unit_id": "u-exact",
    "tier": "exact",
-   "scope": "扫路车（道路清扫车） 4×2（扫刷、吸盘与垃圾箱具体布置待确认）",
+   "scope": "扫路车（道路清扫车）——市政环卫专用作业车，4×2 二类载货底盘 + 上装（垃圾箱、风机、扫刷装置、吸盘、水箱/降尘系统） 中置扫刷（含侧扫刷）+ 后置（或中置）吸盘、箱体后倾卸、湿式或干式除尘（待确认）",
    "parts": [
     "bumper",
-    "custom_5a1c7e",
-    "custom_9d3b2f",
-    "custom_c4e8a1",
-    "wheel_arch",
-    "custom_2f6b8d"
+    "custom_brush_guard",
+    "custom_hopper_side_panel",
+    "custom_suction_nozzle",
+    "wheel_arch"
    ],
    "quota": 4,
    "budget": {
@@ -281,14 +268,13 @@
   {
    "unit_id": "u-env",
    "tier": "environment",
-   "scope": "市政道路与园区清扫工况 工程车",
+   "scope": "市政道路与园区清扫工况：铺装路面低速作业、粉尘与轻质垃圾、季节性落叶、需洒水抑尘、频繁启停与靠边作业、要求低噪音与高可视性 工程车",
    "parts": [
     "bumper",
-    "custom_5a1c7e",
-    "custom_9d3b2f",
-    "custom_c4e8a1",
-    "wheel_arch",
-    "custom_2f6b8d"
+    "custom_brush_guard",
+    "custom_hopper_side_panel",
+    "custom_suction_nozzle",
+    "wheel_arch"
    ],
    "quota": 2,
    "budget": {

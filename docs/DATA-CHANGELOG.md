@@ -197,3 +197,15 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   HANDOFF/DEPENDENCIES 口径同步为 100。
 - 已知历史遗留：`EXPERIMENTS-INDEX` 有 7 个编号重复（E17/E19/E24/E27/E34/E35/E37 各出现两行），
   属于早期编号冲突；不改编号（会破坏引用），后续新实验继续用 E59+。
+
+### 18. 部件词表去命名化（2026-11-14）
+
+- 问题：`briefing.py` 对内置于 `data/part_taxonomy.json` 之外的部件生成 `custom_<sha1>`，
+  词表实际决定了命名；H3（扫路车）brief 出现 `custom_5a1c7e` 这类不可读 key。
+- 修复：词表外部件 key 改为 `custom_` + 可读 slug（中文/字母/数字，≤16 字），label 保留原文；
+  词表只用于“认识时显示原名/默认族”，不认识不拒绝、不改名。
+- 回归：`tests/test_briefing.py` 增加“key 必须包含部件名”；H3 brief 已重新生成（可读 key），
+  `fulltest-20261114/MANIFEST.json` 重算 sha256。
+- 审计：`docs/vocabulary-audit-20261114.md` 列出全部表/列表（部件、类目、品牌、来源、风格），
+  区分“危险（领域穷举）”与“可接受（通用词/模型标签）”；CODE-INDEX/README/PRD 口径已改。
+- 待拍板：是否删除 `part_taxonomy.json` 与 legacy `category_profiles.json`。

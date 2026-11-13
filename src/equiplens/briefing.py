@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import re
 import time
@@ -95,6 +96,14 @@ def _as_list(value) -> list:
     return value if isinstance(value, list) else []
 
 
+def _part_slug(label: str) -> str:
+    """词表外部件 → 可读 key 片段（保留中文/字母/数字，截断 16 字）。"""
+    s = re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]+", "_", label or "").strip("_")[:16]
+    if s:
+        return s
+    return hashlib.sha1((label or "").encode("utf-8")).hexdigest()[:8]
+
+
 def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
                    brief_id: str = "", class_hint: str = "",
                    taxonomy: dict | None = None,
@@ -140,10 +149,13 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
         key = raw_key if raw_key in parts_meta else (by_label or raw_key)
         known = key in parts_meta
         if not known:
-            # 用户/LLM 给的是词表外的新部件：保留，不拒绝（词表不是准入）
+            # 词表外的新部件：保留，不拒绝；key 用**可读的文件名**派生，
+            # 不再用整串 sha1（2026-11-14：旧实现把部件名变成 custom_5a1c7e，
+            # 导致后续无法按部件名分析；词表也不该决定命名）。
             if not key.startswith("custom_"):
-                import hashlib
-                key = "custom_" + hashlib.sha1((raw_label or key).encode("utf-8")).hexdigest()[:8]
+                key = "custom_" + _part_slug(raw_label or key)
+            if key in parts_meta:
+                key = key + "_" + hashlib.sha1((raw_label or key).encode("utf-8")).hexdigest()[:4]
             new_parts.append(raw_label)
         if key in seen:
             continue

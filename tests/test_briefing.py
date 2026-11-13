@@ -75,6 +75,7 @@ def test_unknown_part_kept():
     b = briefing.assemble_brief(p, "沙漠牵引车，加涉水喉", slots=12)
     part = b["part_requirements"][0]
     assert part["part"].startswith("custom_"), part
+    assert "涉水喉" in part["part"], part          # key 可读，不是 sha1 哈希
     assert part["label"] == "涉水喉", part
     assert part["taxonomy_status"] == "new", part
     assert part["design_axes"] == ["function_ergonomics"], part

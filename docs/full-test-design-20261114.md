@@ -26,14 +26,14 @@
 |---|---|---|---:|---:|---:|
 | H1 | `h1-fire` | 水罐/泡沫消防车（罐式，含泵房与器材箱上装） | 8（5+3） | 6 | 3 |
 | H2 | `h2-wrecker` | 清障车（拖吊/平板） | 6（4+2） | 7 | 4 |
-| H3 | `h3-sweeper` | 扫路车（道路清扫车） | 6（4+2） | 6 | 4（**部件名为不透明 hash**） |
+| H3 | `h3-sweeper` | 扫路车（道路清扫车） | 6（4+2） | 5 | 3（可读：`custom_brush_guard` 等） |
 | H4 | `h4-crane-truck` | 随车起重运输车（随车吊 / 二类底盘改装） | 8（5+3） | 7 | 4 |
 
 **Brief 质量备注**：
 - H1/H2/H4 的 custom 部件带语义名（如 `custom_pump_room_side_panel`），可读；
-- **H3 的 4 个部件被映射成 `custom_5a1c7e` 这类 hash**（扫刷护罩/吸盘/垃圾箱侧板不在词表里），
-  不影响抓图流程，但部件级分析不可读。若需要可读性，可重新生成 H3（换更通用的部件名），
-  这一步应在筛查前决定，避免筛查中途换 brief。
+- H3 已于 11-14 重新生成：词表外部件改为**可读 key**（`custom_brush_guard`、
+  `custom_hopper_side_panel`、`custom_suction_nozzle`），不再出现不透明 hash；
+  brief 内容随之更新（manifest 已重算 sha256）。
 
 > 注意：`aerial`（高空作业车）和 `mining-dump`（矿用自卸）在早期探针里出现过，
 > **不算未见**；若要扩到 12 个类目，可把它们作为“半 holdout”。
