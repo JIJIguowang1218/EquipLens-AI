@@ -117,6 +117,11 @@ class RuleVerifier:
             identity, grade = "confirmed", "E1"
         elif (cn_hit and cfg_hit) or len(cn_hit) >= 2:
             identity, grade = "probable", "E2"
+        elif series_hit and cfg_hit:
+            # 去表化证据（2026-11-14）：拉丁车系 + 构型双命中即可 probable，
+            # 不再要求“品牌表认识这个牌子”。单靠品牌词不算（HOWO TX 会被误当
+            # HOWO 全驱牵引车），必须两个信号。
+            identity, grade = "probable", "E2"
         elif brand_hit and (series_hit or cfg_hit or fallback_series):
             identity, grade = "probable", "E2"
         else:
@@ -248,26 +253,35 @@ class WebWorld:
 
     @staticmethod
     def normalize_query(model: str) -> str:
-        """长名字 → 短检索键：去掉括号说明，取型号代码（优先）+ 品牌。
+        """长名字 → 检索键：型号码优先（**包含括号里的码**），其次拉丁车系，最后类目短语。
 
-        2026-11-13 修复：旧实现无条件拼 `6x6`，叉车 `CPD30 6x6`、压路机
-        `XS202J 6x6` 这类非 6×6 类目会被带偏，搜索结果与车型无关。
-        现在只保留车型名里**本来就带的**构型词（6x6/8x8/4x4）。
+        2026-11-13 修复三件事（见 docs/query-kill-chain-20261113.md）：
+        - 型号码在括号里时，旧实现先删括号 → 码丢失；现在先在原始串上找码；
+        - 不再无条件拼 `6x6`（叉车/压路机被带偏）；
+        - 纯描述名去掉构型/驱动词后截短，避免超长中文查询召回差。
         """
         import re as _re
-        s = _re.sub(r"[（(][^）)]*[）)]", " ", model or "")
-        s = s.replace("×", "x").strip()
-        low = s.lower()
-        conf = next((c for c in ("6x6", "8x8", "4x4") if c in low), "")
-        code = _re.search(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", s)
+        raw = model or ""
+        conf = next((c for c in ("6x6", "8x8", "4x4")
+                     if c in raw.replace("×", "x").lower()), "")
+        code = _re.search(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", raw)
         if code:
-            brand = _re.search(r"[一-鿿]{2,4}", s[:code.start()])
-            pre = brand.group(0) if brand else ""
-            return " ".join(p for p in (pre, code.group(0), conf) if p).strip()
-        words = [w for w in s.split() if w]
-        key = " ".join(words[:3]).strip(" /,、;")
+            pre = _re.sub(r"[（(][^）)]*[）)]", " ", raw[:code.start()])
+            brand = _re.search(r"[一-鿿]{2,4}", pre)
+            return " ".join(p for p in ((brand.group(0) if brand else ""),
+                                        code.group(0), conf) if p).strip()
+        s = _re.sub(r"[（(][^）)]*[）)]", " ", raw).replace("×", "x")
+        s = " ".join(s.split())
+        series = next((t for t in s.split()
+                       if _re.fullmatch(r"[A-Za-z][A-Za-z\-]{2,}", t)), "")
+        if series:
+            return " ".join(p for p in (series, conf) if p).strip()
+        # 纯描述名：去掉构型/驱动词，保留类目短语（纯字符串规则，不查表）
+        key = _re.sub(r"(?i)(6x6|8x8|4x4|8x4|6x4|4x2|6x2|全轮驱动|全驱|六驱|八驱|四驱)",
+                      " ", s)
+        key = " ".join(key.split())[:14].strip(" /,、;")
         if conf and conf not in key.lower():
-            key = f"{key} {conf}"
+            key = f"{key} {conf}".strip()
         return key
 
     def can_replan(self) -> bool:

@@ -197,8 +197,10 @@ def alias_query(src: str) -> str:
     code = next((t for t in _distinctive(s) if t not in group), "")
     conf = next((c for c in ("6x6", "8x8", "4x4") if c in _config_set(src or s)), "")
     tail = "牵引车" if "牵引" in s else "卡车"
-    parts = [brand, series or code, conf, tail]
-    return " ".join(p for p in parts if p).strip()
+    if not (brand or series or code):   # 只有构型词（6x6 牵引车）也是噪声：跳过该档
+        return ""
+    core = [p for p in (brand, series or code, conf) if p]
+    return " ".join(core + [tail]).strip()
 
 
 def query_variants(query: str, model: str = "") -> list[str]:
@@ -310,8 +312,12 @@ _DESC_STEMS = ("牵引", "挂车", "卡车", "货车", "自卸", "载货", "越�
 
 
 def _looks_like_brand(tok: str) -> bool:
-    """短中文词、不含描述性词干，才允许当品牌兜底。"""
-    if not tok or len(tok) > 4 or re.search(r"\d", tok):
+    """短中文词、不含描述性词干，才允许当品牌兜底；拉丁车系（Zetros/Oshkosh）直接认。"""
+    if not tok:
+        return False
+    if re.fullmatch(r"[A-Za-z][A-Za-z\-]+", tok):
+        return True
+    if re.search(r"\d", tok) or len(tok) > 4:
         return False
     return not any(s in tok for s in _DESC_STEMS)
 
@@ -328,14 +334,18 @@ def _brand_group(src: str) -> tuple[str, ...]:
     for t in toks:
         if t in _BRAND_LOOKUP:
             return _BRAND_LOOKUP[t]
-    low = (src or "").lower()
+    # 兜底只认**开头**的词：品牌通常在车名最前面；“马力/轴距/批次”这类
+    # 后半段属性词不能被当成品牌，否则又会回到“要求标题出现属性词”的误杀。
+    if toks:
+        first = toks[0]
+        if first not in GENERIC and _looks_like_brand(first):
+            return (first,)
+    # 长描述里内嵌的品牌：只在括号外找，避免把“沃尔沃发动机”当成品牌
+    low = re.sub(r"[（(][^）)]*[）)]", " ", src or "").lower()
     if low:
         for alias, group in _BRAND_LOOKUP.items():
             if alias and alias in low:
                 return group
-    for t in toks:
-        if t not in GENERIC and _looks_like_brand(t):
-            return (t,)
     return ()
 
 
@@ -367,6 +377,11 @@ def _relevant(query: str, title: str, model: str | None = None) -> bool:
         if any(_alias_in(a, t) for a in group):
             return True
         return False
+    # 无品牌/车系：用车名自身的非通用词与标题做重叠（不查类目表），再退回车辆词。
+    own = [x for x in _tokens(src)
+           if not re.search(r"\d", x) and x not in GENERIC and len(x) >= 2]
+    if own and any(x in t for x in own):
+        return True
     return any(w in t for w in VEHICLE_WORDS)
 
 

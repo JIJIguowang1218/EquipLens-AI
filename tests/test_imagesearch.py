@@ -233,6 +233,15 @@ def test_descriptive_name_is_not_a_brand():
     assert imagesearch._brand_group("豪沃 TAZ4922 6×6 油田牵引车")
 
 
+def test_alias_degrades_to_empty():
+    """无品牌/车系/型号时，别名档不应退化成“牵引车/卡车”这种噪声查询。"""
+    assert imagesearch.alias_query("6×6 越野牵引头") == ""
+    assert imagesearch.alias_query("沙漠越野重型牵引车（康明斯+艾里逊）") == ""
+    a = imagesearch.alias_query("Zetros 4051 AS 6×6 重型牵引车")
+    assert a and len(a) > 6, a
+    assert "6x6" in a or "牵引" in a, a
+
+
 if __name__ == "__main__":
     check("相关性护栏", test_relevance_guard)
     check("构型/品牌/非车污染护栏", test_config_and_brand_guard)
@@ -249,6 +258,7 @@ if __name__ == "__main__":
     check("搜狐 w_1280 升图", test_upgrade_sohu_url)
     check("死图床拉黑", test_domain_health_blocks_after_threshold)
     check("描述性车名不当品牌", test_descriptive_name_is_not_a_brand)
+    check("别名档不成噪声", test_alias_degrades_to_empty)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

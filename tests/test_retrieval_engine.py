@@ -841,6 +841,12 @@ def test_normalize_query_keeps_only_explicit_drive_config():
     q = WebWorld.normalize_query("HOWO 6×6 全驱牵引车").lower()
     assert q.count("6x6") == 1, q
     assert WebWorld.normalize_query("TAZ4922 6×6 油田专用全驱牵引车").lower() == "taz4922 6x6"
+    # 型号码只在括号里：不能被删掉
+    q2 = WebWorld.normalize_query("豪沃 6×6 油田专用全驱牵引车（TAZ4922）").lower()
+    assert "taz4922" in q2, q2
+    # 纯描述名：去掉构型词并截短，不要整句
+    q3 = WebWorld.normalize_query("6×6 全轮驱动油田牵引卡车（375马力，欧5）")
+    assert len(q3) <= 18 and "全轮驱动" not in q3, q3
 
 
 def test_asset_query_tier_roundtrip():
@@ -856,6 +862,21 @@ def test_asset_query_tier_roundtrip():
     assert WebWorld._query_tier(m, "TAZ4922 6x6") == "exact"
     assert WebWorld._query_tier(m, m) == "model"
     assert WebWorld._query_tier(m, "别的查询 6x6") == "part_fallback"
+
+
+def test_identity_evidence_without_brand_table():
+    """未知品牌也要能靠“车系+构型”双证据判 probable；单品牌词不算。"""
+    part = PartRequirement(part="bumper", label="保险杠", views=("front",),
+                           design_relevance="strong", accept="A")
+    verifier = RuleVerifier({"bumper": part})
+    ok = Asset(asset_id="a", target_id="t", part="bumper", view="front",
+               width=1600, height=1200, title="oshkosh mk23 7 ton 6x6 cargo truck",
+               model="Oshkosh J-3080 6×6")
+    assert verifier.verify(ok, "bumper").identity == "probable"
+    weak = Asset(asset_id="b", target_id="t", part="bumper", view="front",
+                 width=1600, height=1200, title="howo tx 牵引车 促销",
+                 model="HOWO 6×6 全驱牵引车（全驱系列）")
+    assert verifier.verify(weak, "bumper").identity == "unknown"
 
 
 if __name__ == "__main__":
@@ -900,6 +921,7 @@ if __name__ == "__main__":
     check("并发下载保序且不重复下载", test_parallel_download_preserves_order_and_cache)
     check("查询只保留显式构型", test_normalize_query_keeps_only_explicit_drive_config)
     check("图片来源分级进契约", test_asset_query_tier_roundtrip)
+    check("未知品牌靠双证据判 probable", test_identity_evidence_without_brand_table)
     check("节点耗时记录", test_summary_records_step_timings)
     check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]
