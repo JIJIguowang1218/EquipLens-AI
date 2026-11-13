@@ -120,7 +120,23 @@ wide 抽取在 c2 混进的 4 台离类车，**全部只被 `environment` 维度
 | 品牌表 | 仍用于 `alias_query` 加分 | 后续可只保留“加分”，不再参与判定 |
 | 端到端 | 本轮未跑 loop | 下一轮用冻结 brief 跑 c1/c2 对照 |
 
-## 7. 复现
+## 7. 端到端验证（2026-11-14，冻结 plan）
+
+同一份 brief + 同一份 plan（`delivery-20261113-regress`），只改代码：
+
+| 臂 | c1 交付 | c1 备选 | c1 degraded | c2 交付 | c2 备选 | c2 degraded |
+|---|---|---|---|---|---|---|
+| 11-12 clean（基线） | 9/10 | 2/4 | 8 | 10/10 | 2/4 | 6 |
+| 11-13 品牌修复 | 10/10 | 1/4 | 9 | 10/10 | 2/4 | 5 |
+| **11-14 判死点全修** | **10/10** | 1/4 | 9 | **10/10** | **3/4** | 6 |
+
+- 数据：`data-test/runs/p2-identity-20261114/`；
+- 配置已进 `summary.config`：`download_workers 4 / plan_concurrency 4 / rank_method llm`；
+- `query_tiers` 已生效（c1 = 225 张全部来自“车型全名”档，说明该 case 的窄查询键多数没命中）；
+- c2 备选 +1，c1 持平；delivered 增加的部分仍是 degraded（身份弱），不是冒充 confirmed；
+- 端到端只跑 c1/c2，未跑全 5 case。
+
+## 8. 复现
 
 ```bash
 PYTHONPATH=src python scripts/evaluate_kill_chain_offline.py

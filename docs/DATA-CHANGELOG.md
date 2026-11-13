@@ -169,3 +169,11 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   旧放行→新拒绝 **0**；4456 个 unknown 资产 382 个可升级（8.6%）。
 - 测试：`imagesearch 16/16`、`retrieval_engine 44/44`；**未跑检索 loop**，未改既有 run 数据。
 - 文档：`docs/query-kill-chain-20261113.md`；复现：`scripts/evaluate_kill_chain_offline.py`。
+
+### 15. 判死点端到端与配置补记（2026-11-14）
+
+- `query_tier`：缓存命中时补记主查询键，避免来源档位为空；
+- `summary.config.rank_method`：LLM rank 的 plan 没有 `ranking.method` 时记为 `llm`；
+- 端到端（冻结 plan，只改代码）：c1 9/10→**10/10**（备选 2→1、degraded 8→9）；
+  c2 10/10、备选 2→**3**、degraded 6；数据 `data-test/runs/p2-identity-20261114/`；
+- 新增机制待尝试清单：`docs/backlog-mechanisms-20261114.md`（A/B/C/D/E 五组，含冻结/解冻协议）。
