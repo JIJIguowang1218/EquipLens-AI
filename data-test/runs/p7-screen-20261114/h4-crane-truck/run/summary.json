@@ -1,0 +1,398 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261114-024759",
+  "state": "DONE",
+  "slots": {
+    "target": 8,
+    "accepted": 8,
+    "filled": true
+  },
+  "delivery": {
+    "required": 8,
+    "delivered": 8,
+    "missing": 0,
+    "degraded": 5,
+    "degraded_ratio": 0.625,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "解放牌 CSJ5257JSQ6A81",
+      "EQ5258JSQF1 随车起重运输车",
+      "CSJ5241JSQ6A90 随车起重运输车",
+      "曼恩 TGS 6x4",
+      "豪泺 ZZ1317M4661V 重型载货车及底盘"
+    ],
+    "citation_only": 4,
+    "citation_only_targets": [
+      "解放牌 CSJ5257JSQ6A81",
+      "EQ5258JSQF1 随车起重运输车",
+      "CSJ5241JSQ6A90 随车起重运输车",
+      "豪泺 ZZ1317M4661V 重型载货车及底盘"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 2,
+      "images": 4
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 2,
+      "status": "short",
+      "models": [
+        "沃尔沃 VNX 载货车",
+        "CA5250JSQP62K1L7T3E6 随车起重运输车"
+      ],
+      "images": 4,
+      "no_image_models": [],
+      "short": 2
+    },
+    "backup_short": 2,
+    "query_tiers": {
+      "model": 112,
+      "exact": 70
+    },
+    "unavailable": [
+      {
+        "model": "EQ5253JSQZM 随车起重运输车",
+        "reason": "all_download_failed",
+        "hits": 42,
+        "downloaded": 0,
+        "blocked": 2
+      },
+      {
+        "model": "LT5251JSQABC0 随车起重运输车",
+        "reason": "all_download_failed",
+        "hits": 42,
+        "downloaded": 0,
+        "blocked": 3
+      },
+      {
+        "model": "CA5250JSQP62K1L7T3E6 随车起重运输车",
+        "reason": "not_delivered",
+        "hits": 42,
+        "downloaded": 35,
+        "blocked": 0
+      },
+      {
+        "model": "沃尔沃 VNX 载货车",
+        "reason": "not_delivered",
+        "hits": 42,
+        "downloaded": 21,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 5,
+      "accepted": 5,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "XG1-DM270I 随车起重机",
+      "HCM5240JSQDFV6",
+      "尚骏牌 CSJ5255JSQ6",
+      "解放牌 CSJ5257JSQ6A81",
+      "EQ5258JSQF1 随车起重运输车"
+    ],
+    "u-env": [
+      "CSJ5241JSQ6A90 随车起重运输车",
+      "曼恩 TGS 6x4",
+      "豪泺 ZZ1317M4661V 重型载货车及底盘"
+    ]
+  },
+  "budget_used": {
+    "queries": 36,
+    "models": 12,
+    "fetches": 210,
+    "verifies": 210
+  },
+  "config": {
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 490,
+    "downloaded": 315,
+    "failed": 95,
+    "blocked": 12,
+    "gate_pass": 217,
+    "early_stop_models": 2,
+    "blocked_hosts": [
+      "i1.go2yd.com",
+      "img.chinacar.com.cn",
+      "img1.fr-trading.com",
+      "img4.makepolo.net",
+      "img6.makepolo.net",
+      "m.chinacar.com.cn",
+      "mp.ofweek.com",
+      "oss.huangye88.net",
+      "p3-sign.toutiaoimg.com",
+      "www.cn357.com",
+      "www.liweicar.com"
+    ],
+    "fail_counts": {
+      "i1.go2yd.com": 7,
+      "img.chinacar.com.cn": 21,
+      "img05.jdzj.com": 1,
+      "img1.fr-trading.com": 4,
+      "img3.makepolo.net": 1,
+      "img4.makepolo.net": 7,
+      "img6.makepolo.net": 7,
+      "m.chinacar.com.cn": 7,
+      "mp.ofweek.com": 14,
+      "oss.huangye88.net": 7,
+      "p3-sign.toutiaoimg.com": 7,
+      "www.chinacar.com.cn": 2,
+      "www.cn357.com": 7,
+      "www.liweicar.com": 3
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T04:16:36"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/8，池中仍有候选",
+      "ts": "2026-11-14T04:16:36"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 5 个",
+      "ts": "2026-11-14T04:16:47"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/8，池中仍有候选",
+      "ts": "2026-11-14T04:18:05"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T04:18:05"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-14T04:18:05"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-14T04:18:08"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/8，池中仍有候选",
+      "ts": "2026-11-14T04:18:22"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-14T04:18:29"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 3 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-14T04:18:50"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 1 个候选",
+      "ts": "2026-11-14T04:18:54"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 2 台有图车型，从 plan 池补抓（第 2 轮，不新增规划）",
+      "ts": "2026-11-14T04:19:00"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_exhausted",
+      "reason": "plan 池已无候选，备选按实际数量交付",
+      "ts": "2026-11-14T04:19:00"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:16:36"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 10966,
+      "at": "2026-11-14T04:16:47"
+    },
+    {
+      "state": "FETCH",
+      "ms": 77688,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 5,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T04:18:05"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 3168,
+      "at": "2026-11-14T04:18:08"
+    },
+    {
+      "state": "FETCH",
+      "ms": 13883,
+      "at": "2026-11-14T04:18:22"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T04:18:22"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:18:22"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:18:22"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 7307,
+      "at": "2026-11-14T04:18:29"
+    },
+    {
+      "state": "FETCH",
+      "ms": 20681,
+      "at": "2026-11-14T04:18:50"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 3,
+      "at": "2026-11-14T04:18:50"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:18:50"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:18:50"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 3663,
+      "at": "2026-11-14T04:18:54"
+    },
+    {
+      "state": "FETCH",
+      "ms": 6410,
+      "at": "2026-11-14T04:19:00"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T04:19:00"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:19:00"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T04:19:00"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-14T04:19:00"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 1,
+      "at": "2026-11-14T04:19:00"
+    }
+  ],
+  "elapsed_ms": 143775,
+  "state_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-20261114\\h4-crane-truck\\run\\state.json",
+  "events_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-20261114\\h4-crane-truck\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-20261114\\h4-crane-truck\\run\\evidence.json"
+}

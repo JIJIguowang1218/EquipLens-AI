@@ -1,0 +1,1157 @@
+{
+ "brief_id": "auto-20261114-024559",
+ "created_at": "2026-11-14T04:03:19",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 99,
+ "candidates": [
+  {
+   "model": "3500升 4*2 泡沫水罐消防车",
+   "brand": "克洛威",
+   "slots": {
+    "brand": "克洛威",
+    "series": "泡沫水罐消防车",
+    "model_code": "3500升 4*2",
+    "config": "4×2"
+   },
+   "search_key": "克洛威 3500升 4*2 泡沫水罐消防车",
+   "reason": "结果正文明确为3500升4*2泡沫水罐消防车，适用于市政、石化企业、工矿企业等城市与厂区救援场景。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601558865950"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/3500升42泡沫水罐消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "3500升 4*2 泡沫水罐消防车",
+    "克洛威 3500升 4*2 泡沫水罐消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "environment",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "PM75多功能水罐泡沫消防车",
+   "brand": "沈阳捷通",
+   "slots": {
+    "brand": "沈阳捷通",
+    "series": "多功能水罐泡沫消防车",
+    "model_code": "PM75",
+    "config": "4X2"
+   },
+   "search_key": "沈阳捷通 PM75 4X2 水罐泡沫消防车",
+   "reason": "结果明确PM75采用重汽豪沃双排商用底盘，驱动形式4X2，面向大中城市消防队及大型工矿企业等场景。",
+   "sources": [
+    "https://en.syxfc.com/pro/1012748845227794432.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/PM75多功能水罐泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "PM75多功能水罐泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "GIGA 8立方米水泡沫消防车",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "GIGA",
+    "model_code": "8立方米水泡沫消防车",
+    "config": "4x2"
+   },
+   "search_key": "五十铃 GIGA 4x2 水泡沫消防车",
+   "reason": "结果正文明确为五十铃4x2 8立方米水泡沫消防车，兼具水箱与泡沫灭火系统，可用于化学品及一般物质火灾。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/blog/isuzu-giga-6x6-off-road-troop-carrier_bk_23"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/GIGA8立方米水泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "GIGA 8立方米水泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "4X2 Water & Foam Fire Engine",
+   "brand": "FAW",
+   "slots": {
+    "brand": "FAW",
+    "series": "Water & Foam Fire Engine",
+    "model_code": "4X2 Water & Foam Fire Engine",
+    "config": "4X2"
+   },
+   "search_key": "FAW 4X2 Water Foam Fire Engine",
+   "reason": "结果明确为FAW 4×2水罐泡沫消防车，含独立水罐与泡沫罐，匹配水罐/泡沫消防车4×2构型。",
+   "sources": [
+    "https://www.charymachinery.com/faw-4x2-water-foam-fire-engine-pumper-truck.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/4X2WATERFOAMFIREENGINE",
+   "identity_kind": "generic",
+   "model_variants": [
+    "4X2 Water & Foam Fire Engine"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CSC5160GXFSG/PM70/E6 水罐/泡沫消防车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ1185DJ9CDF",
+    "model_code": "CSC5160GXFSG/PM70/E6",
+    "config": "4X2"
+   },
+   "search_key": "CSC5160GXFSG/PM70/E6 4X2 水罐泡沫消防车",
+   "reason": "结果说明该车采用东风EQ1185DJ9CDF 4X2二类底盘改装，配消防泵与消防炮，适用于城市特勤及石油化工企业等。",
+   "sources": [
+    "https://www.csyjw.com/cy/dtl/csprodetail_1/wafangdian-1247603281368158208.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/CSC5160GXFSG",
+   "identity_kind": "code",
+   "model_variants": [
+    "CSC5160GXFSG/PM70/E6 水罐/泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "P310城市主战消防车",
+   "brand": "斯堪尼亚",
+   "slots": {
+    "brand": "斯堪尼亚",
+    "series": "P310",
+    "model_code": "P310",
+    "config": "4X2"
+   },
+   "search_key": "斯堪尼亚 P310 4X2 城市主战消防车",
+   "reason": "结果提到斯堪尼亚城市主战消防车采用P310 4X2底盘改制，载水3吨、泡沫1吨，符合城市消防水罐/泡沫车工况。",
+   "sources": [
+    "http://www.sdmingquan.com/Public/userfiles/files/%e5%b1%b1%e4%b8%9c%e6%99%8b%e6%8e%a7%e6%98%8e%e6%b0%b4%e5%8c%96%e5%b7%a5%e9%9b%86%e5%9b%a2%e6%9c%89%e9%99%90%e5%85%ac%e5%8f%b8%e7%8e%b0%e7%8a%b6%e8%af%84%e4%bb%b7%e6%8a%a5%e5%91%8a%ef%bc%88%e5%8e%8b%e7%bc%a9%e7%89%88%ef%bc%89-2026_6_2.pdf#42#118#42"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/P310城市主战消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "P310城市主战消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市消防 与厂区/园区救援 水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽 HOWO 266马力 4X2 消防车（上格牌 SGX5191GXFPM80）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "SGX5191GXFPM80",
+    "config": "4X2"
+   },
+   "search_key": "中国重汽 HOWO SGX5191GXFPM80 4X2",
+   "reason": "结果明确 4X2、泡沫消防车公告型号 SGX5191GXFPM80。",
+   "sources": [
+    "https://product.360che.com/m43/10924_param.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/SGX5191GXFPM80",
+   "identity_kind": "code",
+   "model_variants": [
+    "中国重汽 HOWO 266马力 4X2 消防车（上格牌 SGX5191GXFPM80）",
+    "中国重汽 HOWO 266马力 4X2 泡沫消防车（上格牌 SGX5191GXFPM80）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽 HOWO 280马力 4X2 泡沫消防车（程力威牌 HXF5200GXFPM80）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "HXF5200GXFPM80",
+    "config": "4X2"
+   },
+   "search_key": "中国重汽 HOWO HXF5200GXFPM80 4X2",
+   "reason": "结果列有 4X2 泡沫消防车及公告型号 HXF5200GXFPM80。",
+   "sources": [
+    "https://product.360che.com/m153/38406_param.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/HXF5200GXFPM80",
+   "identity_kind": "code",
+   "model_variants": [
+    "中国重汽 HOWO 280马力 4X2 泡沫消防车（程力威牌 HXF5200GXFPM80）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中联重科 ZLJ5160GXFPM40 泡沫水罐消防车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "",
+    "model_code": "ZLJ5160GXFPM40",
+    "config": "4×2"
+   },
+   "search_key": "中联重科 ZLJ5160GXFPM40 4×2",
+   "reason": "结果明确为泡沫水罐消防车，底盘为雷诺D18 4×2。",
+   "sources": [
+    "http://zoomlionmall.com/equipment/content/201512/1268.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/ZLJ5160GXFPM40",
+   "identity_kind": "code",
+   "model_variants": [
+    "中联重科 ZLJ5160GXFPM40 泡沫水罐消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "五十铃700P 4吨水罐/泡沫消防车（QL1110ANKAY）",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "700P",
+    "model_code": "QL1110ANKAY",
+    "config": "4×2"
+   },
+   "search_key": "五十铃700P QL1110ANKAY 4×2",
+   "reason": "结果明确 QL1110ANKAY 底盘、4×2，并给出4吨水罐/泡沫消防车配置。",
+   "sources": [
+    "http://www.chengli-qc.com/show-12-5001-1268.html",
+    "http://www.clyjhw.com/show-12-5041-16.html",
+    "http://m.clqcc.com/show-139-1377-1.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/QL1110ANKAY",
+   "identity_kind": "code",
+   "model_variants": [
+    "五十铃700P 4吨水罐/泡沫消防车（QL1110ANKAY）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "江特牌 JDF5090GXFPM33E 泡沫消防车",
+   "brand": "江特牌",
+   "slots": {
+    "brand": "江特牌",
+    "series": "",
+    "model_code": "JDF5090GXFPM33E",
+    "config": "4X2"
+   },
+   "search_key": "江特牌 JDF5090GXFPM33E 4X2",
+   "reason": "结果列出 4X2、水罐/泡沫消防车及公告型号 JDF5090GXFPM33E。",
+   "sources": [
+    "https://product.360che.com/price/c4_s85_b411_s6200.html#1"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/JDF5090GXFPM33E",
+   "identity_kind": "code",
+   "model_variants": [
+    "江特牌 JDF5090GXFPM33E 泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "梅赛德斯-奔驰 Atego 1330 4×2 压缩空气泡沫消防车",
+   "brand": "梅赛德斯-奔驰",
+   "slots": {
+    "brand": "梅赛德斯-奔驰",
+    "series": "Atego",
+    "model_code": "1330",
+    "config": "4×2"
+   },
+   "search_key": "奔驰 Atego 1330 4×2 压缩空气泡沫消防车",
+   "reason": "结果明确 Atego 1330 4×2 压缩空气泡沫消防车，面向城市灭火场景。",
+   "sources": [
+    "https://www.yunshuren.com/article-66330.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/梅赛德斯奔驰ATEGO13304X2压缩空气泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "梅赛德斯-奔驰 Atego 1330 4×2 压缩空气泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "水罐/泡沫消防车 4×2 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "GIGA 水泡沫消防车（8立方米）",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "GIGA",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "五十铃GIGA 4x2 水泡沫消防车 8立方米",
+   "reason": "结果中明确写“五十铃GIGA 8立方米水泡沫消防车”，水箱与泡沫罐一体，并提到“五十铃4x2 8立方米水泡沫消防车”，符合水罐/泡沫消防车与4×2构型；该车系车身坚固，可用于城市与厂区/化工类火灾扑救。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/blog/isuzu-prisoner-transport-vehicle_bk_23",
+    "https://zh-cn.isuzutruckscn.com/blog/isuzu-vehicle-transporter_bk_23"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/GIGA水泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "GIGA 水泡沫消防车（8立方米）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "700P 水罐消防车（4吨）",
+   "brand": "庆铃",
+   "slots": {
+    "brand": "庆铃",
+    "series": "700P",
+    "model_code": "QL1110ANKAY",
+    "config": "4x2"
+   },
+   "search_key": "庆铃700P 4x2 水罐消防车",
+   "reason": "结果标题为“庆铃700P水罐消防车”，正文写明采用庆铃五十铃QL1110ANKAY的4×2底盘，装备消防水泵、器材、贮水罐及水枪水炮，可独立扑救火灾，匹配水罐消防车与4×2底盘槽位。",
+   "sources": [
+    "http://www.hb-xfc.com/cont/77.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/700P水罐消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "700P 水罐消防车（4吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Atego 1330 消防车",
+   "brand": "梅赛德斯-奔驰",
+   "slots": {
+    "brand": "梅赛德斯-奔驰",
+    "series": "Atego",
+    "model_code": "1330",
+    "config": "4x2"
+   },
+   "search_key": "奔驰Atego 1330 4x2 消防车",
+   "reason": "结果写明展会亮相“基于梅赛德斯-奔驰Atego 1330 4…”底盘改装的消防车，并说明Atego为消防专用底盘、现场“两桥消防车”多基于该底盘，两桥即4×2，覆盖城市主战消防场景。",
+   "sources": [
+    "https://m.chinatruck.org/news/20_132198.html",
+    "https://www.yunshuren.com/article-66330.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/ATEGO1330消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Atego 1330 消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "4X2 4000L 救援/消防洒水罐车（CLW上装）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "东风 4x2 4000L 消防车 CLW",
+   "reason": "标题为“Dongfeng 4X2 6 Wheels Wheeler 4000L Rescue Emergency Fire Engine Fighting Truck”，参数含罐容积3001-5000L、手动变速箱、CLW消防车上装、湖北产地，属4×2罐式消防车，可用于城市与厂区初火压制。",
+   "sources": [
+    "https://www.machinio.com/listings/92106689-dongfeng-4x2-6-wheels-wheeler-4000l-rescue-emergency-fire-engine-fighting-truck-in-hubei-china#1"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/4X24000L救援消防洒水罐车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "4X2 4000L 救援/消防洒水罐车（CLW上装）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "4000L 水和泡沫罐消防车（2025新型）",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "",
+    "model_code": "",
+    "config": "4x2"
+   },
+   "search_key": "4000L 4x2 水泡沫罐消防车",
+   "reason": "结果标题为“2025新型4000L 4*2水和泡沫罐消防车”，重要属性给出驱动形式4x2、水箱3000L+泡沫罐1000L、轴距3815mm、柴油190马力，属典型4×2水罐/泡沫消防车；页面未标注具体品牌，故品牌留空。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/2025-New-4000L-4-2-Water_1601558935074.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/4000L水和泡沫罐消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "4000L 水和泡沫罐消防车（2025新型）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市消防 与厂区/园区救援 4×2 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "川消牌 SXF5090GXFPM35 泡沫消防车（东风商用车底盘）",
+   "brand": "四川森田/川消",
+   "slots": {
+    "brand": "四川森田(川消牌)",
+    "series": "东风商用车底盘消防车",
+    "model_code": "SXF5090GXFPM35",
+    "config": "4X2"
+   },
+   "search_key": "SXF5090GXFPM35 4X2 泡沫消防车",
+   "reason": "结果参数页给出 4X2、泡沫消防车、上装型号 SXF5090GXFPM35，与任务单 4×2 罐式泡沫消防车完全匹配，可用于提取前脸/泵房/器材箱外观。",
+   "sources": [
+    "https://product.360che.com/price/c4_s85_b741_s6283.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/SXF5090GXFPM35",
+   "identity_kind": "code",
+   "model_variants": [
+    "川消牌 SXF5090GXFPM35 泡沫消防车（东风商用车底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "庆铃 五十铃 260马力 4X2 消防车（中联牌 ZLJ5150GXFAP42）",
+   "brand": "庆铃 五十铃",
+   "slots": {
+    "brand": "庆铃",
+    "series": "五十铃",
+    "model_code": "ZLJ5150GXFAP42",
+    "config": "4X2"
+   },
+   "search_key": "庆铃 五十铃 4X2 泡沫消防车 ZLJ5150GXFAP42",
+   "reason": "结果参数页给出 4X2、A 类泡沫消防车、上装型号 ZLJ5150GXFAP42，属 4×2 泡沫消防车，适合城市出动工况。",
+   "sources": [
+    "https://product.360che.com/m42/10600_param.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/ZLJ5150GXFAP42",
+   "identity_kind": "code",
+   "model_variants": [
+    "庆铃 五十铃 260马力 4X2 消防车（中联牌 ZLJ5150GXFAP42）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽 Shacman 4X2 水罐泡沫消防车",
+   "brand": "陕汽 Shacman",
+   "slots": {
+    "brand": "Shacman",
+    "series": "",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "Shacman 4X2 water and foam tanker fire f",
+   "reason": "结果标题与摘要明确为 Shacman 4X2 水罐+泡沫罐消防车（欧三柴油），构型符合任务单。",
+   "sources": [
+    "https://www.machinio.au/fire-trucks?page=7&search=cab+and+chassis+truck"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/陕汽SHACMAN4X2水罐泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "陕汽 Shacman 4X2 水罐泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "梅赛德斯-奔驰 Atego 两桥消防车底盘",
+   "brand": "梅赛德斯-奔驰",
+   "slots": {
+    "brand": "梅赛德斯-奔驰",
+    "series": "Atego",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Mercedes-Benz Atego 消防车 两桥",
+   "reason": "结果文章明确 Atego 为消防专用底盘、两桥消防车主流选择（欧洲每 10 辆消防车约 3 辆用 Atego 底盘），对应任务单 4×2 中重型二类底盘；原文未直接写 4x2，config 留空。",
+   "sources": [
+    "https://www.yunshuren.com/article-66330.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/梅赛德斯奔驰ATEGO两桥消防车底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "梅赛德斯-奔驰 Atego 两桥消防车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JAC 3吨 4*2 水罐消防车",
+   "brand": "JAC",
+   "slots": {
+    "brand": "JAC",
+    "series": "",
+    "model_code": "",
+    "config": "4*2"
+   },
+   "search_key": "JAC 4*2 water tank firefighting truck 3t",
+   "reason": "结果摘要写明 3 吨欧四 JAC 水罐消防车、4*2 厂区/工业消防车，可作为 4×2 罐式消防车的补充外观样本。",
+   "sources": [
+    "https://www.machinio.au/fire-trucks?search=pl"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/JAC42水罐消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "JAC 3吨 4*2 水罐消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "水罐/泡沫消防车 4×2 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田瑞沃水罐泡沫消防车（CLW5160GXFSG60）",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "瑞沃",
+    "model_code": "CLW5160GXFSG60",
+    "config": "4×2"
+   },
+   "search_key": "福田 瑞沃 CLW5160GXFSG60 4×2",
+   "reason": "结果明确4×2（单桥）、水罐+泡沫罐及双排驾驶室，符合4×2水罐/泡沫消防车。",
+   "sources": [
+    "http://icljt.com/xiaofangche/416.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CLW5160GXFSG60",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田瑞沃水罐泡沫消防车（CLW5160GXFSG60）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽 HOWO PM80 泡沫消防车（6000L水/2000L泡沫）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "PM80",
+    "config": "4x2"
+   },
+   "search_key": "Sinotruk Howo PM80 4x2",
+   "reason": "结果标明Sinotruk-Howo底盘、4x2、PM80泡沫消防车及6000L水/2000L泡沫。",
+   "sources": [
+    "https://www.machinio.com/fire-trucks/china?page=2&search=48+air#1"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "中国重汽 HOWO PM80 泡沫消防车（6000L水/2000L泡沫）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "曼恩 TGM18.290B6 4x2 泡沫消防车（QHV5170GXFPM60/M6）",
+   "brand": "曼恩",
+   "slots": {
+    "brand": "曼恩",
+    "series": "TGM18.290B6",
+    "model_code": "QHV5170GXFPM60/M6",
+    "config": "4x2"
+   },
+   "search_key": "曼恩 TGM18.290B6 QHV5170GXFPM60/M6 4x2",
+   "reason": "结果说明采用MAN TGM18.290B6 4x2二类底盘改装，泡沫消防车，适用于城市特勤及石化企业。",
+   "sources": [
+    "http://www.qihangcrrc.com/sys-pd/14.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/QHV5170GXFPM60",
+   "identity_kind": "code",
+   "model_variants": [
+    "曼恩 TGM18.290B6 4x2 泡沫消防车（QHV5170GXFPM60/M6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "曼恩 TGM18.290B6 4x2 水罐消防车（QHV5160GXFSG60/M6）",
+   "brand": "曼恩",
+   "slots": {
+    "brand": "曼恩",
+    "series": "TGM18.290B6",
+    "model_code": "QHV5160GXFSG60/M6",
+    "config": "4x2"
+   },
+   "search_key": "曼恩 TGM18.290B6 QHV5160GXFSG60/M6 4x2",
+   "reason": "同结果中明确水罐消防车型号，基于MAN TGM18.290B6 4x2底盘，适配城市/厂区水罐消防。",
+   "sources": [
+    "http://www.qihangcrrc.com/sys-pd/14.html"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/QHV5160GXFSG60",
+   "identity_kind": "code",
+   "model_variants": [
+    "曼恩 TGM18.290B6 4x2 水罐消防车（QHV5160GXFSG60/M6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "大力轻型城市主战车（FORD 4×2 消防专用底盘）",
+   "brand": "大力",
+   "slots": {
+    "brand": "大力",
+    "series": "轻型城市主战车",
+    "model_code": "",
+    "config": "4×2"
+   },
+   "search_key": "大力 轻型城市主战车 FORD 4×2",
+   "reason": "结果明确FORD 4×2消防专用底盘、水罐2800L+泡沫200L，定位城市主战消防车。",
+   "sources": [
+    "http://www.wsdarley.com.cn/index.php?c=show&id=9"
+   ],
+   "source_query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/大力轻型城市主战车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "大力轻型城市主战车（FORD 4×2 消防专用底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "水罐/泡沫消防车 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃重型消防车（4×2 底盘）",
+   "brand": "中国重汽（重汽）",
+   "slots": {
+    "brand": "重汽",
+    "series": "豪沃",
+    "model_code": "",
+    "config": "4×2"
+   },
+   "search_key": "豪沃 4×2 重型消防车",
+   "reason": "结果中的原文明确写的是“重汽重型消防车依托成熟底盘技术……豪沃重型消防车市场保有量大”，并指出“可选 4×2、6×4 驱动形式”，且适用于大型厂区、化工园区、乡镇专职消防队；这与任务要求的 4×2 中重型二类底盘、城市/厂区双工况相符，可以作为水罐/泡沫消防车常用底盘系列的首选画像。",
+   "sources": [
+    "http://www.jnxfc.com/news/carnews3316.html"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/豪沃重型消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃重型消防车（4×2 底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "奔驰18吨泡沫消防车",
+   "brand": "奔驰",
+   "slots": {
+    "brand": "奔驰",
+    "series": "泡沫消防车",
+    "model_code": "18吨",
+    "config": ""
+   },
+   "search_key": "奔驰 18吨 泡沫消防车",
+   "reason": "结果以车辆类型表的形式明确列出“奔驰18吨泡沫消防车”，属于灭火类消防车中的泡沫消防车，可对应厂区/化工园区泡沫灭火工况；结果没有标注驱动形式、泵房与器材箱上装细节，因此 config 留空，需要逐张页面核实 4×2 与上装布置。",
+   "sources": [
+    "http://sthjj.quanzhou.gov.cn/hjgl/hbsp/hpslqkgk/202606/P020260626570659868264.pdf#13#14#13"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/奔驰泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "奔驰18吨泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "曼（MAN）20吨泡沫消防车",
+   "brand": "德国（曼）",
+   "slots": {
+    "brand": "德国（曼）",
+    "series": "泡沫消防车",
+    "model_code": "20吨",
+    "config": ""
+   },
+   "search_key": "曼 20吨 泡沫消防车",
+   "reason": "结果表格中列出“德国（曼）20吨泡沫消防车”，属于灭火类泡沫消防车，适配厂区/化工园区救援工况，可作为罐式泡沫消防车的对照车型；结果未给出 4×2 等驱动形式与上装侧板、器材箱门信息，config 留空。",
+   "sources": [
+    "http://sthjj.quanzhou.gov.cn/hjgl/hbsp/hpslqkgk/202606/P020260626570659868264.pdf#13#14#13"
+   ],
+   "source_query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/曼泡沫消防车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "曼（MAN）20吨泡沫消防车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "城市消防 与厂区/园区救援 双工况 4×2 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 30
+ },
+ "pool": {
+  "count": 30,
+  "required": 20,
+  "slots": 8,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 11
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 30,
+  "slots": 8,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 42,
+  "unique": 30,
+  "removed": 12,
+  "generic": 18
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

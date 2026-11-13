@@ -1,0 +1,343 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261114-025547",
+  "state": "DONE",
+  "slots": {
+    "target": 6,
+    "accepted": 6,
+    "filled": true
+  },
+  "delivery": {
+    "required": 6,
+    "delivered": 6,
+    "missing": 0,
+    "degraded": 4,
+    "degraded_ratio": 0.667,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "中联重科 ZLJ5064TSLE3 扫路车",
+      "恒润高科 HHR5080TXS4JH 扫路车",
+      "青特 QDT5074TSLH5 干湿两用扫路车",
+      "东风大多利卡 8吨扫路车（2.5水/5尘）"
+    ],
+    "citation_only": 0,
+    "citation_only_targets": [],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 4,
+      "images": 18
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "长安蓝牌扫路车（4×2 底盘）",
+        "ZHF5060TSL",
+        "五十铃扫路车（5吨）",
+        "中联重科ZBH5073TSUXE6湿式扫路车"
+      ],
+      "images": 18,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "query_tiers": {
+      "model": 65,
+      "exact": 25
+    },
+    "unavailable": [
+      {
+        "model": "ZHF5060TSL",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 20,
+        "blocked": 5
+      },
+      {
+        "model": "五十铃扫路车（5吨）",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "中联重科ZBH5073TSUXE6湿式扫路车",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "长安蓝牌扫路车（4×2 底盘）",
+        "reason": "not_delivered",
+        "hits": 20,
+        "downloaded": 20,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 4,
+      "accepted": 4,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "中联重科 ZLJ5064TSLE3 扫路车",
+      "恒润高科 HHR5080TXS4JH 扫路车",
+      "青特 QDT5074TSLH5 干湿两用扫路车",
+      "ZLJ5063TSLHE3"
+    ],
+    "u-env": [
+      "HHR5060TSL",
+      "东风大多利卡 8吨扫路车（2.5水/5尘）"
+    ]
+  },
+  "budget_used": {
+    "queries": 30,
+    "models": 10,
+    "fetches": 180,
+    "verifies": 180
+  },
+  "config": {
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 275,
+    "downloaded": 195,
+    "failed": 70,
+    "blocked": 10,
+    "gate_pass": 185,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "hbcl7c0722.cn.china.cn",
+      "img.chinacar.com.cn",
+      "img.jdzj.com",
+      "img.lmjx.net",
+      "img2.makepolo.net",
+      "img5.cn.gcimg.net",
+      "img6.makepolo.net",
+      "n1.itc.cn",
+      "www.cljtzp.com",
+      "www.clzgm.com",
+      "www.cn357.com",
+      "www.liweicar.com"
+    ],
+    "fail_counts": {
+      "hbcl7c0722.cn.china.cn": 5,
+      "img.chinacar.com.cn": 10,
+      "img.jdzj.com": 10,
+      "img.lmjx.net": 5,
+      "img2.makepolo.net": 5,
+      "img5.cn.gcimg.net": 5,
+      "img6.makepolo.net": 5,
+      "n1.itc.cn": 5,
+      "www.cljtzp.com": 5,
+      "www.clzgm.com": 5,
+      "www.cn357.com": 5,
+      "www.liweicar.com": 5
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T05:04:09"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/6，池中仍有候选",
+      "ts": "2026-11-14T05:04:09"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-14T05:04:11"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 4/6，池中仍有候选",
+      "ts": "2026-11-14T05:04:38"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T05:04:38"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-14T05:04:38"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-14T05:04:48"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 4 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-14T05:05:45"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 4 个候选",
+      "ts": "2026-11-14T05:06:01"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 6/6 已满",
+      "ts": "2026-11-14T05:06:34"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:04:09"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 2482,
+      "at": "2026-11-14T05:04:11"
+    },
+    {
+      "state": "FETCH",
+      "ms": 26545,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T05:04:38"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 10415,
+      "at": "2026-11-14T05:04:48"
+    },
+    {
+      "state": "FETCH",
+      "ms": 56119,
+      "at": "2026-11-14T05:05:45"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T05:05:45"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:05:45"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:05:45"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 15976,
+      "at": "2026-11-14T05:06:01"
+    },
+    {
+      "state": "FETCH",
+      "ms": 33613,
+      "at": "2026-11-14T05:06:34"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 3,
+      "at": "2026-11-14T05:06:34"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:06:34"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-14T05:06:34"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 1,
+      "at": "2026-11-14T05:06:34"
+    }
+  ],
+  "elapsed_ms": 145156,
+  "state_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\h3-sweeper\\run\\state.json",
+  "events_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\h3-sweeper\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\h3-sweeper\\run\\evidence.json"
+}

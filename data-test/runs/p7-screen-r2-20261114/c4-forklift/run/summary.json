@@ -1,0 +1,393 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-212154",
+  "state": "DONE",
+  "slots": {
+    "target": 6,
+    "accepted": 6,
+    "filled": true
+  },
+  "delivery": {
+    "required": 6,
+    "delivered": 6,
+    "missing": 0,
+    "degraded": 6,
+    "degraded_ratio": 1.0,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "CPD40-40B 四轮座驾式电动叉车",
+      "FE4P25N 四轮座驾式电动叉车",
+      "扬子 CPD40-50B 四轮座驾式电动叉车",
+      "CPD50-B",
+      "J4.0-5.5XN 四轮电动平衡重叉车",
+      "尤恩 FE系列四支点电动叉车"
+    ],
+    "citation_only": 4,
+    "citation_only_targets": [
+      "扬子 CPD40-50B 四轮座驾式电动叉车",
+      "CPD50-B",
+      "J4.0-5.5XN 四轮电动平衡重叉车",
+      "尤恩 FE系列四支点电动叉车"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 4,
+      "images": 12
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "CPD30/35",
+        "山猫 B18S-7 四轮电动叉车（7系列）",
+        "Hyster J7.0-9.0XNL 四轮电动平衡重叉车",
+        "UN Forklift FB15-FENLZD 四轮电动叉车"
+      ],
+      "images": 12,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "query_tiers": {
+      "model": 70,
+      "exact": 15
+    },
+    "unavailable": [
+      {
+        "model": "EL25 四支点平衡重电动叉车",
+        "reason": "gate_or_verify_rejected",
+        "hits": 10,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "Yale ERP4.0-5.0MXLG 四轮电动平衡式叉车",
+        "reason": "gate_or_verify_rejected",
+        "hits": 5,
+        "downloaded": 5,
+        "blocked": 0
+      },
+      {
+        "model": "CPD30/35",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "山猫 B18S-7 四轮电动叉车（7系列）",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "Hyster J7.0-9.0XNL 四轮电动平衡重叉车",
+        "reason": "not_delivered",
+        "hits": 10,
+        "downloaded": 10,
+        "blocked": 0
+      },
+      {
+        "model": "UN Forklift FB15-FENLZD 四轮电动叉车",
+        "reason": "not_delivered",
+        "hits": 10,
+        "downloaded": 5,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 4,
+      "accepted": 4,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "CPD40-40B 四轮座驾式电动叉车",
+      "FE4P25N 四轮座驾式电动叉车",
+      "扬子 CPD40-50B 四轮座驾式电动叉车",
+      "CPD50-B"
+    ],
+    "u-env": [
+      "J4.0-5.5XN 四轮电动平衡重叉车",
+      "尤恩 FE系列四支点电动叉车"
+    ]
+  },
+  "budget_used": {
+    "queries": 36,
+    "models": 12,
+    "fetches": 145,
+    "verifies": 145
+  },
+  "config": {
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 250,
+    "downloaded": 205,
+    "failed": 45,
+    "blocked": 0,
+    "gate_pass": 165,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "img.cmol.com",
+      "img.jdzj.com",
+      "img003.hc360.cn",
+      "img006.hc360.cn",
+      "img1.fr-trading.com",
+      "img2.makepolo.net",
+      "img5.makepolo.net",
+      "www.chachehui.com"
+    ],
+    "fail_counts": {
+      "img.cmol.com": 10,
+      "img.jdzj.com": 5,
+      "img003.hc360.cn": 5,
+      "img006.hc360.cn": 5,
+      "img1.fr-trading.com": 5,
+      "img2.makepolo.net": 5,
+      "img5.makepolo.net": 5,
+      "www.chachehui.com": 5
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T04:33:47"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/6，池中仍有候选",
+      "ts": "2026-11-14T04:33:47"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-14T04:33:50"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 4/6，池中仍有候选",
+      "ts": "2026-11-14T04:34:37"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T04:34:37"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-14T04:34:37"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-14T04:34:38"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/6，池中仍有候选",
+      "ts": "2026-11-14T04:35:37"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-14T04:36:00"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 3 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-14T04:36:16"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 4 个候选",
+      "ts": "2026-11-14T04:36:21"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 6/6 已满",
+      "ts": "2026-11-14T04:36:57"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:33:47"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 2678,
+      "at": "2026-11-14T04:33:50"
+    },
+    {
+      "state": "FETCH",
+      "ms": 46743,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 4,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T04:34:37"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 1144,
+      "at": "2026-11-14T04:34:38"
+    },
+    {
+      "state": "FETCH",
+      "ms": 59130,
+      "at": "2026-11-14T04:35:37"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T04:35:37"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:35:37"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:35:37"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 22877,
+      "at": "2026-11-14T04:36:00"
+    },
+    {
+      "state": "FETCH",
+      "ms": 15754,
+      "at": "2026-11-14T04:36:16"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-14T04:36:16"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T04:36:16"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:36:16"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 5227,
+      "at": "2026-11-14T04:36:21"
+    },
+    {
+      "state": "FETCH",
+      "ms": 36057,
+      "at": "2026-11-14T04:36:57"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-14T04:36:57"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T04:36:57"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-14T04:36:57"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 0,
+      "at": "2026-11-14T04:36:57"
+    }
+  ],
+  "elapsed_ms": 189617,
+  "state_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\c4-forklift\\run\\state.json",
+  "events_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\c4-forklift\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r2-20261114\\c4-forklift\\run\\evidence.json"
+}

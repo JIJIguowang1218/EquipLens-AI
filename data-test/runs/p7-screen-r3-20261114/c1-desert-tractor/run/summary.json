@@ -1,0 +1,291 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-205307",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 8,
+    "degraded_ratio": 0.8,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "泰安五岳 TAZ4922 6×6 油田专用全驱牵引车",
+      "奔驰 Zetros 4051 AS 6×6 牵引车",
+      "HOWO 371HP 全驱越野牵引车（6×6）",
+      "KAMAZ K-65959 6X6 牵引车",
+      "MOL HF 8066 6×6 越野底盘",
+      "Mercedes-Benz Zetros 6x6 牵引头",
+      "OTTC 460马力 6×6 牵引头",
+      "沙漠越野重型牵引车（康明斯+艾里逊运输底盘）"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "KAMAZ K-65959 6X6 牵引车",
+      "沙漠越野重型牵引车（康明斯+艾里逊运输底盘）"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 4,
+      "images": 13
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "豪沃TX 6×6牵引车 ZZ4257V455GF1",
+        "OTTC 越野 460 马力 6×6 牵引头",
+        "6×6 越野牵引头（460 马力）",
+        "6X6 油田沙漠重型牵引车（专利 CN206171594U 所述车型）"
+      ],
+      "images": 13,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "query_tiers": {
+      "model": 225
+    },
+    "unavailable": [
+      {
+        "model": "豪沃TX 6×6牵引车 ZZ4257V455GF1",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "6×6 越野牵引头（460 马力）",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 20,
+        "blocked": 0
+      },
+      {
+        "model": "6X6 油田沙漠重型牵引车（专利 CN206171594U 所述车型）",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "OTTC 越野 460 马力 6×6 牵引头",
+        "reason": "not_delivered",
+        "hits": 10,
+        "downloaded": 10,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "泰安五岳 TAZ4922 6×6 油田专用全驱牵引车",
+      "奔驰 Zetros 4051 AS 6×6 牵引车",
+      "HOWO 371HP 全驱越野牵引车（6×6）",
+      "KAMAZ K-65959 6X6 牵引车",
+      "MOL HF 8066 6×6 越野底盘",
+      "MOL H6066 6×6 特种运输车",
+      "Mercedes-Benz Zetros 6x6 牵引头"
+    ],
+    "u-env": [
+      "OTTC 460马力 6×6 牵引头",
+      "北奔沙漠车（ND5180TSMZ01/ND5140TSMZ02/ND5250TSM 系列）",
+      "沙漠越野重型牵引车（康明斯+艾里逊运输底盘）"
+    ]
+  },
+  "budget_used": {
+    "queries": 45,
+    "models": 14,
+    "fetches": 290,
+    "verifies": 290
+  },
+  "config": {
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 375,
+    "downloaded": 330,
+    "failed": 45,
+    "blocked": 0,
+    "gate_pass": 295,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "admin.cvworld.cn",
+      "i.img16888.com",
+      "img12.cntrades.com",
+      "p2.pstatp.com",
+      "www.360trucks.cn",
+      "www.cn357.com",
+      "www.zhka.com",
+      "wx1.sinaimg.cn"
+    ],
+    "fail_counts": {
+      "admin.cvworld.cn": 5,
+      "i.img16888.com": 5,
+      "img12.cntrades.com": 5,
+      "p2.pstatp.com": 5,
+      "www.360trucks.cn": 10,
+      "www.cn357.com": 5,
+      "www.zhka.com": 5,
+      "wx1.sinaimg.cn": 5
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T05:12:55"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-14T05:12:55"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-14T05:13:09"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/10，池中仍有候选",
+      "ts": "2026-11-14T05:14:10"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-14T05:14:35"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 10/10 已满",
+      "ts": "2026-11-14T05:15:30"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:12:55"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 14160,
+      "at": "2026-11-14T05:13:09"
+    },
+    {
+      "state": "FETCH",
+      "ms": 60794,
+      "at": "2026-11-14T05:14:10"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 8,
+      "at": "2026-11-14T05:14:10"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:14:10"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:14:10"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 25001,
+      "at": "2026-11-14T05:14:35"
+    },
+    {
+      "state": "FETCH",
+      "ms": 54258,
+      "at": "2026-11-14T05:15:30"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 3,
+      "at": "2026-11-14T05:15:30"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:15:30"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:15:30"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-14T05:15:30"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 2,
+      "at": "2026-11-14T05:15:30"
+    }
+  ],
+  "elapsed_ms": 154226,
+  "state_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c1-desert-tractor\\run\\state.json",
+  "events_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c1-desert-tractor\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c1-desert-tractor\\run\\evidence.json"
+}

@@ -1,0 +1,1194 @@
+{
+ "brief_id": "auto-20261112-210206",
+ "created_at": "2026-11-14T04:23:29",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "港口集装箱正面吊 4×2 底盘 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "港口集装箱正面吊 4×2 底盘 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 127,
+ "candidates": [
+  {
+   "model": "合力 RSH4532-Vo 正面吊运机",
+   "brand": "合力",
+   "slots": {
+    "brand": "合力",
+    "series": "RSH",
+    "model_code": "RSH4532-Vo",
+    "config": ""
+   },
+   "search_key": "合力 RSH4532-Vo 正面吊运机",
+   "reason": "结果页标题明确为安徽合力 RSH4532-Vo 正面吊运机，适用于集装箱中转站、港口场所的满箱搬运和堆垛；结果未给出驱动形式，因此 config 留空。",
+   "sources": [
+    "https://www.56chp.cn/site/product_detail/mi/21211/id/36037.html",
+    "https://m.chinaforklift.com/sell/detail/202006/20/241945.html",
+    "https://m.chinaforklift.com/sell/detail/202006/22/267373.html"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/RSH4532VO",
+   "identity_kind": "code",
+   "model_variants": [
+    "合力 RSH4532-Vo 正面吊运机",
+    "安徽合力 RSH4532-Vo",
+    "安徽合力 RSH4532-Vo 正面吊运机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "topup"
+   ],
+   "source_count": 3,
+   "intent_band": "must",
+   "intent_reason": "结果页标题明确为安徽合力 RSH4532-Vo 正面吊运机，适用于集装箱中转站、港口场所的满箱搬运和堆垛；它与港口堆场工况、正面吊整机关系轴最直接，型号明确，优先抓图；驱动形式未给出，需抓图核实4×2。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "海斯特 RS45（B921）",
+   "brand": "海斯特",
+   "slots": {
+    "brand": "海斯特",
+    "series": "RS45",
+    "model_code": "B921",
+    "config": ""
+   },
+   "search_key": "海斯特RS45（B921）正面吊",
+   "reason": "结果明确为海斯特新一代正面吊RS45（B921），面向港口、铁路及大型物流园区集装箱搬运。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MjM5NjMyODE0Mw==&mid=2651386588&idx=1&sn=0ce2cfdba27a8f298d0f568407f59ec4"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/B921",
+   "identity_kind": "code",
+   "model_variants": [
+    "海斯特 RS45（B921）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "结果明确为海斯特新一代正面吊RS45（B921），面向港口、铁路及大型物流园区集装箱搬运；品牌代表性强，与港口堆场匹配，也能与Hyster RS45通用页形成代际和型谱差异。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "卡尔玛 Essential系列正面吊 DRU450-570",
+   "brand": "卡尔玛",
+   "slots": {
+    "brand": "卡尔玛",
+    "series": "Essential系列",
+    "model_code": "DRU450-570",
+    "config": ""
+   },
+   "search_key": "卡尔玛 Essential系列 正面吊 DRU450-570",
+   "reason": "结果明确提到Essential系列正面吊（DRU450-570）包括4款车型，起升能力45-57吨。",
+   "sources": [
+    "https://www.kalmar.cn/news--insights/press_releases/2017/kalmar-introduces-new-essential-range-of-reachstackers-empty-container-handlers-and-forklifts-and-tl2-terminal-tractor-in-asia-pacific",
+    "http://hqgcjxw.com/news/show.php?itemid=46788"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/DRU450570",
+   "identity_kind": "code",
+   "model_variants": [
+    "卡尔玛 Essential系列正面吊 DRU450-570",
+    "卡尔玛 Essential 系列正面吊 DRU450-570"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "结果明确提到Essential系列正面吊DRU450-570包括4款车型，起升能力45-57吨；覆盖港口正面吊主力吨位段，适合比较系列内驾驶室外罩、配重罩和走台布置差异。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "科尼 SMV 4542 TB4 BH",
+   "brand": "科尼",
+   "slots": {
+    "brand": "科尼",
+    "series": "SMV",
+    "model_code": "4542 TB4 BH",
+    "config": ""
+   },
+   "search_key": "科尼 SMV 4542 TB4 BH 正面吊",
+   "reason": "结果标题明确为科尼SMV 4542 TB4 BH正面吊，并介绍其用于驳船装卸等集装箱搬运任务。",
+   "sources": [
+    "https://m.d1cm.com/product/konecranes003/117114/"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/SMV4542",
+   "identity_kind": "code",
+   "model_variants": [
+    "科尼 SMV 4542 TB4 BH"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "结果标题明确为科尼SMV 4542 TB4 BH正面吊，并介绍其用于驳船装卸等集装箱搬运任务；港口装卸工况匹配，具体型号便于核对整机外罩和走台关系。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "大连叉车 CRS450Z5",
+   "brand": "大连叉车(DALIAN)",
+   "slots": {
+    "brand": "大连叉车(DALIAN)",
+    "series": "",
+    "model_code": "CRS450Z5",
+    "config": ""
+   },
+   "search_key": "大连叉车 CRS450Z5 集装箱正面吊运机",
+   "reason": "结果明确为大连叉车CRS450Z5型集装箱正面吊运机，用于20/40英尺集装箱堆叠及码头、堆场水平运输。",
+   "sources": [
+    "https://www.chacheku.com/archives/137301.html#respond"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CRS450Z5",
+   "identity_kind": "code",
+   "model_variants": [
+    "大连叉车 CRS450Z5"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "结果明确为大连叉车CRS450Z5型集装箱正面吊运机，用于20/40英尺集装箱堆叠及码头、堆场水平运输；与港口集装箱堆场和正面吊上装关系直接匹配。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "龙工 LG420FC4",
+   "brand": "龙工",
+   "slots": {
+    "brand": "龙工",
+    "series": "",
+    "model_code": "LG420FC4",
+    "config": ""
+   },
+   "search_key": "龙工 LG420FC4 集装箱正面吊",
+   "reason": "结果标题明确为龙工LG420FC4集装箱正面吊，并给出门架、驱动桥、变速箱等整机配置信息。",
+   "sources": [
+    "https://m.gkzhan.com/chanpin/9118622.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/LG420FC4",
+   "identity_kind": "code",
+   "model_variants": [
+    "龙工 LG420FC4"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果标题明确为龙工LG420FC4集装箱正面吊，并给出门架、驱动桥、变速箱等整机配置信息；可用于核对外罩、走台、踏步与底盘/门架关系，具体型号值得优先看。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "Kalmar DRD420-65S6 正面吊运机",
+   "brand": "卡尔玛（Kalmar）",
+   "slots": {
+    "brand": "卡尔玛（Kalmar）",
+    "series": "DRD",
+    "model_code": "DRD420-65S6",
+    "config": ""
+   },
+   "search_key": "Kalmar DRD420-65S6 正面吊运机",
+   "reason": "结果正文提到Kalmar DRD420-65S6型正面吊运机用于上海港外高桥工程，属港口正面吊具体型号；驱动形式未写明。",
+   "sources": [
+    "https://www.mfcad.com/tuzhi/qizhongji/1107656.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "identity": "code/DRD42065S6",
+   "identity_kind": "code",
+   "model_variants": [
+    "Kalmar DRD420-65S6 正面吊运机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果正文提到Kalmar DRD420-65S6型正面吊运机用于上海港外高桥工程，属港口正面吊具体型号；港口实景线索强，可与Essential系列形成差异。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "临晟 CRS450 集装箱正面吊",
+   "brand": "临晟集团",
+   "slots": {
+    "brand": "临晟集团",
+    "series": "CRS",
+    "model_code": "CRS450",
+    "config": ""
+   },
+   "search_key": "CRS450 集装箱正面吊",
+   "reason": "结果给出CRS450柴油正面吊整机参数，属港口集装箱正面吊；结果未明确驱动形式，4×2需二次核实。",
+   "sources": [
+    "https://www.ltmg.com/cn/products/port-machinery/CRS450"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "identity": "code/CRS450",
+   "identity_kind": "code",
+   "model_variants": [
+    "临晟 CRS450 集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果给出CRS450柴油正面吊整机参数，属港口集装箱正面吊；可补充具体型号样本，但4×2驱动形式未明确，需抓图二次核实。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "XCMG 45吨级集装箱正面吊",
+   "brand": "XCMG",
+   "slots": {
+    "brand": "XCMG",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "XCMG 集装箱正面吊 45吨",
+   "reason": "结果页介绍 XCMG 集装箱正面吊，主力机型为 45 吨级，应用于海港/内河码头集装箱堆场装卸堆垛；结果未列出具体型号码和驱动形式。",
+   "sources": [
+    "https://www.lionkar.cn/product/xcmg%E9%9B%86%E8%A3%85%E7%AE%B1%E6%AD%A3%E9%9D%A2%E5%90%8A/"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/XCMG级集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XCMG 45吨级集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果介绍XCMG集装箱正面吊主力机型为45吨级，应用于海港/内河码头集装箱堆场装卸堆垛；虽为generic，但吨位与港口堆场场景高度匹配，代表性强。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "TOMAC 集装箱正面吊",
+   "brand": "TOMAC（通玛科）",
+   "slots": {
+    "brand": "TOMAC",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "TOMAC 正面吊",
+   "reason": "结果图文明确将 TOMAC（通玛科）车辆识别为集装箱正面吊，摄于唐山京唐港码头，属港口堆场正面吊整机，符合任务单class。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/TOMAC集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TOMAC 集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果图文明确将TOMAC车辆识别为集装箱正面吊，摄于唐山京唐港码头；港口堆场实车线索强，适合看驾驶室外罩、配重罩、走台护栏和灯具护罩等整机关系。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "Hyster RS45 正面吊",
+   "brand": "Hyster",
+   "slots": {
+    "brand": "Hyster",
+    "series": "RS",
+    "model_code": "RS45",
+    "config": ""
+   },
+   "search_key": "Hyster RS45 正面吊",
+   "reason": "结果页为 Hyster RS45 正面吊产品页，额定起重量 45 吨，面向港口集装箱搬运；结果未给出 4×2 等驱动形式，因此 config 留空。",
+   "sources": [
+    "https://www.hyster.com/zh-cn/china/%E9%9B%86%E8%A3%85%E7%AE%B1%E5%A0%86%E9%AB%98%E6%9C%BA/rs45/"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/HYSTERRS45正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Hyster RS45 正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "港口集装箱堆场：盐雾/潮湿 港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果页为Hyster RS45正面吊产品页，额定起重量45吨，面向港口集装箱搬运；与海斯特RS45（B921）同品牌，可作型谱/代际备用，非首选。",
+   "role": "backup",
+   "intent_rank": 11
+  },
+  {
+   "model": "HCS46",
+   "brand": "哈工机械",
+   "slots": {
+    "brand": "哈工机械",
+    "series": "正面吊",
+    "model_code": "HCS46",
+    "config": ""
+   },
+   "search_key": "哈工 HCS46 正面吊",
+   "reason": "结果明确给出HCS46集装箱正面吊运起重机，适用于港口、堆场等集装箱装卸场景；结果未给出驱动形式，config留空。",
+   "sources": [
+    "https://www.hgcjx.com/zmd.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/HCS46",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HCS46"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果明确给出HCS46集装箱正面吊运起重机，适用于港口、堆场等集装箱装卸场景；场景匹配，但品牌和型谱线索弱于主选，作备用。",
+   "role": "backup",
+   "intent_rank": 12
+  },
+  {
+   "model": "RSH4532-VO2",
+   "brand": "合力",
+   "slots": {
+    "brand": "合力",
+    "series": "重型正面吊",
+    "model_code": "RSH4532-VO2",
+    "config": ""
+   },
+   "search_key": "合力 RSH4532-VO2 正面吊",
+   "reason": "结果中的重型正面吊性能参数表列出该型号，属于港口集装箱正面吊；结果未明确驱动形式，config留空。",
+   "sources": [
+    "https://www.heli.com.cn/Products_detail/212.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/RSH4532VO2",
+   "identity_kind": "code",
+   "model_variants": [
+    "RSH4532-VO2"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果中的重型正面吊性能参数表列出RSH4532-VO2，属港口集装箱正面吊；与合力RSH4532-Vo同族，可补参数和型谱，需核实与主选差异。",
+   "role": "backup",
+   "intent_rank": 13
+  },
+  {
+   "model": "XCMG集装箱正面吊",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "XCMG 集装箱正面吊",
+   "reason": "结果标题与正文明确XCMG/徐工正面吊，应用于海港、内河码头集装箱堆场等；结果未给出具体型号码。",
+   "sources": [
+    "https://www.lionkar.cn/product/xcmg%E9%9B%86%E8%A3%85%E7%AE%B1%E6%AD%A3%E9%9D%A2%E5%90%8A/"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/XCMG集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XCMG集装箱正面吊",
+    "XCMG 集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "港口集装箱正面吊 4×2 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果标题与正文明确XCMG/徐工正面吊，应用于海港、内河码头集装箱堆场；与45吨级条目同品牌，作generic备用。",
+   "role": "backup",
+   "intent_rank": 14
+  },
+  {
+   "model": "RSH4528-VO2",
+   "brand": "合力",
+   "slots": {
+    "brand": "合力",
+    "series": "重型正面吊",
+    "model_code": "RSH4528-VO2",
+    "config": ""
+   },
+   "search_key": "合力 RSH4528-VO2 正面吊",
+   "reason": "结果中的重型正面吊性能参数表列出该型号，属于港口集装箱正面吊；结果未明确驱动形式，config留空。",
+   "sources": [
+    "https://www.heli.com.cn/Products_detail/212.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/RSH4528VO2",
+   "identity_kind": "code",
+   "model_variants": [
+    "RSH4528-VO2"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果中的重型正面吊性能参数表列出该型号，属于港口集装箱正面吊；文本仅到参数表层级，代表性弱于主选，入池补充型谱。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "RSH4536-VO2",
+   "brand": "合力",
+   "slots": {
+    "brand": "合力",
+    "series": "重型正面吊",
+    "model_code": "RSH4536-VO2",
+    "config": ""
+   },
+   "search_key": "合力 RSH4536-VO2 正面吊",
+   "reason": "结果中的重型正面吊性能参数表列出该型号，属于港口集装箱正面吊；结果未明确驱动形式，config留空。",
+   "sources": [
+    "https://www.heli.com.cn/Products_detail/212.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/RSH4536VO2",
+   "identity_kind": "code",
+   "model_variants": [
+    "RSH4536-VO2"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "港口集装箱正面吊 4×2 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果中的重型正面吊性能参数表列出该型号，属于港口集装箱正面吊；与RSH4532同族，差异性有限，入池。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "三一（SANY）集装箱正面吊",
+   "brand": "SANY（三一）",
+   "slots": {
+    "brand": "SANY",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "SANY 正面吊",
+   "reason": "行业报告在集装箱正面吊厂商章节中列出 SANY，可作为正面吊整机品牌候选；结果未给出具体型号与驱动形式，故仅保留品牌级条目。",
+   "sources": [
+    "https://www.168report.com/reports/13078785/container-reach-stacker#2"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/三一集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "三一（SANY）集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "行业报告在集装箱正面吊厂商章节中列出SANY，可作为正面吊整机品牌候选；结果未给具体型号与驱动形式，仅作品牌池。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "利勃海尔（Liebherr）集装箱正面吊",
+   "brand": "Liebherr（利勃海尔）",
+   "slots": {
+    "brand": "Liebherr",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "利勃海尔 正面吊",
+   "reason": "结果在集装箱正面吊介绍中将利勃海尔列为国际有名品牌，行业报告亦将其列入集装箱正面吊主要厂商；属正面吊整机品牌候选。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e",
+    "https://www.168report.com/reports/13078785/container-reach-stacker#3"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/利勃海尔集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "利勃海尔（Liebherr）集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果在集装箱正面吊介绍中将利勃海尔列为国际有名品牌；属品牌级候选，缺具体型号和驱动形式，入池。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "科尼（Konecranes）集装箱正面吊",
+   "brand": "Konecranes（科尼）",
+   "slots": {
+    "brand": "Konecranes",
+    "series": "集装箱正面吊",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "科尼 正面吊",
+   "reason": "结果将其列为国际有名的集装箱正面吊品牌之一，属正面吊整机品牌；结果未给出具体车系/型号码，故仅保留品牌级候选。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e",
+    "http://sxqyjd.tz1288.com/news_view_11920587.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/科尼集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "科尼（Konecranes）集装箱正面吊",
+    "科尼 集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "港口集装箱正面吊 4×2 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "港口集装箱正面吊 4×2 底盘 厂家"
+    }
+   ],
+   "dimensions": [
+    "english",
+    "topup"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果将其列为国际有名的集装箱正面吊品牌之一；已有科尼SMV具体型号，本条目仅作品牌级补充。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "诺尔 正面吊 RS",
+   "brand": "诺尔",
+   "slots": {
+    "brand": "诺尔",
+    "series": "正面吊",
+    "model_code": "RS",
+    "config": ""
+   },
+   "search_key": "诺尔 正面吊 RS",
+   "reason": "结果将诺尔产品列为正面吊（RS），可作为正面吊车型线索；未给出具体驱动形式。",
+   "sources": [
+    "https://m.21-sun.com/product/b/neqzsb/"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "identity": "generic/诺尔正面吊RS",
+   "identity_kind": "generic",
+   "model_variants": [
+    "诺尔 正面吊 RS"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "港口集装箱正面吊 4×2 底盘 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果将诺尔产品列为正面吊（RS），可作为正面吊车型线索；未给出具体驱动形式，入池。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "TOMAC（通玛科）正面吊",
+   "brand": "TOMAC（通玛科）",
+   "slots": {
+    "brand": "TOMAC（通玛科）",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "TOMAC 通玛科 正面吊",
+   "reason": "结果正文提到唐山京唐港码头实拍车辆中有TOMAC（通玛科）正面吊；仅品牌级信息，无具体型号码和驱动形式。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "identity": "generic/TOMAC正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TOMAC（通玛科）正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果正文提到唐山京唐港码头实拍车辆中有TOMAC正面吊；与TOMAC集装箱正面吊重复且更泛，仅作池内补充。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "科尼（Konecranes）正面吊",
+   "brand": "科尼（Konecranes）",
+   "slots": {
+    "brand": "科尼（Konecranes）",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "科尼 Konecranes 正面吊",
+   "reason": "结果正文将科尼（Konecranes）列为国际有名正面吊品牌；仅品牌级候选，型号码和驱动形式未在结果中出现。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "identity": "generic/科尼正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "科尼（Konecranes）正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果正文将科尼列为国际有名正面吊品牌；品牌级且与已有科尼条目重复，入池。",
+   "role": "pool",
+   "intent_rank": 22
+  },
+  {
+   "model": "利勃海尔（Liebherr）正面吊",
+   "brand": "利勃海尔（Liebherr）",
+   "slots": {
+    "brand": "利勃海尔（Liebherr）",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "利勃海尔 Liebherr 正面吊",
+   "reason": "结果正文将利勃海尔列为国际有名正面吊品牌；仅品牌级候选，型号码和驱动形式未在结果中出现。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247488113&idx=1&sn=7221362d70828e95c95d43f834e2420e"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "identity": "generic/利勃海尔正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "利勃海尔（Liebherr）正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "港口集装箱正面吊 4×2 底盘 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果正文将利勃海尔列为国际有名正面吊品牌；品牌级且与已有条目重复，入池。",
+   "role": "pool",
+   "intent_rank": 23
+  },
+  {
+   "model": "Kalmar 集装箱正面吊",
+   "brand": "Kalmar",
+   "slots": {
+    "brand": "Kalmar",
+    "series": "集装箱正面吊",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Kalmar 集装箱正面吊",
+   "reason": "结果提到卡尔玛/Kalmar品牌生产集装箱正面吊，并有正面吊产品线索；未给出具体型号码和驱动形式。",
+   "sources": [
+    "https://baike.baidu.com/item/%e5%8d%a1%e5%93%a5%e7%89%b9%e7%a7%91%e5%b7%a5%e4%b8%9a%ef%bc%88%e4%b8%ad%e5%9b%bd%ef%bc%89%e6%9c%89%e9%99%90%e5%85%ac%e5%8f%b8/20976716?bst=1789780225.8d1fa1adc60f3b10#1#1#1",
+    "http://haiqe.com/brand/kalmar.html"
+   ],
+   "source_query": "港口集装箱正面吊 4×2 底盘 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "identity": "generic/KALMAR集装箱正面吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Kalmar 集装箱正面吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "港口集装箱正面吊 4×2 底盘 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 2,
+   "intent_band": "weak",
+   "intent_reason": "结果提到卡尔玛/Kalmar品牌生产集装箱正面吊，并有正面吊产品线索；已有Kalmar具体型号，品牌级条目入池。",
+   "role": "pool",
+   "intent_rank": 24
+  },
+  {
+   "model": "HOWO Sitrak 480HP 4X2 集装箱码头牵引车",
+   "brand": "HOWO Sitrak",
+   "slots": {
+    "brand": "HOWO Sitrak",
+    "series": "Sitrak",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "HOWO Sitrak 480HP 4X2 Container Terminal",
+   "reason": "结果标题明确为HOWO Sitrak 480HP 4X2集装箱码头牵引车，匹配港口集装箱场景与4×2构型；结果未给车系型号码。",
+   "sources": [
+    "https://yltrucks.en.made-in-china.com/product/TfqpVYFxJUhB/China-Outstanding-Value-for-The-Price-Responsive-HOWO-Sitrak-480HP-4X2-Container-Terminal-Tractor.html"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "series/HOWO",
+   "identity_kind": "series",
+   "model_variants": [
+    "HOWO Sitrak 480HP 4X2 集装箱码头牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果明确为4X2集装箱码头牵引车，匹配港口和4×2构型；但车辆类别是牵引车而非正面吊，对驾驶室外罩、配重罩、登车踏步等关系轴弱。",
+   "role": "pool",
+   "intent_rank": 25
+  },
+  {
+   "model": "广汽日野 700 4X2 集装箱运输底盘",
+   "brand": "广汽日野",
+   "slots": {
+    "brand": "广汽日野",
+    "series": "700",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "广汽日野700 4X2底盘 集装箱运输",
+   "reason": "结果明确为广汽日野700的4X2底盘，定位集装箱运输，匹配港口短驳与4×2构型。",
+   "sources": [
+    "https://www.cntplus.com/truck/128022.html"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/广汽日野7004X2集装箱运输底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "广汽日野 700 4X2 集装箱运输底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果明确为广汽日野700的4X2底盘，定位集装箱运输，匹配港口短驳与4×2；但属运输底盘，缺少正面吊配重罩、吊具上装和走台护栏关系。",
+   "role": "pool",
+   "intent_rank": 26
+  },
+  {
+   "model": "五十铃 Giga（CXY系列）港口牵引车",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "Giga",
+    "model_code": "CXY",
+    "config": ""
+   },
+   "search_key": "五十铃 Giga（CXY系列）港口牵引车",
+   "reason": "结果称Giga（CXY系列）为巴拿马港口牵引车主力，并提到高湿高盐环境；未明示驱动形式。",
+   "sources": [
+    "https://www.isuzuvehicles.com/zh-CN/best-isuzu-tractor-truck-configuration-for-panama-ports/#respond#1"
+   ],
+   "source_query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "identity": "generic/五十铃GIGA港口牵引车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "五十铃 Giga（CXY系列）港口牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "港口集装箱堆场：盐雾/潮湿 4×2 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果称Giga（CXY系列）为港口牵引车，并提到高湿高盐环境；场景和环境匹配，但车辆类别为牵引车，不是正面吊，关系轴弱。",
+   "role": "pool",
+   "intent_rank": 27
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 16,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 27,
+  "required": 23,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 4
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 27,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 49,
+  "unique": 27,
+  "removed": 22,
+  "generic": 15
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 10,
+  "backup": 4,
+  "primary": 10
+ }
+}

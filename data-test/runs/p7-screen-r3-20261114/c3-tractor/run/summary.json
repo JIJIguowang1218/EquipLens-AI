@@ -1,0 +1,365 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261112-211042",
+  "state": "DONE",
+  "slots": {
+    "target": 10,
+    "accepted": 10,
+    "filled": true
+  },
+  "delivery": {
+    "required": 10,
+    "delivered": 10,
+    "missing": 0,
+    "degraded": 5,
+    "degraded_ratio": 0.5,
+    "degraded_warn": false,
+    "degraded_targets": [
+      "凯斯 OPTUM2704",
+      "悍沃1654轮式拖拉机",
+      "潍坊泰山 TT1600（G4）",
+      "东方红-1604/1804",
+      "天拖TN1454型大马力轮式拖拉机"
+    ],
+    "citation_only": 3,
+    "citation_only_targets": [
+      "凯斯 OPTUM2704",
+      "潍坊泰山 TT1600（G4）",
+      "东方红-1604/1804"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 7,
+      "images": 30
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "东方红-LX2004",
+        "KAT2204拖拉机",
+        "丰疆智能 FJ2004",
+        "东方红-LX2204系列"
+      ],
+      "images": 15,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "query_tiers": {
+      "model": 135,
+      "exact": 95
+    },
+    "unavailable": [
+      {
+        "model": "东方红-LX2004",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "雷沃 TG1654 / M1654-G",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "KAT2204拖拉机",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "丰疆智能 FJ2004",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 25,
+        "blocked": 0
+      },
+      {
+        "model": "TT1604（G4）轮式拖拉机",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "东方红-LX2204系列",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      },
+      {
+        "model": "飞驰 FB1804",
+        "reason": "not_delivered",
+        "hits": 30,
+        "downloaded": 30,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 7,
+      "accepted": 7,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "东方红 LX2204 大马力轮式拖拉机",
+      "雷沃欧豹 M1654",
+      "五征雷诺曼 PH2304",
+      "凯斯 OPTUM2704",
+      "John Deere 6170R",
+      "骥驰 JC2104",
+      "悍沃1654轮式拖拉机"
+    ],
+    "u-env": [
+      "潍坊泰山 TT1600（G4）",
+      "东方红-1604/1804",
+      "天拖TN1454型大马力轮式拖拉机"
+    ]
+  },
+  "budget_used": {
+    "queries": 51,
+    "models": 17,
+    "fetches": 380,
+    "verifies": 380
+  },
+  "config": {
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 510,
+    "downloaded": 465,
+    "failed": 45,
+    "blocked": 0,
+    "gate_pass": 395,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "file.mainongji.com",
+      "himg.china.cn",
+      "img003.hc360.cn",
+      "img005.hc360.cn",
+      "img011.hc360.cn",
+      "img1.makepolo.net",
+      "img3.99114.com",
+      "img56.nongjx.com"
+    ],
+    "fail_counts": {
+      "file.mainongji.com": 5,
+      "himg.china.cn": 5,
+      "img003.hc360.cn": 5,
+      "img005.hc360.cn": 5,
+      "img011.hc360.cn": 10,
+      "img1.makepolo.net": 5,
+      "img3.99114.com": 5,
+      "img56.nongjx.com": 5
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T05:23:32"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/10，池中仍有候选",
+      "ts": "2026-11-14T05:23:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 7 个",
+      "ts": "2026-11-14T05:23:36"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/10，池中仍有候选",
+      "ts": "2026-11-14T05:24:23"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T05:24:23"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-14T05:24:23"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-14T05:24:25"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 4 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-14T05:24:45"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 7 个候选",
+      "ts": "2026-11-14T05:24:55"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 10/10 已满",
+      "ts": "2026-11-14T05:25:39"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:23:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 4195,
+      "at": "2026-11-14T05:23:36"
+    },
+    {
+      "state": "FETCH",
+      "ms": 47505,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 11,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "FILL",
+      "ms": 2,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T05:24:23"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 1882,
+      "at": "2026-11-14T05:24:25"
+    },
+    {
+      "state": "FETCH",
+      "ms": 19539,
+      "at": "2026-11-14T05:24:45"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-14T05:24:45"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T05:24:45"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:24:45"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 9661,
+      "at": "2026-11-14T05:24:55"
+    },
+    {
+      "state": "FETCH",
+      "ms": 44466,
+      "at": "2026-11-14T05:25:39"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 4,
+      "at": "2026-11-14T05:25:39"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T05:25:39"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-14T05:25:39"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 1,
+      "at": "2026-11-14T05:25:39"
+    }
+  ],
+  "elapsed_ms": 127267,
+  "state_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c3-tractor\\run\\state.json",
+  "events_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c3-tractor\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\86136\\Desktop\\EquipLens-AI\\data-test\\runs\\p7-screen-r3-20261114\\c3-tractor\\run\\evidence.json"
+}

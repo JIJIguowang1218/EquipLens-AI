@@ -1,0 +1,1494 @@
+{
+ "brief_id": "auto-20261112-212742",
+ "created_at": "2026-11-14T03:50:16",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "道路施工工况 单钢轮 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0
+  }
+ ],
+ "search_results": 101,
+ "candidates": [
+  {
+   "model": "徐工 CV83PDU/CV123PDU",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "CV",
+    "model_code": "CV83PDU/CV123PDU",
+    "config": ""
+   },
+   "search_key": "徐工 CV83PDU/CV123PDU 单钢轮压路机",
+   "reason": "结果明确为徐工北美市场单钢轮压路机，且提到ROPS/FOPS驾驶室，符合道路施工与驾驶室框架相关需求。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzA4MzAxOTkxMQ==&mid=2652701247&idx=3&sn=745b6a2395a77c7c95d227f7d042c006"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/CV123PDU",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 CV83PDU/CV123PDU"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "文本明确为徐工北美市场单钢轮压路机，并提到ROPS/FOPS驾驶室；与任务单的ROPS驾驶室框架、道路施工单钢轮构型直接相关。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "CA510PD",
+   "brand": "Dynapac",
+   "slots": {
+    "brand": "Dynapac",
+    "series": "CA",
+    "model_code": "CA510PD",
+    "config": ""
+   },
+   "search_key": "Dynapac CA510PD 单钢轮振动压路机",
+   "reason": "结果为 Dynapac CA510PD 单钢轮振动压路机，含 ROPS 工作重量、前/后模重、轮胎型号等参数，属后胶轮+前钢轮的单钢轮压路机。",
+   "sources": [
+    "https://dynapac.com/cn/products/compaction/dynapac-ca510pd"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/CA510PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA510PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "文本含ROPS工作重量、前/后模重、轮胎型号等参数，属后胶轮+前钢轮；直接覆盖单钢轮底盘和ROPS信息。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "BW213D-40",
+   "brand": "宝马格（BOMAG）",
+   "slots": {
+    "brand": "宝马格",
+    "series": "BW213",
+    "model_code": "BW213D-40",
+    "config": ""
+   },
+   "search_key": "宝马格 BW213D-40 单钢轮振动压路机",
+   "reason": "结果明确为宝马格 BW213D-40 单钢轮振动压路机，工作质量 12420kg，应用于道路施工、沥青压实等场景，与任务单环境一致。",
+   "sources": [
+    "https://baike.baidu.com/item/%E5%AE%9D%E9%A9%AC%E6%A0%BCBW213D-40%E5%8E%8B%E8%B7%AF%E6%9C%BA#1"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/BW213D40",
+   "identity_kind": "code",
+   "model_variants": [
+    "BW213D-40"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为宝马格单钢轮振动压路机，工作质量12420kg，应用于道路施工、沥青压实，工况匹配。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "XS265HS 单钢轮压路机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "",
+    "model_code": "XS265HS",
+    "config": ""
+   },
+   "search_key": "徐工 XS265HS 单钢轮压路机",
+   "reason": "结果明确为徐工单钢轮振动压路机，适用于地面压实及公路等工程，符合道路施工工况。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-125233.htm#item2"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS265HS",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS265HS 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为徐工单钢轮振动压路机，适用于地面压实及公路等工程，符合道路施工工况。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "XS395IV 单钢轮压路机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "",
+    "model_code": "XS395IV",
+    "config": ""
+   },
+   "search_key": "徐工 XS395IV 全液压单钢轮压路机",
+   "reason": "结果描述为全液压单钢轮振动压路机，适用于公路路面基层、路基等压实作业。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail.jsp?id=125231"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS395IV",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS395IV 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本描述为全液压单钢轮振动压路机，适用于公路路面基层、路基压实，是道路工况的主力配置。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "XS265JSIV 单钢轮压路机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "",
+    "model_code": "XS265JSIV",
+    "config": ""
+   },
+   "search_key": "徐工 XS265JSIV 机械驱动单钢轮振动压路机",
+   "reason": "结果明确为机械驱动单钢轮振动压路机，适用于基础层及公路等压实作业。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-136877.htm#item2"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS265JSIV",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS265JSIV 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为机械驱动单钢轮振动压路机，适用于基础层及公路压实；可与全液压车型形成驱动形式差异。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "HC 228D 单钢轮压路机",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "HC系列",
+    "model_code": "HC 228D",
+    "config": ""
+   },
+   "search_key": "悍马 HC 228D 单钢轮压路机",
+   "reason": "结果明确为悍马HC系列全液压单钢轮压路机，用于道路水泥稳定碎石基层压实。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202405/516079155876501397.html"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/HC228D单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HC 228D 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确为悍马HC系列全液压单钢轮压路机，用于道路水泥稳定碎石基层压实，品牌与工况匹配。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "LSS2302",
+   "brand": "国机洛建（洛建）",
+   "slots": {
+    "brand": "国机洛建",
+    "series": "LSS",
+    "model_code": "LSS2302",
+    "config": ""
+   },
+   "search_key": "洛建 LSS2302 单钢轮振动压路机",
+   "reason": "结果为洛建 LSS2302 单钢轮振动压路机，工作质量 23000kg，激振力/振动频率等压实参数齐全，适用于砾石碎石等道路基层压实。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%B4%9B%E5%BB%BALSS2302%E5%8E%8B%E8%B7%AF%E6%9C%BA?bst=1792771468.33016749024ec2cd#1"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/LSS2302",
+   "identity_kind": "code",
+   "model_variants": [
+    "LSS2302",
+    "LSS2302 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本为洛建单钢轮振动压路机，工作质量23000kg，激振力/振动频率等参数齐全，适用于砾石碎石道路基层。",
+   "role": "primary",
+   "intent_rank": 8
+  },
+  {
+   "model": "SR40-G",
+   "brand": "山推股份",
+   "slots": {
+    "brand": "山推股份",
+    "series": "SR",
+    "model_code": "SR40-G",
+    "config": ""
+   },
+   "search_key": "山推 SR40-G 单钢轮振动压路机",
+   "reason": "结果为山推 SR40-G 单钢轮振动压路机，大吨位全液压双驱、前后双驱动，含振动轮/压实宽度等参数，符合单钢轮道路压实构型。",
+   "sources": [
+    "https://www.shantui.com/phone/product/pro-detail-3936086.htm"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/SR40G",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SR40-G"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "山推SR40-G单钢轮振动压路机，大吨位全液压双驱，含振动轮/压实宽度等参数，构型信息具体。",
+   "role": "primary",
+   "intent_rank": 9
+  },
+  {
+   "model": "618A",
+   "brand": "柳工",
+   "slots": {
+    "brand": "柳工",
+    "series": "6",
+    "model_code": "618A",
+    "config": ""
+   },
+   "search_key": "柳工 618A 单钢轮压路机",
+   "reason": "结果为柳工 618A 机械式振动单钢轮压路机，工作质量 18 吨，含振动频率、振动轮宽度/直径等参数，符合单钢轮构型。",
+   "sources": [
+    "https://product.360che.com/m357/89488_param.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "generic/618A",
+   "identity_kind": "generic",
+   "model_variants": [
+    "618A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "柳工618A机械式振动单钢轮压路机，工作质量18吨，含振动频率、振动轮宽度/直径等参数，机械式代表。",
+   "role": "primary",
+   "intent_rank": 10
+  },
+  {
+   "model": "山推 SR22-G",
+   "brand": "山推",
+   "slots": {
+    "brand": "山推",
+    "series": "SR",
+    "model_code": "SR22-G",
+    "config": ""
+   },
+   "search_key": "山推 SR22-G 单钢轮压路机",
+   "reason": "山推官方产品页明确为SR22-G单钢轮压路机，全液压双驱单钢轮振动压路机，适用于道路基础压实。",
+   "sources": [
+    "https://www.shantui.com/phone/product/pro-detail-3933230.htm"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/山推SR22G",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山推 SR22-G"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "山推官方产品页明确为SR22-G单钢轮压路机，全液压双驱，适用于道路基础压实。",
+   "role": "primary",
+   "intent_rank": 11
+  },
+  {
+   "model": "三一 SSR260C-10H 单钢轮压路机",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "SSR",
+    "model_code": "SSR260C-10H",
+    "config": ""
+   },
+   "search_key": "三一 SSR260C-10H 单钢轮压路机",
+   "reason": "结果为SSR260C-10H单钢轮压路机，适用公路、市政等工况。",
+   "sources": [
+    "https://m.sanygroup.com/product/861.html"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/SSR260C10H",
+   "identity_kind": "code",
+   "model_variants": [
+    "三一 SSR260C-10H 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "SSR260C-10H单钢轮压路机，适用公路、市政等工况，补足三一品牌道路压实样本。",
+   "role": "primary",
+   "intent_rank": 12
+  },
+  {
+   "model": "宝马格 BW226D-5CL 双驱单钢轮压路机",
+   "brand": "宝马格",
+   "slots": {
+    "brand": "宝马格",
+    "series": "BW226D-5CL",
+    "model_code": "BW226D-5CL",
+    "config": ""
+   },
+   "search_key": "宝马格 BW226D-5CL 双驱单钢轮压路机",
+   "reason": "结果为宝马格BW226D-5CL双驱单钢轮压路机，面向道路施工、市政基建等压实需求。",
+   "sources": [
+    "https://community.b-china.cn/product/info/13336"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/BW226D5CL",
+   "identity_kind": "code",
+   "model_variants": [
+    "宝马格 BW226D-5CL 双驱单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "BW226D-5CL双驱单钢轮压路机，面向道路施工、市政基建，双驱构型有差异性。",
+   "role": "primary",
+   "intent_rank": 13
+  },
+  {
+   "model": "山工 SEM8222 单钢轮压路机",
+   "brand": "山工",
+   "slots": {
+    "brand": "山工",
+    "series": "SEM8222",
+    "model_code": "SEM8222",
+    "config": ""
+   },
+   "search_key": "山工 SEM8222 单钢轮压路机",
+   "reason": "结果为山工SEM8222单钢轮压路机，应用于路基、基础层等道路压实作业。",
+   "sources": [
+    "https://baike.baidu.com/item/%E5%B1%B1%E5%B7%A5SEM8222%E5%8E%8B%E8%B7%AF%E6%9C%BA/8941093"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/SEM8222",
+   "identity_kind": "code",
+   "model_variants": [
+    "山工 SEM8222 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "SEM8222单钢轮压路机，应用于路基、基础层等道路压实，补足山工品牌样本。",
+   "role": "primary",
+   "intent_rank": 14
+  },
+  {
+   "model": "XS202J",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "XS202",
+    "model_code": "XS202J",
+    "config": ""
+   },
+   "search_key": "徐工 XS202J 单钢轮压路机",
+   "reason": "结果给出徐工 XS202J 机械驱动单钢轮振动压路机参数（20/22 吨级、前钢轮后轮分配质量），属单钢轮振动压路机系列。",
+   "sources": [
+    "https://product.360che.com/m358/89583_param.html",
+    "https://baike.baidu.com/item/%e5%be%90%e5%b7%a5XS202%e5%8e%8b%e8%b7%af%e6%9c%ba/470344?bst=1792985850.8456ede4969a848b#1"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XS202J",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS202J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "文本给出20/22吨级、前钢轮后轮分配质量等参数，机械驱动单钢轮信息具体；因徐工样本已较多列备份。",
+   "role": "backup",
+   "intent_rank": 15
+  },
+  {
+   "model": "CA610D-8 单钢轮振动压路机",
+   "brand": "戴纳派克",
+   "slots": {
+    "brand": "戴纳派克",
+    "series": "",
+    "model_code": "CA610D-8",
+    "config": ""
+   },
+   "search_key": "戴纳派克 CA610D-8 单钢轮振动压路机",
+   "reason": "结果明确为戴纳派克 CA610D-8 单钢轮振动压路机，适用于道路建设等压实作业。",
+   "sources": [
+    "http://dynapac.brand.lmjx.net/zdylj/MzgyOTk=/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CA610D8",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA610D-8 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "明确为戴纳派克单钢轮振动压路机，适用于道路建设；因已有CA510PD列备份。",
+   "role": "backup",
+   "intent_rank": 16
+  },
+  {
+   "model": "柳工 620H",
+   "brand": "柳工",
+   "slots": {
+    "brand": "柳工",
+    "series": "",
+    "model_code": "620H",
+    "config": ""
+   },
+   "search_key": "柳工 620H 单钢轮压路机",
+   "reason": "结果中明确出现柳工620H单钢轮压路机，可作为单钢轮振动压路机候选。",
+   "sources": [
+    "http://www.28cic.com/list_20586_3_2/page4/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/柳工620H",
+   "identity_kind": "generic",
+   "model_variants": [
+    "柳工 620H"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确出现柳工620H单钢轮压路机，可作柳工品牌补充；因已有618A列备份。",
+   "role": "backup",
+   "intent_rank": 17
+  },
+  {
+   "model": "KS126PD 全液压单钢轮振动压路机",
+   "brand": "青岛科泰重工机械有限公司",
+   "slots": {
+    "brand": "青岛科泰重工机械有限公司",
+    "series": "",
+    "model_code": "KS126PD",
+    "config": ""
+   },
+   "search_key": "青岛科泰重工 KS126PD 全液压单钢轮振动压路机",
+   "reason": "结果标题明确为 KS126PD 全液压单钢轮振动压路机，展商为青岛科泰重工机械有限公司。",
+   "sources": [
+    "https://community.b-china.cn/product/info/14054"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/KS126PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "KS126PD 全液压单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "标题明确为全液压单钢轮振动压路机，构型匹配；但品牌和道路场景描述相对少，列备份。",
+   "role": "backup",
+   "intent_rank": 18
+  },
+  {
+   "model": "徐工 XS262J",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS262J",
+    "config": ""
+   },
+   "search_key": "徐工 XS262J 单钢轮压路机",
+   "reason": "结果中明确出现徐工XS262J单钢轮压路机，属于单钢轮振动压路机。",
+   "sources": [
+    "http://www.28cic.com/list_20586_3_2/page4/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/XS262J",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 XS262J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "文本明确出现徐工XS262J单钢轮压路机，匹配类别；但细节少，且徐工主样本已覆盖。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "徐工 XS183J",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS183J",
+    "config": ""
+   },
+   "search_key": "徐工 XS183J 单钢轮压路机",
+   "reason": "结果中明确出现徐工XS183J压路机，并标注为18吨单钢轮压路机。",
+   "sources": [
+    "http://www.28cic.com/list_20586_3_3/"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/XS183J",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 XS183J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "文本标注为18吨单钢轮压路机，类别匹配；细节少，优先级低于已选徐工车型。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "XS143J 单钢轮振动压路机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "",
+    "model_code": "XS143J",
+    "config": ""
+   },
+   "search_key": "徐工 XS143J 单钢轮振动压路机",
+   "reason": "结果明确为徐工14吨单钢轮振动压路机，适用于高速公路等大型工程压实。",
+   "sources": [
+    "https://www.xcmgmachinery.com/zh/portfolio-item/xs143j/7"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS143J",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS143J 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "明确为徐工14吨单钢轮振动压路机，适用于高速公路等大型工程；与XS143/XS202J等重叠，列池。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "XS143",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "XS",
+    "model_code": "XS143",
+    "config": ""
+   },
+   "search_key": "徐工 XS143 单钢轮振动压路机",
+   "reason": "结果明确为徐工 XS143 单钢轮振动压路机，中型机，用于基础层/次基础层压实，符合道路施工工况的单钢轮构型。",
+   "sources": [
+    "https://www.xcmgmachinery.com/zh/portfolio-item/xs143/4"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "identity": "code/XS143",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS143"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "徐工XS143单钢轮振动压路机，中型机，用于基础层/次基础层；与XS143J重叠。",
+   "role": "pool",
+   "intent_rank": 22
+  },
+  {
+   "model": "XS223JE 单钢轮压路机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "XS",
+    "model_code": "XS223JE",
+    "config": ""
+   },
+   "search_key": "徐工 XS223JE 机械驱动单钢轮振动压路机",
+   "reason": "结果描述为机械驱动单钢轮振动压路机，用于地面压实及大型工程基础材料压实。",
+   "sources": [
+    "https://www.xcmgmachinery.com/zh/portfolio-item/xs223jetier-iii/12"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/XS223JE",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS223JE 单钢轮压路机",
+    "XS223JE",
+    "XS223JE(第三级) 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "单钢轮振动压路机 单钢轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "文本为机械驱动单钢轮振动压路机，用于地面及大型工程基础材料压实；与XS202J/XS265JSIV重叠。",
+   "role": "pool",
+   "intent_rank": 23
+  },
+  {
+   "model": "YZ36 单钢轮振动压路机",
+   "brand": "Power",
+   "slots": {
+    "brand": "Power",
+    "series": "",
+    "model_code": "YZ36",
+    "config": ""
+   },
+   "search_key": "Power YZ36 单钢轮振动压路机",
+   "reason": "结果明确为Power YZ36单钢轮振动压路机，用于路基夯实、高填方基础压实等道路施工场景。",
+   "sources": [
+    "https://gl3s.gslq.com/info/1325/7504.htm"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "generic/YZ36单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "YZ36 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "Power YZ36单钢轮振动压路机，用于路基夯实、高填方；品牌/平台信息不如已选具体。",
+   "role": "pool",
+   "intent_rank": 24
+  },
+  {
+   "model": "LG514D 单钢轮压路机",
+   "brand": "龙工",
+   "slots": {
+    "brand": "龙工",
+    "series": "",
+    "model_code": "LG514D",
+    "config": ""
+   },
+   "search_key": "龙工 LG514D 单钢轮振动压路机",
+   "reason": "结果标题和参数页均给出龙工 LG514D 单钢轮压路机/单钢轮振动压路机。",
+   "sources": [
+    "https://product.360che.com/m357/89471_param.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/LG514D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG514D 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本标题和参数页明确为龙工LG514D单钢轮压路机；可作为品牌补充，但道路/ROPS细节少。",
+   "role": "pool",
+   "intent_rank": 25
+  },
+  {
+   "model": "CA262PD 单钢轮振动压路机",
+   "brand": "戴纳派克",
+   "slots": {
+    "brand": "戴纳派克",
+    "series": "",
+    "model_code": "CA262PD",
+    "config": ""
+   },
+   "search_key": "戴纳派克 CA262PD 单钢轮振动压路机",
+   "reason": "结果明确为戴纳派克 CA262PD 单钢轮振动压路机，属于中型单钢轮振动压路机。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%88%B4%E7%BA%B3%E6%B4%BE%E5%85%8BCA262PD%E5%8E%8B%E8%B7%AF%E6%9C%BA"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "code/CA262PD",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA262PD 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "明确为戴纳派克中型单钢轮振动压路机；与CA510PD/CA610D-8重叠。",
+   "role": "pool",
+   "intent_rank": 26
+  },
+  {
+   "model": "山推 SR20MA 单钢轮压路机",
+   "brand": "山推",
+   "slots": {
+    "brand": "山推",
+    "series": "SR20MA",
+    "model_code": "SR20MA",
+    "config": ""
+   },
+   "search_key": "山推 SR20MA 单钢轮压路机",
+   "reason": "结果明确为山推SR20MA单钢轮压路机，用于道路修筑/路基施工，符合单钢轮道路施工工况。",
+   "sources": [
+    "https://www.shantui.com/case/diao-detail-323.htm"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/山推SR20MA单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山推 SR20MA 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "明确为山推SR20MA单钢轮压路机，用于道路修筑/路基；与SR22-G/SR40-G重叠。",
+   "role": "pool",
+   "intent_rank": 27
+  },
+  {
+   "model": "山推 SR26M-C5 单钢轮压路机",
+   "brand": "山推",
+   "slots": {
+    "brand": "山推",
+    "series": "SR26M-C5",
+    "model_code": "SR26M-C5",
+    "config": ""
+   },
+   "search_key": "山推 SR26M-C5 单钢轮压路机",
+   "reason": "结果多次出现SR26M-C5单钢轮压路机用于路基压实、园区道路施工，符合道路施工工况。",
+   "sources": [
+    "https://www.shantui.com/case/wa-detail-328.htm",
+    "https://www.shantui.com/case/tuizj-detail-329.htm"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/山推SR26MC5单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山推 SR26M-C5 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "文本多次出现SR26M-C5用于路基压实、园区道路施工；与山推已选车型重叠。",
+   "role": "pool",
+   "intent_rank": 28
+  },
+  {
+   "model": "徐工 XS202",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS202",
+    "config": ""
+   },
+   "search_key": "徐工 XS202 单钢轮振动压路机",
+   "reason": "结果明确为徐工超重型单钢轮振动压路机系列，适用于道路等压实作业。",
+   "sources": [
+    "https://baike.baidu.com/item/%e5%be%90%e5%b7%a5XS202%e5%8e%8b%e8%b7%af%e6%9c%ba/470344?bst=1792985850.8456ede4969a848b#1"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "code/XS202",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 XS202"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "文本为徐工超重型单钢轮振动压路机系列，适用道路压实；系列描述较泛，XS202J更具体。",
+   "role": "pool",
+   "intent_rank": 29
+  },
+  {
+   "model": "徐工 XS222J 机械驱动单钢轮振动压路机",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS222",
+    "model_code": "XS222J",
+    "config": ""
+   },
+   "search_key": "徐工 XS222J 单钢轮振动压路机",
+   "reason": "结果标题即为徐工XS222J机械驱动单钢轮振动压路机，属于单钢轮振动压路机。",
+   "sources": [
+    "https://product.360che.com/m358/89585_param.html"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/XS222J",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 XS222J 机械驱动单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "标题即XS222J机械驱动单钢轮振动压路机，类别明确；与XS202J/XS265JSIV重叠。",
+   "role": "pool",
+   "intent_rank": 30
+  },
+  {
+   "model": "HAMM HC 系列",
+   "brand": "HAMM",
+   "slots": {
+    "brand": "HAMM",
+    "series": "HC",
+    "model_code": "HC",
+    "config": ""
+   },
+   "search_key": "HAMM HC 系列 单钢轮压路机",
+   "reason": "结果中明确提到悍马HC系列单钢轮压路机，整备质量覆盖11–25t，属于土方单钢轮压路机平台。",
+   "sources": [
+    "https://www.wirtgen-group.com/zh-tw/news-and-media/hamm/innovations-in-earthworks-and-asphalt-construction/#1863090"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/HAMMHC系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HAMM HC 系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本提到悍马HC系列单钢轮压路机，整备质量覆盖11–25t；平台描述较泛，HC 228D更具体。",
+   "role": "pool",
+   "intent_rank": 31
+  },
+  {
+   "model": "戴纳派克 犀牛系列 CA55/65/70",
+   "brand": "戴纳派克",
+   "slots": {
+    "brand": "戴纳派克",
+    "series": "犀牛(RHINO)",
+    "model_code": "CA55/65/70",
+    "config": ""
+   },
+   "search_key": "戴纳派克 犀牛 CA55/65/70 单钢轮振动压路机",
+   "reason": "结果明确为戴纳派克犀牛系列CA55/65/70单钢轮振动压路机，覆盖道路基础建设等土方压实。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202311/486484994236127125.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "identity": "generic/戴纳派克犀牛系列CA556570",
+   "identity_kind": "generic",
+   "model_variants": [
+    "戴纳派克 犀牛系列 CA55/65/70"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮振动压路机 单钢轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "犀牛系列单钢轮振动压路机覆盖道路基础建设；系列/多型号描述较泛，已有具体戴纳派克车型。",
+   "role": "pool",
+   "intent_rank": 32
+  },
+  {
+   "model": "戴纳派克 DRS260D 单钢轮压路机",
+   "brand": "戴纳派克",
+   "slots": {
+    "brand": "戴纳派克",
+    "series": "DRS",
+    "model_code": "DRS260D",
+    "config": ""
+   },
+   "search_key": "戴纳派克 DRS260D 单钢轮压路机",
+   "reason": "结果介绍红线系列DRS230D/DRS260D单钢轮压路机，面向路基、堤坝及大型填方等土方压实工况。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzUzMDAzMjYzMA==&mid=2247492475&idx=1&sn=3bfd5dd080fd9fc7317a871cd9262ab5"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "code/DRS260D",
+   "identity_kind": "code",
+   "model_variants": [
+    "戴纳派克 DRS260D 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本介绍红线系列DRS230D/DRS260D面向路基、堤坝及大型填方；偏土方大填方，与道路施工有交集但非最优先。",
+   "role": "pool",
+   "intent_rank": 33
+  },
+  {
+   "model": "悍马 322 单钢轮压路机",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "322",
+    "model_code": "322",
+    "config": ""
+   },
+   "search_key": "悍马 322 单钢轮压路机",
+   "reason": "结果为悍马322单钢轮压路机用于水稳层压实，属于道路施工场景。",
+   "sources": [
+    "https://www.wirtgen-group.com/zh-mn/news-and-media/hamm/easy-paving-and-compaction-of-50-cm-ctb-layer/?q=ngd"
+   ],
+   "source_query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "identity": "generic/悍马322单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍马 322 单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "道路施工工况 工程车 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本为悍马322单钢轮压路机用于水稳层压实，场景匹配；但文本信息少，品牌已有HC 228D。",
+   "role": "pool",
+   "intent_rank": 34
+  },
+  {
+   "model": "618A 机械式振动单钢轮压路机",
+   "brand": "柳工",
+   "slots": {
+    "brand": "柳工",
+    "series": "",
+    "model_code": "618A",
+    "config": ""
+   },
+   "search_key": "柳工 618A 机械式振动单钢轮压路机",
+   "reason": "结果明确为柳工 618A 机械式振动单钢轮压路机，符合单钢轮振动压路机任务。",
+   "sources": [
+    "https://product.360che.com/m357/89488_param.html"
+   ],
+   "source_query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "identity": "generic/618A机械式振动单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "618A 机械式振动单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "与618A重复，明确为柳工机械式振动单钢轮压路机；保留作同型号文本补充。",
+   "role": "pool",
+   "intent_rank": 35
+  },
+  {
+   "model": "LSS327 单钢轮振动压路机",
+   "brand": "国机洛建",
+   "slots": {
+    "brand": "国机洛建",
+    "series": "",
+    "model_code": "LSS327",
+    "config": ""
+   },
+   "search_key": "国机洛建 LSS327 单钢轮振动压路机",
+   "reason": "结果明确为国机洛建机械式单钢轮振动压路机，适用于高等级公路等基础层压实。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzA5NjM5NzgzNg==&mid=2652192760&idx=1&sn=82a377f4155602ab8de660b70fb42d33"
+   ],
+   "source_query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "identity": "code/LSS327",
+   "identity_kind": "code",
+   "model_variants": [
+    "LSS327 单钢轮振动压路机",
+    "LSS327 机械式单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "道路施工工况 单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮振动压路机 单钢轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "国机洛建机械式单钢轮振动压路机，适用于高等级公路基础层压实；与LSS2302同品牌重叠，列池。",
+   "role": "pool",
+   "intent_rank": 36
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 36
+ },
+ "pool": {
+  "count": 36,
+  "required": 29,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 16
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 36,
+  "slots": 14,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 40,
+  "unique": 36,
+  "removed": 4,
+  "generic": 12
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 14,
+  "backup": 4,
+  "primary": 14
+ }
+}

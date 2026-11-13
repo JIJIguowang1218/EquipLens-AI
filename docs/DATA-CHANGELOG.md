@@ -209,3 +209,42 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - 审计：`docs/vocabulary-audit-20261114.md` 列出全部表/列表（部件、类目、品牌、来源、风格），
   区分“危险（领域穷举）”与“可接受（通用词/模型标签）”；CODE-INDEX/README/PRD 口径已改。
 - 待拍板：是否删除 `part_taxonomy.json` 与 legacy `category_profiles.json`。
+
+### 19. 词表静默与主链去表化（2026-11-14）
+
+**动作**（保留文件、未删除；路径与 sha256 已确认）：
+
+- `data/part_taxonomy.json` → `data/legacy/part_taxonomy.json`（`0b4a521b…`）；
+- `data/category_profiles.json` → `data/legacy/category_profiles.json`（`4f1e79a3…`）；
+- `imagesearch.BRAND_GROUPS` 移出主代码 → `data/legacy/brand_aliases.json`（`a3bb257a…`），
+  默认空；仅 `EQUIPLENS_ENABLE_LEGACY_BRANDS=1` 时加载（已验证 22 → 0）。
+
+**主链改动**：
+
+- `briefing`：不再读取部件表；part key 只按写法（ascii snake 保留，否则 `custom_<可读 slug>`）；
+  prompt 里删除 `reference_parts`，改为 `no_vocabulary_note`；
+- `analysis`：`load_taxonomy/taxonomy_with_when` 返回空（兼容旧脚本），不再标 `term_off_taxonomy`；
+- `textrun`/`make_ui_fixtures`：显式指向 `data/legacy/`（旧链路）；
+- `RuleVerifier`：`fallback_series` 仅在 legacy 品牌表加载时生效，避免“品牌命中 + 车名 token”被误判 probable。
+
+**守卫**：`tests/test_no_legacy_tables.py`（3/3）检查主代码无 `part_taxonomy`、品牌表默认空、legacy 文件仍在。
+
+**测试**：`briefing 5/5`、`planning 16/16`、`engine 47/47`、`imagesearch 16/16`、
+`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 3/3`。
+**未跑检索 loop**：需先做“品牌表静默后”的 c1/c2 冒烟（见 full-test-design §6）。
+
+### 20. P0–P4 完整测试（2026-11-14，无人值守）
+
+- **P0** 品牌表静默后 c1/c2 冻结 plan 冒烟：c1 10/10+1/4（持平），c2 10/10+4/4（备选 +1）→ 无回归。
+- **P1** 洒水车 brief：无 `reference_parts` 提示、部件 key 可读、schema/契约/plan（30 候选）全通过。
+- **P2** 10 类目 ×1：6 已知 + 4 holdout **全部满额交付**；no_hits 2；成本 ¥1.82；Go=true。
+- **P3** 10 类目 ×3（共 30 run）：交付率全部 1.000（极差 0）；备选 h4 极差 2、s6 ±1；
+  degraded CV c5=0.374（绝对值 2–5/14 台）；预注册稳定性判定 **false**（备选/身份两项未达阈值）。
+- **调整**：`top_up_queries` 增加通用查询（图集/参数/评测），`--topup` 上限 2→4（**默认仍 2**）。
+  h4 备选 2/4→4/4 与 3/4；s6 两次 4/4；候选池上移但波动未消除 → 仅作紧供类目缓解。
+- 数据：`data-test/runs/p7-screen-20261114/`、`p7-screen-r{2,3}-20261114/`、
+  `p8b/p8c-topup4-20261114/`；汇总 `data-test/evals/fulltest-repeats.json`；
+  报告 `docs/fulltest-report-20261114.md`。
+- 测试：`planning 16/16`、`retrieval_engine 47/47`、`imagesearch 16/16`、`briefing 5/5`、
+  `ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 3/3`。
+- 未改其他生产默认；`search_key` 在 30 次运行中触发 0 次（符合末档兜底定位）。
