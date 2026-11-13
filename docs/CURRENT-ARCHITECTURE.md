@@ -94,6 +94,10 @@ task-brief@v2 (API)
 - gate v4 + RuleVerifier；
 - intent rank；
 - N 槽 = 用户输入（`page_budget.vehicle_slots`），不是固定 12；
+- **并发默认（2026-11-13）**：plan 查询 4 路、FETCH 下载 4 路；串行只作对照臂
+  （`plan_candidates --concurrency 1`、`retrieval_engine --download-workers 1`）；
+  每次 run 的 `summary.config` 记录 `download_workers / plan_concurrency / rank_method`，
+  没有 config 的 run 不参与横向对比；
 - code prefilter 默认 **关闭**（实验通过但未默认）。
 
 ### 实验（不默认）
@@ -179,7 +183,7 @@ task-brief@v2 (API)
   备选 15/20、峰值 ¥2.093；c1 掉 1 台源于 plan 池缩到 12（基线 17），用 clean 原 plan 隔离
   （`delivery-20261113-fillfix-c1`）得 **10/10 + 1/4**；c1 计划 `--concurrency 1` 与 `4` 均为
   19 候选（`delivery-20261113-planvar`）→ 池波动与并发无关；
-- **并发实验（2026-11-13）**：plan `--concurrency 4` 5 brief 518→155 s（3.34×，默认仍 1）；
+- **并发实验（2026-11-13）**：plan `--concurrency 4` 5 brief 518→155 s（3.34×，2026-11-13 晚起默认 4）；
   下载 4 路基准 2.9×（未接 loop）；LLM rank vs 确定性两 case 交付一致，确定性省 20–40 s；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；

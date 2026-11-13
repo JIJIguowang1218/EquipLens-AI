@@ -98,7 +98,8 @@
 - 验证 `data-test/runs/verify-fillfix-20261113/`：复用原 plan 复跑 c2 两臂，
   8+2→**10+0**、9+4→**10+4**；
 - A 测试 `data-test/runs/ab-plan-concurrency-20261113/`：plan 串行 518.3 s →
-  4 路并发 155.3 s（3.34×），`plan_candidates.py --concurrency` 默认仍 1；
+  4 路并发 155.3 s（3.34×），`plan_candidates.py --concurrency` 默认仍 1
+  （当晚改为默认 4，见 §12）；
 - rank A/B `data-test/runs/ab-rank-20261113/`：LLM vs 确定性交付一致，
   确定性 rank 省 20–40 s；`rank_plan.py --deterministic` 仅实验开关；
 - 下载基准 `data-test/runs/ab-negative-20261113/c5-roller/DOWNLOAD-CONCURRENCY.json`：
@@ -138,3 +139,13 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   `--reuse-brief` 不重新生成 brief，回归可复现。
 - 未改任何既有 run 数据；`images/` 照旧不入库。
 
+
+### 12. 并发切默认（2026-11-13 晚）
+
+- `plan_candidates.py --concurrency` 默认 1 → **4**；`--concurrency 1` 仅作串行对照臂；
+- `retrieval_engine` 新增 `--download-workers`（默认 **4**）：`web.live_fetch` 只并行下载 I/O，
+  结算严格按原顺序（拉黑/早停/fetch_log/计数与串行等价）；1 = 串行对照臂；
+- `summary.config` 新增 `download_workers / plan_concurrency / rank_method / platform_extra /
+  code_prefilter`：任何 run 都能自证并发配置，没有这一项不参与横向对比；
+- 本次只改代码与文档，**未跑检索实验**；单测 `retrieval_engine 41/41`、`imagesearch 14/14`、
+  `planning 14/14` 全绿（新增“并发下载保序且不重复下载”）。

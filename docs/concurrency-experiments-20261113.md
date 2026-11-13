@@ -6,7 +6,7 @@
 
 ## 1. A 测试：plan 串行 vs 并发
 
-实现：`scripts/plan_candidates.py --concurrency N`（默认 1）。
+实现：`scripts/plan_candidates.py --concurrency N`（**2026-11-13 晚起默认 4**，`--concurrency 1` 为串行对照臂）。
 每条查询仍是“1 次 Search + 1 次抽取”，出处校验仍绑定本查询的结果集；
 只是把 6–8 条互不依赖的查询并行执行，`api_log` 记录每条调用的 `ms`。
 

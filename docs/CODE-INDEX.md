@@ -21,7 +21,7 @@
 | 职责 | 代码 |
 |---|---|
 | brief 生成 | `src/equiplens/briefing.py`、`scripts/build_brief.py`、`skills/task-brief/SKILL.md` |
-| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 1） |
+| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；1=串行对照） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |
 | 平台/抓取/核验 | `src/equiplens/retrieval_engine/web.py`、`src/equiplens/imagesearch.py` |
