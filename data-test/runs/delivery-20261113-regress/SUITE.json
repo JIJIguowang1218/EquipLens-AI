@@ -1,0 +1,296 @@
+[
+ {
+  "case": "c1-desert-tractor",
+  "slots": 10,
+  "class": "沙漠牵引车",
+  "plan_concurrency": 4,
+  "brief_reused": true,
+  "plan_pool": {
+   "count": 12,
+   "required": 23,
+   "ok": false,
+   "warning": "候选池 12 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+  },
+  "plan_candidates": 12,
+  "summary": {
+   "state": "FAILED",
+   "delivery": "short",
+   "delivered": 8,
+   "required": 10,
+   "degraded": 7,
+   "backup": {
+    "required": 4,
+    "delivered": 0,
+    "status": "short",
+    "models": [],
+    "images": 0,
+    "no_image_models": [],
+    "short": 4
+   },
+   "budget": {
+    "queries": 57,
+    "models": 12,
+    "fetches": 175,
+    "verifies": 175
+   },
+   "elapsed_ms": 205445
+  },
+  "steps": [
+   {
+    "step": "brief",
+    "rc": 0,
+    "sec": 0,
+    "reused": true
+   },
+   {
+    "step": "plan",
+    "rc": 0,
+    "sec": 66.1
+   },
+   {
+    "step": "rank",
+    "rc": 0,
+    "sec": 20.0
+   },
+   {
+    "step": "loop",
+    "rc": 2,
+    "sec": 205.9
+   },
+   {
+    "step": "audit",
+    "rc": 0,
+    "sec": 0.1
+   },
+   {
+    "step": "manifest",
+    "rc": 0,
+    "sec": 0.2
+   }
+  ]
+ },
+ {
+  "case": "c2-reach-stacker",
+  "slots": 10,
+  "class": "港口集装箱正面吊",
+  "plan_concurrency": 4,
+  "brief_reused": true,
+  "plan_pool": {
+   "count": 21,
+   "required": 23,
+   "ok": false,
+   "warning": "候选池 21 < 建议 23（1.6×(10+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+  },
+  "plan_candidates": 21,
+  "summary": {
+   "state": "DONE",
+   "delivery": "complete",
+   "delivered": 10,
+   "required": 10,
+   "degraded": 7,
+   "backup": {
+    "required": 4,
+    "delivered": 3,
+    "status": "short",
+    "models": [
+     "RSH4532-Vo正面吊运机",
+     "RSH4528-VO2",
+     "徐工港机 集装箱正面吊（伸缩臂叉车/正面吊系列）"
+    ],
+    "images": 9,
+    "no_image_models": [],
+    "short": 1
+   },
+   "budget": {
+    "queries": 90,
+    "models": 21,
+    "fetches": 210,
+    "verifies": 210
+   },
+   "elapsed_ms": 613699
+  },
+  "steps": [
+   {
+    "step": "brief",
+    "rc": 0,
+    "sec": 0,
+    "reused": true
+   },
+   {
+    "step": "plan",
+    "rc": 0,
+    "sec": 40.9
+   },
+   {
+    "step": "rank",
+    "rc": 0,
+    "sec": 49.4
+   },
+   {
+    "step": "loop",
+    "rc": 0,
+    "sec": 614.2
+   },
+   {
+    "step": "audit",
+    "rc": 0,
+    "sec": 0.1
+   },
+   {
+    "step": "manifest",
+    "rc": 0,
+    "sec": 0.2
+   }
+  ]
+ },
+ {
+  "case": "c3-tractor",
+  "slots": 10,
+  "class": "大马力轮式拖拉机",
+  "plan_concurrency": 4,
+  "brief_reused": true,
+  "plan_pool": {
+   "count": 26,
+   "required": 23,
+   "ok": true,
+   "warning": ""
+  },
+  "plan_candidates": 26,
+  "summary": {
+   "state": "DONE",
+   "delivery": "complete",
+   "delivered": 10,
+   "required": 10,
+   "degraded": 4,
+   "backup": {
+    "required": 4,
+    "delivered": 4,
+    "status": "complete",
+    "models": [
+     "LX2204",
+     "1604",
+     "TN1454",
+     "LX1004/1104/1204/1254/1304"
+    ],
+    "images": 11,
+    "no_image_models": [],
+    "short": 0
+   },
+   "budget": {
+    "queries": 75,
+    "models": 21,
+    "fetches": 315,
+    "verifies": 315
+   },
+   "elapsed_ms": 586275
+  },
+  "steps": [
+   {
+    "step": "brief",
+    "rc": 0,
+    "sec": 0,
+    "reused": true
+   },
+   {
+    "step": "plan",
+    "rc": 0,
+    "sec": 37.4
+   },
+   {
+    "step": "rank",
+    "rc": 0,
+    "sec": 31.2
+   },
+   {
+    "step": "loop",
+    "rc": 0,
+    "sec": 586.7
+   },
+   {
+    "step": "audit",
+    "rc": 0,
+    "sec": 0.2
+   },
+   {
+    "step": "manifest",
+    "rc": 0,
+    "sec": 0.4
+   }
+  ]
+ },
+ {
+  "case": "c5-roller",
+  "slots": 14,
+  "class": "单钢轮振动压路机",
+  "plan_concurrency": 4,
+  "brief_reused": true,
+  "plan_pool": {
+   "count": 35,
+   "required": 29,
+   "ok": true,
+   "warning": ""
+  },
+  "plan_candidates": 35,
+  "summary": {
+   "state": "DONE",
+   "delivery": "complete",
+   "delivered": 14,
+   "required": 14,
+   "degraded": 2,
+   "backup": {
+    "required": 4,
+    "delivered": 4,
+    "status": "complete",
+    "models": [
+     "XS262J",
+     "620H",
+     "XS183J",
+     "CA55/65/70（犀牛系列）"
+    ],
+    "images": 11,
+    "no_image_models": [],
+    "short": 0
+   },
+   "budget": {
+    "queries": 87,
+    "models": 27,
+    "fetches": 582,
+    "verifies": 582
+   },
+   "elapsed_ms": 753052
+  },
+  "steps": [
+   {
+    "step": "brief",
+    "rc": 0,
+    "sec": 0,
+    "reused": true
+   },
+   {
+    "step": "plan",
+    "rc": 0,
+    "sec": 24.1
+   },
+   {
+    "step": "rank",
+    "rc": 0,
+    "sec": 40.6
+   },
+   {
+    "step": "loop",
+    "rc": 0,
+    "sec": 753.6
+   },
+   {
+    "step": "audit",
+    "rc": 0,
+    "sec": 0.2
+   },
+   {
+    "step": "manifest",
+    "rc": 0,
+    "sec": 0.5
+   }
+  ]
+ }
+]

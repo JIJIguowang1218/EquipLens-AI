@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-13T19:40:54 · 共 84 条 · 待补人工结论 42 条
+> 生成时间：2026-11-13T20:41:45 · 共 87 条 · 待补人工结论 45 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -73,12 +73,15 @@
 | other | `verify-yield-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=84 · gate_pass=79 · degraded=8 | [—](data-test/runs/verify-yield-20261112/summary.json) |
 | other | `verify-yield2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield2-20261112/summary.json) |
 | other | `verify-yield3-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield3-20261112/audit.html) |
+| other | `delivery-20261113-regress` | plan-set | 2026-11-13 | — | — | — |
 
 ## 空目录 / 归档
 
 - `ab-negative-20261113` → empty（未删除，仅标记）
 - `ab-plan-concurrency-20261113` → empty（未删除，仅标记）
 - `ab-rank-20261113` → empty（未删除，仅标记）
+- `delivery-20261113-fillfix-c1` → empty（未删除，仅标记）
+- `delivery-20261113-planvar` → empty（未删除，仅标记）
 - `filter-98-20261109` → empty（未删除，仅标记）
 - `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）

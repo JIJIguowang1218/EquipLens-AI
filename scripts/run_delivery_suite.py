@@ -58,33 +58,50 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default=str(BASE))
     ap.add_argument("--topup", type=int, default=0)
+    ap.add_argument("--concurrency", type=int, default=1,
+                    help="plan_candidates 的查询并发（默认 1=串行）")
+    ap.add_argument("--reuse-brief", action="store_true",
+                    help="复用 case 目录里已冻结的 brief.json（回归用；不重新生成）")
+    ap.add_argument("--cases", default="",
+                    help="逗号分隔的 case 名单，默认全部")
     args = ap.parse_args()
+    only = {x.strip() for x in args.cases.split(",") if x.strip()}
     base_dir = Path(args.base)
     base_dir.mkdir(parents=True, exist_ok=True)
     results = []
     for name, text, klass, slots in CASES:
+        if only and name not in only:
+            continue
         case = base_dir / name
         (case / "logs").mkdir(parents=True, exist_ok=True)
         brief = case / "brief.json"
         plan = case / "plan.json"
-        rec = {"case": name, "slots": slots, "class": klass}
+        rec = {"case": name, "slots": slots, "class": klass,
+               "plan_concurrency": args.concurrency,
+               "brief_reused": bool(args.reuse_brief and brief.exists())}
         print(f"\n=== {name} (slots={slots}) ===", flush=True)
 
         steps = []
-        cmd = [PY, "scripts/build_brief.py", "--input", text,
-               "--class", klass, "--slots", str(slots), "--out", str(brief)]
-        rc, sec = run(cmd, case / "logs" / "1-brief.log", 600)
-        steps.append({"step": "brief", "rc": rc, "sec": sec})
-        print(f"  brief rc={rc} {sec}s", flush=True)
-        if rc != 0:
-            rec["steps"] = steps
-            results.append(rec)
-            continue
+        if args.reuse_brief and brief.exists():
+            steps.append({"step": "brief", "rc": 0, "sec": 0, "reused": True})
+            print("  brief 复用冻结文件", flush=True)
+        else:
+            cmd = [PY, "scripts/build_brief.py", "--input", text,
+                   "--class", klass, "--slots", str(slots), "--out", str(brief)]
+            rc, sec = run(cmd, case / "logs" / "1-brief.log", 600)
+            steps.append({"step": "brief", "rc": rc, "sec": sec})
+            print(f"  brief rc={rc} {sec}s", flush=True)
+            if rc != 0:
+                rec["steps"] = steps
+                results.append(rec)
+                continue
 
         cmd = [PY, "scripts/plan_candidates.py", "--brief", str(brief),
                "--out", str(plan)]
         if args.topup:
             cmd += ["--topup", str(args.topup)]
+        if args.concurrency and args.concurrency > 1:
+            cmd += ["--concurrency", str(args.concurrency)]
         rc, sec = run(cmd, case / "logs" / "2-plan.log", 1200)
         steps.append({"step": "plan", "rc": rc, "sec": sec})
         print(f"  plan  rc={rc} {sec}s", flush=True)
