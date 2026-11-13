@@ -85,8 +85,9 @@ def main() -> int:
             fails += 1
 
     print("\n下一步：")
-    print("  PYTHONPATH=src python tests/test_retrieval_engine.py   # 18/18")
-    print("  PYTHONPATH=src python tests/test_imagesearch.py        # 12/12")
+    print("  PYTHONPATH=src python tests/test_retrieval_engine.py   # 40/40")
+    print("  PYTHONPATH=src python tests/test_imagesearch.py        # 14/14")
+    print("  PYTHONPATH=src python tests/test_planning.py           # 14/14")
     print("  PYTHONPATH=src python tests/test_gate.py               # 11/11")
     return 0 if fails == 0 else 1
 
