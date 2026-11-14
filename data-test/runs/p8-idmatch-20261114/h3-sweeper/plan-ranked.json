@@ -1,0 +1,1048 @@
+{
+ "brief_id": "auto-20261114-025547",
+ "created_at": "2026-11-14T17:11:23",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 102,
+ "candidates": [
+  {
+   "model": "ZLJ5064TSLE3 扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "",
+    "model_code": "ZLJ5064TSLE3",
+    "config": ""
+   },
+   "search_key": "中联重科 ZLJ5064TSLE3 扫路车",
+   "reason": "结果页为干式扫路车，采用中置两扫刷+中置反吹吸嘴，吸扫结合、副发动机驱动风机，适合市政道路与园区铺装路面清扫；公告型号明确。",
+   "sources": [
+    "https://www.chinaspv.com.cn/products/26393.html"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "ZLJ5064TSLE3",
+   "identity": "code/ZLJ5064TSLE3",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZLJ5064TSLE3 扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "结果页明确为干式扫路车，采用中置两扫刷+中置反吹吸嘴，吸扫结合、副发动机驱动风机，面向市政道路与园区铺装路面清扫；干式除尘与后续湿式候选形成明显差异，且扫刷/吸嘴构型与任务单高度匹配。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "QDT5074TSLH5 扫路车",
+   "brand": "青特",
+   "slots": {
+    "brand": "青特",
+    "series": "",
+    "model_code": "QDT5074TSLH5",
+    "config": ""
+   },
+   "search_key": "青特 QDT5074TSLH5 干湿两用扫路车",
+   "reason": "青特干湿两用扫路车，具备风道转换、干湿作业模式，面向城市道路、广场等机械化清扫保洁；型号明确。",
+   "sources": [
+    "https://www.qingtegroup.com/product/ganshiliangyongsaoluche.htm"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "QDT5074TSLH5",
+   "identity": "code/QDT5074TSLH5",
+   "identity_kind": "code",
+   "model_variants": [
+    "QDT5074TSLH5 扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "青特干湿两用扫路车，具备风道转换、干湿作业模式，面向城市道路、广场等机械化清扫保洁；正好覆盖任务单中“湿式或干式除尘待确认”的配置差异，值得优先核验扫刷护罩、吸盘与箱体布置。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "HHR5080TXS4JH 扫路车",
+   "brand": "恒润高科",
+   "slots": {
+    "brand": "恒润高科",
+    "series": "",
+    "model_code": "HHR5080TXS4JH",
+    "config": ""
+   },
+   "search_key": "恒润高科 HHR5080TXS4JH 扫路车",
+   "reason": "结果页显示该车采用江淮HFC1081K2F二类底盘，布置为“中置四扫盘+侧高压喷杆+后置吸嘴”，属于市政道路洗扫保洁构型。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/HHR5080TXS4JH.htm"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "HHR5080TXS4",
+   "identity": "code/HHR5080TXS4JH",
+   "identity_kind": "code",
+   "model_variants": [
+    "HHR5080TXS4JH 扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路与园区清扫工况：铺装 扫路车 ——市政环卫专用作业车 中置扫 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果页显示采用江淮HFC1081K2F二类底盘，布置为“中置四扫盘+侧高压喷杆+后置吸嘴”，属于市政道路洗扫保洁构型；底盘与前脸关系明确，四扫盘+侧喷杆也有差异，适合看扫刷护罩、前保险杠和轮拱。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "东风天锦国四道路清扫车 EQ5160TXS4",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "EQ5160TXS4",
+    "config": "4x2"
+   },
+   "search_key": "东风天锦 EQ5160TXS4 4×2 道路清扫车",
+   "reason": "结果明确4×2驱动、D530平头驾驶室，为道路清扫专用车；摘要未展开扫盘/吸盘布局，需图片核验。",
+   "sources": [
+    "http://qcgq168.com/car/4989.html"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "EQ5160TXS4",
+   "identity": "code/EQ5160TXS4",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风天锦国四道路清扫车 EQ5160TXS4"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果明确4×2驱动、D530平头驾驶室，为道路清扫专用车；直接命中任务单的4×2底盘和前脸/前保险杠继承关系。摘要未展开扫盘/吸盘布局，需抓图核验，但其底盘与驾驶室代表性高。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "XGH5040TSLSBEV 扫路车",
+   "brand": "XCMG",
+   "slots": {
+    "brand": "XCMG",
+    "series": "",
+    "model_code": "XGH5040TSLSBEV",
+    "config": ""
+   },
+   "search_key": "XGH5040TSLSBEV 扫路车 中置四扫盘 后置吸嘴",
+   "reason": "结果页产品页明确 XGH5040TSLSBEV 为纯电动扫路车，结构采用“中置四扫盘+后置吸嘴”，并列明城市主干道、广场、公园等适用工况。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-137249.htm"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "XGH5040TSLSBEV",
+   "identity": "code/XGH5040TSLSBEV",
+   "identity_kind": "code",
+   "model_variants": [
+    "XGH5040TSLSBEV 扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "产品页明确为纯电动扫路车，采用“中置四扫盘+后置吸嘴”，并列明城市主干道、广场、公园等适用工况；电动上装和低噪音园区工况差异明显，值得优先作为新能源对照车型。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "HHR5060TSL",
+   "brand": "恒润高科",
+   "slots": {
+    "brand": "恒润高科",
+    "series": "扫路车",
+    "model_code": "HHR5060TSL",
+    "config": ""
+   },
+   "search_key": "HHR5060TSL 扫路车 中置四扫盘 后置吸嘴",
+   "reason": "结果明确采用庆铃NKR77LLLACJAY国Ⅲ二类底盘改装，作业装置为“中置四扫盘+后置吸嘴”整体布置，扫盘遇障自动避让、全浮式吸嘴随地面，属轻型二类底盘市政扫路车。",
+   "sources": [
+    "https://product.d1cm.com/hengrun001/100206/"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "HHR5060TSL",
+   "identity": "code/HHR5060TSL",
+   "identity_kind": "code",
+   "model_variants": [
+    "HHR5060TSL"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "明确采用庆铃NKR77LLLACJAY国Ⅲ二类底盘改装，作业装置为“中置四扫盘+后置吸嘴”整体布置，扫盘遇障自动避让、全浮式吸嘴随地面；轻型二类底盘和吸盘随地细节与任务单重点项直接相关。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "中联重科ZBH5073TSUXE6湿式扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "",
+    "model_code": "ZBH5073TSUXE6",
+    "config": ""
+   },
+   "search_key": "中联重科 ZBH5073TSUXE6 湿式扫路车 中置四扫盘 后置吸嘴",
+   "reason": "结果明确型号ZBH5073TSUXE6湿式扫路车，采用“中置四扫盘+后置吸嘴”，底盘为江铃凯运国六，具备湿式除尘与高压自洁功能；符合市政道路清扫工况。结果未明示驱动形式。",
+   "sources": [
+    "http://zoomlion.brand.lmjx.net/qsc/Mzg1Nzg=/"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZBH5073TSUXE6",
+   "identity": "generic/中联重科ZBH5073TSUXE6湿式扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中联重科ZBH5073TSUXE6湿式扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果明确型号ZBH5073TSUXE6湿式扫路车，采用“中置四扫盘+后置吸嘴”，底盘为江铃凯运国六，具备湿式除尘与高压自洁功能；可补充湿式除尘和江铃驾驶室/前脸关系，作为优先备份。",
+   "role": "backup",
+   "intent_rank": 7
+  },
+  {
+   "model": "ZLJ5063TSLHE3",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "扫路车",
+    "model_code": "ZLJ5063TSLHE3",
+    "config": ""
+   },
+   "search_key": "ZLJ5063TSLHE3 扫路车 中置四盘刷 后置吸嘴",
+   "reason": "结果为6吨湿式扫路车，采用“中置四盘刷－后置吸嘴”对称布置，前清扫装置带防碰撞避让，符合园区/市政道路低速清扫与中置扫刷+后置吸盘构型。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/ZLJ5063TSLHE3.shtm",
+    "https://m.d1cm.com/product/zoomlion010/108230/",
+    "http://www.cnesip.com/Products/Detail.aspx?Id=35"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5063TSLHE3",
+   "identity": "code/ZLJ5063TSLHE3",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZLJ5063TSLHE3"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "strong",
+   "intent_reason": "结果为6吨湿式扫路车，采用“中置四盘刷－后置吸嘴”对称布置，前清扫装置带防碰撞避让；吨位和防碰撞扫刷护罩细节贴近市政/园区低速清扫，适合作为中联湿式6吨级备份。",
+   "role": "backup",
+   "intent_rank": 8
+  },
+  {
+   "model": "ZLJ5100TSLE3/E4",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "扫路车",
+    "model_code": "ZLJ5100TSLE3/E4",
+    "config": ""
+   },
+   "search_key": "ZLJ5100TSLE3/E4 中置四盘刷 后置吸嘴",
+   "reason": "结果给出中联独创“中置四盘刷－后置吸嘴”对称结构，前清扫装置具防碰撞避让，属市政道路清扫用扫路车，与中置扫刷+后置吸盘构型匹配。",
+   "sources": [
+    "http://www.cnesip.com/Products/Detail.aspx?Id=39#tag"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5100TSLE3",
+   "identity": "code/ZLJ5100TSLE3",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZLJ5100TSLE3/E4"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "结果给出“中置四盘刷－后置吸嘴”对称结构，前清扫装置具防碰撞避让，属市政道路清扫用扫路车；与任务单构型匹配，并可补充10吨级中联车型的扫刷护罩与吸盘布置。",
+   "role": "backup",
+   "intent_rank": 9
+  },
+  {
+   "model": "长安2700扫路车",
+   "brand": "长安",
+   "slots": {
+    "brand": "长安",
+    "series": "2700",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "长安2700扫路车 中置四立扫+后置吸盘",
+   "reason": "结果页为长安2700国VI蓝牌扫路车，采用二类底盘，并给出中置四立扫+后置吸盘布置。",
+   "sources": [
+    "http://chengli-qc.com/show-12-1008-1413.html",
+    "http://clzqjym.com/show-12-1007-319.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/长安2700扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "长安2700扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果页为长安2700国VI蓝牌扫路车，采用二类底盘，并给出中置四立扫+后置吸盘布置；小型蓝牌底盘适合园区、狭窄道路和频繁靠边作业，可作为小型化/轮拱与扫刷护罩的备份。",
+   "role": "backup",
+   "intent_rank": 10
+  },
+  {
+   "model": "ZHF5060TSL",
+   "brand": "路之友",
+   "slots": {
+    "brand": "路之友",
+    "series": "扫路车",
+    "model_code": "ZHF5060TSL",
+    "config": ""
+   },
+   "search_key": "ZHF5060TSL 中置四盘刷 后置吸嘴",
+   "reason": "结果为路之友牌ZHF5060TSL型，吸扫结合、湿式除尘、电液控制、液压倾翻卸料，“中置四盘刷——后置吸嘴”布置，副发动机驱动风机，扫臂具遇障避让，与任务单一致。",
+   "sources": [
+    "http://zljxfh.cn/productView.asp?id=49"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZHF5060TSL",
+   "identity": "code/ZHF5060TSL",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZHF5060TSL"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果为路之友牌ZHF5060TSL型，吸扫结合、湿式除尘、电液控制、液压倾翻卸料，“中置四盘刷——后置吸嘴”布置，副发动机驱动风机，扫臂具遇障避让；构型匹配且细节较完整，但优先级略低于前述主力与备份。",
+   "role": "pool",
+   "intent_rank": 11
+  },
+  {
+   "model": "ZLJ5163TSLE3/E4",
+   "brand": "盈峰环境（中联重科）",
+   "slots": {
+    "brand": "盈峰环境",
+    "series": "扫路车",
+    "model_code": "ZLJ5163TSLE3/E4",
+    "config": ""
+   },
+   "search_key": "ZLJ5163TSLE3/E4 中置四盘刷 后置吸嘴",
+   "reason": "结果描述吸扫结合、湿式除尘、电液控制、液压倾翻卸料，采用“中置四盘刷—后置吸嘴”并带短卧扫与反吹风，扫盘三档转速适配不同污染工况，符合任务单构型。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/ZLJ5163TSLE3E4.shtm"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5163TSLE3",
+   "identity": "code/ZLJ5163TSLE3",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZLJ5163TSLE3/E4"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果描述吸扫结合、湿式除尘、电液控制、液压倾翻卸料，采用“中置四盘刷—后置吸嘴”并带短卧扫与反吹风，扫盘三档转速适配不同污染工况；构型详细，但16吨级可能偏离任务单4.5–12 t级重点，故入池。",
+   "role": "pool",
+   "intent_rank": 12
+  },
+  {
+   "model": "盈峰环境ZLJ5163TSLE3/E4清扫机",
+   "brand": "盈峰环境",
+   "slots": {
+    "brand": "盈峰环境",
+    "series": "清扫机",
+    "model_code": "ZLJ5163TSLE3/E4",
+    "config": ""
+   },
+   "search_key": "盈峰环境 ZLJ5163TSLE3/E4 中置四盘刷 后置吸嘴",
+   "reason": "结果明确中置四盘刷—后置吸嘴，吸扫结合湿式除尘，符合扫路车中置扫刷+后置吸嘴构型；底盘驱动形式未明写。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/ZLJ5163TSLE3E4.shtm"
+   ],
+   "source_query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ZLJ5163TSLE3",
+   "identity": "generic/盈峰环境ZLJ5163TSLE3E4清扫机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "盈峰环境ZLJ5163TSLE3/E4清扫机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果明确中置四盘刷—后置吸嘴，吸扫结合湿式除尘，符合扫路车中置扫刷+后置吸嘴构型；但底盘驱动形式和吨位细节未明写，作为同系列补充入池。",
+   "role": "pool",
+   "intent_rank": 13
+  },
+  {
+   "model": "东风小多利卡扫路车国VI",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "小多利卡",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风小多利卡 扫路车 中置四立扫 后置吸盘",
+   "reason": "结果标题与正文指向东风小多利卡国VI二类底盘扫路车，采用“中置四立扫+后置吸盘”，并说明后置吸嘴高度可调；适用于城市街道、市政广场、园区等清扫作业。结果未明示驱动形式。",
+   "sources": [
+    "http://m.chengli-car.com/show-12-1007-975.html",
+    "http://clzqjym.com/show-12-1007-320.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风小多利卡扫路车国VI",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风小多利卡扫路车国VI"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果标题与正文指向东风小多利卡国VI二类底盘扫路车，采用“中置四立扫+后置吸盘”，并说明后置吸嘴高度可调；适用于城市街道、市政广场、园区等清扫作业，园区工况相关性较好，但驱动形式未明示。",
+   "role": "pool",
+   "intent_rank": 14
+  },
+  {
+   "model": "东风大多利卡扫路车国VI",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "大多利卡",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风大多利卡扫路车 中置四立扫 后置吸盘",
+   "reason": "结果页标题为东风大多利卡扫路车国VI，正文明确采用“中置四立扫+后置吸盘”的布置结构。",
+   "sources": [
+    "http://m.chengli-car.com/show-12-1007-977.html",
+    "http://www.hbchusheng.com/show-12-1007-201.html",
+    "http://m.chenglivcar.com/slc/667.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风大多利卡扫路车国VI",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风大多利卡扫路车国VI"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "possible",
+   "intent_reason": "结果页正文明确采用“中置四立扫+后置吸盘”的布置结构，属于扫路车典型构型；但摘要未给底盘驱动形式和更多前脸/箱体细节，作为多利卡系列补充。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "东风途逸扫路车国VI蓝牌柴油机",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "途逸",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风途逸扫路车 左右立扫 后置吸盘",
+   "reason": "结果页显示该车采用东风途逸（轴距2600）国VI二类底盘改装，加装左右立扫、后置吸盘及扫盘降尘系统。",
+   "sources": [
+    "http://www.hbchusheng.com/show-12-1007-202.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风途逸扫路车国VI蓝牌柴油机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风途逸扫路车国VI蓝牌柴油机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果页显示采用东风途逸轴距2600国VI二类底盘改装，加装左右立扫、后置吸盘及扫盘降尘系统；小型蓝牌底盘适合园区，但文本细节少于主力候选。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "长安2700扫路车国VI蓝牌",
+   "brand": "长安",
+   "slots": {
+    "brand": "长安",
+    "series": "2700",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "长安2700扫路车 中置四立扫 后置吸盘",
+   "reason": "结果页显示该车采用长安后单轮（轴距2700）国VI二类底盘改装，上装含左右立扫、后置吸盘，符合中置扫刷+后置吸盘的扫路车构型。",
+   "sources": [
+    "http://chengli-qc.com/show-12-1008-1413.html",
+    "http://clzqjym.com/show-12-1007-319.html",
+    "http://www.hbchusheng.com/show-12-1007-198.html",
+    "http://szzq2.com/show-12-1007-287.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/长安2700扫路车国VI蓝牌",
+   "identity_kind": "generic",
+   "model_variants": [
+    "长安2700扫路车国VI蓝牌"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 4,
+   "intent_band": "possible",
+   "intent_reason": "结果页显示采用长安后单轮轴距2700国VI二类底盘改装，上装含左右立扫、后置吸盘，符合中置扫刷+后置吸盘构型；与“长安2700扫路车”信息重叠，作为小型车补充。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "福田2600mm扫路车",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "2600mm",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田2600mm扫路车 中置四扫盘+后置吸嘴",
+   "reason": "结果页为福田2600mm扫路车，2轴二类载货底盘，描述采用中置四扫盘+后置吸嘴。",
+   "sources": [
+    "http://www.cspvc.cn/show-12-1007-345.html",
+    "http://m.clgw777.com/show-12-1007-261.html",
+    "http://m.hbwhqc.com/show-12-5003-522.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福田2600MM扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田2600mm扫路车",
+    "福田2600mm扫路车（国V）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 3,
+   "intent_band": "possible",
+   "intent_reason": "结果页为福田2600mm扫路车，2轴二类载货底盘，描述采用中置四扫盘+后置吸嘴；小型2轴底盘适合园区/支路，但文本未给更多前脸、护罩和箱体细节。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "福田2600mm扫路车国V",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "2600mm",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田2600mm扫路车 中置四扫盘 后置吸嘴",
+   "reason": "结果页显示福田2600mm扫路车采用“中置四扫盘+后置吸嘴”对称结构，并给出二类载货底盘及整车参数。",
+   "sources": [
+    "http://chengli-qc.com/show-12-1008-1393.html",
+    "http://m.hbchusheng.com/show-12-1007-192.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福田2600MM扫路车国V",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田2600mm扫路车国V"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2,
+   "intent_band": "weak",
+   "intent_reason": "结果页显示福田2600mm扫路车采用“中置四扫盘+后置吸嘴”对称结构，并给出二类载货底盘及整车参数；与福田2600mm扫路车高度重复，且国V信息较旧，优先级较低。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "东风途逸扫路车国VI蓝牌汽油机",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "途逸",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风途逸 扫路车 中置四盘刷 后置吸嘴",
+   "reason": "结果标题为东风途逸扫路车国VI蓝牌汽油机；同页族结果描述“中置四盘刷+后置吸嘴”，适用于城市街道、市政广场、大型厂矿机械化清扫保洁。结果未明示驱动形式。",
+   "sources": [
+    "http://m.hbrlqz.com/show-12-1007-373.html",
+    "https://kailiqc.com/list_169/1513.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风途逸扫路车国VI蓝牌汽油机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风途逸扫路车国VI蓝牌汽油机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果标题为东风途逸扫路车国VI蓝牌汽油机，同页族结果描述“中置四盘刷+后置吸嘴”，适用于城市街道、市政广场、大型厂矿机械化清扫保洁；汽油机版本有差异，但未明示驱动形式，作为补充。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "五十铃扫路车（5吨）",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "5吨",
+    "model_code": "QL1070A5HAY",
+    "config": ""
+   },
+   "search_key": "五十铃扫路车 5吨 中置4组扫刷+后置吸盘",
+   "reason": "清扫车系列页列出五十铃扫路车（5吨），并说明扫路车采用中置4组扫刷、后置吸盘。",
+   "sources": [
+    "http://m.cljtclw.com/qingsao/Index_4.html",
+    "https://baike.baidu.com/item/%E4%BA%94%E5%8D%81%E9%93%83%E6%89%AB%E8%B7%AF%E8%BD%A6#1",
+    "http://m.xgcspj.com/i-sell-t-309568.html",
+    "https://news.yiche.com/hao/wenzhang/33414881"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/五十铃扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "五十铃扫路车（5吨）",
+    "庆铃五十铃扫路车",
+    "五十铃5吨扫路车",
+    "五十铃扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "市政道路与园区清扫工况：铺装 中置扫刷 + 后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 truc -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路与园区清扫工况：铺装路面低速作业 中置扫刷 + 后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "environment",
+    "english",
+    "unit"
+   ],
+   "source_count": 4,
+   "intent_band": "possible",
+   "intent_reason": "清扫车系列页列出五十铃扫路车5吨，并说明扫路车采用中置4组扫刷、后置吸盘；底盘品牌有代表性，但页面信息偏系列概述，缺少具体前脸、护罩和箱体细节。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "跃进扫路车（3方）",
+   "brand": "跃进",
+   "slots": {
+    "brand": "跃进",
+    "series": "3方",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "跃进扫路车 3方 中置4组扫刷+后置吸盘",
+   "reason": "清扫车系列页列出跃进扫路车（3方），并说明扫路车采用中置4组扫刷、后置吸盘。",
+   "sources": [
+    "http://m.cljtclw.com/qingsao/Index_4.html"
+   ],
+   "source_query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/跃进扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "跃进扫路车（3方）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "扫路车 ——市政环卫专用作业车 中置扫刷 + 后置 车型 品 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "清扫车系列页列出跃进扫路车3方，并说明扫路车采用中置4组扫刷、后置吸盘；仅能确认基本构型，缺少具体底盘、驾驶室和上装细节，作为小型系列池备选。",
+   "role": "pool",
+   "intent_rank": 22
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 22
+ },
+ "pool": {
+  "count": 22,
+  "required": 16,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 12
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 22,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 43,
+  "unique": 22,
+  "removed": 21,
+  "generic": 12
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 6,
+  "backup": 4,
+  "primary": 6
+ }
+}

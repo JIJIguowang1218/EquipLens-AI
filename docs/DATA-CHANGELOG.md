@@ -429,3 +429,40 @@ textrun 13/13、imagesearch 16/16、guard 4/4、ledger 8/8。
 - 台账：新增 `verify-identity-20261114` suite 记录，`run_ledger --check` = **108 条 / 0 issue**。
 
 **数据**：`data-test/runs/verify-identity-20261114/<case>/{run/summary.json,run/DELIVERY.md}`。
+
+### 29. 标识归一化的全类目筛查（2026-11-14，真实链路）
+
+**条件**：`scripts/run_fulltest.py --cases data-test/evals/fulltest-20261114/CASES.json`，
+10 个 case（6 known + 4 holdout）走**完整生产链路**：`plan_candidates`（LLM 规划+抽取，
+并发 4、extract-mode=model、topup 2、glean 0）→ `rank_plan`（LLM）→ `retrieval_engine`
+（web-only、下载 4 路）→ `build_delivery_manifest`。输入为 API 生成的冻结 brief（非手写），
+无 legacy 环境变量，网络实时抓取。**与 p7-screen-20261114（r1）对比时注意：plan 是新生成的，
+候选池与基线不完全相同**，所以下面同时给“同资产反事实”隔离匹配本身的效果。
+
+| 指标 | 基线 r1 | 本轮 | 变化 |
+|---|---:|---:|---:|
+| 交付 | 90/90 | **90/90** | 持平 |
+| 备选 | 38/40 | 37/40 | −1（h4 1/4，池 14） |
+| degraded | 61/90 (67.8%) | **55/90 (61.1%)** | **−6（−6.7pp）** |
+| confirmed（交付台） | 29/90 (32.2%) | **35/90 (38.9%)** | **+6（+6.7pp）** |
+| known degraded | 40/62 (64.5%) | **0.574** | −7.1pp |
+| holdout degraded | 21/28 (75.0%) | **0.698** | −5.2pp |
+| no_hits | 2 | **0** | — |
+| 成本（peak, ¥） | 4.681 | 4.347 | plan 波动 |
+| 耗时合计 | ~2215 s | 2186 s | 持平 |
+
+**隔离匹配本身的效果**（同一批新资产，仅把匹配函数换回旧正则）：
+交付台 confirmed 旧 31 → 新 35（**+4**：h1 +2、c2 +1、c4 +1）；全资产旧 104 → 新 143。
+其余 +2 来自 plan/抓取波动，不是匹配。**严格化的代价**：全 10 case 仅 2 个资产
+旧能命中、新拒绝（h2 `CLW5250TQZZ` vs 标题 `CLW5250TQZZ3/5`），**0 台交付受影响**。
+
+**表现变差的 case 归因**：
+- `s6-mixer` degraded 10→12：新 plan 里带码候选（AXOR3236/SY5255GJB2E/CR412）抓到的标题
+  基本不含码（“三一12方搅拌车”这类），属来源标题问题，不是匹配更严；
+- `h4-crane-truck` degraded 5→7、备选 2/4→1/4：池仅 14 台（本来就 short），属已知供给波动。
+
+**判定**：交付无回归、身份强度提升（+6 台），Go 仍为 true；h4/s6 的波动落在历史已知的
+候选池波动范围内，但本轮低于其 3 轮基线区间，报告如实记录，不当作机制回归。
+
+**数据**：`data-test/runs/p8-idmatch-20261114/`（`SUITE.json`、各 case 的 plan/summary/DELIVERY）；
+评估：`data-test/evals/fulltest-eval-p8-idmatch-20261114.json`；台账 **109 条 / 0 issue**。
