@@ -15,6 +15,8 @@ from __future__ import annotations
 import math
 import re
 
+from .identity import primary_code, validate_model_code
+
 # 覆盖维度：查询只描述“工况/类目/构型/市场段”，不写品牌名单
 CORE_DIMENSIONS = ("base", "model", "environment")
 
@@ -334,6 +336,7 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
     rows: list[dict] = []
     dropped_no_source = 0
     dropped_invalid = 0
+    dropped_invalid_code = 0
     seen: set[str] = set()
     for cand in (payload or {}).get("candidates") or []:
         model = normalize_text(cand.get("model"))
@@ -351,6 +354,11 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
         seen.add(key)
         slots = {k: normalize_text((cand.get("slots") or {}).get(k))
                  for k in SLOT_FIELDS}
+        if slots.get("model_code") and not validate_model_code(slots["model_code"]):
+            # LLM 常把构型/吨位/容量填进 model_code（4X2 / 8方 / 340Hp）
+            slots["model_code"] = ""
+            dropped_invalid_code += 1
+        key_tok = primary_code(model)
         sk = normalize_text(cand.get("search_key"))[:40] or derive_search_key(slots, model)
         rows.append({
             "model": model,
@@ -364,11 +372,15 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
             "source_query": query_meta["query"],
             "source_query_id": query_meta["query_id"],
             "dimension": query_meta["dimension"],
+            # 第一段可核验性：车名里有没有"主码"（决定第二段能不能 confirm）
+            "verifiable": bool(key_tok),
+            "code_core": key_tok.cores[0] if key_tok else "",
         })
         if len(rows) >= limit:
             break
     stats = {"kept": len(rows), "dropped_no_source": dropped_no_source,
-             "dropped_invalid_source": dropped_invalid}
+             "dropped_invalid_source": dropped_invalid,
+             "dropped_invalid_code": dropped_invalid_code}
     return rows, stats
 
 
@@ -416,6 +428,8 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             ]
             merged[ident]["dimensions"] = [item.get("dimension")]
             merged[ident]["source_count"] = len(item.get("sources") or [])
+            merged[ident]["verifiable"] = bool(item.get("verifiable"))
+            merged[ident]["code_core"] = item.get("code_core") or ""
             order.append(ident)
             return
         cur = merged[ident]
@@ -441,6 +455,9 @@ def merge_candidates(items: list[dict]) -> list[dict]:
             if not cur_slots.get(k) and (item.get("slots") or {}).get(k):
                 cur_slots[k] = item["slots"][k]
         cur["source_count"] = len(cur["sources"])
+        if item.get("verifiable") and not cur.get("verifiable"):
+            cur["verifiable"] = True
+            cur["code_core"] = item.get("code_core") or cur.get("code_core") or ""
 
     for item in items:
         ident = model_identity(item.get("model"))

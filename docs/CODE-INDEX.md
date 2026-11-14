@@ -38,7 +38,7 @@
 | 死图床监测 | `scripts/monitor_bad_domains.py`（只统计，不参与生产） |
 | 密钥卫生 | `scripts/scan_secrets.py`、`tests/test_no_secrets.py`（提交前跑） |
 | 交付测试套件 | `scripts/run_delivery_suite.py`、`scripts/summarize_delivery_suite.py` |
-| 完整测试驱动/评估 | `scripts/run_fulltest.py`、`scripts/eval_fulltest.py`、`scripts/eval_fulltest_repeats.py`、`scripts/eval_plan_snapshot.py` |
+| 完整测试驱动/评估 | `scripts/run_fulltest.py`、`scripts/eval_fulltest.py`、`scripts/eval_fulltest_repeats.py`、`scripts/eval_plan_snapshot.py`、`scripts/evaluate_identity_match.py`（标识回放） |
 
 ## 3. 支撑模块
 
@@ -50,7 +50,7 @@
 | 审核服务 | `review.py`、`reviewserver.py`、`scripts/build_*_review.py` |
 | L3 段落质检 | `passage.py`、`l3gate.py`、`scripts/eval_l3gate.py` |
 | 旧 text/workflow | `textrun.py`、`workflow.py`、`runner.py`、`strategy.py`、`query.py`、`roster.py` |
-| 辅助模块 | `doctor.py`（环境自检）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
+| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
 
 ## 4. 实验脚本（不得默认进生产）
 
@@ -79,10 +79,11 @@
 
 | 测试 | 覆盖 |
 |---|---|
-| `tests/test_briefing.py` | brief API/组装/校验（5） |
-| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter（47） |
+| `tests/test_briefing.py` | brief API/组装/校验（6） |
+| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划（48） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
-| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots（16） |
+| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验（17） |
+| `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
 | `tests/test_no_legacy_tables.py` | 词表守卫（src 全量禁旧表名、三表必须不存在、品牌组为空、主链不 import 旧链路，4） |

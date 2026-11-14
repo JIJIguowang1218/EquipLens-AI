@@ -362,3 +362,46 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 
 **回归**：engine 48/48、planning 16/16、briefing 6/6、analysis 14/14、guard 4/4、
 textrun 13/13、imagesearch 16/16、gate 11/11、ledger 8/8、association 12/12。
+
+### 27. 车型标识归一化 + 第一段可核验性（2026-11-14）
+
+**动机**：`HF 8066`（空格）、`CPD50-B`（2 位码）、`XS265HS`（标题写 XS265）在第二段被判
+“不是同一台”；同时 `code in title` 是子串匹配，`RS45（B921）` 会用括号里的 `B921` 命中 `B921RR`。
+第一段和第二段各写了一套正则，口径不一致。
+
+**改动**（新增 `src/equiplens/identity.py`，两段共用）：
+
+- 主码 = 括号外的第一个强标识；括号内是底盘/备注时不算主身份，但**括号外没有码时兜底使用**（北奔写法）；
+- 允许字母/数字之间的空格、连字符、点；拒绝 `4X2`/`8方`/`340Hp`/`3.0T`/`12CUBIC`/`371HP`（构型与规格不是码）；
+- 尾部后缀按同族处理：`XS265HS` ≈ `XS265`；**尾部 ≥3 字符视为上装/变体编码，必须整串匹配**
+  （`EQ5253JSQZM` 不等于 `EQ5253CCYF2`）；点分段保留（`TGM18.290` 不等于 `TGM18.320`）；
+- 匹配 = 左边界严格、右侧允许字母、不允许数字（`XS265` 命中 `XS265HS`，不命中 `XS2650`）；
+- 【第二段】`RuleVerifier` 改用 `code_in_title()`；**不做主题判断**（电池/配件/航模页归门卫，见本轮结论）；
+- 【第一段】`validate_extraction` 校验 `slots.model_code`（假码清空并计数 `dropped_invalid_code`），
+  候选新增 `verifiable` / `code_core`，plan 的 `pool` 新增 `verifiable` / `verifiable_share`；
+  **合并去重仍用完整码**（核心码合并留待下一步，避免把不同上装并入一台）。
+
+**离线回放**（`scripts/evaluate_identity_match.py`，30 个 run / 1676 个资产，冻结证据、不联网）：
+
+| 指标 | 数值 |
+|---|---|
+| 旧 confirmed 资产 | 345 |
+| 新增可 confirmed（gained） | **59** |
+| 失去 confirm（lost） | **0** |
+| 已交付车辆因此获得 confirmed 图 | **16 / 270**（33.0% → **38.9%**） |
+
+- 16 台里 10 台是干净修复（HF 8066 / RS45 / TGM18.290 / EQ2102 / J4.0-5.5XN 等）；
+  4 台是尾部变体（XS265HS↔JSIV、HC228D↔228i、SR20MA↔SR20M、SR22-G↔SR22M），
+  按产品负责人 2026-11-14 的规则（后缀是配置差异）放行，建议交付前抽检；
+  2 台命中的是配件/电池页（cpd50j 马达、森泉电池）——**属于门卫职责，不归核验**，
+  是否要加 gate v5 的“配件/商品”反例另行评估。
+- 旧子串误命中（`B921RR`/`AP620H`/`M618A`/`LSS23022`）全部不再 confirmed（lost=0 说明它们原本
+  也另有合法证据，或本来就未被交付使用）。
+
+**实验条件**：回放只读 `data-test/runs/p7-screen{,-r2,-r3}-20261114/*/run/{state,summary}.json`；
+30 个 run 的生产代码内容 == `d0a4cec`（见 §23），本轮改动只涉及核验匹配函数，不重跑检索、不触网。
+
+**测试**：identity 10/10、planning 17/17、engine 48/48、briefing 6/6、analysis 14/14、
+textrun 13/13、imagesearch 16/16、guard 4/4、ledger 8/8。
+
+**数据**：`data-test/evals/identity-match-20261114.json`（gained/lost/delivered_flips 明细）。

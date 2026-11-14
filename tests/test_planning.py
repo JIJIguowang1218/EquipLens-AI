@@ -300,6 +300,35 @@ def test_slots_derive_search_key_and_merge():
     assert merged[0]["slots"].get("config") == "6x6", merged[0]
 
 
+def test_model_code_validation_and_verifiable():
+    """第一段：假码（4X2/8方/340Hp）清空；候选带 verifiable/code_core。"""
+    meta = {"query": "q1", "query_id": "q-model", "dimension": "model"}
+    rows, stats = planning.validate_extraction(
+        {"candidates": [
+            {"model": "HF 8066 6×6 重型越野底盘",
+             "slots": {"brand": "MOL", "model_code": "HF 8066", "config": "6x6"},
+             "sources": ["https://ok/1"]},
+            {"model": "某 6×6 消防车", "slots": {"model_code": "4X2"},
+             "sources": ["https://ok/2"]},
+            {"model": "某 12 方搅拌车", "slots": {"model_code": "8方"},
+             "sources": ["https://ok/3"]},
+        ]},
+        {"https://ok/1", "https://ok/2", "https://ok/3"}, meta, limit=6)
+    by_model = {r["model"]: r for r in rows}
+    hf = by_model["HF 8066 6×6 重型越野底盘"]
+    assert hf["slots"]["model_code"] == "HF 8066", hf["slots"]
+    assert hf["verifiable"] and hf["code_core"] == "HF8066", hf
+    assert by_model["某 6×6 消防车"]["slots"]["model_code"] == "", by_model["某 6×6 消防车"]["slots"]
+    assert by_model["某 12 方搅拌车"]["slots"]["model_code"] == ""
+    assert stats["dropped_invalid_code"] == 2, stats
+    # 没有任何码的候选：verifiable=False
+    rows2, _ = planning.validate_extraction(
+        {"candidates": [{"model": "沙漠越野重型牵引车（康明斯+艾利逊）",
+                         "sources": ["https://ok/4"]}]},
+        {"https://ok/4"}, meta, limit=6)
+    assert rows2[0]["verifiable"] is False and rows2[0]["code_core"] == "", rows2[0]
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -315,6 +344,7 @@ if __name__ == "__main__":
     check("查询压缩与补查询", test_short_query_builder)
     check("人审后的合并规则", test_merge_rules_from_human_verdicts)
     check("negative 只收短词", test_negative_terms_only_short_words)
+    check("model_code 校验与可核验标记", test_model_code_validation_and_verifiable)
     check("search_key 过校验/合并", test_search_key_survives_validation_and_merge)
     check("槽位派生 key/合并补齐", test_slots_derive_search_key_and_merge)
     fails = [r for r in results if r[1] == "FAIL"]

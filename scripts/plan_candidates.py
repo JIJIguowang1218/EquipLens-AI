@@ -317,6 +317,9 @@ def main(argv=None) -> int:
                   "kept": sum(int(x.get("kept") or 0) for x in topup_rows),
                   "candidates_before": len(merge_candidates(extracted)) if not extras else None},
         "pool": {"count": len(candidates), "required": need,
+                 "verifiable": sum(1 for c in candidates if c.get("verifiable")),
+                 "verifiable_share": round(
+                     sum(1 for c in candidates if c.get("verifiable")) / max(1, len(candidates)), 3),
                  "slots": slots, "backup": backup,
                  "per_query": extract_n, "limit": limits["limit"],
                  "ok": not warn, "warning": warn},

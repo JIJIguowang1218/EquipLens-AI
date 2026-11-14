@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Callable
 
 from .contracts import Asset, PartRequirement, Target, Verification
+from ..identity import code_in_title
 
 # 目标级早停：同一台车连续这么多张下载硬失败（403/死链）就放弃该台
 EARLY_STOP_FAILS = 8
@@ -107,8 +108,9 @@ class RuleVerifier:
             warnings.append("view_interior_hint")
 
         # ---- 身份证据 ----
-        code = re.search(r"[A-Z]{1,4}\d{3,}[A-Z0-9]*", model)
-        code_hit = bool(code) and code.group(0).lower() in title
+        # 码匹配统一走 identity 模块（2026-11-14）：空格/连字符/点分隔容忍、
+        # 括号内底盘码不算主身份、尾部后缀按同族处理；只认标识，不做主题判断。
+        code_hit = code_in_title(model, asset.title or "")
         cn_tokens = [t for t in re.findall(r"[一-鿿]{2,4}", model)
                      if t not in self.GENERIC_CN]
         cn_hit = [t for t in cn_tokens if t in title]
