@@ -5,12 +5,28 @@ P1 只依赖适配器协议与夹具；不联网、不碰数据库。
 """
 from __future__ import annotations
 
+import subprocess
 import time
 from pathlib import Path
 from typing import Any
 
 from .contracts import Asset, Brief, ResearchUnit, Target, Verification
 from .state import RunStore, new_state, record_decision
+
+_CODE_VERSION: str | None = None
+
+
+def _code_version() -> str:
+    """当前代码版本（git short sha），写进 summary.config 供实验追溯。"""
+    global _CODE_VERSION
+    if _CODE_VERSION is None:
+        try:
+            _CODE_VERSION = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"],
+                cwd=Path(__file__).resolve().parents[3], text=True).strip()
+        except Exception:  # noqa: BLE001
+            _CODE_VERSION = ""
+    return _CODE_VERSION
 
 # 回退来源的图（部件名兜底/类目回退）只能进 degraded，不参与正式槽与备选
 FALLBACK_TIERS = {"part_fallback", "class_fallback"}
@@ -708,6 +724,7 @@ class RetrievalEngine:
             },
             "budget_used": dict(state.get("budget_used") or {}),
             "config": {
+                "code_version": _code_version(),
                 "download_workers": int(getattr(self.world, "download_workers", 1) or 1),
                 "plan_concurrency": getattr(self.world, "plan_meta", {}).get("concurrency"),
                 "rank_method": getattr(self.world, "plan_meta", {}).get("rank_method"),

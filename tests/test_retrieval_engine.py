@@ -733,6 +733,8 @@ def test_summary_records_step_timings():
         assert timings, summary
         assert all("ms" in t and "state" in t for t in timings), timings
         assert summary.get("elapsed_ms") is not None
+        # 代码版本必须进 config：否则产物无法回溯到某次提交
+        assert "code_version" in summary["config"], summary["config"]
 
 
 def test_degraded_fill_when_tiers_exhausted():
