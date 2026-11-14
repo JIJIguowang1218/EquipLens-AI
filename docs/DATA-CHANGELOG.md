@@ -323,3 +323,42 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   - `source_registry` 在旧 text 链里靠 `trust`/`skip_domains` 影响评分与跳源，
     与"运维配置不参与准入"的口径不符。
 - 影响面：纯新增归档，不改代码、不动任何 run；`data-test/corpus/**` 已在 `.gitignore` 白名单内。
+
+### 26. 词表删除与参数去固定化（2026-11-14，用户批准）
+
+**删除**（sha256 见 `docs/vocabulary-policy.md` §3；文件与引用一并清零）：
+
+| 删除项 | 代码处理后 |
+|---|---|
+| `data/legacy/part_taxonomy.json` | `analysis.load_taxonomy()` 返回 `{}`；`make_ui_fixtures.py` 归档（缺表即显式退出） |
+| `data/legacy/category_profiles.json` | `textrun.DEFAULT_PROFILES` 删除；`load_profiles()` 默认空，仅显式 `--profiles` 读外部文件 |
+| `data/legacy/brand_aliases.json` | `imagesearch` 的 `LEGACY_BRAND_PATH`/环境开关删除；`BRAND_GROUPS` 恒为 `()`；`web.RuleVerifier.fallback_series` 删除 |
+
+- 守卫强化：`tests/test_no_legacy_tables.py` 4/4——全量扫 `src/` 禁止出现三个表名/`data/legacy`，
+  三表必须**不存在**，品牌组必须为空，主链不得 import 旧链路模块。
+- 旧测试按新口径修正：`test_textrun` 用内联档案夹具（13/13）；`test_analysis` 的 3 条
+  “词表在场”断言改为“去表化后自由填写/缺部位文案/显式 slot”（14/14，此前 11/14 长期红）。
+
+**参数去固定化**（真实业务输入决定，不再写死）：
+
+- `assemble_brief` / `generate_brief` / `scripts/build_brief.py --slots` **不再默认 12**；
+  缺台数直接 `ValueError`，`build_brief` 的 `--slots` 改为必填；
+- `page_budget` 只写 `{vehicle_slots}`（删 `total=20`、`part_pages=2` 两个死键）；
+- `budget` 改为 `{max_queries: 3*slots+4}`（12 台时 = 40，与旧值一致；删 `max_rounds`/`max_models` 死键）；
+- `stop_rules` 置空（全链不消费）。
+
+**生产预设清理**：
+
+- `retrieval_engine/web.py`：`replan()` 去掉写死的 `6x6` 与 `"沙漠 6x6 牵引车 车型 品牌"`，
+  改由 `replan_queries(failed, brief)` 从任务单 `class/configuration` 派生；无 class 时只按失败车型发问
+  （新增单测 `test_replan_queries_follow_brief_not_preset`）；
+- `planning.SERIES` 移除品牌名 `HOWO`（新增断言：HOWO 两台车不得因品牌名被并成一台）；
+- `briefing.DEFAULT_NEGATIVE` **保留**：产品负责人 2026-11-14 确认“大类排除”不算穷举表，
+  已登记到 `vocabulary-policy` §2 允许例外。
+
+**台账**：`run_ledger` 新增 `suite`（套件，指标在子 run）与 `artifacts`（有产物无 summary）两类，
+`empty` 从 22 降到 **0**；`INDEX.md` 表体恢复为 **107 行**（此前 84 行 + 23 条“empty”）；
+`--write` 补了 12 个 `RUN.json`，`--check` = 107 records / 0 issue。
+
+**回归**：engine 48/48、planning 16/16、briefing 6/6、analysis 14/14、guard 4/4、
+textrun 13/13、imagesearch 16/16、gate 11/11、ledger 8/8、association 12/12。

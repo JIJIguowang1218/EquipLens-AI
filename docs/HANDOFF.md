@@ -163,9 +163,10 @@
 - 关键开关（默认值即生产）：`plan --concurrency 4`、`--download-workers 4`、
   `--extract-mode model`、`--glean 0`、`--topup 2`（可显式 4，仅紧供类目）；
   `--topup 4` 与 `--glean` 都是 opt-in，默认行为不变；
-- 词表：`data/legacy/` 为**静默**表（部件/类目/品牌别名），默认不加载；规则见 `docs/vocabulary-policy.md`；
-- 自检：`check_env.py`；测试：`briefing 5/5`、`planning 16/16`、`retrieval_engine 47/47`、
-  `imagesearch 16/16`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 3/3`；
+- 词表：部件/类目/品牌三张旧表**已删除**（2026-11-14）；主体代码不得引用旧表名；
+  类目档案默认空（仅显式 `--profiles` 读外部文件）；规则见 `docs/vocabulary-policy.md`；
+- 自检：`check_env.py`；测试：`briefing 6/6`、`planning 16/16`、`retrieval_engine 48/48`、
+  `imagesearch 16/16`、`analysis 14/14`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 4/4`；
   `test_analysis` 11/14 为历史失败，与本轮无关；
 - 台账：`run_ledger --check` = **107 条，0 issue**；
 - 本轮数据：`data-test/runs/p6-vocab-smoke-20261114/`、`p7-screen-20261114/`、

@@ -230,27 +230,11 @@ VEHICLE_WORDS = ("卡车", "货车", "牵引", "自卸", "载货", "工程", "�
                  "truck", "lorry", "tractor", "tipper", "dump", "chassis",
                  "offroad", "off-road", "vehicle", "camion")
 
-# 品牌别名表已移出主体代码（2026-11-14）：默认不加载，保持静默。
-# 仅当显式设置 EQUIPLENS_ENABLE_LEGACY_BRANDS=1 时，从 data/legacy 读取，
-# 供考古/对照；正常检索不依赖任何品牌白名单。
-LEGACY_BRAND_PATH = Path(__file__).resolve().parents[2] / "data" / "legacy" / "brand_aliases.json"
-
-
-def _load_legacy_brand_groups() -> tuple[tuple[str, ...], ...]:
-    if os.environ.get("EQUIPLENS_ENABLE_LEGACY_BRANDS") != "1":
-        return ()
-    try:
-        d = json.loads(LEGACY_BRAND_PATH.read_text(encoding="utf-8"))
-        return tuple(tuple(str(x) for x in g) for g in (d.get("groups") or []))
-    except Exception:  # noqa: BLE001
-        return ()
-
-
-BRAND_GROUPS = _load_legacy_brand_groups()
+# 品牌别名表已删除（2026-11-14，用户批准）：主体代码不再持有或加载任何品牌枚举。
+# 品牌识别只保留"车名开头词 + 别名子串"的结构性判断（见 _brand_group），
+# 不依赖白名单，也没有 legacy 环境变量开关。
+BRAND_GROUPS: tuple[tuple[str, ...], ...] = ()
 _BRAND_LOOKUP: dict[str, tuple[str, ...]] = {}
-for _group in BRAND_GROUPS:
-    for _name in _group:
-        _BRAND_LOOKUP[_name] = _group
 
 
 CONF_RE = re.compile(r"\d+\s*[x×]\s*\d+", re.I)

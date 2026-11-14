@@ -24,7 +24,8 @@ from equiplens.retrieval_engine.adapters import FakeWorld  # noqa: E402
 from equiplens.retrieval_engine.evidence import EvidenceStore  # noqa: E402
 from equiplens.retrieval_engine import cli as engine_cli  # noqa: E402
 from equiplens.retrieval_engine.web import (NullLibraryAdapter,  # noqa: E402
-                                            RuleVerifier, WebWorld)
+                                            RuleVerifier, WebWorld,
+                                            replan_queries)
 
 FIX = ROOT / "data-test" / "retrieval-fixtures-20261109"
 
@@ -737,6 +738,18 @@ def test_summary_records_step_timings():
         assert "code_version" in summary["config"], summary["config"]
 
 
+def test_replan_queries_follow_brief_not_preset():
+    """重规划查询必须来自任务单类目，不能带沙漠/6x6 之类的预设。"""
+    qs = replan_queries(["某型号 消防车"], {"request": {"class": "水罐消防车",
+                                                        "configuration": "4x2"}})
+    joined = " ".join(qs)
+    assert "沙漠" not in joined and "6x6" not in joined, qs
+    assert any("水罐消防车" in q for q in qs), qs
+    # 任务单没有 class 时只按失败车型发问，不补预设查询
+    qs2 = replan_queries(["某型号 扫路车"], {"request": {}})
+    assert qs2 == ["某型号 扫路车 替代车型"], qs2
+
+
 def test_degraded_fill_when_tiers_exhausted():
     """底线：层级耗尽、没有 accepted 图时，用 unknown/低清的图也要把槽填满并标 degraded。"""
     b = base_brief(parts=("bumper",), slots=1, tiers=("exact",), backup=0)
@@ -969,6 +982,7 @@ if __name__ == "__main__":
     check("回退图只进 degraded", test_fallback_assets_only_fill_degraded)
     check("回退图不进备选", test_fallback_assets_excluded_from_backup)
     check("节点耗时记录", test_summary_records_step_timings)
+    check("重规划查询跟随任务单", test_replan_queries_follow_brief_not_preset)
     check("层级耗尽后降级兜底", test_degraded_fill_when_tiers_exhausted)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:

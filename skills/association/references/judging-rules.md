@@ -22,7 +22,7 @@
 
 ## 4. 档案缺失/低置信要显式处理
 
-- 正：`data/legacy/category_profiles.json`（静默表）没有该类别 → 标 `profile_missing`、走通用层、提议档案；置信 <0.6 或 `confirmed_by` 是 LLM 草案 → `needs_confirmation(blocking=true)`。
+- 正：类目档案（2026-11-14 起已删除该表，默认没有档案）没有该类别 → 标 `profile_missing`、走通用层、提议档案；置信 <0.6 或 `confirmed_by` 是 LLM 草案 → `needs_confirmation(blocking=true)`。
 - **反例**：静默用通用层跑完，报告里却看不出"这个类目根本没有档案"。
 - **反例**：把"随车吊"按"起重为主"直接做完，用户其实要的是载货为主 → 支腿证据全废。
 

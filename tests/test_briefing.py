@@ -109,12 +109,27 @@ def test_generate_uses_llm_prompt():
     assert out["attempts"] == 1, out
 
 
+def test_slots_must_come_from_input():
+    """台数必须由用户输入给出（不再默认 12）。"""
+    try:
+        briefing.assemble_brief(payload(), "沙漠车")
+    except ValueError as e:
+        assert "vehicle_slots" in str(e), e
+    else:
+        raise AssertionError("缺台数必须报错，不能默认 12")
+    b = briefing.assemble_brief(payload(), "沙漠车", slots=7)
+    assert b["request"]["page_budget"] == {"vehicle_slots": 7}, b["request"]["page_budget"]
+    assert b["budget"] == {"max_queries": 25}, b["budget"]
+    assert b["stop_rules"] == {}, b["stop_rules"]
+
+
 if __name__ == "__main__":
     check("LLM 输出 → 完整 brief", test_assemble_brief)
     check("单槽规则", test_single_slot)
     check("词表外部件保留", test_unknown_part_kept)
     check("缺 class 拒绝", test_missing_class_rejected)
     check("generate 调 LLM 并带 skill", test_generate_uses_llm_prompt)
+    check("台数必须来自用户输入", test_slots_must_come_from_input)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

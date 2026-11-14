@@ -110,6 +110,9 @@ def test_model_identity_not_brand():
     # 泛称不与具体型号码硬并
     assert planning.model_identity("6×6 越野牵引头（460马力）")[0] == "generic"
     assert planning.model_identity("TAZ4922 6×6")[0] == "code"
+    # 品牌名（HOWO）不是车系：同品牌不同车不能因为在 SERIES 里被并成一台
+    assert planning.model_identity("HOWO 6×6 全驱牵引车") != \
+        planning.model_identity("HOWO TX 6×6 牵引车"), "品牌名不得当作车系"
     # GVW/HP 等参数不是型号码
     assert planning.model_identity("K-65959（6×6，GVW 35000 kg）") == \
         planning.model_identity("K-65959 6×6")

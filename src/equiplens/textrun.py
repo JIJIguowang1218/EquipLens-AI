@@ -20,7 +20,7 @@ from . import audit, corpus, passage, runner, runlog, strategy
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS = ROOT / "schemas"
 DEFAULT_REGISTRY = ROOT / "data" / "source_registry.json"
-DEFAULT_PROFILES = ROOT / "data" / "legacy" / "category_profiles.json"  # 已静默，仅旧链路
+DEFAULT_PROFILES = None  # 类目档案表已删除（2026-11-14）：默认无档案，只有显式 --profiles 才加载
 
 
 def _load_json(path: Path | str) -> dict:
@@ -38,7 +38,10 @@ def load_registry(path: str | Path | None = None) -> dict:
 
 
 def load_profiles(path: str | Path | None = None) -> dict:
-    p = Path(path) if path else DEFAULT_PROFILES
+    """类目档案：默认空（表已删除）；只有显式传入 path 才读取。"""
+    if not path:
+        return {"profiles": {}}
+    p = Path(path)
     return _load_json(p) if p.exists() else {"profiles": {}}
 
 

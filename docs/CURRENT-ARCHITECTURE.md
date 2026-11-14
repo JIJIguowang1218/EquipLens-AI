@@ -100,8 +100,9 @@ task-brief@v2 (API)
   没有 config 的 run 不参与横向对比；
 - **抽取与查询键（2026-11-14）**：抽取输出 `slots{brand,series,model_code,config}` 与
   `search_key`；`search_key` 只作查询阶梯**最后一档**（前三档 0 命中才用）；旧 plan 无该字段时回落派生键；
-- **词表静默（2026-11-14）**：部件/类目/品牌别名表移入 `data/legacy/`，主链默认不加载；
-  规则见 `docs/vocabulary-policy.md`；品牌表仅在 `EQUIPLENS_ENABLE_LEGACY_BRANDS=1` 时可用；
+- **词表删除（2026-11-14）**：部件/类目/品牌别名三张表**已删除**（`data/legacy/` 不存在）；
+  主体代码不得引用旧表名；类目档案默认空（仅显式 `text-run --profiles <path>` 才读外部文件）；
+  身份判定只靠型号码/拉丁车系/中文片段/构型等结构性证据；规则见 `docs/vocabulary-policy.md`；
 - **补池（2026-11-14）**：`--topup` 默认 2；`--topup 4` 为紧供类目 opt-in（新增图集/参数/评测后缀），
   默认行为不变；
 - **回退图纪律（2026-11-14）**：`part_fallback/class_fallback` 资产不进正式槽与备选，只由 DEGRADE 兜底使用；

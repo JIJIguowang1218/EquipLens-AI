@@ -93,11 +93,13 @@ def _part_slug(label: str) -> str:
     return hashlib.sha1((label or "").encode("utf-8")).hexdigest()[:8]
 
 
-def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
+def assemble_brief(payload: dict, raw: str, *, slots: int | None = None,
                    brief_id: str = "", class_hint: str = "",
                    now: str | None = None) -> dict:
     """把 LLM 输出补成完整 brief；规则字段在这里生成。
 
+    台数（`vehicle_slots`）**必须来自用户输入**（`--slots` / 任务单 page_budget），
+    不再用固定 12 兜底（2026-11-14）。
     不读取任何部件/类目词表（2026-11-14）：part 若是 ascii snake 键就保留，
     否则用可读的 `custom_<slug>`；label 永远保留原词。
     """
@@ -107,6 +109,16 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
     klass = _clean(request.get("class")) or _clean(class_hint)
     if not klass:
         raise ValueError("无法确定 request.class：用户输入里没有车型类别，也没有 --class 兜底")
+
+    # 台数：显式参数 > LLM/任务单里的 page_budget.vehicle_slots；都没有就报错，
+    # 绝不默认 12（用户要分析几台是业务输入，不是固定值）。
+    slots = slots if slots is not None else (request.get("page_budget") or {}).get("vehicle_slots")
+    try:
+        slots = int(slots)
+    except (TypeError, ValueError):
+        slots = 0
+    if slots <= 0:
+        raise ValueError("缺少 page_budget.vehicle_slots：请用 --slots 指定要分析几台")
 
     regions_out: list[dict] = []
     seen_regions: set[str] = set()
@@ -236,15 +248,16 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
             "base_platform": ({"value": _clean(request.get("base_platform")), "confidence": 0.8}
                               if _clean(request.get("base_platform")) else None),
             "configuration": config or None,
-            "page_budget": {"total": 20, "vehicle_slots": slots, "part_pages": 2},
+            "page_budget": {"vehicle_slots": slots},
         },
         "assumptions": assumptions,
         "region_requirements": regions_out,
         "part_requirements": parts_out,
         "research_units": units,
         "tiers": ["exact"] + (["environment"] if env_quota else []),
-        "budget": {"max_queries": 40, "max_rounds": 3, "max_models": slots + 2},
-        "stop_rules": {"no_new_after": 3, "max_rounds": 2},
+        # 预算按台数派生（不写死）：每条槽约 3 条查询 + 4 条余量；旧值 40 对应 12 台
+        "budget": {"max_queries": 3 * slots + 4},
+        "stop_rules": {},
         "negative": negative,
         "strategy_ref": "default@v1",
     }
@@ -311,7 +324,7 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
     }
 
 
-def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str = "",
+def generate_brief(raw: str, api_key: str, *, slots: int | None = None, class_hint: str = "",
                    part_hints: list[str] | None = None, brief_id: str = "",
                    model: str = "deepseek-flash",
                    chat_fn=None, use_skill: bool = True,

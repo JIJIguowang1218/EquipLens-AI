@@ -227,6 +227,14 @@ def build_record(path: Path) -> dict:
         kind = "diag"
     elif name == "runs":
         kind = "archived"
+    elif (any(path.rglob("summary.json")) or any(path.rglob("state.json"))):
+        # 套件目录：指标在子 run 里，顶层没有 summary。旧版误判成 empty，
+        # 导致"索引说没有、磁盘上有几百个文件"，被当成数据丢失（2026-11-14 修）。
+        kind = "suite"
+    elif any(f.is_file() and f.name != "RUN.json" for f in path.rglob("*")):
+        # 有产物但没有可解析的 summary/state（老 smoke 的 audit/images 等）：
+        # 记 artifacts，绝不再标成 empty。
+        kind = "artifacts"
     else:
         kind = "empty"
 
@@ -319,6 +327,8 @@ def write_index(records: list[dict]) -> None:
             "plan": sum(1 for r in records if r["kind"] == "plan"),
             "plan-set": sum(1 for r in records if r["kind"] == "plan-set"),
             "diag": sum(1 for r in records if r["kind"] == "diag"),
+            "suite": sum(1 for r in records if r["kind"] == "suite"),
+            "artifacts": sum(1 for r in records if r["kind"] == "artifacts"),
             "empty": sum(1 for r in records if r["kind"] == "empty"),
             "needs_review": sum(1 for r in records if r.get("needs_review")),
         },
@@ -362,6 +372,8 @@ def write_index(records: list[dict]) -> None:
     for rec in records:
         if rec["kind"] in ("empty", "archived"):
             lines.append(f"- `{rec['run_id']}` → {rec['kind']}（未删除，仅标记）")
+    if any(r["kind"] == "suite" for r in records):
+        lines += ["", "> `suite` = 套件目录：顶层没有 summary，指标在各子 run 里（未丢数据，勿重跑）。"]
     (RUNS / "INDEX.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

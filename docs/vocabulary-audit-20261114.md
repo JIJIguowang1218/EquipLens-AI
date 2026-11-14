@@ -1,7 +1,9 @@
 # 词表审计：项目里还有哪些“枚举表”，它们驱动什么（2026-11-14）
 
-> 触发：H3 brief 的部件被写成 `custom_5a1c7e` 这类 hash，说明“部件词表”仍在决定命名。
-> 结论先行：**词表不是准入，但确实在改名字**；已修。其余表逐条列出，分清“危险/可接受”。
+> ⚠️ **本文是当日审计快照**：文中三张 legacy 表（part_taxonomy / category_profiles /
+> brand_aliases）已在同日晚些时候**全部删除**（见 `docs/DATA-CHANGELOG.md` §26 与
+> `docs/vocabulary-policy.md` §3）。下文保留原样作追溯，**不要再按“表还在”去读**；
+> 现存偏差只剩 `style_vocabulary.json`（描述性语汇）与旧链路模块自带的词表。
 
 ## 1. 部件相关
 

@@ -9,7 +9,8 @@
 - 技能：`skills/**`
 - 测试：`tests/**`
 - 契约：`schemas/**`
-- 配置/词表：`data/**/*.json`（含 `data/legacy/` 三张**静默表**：部件/类目/品牌别名，入库仅为审计，主链默认不加载）
+- 配置/词表：`data/*.json`（正式库 JSON）；**旧词表已删除**（2026-11-14：部件/类目/品牌三表），
+  `data/legacy/` 不再存在，主体代码也不得引用
 - 文档：`docs/**`
 - 评测结论/数据：`data-test/evals/**`
 - run 的轻量轨迹：`data-test/runs/**/state.json`、`summary.json`、`fetch_log.jsonl`、`events.jsonl`、`audit.html`、`RUN.json`

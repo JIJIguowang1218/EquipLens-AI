@@ -76,9 +76,10 @@ def candidate_key(model: str) -> str:
     return re.sub(r"[^0-9a-z\u4e00-\u9fff]+", "", s)
 
 
-# 车系（无型号码时用）；注意不要放品牌名，否则会把同品牌多台车并成一台
-SERIES = ("ZETROS", "AROCS", "ACTROS", "X3000", "X5000", "M3000",
-          "F3000", "HOWO")
+# 车系（无型号码时用）；**不要放品牌名**，否则会把同品牌多台车并成一台。
+# 2026-11-14：HOWO 是品牌不是车系，已移出（它会让"HOWO 6x6 牵引车"与"HOWO TX"
+# 在无型号码时被判为同一台）。
+SERIES = ("ZETROS", "AROCS", "ACTROS", "X3000", "X5000", "M3000", "F3000")
 _CODE_PATTERNS = (
     re.compile(r"\b[A-Z]{1,6}-?\d{3,}[A-Z0-9-]*\b"),   # TAZ4922 / K-65959 / DFV5253TSMGP6D
     re.compile(r"\b[A-Z]{2,3}\s\d{3,}\b"),              # TB 800

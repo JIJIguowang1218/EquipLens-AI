@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-14T11:58:12 · 共 107 条 · 待补人工结论 65 条
+> 生成时间：2026-11-14T14:44:52 · 共 107 条 · 待补人工结论 65 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -32,6 +32,7 @@
 | loop | `loop-p0c-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=66 · gate_pass=61 · degraded=8 · $0.0165 | [—](data-test/runs/loop-p0c-20261112/summary.json) |
 | loop | `loop-platform-360-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=69 · gate_pass=64 · degraded=8 · $0.01725 | [—](data-test/runs/loop-platform-360-20261112/audit.html) |
 | loop | `loop-platform-baidu-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=111 · gate_pass=98 · degraded=12 · $0.0165 | [—](data-test/runs/loop-platform-baidu-20261112/audit.html) |
+| loop | `p1-wide-loop-20261113` | suite | 2026-11-13 | — | — | — |
 | plan | `plan-ab-20261111` | plan-set | 2026-11-11 | — | — | E13 初版 A/B（一次性抽取）：出处不可归因、同组重合 12–17%。 |
 | plan | `plan-ab2-20261111` | plan-set | 2026-11-11 | — | — | E14 planner v2 A/B：出处 100%，同组重合 26–31%。 |
 | plan | `plan-ab3-20261111` | plan-set | 2026-11-11 | — | — | 中间实验：per-query 6/8 与池子下限（曾出现 11 台 <12 槽）；结论并入 E15。 |
@@ -41,8 +42,17 @@
 | plan | `plan-c01-auto-v2` | plan | 2026-11-12 | — | candidates=22 | — |
 | plan | `plan-c01-v2` | plan | 2026-11-12 | — | candidates=15 | T34 规划（4 次 Search + 引用校验；后续被 planner v2 取代）。 |
 | plan | `plan-m1b-global` | plan | 2026-11-12 | — | candidates=23 | — |
+| plan | `ab-plan-concurrency-20261113` | suite | 2026-11-13 | — | — | [plan 并发 A 测试（2026-11-13）](data-test/runs/ab-plan-concurrency-20261113/README.md) |
+| plan | `delivery-20261113-planvar` | artifacts | 2026-11-13 | — | — | — |
 | plan | `p1-smoke-plan-20261114` | plan | 2026-11-14 | — | candidates=30 | — |
+| search | `web-smoke-20261109` | artifacts | 2026-11-09 | — | — | [W1 网页检索冒烟测试（360）](data-test/runs/web-smoke-20261109/REPORT.md) |
+| search | `web-smoke-harvest1-20261109` | artifacts | 2026-11-09 | — | — | [W1 网页检索冒烟测试（360）](data-test/runs/web-smoke-harvest1-20261109/REPORT.md) |
+| search | `web-smoke-hd-20261109` | artifacts | 2026-11-09 | — | — | [W1 网页检索冒烟测试（360）](data-test/runs/web-smoke-hd-20261109/REPORT.md) |
+| search | `web-smoke-v3-20261109` | artifacts | 2026-11-09 | — | — | [W1 网页检索冒烟测试（360）](data-test/runs/web-smoke-v3-20261109/REPORT.md) |
+| search | `web-smoke-v5-20261109` | artifacts | 2026-11-09 | — | — | [W1 网页检索冒烟测试（360）](data-test/runs/web-smoke-v5-20261109/REPORT.md) |
 | search | `diag-foreign` | diag | 2026-11-12 | — | images=17 · gate_pass=17 | E10 诊断：修复前 Zetros/Arocs/Volvo 在 360 的相关性护栏通过数为 0；不是 360 没图。 |
+| gate | `filter-98-20261109` | artifacts | 2026-11-09 | — | — | [两段式门卫 · 98 张全流程回放](data-test/runs/filter-98-20261109/REPORT.md) |
+| gate | `web-reassess-20261109` | artifacts | 2026-11-09 | — | — | [冒烟图离线重评（门卫 v3 + 分层口径）](data-test/runs/web-reassess-20261109/REPORT.md) |
 | gate | `loop-code-prefilter-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=67 · gate_pass=62 · degraded=8 · $0.01725 | [—](data-test/runs/loop-code-prefilter-20261112/summary.json) |
 | gate | `loop-platform-baidu-filtered-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=59 · gate_pass=55 · degraded=8 · $0.01725 | [—](data-test/runs/loop-platform-baidu-filtered-20261112/audit.html) |
 | engine | `p1-demo` | run | 2026-11-09 | DONE | — | [—](data-test/runs/p1-demo/summary.json) |
@@ -66,7 +76,11 @@
 | text-retrieval | `run-suicheche-blind-v2` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v2](data-test/runs/run-suicheche-blind-v2/REPORT.md) |
 | text-retrieval | `run-suicheche-blind-v3` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-blind-v3](data-test/runs/run-suicheche-blind-v3/REPORT.md) |
 | text-retrieval | `run-suicheche-profile` | run | 2026-10-23 | — | — | [文本检索运行 run-suicheche-profile](data-test/runs/run-suicheche-profile/REPORT.md) |
+| other | `platform-probe-20261111` | artifacts | 2026-11-11 | — | — | — |
 | other | `source-expansion-briefs-20261111` | plan-set | 2026-11-11 | — | — | — |
+| other | `source-expansion-class-query-20261111` | artifacts | 2026-11-11 | — | — | — |
+| other | `source-expansion-funnel-20261111` | artifacts | 2026-11-11 | — | — | — |
+| other | `source-expansion-probe-20261111` | artifacts | 2026-11-11 | — | — | — |
 | other | `delivery-20261112` | plan-set | 2026-11-12 | — | — | — |
 | other | `delivery-20261112-clean` | plan-set | 2026-11-12 | — | — | — |
 | other | `delivery-20261112-intentfix` | plan-set | 2026-11-12 | — | — | — |
@@ -80,10 +94,18 @@
 | other | `verify-yield-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=84 · gate_pass=79 · degraded=8 | [—](data-test/runs/verify-yield-20261112/summary.json) |
 | other | `verify-yield2-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield2-20261112/summary.json) |
 | other | `verify-yield3-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · backup=4/4 · images=83 · gate_pass=78 · degraded=8 | [—](data-test/runs/verify-yield3-20261112/audit.html) |
+| other | `ab-negative-20261113` | suite | 2026-11-13 | — | — | [ab-negative-20261113 目录说明](data-test/runs/ab-negative-20261113/README.md) |
+| other | `ab-rank-20261113` | suite | 2026-11-13 | — | — | [rank 小 A/B（2026-11-13）](data-test/runs/ab-rank-20261113/README.md) |
+| other | `delivery-20261113-fillfix-c1` | suite | 2026-11-13 | — | — | — |
 | other | `delivery-20261113-regress` | plan-set | 2026-11-13 | — | — | — |
+| other | `p0-fallback-20261113` | suite | 2026-11-13 | — | — | — |
+| other | `verify-fillfix-20261113` | suite | 2026-11-13 | — | — | [填槽修复验证（2026-11-13）](data-test/runs/verify-fillfix-20261113/README.md) |
+| other | `p2-identity-20261114` | suite | 2026-11-14 | — | — | — |
+| other | `p2b-tier-20261114` | suite | 2026-11-14 | — | — | — |
 | other | `p3-searchkey-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p4-glean-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p5-slots-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p6-vocab-smoke-20261114` | suite | 2026-11-14 | — | — | — |
 | other | `p7-screen-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p7-screen-r2-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p7-screen-r3-20261114` | plan-set | 2026-11-14 | — | — | — |
@@ -92,26 +114,6 @@
 
 ## 空目录 / 归档
 
-- `ab-negative-20261113` → empty（未删除，仅标记）
-- `ab-plan-concurrency-20261113` → empty（未删除，仅标记）
-- `ab-rank-20261113` → empty（未删除，仅标记）
-- `delivery-20261113-fillfix-c1` → empty（未删除，仅标记）
-- `delivery-20261113-planvar` → empty（未删除，仅标记）
-- `filter-98-20261109` → empty（未删除，仅标记）
-- `p0-fallback-20261113` → empty（未删除，仅标记）
-- `p1-wide-loop-20261113` → empty（未删除，仅标记）
-- `p2-identity-20261114` → empty（未删除，仅标记）
-- `p2b-tier-20261114` → empty（未删除，仅标记）
-- `p6-vocab-smoke-20261114` → empty（未删除，仅标记）
-- `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）
-- `source-expansion-class-query-20261111` → empty（未删除，仅标记）
-- `source-expansion-funnel-20261111` → empty（未删除，仅标记）
-- `source-expansion-probe-20261111` → empty（未删除，仅标记）
-- `verify-fillfix-20261113` → empty（未删除，仅标记）
-- `web-reassess-20261109` → empty（未删除，仅标记）
-- `web-smoke-20261109` → empty（未删除，仅标记）
-- `web-smoke-harvest1-20261109` → empty（未删除，仅标记）
-- `web-smoke-hd-20261109` → empty（未删除，仅标记）
-- `web-smoke-v3-20261109` → empty（未删除，仅标记）
-- `web-smoke-v5-20261109` → empty（未删除，仅标记）
+
+> `suite` = 套件目录：顶层没有 summary，指标在各子 run 里（未丢数据，勿重跑）。

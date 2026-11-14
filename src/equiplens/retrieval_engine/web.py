@@ -42,6 +42,27 @@ class NullLibraryAdapter:
         return []
 
 
+def replan_queries(failed_models: list[str], brief: dict | None = None,
+                   limit: int = 4) -> list[str]:
+    """重规划查询：由失败车型 + 任务单的 class/configuration 派生。
+
+    2026-11-14 修复：旧实现写死 `6x6` 与 "沙漠 6x6 牵引车 车型 品牌"，
+    对消防/扫路等类目套用了沙漠牵引车的查询。这里不再有任何类目预设：
+    任务单没写 class 时只按失败车型发问，宁可少发也不发出错域的查询。
+    """
+    req = (brief or {}).get("request") or {}
+    klass = str(req.get("class") or "").strip()
+    conf = str(req.get("configuration") or "").strip()
+    out: list[str] = []
+    for m in failed_models[:3]:
+        m = str(m or "").strip()
+        if m:
+            out.append(f"{m} 替代车型")
+    if klass:
+        out.append(f"{klass} {conf} 替代车型".strip())
+    return out[:limit]
+
+
 class RuleVerifier:
     """规则核验：标题含型号、构型一致、分辨率达标；视角只记 warning。
 
@@ -98,15 +119,11 @@ class RuleVerifier:
         cfg_hit = any(c in title_confs for c in confs) if confs else False
         # 外国车型的标题常是中文品牌（沃尔沃/卡玛斯）或只有车系（Zetros/Arocs），
         # 与模型名里的拉丁写法对不上；复用 imagesearch 的品牌别名/车系判定。
-        brand_hit = series_hit = fallback_series = False
+        brand_hit = series_hit = False
         try:
             from .. import imagesearch as _is
             group = _is._brand_group(model)
             brand_hit = any(_is._alias_in(a, title) for a in group)
-            # 只有加载了 legacy 品牌表时，"未知拉丁车系"才算额外证据；
-            # 表默认静默时，拉丁 token 只是车名本身，不能单凭它 + 品牌命中判 probable。
-            fallback_series = bool(group) and bool(_is._BRAND_LOOKUP) \
-                and group[0] not in _is._BRAND_LOOKUP
             series = [t for t in _is._tokens(model)
                       if re.search(r"[a-z]", t) and not t.isdigit()
                       and len(t) >= 3 and t not in group and t not in _is.GENERIC]
@@ -125,7 +142,7 @@ class RuleVerifier:
             # 不再要求“品牌表认识这个牌子”。单靠品牌词不算（HOWO TX 会被误当
             # HOWO 全驱牵引车），必须两个信号。
             identity, grade = "probable", "E2"
-        elif brand_hit and (series_hit or cfg_hit or fallback_series):
+        elif brand_hit and (series_hit or cfg_hit):
             identity, grade = "probable", "E2"
         else:
             identity, grade = "unknown", ""
@@ -164,10 +181,13 @@ class WebWorld:
                  pins: list[str] | None = None,
                  unit_quotas: dict[str, int] | None = None,
                  platform_extra: str = "", code_prefilter: bool = False,
-                 download_workers: int = 4, plan_meta: dict | None = None):
+                 download_workers: int = 4, plan_meta: dict | None = None,
+                 brief: dict | None = None):
         if isinstance(models, list):
             models = {"*": models}
         self.models = models or {}
+        # 任务单（只读 request 段）：重规划查询必须由它派生，不能用预设类目
+        self.brief = dict(brief or {})
         self.download_workers = max(1, int(download_workers or 1))
         self.plan_meta = dict(plan_meta or {})
         self.image_dir = Path(image_dir) if image_dir else None
@@ -307,8 +327,7 @@ class WebWorld:
         if not self.api_key:
             return 0
         existing = {(c.get("model") or "").strip() for c in self.plan}
-        queries = [f"{m} 替代车型 6x6" for m in failed_models[:3]]
-        queries.append("沙漠 6x6 牵引车 车型 品牌")
+        queries = replan_queries(failed_models, self.brief)
         results: list[dict] = []
         for q in queries[:4]:
             try:

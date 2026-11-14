@@ -85,15 +85,15 @@
 | `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots（16） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
-| `tests/test_no_legacy_tables.py` | 词表守卫（主链无 part_taxonomy、品牌表默认空、legacy 文件保留、主链不 import 旧链路模块，4） |
-| `tests/test_analysis.py` | 分析（历史有失败，需单独看） |
+| `tests/test_no_legacy_tables.py` | 词表守卫（src 全量禁旧表名、三表必须不存在、品牌组为空、主链不 import 旧链路，4） |
+| `tests/test_analysis.py` | 分析（去表化口径，14） |
 
 ## 6. 契约/数据
 
 - `schemas/task-brief-v3.schema.json`：brief 结构
 - `schemas/retrieval-state.schema.json`：run state
 - `schemas/retrieval-event.schema.json`：events
-- `data/legacy/`：**静默**词表（部件/类目/品牌别名），默认不加载；规则见 `docs/vocabulary-policy.md`
+- `data/legacy/`：**已删除**（2026-11-14，部件/类目/品牌三表）；主体代码不得再引用，规则见 `docs/vocabulary-policy.md`
 - `data/source_registry.json`：来源运维配置（不参与交付准入）
 
 ## 7. 封装检查

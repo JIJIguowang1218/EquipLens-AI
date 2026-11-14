@@ -107,7 +107,8 @@ def main(argv=None) -> int:
                          unit_quotas={u.unit_id: u.quota for u in brief.research_units},
                          platform_extra=args.platform_extra,
                          code_prefilter=args.code_prefilter,
-                         download_workers=args.download_workers)
+                         download_workers=args.download_workers,
+                         brief={"request": brief.request})
     else:
         if not args.fixtures:
             parser.error("非 --web-only 需要 --fixtures")

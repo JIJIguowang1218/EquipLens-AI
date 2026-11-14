@@ -21,20 +21,24 @@ def check(name, fn):
         results.append((name, "FAIL", str(e)[:200]))
 
 
-def test_main_code_has_no_part_taxonomy():
-    for rel in ("src/equiplens/briefing.py", "src/equiplens/analysis.py"):
-        text = (ROOT / rel).read_text(encoding="utf-8")
-        assert "part_taxonomy" not in text, rel
+def test_main_code_has_no_legacy_names():
+    """主体代码（src/）不得出现任何旧词表名：它们已删除（2026-11-14）。"""
+    banned = ("part_taxonomy", "category_profiles", "brand_aliases",
+              "ENABLE_LEGACY", "data/legacy")
+    for path in (ROOT / "src").rglob("*.py"):
+        text = path.read_text(encoding="utf-8")
+        for name in banned:
+            assert name not in text, f"{path.relative_to(ROOT)} 仍引用 {name}"
 
 
 def test_brand_table_silent_by_default():
     from equiplens import imagesearch
-    assert imagesearch.BRAND_GROUPS == (), "品牌表默认必须为空（用 EQUIPLENS_ENABLE_LEGACY_BRANDS=1 显式开启）"
+    assert imagesearch.BRAND_GROUPS == (), "品牌表必须为空（表已删除，无 legacy 开关）"
 
 
-def test_legacy_files_exist():
+def test_legacy_tables_deleted():
     for name in ("part_taxonomy.json", "category_profiles.json", "brand_aliases.json"):
-        assert (ROOT / "data" / "legacy" / name).exists(), name
+        assert not (ROOT / "data" / "legacy" / name).exists(), f"{name} 应已删除"
 
 
 LEGACY_MODULES = ("textrun", "l3gate", "passage", "audit", "roster",
@@ -53,9 +57,9 @@ def test_main_chain_imports_no_legacy_modules():
 
 
 if __name__ == "__main__":
-    check("主体代码无 part_taxonomy", test_main_code_has_no_part_taxonomy)
-    check("品牌表默认静默", test_brand_table_silent_by_default)
-    check("legacy 文件保留", test_legacy_files_exist)
+    check("主体代码无旧词表名", test_main_code_has_no_legacy_names)
+    check("品牌表默认空", test_brand_table_silent_by_default)
+    check("legacy 文件已删除", test_legacy_tables_deleted)
     check("主链不 import 旧链路", test_main_chain_imports_no_legacy_modules)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:

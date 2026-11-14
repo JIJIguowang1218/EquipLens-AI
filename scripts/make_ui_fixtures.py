@@ -41,7 +41,14 @@ NOTICE = ("模拟数据：用于高保真填充与联调，数值与文案按真
           "不代表真实检索结果。生成脚本 scripts/make_ui_fixtures.py")
 
 # ----------------------------------------------------------------- 真实词表
-TAX_RAW = json.loads((ROOT / "data" / "legacy" / "part_taxonomy.json").read_text(encoding="utf-8"))
+# 部件词表已于 2026-11-14 删除（docs/vocabulary-policy.md §3）：本脚本是归档工具，
+# 不再自带任何旧词表；缺表时直接退出，避免用删除内容继续生成"真实感"夹具。
+TAX_PATH = ROOT / "data" / "legacy" / "part_taxonomy.json"
+if not TAX_PATH.exists():
+    raise SystemExit(
+        "part_taxonomy.json 已于 2026-11-14 删除；make_ui_fixtures 归档，不再生成 UI 夹具。"
+        "视觉参照请用 docs/ui-mock/ 的既有产物。")
+TAX_RAW = json.loads(TAX_PATH.read_text(encoding="utf-8"))
 TAX = {slot: [t["name"] for t in spec["terms"]] for slot, spec in TAX_RAW["parts"].items()}
 VOCAB_RAW = json.loads((ROOT / "data" / "style_vocabulary.json").read_text(encoding="utf-8"))
 VOCAB = {k: v["words"] for k, v in VOCAB_RAW["clusters"].items()}

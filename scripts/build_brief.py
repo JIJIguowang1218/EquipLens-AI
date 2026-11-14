@@ -46,7 +46,8 @@ def main(argv=None) -> int:
     ap.add_argument("--input-file", default="", help="或从文件读用户原话")
     ap.add_argument("--class", dest="klass", default="", help="车型类别（可选的强制值）")
     ap.add_argument("--parts", default="", help="可选：逗号分隔的期望部件（提示，不强制）")
-    ap.add_argument("--slots", type=int, default=12)
+    ap.add_argument("--slots", type=int, required=True,
+                    help="要分析几台（业务输入，必填；不再默认 12）")
     ap.add_argument("--out", required=True)
     ap.add_argument("--meta", default="", help="默认 <out>.meta.json")
     ap.add_argument("--brief-id", default="")

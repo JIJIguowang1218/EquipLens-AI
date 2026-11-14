@@ -103,18 +103,19 @@ def test_not_visible_must_be_empty():
     assert any("not_visible" in e for e in errs), errs
 
 
-def test_term_must_hit_taxonomy():
+def test_term_is_freeform_after_detabling():
+    """词表已删除（2026-11-14）：term 不再对照名词表，自造词不应报错。"""
     d = ok_data()
     d["parts"][0]["term"] = "我自己编的格栅"
     errs = analysis.validate_analysis(d, [], VOCAB, TAX, SLOTS)
-    assert any("不在名词表" in e for e in errs), errs
+    assert not any("不在名词表" in e for e in errs), errs
 
 
 def test_missing_slot_rejected():
     d = ok_data()
     d["parts"] = d["parts"][:4]
     errs = analysis.validate_analysis(d, [], VOCAB, TAX, SLOTS)
-    assert any("缺部件 step" in e for e in errs), errs
+    assert any("缺部位 step" in e for e in errs), errs
 
 
 def test_long_line_rejected():
@@ -160,7 +161,10 @@ def test_ledger_tracks_usage_and_balance():
 
 
 def test_prompt_contains_used_words_and_terms():
-    p = analysis.build_prompt("测试车", ["稳重"], ["grille"], VOCAB,
+    # 词表删除后，slot 必须由调用方显式给出（不再查表反解）
+    p = analysis.build_prompt("测试车", ["稳重"],
+                              [{"id": "p1", "label": "进气格栅", "slot": "grille"}],
+                              VOCAB,
                               {"grille": {"label": "进气格栅",
                                           "terms": [{"name": "冲孔网板格栅",
                                                      "when": "大面积冲孔"}]}})
@@ -180,7 +184,7 @@ if __name__ == "__main__":
     check("词不在簇内拒绝", test_word_outside_cluster_rejected)
     check("已用词拒绝", test_used_word_rejected)
     check("不可见不得带描述", test_not_visible_must_be_empty)
-    check("构型名须命中名词表", test_term_must_hit_taxonomy)
+    check("term 去表化后自由填写", test_term_is_freeform_after_detabling)
     check("缺部件拒绝", test_missing_slot_rejected)
     check("超长句拒绝", test_long_line_rejected)
     check("矛盾字段就地归一", test_normalize_strips_not_visible_fields)

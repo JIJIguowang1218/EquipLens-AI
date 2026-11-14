@@ -51,8 +51,20 @@ def test_schema_validation():
     assert "随车吊" in plan["relevant_terms"]
 
 
+# 类目档案表已删除（2026-11-14）：档案机制本身仍要测，用内联夹具代替素材文件。
+FIXTURE_PROFILES = {"profiles": {
+    "重卡": {"aliases": ["重卡", "牵引车"], "market_terms": ["干线物流"],
+             "component_vocab": ["前脸", "格栅"], "status": "found"},
+    "自卸车": {"aliases": ["自卸车", "翻斗铲车"], "market_terms": ["工程运输"],
+              "component_vocab": ["货厢"], "status": "found"},
+    "装载机": {"aliases": ["装载机", "铲车", "翻斗铲车"], "market_terms": ["土方"],
+              "component_vocab": ["铲斗"], "status": "found"},
+}}
+
+
 def test_profile_resolution_and_ambiguity():
-    profiles = textrun.load_profiles()
+    assert textrun.load_profiles() == {"profiles": {}}, "默认必须无档案（表已删除）"
+    profiles = FIXTURE_PROFILES
     name, prof = textrun.resolve_profile("重卡", profiles)
     assert name == "重卡" and prof
     # 翻斗铲车同时命中自卸车与装载机 → 不应擅自解析，必须走澄清
@@ -69,7 +81,7 @@ def test_profile_resolution_and_ambiguity():
 
 
 def test_profile_plan_and_budget():
-    profiles = textrun.load_profiles()
+    profiles = FIXTURE_PROFILES
     name, prof = textrun.resolve_profile("重卡", profiles)
     plan = textrun.build_plan(
         {"task_type": "text_design_scan", "category": "重卡",
