@@ -31,10 +31,10 @@
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py
-PYTHONPATH=src python tests/test_retrieval_engine.py   # 40/40，需 test fixtures
-PYTHONPATH=src python tests/test_imagesearch.py        # 14/14
-PYTHONPATH=src python tests/test_planning.py           # 14/14
-PYTHONPATH=src python scripts/run_ledger.py --check     # 100 records，0 issue
+PYTHONPATH=src python tests/test_retrieval_engine.py   # 47/47，需 test fixtures
+PYTHONPATH=src python tests/test_imagesearch.py        # 16/16
+PYTHONPATH=src python tests/test_planning.py           # 16/16
+PYTHONPATH=src python scripts/run_ledger.py --check     # 107 records，0 issue
 ```
 
 ## 新机器接续

@@ -12,7 +12,8 @@
 | 11-14 | `a3-ladder-design-20261114.md` | 英文条件档设计 | 品牌识别 33%/43%，只做“有证据 token”的条件档 |
 | 11-14 | `optimization-round3-20261114.md` | search_key + 调研 | 条件兜底 3/3 救回；3 份行业调研 |
 | 11-14 | `optimization-round4-20261114.md` | Gleaning / 归一化去重 | Gleaning 0 增益否决；归一化 0.9% 重复 |
-| 11-14 | `optimization-round5-20261114.md` | 结构化槽位 + 冻结评估 | 见本轮 |
+| 11-14 | `optimization-round5-20261114.md` | 结构化槽位 + 冻结评估 | 槽位 94.5%；评估骨架可用但样本窄 |
+| 11-14 | `fulltest-report-20261114.md` | P0–P4 收敛验收 | 30 run 交付 1.000；备选/身份不稳定；功能冻结 |
 
 ## 文件约定
 

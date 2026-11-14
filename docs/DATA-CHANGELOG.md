@@ -248,3 +248,15 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - 测试：`planning 16/16`、`retrieval_engine 47/47`、`imagesearch 16/16`、`briefing 5/5`、
   `ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 3/3`。
 - 未改其他生产默认；`search_key` 在 30 次运行中触发 0 次（符合末档兜底定位）。
+
+### 21. 交接同步与台账（2026-11-14）
+
+- 台账补录 6 个 suite 目录：`run_ledger --check` = **107 条，0 issue**；HANDOFF/DEPENDENCIES 同步为 107。
+- HANDOFF §0.0 增加 2026-11-14 收敛验收（P0–P4）结果、价值判断、调整/不调整清单与下一步；
+- CURRENT-ARCHITECTURE：生产默认补 slots/search_key、词表静默、topup 默认 2（4 为 opt-in）、
+  回退图纪律；§7 增加 30 run 验收快照；
+- CODE-INDEX：补 `run_fulltest/eval_fulltest/eval_fulltest_repeats/eval_plan_snapshot`、
+  `tests/test_no_legacy_tables.py`、`test_briefing.py`，以及 topup/slots/search_key 口径；
+- DEPENDENCIES：测试数 47/16/16、台账 108；
+- 历史文档（association/module-map/superpowers 等）里仍可能出现旧路径 `data/part_taxonomy.json`，
+  以 `docs/vocabulary-policy.md` 与 `data/legacy/` 为准，不再逐个回填历史稿。

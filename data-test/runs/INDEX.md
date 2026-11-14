@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-14T02:33:59 · 共 100 条 · 待补人工结论 58 条
+> 生成时间：2026-11-14T11:58:12 · 共 107 条 · 待补人工结论 65 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -41,6 +41,7 @@
 | plan | `plan-c01-auto-v2` | plan | 2026-11-12 | — | candidates=22 | — |
 | plan | `plan-c01-v2` | plan | 2026-11-12 | — | candidates=15 | T34 规划（4 次 Search + 引用校验；后续被 planner v2 取代）。 |
 | plan | `plan-m1b-global` | plan | 2026-11-12 | — | candidates=23 | — |
+| plan | `p1-smoke-plan-20261114` | plan | 2026-11-14 | — | candidates=30 | — |
 | search | `diag-foreign` | diag | 2026-11-12 | — | images=17 · gate_pass=17 | E10 诊断：修复前 Zetros/Arocs/Volvo 在 360 的相关性护栏通过数为 0；不是 360 没图。 |
 | gate | `loop-code-prefilter-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=67 · gate_pass=62 · degraded=8 · $0.01725 | [—](data-test/runs/loop-code-prefilter-20261112/summary.json) |
 | gate | `loop-platform-baidu-filtered-20261112` | run | 2026-11-12 | DONE | delivery=12/12 · images=59 · gate_pass=55 · degraded=8 · $0.01725 | [—](data-test/runs/loop-platform-baidu-filtered-20261112/audit.html) |
@@ -83,6 +84,11 @@
 | other | `p3-searchkey-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p4-glean-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p5-slots-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p7-screen-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p7-screen-r2-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p7-screen-r3-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p8b-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 
 ## 空目录 / 归档
 
@@ -96,6 +102,7 @@
 - `p1-wide-loop-20261113` → empty（未删除，仅标记）
 - `p2-identity-20261114` → empty（未删除，仅标记）
 - `p2b-tier-20261114` → empty（未删除，仅标记）
+- `p6-vocab-smoke-20261114` → empty（未删除，仅标记）
 - `platform-probe-20261111` → empty（未删除，仅标记）
 - `runs` → archived（未删除，仅标记）
 - `source-expansion-class-query-20261111` → empty（未删除，仅标记）

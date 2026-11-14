@@ -21,7 +21,7 @@
 | 职责 | 代码 |
 |---|---|
 | brief 生成 | `src/equiplens/briefing.py`、`scripts/build_brief.py`、`skills/task-brief/SKILL.md` |
-| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；1=串行对照） |
+| 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |
 | 平台/抓取/核验 | `src/equiplens/retrieval_engine/web.py`、`src/equiplens/imagesearch.py` |
@@ -38,6 +38,7 @@
 | 死图床监测 | `scripts/monitor_bad_domains.py`（只统计，不参与生产） |
 | 密钥卫生 | `scripts/scan_secrets.py`、`tests/test_no_secrets.py`（提交前跑） |
 | 交付测试套件 | `scripts/run_delivery_suite.py`、`scripts/summarize_delivery_suite.py` |
+| 完整测试驱动/评估 | `scripts/run_fulltest.py`、`scripts/eval_fulltest.py`、`scripts/eval_fulltest_repeats.py`、`scripts/eval_plan_snapshot.py` |
 
 ## 3. 支撑模块
 
@@ -72,12 +73,13 @@
 
 | 测试 | 覆盖 |
 |---|---|
-| `tests/test_briefing.py` | brief API/组装 |
-| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter（40） |
+| `tests/test_briefing.py` | brief API/组装/校验（5） |
+| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter（47） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
-| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏（14） |
+| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots（16） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
+| `tests/test_no_legacy_tables.py` | 词表守卫（主链不引用 legacy、品牌表默认空，3） |
 | `tests/test_analysis.py` | 分析（历史有失败，需单独看） |
 
 ## 6. 契约/数据
@@ -85,9 +87,8 @@
 - `schemas/task-brief-v3.schema.json`：brief 结构
 - `schemas/retrieval-state.schema.json`：run state
 - `schemas/retrieval-event.schema.json`：events
-- `data/part_taxonomy.json`：内置部件键（兼容/显示映射，**非准入、非命名依据**；词表外部件用可读 `custom_*`）
-- `data/source_registry.json`：来源注册
-- `data/category_profiles.json`：类目档案
+- `data/legacy/`：**静默**词表（部件/类目/品牌别名），默认不加载；规则见 `docs/vocabulary-policy.md`
+- `data/source_registry.json`：来源运维配置（不参与交付准入）
 
 ## 7. 封装检查
 

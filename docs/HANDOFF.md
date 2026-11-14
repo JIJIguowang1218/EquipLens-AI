@@ -2,11 +2,11 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-13** |
-| 当前阶段 | **检索 v1 收敛：P0 交付不变量 + 第一次用户交付准备**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准；扩源线已收口。 |
+| 更新日期 | **2026-11-14** |
+| 当前阶段 | **收敛验收完成（P0–P4）；功能冻结，等待第一次用户交付决策**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
-| 最新提交 | 见 `git log -1`；工作树状态以 git 为准。整体框架/生产/实验边界见 `docs/CURRENT-ARCHITECTURE.md`。 |
-| 工作树提醒 | 2026-11-13 交接文档已随 `c11b45a` 提交并推送；工作树以 `git status` 为准（本机仅 3 个未跟踪的 run 图片目录）。 |
+| 最新提交 | 见 `git log -1`；完整测试报告 `docs/fulltest-report-20261114.md`。 |
+| 工作树提醒 | 2026-11-14 交接文档已提交；工作树以 `git status` 为准（仅 3 个未跟踪的 run 图片目录）。 |
 
 > 换机/接续只需读 **§0.0（进度与下一步）** 和 **§0.1（30 分钟环境）**；
 > §1 之后是历史记录，不必通读。
@@ -48,6 +48,45 @@
 ## 0.0 当前进度与下一步（2026-11-13 交接版）
 
 **位置**：检索 v1 已收敛；交付链路（5 输入泛化测试）已跑通；**第一次正式用户交付尚未发出**。
+
+### 2026-11-14 收敛验收（P0–P4，最重要）
+
+**做了什么**：品牌表静默后的冻结 plan 冒烟（P0）、新 brief 冒烟（P1）、
+6 已知 + 4 holdout 的十类目筛查（P2）、每类 3 次重复（P3，共 30 run）、守卫与单测（P4）。
+固定配置：plan 4 路、下载 4 路、rank=LLM、extract-mode=model、glean=0、topup=2；
+30 个 run 的 `summary.config` 全部记录。
+
+| 阶段 | 目的 | 方法 | 结果 | 结论 |
+|---|---|---|---|---|
+| P0 | 品牌表静默无回归 | 冻结 c1/c2 plan 复跑 | c1 10/10+1/4（持平）；c2 10/10+4/4（备选+1） | 通过 |
+| P1 | 去表化后 brief 可用 | API 生成洒水车 brief + 校验 + plan | 无 `reference_parts`、部件 key 可读、schema/契约通过、30 候选 | 通过 |
+| P2 | 类目级泛化体检 | 10 类目 ×1 全链路 | **全部满额交付**：known 62/62、holdout 28/28；no_hits 2；¥1.82 | Go |
+| P3 | 稳定性 | 10 类目 ×3（30 run） | 交付 **1.000（极差 0）**；备选 known 3.94 / holdout 3.75；degraded 0.663/0.771；h4 备选极差 2、c5 degraded CV 0.374 | 交付稳定；备选/身份未达预注册阈值 |
+| P4 | 守卫回归 | 单测 + 词表守卫 | briefing 5/5、planning 16/16、engine 47/47、imagesearch 16/16、ledger 8/8、guard 3/3 | 通过 |
+
+**关键数字**：3 个 suite 合计约 ¥14、1.8 h（约 ¥4.6/suite、2200 s/suite）；
+`search_key` 在 30 次运行中触发 **0 次**（符合末档兜底定位）；no_hits 均值 <0.4/类目。
+
+**整体判断**：
+1. **交付能力跨类目成立**（含 4 个未见类目），这是本轮最硬的结论；
+2. 泛化只能声称**同域类目级**，不能外推到乘用车/农机；
+3. **最大质量短板是 degraded 占比高**（已知 0.66、holdout 0.77）——交满 ≠ 身份强；
+4. **稳定性只在交付层成立**：备选与身份强度随候选池/分配波动，根因是候选池数量（h4: 12/20/15）
+   与身份分配（c5 绝对差 2–5/14），不是代码回归；
+5. 机制（并发默认、search_key、slots、tier、去表化）均无回归。
+
+**建议调整 / 不建议调整**：
+- **建议做**：候选池供给（`--topup 4` 已 opt-in 验证：h4 2/4→4/4、3/4；s6 两次 4/4，但未消除波动）；
+  degraded 政策（可接受占比或人工复核）；补池后复测 h4/s6；
+- **不建议**：再加检索规则；改交付口径（N 主+4 备）；把 topup4 设为默认（未证明稳定）；
+  按类目写死策略；恢复被静默的词表。
+
+**下一步（按顺序）**：
+1. 候选池供给方案（topup4 小样本已验，wide+护栏待评）；
+2. degraded 政策拍板（占比阈值/人审流程）；
+3. 第一次用户交付（beta + 人审 + ≥10 条反馈）；
+4. feedback router / 分析模块 / 知识库 / LangGraph（原路线）；
+5. 技术债：rank 成本记账、死配置清理、normalize 外溢。
 
 ### 已完成（本阶段）
 
@@ -111,30 +150,32 @@
 - 审计中发现的更高优先问题：`normalize_query` 给叉车/压路机也拼 `6x6`（白跑一档搜索）；
   rank 阶段 LLM 用量未记账；多处死配置（`page_budget.total`、`budget.max_rounds` 等）。
 
-### 环境与依赖（换机必看，2026-11-13）
+### 环境与依赖（换机必看，2026-11-14）
 
-- Python **3.11**；`pip install -r requirements.txt`；**本轮没有新增第三方依赖**
-  （并发用标准库 `ThreadPoolExecutor`）；
-- DeepSeek key：`~/.equiplens/deepseek.env`（仓库外，另一台已有）；
+- Python **3.11**；`pip install -r requirements.txt`；本轮**没有新增第三方依赖**；
+- DeepSeek key：`~/.equiplens/deepseek.env`（仓库外；新机器必须自备）；
 - 门卫模型 UForm3 首次自动下载（约 59MB，`hf-mirror`）；测试夹具 `data-test/retrieval-fixtures-20261109/` 已在仓库；
-- 新增可选开关（默认关，不影响旧命令）：
-  `plan_candidates.py --concurrency N`、`rank_plan.py --deterministic`；
-  新实验脚本 `scripts/ab_plan_concurrency.py`、`ab_rank.py`、`bench_download_concurrency.py`；
-- 自检：`check_env.py`；测试数 `retrieval_engine 40/40`、`planning 14/14`；
-  全量除 `test_analysis` 11/14 既有失败外全绿；
-- 新实验数据：`data-test/runs/{ab-plan-concurrency,ab-rank,verify-fillfix}-20261113/`，
-  `images/` 不同步，换机后审核页可能缺图（重跑或从原机拷）。
+- 关键开关（默认值即生产）：`plan --concurrency 4`、`--download-workers 4`、
+  `--extract-mode model`、`--glean 0`、`--topup 2`（可显式 4，仅紧供类目）；
+  `--topup 4` 与 `--glean` 都是 opt-in，默认行为不变；
+- 词表：`data/legacy/` 为**静默**表（部件/类目/品牌别名），默认不加载；规则见 `docs/vocabulary-policy.md`；
+- 自检：`check_env.py`；测试：`briefing 5/5`、`planning 16/16`、`retrieval_engine 47/47`、
+  `imagesearch 16/16`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 3/3`；
+  `test_analysis` 11/14 为历史失败，与本轮无关；
+- 台账：`run_ledger --check` = **107 条，0 issue**；
+- 本轮数据：`data-test/runs/p6-vocab-smoke-20261114/`、`p7-screen-20261114/`、
+  `p7-screen-r{2,3}-20261114/`、`p8b/p8c-topup4-20261114/`；
+  `images/` 不同步，审核页可能缺图。
 
-### 下一步（按顺序）
+### 下一步（2026-11-14 定）
 
-1. ~~组合回归~~ **已完成（2026-11-13）**：`delivery-20261113-regress`，主 48/50、备选 15/20；
-   c1 掉 1 台是 plan 池缩到 12 造成，用原 plan 隔离后填槽修复为 10/10+1/4。详见上面小节；
-2. 拍板项：plan 并发已**默认 4**（2026-11-13 晚）；rank 是否切确定性仍待 n≥2 样本（当前 2 case 持平）；
-3. 下载并发已接入 loop（默认 4 路，结算保序）；**待一次回归验证收益与质量不变**；
-4. 第一次用户交付（beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈）；
-5. feedback router + 短期 session（意图 → 回溯节点映射，先用 Python 状态机）；
-6. 分析模块整体测试 → 知识库 → LangGraph spike → 后端/前端；
-7. 技术债（不阻塞交付）：`normalize_query` 的 6x6 外溢、rank 成本记账、死配置清理。
+1. **候选池供给**：`--topup 4` 已 opt-in 验证（h4 2/4→4/4 与 3/4；s6 两次 4/4），
+   但波动未消除；下一步评估 wide+来源护栏，仍不按类目写死；
+2. **degraded 政策**：交付里 degraded 占比 0.66–0.77，需定“可接受占比/人工复核”口径；
+3. **第一次用户交付**：beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈；
+4. feedback router + 短期 session（意图 → 回溯节点，先用 Python 状态机）；
+5. 分析模块整体测试 → 知识库 → LangGraph spike → 后端/前端；
+6. 技术债（不阻塞）：rank 成本记账、死配置清理、`normalize_query` 外溢。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 
@@ -213,13 +254,13 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（100 条，0 issue）
-PYTHONPATH=src python tests/test_planning.py            # 14/14
-PYTHONPATH=src python tests/test_retrieval_engine.py    # 40/40
-PYTHONPATH=src python tests/test_imagesearch.py         # 14/14（全 monkeypatch）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（107 条，0 issue）
+PYTHONPATH=src python tests/test_planning.py            # 16/16
+PYTHONPATH=src python tests/test_retrieval_engine.py    # 47/47
+PYTHONPATH=src python tests/test_imagesearch.py         # 16/16（全 monkeypatch）
 PYTHONPATH=src python tests/test_gate.py                # 11/11（首次加载 CLIP ~59MB）
 PYTHONPATH=src python tests/test_briefing.py            # 5/5
-PYTHONPATH=src python tests/test_run_ledger.py          # 7/7
+PYTHONPATH=src python tests/test_run_ledger.py          # 8/8
 PYTHONPATH=src python tests/test_association.py         # 12/12
 PYTHONPATH=src python tests/test_pricing.py             # 4/4（峰谷计价）
 PYTHONPATH=src python tests/test_delivery_manifest.py   # 3/3（依赖仓库内 run 产物）

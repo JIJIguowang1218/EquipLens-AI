@@ -98,6 +98,14 @@ task-brief@v2 (API)
   （`plan_candidates --concurrency 1`、`retrieval_engine --download-workers 1`）；
   每次 run 的 `summary.config` 记录 `download_workers / plan_concurrency / rank_method`，
   没有 config 的 run 不参与横向对比；
+- **抽取与查询键（2026-11-14）**：抽取输出 `slots{brand,series,model_code,config}` 与
+  `search_key`；`search_key` 只作查询阶梯**最后一档**（前三档 0 命中才用）；旧 plan 无该字段时回落派生键；
+- **词表静默（2026-11-14）**：部件/类目/品牌别名表移入 `data/legacy/`，主链默认不加载；
+  规则见 `docs/vocabulary-policy.md`；品牌表仅在 `EQUIPLENS_ENABLE_LEGACY_BRANDS=1` 时可用；
+- **补池（2026-11-14）**：`--topup` 默认 2；`--topup 4` 为紧供类目 opt-in（新增图集/参数/评测后缀），
+  默认行为不变；
+- **回退图纪律（2026-11-14）**：`part_fallback/class_fallback` 资产不进正式槽与备选，只由 DEGRADE 兜底使用；
+  `delivery.degraded_ratio/degraded_warn` 提供告警；
 - code prefilter 默认 **关闭**（实验通过但未默认）。
 
 ### 实验（不默认）
@@ -185,6 +193,10 @@ task-brief@v2 (API)
   19 候选（`delivery-20261113-planvar`）→ 池波动与并发无关；
 - **并发实验（2026-11-13）**：plan `--concurrency 4` 5 brief 518→155 s（3.34×，2026-11-13 晚起默认 4）；
   下载 4 路基准 2.9×（未接 loop）；LLM rank vs 确定性两 case 交付一致，确定性省 20–40 s；
+- **收敛验收（2026-11-14，P0–P4）**：10 类目（6 已知 + 4 holdout）×3 次共 30 run，
+  **交付率全部 1.000（极差 0）**；备选 known 3.94/holdout 3.75；degraded 0.663/0.771；
+  h4 备选极差 2、c5 degraded CV 0.374 → 预注册稳定性 **false**（交付稳定、备选/身份不稳）；
+  `search_key` 30 次触发 0 次；详见 `docs/fulltest-report-20261114.md`；
 - **契约回归（2026-11-12）**：`verify-contract-20261112`，12/12、degraded 8、citation_only 1，与 baseline 同构成；
   `budget_used = queries 72 / models 20 / fetches 244 / verifies 244`（证明旧口径把 20 当查询数，实际 72）；
   `attempts.assets` 已真实计数（15 台 >0），`part_only` 5 台，`state.json` 过 schema 0 错误。
