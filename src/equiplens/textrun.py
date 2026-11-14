@@ -20,7 +20,7 @@ from . import audit, corpus, passage, runner, runlog, strategy
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMAS = ROOT / "schemas"
 DEFAULT_REGISTRY = ROOT / "data" / "source_registry.json"
-DEFAULT_PROFILES = ROOT / "data" / "category_profiles.json"
+DEFAULT_PROFILES = ROOT / "data" / "legacy" / "category_profiles.json"  # 已静默，仅旧链路
 
 
 def _load_json(path: Path | str) -> dict:

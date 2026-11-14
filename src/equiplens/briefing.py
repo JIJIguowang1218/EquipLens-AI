@@ -20,8 +20,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SKILL_PATH = ROOT / "skills" / "task-brief" / "SKILL.md"
-TAXONOMY_PATH = ROOT / "data" / "part_taxonomy.json"
 SCHEMA_PATH = ROOT / "schemas" / "task-brief-v3.schema.json"
+# 区域分析输出的固定字段（schema 常量，不是部件/类目词表）
+ANALYSIS_FIELDS = ("gesture", "proportion", "character_lines", "cmf", "judgement")
 
 ALLOWED_VIEWS = ("front", "hero_45", "side", "rear", "interior", "detail")
 ALLOWED_AXES = ("form_gesture", "proportion", "structure", "cmf",
@@ -45,21 +46,13 @@ environment_protection/regulation/manufacturing。
 不要输出 page_budget/research_units/quota/tiers/budget/strategy_ref。"""
 
 
-def load_taxonomy(path: Path | None = None) -> dict:
-    return json.loads((path or TAXONOMY_PATH).read_text(encoding="utf-8"))
-
-
-def reference_parts(taxonomy: dict) -> dict[str, str]:
-    return {k: (v.get("label") or k) for k, v in (taxonomy.get("parts") or {}).items()}
-
-
-def build_prompt(raw: str, taxonomy: dict, *, class_hint: str = "",
+def build_prompt(raw: str, *, class_hint: str = "",
                  part_hints: list[str] | None = None,
                  use_skill: bool = True,
                  prompt_mode: str = "v2") -> str:
-    """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束 + 词表。
+    """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束。
 
-    `use_skill=False` 只用于必要性 A/B（无方法引导的基线），不是生产路径。
+    不再向模型提供任何部件/类目词表（2026-11-14 口径：词表不得进入主体代码）。
     """
     mode = prompt_mode if prompt_mode in ("v2", "v1", "none") else "v2"
     if not use_skill and mode == "v2":
@@ -71,15 +64,11 @@ def build_prompt(raw: str, taxonomy: dict, *, class_hint: str = "",
     else:
         skill = ("你是工程车检索任务单解析器。只输出 JSON："
                  "{request, regions, parts, assumptions, negative}。")
-    parts = reference_parts(taxonomy)
     hints = {
         "raw": raw,
         "class_hint": class_hint,
         "part_hints": part_hints or [],
-        "reference_parts": parts,
-        "reference_parts_note": "参考词表，不是准入；用户/新部件可用 custom_*",
-        "reference_regions": {k: (v.get("label") or k)
-                            for k, v in (taxonomy.get("regions") or {}).items()},
+        "no_vocabulary_note": "不要引用任何部件/类目词表；只按用户原话写 label 与 part",
         "allowed_views": list(ALLOWED_VIEWS),
         "allowed_axes": list(ALLOWED_AXES),
         "output": "只输出 JSON：{request, regions, parts, assumptions, negative}",
@@ -106,11 +95,12 @@ def _part_slug(label: str) -> str:
 
 def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
                    brief_id: str = "", class_hint: str = "",
-                   taxonomy: dict | None = None,
                    now: str | None = None) -> dict:
-    """把 LLM 输出补成完整 brief；规则字段在这里生成。"""
-    taxonomy = taxonomy or load_taxonomy()
-    parts_meta = reference_parts(taxonomy)
+    """把 LLM 输出补成完整 brief；规则字段在这里生成。
+
+    不读取任何部件/类目词表（2026-11-14）：part 若是 ascii snake 键就保留，
+    否则用可读的 `custom_<slug>`；label 永远保留原词。
+    """
     request = payload.get("request")
     if not isinstance(request, dict):
         request = {}
@@ -118,21 +108,23 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
     if not klass:
         raise ValueError("无法确定 request.class：用户输入里没有车型类别，也没有 --class 兜底")
 
-    regions_meta = taxonomy.get("regions") or {}
     regions_out: list[dict] = []
+    seen_regions: set[str] = set()
     for item in _as_list(payload.get("regions")):
         if not isinstance(item, dict):
             continue
         key = _clean(item.get("region"))
-        if key not in regions_meta:
+        if not key or key in seen_regions:
             continue
+        seen_regions.add(key)
         views = [v for v in _as_list(item.get("views")) if v in ALLOWED_VIEWS]
         if not views:
             views = REGION_VIEWS.get(key, ["hero_45"])
+        fields = [f for f in _as_list(item.get("fields")) if f in ANALYSIS_FIELDS]
         regions_out.append({
             "region": key,
-            "label": regions_meta[key].get("label") or key,
-            "fields": list(regions_meta[key].get("writes") or []),
+            "label": _clean(item.get("label")) or key,
+            "fields": fields or list(ANALYSIS_FIELDS),
             "views": views,
             "accept": "C",
         })
@@ -145,18 +137,16 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
             continue
         raw_key = _clean(item.get("part"))
         raw_label = _clean(item.get("label")) or raw_key
-        by_label = next((k for k, v in parts_meta.items() if v == raw_label), None)
-        key = raw_key if raw_key in parts_meta else (by_label or raw_key)
-        known = key in parts_meta
-        if not known:
-            # 词表外的新部件：保留，不拒绝；key 用**可读的文件名**派生，
-            # 不再用整串 sha1（2026-11-14：旧实现把部件名变成 custom_5a1c7e，
-            # 导致后续无法按部件名分析；词表也不该决定命名）。
-            if not key.startswith("custom_"):
-                key = "custom_" + _part_slug(raw_label or key)
-            if key in parts_meta:
-                key = key + "_" + hashlib.sha1((raw_label or key).encode("utf-8")).hexdigest()[:4]
-            new_parts.append(raw_label)
+        if not raw_key and not raw_label:
+            continue
+        # 只认“写法”，不查词表：ascii snake 键保留，其余从 label 派生可读 key
+        if raw_key.startswith("custom_"):
+            key, known = raw_key, False
+        elif re.fullmatch(r"[a-z][a-z0-9_]*", raw_key or ""):
+            key, known = raw_key, True
+        else:
+            key, known = "custom_" + _part_slug(raw_label or raw_key), False
+            new_parts.append(raw_label or raw_key)
         if key in seen:
             continue
         seen.add(key)
@@ -174,11 +164,10 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
             axes = ["form_gesture"]
         parts_out.append({
             "part": key,
-            "label": parts_meta[key] if known else raw_label,
-            "kind": _clean(item.get("kind")) or ("part" if known else "function"),
+            "label": raw_label or key,
+            "kind": _clean(item.get("kind")) or "part",
             "location": _clean(item.get("location")),
-            "part_family": _clean(item.get("part_family"))
-                           or ((taxonomy.get("parts") or {}).get(key, {}) or {}).get("default_family", ""),
+            "part_family": _clean(item.get("part_family")),
             "taxonomy_status": "known" if known else "new",
             "relation_axis": _clean(item.get("relation_axis")) or "exact",
             "design_axes": axes,
@@ -219,7 +208,7 @@ def assemble_brief(payload: dict, raw: str, *, slots: int = 12,
     assumptions = [x for x in _as_list(payload.get("assumptions")) if isinstance(x, dict)]
     if new_parts:
         assumptions.append({"field": "parts.new", "value": new_parts,
-                            "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+                            "why": "未使用词表；未知部件保留为可读 custom_* 并保留原词",
                             "confidence": 0.6})
     if any(not _as_list(p.get("views")) for p in payload.get("parts") or []):
         assumptions.append({"field": "views", "value": "hero_45",
@@ -324,12 +313,11 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
 
 def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str = "",
                    part_hints: list[str] | None = None, brief_id: str = "",
-                   model: str = "deepseek-flash", taxonomy: dict | None = None,
+                   model: str = "deepseek-flash",
                    chat_fn=None, use_skill: bool = True,
                    prompt_mode: str = "v2") -> dict:
     """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。"""
-    taxonomy = taxonomy or load_taxonomy()
-    prompt = build_prompt(raw, taxonomy, class_hint=class_hint,
+    prompt = build_prompt(raw, class_hint=class_hint,
                           part_hints=part_hints, use_skill=use_skill,
                           prompt_mode=prompt_mode)
     result = (chat_fn or chat)(prompt, api_key, model)
@@ -337,7 +325,7 @@ def generate_brief(raw: str, api_key: str, *, slots: int = 12, class_hint: str =
     for attempt in range(2):
         try:
             brief = assemble_brief(result["payload"], raw, slots=slots, brief_id=brief_id,
-                                   class_hint=class_hint, taxonomy=taxonomy)
+                                   class_hint=class_hint)
             return {"brief": brief, "prompt": prompt, "response": result,
                     "attempts": attempt + 1, "use_skill": use_skill,
                     "prompt_mode": prompt_mode}

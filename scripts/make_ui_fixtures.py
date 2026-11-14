@@ -4,7 +4,7 @@
 数据来源（全部真实，不编造）：
 - 名录与关联分级：data-test/evals/sample-association-list-desert.json
 - 图片：data-test/ab-images/manifest.json（70 张实拍，按型号名匹配到名录目标）
-- 构型名与部件族：data/part_taxonomy.json
+- 构型名与部件族：data/legacy/part_taxonomy.json（已静默，仅考古用）
 - 风格词：data/style_vocabulary.json
 - 关联散文：docs/ui-interaction-spec-v3.md §9「正本」
 - 部件文案：本脚本内撰写，严格按 docs/superpowers/specs/2026-10-31-analysis-schema-design.md §2.2/§5
@@ -41,7 +41,7 @@ NOTICE = ("模拟数据：用于高保真填充与联调，数值与文案按真
           "不代表真实检索结果。生成脚本 scripts/make_ui_fixtures.py")
 
 # ----------------------------------------------------------------- 真实词表
-TAX_RAW = json.loads((ROOT / "data" / "part_taxonomy.json").read_text(encoding="utf-8"))
+TAX_RAW = json.loads((ROOT / "data" / "legacy" / "part_taxonomy.json").read_text(encoding="utf-8"))
 TAX = {slot: [t["name"] for t in spec["terms"]] for slot, spec in TAX_RAW["parts"].items()}
 VOCAB_RAW = json.loads((ROOT / "data" / "style_vocabulary.json").read_text(encoding="utf-8"))
 VOCAB = {k: v["words"] for k, v in VOCAB_RAW["clusters"].items()}

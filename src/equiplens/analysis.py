@@ -80,13 +80,13 @@ def load_vocab(path: Path | None = None) -> dict:
 
 
 def load_taxonomy(path: Path | None = None) -> dict:
-    d = json.loads((path or DATA / "part_taxonomy.json").read_text(encoding="utf-8"))
-    return {k: [t["name"] for t in v["terms"]] for k, v in d["parts"].items()}
+    """已废弃（2026-11-14）：部件词表不再进入主体代码；保留空实现兼容旧脚本。"""
+    return {}
 
 
 def taxonomy_with_when(path: Path | None = None) -> dict:
-    d = json.loads((path or DATA / "part_taxonomy.json").read_text(encoding="utf-8"))
-    return {k: v for k, v in d["parts"].items()}
+    """已废弃：同 load_taxonomy。"""
+    return {}
 
 
 # ---------------------------------------------------------------- 校验
@@ -160,7 +160,7 @@ def validate_analysis(data: dict, used, vocab: dict, tax: dict,
                     errs.append(f"{slot} 标为 not_visible 却填了 {f}")
             continue
         canon = p.get("slot")
-        if canon in tax and p.get("term") and p["term"] not in tax[canon]:
+        if tax and canon in tax and p.get("term") and p["term"] not in tax[canon]:
             p["term_off_taxonomy"] = p["term"]
         if not p.get("part_family"):
             errs.append(f"{slot} 缺 part_family")

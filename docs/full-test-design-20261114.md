@@ -80,7 +80,8 @@
 1. 生成 4 个 holdout brief（API，不允许手写），并冻结到 `data-test/evals/fulltest-20261114/`；
 2. 确认 S6（mixer）的槽位与基线；
 3. 固定代码版本（当前 HEAD）与配置，记录到每个 run 的 `summary.config`；
-4. 先跑 1 个 brief × 1 次做冒烟，确认 harness 与字段都对，再批量。
+4. 先跑 **c1/c2 两个冻结 plan 的 loop 冒烟**（品牌表静默后是否掉点），再跑 1 个新 brief 验证
+   brief/part key 可读；都通过后才批量。
 
 ## 7. 筛查（10×1）的目的、风险与应对
 

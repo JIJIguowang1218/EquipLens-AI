@@ -103,7 +103,10 @@ class RuleVerifier:
             from .. import imagesearch as _is
             group = _is._brand_group(model)
             brand_hit = any(_is._alias_in(a, title) for a in group)
-            fallback_series = bool(group) and group[0] not in _is._BRAND_LOOKUP
+            # 只有加载了 legacy 品牌表时，"未知拉丁车系"才算额外证据；
+            # 表默认静默时，拉丁 token 只是车名本身，不能单凭它 + 品牌命中判 probable。
+            fallback_series = bool(group) and bool(_is._BRAND_LOOKUP) \
+                and group[0] not in _is._BRAND_LOOKUP
             series = [t for t in _is._tokens(model)
                       if re.search(r"[a-z]", t) and not t.isdigit()
                       and len(t) >= 3 and t not in group and t not in _is.GENERIC]

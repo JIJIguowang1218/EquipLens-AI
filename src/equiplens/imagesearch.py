@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from html.parser import HTMLParser
@@ -229,32 +230,23 @@ VEHICLE_WORDS = ("卡车", "货车", "牵引", "自卸", "载货", "工程", "�
                  "truck", "lorry", "tractor", "tipper", "dump", "chassis",
                  "offroad", "off-road", "vehicle", "camion")
 
-# 中外品牌别名：模型名常是拉丁文（Volvo/KAMAZ），标题却是中文（沃尔沃/卡玛斯）。
-# 护栏按“同组任一并集命中”判断，否则这些车型在 360 上永远被判不相关。
-BRAND_GROUPS = (
-    ("volvo", "沃尔沃"),
-    ("kamaz", "卡玛斯", "卡玛兹"),
-    ("mercedes", "benz", "奔驰", "梅赛德斯"),
-    ("man", "曼恩", "曼"),
-    ("scania", "斯堪尼亚"),
-    ("iveco", "依维柯"),
-    ("renault", "雷诺"),
-    ("daf", "达夫"),
-    ("tatra", "太脱拉", "太拖拉"),
-    ("hino", "日野"),
-    ("isuzu", "五十铃"),
-    ("mitsubishi", "三菱"),
-    ("mack", "马克"),
-    ("kenworth", "肯沃斯"),
-    ("peterbilt", "彼得比尔特"),
-    ("sany", "三一"),
-    ("zoomlion", "中联"),
-    ("xcmg", "徐工"),
-    ("shacman", "陕汽"),
-    ("howo", "豪沃"),
-    ("dongfeng", "东风"),
-    ("beiben", "北奔"),
-)
+# 品牌别名表已移出主体代码（2026-11-14）：默认不加载，保持静默。
+# 仅当显式设置 EQUIPLENS_ENABLE_LEGACY_BRANDS=1 时，从 data/legacy 读取，
+# 供考古/对照；正常检索不依赖任何品牌白名单。
+LEGACY_BRAND_PATH = Path(__file__).resolve().parents[2] / "data" / "legacy" / "brand_aliases.json"
+
+
+def _load_legacy_brand_groups() -> tuple[tuple[str, ...], ...]:
+    if os.environ.get("EQUIPLENS_ENABLE_LEGACY_BRANDS") != "1":
+        return ()
+    try:
+        d = json.loads(LEGACY_BRAND_PATH.read_text(encoding="utf-8"))
+        return tuple(tuple(str(x) for x in g) for g in (d.get("groups") or []))
+    except Exception:  # noqa: BLE001
+        return ()
+
+
+BRAND_GROUPS = _load_legacy_brand_groups()
 _BRAND_LOOKUP: dict[str, tuple[str, ...]] = {}
 for _group in BRAND_GROUPS:
     for _name in _group:

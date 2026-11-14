@@ -104,8 +104,8 @@ def main(argv=None):
     p = sub.add_parser("text-run", parents=[common],
                        help="文本检索编排: intent→plan→retrieve→grade（含运行日志/低信度重规划）")
     p.add_argument("intent_json", help="意图 JSON（schemas/intent.schema.json）")
-    p.add_argument("--registry", default=None, help="来源注册表（默认 data/source_registry.json）")
-    p.add_argument("--profiles", default=None, help="类目档案（默认 data/category_profiles.json）")
+    p.add_argument("--registry", default=None, help="来源注册表（运维配置，不参与产出判定）")
+    p.add_argument("--profiles", default=None, help="类目档案（legacy，默认 data/legacy/category_profiles.json）")
     p.add_argument("--run-root", default=None, help="运行日志根目录（默认 <data-dir>/runs）")
     p.add_argument("--run-id", default=None, help="指定运行号（默认自动生成）")
     p.add_argument("--no-replan", action="store_true", help="禁用低信度重规划（只跑一轮）")

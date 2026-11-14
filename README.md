@@ -115,7 +115,7 @@ EquipLens-AI/
 ├── scripts/           # 生产入口（build_brief / plan_candidates / rank_plan / render_fetch_audit / run_ledger）+ 实验脚本
 ├── skills/            # task-brief（brief 生成方法）
 ├── schemas/           # brief / state / event 契约
-├── data/              # 配置与兼容映射（part_taxonomy 仅显示映射；source_registry 仅来源统计）
+├── data/              # 运维配置；legacy/ 为静默词表（默认不加载）
 ├── tests/             # check() 脚本（不是 pytest）
 └── data-test/         # runs/ 台账、evals/ 评测、fixtures/
 ```

@@ -104,7 +104,7 @@ def test_generate_uses_llm_prompt():
     out = briefing.generate_brief("沙漠牵引车，看踏步和大灯", "sk-test",
                                   slots=12, chat_fn=fake_chat)
     assert seen["key"] == "sk-test", seen
-    assert "reference_parts" in seen["prompt"] and "task-brief" in seen["prompt"], seen
+    assert "no_vocabulary_note" in seen["prompt"] and "task-brief" in seen["prompt"], seen
     assert out["brief"]["brief_id"].startswith("auto-"), out["brief"]
     assert out["attempts"] == 1, out
 
