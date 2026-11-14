@@ -75,6 +75,11 @@
    与身份分配（c5 绝对差 2–5/14），不是代码回归；
 5. 机制（并发默认、search_key、slots、tier、去表化）均无回归。
 
+**代码版本与可复现性（2026-11-14 复核）**：词表静默代码曾漏提交，`d0a4cec` 已补齐；
+核对 mtime 与 `git diff d0a4cec HEAD -- src scripts tests` 为空，**测试跑的就是该版代码**，
+结论有效。`388171a` 窗口内提交不含代码，检出该 commit 不能复现；从 `d0a4cec` 起一致。
+新增 `summary.config.code_version`，今后每个 run 自带 git sha。
+
 **建议调整 / 不建议调整**：
 - **建议做**：候选池供给（`--topup 4` 已 opt-in 验证：h4 2/4→4/4、3/4；s6 两次 4/4，但未消除波动）；
   degraded 政策（可接受占比或人工复核）；补池后复测 h4/s6；

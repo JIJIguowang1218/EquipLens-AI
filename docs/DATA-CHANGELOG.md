@@ -269,3 +269,11 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - 注意：含该标识的 `388171a` 已在远程历史中（5 处）；本次只清理当前 HEAD。
   是否改写历史（force push）需单独决定；AppID 本身是公开标识，不等同密钥。
 - 流程教训：提交前扫描不要用管道（`| tail` 会掩盖退出码），应单独跑并看 exit code。
+
+### 23. 代码版本溯源加固（2026-11-14）
+
+- 复核结论：P0–P3 运行时的工作树代码内容 == `d0a4cec`（`git diff` 为空；源码 mtime 03:07–03:09，
+  首跑 03:17），因此实验结论不受“漏提交”影响；`388171a` 窗口不可复现，`d0a4cec` 起恢复。
+- `engine._summary` 增加 `config.code_version`（git short sha），今后 run 自带代码版本；
+  `retrieval_engine 47/47`。
+- topup4 改动在 P3 尾声（06:03），默认仍 2，P2/P3 未使用；安全脱敏仅改 URL。

@@ -151,3 +151,23 @@ PYTHONPATH=src python scripts/run_fulltest.py \
 PYTHONPATH=src python scripts/eval_fulltest_repeats.py \
   --roots data-test/runs/p7-screen-20261114,data-test/runs/p7-screen-r2-20261114,data-test/runs/p7-screen-r3-20261114
 ```
+
+## 代码版本与严谨性（2026-11-14 复核）
+
+**问题背景**：词表静默的代码改动曾因 `git add` 中止而未真正入库（`d6f60c8` 只含文件移动），
+后来由 `d0a4cec` 补提交。需要回答：测试跑的是哪一版代码？
+
+**核对**：
+- 源码 mtime：`briefing.py` 03:07、`imagesearch.py` 03:08、`analysis.py` 03:08、`web.py` 03:09；
+- 首次运行：P0 03:17；P2 03:26–04:19；P3 04:19–06:10；
+- `git diff d0a4cec HEAD -- src scripts tests` = 空 → **测试时的代码内容 == `d0a4cec` 的内容**；
+- `plan_candidates.py` 的 topup4 改动发生在 06:03（P3 尾声），且默认仍是 2，
+  P2/P3 未使用 `--topup 4`；P8 诊断才使用；
+- 安全脱敏只改了两份证据里的 URL 字符串，不改指标。
+
+**判定**：
+- **结论有效**：执行用的是工作树中已改好的代码，不是旧的已提交版本；
+- **可复现性在 `388171a` 窗口内受损**：该提交不含代码改动，检出它会得到旧代码；
+  `d0a4cec` 起恢复一致；
+- **加固**：本次新增 `summary.config.code_version`（git short sha），
+  今后每个 run 自带代码版本；`retrieval_engine 47/47`。
