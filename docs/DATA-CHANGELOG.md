@@ -277,3 +277,15 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - `engine._summary` 增加 `config.code_version`（git short sha），今后 run 自带代码版本；
   `retrieval_engine 47/47`。
 - topup4 改动在 P3 尾声（06:03），默认仍 2，P2/P3 未使用；安全脱敏仅改 URL。
+
+### 24. 名录草稿归档（2026-10-31 产物，2026-11-14 收编）
+
+- 22 份 `roster-generate` 草稿（`status=pending_lock`，**从未锁定**）从 `data-test/` 根目录
+  迁入 `data-test/corpus/roster-drafts-20261031/<类目>/`，附 `README.md` + `MANIFEST.json`
+  （每个文件的时间/数量/sha256）。
+- 类目分布：`沙漠牵引车` 18 次（候选 4–12，经历 12→10→4→11→6）、`牵引车` 4 次（候选 4）。
+  当天 `src/equiplens/roster.py` 无提交，波动不是代码回归，**不可作基线**；
+  生产/评测仍用 T13–T15 锁定名录。
+- 这批 run 当时没有进 `test-log` 或本文件，属补登记——用途只能从时间与内容反推，
+  不要为它编实验编号。
+- 影响面：纯新增归档，不改代码、不动任何 run；`data-test/corpus/**` 已在 `.gitignore` 白名单内。
