@@ -1,0 +1,276 @@
+{
+ "brief_id": "auto-20261112-212154",
+ "request": {
+  "raw": "电动叉车（护顶架、配重罩、车身侧板、登车踏板、警示灯支架）；仓储物流工况；四轮；6 台",
+  "class": "电动叉车（四轮平衡重式）",
+  "environment": {
+   "value": "仓储物流（室内平整地面、货架通道、频繁起升与上下车）",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "四轮平衡重电动叉车底盘/车身平台（门架前置、后置配重）",
+   "confidence": 0.8
+  },
+  "configuration": "四轮、后置配重、护顶架",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 6,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "class",
+   "value": "四轮平衡重式电动叉车",
+   "why": "用户给出电动叉车与四轮，仓储物流常见平衡重式；未明确座驾/站驾形式",
+   "confidence": 0.85
+  },
+  {
+   "field": "environment",
+   "value": "室内仓储物流、平整硬化地面、货架通道、频繁起升与上下车",
+   "why": "用户仅写仓储物流工况，按典型场景补足分析条件",
+   "confidence": 0.8
+  },
+  {
+   "field": "base_platform",
+   "value": "四轮平衡重电动叉车底盘/车身平台（门架前置、后置配重）",
+   "why": "由四轮、配重罩与护顶架推断基型平台",
+   "confidence": 0.75
+  },
+  {
+   "field": "configuration",
+   "value": "四轮、后置配重、护顶架",
+   "why": "用户点名四轮、配重罩、护顶架",
+   "confidence": 0.8
+  },
+  {
+   "field": "quantity",
+   "value": "6 台为小批量车队采购/配置",
+   "why": "影响附件标准化与可维护性判断，但不改变单车设计分析",
+   "confidence": 0.6
+  },
+  {
+   "field": "beacon_bracket",
+   "value": "警示灯支架可能为护顶架附属后装件",
+   "why": "用户未说明安装位置与是否后装，需在检索中确认",
+   "confidence": 0.5
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "护顶架",
+    "配重罩",
+    "车身侧板",
+    "警示灯支架"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [],
+ "part_requirements": [
+  {
+   "part": "custom_ohg7f2a",
+   "label": "护顶架",
+   "kind": "part",
+   "location": "overhead/cab_roof",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "框架型材焊接节点与立柱布置",
+    "顶部落物防护与司机视野/头部空间",
+    "护顶架强度、开口尺寸与法规符合性"
+   ],
+   "why": "护顶架是叉车专属安全结构件，能提供框架节点、视野通透性、上下车人机与法规开口尺寸的设计证据。"
+  },
+  {
+   "part": "custom_cwc3b1d",
+   "label": "配重罩",
+   "kind": "part",
+   "location": "rear_lower",
+   "part_family": "cast_forged",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "hero_45",
+    "side"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "尾部体量与家族识别",
+    "铸造/钣金罩壳分缝与装配",
+    "涂装与表面耐刮擦处理"
+   ],
+   "why": "配重罩是电动叉车尾部体量与品牌识别的核心载体，可提供配重功能、罩壳分缝、涂装与制造工艺之间的设计证据。"
+  },
+  {
+   "part": "custom_side5c9e",
+   "label": "车身侧板",
+   "kind": "part",
+   "location": "side_body",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "platform",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧面线条与体量过渡",
+    "覆盖件分缝、固定点与可拆卸维修",
+    "涂装分色与耐刮擦表面"
+   ],
+   "why": "车身侧板连接前部与配重罩，能提供侧面造型语言、覆盖件装配分缝、维修开口及仓储刮擦防护的设计证据。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "part",
+   "location": "side_lower",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "detail",
+    "side",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "登车高度、踏步深度与防滑",
+    "板金折弯、加强筋与排水",
+    "油污/粉尘环境下的防滑与清洁"
+   ],
+   "why": "仓储物流工况频繁上下车，登车踏板能提供人机尺寸、防滑构造、板金加强及清洁维护的设计证据。"
+  },
+  {
+   "part": "custom_bcn2d4",
+   "label": "警示灯支架",
+   "kind": "function",
+   "location": "overhead_rear",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "manufacturing"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "detail",
+    "rear",
+    "side"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "支架刚度与减振",
+    "安装高度、可视角度与警示法规",
+    "折弯/焊接与走线固定"
+   ],
+   "why": "警示灯支架是仓储物流工况下的功能附件，能提供护顶架安装点、支架刚度、走线固定及法规可视性的设计证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "电动叉车（四轮平衡重式） 四轮、后置配重、护顶架",
+   "parts": [
+    "custom_ohg7f2a",
+    "custom_cwc3b1d",
+    "custom_side5c9e",
+    "step",
+    "custom_bcn2d4"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "仓储物流（室内平整地面、货架通道、频繁起升与上下车） 工程车",
+   "parts": [
+    "custom_ohg7f2a",
+    "custom_cwc3b1d",
+    "custom_side5c9e",
+    "step",
+    "custom_bcn2d4"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 8
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1"
+}

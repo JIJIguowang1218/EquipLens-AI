@@ -1,0 +1,657 @@
+{
+ "brief_id": "source-expansion-mixer-20261111",
+ "created_at": "2026-11-14T19:23:18",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "城市工程/城建工况：城市道路 混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "城市工程/城建工况：城市道路 发动机前置 卡车 车型 -\"客车\" -\"SUV\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "城市工程/城建工况：城市道路与市政工地 发动机前置 -\"客车\" -\"SUV\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "混凝土搅拌车 发动机前置 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "混凝土搅拌车 发动机前置 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 143,
+ "candidates": [
+  {
+   "model": "山推建友 CR412-06 混凝土搅拌车",
+   "brand": "山推建友",
+   "slots": {
+    "brand": "山推建友",
+    "series": "CR412-06",
+    "model_code": "CR412-06",
+    "config": ""
+   },
+   "search_key": "山推建友 CR412-06 混凝土搅拌车",
+   "reason": "结果用于四川城市建设工况，为传统燃油搅拌车并采用重汽豪沃底盘；结果未明示12m³与8×4驱动形式，需继续核验公告参数。",
+   "sources": [
+    "https://www.shantui.com/case/tan-detail-1505.htm",
+    "https://www.shantui.com/phone/case/hunning-detail-1505.htm"
+   ],
+   "source_query": "城市工程/城建工况：城市道路 混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CR412",
+   "identity": "code/CR41206",
+   "identity_kind": "code",
+   "model_variants": [
+    "山推建友 CR412-06 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市工程/城建工况：城市道路 混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "城市猎豹牌 HDL5310GJBJ5GE 混凝土搅拌运输车",
+   "brand": "城市猎豹牌",
+   "slots": {
+    "brand": "城市猎豹牌",
+    "series": "",
+    "model_code": "HDL5310GJBJ5GE",
+    "config": ""
+   },
+   "search_key": "城市猎豹 HDL5310GJBJ5GE 混凝土搅拌车",
+   "reason": "公告类结果，明确为31t级混凝土搅拌运输车，可作为城建搅拌车候选继续核验；结果未给出12m³容积与8×4驱动形式。",
+   "sources": [
+    "https://www.jisuepc.com/announce/HDL5310GJBJ5GE/663544"
+   ],
+   "source_query": "城市工程/城建工况：城市道路 混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "HDL5310GJBJ5",
+   "identity": "code/HDL5310GJBJ5GE",
+   "identity_kind": "code",
+   "model_variants": [
+    "城市猎豹牌 HDL5310GJBJ5GE 混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市工程/城建工况：城市道路 混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO NX 340马力 12方混凝土搅拌车",
+   "brand": "HOWO",
+   "slots": {
+    "brand": "HOWO",
+    "series": "NX",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "HOWO NX 340 12方 混凝土搅拌车",
+   "reason": "结果标题明确HOWO NX 340Hp、12 Cubic Meters、混凝土搅拌车；驱动形式未在结果中明确。",
+   "sources": [
+    "https://afrimart.co.za/product/construction-machine-brand-howo-nx-340hp-12cubic-meters-capacity-zoomlion-diesel-engine-concrete-mixer-truck"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "NX340",
+   "identity": "generic/HOWONX12方混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO NX 340马力 12方混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "联合卡车 U系 QCC5312GJBD656N 混凝土搅拌车",
+   "brand": "联合卡车",
+   "slots": {
+    "brand": "联合卡车",
+    "series": "U系",
+    "model_code": "QCC5312GJBD656N",
+    "config": ""
+   },
+   "search_key": "联合卡车 U系 QCC5312GJBD656N 搅拌车",
+   "reason": "结果列出联合卡车U系混凝土搅拌车及QCC5312GJBD656N等公告型号；驱动形式与方量未在摘要中明确。",
+   "sources": [
+    "https://product.360che.com/price/c8_s67_b66_s216_p1YC6MK375N-29JS150T-B-4%e5%9b%bd%e4%ba%94.html#2",
+    "https://product.360che.com/m256/64210_param.html#2"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "QCC5312GJBD656",
+   "identity": "code/QCC5312GJBD656N",
+   "identity_kind": "code",
+   "model_variants": [
+    "联合卡车 U系 QCC5312GJBD656N 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "三一 SY5255GJB2E 混凝土搅拌车",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "",
+    "model_code": "SY5255GJB2E",
+    "config": ""
+   },
+   "search_key": "三一 SY5255GJB2E 搅拌车",
+   "reason": "结果明确三一SY5255GJB2E搅拌车；驱动形式与方量未在结果中明确。",
+   "sources": [
+    "http://zgqc888.com/read-1916.html"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "SY5255GJB2",
+   "identity": "code/SY5255GJB2E",
+   "identity_kind": "code",
+   "model_variants": [
+    "三一 SY5255GJB2E 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车 发动机前置 车型 品牌 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "日野700 8×4 混凝土搅拌车",
+   "brand": "日野",
+   "slots": {
+    "brand": "日野",
+    "series": "700",
+    "model_code": "",
+    "config": "8×4"
+   },
+   "search_key": "日野700 8×4 混凝土搅拌车",
+   "reason": "结果明确出现“日野6×4混凝土搅拌车”和“这是8×4版本”，并说明该代700包含混凝土搅拌车、350-450马力P11C/E13C发动机，是唯一直接匹配8×4搅拌车构型的候选；其驾驶室前脸与日系平头前脸可作为前脸参考。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYyMjIxNTU2Ng==&mid=2247486428&idx=1&sn=db9e68f95bb0c34e159bb6b5c4870c55"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/日野7008X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "日野700 8×4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沃尔沃FM系列搅拌车底盘",
+   "brand": "沃尔沃",
+   "slots": {
+    "brand": "沃尔沃",
+    "series": "FM",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "沃尔沃 FM 搅拌车底盘",
+   "reason": "结果提到沃尔沃搅拌车底盘集中在FM系列，属发动机前置平头驾驶室的重卡搅拌车底盘，并列出FM9、FM12、改款后FM（D13 400马力）等；底盘驱动形式未写明，需按8×4另行确认。",
+   "sources": [
+    "https://www.360che.com/market/091109/7966_6.html"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/沃尔沃FM系列搅拌车底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沃尔沃FM系列搅拌车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "奔驰Actros工程版搅拌车底盘",
+   "brand": "奔驰",
+   "slots": {
+    "brand": "奔驰",
+    "series": "Actros",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "奔驰 Actros 搅拌车底盘",
+   "reason": "结果写“奔驰的搅拌车底盘是工程版的Actros”，配OM501系列V6发动机，早期进口400马力；Actros的外摆式或工程版前脸、侧防护布置适合作为前脸与侧防护参考，驱动形式需另行确认。",
+   "sources": [
+    "https://www.360che.com/market/091109/7966_6.html"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/ACTROS",
+   "identity_kind": "series",
+   "model_variants": [
+    "奔驰Actros工程版搅拌车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 发动机前置 truck brands -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JGC5271GJB 混凝土搅拌输送车",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "",
+    "model_code": "JGC5271GJB",
+    "config": ""
+   },
+   "search_key": "JGC5271GJB混凝土搅拌输送车",
+   "reason": "结果给出完整车型型号，适用于城建等混凝土需求大的工程，并提到发动机前端取力；结果未给容积和8×4驱动形式。",
+   "sources": [
+    "https://kms.wanfangdata.com.cn/fzxk/Detail/Cstad?id=99019889"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "JGC5271GJB",
+   "identity": "code/JGC5271GJB",
+   "identity_kind": "code",
+   "model_variants": [
+    "JGC5271GJB 混凝土搅拌输送车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放 CA5250GJBP66K22L1T1E 平头柴油混凝土搅拌汽车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "",
+    "model_code": "CA5250GJBP66K22L1T1E",
+    "config": ""
+   },
+   "search_key": "解放 CA5250GJBP66K22L1T1E 平头柴油混凝土搅拌汽车",
+   "reason": "结果给出完整公告型号和平头柴油混凝土搅拌汽车类型；但未标注12方与8×4，需二次确认是否匹配任务底盘。",
+   "sources": [
+    "https://www.17vin.com/gonggao/494107/CA5250GJBP66K22L1T1E.html"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CA5250GJBP66K22L1T1",
+   "identity": "code/CA5250GJBP66K22L1T1E",
+   "identity_kind": "code",
+   "model_variants": [
+    "解放 CA5250GJBP66K22L1T1E 平头柴油混凝土搅拌汽车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 发动机前置 -\"客车\" -\"SUV\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "AXOR 3236 8X4 12 M3 CONCRETE MIXER",
+   "brand": "Mercedes-Benz",
+   "slots": {
+    "brand": "Mercedes-Benz",
+    "series": "AXOR",
+    "model_code": "",
+    "config": "8X4"
+   },
+   "search_key": "Mercedes-Benz AXOR 3236 8X4 12 M3 CONCRE",
+   "reason": "结果标题明确为 8X4 底盘、12 M3 混凝土搅拌车，最贴合任务单的 8×4 与 12 方核心要求；驾驶室前脸、搅拌罐、进出料斗、侧防护、尾部操作台等仍需实车图核验。",
+   "sources": [
+    "https://machineryline-au.com/-/sale/concrete-mixer-trucks/Mercedes-Benz/2011-AXOR-32368X4-E4-12-M3-CONCRETE-MIXER--26062412423795450000"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "AXOR3236",
+   "identity": "generic/AXOR32368X412M3CONCRETEMIXER",
+   "identity_kind": "generic",
+   "model_variants": [
+    "AXOR 3236 8X4 12 M3 CONCRETE MIXER"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 发动机前置 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Arocs 4142 B 8x4 concrete mixer truck",
+   "brand": "Mercedes-Benz",
+   "slots": {
+    "brand": "Mercedes-Benz",
+    "series": "Arocs",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "Mercedes-Benz Arocs 4142 B 8x4 concrete ",
+   "reason": "结果标题明确为 Arocs 4142 B 8x4 混凝土搅拌车，符合 8×4 底盘构型；结果未明确公称容积，12 方需进一步核验。",
+   "sources": [
+    "https://machineryline.nz/-/sale/concrete-mixer-trucks/Mercedes-Benz/Arocs-4142-B-8x4--26111315011378611200"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/AROCS/4142",
+   "identity_kind": "series",
+   "model_variants": [
+    "Arocs 4142 B 8x4 concrete mixer truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 发动机前置 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO NX 340Hp 12Cubic Meters",
+   "brand": "HOWO",
+   "slots": {
+    "brand": "HOWO",
+    "series": "NX",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "HOWO NX 340Hp 12Cubic Meters concrete mi",
+   "reason": "结果标题明确为 HOWO NX 340Hp、12 立方米混凝土搅拌车，符合 12 方容积方向；结果未写驱动形式，8×4 需进一步核验。",
+   "sources": [
+    "https://afrimart.co.za/product/construction-machine-brand-howo-nx-340hp-12cubic-meters-capacity-zoomlion-diesel-engine-concrete-mixer-truck"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HOWONX340HP12CUBICMETERS",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO NX 340Hp 12Cubic Meters"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 发动机前置 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "山东富鑫 重汽12方搅拌车",
+   "brand": "山东富鑫",
+   "slots": {
+    "brand": "山东富鑫",
+    "series": "重汽12方搅拌车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "重汽12方搅拌车",
+   "reason": "结果中山东富鑫产品列表明确出现“重汽12方搅拌车”，另有“12方混凝土搅拌车 山东富鑫搅拌车”的标题，可确认是12方搅拌运输车候选；结果未明确8×4驱动形式，也写有“前置后驱”，但仍需用图片和公告进一步核实。",
+   "sources": [
+    "https://big5.made-in-china.com/gongying/fx15866522797-LKxEdmQyRnrg.html",
+    "http://qp365.net/supply/info.aspx?id=98665",
+    "https://cn.made-in-china.com/gongying/fx15866522797-wKpnXOFokmre.html"
+   ],
+   "source_query": "混凝土搅拌车 发动机前置 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/山东富鑫重汽12方搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山东富鑫 重汽12方搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 发动机前置 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 3
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 4,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 14,
+  "required": 26,
+  "verifiable": 8,
+  "verifiable_share": 0.571,
+  "slots": 12,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": false,
+  "warning": "候选池 14 < 建议 26（1.6×(12+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 2
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 14,
+  "slots": 12,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 26,
+  "unique": 14,
+  "removed": 12,
+  "generic": 6
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

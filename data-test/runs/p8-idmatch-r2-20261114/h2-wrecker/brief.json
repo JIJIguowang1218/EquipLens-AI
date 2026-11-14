@@ -1,0 +1,410 @@
+{
+ "brief_id": "auto-20261114-024643",
+ "request": {
+  "raw": "清障车（拖吊/平板），重点看前保险杠、吊臂与托举机构、平板侧板、轮拱、登车踏板、警示灯支架；高速公路与城区道路救援工况；6×4 底盘；6 台",
+  "class": "清障车（拖吊/平板）",
+  "environment": {
+   "value": "高速公路与城区道路救援工况",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "6×4 载货汽车底盘（带驾驶室）",
+   "confidence": 0.8
+  },
+  "configuration": "6×4 底盘；拖吊与平板两种上装构型并行",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 6,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "configuration",
+   "value": "拖吊与平板两种上装并行分析，不合并为单一构型",
+   "why": "用户同时写“拖吊/平板”，需要覆盖两种上装差异",
+   "confidence": 0.9
+  },
+  {
+   "field": "base_platform",
+   "value": "按 6×4 载货汽车底盘（带驾驶室）理解",
+   "why": "用户明确 6×4 底盘，清障车通常由载货汽车底盘改装",
+   "confidence": 0.85
+  },
+  {
+   "field": "boom_lift_location",
+   "value": "按后置拖吊上装的吊臂与托举机构理解",
+   "why": "清障车拖吊上装通常后置，但用户未明确安装位置",
+   "confidence": 0.75
+  },
+  {
+   "field": "warning_light_bracket",
+   "value": "按驾驶室顶部/后部警示灯安装支架理解，安装位置待确认",
+   "why": "警示灯支架可能位于顶部、前部或后部",
+   "confidence": 0.6
+  },
+  {
+   "field": "wheel_arch",
+   "value": "覆盖前转向桥与后驱动桥轮位",
+   "why": "6×4 多轴底盘轮拱需覆盖多轮位，具体轴距待确认",
+   "confidence": 0.75
+  },
+  {
+   "field": "flatbed_side_panel",
+   "value": "按平板货斗两侧栏板/侧板理解",
+   "why": "平板清障车侧板可能为固定栏板或可翻侧板",
+   "confidence": 0.8
+  },
+  {
+   "field": "front_bumper",
+   "value": "按 6×4 底盘驾驶室前保险杠，可能集成绞盘/灯具/防护附件",
+   "why": "清障车常在前保险杠区域加装救援附件，具体配置待确认",
+   "confidence": 0.7
+  },
+  {
+   "field": "parts.new",
+   "value": [
+    "吊臂",
+    "托举机构",
+    "平板侧板",
+    "警示灯支架"
+   ],
+   "why": "词表外的新部件，已保留为 custom_* 并保留原词",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后围整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "rear",
+    "side",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "roof",
+   "label": "顶盖与导流",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "hero_45",
+    "front",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "bumper",
+   "label": "保险杠",
+   "kind": "part",
+   "location": "front",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "板面分缝与加强筋",
+    "接近角/离地间隙",
+    "灯具/反光/附件安装"
+   ],
+   "why": "看清障车前保险杠的板面分缝、体量收放、离地与防护结构，以及灯具/反光/绞盘等救援附件的集成方式，为前脸造型与防护布置提供证据。"
+  },
+  {
+   "part": "custom_tow_boom",
+   "label": "吊臂",
+   "kind": "part",
+   "location": "rear/upper",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "截面与铰点",
+    "焊缝与节点",
+    "作业包络与走台"
+   ],
+   "why": "看吊臂截面形式、铰点布置、焊缝与节点构造，以及吊臂与驾驶室/平板/托举机构的作业包络关系，判断结构承载与作业可视性。"
+  },
+  {
+   "part": "custom_tow_lift",
+   "label": "托举机构",
+   "kind": "function",
+   "location": "rear_lower",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "托举臂铰点",
+    "锁止/对位",
+    "离地间隙与操作空间"
+   ],
+   "why": "看托举臂铰点、锁止/对位结构、离地间隙与操作空间，判断机构布置、承载节点与救援操作安全。"
+  },
+  {
+   "part": "custom_flatbed_side_panel",
+   "label": "平板侧板",
+   "kind": "part",
+   "location": "side/rear",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧板分缝与高度",
+    "铰链/锁具",
+    "涂装分色"
+   ],
+   "why": "看平板侧板的高度、分缝、铰链/锁具与涂装分色，判断平板侧向体量、装载人机与侧面视觉连续性。"
+  },
+  {
+   "part": "wheel_arch",
+   "label": "翼子板与轮拱",
+   "kind": "part",
+   "location": "side/多轴轮位",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "platform",
+   "design_axes": [
+    "proportion",
+    "structure",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "轮拱覆盖与间隙",
+    "多轴轮位比例",
+    "泥水遮挡"
+   ],
+   "why": "看轮拱与轮胎、平板侧板、登车踏板之间的间隙和覆盖关系，判断 6×4 多轴底盘比例、轮拱结构与泥水防护。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "part",
+   "location": "side/cab",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "platform",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "踏步高度与防滑",
+    "支架与轮拱关系",
+    "防泥水"
+   ],
+   "why": "看踏步高度、防滑面、支架与轮拱/侧板的关系，判断登车人机、结构固定方式与道路泥水环境下的防滑防污。"
+  },
+  {
+   "part": "custom_warning_light_bracket",
+   "label": "警示灯支架",
+   "kind": "part",
+   "location": "roof/rear",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "regulation",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "hero_45",
+    "front",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "安装点与减振",
+    "走线",
+    "灯面可见性"
+   ],
+   "why": "看警示灯支架的安装点、减振/走线方式与灯面可见性，判断法规可见性、维护可达性与顶部/后部造型整合。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "清障车（拖吊/平板） 6×4 底盘；拖吊与平板两种上装构型并行",
+   "parts": [
+    "bumper",
+    "custom_tow_boom",
+    "custom_tow_lift",
+    "custom_flatbed_side_panel",
+    "wheel_arch",
+    "step",
+    "custom_warning_light_bracket"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "高速公路与城区道路救援工况 工程车",
+   "parts": [
+    "bumper",
+    "custom_tow_boom",
+    "custom_tow_lift",
+    "custom_flatbed_side_panel",
+    "wheel_arch",
+    "step",
+    "custom_warning_light_bracket"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 8
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1"
+}

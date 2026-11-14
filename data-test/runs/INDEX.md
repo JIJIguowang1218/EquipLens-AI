@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-14T17:20:08 · 共 109 条 · 待补人工结论 67 条
+> 生成时间：2026-11-14T19:42:31 · 共 111 条 · 待补人工结论 69 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -110,6 +110,8 @@
 | other | `p7-screen-r2-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p7-screen-r3-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p8-idmatch-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p8-idmatch-r2-20261114` | plan-set | 2026-11-14 | — | — | — |
+| other | `p8-idmatch-r3-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p8b-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `verify-identity-20261114` | suite | 2026-11-14 | — | — | — |

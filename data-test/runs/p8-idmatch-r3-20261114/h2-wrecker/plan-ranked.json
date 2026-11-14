@@ -1,0 +1,926 @@
+{
+ "brief_id": "auto-20261114-024643",
+ "created_at": "2026-11-14T19:31:52",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 1,
+   "dropped_invalid_source": 1,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "高速公路与城区道路救援工况 6×4 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 97,
+ "candidates": [
+  {
+   "model": "CLH5320TQZS6 6×4 清障车",
+   "brand": "程力重工",
+   "slots": {
+    "brand": "程力重工",
+    "series": "",
+    "model_code": "CLH5320TQZS6",
+    "config": "6×4"
+   },
+   "search_key": "程力重工 CLH5320TQZS6 6×4 清障车",
+   "reason": "结果参数表明确该清障车采用重汽6×4驱动形式，并列出16吨托臂、10吨绞盘及液压系统，适合托吊/托举机构与6×4底盘候选。",
+   "sources": [
+    "https://www.chenglib.com/info-news/238636.html"
+   ],
+   "source_query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLH5320TQZS6",
+   "identity": "code/CLH5320TQZS6",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLH5320TQZS6 6×4 清障车",
+    "程力重工 CLH5320TQZS6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "参数表明确该清障车采用重汽6×4驱动形式，并列出16吨托臂、10吨绞盘及液压系统，直接覆盖吊臂/托举机构与6×4底盘要求。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "重汽豪沃MAX 后双桥托吊连体清障车 CSC5250TQZZT6",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽豪沃",
+    "series": "豪沃MAX",
+    "model_code": "CSC5250TQZZT6",
+    "config": "6×4"
+   },
+   "search_key": "重汽豪沃 MAX CSC5250TQZZT6 6×4 清障车",
+   "reason": "结果明确为豪沃MAX宽体、后双桥托吊连体清障车，驱动6×4，底盘ZZ1257V584JF1，匹配拖吊构型。",
+   "sources": [
+    "http://cljhcjg.com/show-12-5002-259.html",
+    "http://www.clcjgc.com/show-12-5011-491.html"
+   ],
+   "source_query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CSC5250TQZZT6",
+   "identity": "code/CSC5250TQZZT6",
+   "identity_kind": "code",
+   "model_variants": [
+    "重汽豪沃MAX 后双桥托吊连体清障车 CSC5250TQZZT6",
+    "豪沃MAX 后双桥托吊连体清障车 CSC5250TQZZT6",
+    "重汽豪沃MAX 后双桥托吊连体清障车（CSC5250TQZZT6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "must",
+   "intent_reason": "标题明确为豪沃MAX宽体、后双桥托吊连体清障车，参数给出6×4与底盘ZZ1257V584JF1，托吊构型与任务重点高度匹配。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "一汽解放 J6M 320马力 6X4 清障车(程力威牌)(CLW5250TQZC5)",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "解放J6M",
+    "model_code": "CLW5250TQZC5",
+    "config": "6X4"
+   },
+   "search_key": "解放J6M 6X4 清障车 CLW5250TQZC5",
+   "reason": "结果标题直接给出“一汽解放 J6M 320马力 6X4 清障车(程力威牌)(CLW5250TQZC5)”，参数摘要含驱动形式6X4、底盘车系解放J6M，符合高速公路/城区救援用6×4清障车底盘要求。",
+   "sources": [
+    "https://product.360che.com/m302/75567_param.html#1"
+   ],
+   "source_query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5250TQZC5",
+   "identity": "code/CLW5250TQZC5",
+   "identity_kind": "code",
+   "model_variants": [
+    "一汽解放 J6M 320马力 6X4 清障车(程力威牌)(CLW5250TQZC5)",
+    "一汽解放 J6M 320马力 6X4 清障车（程力威牌）CLW5250TQZC5",
+    "一汽解放 J6M 6X4 清障车（CLW5250TQZC5）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "标题直接给出一汽解放J6M、320马力、6X4清障车及CLW5250TQZC5，底盘与车型类别明确，适合看前保险杠、轮拱、踏板等驾驶室周边。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "解放6*4清障带吊机（程力威牌CLW5250TQZCQA型清障车）",
+   "brand": "程力威牌",
+   "slots": {
+    "brand": "程力威牌",
+    "series": "解放",
+    "model_code": "CLW5250TQZCQA",
+    "config": "6*4"
+   },
+   "search_key": "解放6*4清障带吊机 CLW5250TQZCQA",
+   "reason": "结果标题为“解放6*4清障带吊机”，正文给出“程力威牌CLW5250TQZCQA型清障车”，属于6×4底盘带吊清障车，可用于拖吊/平板类救援上装参考。",
+   "sources": [
+    "http://www.clw-autos.cn/fra/sys-pd/132.html"
+   ],
+   "source_query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5250TQZCQA",
+   "identity": "generic/解放64清障带吊机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放6*4清障带吊机（程力威牌CLW5250TQZCQA型清障车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "标题明确“解放6*4清障带吊机”，正文给出CLW5250TQZCQA型清障车，能补充带吊机型与吊臂/吊机支架参考；与J6M同平台但上装构型不同。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "中国重汽豪沃 HOWO 6x4 30吨重型平板拖车",
+   "brand": "中国重汽/Sinotruk",
+   "slots": {
+    "brand": "中国重汽/Sinotruk",
+    "series": "HOWO",
+    "model_code": "",
+    "config": "6x4"
+   },
+   "search_key": "Sinotruk Howo 6x4 30t flatbed tow truck",
+   "reason": "结果标题与描述明确6x4、30吨平板拖车/道路救援，匹配平板清障构型。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601681749907"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中国重汽豪沃HOWO6X4重型平板拖车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中国重汽豪沃 HOWO 6x4 30吨重型平板拖车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "标题明确6x4、30吨重型平板拖车/道路救援，能覆盖平板侧板、平板附件与轮拱等平板清障构型；虽为generic，但可补足拖吊之外的平板形态。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "陕汽重卡 德龙新M3000 336马力 6X4 清障车（程力威牌）CLW5320TQZS5",
+   "brand": "陕汽重卡",
+   "slots": {
+    "brand": "陕汽重卡",
+    "series": "德龙新M3000",
+    "model_code": "CLW5320TQZS5",
+    "config": "6X4"
+   },
+   "search_key": "陕汽重卡 德龙新M3000 6X4 清障车",
+   "reason": "结果标题与参数显示德龙新M3000底盘、6X4、程力威牌清障车，构型匹配。",
+   "sources": [
+    "https://productedit.360che.com.cn/m287/71830_param.html",
+    "https://product.360che.com/m393/98443_param.html#1"
+   ],
+   "source_query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "M3000",
+   "identity": "code/CLW5320TQZS5",
+   "identity_kind": "code",
+   "model_variants": [
+    "陕汽重卡 德龙新M3000 336马力 6X4 清障车（程力威牌）CLW5320TQZS5",
+    "陕汽重卡 德龙新M3000 6X4 清障车（CLW5320TQZS5）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "标题与参数显示德龙新M3000底盘、6X4、程力威牌清障车，品牌底盘与解放、豪沃形成差异，适合作为6×4清障车代表车型之一。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "东风商用车 天龙 260马力 6X4 清障车（江特牌）",
+   "brand": "东风商用车",
+   "slots": {
+    "brand": "东风商用车",
+    "series": "东风天龙",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "东风天龙 6X4 清障车",
+   "reason": "结果标题与参数显示东风天龙底盘、6X4、江特牌清障车，符合任务底盘构型。",
+   "sources": [
+    "https://productedit.360che.com.cn/m27/6964_param.html"
+   ],
+   "source_query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风商用车天龙6X4清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风商用车 天龙 260马力 6X4 清障车（江特牌）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "标题与参数显示东风天龙底盘、6X4、江特牌清障车，符合任务底盘构型，并可补充东风品牌与江特上装差异；但文本未展开托臂/平板细节。",
+   "role": "backup",
+   "intent_rank": 7
+  },
+  {
+   "model": "重汽豪沃 HOWO-7 6X4 清障车（程力威牌）",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽豪沃",
+    "series": "HOWO-7",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "重汽豪沃 HOWO-7 6X4 清障车",
+   "reason": "结果参数标注底盘品牌重汽豪沃、底盘车系HOWO-7，并显示6X4，属于清障车底盘。",
+   "sources": [
+    "https://productedit.360che.com.cn/s32/8113_78_param.html"
+   ],
+   "source_query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/重汽豪沃HOWO76X4清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽豪沃 HOWO-7 6X4 清障车（程力威牌）",
+    "HOWO-7 6X4 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 6×4 底盘 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "参数标注底盘品牌重汽豪沃、底盘车系HOWO-7，并显示6X4，属于清障车底盘；文本未给出具体托举或平板构型，适合作为豪沃车系备选。",
+   "role": "backup",
+   "intent_rank": 8
+  },
+  {
+   "model": "Sinotruk HOWO 道路清障车 CLW5250TQZZ",
+   "brand": "中国重汽/Sinotruk",
+   "slots": {
+    "brand": "中国重汽/Sinotruk",
+    "series": "HOWO",
+    "model_code": "CLW5250TQZZ",
+    "config": "6x4"
+   },
+   "search_key": "Sinotruk Howo CLW5250TQZZ 6x4 wrecker",
+   "reason": "结果给出整车型号CLW5250TQZZ、底盘ZZ1257N5847C及6x4驱动，属于道路清障/拖吊车。",
+   "sources": [
+    "https://www.truck-cnhtc.com/truck/heavy-truck/sinotruk-howo-road-wrecker-truck.html",
+    "https://de.truck-cnhtc.com/truck/heavy-truck/sinotruk-howo-road-wrecker-truck.html"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5250TQZZ",
+   "identity": "code/CLW5250TQZZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "Sinotruk HOWO 道路清障车 CLW5250TQZZ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "结果给出整车型号CLW5250TQZZ、底盘ZZ1257N5847C及6x4驱动，属于道路清障/拖吊车，可作为有具体型号的备选核实托吊机构。",
+   "role": "backup",
+   "intent_rank": 9
+  },
+  {
+   "model": "Sinotruk HOWO 60吨道路清障车 ST5310TQZCZ",
+   "brand": "中国重汽/Sinotruk",
+   "slots": {
+    "brand": "中国重汽/Sinotruk",
+    "series": "HOWO",
+    "model_code": "ST5310TQZCZ",
+    "config": "6x4"
+   },
+   "search_key": "HOWO ST5310TQZCZ 6x4 60ton wrecker",
+   "reason": "结果型号栏标明6x4 ST5310TQZCZ，额定拖重55吨，属重载拖吊清障车。",
+   "sources": [
+    "https://www.bossgoo.com/product-detail/sinotruk-howo-road-wrecker-truck-60ton-14093796.html#1"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "HOWO60",
+   "identity": "code/ST5310TQZCZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "Sinotruk HOWO 60吨道路清障车 ST5310TQZCZ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果型号栏标明6x4 ST5310TQZCZ，额定拖重55吨，属重载拖吊清障车；适合补充重载托吊参考，但吨位偏重，优先级低于常规公路/城区救援车型。",
+   "role": "backup",
+   "intent_rank": 10
+  },
+  {
+   "model": "一汽 FAW 6×4 吊车清障车",
+   "brand": "一汽/FAW",
+   "slots": {
+    "brand": "一汽/FAW",
+    "series": "",
+    "model_code": "CA5250JSQP62K1L7T3E6",
+    "config": "6x4"
+   },
+   "search_key": "FAW 6×4 吊车清障车",
+   "reason": "结果明确给出驱动6×4、清障/吊车救援上装及发动机型号，符合高速与城区道路救援的拖吊工况。",
+   "sources": [
+    "https://www.chengli.co/zh-cn/faw-6x4-wrecker-truck-with-crane.html"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/一汽FAW6X4吊车清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "一汽 FAW 6×4 吊车清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果明确给出驱动6×4、清障/吊车救援上装及发动机型号，能补充一汽吊车清障构型；但名称为generic，缺少具体整车型号与上装参数。",
+   "role": "pool",
+   "intent_rank": 11
+  },
+  {
+   "model": "重汽豪沃NX黄牌清障车 RLQ5230TQZ6",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽豪沃",
+    "series": "NX",
+    "model_code": "RLQ5230TQZ6",
+    "config": ""
+   },
+   "search_key": "豪沃NX RLQ5230TQZ6 清障车",
+   "reason": "结果描述为23吨重载清障车，配12吨下沉板与加强型后托臂，符合平板/托举救援；驱动形式未在结果中明确，需二次确认6×4。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzI0Njg4MDk0Ng==&mid=2247488852&idx=1&sn=1c00cc41b505f451e339d033ba403949"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "RLQ5230TQZ6",
+   "identity": "code/RLQ5230TQZ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "重汽豪沃NX黄牌清障车 RLQ5230TQZ6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果描述为23吨重载清障车，配12吨下沉板与加强型后托臂，平板/托举信息较具体；但驱动形式未在结果中明确，需二次确认6×4。",
+   "role": "pool",
+   "intent_rank": 12
+  },
+  {
+   "model": "豪沃牌 SCS5254TQZZ6 清障车",
+   "brand": "豪沃牌",
+   "slots": {
+    "brand": "豪沃牌",
+    "series": "",
+    "model_code": "SCS5254TQZZ6",
+    "config": "6×4"
+   },
+   "search_key": "SCS5254TQZZ6 6×4 清障车",
+   "reason": "结果为25t级豪沃牌清障车，底盘型号ZZ1257V584JF1；另一结果中同底盘车型明示为6×4构型。",
+   "sources": [
+    "http://hbsbzq.com/ah4ey3gjfw40ddkly/"
+   ],
+   "source_query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SCS5254TQZZ6",
+   "identity": "code/SCS5254TQZZ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃牌 SCS5254TQZZ6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果为25t级豪沃牌清障车，底盘型号ZZ1257V584JF1，另一同底盘车型明示6×4；与CSC5250TQZZT6信息部分重叠，作为同底盘补充。",
+   "role": "pool",
+   "intent_rank": 13
+  },
+  {
+   "model": "德龙新M3000 6X4 清障车",
+   "brand": "陕汽重卡",
+   "slots": {
+    "brand": "陕汽重卡",
+    "series": "德龙新M3000",
+    "model_code": "CLW5320TQZS5",
+    "config": "6X4"
+   },
+   "search_key": "陕汽重卡 德龙新M3000 6X4 清障车",
+   "reason": "结果标题与参数页明确为陕汽重卡德龙新M3000底盘、6X4清障车，并给出程力威牌整车型号CLW5320TQZS5，符合6×4清障车底盘与上装检索方向。",
+   "sources": [
+    "https://product.360che.com/m393/98443_param.html#1"
+   ],
+   "source_query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "M3000",
+   "identity": "series/M3000",
+   "identity_kind": "series",
+   "model_variants": [
+    "德龙新M3000 6X4 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果标题与参数页明确为陕汽重卡德龙新M3000底盘、6X4清障车，并给出CLW5320TQZS5；与已入选的陕汽重卡车型重复，作为系列补充。",
+   "role": "pool",
+   "intent_rank": 14
+  },
+  {
+   "model": "天龙 6X4 清障车（江特牌）",
+   "brand": "东风商用车",
+   "slots": {
+    "brand": "东风商用车",
+    "series": "东风天龙",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "东风天龙 6X4 清障车 江特",
+   "reason": "结果标题为东风商用车天龙260马力6X4清障车（江特牌），并标注一拖一清障车，符合6×4拖吊类清障车候选。",
+   "sources": [
+    "https://product.360che.com/m27/6964_param.html"
+   ],
+   "source_query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/天龙6X4清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "天龙 6X4 清障车（江特牌）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 6×4 底盘 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "标题为东风商用车天龙260马力6X4清障车（江特牌），并标注一拖一清障车；与已入选东风天龙车型重复，可作为同平台备查。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "HOWO 6×4 清障车底盘",
+   "brand": "HOWO",
+   "slots": {
+    "brand": "HOWO",
+    "series": "HOWO",
+    "model_code": "",
+    "config": "6×4"
+   },
+   "search_key": "HOWO 6×4 清障车",
+   "reason": "结果中的专用/职业卡车页明确列出拖车/清障车可采用平板滑回式或集成轮式托举上装，并指出职业卡车典型底盘为6×4或4×2的HOWO或SHACMAN；据此可抽取HOWO 6×4清障车底盘候选。",
+   "sources": [
+    "https://sigmausedtrucks.com/zh/used-special-trucks/#main"
+   ],
+   "source_query": "高速公路与城区道路救援工况 6×4 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HOWO6X4清障车底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO 6×4 清障车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "高速公路与城区道路救援工况 6×4 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "仅给出HOWO 6×4清障车底盘及平板滑回式/集成轮式托举上装的概念说明，缺少具体整车型号与上装细节，适合作为底盘背景参考。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "SHACMAN 6×4 清障车底盘",
+   "brand": "SHACMAN",
+   "slots": {
+    "brand": "SHACMAN",
+    "series": "SHACMAN",
+    "model_code": "",
+    "config": "6×4"
+   },
+   "search_key": "SHACMAN 6×4 清障车",
+   "reason": "同一结果页将拖车/清障车列为专用职业卡车，并指出典型底盘为6×4或4×2的HOWO或SHACMAN；可据此抽取SHACMAN 6×4清障车底盘候选。",
+   "sources": [
+    "https://sigmausedtrucks.com/zh/used-special-trucks/#main"
+   ],
+   "source_query": "高速公路与城区道路救援工况 6×4 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SHACMAN6X4清障车底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SHACMAN 6×4 清障车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "高速公路与城区道路救援工况 6×4 底盘 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "仅由结果页说明清障车典型底盘可为6×4的HOWO或SHACMAN，给出SHACMAN 6×4清障车底盘候选；缺少具体上装与车型参数。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "HOWO 6/10轮道路救援清障/拖车",
+   "brand": "中国重汽/Sinotruk",
+   "slots": {
+    "brand": "中国重汽/Sinotruk",
+    "series": "HOWO",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "HOWO 6/10 Wheels road rescue wrecker tow",
+   "reason": "结果为HOWO道路救援/清障拖车，牵引吨位30T，适合高速/城区救援；标题为6/10轮，未明确6×4，需确认。",
+   "sources": [
+    "https://www.machinio.com:443/listings/85823120-howo-6-10-wheels-road-rescue-recovery-wrecker-tow-trucks-in-shandong-china"
+   ],
+   "source_query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HOWO610轮道路救援清障拖车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO 6/10轮道路救援清障/拖车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高速公路与城区道路救援工况 工程车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "结果为HOWO道路救援/清障拖车，牵引吨位30T，适合高速/城区救援；但标题为6/10轮，未明确6×4，驱动与上装构型均需确认。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "程力重工CLH5320TQZS6清障车",
+   "brand": "程力重工",
+   "slots": {
+    "brand": "程力重工",
+    "series": "",
+    "model_code": "CLH5320TQZS6",
+    "config": "6×4"
+   },
+   "search_key": "程力重工 CLH5320TQZS6 6×4 清障车",
+   "reason": "结果标题为“程力重工CLH5320TQZS6清障车参数表”，摘要明确“底盘采用重汽6×4驱动形式”，并列出托臂、绞盘及液压系统，符合6×4清障车底盘与上装构型。",
+   "sources": [
+    "https://www.chenglib.com/info-news/238636.html"
+   ],
+   "source_query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLH5320TQZS6",
+   "identity": "generic/程力重工CLH5320TQZS6清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "程力重工CLH5320TQZS6清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高速公路与城区道路救援工况 清障车 6×4 底盘 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "LLM 未排序，放到 pool",
+   "role": "pool",
+   "intent_rank": 19
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 19
+ },
+ "pool": {
+  "count": 19,
+  "required": 16,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 11
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 19,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 29,
+  "unique": 19,
+  "removed": 10,
+  "generic": 10
+ },
+ "dropped_without_valid_source": 1,
+ "dropped_invalid_sources": 1,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 6,
+  "backup": 4,
+  "primary": 6
+ }
+}

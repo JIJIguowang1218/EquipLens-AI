@@ -1,0 +1,1046 @@
+{
+ "brief_id": "auto-20261112-212154",
+ "created_at": "2026-11-14T18:17:39",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "仓储物流 四轮 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "电动叉车 四轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "仓储物流 工程车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  }
+ ],
+ "search_results": 104,
+ "candidates": [
+  {
+   "model": "CPD40-40B",
+   "brand": "扬子（YANGZI）",
+   "slots": {
+    "brand": "扬子（YANGZI）",
+    "series": "",
+    "model_code": "CPD40-40B",
+    "config": ""
+   },
+   "search_key": "扬子 CPD40-40B 四轮座驾式电动叉车",
+   "reason": "结果是四轮座驾式平衡重电动叉车，含护顶架结构与仓储装卸用途，符合四轮平衡重电动叉车任务单。",
+   "sources": [
+    "https://www.vipmro.com/product/82127184"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CPD40",
+   "identity": "generic/CPD4040B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD40-40B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本明确为四轮座驾式平衡重电动叉车，含护顶架结构与仓储装卸用途，直接覆盖任务单中的护顶架、四轮平衡重和仓储物流工况。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "CPD40-35B",
+   "brand": "扬子（YANGZI）",
+   "slots": {
+    "brand": "扬子（YANGZI）",
+    "series": "",
+    "model_code": "CPD40-35B",
+    "config": ""
+   },
+   "search_key": "扬子 CPD40-35B 四轮座驾式电动叉车",
+   "reason": "同系列四轮座驾式平衡重电动叉车，参数含门架、货叉与配重式车身信息，适合仓储搬运场景。",
+   "sources": [
+    "https://www.vipmro.com/product/82127178"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CPD40",
+   "identity": "generic/CPD4035B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD40-35B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本为同系列四轮座驾式平衡重电动叉车，参数含门架、货叉与配重式车身信息，适合仓储搬运，对配重罩和车身侧板关系更有参考价值。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "扬子 CPD40-50B",
+   "brand": "扬子",
+   "slots": {
+    "brand": "扬子",
+    "series": "",
+    "model_code": "CPD40-50B",
+    "config": ""
+   },
+   "search_key": "扬子 CPD40-50B 四轮座驾式电动叉车",
+   "reason": "结果为扬子4吨四轮座驾式CPD40-50B平衡重电动叉车，可用于堆高装卸搬运，符合四轮平衡重电动叉车方向。",
+   "sources": [
+    "https://www.vipmro.com/product/82127179"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CPD40",
+   "identity": "generic/扬子CPD4050B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "扬子 CPD40-50B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选文本明确为扬子4吨四轮座驾式CPD40-50B平衡重电动叉车，可用于堆高装卸搬运，符合四轮平衡重电动叉车方向。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "CPD30/35",
+   "brand": "龙工",
+   "slots": {
+    "brand": "龙工",
+    "series": "",
+    "model_code": "CPD30/35",
+    "config": ""
+   },
+   "search_key": "龙工 CPD30/35 四轮座驾式电动叉车",
+   "reason": "结果标题明确为龙工3吨四轮座驾式新能源电动叉车，面向仓储物流工厂堆高搬运；参数中型号列为CPD30/35。",
+   "sources": [
+    "https://chachexs.51sole.com/companyproductdetail_482239255.htm"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CPD30",
+   "identity": "generic/CPD3035",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD30/35"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为龙工3吨四轮座驾式新能源电动叉车，面向仓储物流工厂堆高搬运，且参数中型号列为CPD30/35，主流吨位与工况匹配。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "CPD50-B",
+   "brand": "爵力",
+   "slots": {
+    "brand": "爵力",
+    "series": "",
+    "model_code": "CPD50-B",
+    "config": ""
+   },
+   "search_key": "爵力 CPD50-B 四轮电动叉车",
+   "reason": "结果标题明确为爵力四轮电动叉车、座驾式，载重5吨，适用于物流仓储搬运，符合四轮平衡重电动叉车方向。",
+   "sources": [
+    "https://www.vipmro.com/product/82126821"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CPD50",
+   "identity": "generic/CPD50B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD50-B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为爵力四轮电动叉车、座驾式，载重5吨，适用于物流仓储搬运，可补充较大吨位和座驾式上下车关系。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "Hyster E80-120XN",
+   "brand": "Hyster",
+   "slots": {
+    "brand": "Hyster",
+    "series": "E80-120XN",
+    "model_code": "E80-120XN",
+    "config": ""
+   },
+   "search_key": "Hyster E80-120XN 四轮电动平衡重式叉车",
+   "reason": "结果为Hyster四轮电动平衡重式叉车E80-120XN系列，承载能力4000-5500千克，适合室内高强度作业。",
+   "sources": [
+    "https://www.hyster.com/zh-cn/china/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/e80-120xn/"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "E80",
+   "identity": "generic/HYSTERE80120XN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Hyster E80-120XN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本明确为Hyster四轮电动平衡重式叉车E80-120XN系列，承载能力4000-5500千克，适合室内高强度作业，代表性与仓储工况匹配。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "Yale ERP4.0-5.0MXLG",
+   "brand": "Yale",
+   "slots": {
+    "brand": "Yale",
+    "series": "ERP",
+    "model_code": "ERP4.0-5.0MXLG",
+    "config": ""
+   },
+   "search_key": "Yale ERP4.0-5.0MXLG 四轮电动平衡式",
+   "reason": "结果为Yale四轮电动平衡式叉车ERP4.0-5.0MXLG，适用于室内或室外工作环境，具备锂离子蓄电池和人体工程学设计。",
+   "sources": [
+    "https://www.yale.com/zh-cn/asia-pacific/4-wheel-electric-forklift-trucks/erp4.0-5.0mxlg/"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "ERP4.0",
+   "identity": "generic/YALEERP4050MXLG",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Yale ERP4.0-5.0MXLG"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为Yale四轮电动平衡式叉车ERP4.0-5.0MXLG，适用于室内或室外工作环境，并提到锂离子蓄电池和人体工程学设计，可作为登车踏板与车身人机关系的备份。",
+   "role": "backup",
+   "intent_rank": 7
+  },
+  {
+   "model": "爵力 CPD40-B",
+   "brand": "爵力",
+   "slots": {
+    "brand": "爵力",
+    "series": "",
+    "model_code": "CPD40-B",
+    "config": ""
+   },
+   "search_key": "爵力 CPD40-B 电动四轮叉车",
+   "reason": "结果为爵力CPD40-B电动四轮叉车座驾式，载重4吨，用于物流仓储搬运装卸，符合四轮平衡重电动叉车类别。",
+   "sources": [
+    "https://www.vipmro.com/product/82126954"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CPD40",
+   "identity": "generic/爵力CPD40B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "爵力 CPD40-B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为爵力CPD40-B电动四轮叉车座驾式，载重4吨，用于物流仓储搬运装卸，是CPD50-B之外的同品牌4吨级近似备份。",
+   "role": "backup",
+   "intent_rank": 8
+  },
+  {
+   "model": "尤恩 FE系列四支点电动叉车",
+   "brand": "尤恩",
+   "slots": {
+    "brand": "尤恩",
+    "series": "FE系列",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "尤恩 FE系列 四支点电动叉车",
+   "reason": "结果为FE系列四支点电动叉车，四轮结构，额定载荷覆盖1.5-3.5吨，适用于仓库、物流中心等室内外物料搬运。",
+   "sources": [
+    "https://community.b-china.cn/product/info/17725"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/尤恩FE系列四支点电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "尤恩 FE系列四支点电动叉车",
+    "FE系列四支点电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本为FE系列四支点电动叉车，四轮结构，额定载荷覆盖1.5-3.5吨，适用于仓库、物流中心等室内外物料搬运，可补充四支点底盘差异。",
+   "role": "backup",
+   "intent_rank": 9
+  },
+  {
+   "model": "E-T50",
+   "brand": "Torchuck",
+   "slots": {
+    "brand": "Torchuck",
+    "series": "",
+    "model_code": "E-T50",
+    "config": ""
+   },
+   "search_key": "Torchuck E-T50 四轮电动叉车",
+   "reason": "结果将E-T50描述为四轮电动叉车，双驱动交流电机、5000kg载重、3000mm提升，适合密集型仓库和物流应用。",
+   "sources": [
+    "https://torchuck-china.com/zh/%e8%ae%be%e5%a4%87/%e7%81%ab%e7%82%ac%e5%8f%89%e8%bd%a6/e-t50-%e7%94%b5%e5%8a%a8%e5%8f%89%e8%bd%a6/"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "T50",
+   "identity": "generic/ET50",
+   "identity_kind": "generic",
+   "model_variants": [
+    "E-T50"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "候选文本将E-T50描述为四轮电动叉车，双驱动交流电机、5000kg载重、3000mm提升，适合密集型仓库和物流应用，动力与起升参数有参考性。",
+   "role": "backup",
+   "intent_rank": 10
+  },
+  {
+   "model": "Nissan MXS series",
+   "brand": "Nissan Forklift",
+   "slots": {
+    "brand": "Nissan Forklift",
+    "series": "MXS",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Nissan MXS series 4轮平衡重式电动叉车",
+   "reason": "结果为Nissan Forklift MXS系列，坐驾式搬运、4轮、平衡重式电动叉车，符合四轮平衡重电动叉车检索方向。",
+   "sources": [
+    "https://www.directindustry-china.cn/prod/nissan-forklift/product-14113-2675443.html"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/NISSANMXSSERIES",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Nissan MXS series"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为Nissan Forklift MXS系列，坐驾式搬运、4轮、平衡重式电动叉车，方向匹配，但未展开护顶架、配重罩或踏板等车身细节。",
+   "role": "pool",
+   "intent_rank": 11
+  },
+  {
+   "model": "山猫 B18S-7",
+   "brand": "山猫",
+   "slots": {
+    "brand": "山猫",
+    "series": "7系列",
+    "model_code": "B18S-7",
+    "config": ""
+   },
+   "search_key": "山猫 B18S-7 四轮电动叉车",
+   "reason": "结果明确为山猫7系列四轮电动叉车，额定载荷1750kg，四轮底盘配置，适合仓储物流平整地面作业。",
+   "sources": [
+    "https://www.21-sun.com/newenergy/proDetail/77929.htm",
+    "https://brand.lmjx.net/l_bobcat/product/gongyecheliang/"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "B18",
+   "identity": "generic/山猫B18S7",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山猫 B18S-7"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2,
+   "intent_band": "possible",
+   "intent_reason": "候选文本明确为山猫7系列四轮电动叉车，额定载荷1750kg，四轮底盘配置，适合仓储物流平整地面作业，但吨位偏小且车身部件信息较少。",
+   "role": "pool",
+   "intent_rank": 12
+  },
+  {
+   "model": "恒叉 EF320",
+   "brand": "恒叉",
+   "slots": {
+    "brand": "恒叉",
+    "series": "",
+    "model_code": "EF320",
+    "config": ""
+   },
+   "search_key": "恒叉 EF320 四轮单驱平衡重电动叉车",
+   "reason": "结果明确为恒叉EF320四轮单驱平衡重电动叉车，额定起重量2000kg，属于四轮平衡重电动叉车。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/71721.htm"
+   ],
+   "source_query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "EF320",
+   "identity": "code/EF320",
+   "identity_kind": "code",
+   "model_variants": [
+    "恒叉 EF320"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "电动叉车 四轮 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本明确为恒叉EF320四轮单驱平衡重电动叉车，额定起重量2000kg，属于四轮平衡重方向，但吨位和车身结构信息有限。",
+   "role": "pool",
+   "intent_rank": 13
+  },
+  {
+   "model": "UN FB15-FENLZD 四轮电动平衡重叉车",
+   "brand": "Zhejiang UN Forklift（UN叉车）",
+   "slots": {
+    "brand": "UN Forklift",
+    "series": "FB15-FENLZD",
+    "model_code": "FB15-FENLZD",
+    "config": "4WD"
+   },
+   "search_key": "UN FB15-FENLZD 四轮电动叉车",
+   "reason": "结果中给出具体型号 FB15-FENLZD，描述为电动四轮平衡重叉车、锂电、1500kg，属于四轮平衡重构型。",
+   "sources": [
+    "https://www.blinto.se/auction/UN-FB15-FENLZD-Elektrisk-282320-214121/"
+   ],
+   "source_query": "电动叉车 四轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "FB15",
+   "identity": "generic/UNFB15FENLZD四轮电动平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "UN FB15-FENLZD 四轮电动平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "电动叉车 四轮 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本给出具体型号FB15-FENLZD，描述为电动四轮平衡重叉车、锂电、1500kg，属于四轮平衡重构型，但吨位较小。",
+   "role": "pool",
+   "intent_rank": 14
+  },
+  {
+   "model": "FE4P25N",
+   "brand": "诺力（NOBLELIFT）",
+   "slots": {
+    "brand": "诺力（NOBLELIFT）",
+    "series": "FE4P",
+    "model_code": "FE4P25N",
+    "config": ""
+   },
+   "search_key": "诺力 FE4P25N 四轮座驾式电动叉车",
+   "reason": "四轮座驾式平衡重电动叉车，2.5吨级，适合仓库堆高与频繁起升工况。",
+   "sources": [
+    "https://gpyx.jd.com/product/80121407"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "FE4P25",
+   "identity": "generic/FE4P25N",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FE4P25N"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为四轮座驾式平衡重电动叉车，2.5吨级，适合仓库堆高与频繁起升工况，匹配工况但缺少护顶架和配重罩细节。",
+   "role": "pool",
+   "intent_rank": 15
+  },
+  {
+   "model": "EL25",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL",
+    "model_code": "EL25",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL25 四支点电动叉车",
+   "reason": "四支点四轮平衡重电动叉车，2.5吨级，适用于工厂车间与仓储库房的重载堆垛转运。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el25"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EL25",
+   "identity": "generic/EL25",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL25"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为四支点四轮平衡重电动叉车，2.5吨级，适用于工厂车间与仓储库房的重载堆垛转运，可作为中小吨位补充。",
+   "role": "pool",
+   "intent_rank": 16
+  },
+  {
+   "model": "J4.0-5.5XN",
+   "brand": "Hyster",
+   "slots": {
+    "brand": "Hyster",
+    "series": "",
+    "model_code": "J4.0-5.5XN",
+    "config": ""
+   },
+   "search_key": "Hyster J4.0-5.5XN 四轮电动平衡重叉车",
+   "reason": "结果页面明确为四轮电动平衡重叉车，型号J4.0-5.5XN，承载4.0-5.5吨，室内外可用，符合仓储物流四轮电动叉车方向。",
+   "sources": [
+    "https://www.hyster.com/zh-cn/china/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/j4.0-5.5xn6/"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "J4.0",
+   "identity": "generic/J4055XN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J4.0-5.5XN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本明确为四轮电动平衡重叉车，型号J4.0-5.5XN，承载4.0-5.5吨，室内外可用，吨位匹配但车身部件描述不足。",
+   "role": "pool",
+   "intent_rank": 17
+  },
+  {
+   "model": "J1.6-2.0XN",
+   "brand": "Hyster",
+   "slots": {
+    "brand": "Hyster",
+    "series": "J1.6-2.0XN",
+    "model_code": "J1.6-2.0XN",
+    "config": ""
+   },
+   "search_key": "Hyster J1.6-2.0XN 四轮电动叉车",
+   "reason": "四轮平衡式电动叉车，中型应用，门架与机动性描述符合仓储物流四轮平衡重工况。",
+   "sources": [
+    "https://www.hyster.com/zh-sg/asia-pacific/%e5%9b%9b%e8%bd%ae%e7%94%b5%e5%8a%a8%e5%8f%89%e8%bd%a6/j1.6-2.0xn/"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "J1.6",
+   "identity": "generic/J1620XN",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J1.6-2.0XN"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为四轮平衡式电动叉车，中型应用，门架与机动性描述符合仓储物流四轮平衡重工况，但吨位偏小且细节较少。",
+   "role": "pool",
+   "intent_rank": 18
+  },
+  {
+   "model": "CPD-10",
+   "brand": "悍博",
+   "slots": {
+    "brand": "悍博",
+    "series": "",
+    "model_code": "CPD-10",
+    "config": ""
+   },
+   "search_key": "悍博 CPD-10 四轮电动叉车",
+   "reason": "标题明确为悍博物流装卸用四轮电动叉车CPD-10型，额定起重量1500kg，属于仓储物流四轮电动叉车候选。",
+   "sources": [
+    "https://supply.nongjx.com/sale/detail-1872971.html"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CPD10",
+   "identity": "generic/CPD10",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD-10"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本标题明确为悍博物流装卸用四轮电动叉车CPD-10型，额定起重量1500kg，属于仓储物流四轮电动叉车候选，但吨位较小。",
+   "role": "pool",
+   "intent_rank": 19
+  },
+  {
+   "model": "H4 3吨电动叉车",
+   "brand": "昊航",
+   "slots": {
+    "brand": "昊航",
+    "series": "H4",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "昊航 H4 3吨 四轮电动叉车",
+   "reason": "结果提到昊航H4新款3吨电动叉车，并说明配备四轮实心轮胎，且品牌系列包含四轮平衡重式电动叉车，适合仓储场景。",
+   "sources": [
+    "http://www.lyhaohangchache.com/listshow.php?cid=6&id=62#anchor"
+   ],
+   "source_query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/H4电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "H4 3吨电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本提到昊航H4新款3吨电动叉车，并说明配备四轮实心轮胎，品牌系列包含四轮平衡重式电动叉车，适合仓储场景，但部件信息较泛。",
+   "role": "pool",
+   "intent_rank": 20
+  },
+  {
+   "model": "ERP4.0-5.0MXLG",
+   "brand": "Yale",
+   "slots": {
+    "brand": "Yale",
+    "series": "ERP",
+    "model_code": "ERP4.0-5.0MXLG",
+    "config": ""
+   },
+   "search_key": "Yale ERP4.0-5.0MXLG 四轮电动平衡式",
+   "reason": "四轮电动平衡式叉车，强调室内外工况适应性和锂电侧面充电，属于平衡重电动叉车平台。",
+   "sources": [
+    "https://www.yale.com/zh-cn/asia-pacific/4-wheel-electric-forklift-trucks/erp4.0-5.0mxlg/"
+   ],
+   "source_query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ERP4.0",
+   "identity": "generic/ERP4050MXLG",
+   "identity_kind": "generic",
+   "model_variants": [
+    "ERP4.0-5.0MXLG"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "候选文本为四轮电动平衡式叉车，强调室内外工况适应性和锂电侧面充电，属于平衡重电动叉车平台，但与Yale同名系列信息重复且品牌身份较弱。",
+   "role": "pool",
+   "intent_rank": 21
+  },
+  {
+   "model": "工程越野叉车 140",
+   "brand": "路威",
+   "slots": {
+    "brand": "路威",
+    "series": "越野叉车",
+    "model_code": "",
+    "config": "四驱"
+   },
+   "search_key": "路威 140 四驱越野叉车",
+   "reason": "结果明确品牌路威、型号140，为四驱越野叉车，使用范围含仓储、物流；可作为仓储物流叉车近似候选，但结果未体现电动平衡重构型。",
+   "sources": [
+    "https://www.56chp.cn/Site/product_detail/mi/29938/id/61986.html"
+   ],
+   "source_query": "仓储物流 工程车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/工程越野叉车140",
+   "identity_kind": "generic",
+   "model_variants": [
+    "工程越野叉车 140"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流 工程车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "候选文本为路威型号140四驱越野叉车，使用范围含仓储物流，但未体现电动平衡重构型，与室内平整地面、四轮平衡重电动叉车任务偏差较大。",
+   "role": "pool",
+   "intent_rank": 22
+  },
+  {
+   "model": "LW-30 仓库前移式装卸叉车",
+   "brand": "路威",
+   "slots": {
+    "brand": "路威",
+    "series": "仓库前移式装卸叉车",
+    "model_code": "LW-30",
+    "config": "四驱"
+   },
+   "search_key": "路威 LW-30 四驱叉车",
+   "reason": "结果标题明确为仓库前移式装卸叉车，并标注山地四驱，适用于仓储装卸场景；需进一步核验是否为电动平衡重构型。",
+   "sources": [
+    "https://m.56js.com/st15985/product_936189.html"
+   ],
+   "source_query": "仓储物流 工程车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "LW30",
+   "identity": "generic/LW30仓库前移式装卸叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LW-30 仓库前移式装卸叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流 工程车 四轮 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "候选文本为仓库前移式装卸叉车并标注山地四驱，需进一步核验是否为电动平衡重构型；前移式/四驱描述与任务单四轮平衡重方向存在偏差。",
+   "role": "pool",
+   "intent_rank": 23
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 23
+ },
+ "pool": {
+  "count": 23,
+  "required": 16,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 9
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 23,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 30,
+  "unique": 23,
+  "removed": 7,
+  "generic": 22
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 6,
+  "backup": 4,
+  "primary": 6
+ }
+}

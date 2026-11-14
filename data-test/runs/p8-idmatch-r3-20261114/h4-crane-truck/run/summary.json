@@ -1,0 +1,306 @@
+{
+  "run_id": "run",
+  "brief_id": "auto-20261114-024759",
+  "state": "FAILED",
+  "slots": {
+    "target": 8,
+    "accepted": 7,
+    "filled": false
+  },
+  "delivery": {
+    "required": 8,
+    "delivered": 7,
+    "missing": 1,
+    "degraded": 4,
+    "degraded_ratio": 0.571,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "漢風 XG1-DM270I 随车起重机（整车 XGA5250JSQN6）",
+      "CA5250JSQP62K1L7T3E6 随车起重运输车",
+      "ABC5246JSQCA6 随车起重运输车",
+      "华菱星马随车吊专用底盘（汉马动力+H6 驾驶室）"
+    ],
+    "citation_only": 4,
+    "citation_only_targets": [
+      "漢風 XG1-DM270I 随车起重机（整车 XGA5250JSQN6）",
+      "CA5250JSQP62K1L7T3E6 随车起重运输车",
+      "ABC5246JSQCA6 随车起重运输车",
+      "华菱星马随车吊专用底盘（汉马动力+H6 驾驶室）"
+    ],
+    "degraded_fill": [
+      "CA5250JSQP62K1L7T3E6 随车起重运输车"
+    ],
+    "bonus": {
+      "models": 0,
+      "images": 0
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 0,
+      "status": "short",
+      "models": [],
+      "images": 0,
+      "no_image_models": [],
+      "short": 4
+    },
+    "backup_short": 4,
+    "query_tiers": {
+      "model": 168,
+      "exact": 7
+    },
+    "unavailable": [
+      {
+        "model": "CA5250JSQP62K1L5T1E6 随车起重运输车",
+        "reason": "gate_or_verify_rejected",
+        "hits": 42,
+        "downloaded": 7,
+        "blocked": 28
+      }
+    ],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 5,
+      "accepted": 4,
+      "filled": false
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 3,
+      "filled": true
+    }
+  },
+  "gaps": [
+    "u-exact"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "漢風 XG1-DM270I 随车起重机（整车 XGA5250JSQN6）",
+      "尚骏牌 CSJ5255JSQ6 随车起重运输车",
+      "宏昌天马牌 HCM5240JSQDFV6 随车起重运输车",
+      "CA5250JSQP62K1L7T3E6 随车起重运输车"
+    ],
+    "u-env": [
+      "ABC5246JSQCA6 随车起重运输车",
+      "华菱星马随车吊专用底盘（汉马动力+H6 驾驶室）",
+      "CA1260P2K1T1"
+    ]
+  },
+  "budget_used": {
+    "queries": 24,
+    "models": 8,
+    "fetches": 175,
+    "verifies": 175
+  },
+  "config": {
+    "code_version": "5f810d1",
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": "llm",
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 308,
+    "downloaded": 210,
+    "failed": 56,
+    "blocked": 42,
+    "gate_pass": 182,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "img.chinacar.com.cn",
+      "img11.makepolo.net",
+      "p3-sign.toutiaoimg.com",
+      "shopimg.kongfz.com.cn",
+      "www.cn357.com",
+      "www0.kfzimg.com"
+    ],
+    "fail_counts": {
+      "img.chinacar.com.cn": 7,
+      "img11.makepolo.net": 7,
+      "p3-sign.toutiaoimg.com": 7,
+      "shopimg.kongfz.com.cn": 7,
+      "www.cn357.com": 7,
+      "www0.kfzimg.com": 21
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-14T19:40:15"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/8，池中仍有候选",
+      "ts": "2026-11-14T19:40:15"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 5 个",
+      "ts": "2026-11-14T19:40:24"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 3/8，池中仍有候选",
+      "ts": "2026-11-14T19:41:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T19:41:32"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-14T19:41:32"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 3 个",
+      "ts": "2026-11-14T19:41:38"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 6/8，池中仍有候选",
+      "ts": "2026-11-14T19:42:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-14T19:42:02"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，仍缺 1 台，报缺口",
+      "ts": "2026-11-14T19:42:02"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T19:40:15"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 8471,
+      "at": "2026-11-14T19:40:24"
+    },
+    {
+      "state": "FETCH",
+      "ms": 68504,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 6,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T19:41:32"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 5492,
+      "at": "2026-11-14T19:41:38"
+    },
+    {
+      "state": "FETCH",
+      "ms": 24367,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 2,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 0,
+      "at": "2026-11-14T19:42:02"
+    }
+  ],
+  "elapsed_ms": 106842,
+  "state_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\p8-idmatch-r3-20261114\\h4-crane-truck\\run\\state.json",
+  "events_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\p8-idmatch-r3-20261114\\h4-crane-truck\\run\\events.jsonl",
+  "evidence_path": "C:\\Users\\LHM\\Desktop\\EquipLens-AI\\data-test\\runs\\p8-idmatch-r3-20261114\\h4-crane-truck\\run\\evidence.json"
+}

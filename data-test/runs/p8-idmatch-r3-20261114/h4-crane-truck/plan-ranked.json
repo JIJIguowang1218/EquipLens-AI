@@ -1,0 +1,475 @@
+{
+ "brief_id": "auto-20261114-024759",
+ "created_at": "2026-11-14T19:39:43",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "随车起重运输车 前置驾驶室 + 车架 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "工程物流与设备转运工况：铺装 前置驾驶室 + 车架 卡车 车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "随车起重运输车 前置驾驶室 + 车架 truck brand -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "随车起重运输车 前置驾驶室 + 车架中后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "工程物流与设备转运工况：铺装与非铺装道路 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "随车起重运输车 前置驾驶室 + 车架 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "随车起重运输车 前置驾驶室 + 车架 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 135,
+ "candidates": [
+  {
+   "model": "漢風 XG1-DM270I 随车起重机（整车 XGA5250JSQN6）",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "漢風 XG1-DM",
+    "model_code": "XGA5250JSQN6",
+    "config": "6×4"
+   },
+   "search_key": "XG1-DM270I 6×4 随车起重机",
+   "reason": "结果中唯一明确标注驱动形式 6×4 的随车起重运输车整车，驾驶室为 G5SD 前置驾驶室，属整车一体化随车吊，与二类底盘、前驾驶室和车架中后部吊机的构型一致，可用于工程辅助吊运与场内转运工况。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-136178.htm"
+   ],
+   "source_query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "DM270",
+   "identity": "code/XGA5250JSQN6",
+   "identity_kind": "code",
+   "model_variants": [
+    "漢風 XG1-DM270I 随车起重机（整车 XGA5250JSQN6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "must",
+   "intent_reason": "候选中唯一明确标注驱动形式6×4的随车起重运输车整车，G5SD前置驾驶室、整车一体化，直接匹配“二类底盘+前置驾驶室+车架中后部吊机”的构型，并覆盖工程辅助吊运与场内转运工况，应优先抓取前保险杠、吊臂、支腿、货厢侧板、轮拱、踏板、回转支承等全车关系。",
+   "role": "primary",
+   "intent_rank": 1
+  },
+  {
+   "model": "尚骏牌 CSJ5255JSQ6 随车起重运输车",
+   "brand": "尚骏牌",
+   "slots": {
+    "brand": "尚骏牌",
+    "series": "",
+    "model_code": "CSJ5255JSQ6",
+    "config": ""
+   },
+   "search_key": "尚骏牌 CSJ5255JSQ6 随车起重运输车",
+   "reason": "结果中总质量25000kg、轴荷7000/18000(二轴组)，为三轴重型随车起重运输车，后部为双轴组，较符合任务单6×4重型二类底盘改装方向；但结果未直接写明6X4，config留空。",
+   "sources": [
+    "https://www.17vin.com/gonggao/92407/CSJ5255JSQ6.html"
+   ],
+   "source_query": "随车起重运输车 前置驾驶室 + 车架 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "CSJ5255JSQ6",
+   "identity": "code/CSJ5255JSQ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "尚骏牌 CSJ5255JSQ6 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "随车起重运输车 前置驾驶室 + 车架 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "文本给出总质量25000kg、轴荷7000/18000(二轴组)，属三轴重型随车起重运输车，后部双轴组接近任务单6×4重型二类底盘方向；整车公告比纯底盘更利于看吊臂、支腿、货厢侧板与回转支承。",
+   "role": "primary",
+   "intent_rank": 2
+  },
+  {
+   "model": "宏昌天马牌 HCM5240JSQDFV6 随车起重运输车",
+   "brand": "宏昌天马",
+   "slots": {
+    "brand": "宏昌天马",
+    "series": "",
+    "model_code": "HCM5240JSQDFV6",
+    "config": ""
+   },
+   "search_key": "宏昌天马牌HCM5240JSQDFV6型随车起重运输车",
+   "reason": "结果给出公告型号HCM5240JSQDFV6，外形长/轴距/前悬/后悬对应关系含12000/5900+1350/1440/3310，单前轴后双桥布置，属24吨级重型随车吊底盘，符合任务单6×4二类底盘改装方向。",
+   "sources": [
+    "http://chifengshi.zyqcs.com/chanpin/83197.html"
+   ],
+   "source_query": "随车起重运输车 前置驾驶室 + 车架 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "HCM5240JSQDFV6",
+   "identity": "code/HCM5240JSQDFV6",
+   "identity_kind": "code",
+   "model_variants": [
+    "宏昌天马牌 HCM5240JSQDFV6 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "随车起重运输车 前置驾驶室 + 车架 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "公告型号明确为随车起重运输车，外形关系含12000/5900+1350/1440/3310，单前轴后双桥布置，属24吨级重型随车吊底盘方向；适合重点看支腿展开、货厢侧板、轮拱与后部吊机安装关系。",
+   "role": "primary",
+   "intent_rank": 3
+  },
+  {
+   "model": "CA5250JSQP62K1L7T3E6 随车起重运输车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6（公告型谱 CA5250JSQ）",
+    "model_code": "CA5250JSQP62K1L7T3E6",
+    "config": ""
+   },
+   "search_key": "CA5250JSQP62K1L7T3E6 随车起重运输车",
+   "reason": "结果以公告型式列出该随车起重运输车（同页另有 CA5240JSQP62K1L5T1E6），属 25t 级重型二类底盘改装的随车吊，符合前置驾驶室+车架中后部吊机的构型；驱动形式未在结果中写明，故留空。",
+   "sources": [
+    "https://sthjj.beijing.gov.cn/bjhrb/index/ztzl/fhhbpfbzcxml/325854070/2022060116595275910.docx#14#24#14"
+   ],
+   "source_query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CA5250JSQP62K1L7T3E6",
+   "identity": "code/CA5250JSQP62K1L7T3E6",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA5250JSQP62K1L7T3E6 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "strong",
+   "intent_reason": "以公告型式列为随车起重运输车，并提到同页另有CA5240JSQP62K1L5T1E6，属25t级重型二类底盘改装随车吊，符合前置驾驶室+车架中后部吊机构型；驱动形式未写明，但上装类别与任务单高度匹配。",
+   "role": "primary",
+   "intent_rank": 4
+  },
+  {
+   "model": "CA5250JSQP62K1L5T1E6 随车起重运输车",
+   "brand": "解放牌",
+   "slots": {
+    "brand": "解放牌",
+    "series": "",
+    "model_code": "CA5250JSQP62K1L5T1E6",
+    "config": ""
+   },
+   "search_key": "CA5250JSQP62K1L5T1E6",
+   "reason": "结果中列出该解放牌整车型号，属25吨级重型随车起重运输车，可作为6×4二类底盘改装候选；但摘要未明示驱动形式、吊机安装位置及支腿/货厢细节，需按任务单6×4构型进一步核验。",
+   "sources": [
+    "https://www.cn-truck.com/zhengche/list_1047_1164_1.html",
+    "https://product.360che.com/m293/73279_param.html#1"
+   ],
+   "source_query": "随车起重运输车 前置驾驶室 + 车架 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CA5250JSQP62K1L5T1E6",
+   "identity": "code/CA5250JSQP62K1L5T1E6",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA5250JSQP62K1L5T1E6 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 前置驾驶室 + 车架 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2,
+   "intent_band": "strong",
+   "intent_reason": "文本将其列为25吨级重型随车起重运输车，可作为6×4二类底盘改装候选，并与CA5250JSQP62K1L7T3E6形成同系列变体差异；摘要未明示驱动形式、吊机位置及支腿/货厢细节，适合作为同平台补充样本。",
+   "role": "primary",
+   "intent_rank": 5
+  },
+  {
+   "model": "ABC5246JSQCA6 随车起重运输车",
+   "brand": "神百重工牌",
+   "slots": {
+    "brand": "神百重工牌",
+    "series": "",
+    "model_code": "ABC5246JSQCA6",
+    "config": ""
+   },
+   "search_key": "ABC5246JSQCA6 随车起重运输车",
+   "reason": "结果给出完整公告信息，底盘为 CA1240PK8L5T2E6BA90 的一汽解放二类底盘，上装为货厢+吊机的随车起重运输车，属中重型工程吊运车型；结果未写驱动形式，config 留空。",
+   "sources": [
+    "https://www.cn-truck.com/gonggao/468780_ABC5246JSQCA6"
+   ],
+   "source_query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "ABC5246JSQCA6",
+   "identity": "code/ABC5246JSQCA6",
+   "identity_kind": "code",
+   "model_variants": [
+    "ABC5246JSQCA6 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "结果给出完整公告信息，底盘为CA1240PK8L5T2E6BA90的一汽解放二类底盘，上装为货厢+吊机的随车起重运输车，属中重型工程吊运车型；可补充不同底盘来源与货厢/吊机组合，但驱动形式未写，需核验6×4。",
+   "role": "primary",
+   "intent_rank": 6
+  },
+  {
+   "model": "华菱星马随车吊专用底盘（汉马动力+H6 驾驶室）",
+   "brand": "华菱星马",
+   "slots": {
+    "brand": "华菱星马",
+    "series": "H6",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "华菱星马 随车吊专用底盘 H6",
+   "reason": "结果明确为随车吊专用底盘，配汉马 CM6D18.310 发动机、9SDB1851 变速箱与 HL460 中后桥，属重型载货二类底盘改装的随车吊基型，适配工程物流吊运工况；结果未直接写驱动形式，故 config 留空。",
+   "sources": [
+    "http://ecv360.com/special/201703/29207.html"
+   ],
+   "source_query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/华菱星马随车吊专用底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "华菱星马随车吊专用底盘（汉马动力+H6 驾驶室）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "工程物流与设备转运工况：铺装 随车起重运输车 前置驾驶室 + 车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1,
+   "intent_band": "possible",
+   "intent_reason": "文本明确为随车吊专用底盘，配汉马CM6D18.310发动机、9SDB1851变速箱与HL460中后桥，属重型载货二类底盘改装的随车吊基型，适合看车架、轮拱、登车踏板及底盘布置；但无上装吊臂/支腿信息，驱动形式未直接写明。",
+   "role": "primary",
+   "intent_rank": 7
+  },
+  {
+   "model": "CA1260P2K1T1",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "重型系列",
+    "model_code": "CA1260P2K1T1",
+    "config": "6x4"
+   },
+   "search_key": "解放 CA1260P2K1T1 6x4 重型",
+   "reason": "结果标题明确为解放牌CA1260P2K1T1（6×4）重型系列车型，含载货汽车及底盘车型，可作为6×4重型二类底盘候选；结果未直接出现随车吊上装。",
+   "sources": [
+    "https://d.wanfangdata.com.cn/cstad/ChtDc3RhZE5ld1NvbHI5MjAyNjA3MzExNzM2NDMSCjA2MDE0MTAzNTcaCDZ1c3AyeXlh"
+   ],
+   "source_query": "工程物流与设备转运工况：铺装 前置驾驶室 + 车架 卡车 车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CA1260P2K1T1",
+   "identity": "code/CA1260P2K1T1",
+   "identity_kind": "code",
+   "model_variants": [
+    "CA1260P2K1T1"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "工程物流与设备转运工况：铺装 前置驾驶室 + 车架 卡车 车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1,
+   "intent_band": "weak",
+   "intent_reason": "标题明确为解放牌CA1260P2K1T1（6×4）重型系列车型，含载货汽车及底盘车型，可作为6×4底盘、驾驶室前保险杠与轮拱关系参考；但结果未直接出现随车吊上装，吊臂、支腿、货厢侧板与回转支承信息缺失，故优先级最低但仍保留为第8槽底盘参考。",
+   "role": "primary",
+   "intent_rank": 8
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 3,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 9,
+  "required": 20,
+  "ok": false,
+  "warning": "候选池 9 < 建议 20（1.6×(8+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 0
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 9,
+  "slots": 8,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 12,
+  "unique": 9,
+  "removed": 3,
+  "generic": 1
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0,
+ "ranking": {
+  "model": "deepseek-flash",
+  "pins": [],
+  "slots": 8,
+  "backup": 0,
+  "primary": 8
+ }
+}

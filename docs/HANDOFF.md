@@ -167,7 +167,7 @@
   类目档案默认空（仅显式 `--profiles` 读外部文件）；规则见 `docs/vocabulary-policy.md`；
 - 自检：`check_env.py`；测试：`briefing 6/6`、`planning 17/17`、`retrieval_engine 48/48`、
   `imagesearch 16/16`、`analysis 14/14`、`identity 10/10`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 4/4`；
-- 台账：`run_ledger --check` = **109 条，0 issue**；
+- 台账：`run_ledger --check` = **111 条，0 issue**；
 - 本轮数据：`data-test/runs/p6-vocab-smoke-20261114/`、`p7-screen-20261114/`、
   `p7-screen-r{2,3}-20261114/`、`p8b/p8c-topup4-20261114/`；
   `images/` 不同步，审核页可能缺图。
@@ -183,6 +183,11 @@
 4. feedback router + 短期 session（意图 → 回溯节点，先用 Python 状态机）；
 5. 分析模块整体测试 → 知识库 → LangGraph spike → 后端/前端；
 6. 技术债（不阻塞）：rank 成本记账、死配置清理、`normalize_query` 外溢。
+
+> **新增提案（2026-11-14，待拍板）**：邻近构型检索（精确 + 邻近参考，默认 8+2，
+> 第一段有界回环、增量交付）——设计见
+> [`docs/adjacent-scope-design-20261114.md`](adjacent-scope-design-20261114.md)；
+> 未实现、默认关闭。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 
@@ -261,7 +266,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（109 条，0 issue）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（111 条，0 issue）
 PYTHONPATH=src python tests/test_planning.py            # 16/16
 PYTHONPATH=src python tests/test_retrieval_engine.py    # 47/47
 PYTHONPATH=src python tests/test_imagesearch.py         # 16/16（全 monkeypatch）
