@@ -175,7 +175,9 @@
 ### 下一步（2026-11-14 定）
 
 1. **候选池供给**：`--topup 4` 已 opt-in 验证（h4 2/4→4/4 与 3/4；s6 两次 4/4），
-   但波动未消除；下一步评估 wide+来源护栏，仍不按类目写死；
+   但波动未消除；下一步评估 wide+**离类护栏**，仍不按类目写死。
+   ⚠️ 前置条件：wide 默认化前需先有离类标注集（A1「来源自动降权」已否决，误伤 10.7–54%，
+   不要把它改个名字重新提；见 `optimization-round-20261114.md` E50/A1）；
 2. **degraded 政策**：交付里 degraded 占比 0.66–0.77，需定“可接受占比/人工复核”口径；
 3. **第一次用户交付**：beta + 人审，N 主 + 4 备，收集 ≥10 条真实反馈；
 4. feedback router + 短期 session（意图 → 回溯节点，先用 Python 状态机）；
@@ -708,6 +710,12 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 
 ## 3. 下一步（按序执行）
 
+> ⚠️ **本节是 2026-11-08 的历史快照，不是当前待办**（当前待办见 §0.0「下一步 2026-11-14 定」）。
+> 尤其 ③.5 之后的 ④⑤⑥ 三项（P0-1 L1.5 清单 / P0-2 图片证据库 / P0-3 身份校验）在
+> `retrieval_engine` 落地时已以另一种形态交付：证据库 = `retrieval_engine/evidence.py`（`--evidence-db`）、
+> 身份校验 = `RuleVerifier`（型号码/品牌/构型三档），清单 = `plan` 槽位 + `unit` 分配。
+> **不要按本节重新排期这三项**；本节仅用于追溯 11-08 的判断过程。
+
 ### 3.0 当前主线（2026-11-08 更新；旧计划保留作对照）
 
 > 状态已按“UI 暂停 + 主体功能复盘”更新；更细的“最近工作 / 已知边界”见 §0.9，本轮评估见 [`retrieval-strategy-review-20261108.md`](retrieval-strategy-review-20261108.md)。
@@ -872,7 +880,7 @@ PYTHONPATH=src python scripts/render_fetch_audit.py data-test/runs/loop-m1b-glob
 3. **前端现状**：高保真四页在 `docs/ui-hifi-dark/`（v3.3 静态，可走 S0→S3），浅色版在 `docs/ui-hifi/`；**正式前端工程（`webapp/`）尚未创建**。现行 `web/ui/index.html` 是旧版单页（770 行原生 JS），将被替换。旧低保真样张可重渲：`python docs/ui-mock/shot.py`（仅视觉参照）。
 4. **代码地图**：`src/equiplens/{textrun,corpus,passage,l3gate,runner,audit,domainbench,strategy,runlog}.py`；检索中引擎 `src/equiplens/retrieval_engine/`（P0–P1）；
    测试 `tests/test_{textrun,corpus,l3gate,runner,audit,domainbench,retrieval_engine}.py`。
-5. **跑测试**（全部可离线；当前检索三件套：`test_retrieval_engine` 18/18、`test_imagesearch` 12/12、`test_gate` 11/11）：
+5. **跑测试**（全部可离线；当前三件套：`test_retrieval_engine` **47/47**、`test_imagesearch` **16/16**、`test_gate` **11/11**；以 `docs/DEPENDENCIES.md` 的「快速自检」为准）：
    `for f in tests/test_{gate,imagesearch,retrieval_engine,textrun,corpus,l3gate,runner,audit,domainbench,query,workflow,ingest,data_layer,m31,r0,r1}.py; do PYTHONPATH=src python $f; done`
 6. **复跑检索**（必须用新 run_id，否则 runner 续跑会复用旧批次）：
    `PYTHONPATH=src python -m equiplens text-run scripts/intent-chain2.json --data-dir data-test --run-root data-test/runs --run-id <new-id>`

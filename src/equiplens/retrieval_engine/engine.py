@@ -388,7 +388,7 @@ class RetrievalEngine:
                                    f"{self._slot_target()}，池中仍有候选")
             state["state"] = "EXTERNAL_DISCOVER"
             return
-        # 池子空了且槽位未满：尝试重规划（只对“规划池模式”的世界生效），最多 2 次
+        # 池子空了且槽位未满：尝试重规划（只对“规划池模式”的世界生效），上限 4 次
         can = getattr(self.world, "can_replan", None)
         replan = getattr(self.world, "replan", None)
         if (callable(can) and can() and callable(replan)

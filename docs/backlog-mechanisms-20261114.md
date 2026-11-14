@@ -20,7 +20,7 @@
 
 | # | 机制 | 状态 | 成本 | 风险 | 依赖/数据 |
 |---|---|---|---|---|---|
-| B1 | **tier 规则**：`part_fallback`/`class_fallback` 图只进 degraded，不占正式槽；degraded 占比告警线 0.5 | **已实现并测试**（46/46） | 低 | 中：与“必须交满 N”靠 DEGRADE 兼容 | `Asset.query_tier` + `delivery.degraded_ratio/warn` |
+| B1 | **tier 规则**：`part_fallback`/`class_fallback` 图只进 degraded，不占正式槽；degraded 占比告警线 0.5 | **已实现并测试**（47/47） | 低 | 中：与“必须交满 N”靠 DEGRADE 兼容 | `Asset.query_tier` + `delivery.degraded_ratio/warn` |
 | B2 | **degraded 人工复核标记**：DELIVERY.md 标出弱身份来源 | 提案 | 低 | 低 | B1 同源数据 |
 | B3 | 核验“构型误判”豁免（底盘 6×4 ≠ 驱动 6×6 的场景） | 未评估 | 低 | 中：可能放行错车 | `wrong_config` 仅 85 次，先抽样 |
 | B4 | 品牌表降级为纯加分（判定不再依赖） | 部分（#6 已加双证据） | 低 | 低 | 现有 verifier 回归 |

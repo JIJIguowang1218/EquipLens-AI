@@ -257,7 +257,7 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   回退图纪律；§7 增加 30 run 验收快照；
 - CODE-INDEX：补 `run_fulltest/eval_fulltest/eval_fulltest_repeats/eval_plan_snapshot`、
   `tests/test_no_legacy_tables.py`、`test_briefing.py`，以及 topup/slots/search_key 口径；
-- DEPENDENCIES：测试数 47/16/16、台账 108；
+- DEPENDENCIES：测试数 47/16/16、台账 **107**（原写 108 是笔误；`run_ledger --check` 实测 107 条）；
 - 历史文档（association/module-map/superpowers 等）里仍可能出现旧路径 `data/part_taxonomy.json`，
   以 `docs/vocabulary-policy.md` 与 `data/legacy/` 为准，不再逐个回填历史稿。
 
@@ -288,4 +288,38 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
   生产/评测仍用 T13–T15 锁定名录。
 - 这批 run 当时没有进 `test-log` 或本文件，属补登记——用途只能从时间与内容反推，
   不要为它编实验编号。
+
+### 25. 口径清理（2026-11-14，审计轮）
+
+> 目的：防止旧口径/已毙策略/过期数字被下一任当成"未完成"重新提出来。
+> 全部为文档与注释改动，**不动生产行为**（唯一代码改动是守卫测试多一条断言）。
+
+- **数字**：`retrieval_engine` 46/46 → **47/47**（`EXPERIMENTS-INDEX` E49、`backlog` B1、
+  `optimization-round-20261114` 两处）；§21 的"台账 108" → **107**（笔误，实测 107）。
+- **已毙/已收口不再当 TODO**：
+  - `HANDOFF` §3 顶部加历史声明：§3 是 2026-11-08 快照，④⑤⑥（L1.5 清单/图片证据库/身份校验）
+    已由 `retrieval_engine` 以另一种形态交付，**不要重新排期**；
+  - `v1-retrieval-convergence-decision` 不变量 2 标注 **K5 已弃**（硬性 overview 门槛不成立）；
+  - `optimization-round-20261114` 的"下一批建议"从 **D1**（已作废：rank 看不到图）改为 **D1a**；
+  - `HANDOFF` 下一步"wide+来源护栏"补前置条件：**不是**重提 A1（来源自动降权已否决，误伤 10.7–54%）。
+- **路径/产物名**：`skills/association/{SKILL.md,judging-rules.md}` 的
+  `data/category_profiles.json` → `data/legacy/category_profiles.json`（并注明静默）；
+  `SYNC-MANIFEST` 的 `data/*.json` → `data/**/*.json`（含 legacy 三表）、
+  `SUITE-SUITE-SUMMARY.md` → `SUITE-SUMMARY.md`。
+- **索引**：`optimization-index` 的 A4/B1/A1 轮次日期 11-13 → **11-14**；
+  `CODE-INDEX` 补 7 个辅助模块、5 个实验/评估脚本、守卫计数改 4。
+- **权威性**：`CURRENT-ARCHITECTURE` 的"5 输入交付（权威）49/50"改为**历史基线（填槽修复前）**，
+  与 HANDOFF §0.0 的"不能当最终数字"一致。
+- **词表政策**：`vocabulary-policy` §3 新增"已知偏差"——`textrun.load_profiles()` 仍默认加载
+  `category_profiles`（无门控）、`style_vocabulary.json` 未纳管、旧链路模块自带词表；
+  §6 守卫新增"主链 `retrieval_engine` 不得 import 旧链路模块"，`vocabulary_guard` **4/4**。
+- **本轮未修（需拍板/单独立项）**：
+  - `run_ledger` 把 23 个**有内容**的套件目录标成 `empty`（如 `ab-negative-20261113` 有 900 文件），
+    `INDEX.md` 表体 84 行 vs 头部 107 条；
+  - `retrieval_engine/web.py` `replan()` 硬编码 `"6x6"` 与 `"沙漠 6x6 牵引车 车型 品牌"`，
+    对消防/扫路等类目套用了沙漠牵引车预设；
+  - `planning.SERIES` 含品牌名 `HOWO`（注释自己写着"不要放品牌名"）；
+  - `briefing.DEFAULT_NEGATIVE`（客车/SUV/房车…）无条件并入每条 brief 的 negative；
+  - `source_registry` 在旧 text 链里靠 `trust`/`skip_domains` 影响评分与跳源，
+    与"运维配置不参与准入"的口径不符。
 - 影响面：纯新增归档，不改代码、不动任何 run；`data-test/corpus/**` 已在 `.gitignore` 白名单内。

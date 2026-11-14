@@ -37,10 +37,26 @@ def test_legacy_files_exist():
         assert (ROOT / "data" / "legacy" / name).exists(), name
 
 
+LEGACY_MODULES = ("textrun", "l3gate", "passage", "audit", "roster",
+                  "corpus", "domainbench", "strategy")
+
+
+def test_main_chain_imports_no_legacy_modules():
+    """主链不得顺着 import 图把旧链路词表拉回来（policy §6）。"""
+    for path in (ROOT / "src" / "equiplens" / "retrieval_engine").glob("*.py"):
+        text = path.read_text(encoding="utf-8")
+        for mod in LEGACY_MODULES:
+            bad = (f"from ..{mod} import" in text
+                   or f"from .. import {mod}" in text
+                   or f"import equiplens.{mod}" in text)
+            assert not bad, f"{path.name} 引用了旧链路模块 {mod}"
+
+
 if __name__ == "__main__":
     check("主体代码无 part_taxonomy", test_main_code_has_no_part_taxonomy)
     check("品牌表默认静默", test_brand_table_silent_by_default)
     check("legacy 文件保留", test_legacy_files_exist)
+    check("主链不 import 旧链路", test_main_chain_imports_no_legacy_modules)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

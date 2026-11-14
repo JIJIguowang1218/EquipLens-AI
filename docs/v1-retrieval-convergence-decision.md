@@ -19,6 +19,8 @@
 
 1. **全局去重**：URL/sha1/车型身份；同一图不能重复占槽；
 2. **整车槽资格**：至少一张 `scene=single_vehicle` 的 overview；part-only 只做部件证据，不单独占槽；
+   > ⚠️ 2026-11-12 已弃（`killed-strategies.md` K5，**不再讨论**）：硬性 overview 门槛与硬性
+   > part-only 拒绝都不进交付判定；`part_only` 只作审计/排序信号。本条仅存档当时的判断。
 3. **preferred attempt 日志**：每个 primary/preferred target 是否 fetch/verify/accept，失败原因可见；不先做复杂预留槽。
 
 可选低风险：code prefilter（已独立验证：12/12 构成不变，accepted 236→224，无 target 丢失）。

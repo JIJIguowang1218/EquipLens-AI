@@ -161,6 +161,9 @@ PYTHONPATH=src python scripts/eval_fulltest_repeats.py \
 - 源码 mtime：`briefing.py` 03:07、`imagesearch.py` 03:08、`analysis.py` 03:08、`web.py` 03:09；
 - 首次运行：P0 03:17；P2 03:26–04:19；P3 04:19–06:10；
 - `git diff d0a4cec HEAD -- src scripts tests` = 空 → **测试时的代码内容 == `d0a4cec` 的内容**；
+  （2026-11-14 复核补注：`6210c6e` 之后该命令**不再为空**——只多 `engine.py` 的
+  `code_version` 元数据 +17 行与一条对应测试断言，检索行为不变；重跑这条核对时请读 diff 内容，
+  不要只看“是否为空”。）
 - `plan_candidates.py` 的 topup4 改动发生在 06:03（P3 尾声），且默认仍是 2，
   P2/P3 未使用 `--topup 4`；P8 诊断才使用；
 - 安全脱敏只改了两份证据里的 URL 字符串，不改指标。

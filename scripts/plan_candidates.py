@@ -224,7 +224,7 @@ def main(argv=None) -> int:
     ap.add_argument("--limit", type=int, default=0,
                     help="候选池总上限；0=按 1.6×(slots+backup) 自动（2026-11-12）")
     ap.add_argument("--topup", type=int, default=2,
-                    help="候选池不足时追加的查询数（默认 2，0=关闭；最多 2）")
+                    help="候选池不足时追加的查询数（默认 2，0=关闭；紧供类目可显式设 4，代码上限 4）")
     ap.add_argument("--per-query", type=int, default=0,
                     help="每条查询最多抽几个候选；0=按目标池/查询数自动")
     ap.add_argument("--extract-mode", default="model", choices=["model", "wide"],

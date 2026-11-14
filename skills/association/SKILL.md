@@ -34,7 +34,7 @@ description: 把「车型类别（+具体车型）＋ 要分析的部件」翻�
 
 ## 流程（四步，判断自定）
 
-1. **读输入**：类目档案（`data/category_profiles.json`）、名录（`data-test/roster-*.json`）、证据索引；
+1. **读输入**：类目档案（`data/legacy/category_profiles.json`，**已静默**：主链默认不加载，只有 `text-run --profiles` 显式指向时才用）、名录（`data-test/roster-*.json`）、证据索引；
 2. **出清单**：12 台目标 + 备选；每台查 `evidence_check.py --lookup` 拿 URL，查不到就不进推荐位；
 3. **校验**：`python scripts/check_list.py <list.json>`，必须 `ok:true`；
 4. **报缺口**：凑不满写 `coverage.gap_kind` 与 `next_action`，不编造。

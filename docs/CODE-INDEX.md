@@ -50,6 +50,7 @@
 | 审核服务 | `review.py`、`reviewserver.py`、`scripts/build_*_review.py` |
 | L3 段落质检 | `passage.py`、`l3gate.py`、`scripts/eval_l3gate.py` |
 | 旧 text/workflow | `textrun.py`、`workflow.py`、`runner.py`、`strategy.py`、`query.py`、`roster.py` |
+| 辅助模块 | `doctor.py`（环境自检）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
 
 ## 4. 实验脚本（不得默认进生产）
 
@@ -59,6 +60,11 @@
 - `scripts/bench_download_concurrency.py`：下载并发基准（不改 loop）
 - `scripts/probe_platforms.py`
 - `scripts/probe_class_query.py`
+- `scripts/probe_query_fallback.py`（E44 判死回退探针）
+- `scripts/probe_english_query.py`（E51/E53 英文条件档）
+- `scripts/evaluate_kill_chain_offline.py`（E46 判死链离线回放）
+- `scripts/evaluate_source_provenance.py`（E50 A1 来源降权评估）
+- `scripts/evaluate_search_key.py`（E54 search_key 评估）
 - `scripts/probe_source_expansion.py`
 - `scripts/probe_source_expansion_funnel.py`
 - `scripts/backfill_baidu.py`
@@ -79,7 +85,7 @@
 | `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots（16） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
-| `tests/test_no_legacy_tables.py` | 词表守卫（主链不引用 legacy、品牌表默认空，3） |
+| `tests/test_no_legacy_tables.py` | 词表守卫（主链无 part_taxonomy、品牌表默认空、legacy 文件保留、主链不 import 旧链路模块，4） |
 | `tests/test_analysis.py` | 分析（历史有失败，需单独看） |
 
 ## 6. 契约/数据

@@ -26,8 +26,26 @@
 | 文件 | sha256（前 12） | 原用途 | 现状 |
 |---|---|---|---|
 | `data/legacy/part_taxonomy.json` | `0b4a521be011` | 部件键/区域/术语 | `briefing`/`analysis` 不再读取；仅 `make_ui_fixtures` 显式引用 |
-| `data/legacy/category_profiles.json` | `4f1e79a33578` | 类目档案（旧 textrun） | 旧链路默认路径；正常 loop 不读 |
+| `data/legacy/category_profiles.json` | `4f1e79a33578` | 类目档案（旧 textrun） | 旧 `text-run` 链路**仍默认加载**（`textrun.load_profiles()` 无门控）；主链 loop 不读。见下方「已知偏差」 |
 | `data/legacy/brand_aliases.json` | `a3bb257a8117` | 中外品牌别名 | 默认空；仅 `EQUIPLENS_ENABLE_LEGACY_BRANDS=1` 时加载 |
+
+### 3.1 已知偏差（2026-11-14 复核，尚未修）
+
+- **`category_profiles.json` 没有真正静默**：`textrun.load_profiles(path=None)` 会回落
+  `DEFAULT_PROFILES` 并加载该表；`text-run` 命令因此**默认带上类目档案**（歧义判定/查询词汇）。
+  它与 §1.1「不得默认加载」冲突，但属于 13 个旧链路测试（`tests/test_textrun.py`
+  `test_profile_resolution_and_ambiguity` 直接断言默认档案存在）的既有行为，
+  改动需连测试一起改，故**先记录、不改**。主链（`retrieval_engine`）不 import `textrun`，
+  近期的 P0–P4 实验不受影响。
+- **`data/style_vocabulary.json` 未纳入清单**：`analysis.load_vocab()` 默认加载它，
+  用于校验分析输出里的风格词。它是**描述性语汇**（不是品牌/车型/部件枚举），
+  按 §2.1 视为"通用语言学"边界情形，**是否要迁入 `data/legacy/` 待拍板**。
+- **旧链路模块仍在 `src/` 内自带词表**：`l3gate.py`（`PARTS` 56 / `FORMS` / `OPTION_WORDS`）、
+  `passage.py`（`STRONG`/`WEAK`/`NEGATIVE`）、`audit.py`（`STRONG_WORDS`）、
+  `roster.py`（`BRANDS` 50+ / `VEHICLE_WORDS`）、`corpus.py`（`SOURCE_TYPES`）。
+  它们**不在主链 import 图内**（主链只 import `imagesearch`、`gate`），
+  按 §1 的字面"不得包含"属于违规；按"主链不可达"属可接受。**当前取舍：保留，靠守卫锁住可达性**（§6），
+  若要彻底清理需单独排期。
 
 > 注意：这些文件**没有删除**，只是静默；删除需单独评审（见 §5）。
 
@@ -50,4 +68,10 @@
 `tests/test_no_legacy_tables.py` 会检查：
 - `briefing.py` / `analysis.py` 不再出现 `part_taxonomy`；
 - `imagesearch.BRAND_GROUPS` 默认为空（未设置 legacy 环境变量时）；
-- 上述文件仍存在于 `data/legacy/`（防止误删导致 legacy 脚本静默失效）。
+- 上述文件仍存在于 `data/legacy/`（防止误删导致 legacy 脚本静默失效）；
+- **主链 `src/equiplens/retrieval_engine/**` 不得 import 旧链路模块**
+  （`textrun`/`l3gate`/`passage`/`audit`/`roster`/`corpus`/`domainbench`/`strategy`）——
+  这条锁住"旧词表不会顺着 import 图回流主链"。
+
+**未覆盖（已知缺口，见 §3.1）**：`textrun.load_profiles()` 与 `analysis.load_vocab()` 的
+默认加载；守卫只做静态字符串/import 检查，不追踪运行时路径。

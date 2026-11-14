@@ -33,7 +33,7 @@
 | E46 判死链离线回放（去表化修复） | 1135 车型：括号内型号码 76/76 修复、311/378 长查询变短、665 例硬拼 6x6；4337 条可回放命中中旧放行→新拒绝 **0**、旧拒绝→新放行 85；4456 个 unknown 资产中 382（8.6%）凭“车系+构型”升级。门卫/视角不动 | `data-test/evals/kill-chain-offline-20261114.json` | `scripts/evaluate_kill_chain_offline.py` | 本次提交 |
 | E47 判死点端到端（冻结 plan c1/c2） | 同 brief 同 plan 只改代码：c1 9/10→**10/10**（备选 2→1、degraded 8→9）、c2 10/10（备选 2→**3**、degraded 6）；`summary.config` 记录 4 路并发/rank；`query_tiers` 生效（c1 全为 model 档） | `data-test/runs/p2-identity-20261114/`、`p2b-tier-20261114/` | `retrieval_engine --download-workers` | `db9d21f` |
 | E48 长查询残留抽查（A4） | 旧 >14 字且未变短剩 **60** 个，绝大多数是长型号码（18–20 字），个别丢 `8X4` 构型；结论：不再为长度优化 | `data-test/evals/long-query-residual-20261114.json` | 分析内联 | 本次提交 |
-| E49 tier 规则（B1） | `part_fallback/class_fallback` 资产不进正式槽与备选，只在 DEGRADE 兜底使用；新增 `degraded_ratio/warn`（0.5 告警）；单测 46/46 | `tests/test_retrieval_engine.py` | `engine._fill_pass`、`_delivery` | 本次提交 |
+| E49 tier 规则（B1） | `part_fallback/class_fallback` 资产不进正式槽与备选，只在 DEGRADE 兜底使用；新增 `degraded_ratio/warn`（0.5 告警）；单测 47/47 + 词表守卫 4/4 | `tests/test_retrieval_engine.py` | `engine._fill_pass`、`_delivery` | 本次提交 |
 | E50 来源降权离线评估（A1） | 三种规则影响面：`base\|model` 降权 54%、加 unit 34%、仅 environment 10.7%（仍误伤合法车型）；**否决自动降权** | `data-test/evals/source-provenance-20261114.json` | `scripts/evaluate_source_provenance.py` | `094d465` |
 | E51 英文查询探针（A3） | 18 个含拉丁名车型三档对比：current 13/18 相关命中、en_latin 11、en_code 6；**仅“拉丁品牌+卡车”有效**（HOWO TAZ 0→3、TX 2→6），正面吊/叉车/纯码变差 → 不默认、只做条件档 | `data-test/evals/english-query-probe-20261114.json` | `scripts/probe_english_query.py` | 本次提交 |
 | E52 标题一致性（C1） | 1203 组同车型 ≥3 图：有共识 90% 通过 vs 无共识 65%；但与核验同源（循环论证），**暂不做** | 见 `docs/optimization-round2-20261114.md` | — | `0141c6c` |

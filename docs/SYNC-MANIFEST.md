@@ -9,11 +9,11 @@
 - 技能：`skills/**`
 - 测试：`tests/**`
 - 契约：`schemas/**`
-- 配置/词表：`data/*.json`
+- 配置/词表：`data/**/*.json`（含 `data/legacy/` 三张**静默表**：部件/类目/品牌别名，入库仅为审计，主链默认不加载）
 - 文档：`docs/**`
 - 评测结论/数据：`data-test/evals/**`
 - run 的轻量轨迹：`data-test/runs/**/state.json`、`summary.json`、`fetch_log.jsonl`、`events.jsonl`、`audit.html`、`RUN.json`
-- 交付与监控产物：`DELIVERY.md/json`、`SUITE.json`、`SUITE-SUITE-SUMMARY.md`、`dedupe-review.html`、`data-test/evals/bad-domains-monitor.*`
+- 交付与监控产物：`DELIVERY.md/json`、`SUITE.json`、`SUITE-SUMMARY.md`（旧名 `SUITE-SUITE-SUMMARY.md` 已废弃）、`dedupe-review.html`、`data-test/evals/bad-domains-monitor.*`
 - 2026-11-13 实验数据：`data-test/runs/ab-negative-20261113/`（含 `SEARCH-LEVEL.json`、
   `AUDIT-DELIVERY-TIMING.md`、`DELIVERY-AUDIT.json`）、`ab-plan-concurrency-20261113/`、
   `ab-rank-20261113/`、`verify-fillfix-20261113/`；这些目录的 `images/` 仍不同步

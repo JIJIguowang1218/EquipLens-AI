@@ -2,7 +2,7 @@
 
 > 每个测试写：目的、方法、结果、结论（好/坏、是否值得、是否有冲突）。
 > 数据：`data-test/evals/long-query-residual-20261114.json`、`source-provenance-20261114.json`；
-> 代码：`retrieval_engine 46/46`（离线，无新检索）。
+> 代码：`retrieval_engine 47/47`（离线，无新检索）。
 
 ## A4 长查询残留抽查
 
@@ -32,7 +32,7 @@
 - 新增 `delivery.degraded_ratio` 与 `degraded_warn`（>0.5 告警，不阻止交付）。
 
 **结果**：单测新增 2 条，“回退图只进 degraded”“回退图不进备选”，
-`retrieval_engine 46/46`。历史 run 的 asset 多数没有 tier（空），因此**当前不影响既有数据**；
+`retrieval_engine 47/47`。历史 run 的 asset 多数没有 tier（空），因此**当前不影响既有数据**；
 只有今后出现回退档时才会生效。
 
 **结论**：**值得，低风险**；它把“数量优先”和“质量口径”分开：允许交付，但不许回退图冒充精确图。
@@ -67,4 +67,5 @@ A 仅 `base|model` 保留；B 加 `unit`；C 只降权 `environment`-only。
 - A4：**已完成**（结论：无需继续优化）
 - B1：**已完成**（规则已实现并测试）
 - A1：**已完成评估，否决**（不实现自动降权）
-- 下一批建议：A3 英文查询单变量 → C1 标签一致性（离线）→ D1 rank 相关性标注
+- 下一批建议：A3 英文查询单变量 → C1 标签一致性（离线）→ **D1a 文本 rank 合理性指标**
+  （D1-旧「rank 相关性标注」已作废：rank 看不到图，见 `backlog-mechanisms-20261114.md` D1-旧）

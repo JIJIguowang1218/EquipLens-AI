@@ -7,7 +7,7 @@
 |---|---|---|---|
 | 11-13 | `query-optimization-20261113.md` | 判死点、宽抽取 | c1 8/10→10/10（品牌误判修复）；wide 抽取涨候选但离类 |
 | 11-13 | `query-kill-chain-20261113.md` | 判死链复盘 | 9 个判死点；去表化修法；离线回放 0 回归 |
-| 11-13 | `optimization-round-20261114.md` | A4/B1/A1 | 长查询无需再优；tier 规则落地；来源降权否决 |
+| 11-14 | `optimization-round-20261114.md` | A4/B1/A1 | 长查询无需再优；tier 规则落地；来源降权否决 |
 | 11-14 | `optimization-round2-20261114.md` | A3/C1/D1 | 英文仅条件可用；标题一致性循环论证；rank 重定义 |
 | 11-14 | `a3-ladder-design-20261114.md` | 英文条件档设计 | 品牌识别 33%/43%，只做“有证据 token”的条件档 |
 | 11-14 | `optimization-round3-20261114.md` | search_key + 调研 | 条件兜底 3/3 救回；3 份行业调研 |
