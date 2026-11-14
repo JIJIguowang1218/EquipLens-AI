@@ -260,3 +260,12 @@ PYTHONPATH=src python scripts/summarize_delivery_suite.py --base data-test/runs/
 - DEPENDENCIES：测试数 47/16/16、台账 108；
 - 历史文档（association/module-map/superpowers 等）里仍可能出现旧路径 `data/part_taxonomy.json`，
   以 `docs/vocabulary-policy.md` 与 `data/legacy/` 为准，不再逐个回填历史稿。
+
+### 22. 安全脱敏（2026-11-14）
+
+- P3 证据（`p7-screen-r3-20261114/c3-tractor/run/{fetch_log,state}.json*`）里出现 11 处
+  `wx<16hex>`（第三方图片 URL 中的 AppID，按项目规矩视为敏感标识）；已用
+  `scan_secrets.py --fix` 替换为 `wx-REDACTED`，复扫 0 hit。
+- 注意：含该标识的 `388171a` 已在远程历史中（5 处）；本次只清理当前 HEAD。
+  是否改写历史（force push）需单独决定；AppID 本身是公开标识，不等同密钥。
+- 流程教训：提交前扫描不要用管道（`| tail` 会掩盖退出码），应单独跑并看 exit code。
