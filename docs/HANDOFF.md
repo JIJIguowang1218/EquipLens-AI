@@ -167,7 +167,7 @@
   类目档案默认空（仅显式 `--profiles` 读外部文件）；规则见 `docs/vocabulary-policy.md`；
 - 自检：`check_env.py`；测试：`briefing 6/6`、`planning 17/17`、`retrieval_engine 48/48`、
   `imagesearch 16/16`、`analysis 14/14`、`identity 10/10`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 4/4`；
-- 台账：`run_ledger --check` = **107 条，0 issue**；
+- 台账：`run_ledger --check` = **108 条，0 issue**；
 - 本轮数据：`data-test/runs/p6-vocab-smoke-20261114/`、`p7-screen-20261114/`、
   `p7-screen-r{2,3}-20261114/`、`p8b/p8c-topup4-20261114/`；
   `images/` 不同步，审核页可能缺图。
@@ -261,7 +261,7 @@ git log --oneline -1        # 应为当前 HEAD（本文档不锁定 commit）
 
 ```bash
 PYTHONPATH=src python scripts/check_env.py              # Python/依赖/key/模型/文件自检
-PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（107 条，0 issue）
+PYTHONPATH=src python scripts/run_ledger.py --check     # run 台账完整性（108 条，0 issue）
 PYTHONPATH=src python tests/test_planning.py            # 16/16
 PYTHONPATH=src python tests/test_retrieval_engine.py    # 47/47
 PYTHONPATH=src python tests/test_imagesearch.py         # 16/16（全 monkeypatch）

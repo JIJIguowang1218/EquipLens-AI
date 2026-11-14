@@ -405,3 +405,27 @@ textrun 13/13、imagesearch 16/16、gate 11/11、ledger 8/8、association 12/12�
 textrun 13/13、imagesearch 16/16、guard 4/4、ledger 8/8。
 
 **数据**：`data-test/evals/identity-match-20261114.json`（gained/lost/delivered_flips 明细）。
+
+### 28. 标识归一化的端到端验证（2026-11-14）
+
+**条件**：3 个 case（c1 沙漠牵引车 / c4 叉车 / c5 压路机），复用 `p7-screen-20261114` 的
+**冻结 brief + plan-ranked**（候选集合与基线完全一致），只换核验代码；实时抓取（有网络、
+外网抖动），跑法与 `run_fulltest.py` 的 loop 段一致（`--web-only --plan --run-root --run-id run`）。
+**这是单次 run，不是重复实验**：交付/备选与基线一致，因此只作“无回归”记录，不作效应量。
+
+| case | 交付 | 备选 | degraded | confirmed | hits | 耗时(s) |
+|---|---|---|---|---|---|---|
+| c1 基线 → 新 | 10/10 → 10/10 | 4/4 → 4/4 | 9 → **8** | 1 → **2** | 365 → 365 | 148 → 178 |
+| c4 基线 → 新 | 6/6 → 6/6 | 4/4 → 4/4 | 5 → **4** | 1 → **2** | 255 → 260 | 249 → 230 |
+| c5 基线 → 新 | 14/14 → 14/14 | 4/4 → 4/4 | 5 → **3** | 9 → **11** | 930 → 924 | 392 → 359 |
+| **合计** | **30/30 → 30/30** | **12/12 → 12/12** | **19 → 15** | **11 → 15（+36%）** | 1550 → 1549 | — |
+
+- 交付车型集合逐台对比：**added/removed 均为空**（只改身份档，不换车）；
+- 档位变化：c1 `HF 8066` probable→confirmed；c4 `CPD40-B` unknown→confirmed；
+  c5 `XS265HS`、`HC 228D` probable→confirmed；
+- c4 的 `CPD40-B` 命中的两条来源含电池适配页（标题），按职责归【门卫】——本轮只记录，不据此改核验；
+- 成本：本轮 plan 冻结，只付 loop 段（manifest 口径 ¥0.13 / ¥0.13 / ¥0.23），
+  与基线含 plan 的 ¥0.42–0.51 **不可直接比**；
+- 台账：新增 `verify-identity-20261114` suite 记录，`run_ledger --check` = **108 条 / 0 issue**。
+
+**数据**：`data-test/runs/verify-identity-20261114/<case>/{run/summary.json,run/DELIVERY.md}`。

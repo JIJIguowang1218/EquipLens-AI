@@ -35,7 +35,7 @@ PYTHONPATH=src python tests/test_retrieval_engine.py   # 48/48，需 test fixtur
 PYTHONPATH=src python tests/test_imagesearch.py        # 16/16
 PYTHONPATH=src python tests/test_planning.py           # 17/17
 PYTHONPATH=src python tests/test_identity.py           # 10/10（标识归一化）
-PYTHONPATH=src python scripts/run_ledger.py --check     # 107 records，0 issue
+PYTHONPATH=src python scripts/run_ledger.py --check     # 108 records，0 issue
 ```
 
 ## 新机器接续

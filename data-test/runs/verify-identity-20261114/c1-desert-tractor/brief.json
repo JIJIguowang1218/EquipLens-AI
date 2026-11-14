@@ -1,0 +1,288 @@
+{
+ "brief_id": "auto-20261112-205307",
+ "request": {
+  "raw": "沙漠牵引车（前保险杠、侧防护栏、登车踏步、大灯、前轮拱）；沙漠/油田工况；6×6；10 台",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "沙漠/油田工况",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "6×6 重型牵引车底盘",
+   "confidence": 0.8
+  },
+  "configuration": "6×6 牵引车",
+  "page_budget": {
+   "total": 20,
+   "vehicle_slots": 10,
+   "part_pages": 2
+  }
+ },
+ "assumptions": [
+  {
+   "field": "base_platform",
+   "value": "6×6 重型牵引车底盘",
+   "why": "用户给出沙漠牵引车与6×6，未给具体平台；按重型牵引车底盘分析。",
+   "confidence": 0.7
+  },
+  {
+   "field": "environment",
+   "value": "沙漠/油田工况按强沙尘、沙石冲击和油污风险理解",
+   "why": "用户只写沙漠/油田，未给出沙尘等级或具体油田环境。",
+   "confidence": 0.75
+  },
+  {
+   "field": "part_mapping",
+   "value": "前保险杠→bumper；侧防护栏→side_guard；登车踏步→step；大灯→headlamp；前轮拱→wheel_arch",
+   "why": "按参考词表归一化用户原词，未新增用户未点名部件。",
+   "confidence": 0.95
+  },
+  {
+   "field": "quantity",
+   "value": "10 台为批量/样本数量，不作为设计对象",
+   "why": "输入末尾给出10台，但未说明其设计含义。",
+   "confidence": 0.8
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整体",
+   "fields": [
+    "gesture",
+    "character_lines",
+    "proportion",
+    "cmf",
+    "judgement",
+    "style_tags"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "bumper",
+   "label": "保险杠",
+   "kind": "part",
+   "location": "front",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "environment_protection",
+    "structure",
+    "proportion"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "沙石冲击与磨蚀防护",
+    "接近角/前悬与离地间隙",
+    "分段/安装节点与可更换性"
+   ],
+   "why": "前保险杠是前脸最外露的防护件，能提供沙尘环境下的防冲蚀、接近角与结构分缝证据。"
+  },
+  {
+   "part": "side_guard",
+   "label": "侧防护栏",
+   "kind": "function",
+   "location": "side",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "environment_protection",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧向防撞/防石击",
+    "离地与积沙",
+    "型材框架与安装节点"
+   ],
+   "why": "侧防护栏能提供型材框架、离地间隙、防沙石与法规边界的证据。"
+  },
+  {
+   "part": "step",
+   "label": "登车踏步",
+   "kind": "function",
+   "location": "side_cab_entry",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "登车高度与踏步间距",
+    "防滑与自清洁踏面",
+    "支架/悬臂安装"
+   ],
+   "why": "登车踏步能提供高底盘驾驶室的人机登车、防滑踏面和沙尘自清洁证据。"
+  },
+  {
+   "part": "headlamp",
+   "label": "大灯与灯罩防护",
+   "kind": "part",
+   "location": "front",
+   "part_family": "function_attachment",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "regulation",
+    "environment_protection",
+    "structure"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "照明法规与配光",
+    "沙尘/泥污对灯罩的影响",
+    "灯罩防护与安装/更换"
+   ],
+   "why": "大灯能提供照明法规、沙尘防护、灯罩安装与前脸分缝证据。"
+  },
+  {
+   "part": "wheel_arch",
+   "label": "翼子板与轮拱",
+   "kind": "part",
+   "location": "front_side",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "proportion",
+    "environment_protection",
+    "structure"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "轮胎包络与轮拱间隙",
+    "沙石飞溅/挡泥与密封",
+    "轮拱分片与车身接口"
+   ],
+   "why": "前轮拱能提供轮胎包络、沙石飞溅控制、车身分缝与离地比例证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车 6×6 牵引车",
+   "parts": [
+    "bumper",
+    "side_guard",
+    "step",
+    "headlamp",
+    "wheel_arch"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠/油田工况 工程车",
+   "parts": [
+    "bumper",
+    "side_guard",
+    "step",
+    "headlamp",
+    "wheel_arch"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 40,
+  "max_rounds": 3,
+  "max_models": 12
+ },
+ "stop_rules": {
+  "no_new_after": 3,
+  "max_rounds": 2
+ },
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1"
+}
