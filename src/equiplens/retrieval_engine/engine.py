@@ -59,7 +59,7 @@ class RetrievalEngine:
         }
 
     # ---------------------------------------------------------------- public
-    def run(self) -> dict:
+    def _load_or_init(self) -> dict:
         state = self.store.load()
         if state is None:
             state = new_state(self.brief, run_id=self.run_id)
@@ -67,27 +67,38 @@ class RetrievalEngine:
             self.store.append_event({
                 "run_id": self.run_id, "from": "", "to": "BRIEF_READY",
                 "action": "start"})
+        return state
 
+    def step(self, state: dict | None = None) -> dict:
+        """执行一个状态（供 Session 在 checkpoint 之间推进/暂停）。"""
+        if state is None:
+            state = self._load_or_init()
+        if state.get("finished"):
+            return state
+        before = state["state"]
+        handler = self.handlers.get(before)
+        if handler is None:
+            raise RuntimeError(f"未知状态: {before}")
+        t0 = time.perf_counter()
+        handler(state)
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+        state.setdefault("timings", []).append(
+            {"state": before, "ms": elapsed_ms, "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
+        if state["state"] != before:
+            self.store.append_event({
+                "run_id": self.run_id, "from": before,
+                "to": state["state"], "action": "transition"})
+        self.store.save(state)
+        return state
+
+    def run(self) -> dict:
+        state = self._load_or_init()
         if state.get("finished"):
             return self._summary(state)
 
         steps = 0
-        timings = state.setdefault("timings", [])
         while not state.get("finished") and steps < self.max_steps:
-            before = state["state"]
-            handler = self.handlers.get(before)
-            if handler is None:
-                raise RuntimeError(f"未知状态: {before}")
-            t0 = time.perf_counter()
-            handler(state)
-            elapsed_ms = int((time.perf_counter() - t0) * 1000)
-            timings.append({"state": before, "ms": elapsed_ms,
-                            "at": time.strftime("%Y-%m-%dT%H:%M:%S")})
-            if state["state"] != before:
-                self.store.append_event({
-                    "run_id": self.run_id, "from": before,
-                    "to": state["state"], "action": "transition"})
-            self.store.save(state)
+            self.step(state)
             steps += 1
 
         if not state.get("finished"):

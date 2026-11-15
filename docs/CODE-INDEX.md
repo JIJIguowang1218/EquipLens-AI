@@ -93,6 +93,7 @@
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
 | `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化（14） |
 | `tests/test_session_router.py` | Router 守卫：白名单/硬软/删除确认/上下文/回退/工厂（15） |
+| `tests/test_session_engine.py` | Session × FakeWorld：step 续跑、checkpoint、交付编辑、delta run（4） |
 | `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（21） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |

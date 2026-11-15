@@ -684,3 +684,16 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - **M3.5**：`session_router.make_router(api_key)` 工厂，可直接注入 `Session`；
   `tests/test_session_router.py` **15/15**；
 - 影响面：S4 原型 + 文档；未接引擎、未改 S0–S3、未新增 run。
+
+
+### 44. S0-05 M4 初步：Session × FakeWorld（2026-11-15）
+
+- `RetrievalEngine` 新增 `step()`（单状态推进），`run()` 改为循环调用；引擎 48/48 仍通过；
+- 新增 `tests/test_session_engine.py` **4/4**：
+  - engine 跑两步后“崩溃”，新实例同 run_root/run_id 续跑完成；
+  - Session 在 engine step 之间 checkpoint，软补丁生效且不阻塞引擎；
+  - 交付编辑目标明确不确认，旧资产 superseded、不物理删除；
+  - 新增品牌走 delta run：只抓新 target，交付只增不减；
+- **未覆盖**（M4.1）：单张纠错（verify.blacklist 后旧资产标 superseded）、
+  “只重跑受影响 target”的真实 brief 变更（当前用 delta run 模拟）、3 个 live case；
+- 影响面：引擎新增只读 step API；Session 仍为 S4 原型，未接正式 CLI/引擎默认；未新增 run。
