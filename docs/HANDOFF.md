@@ -166,7 +166,7 @@
 - 词表：部件/类目/品牌三张旧表**已删除**（2026-11-14）；主体代码不得引用旧表名；
   类目档案默认空（仅显式 `--profiles` 读外部文件）；规则见 `docs/vocabulary-policy.md`；
 - 自检：`check_env.py`；测试：`briefing 6/6`、`planning 17/17`、`retrieval_engine 48/48`、
-  `imagesearch 16/16`、`analysis 14/14`、`identity 10/10`、`taskspec 21/21`、`session 14/14`、`session_router 14/14`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 4/4`；
+  `imagesearch 16/16`、`analysis 14/14`、`identity 10/10`、`taskspec 21/21`、`session 14/14`、`session_router 15/15`、`ledger 8/8`、`pricing 4/4`、`manifest 3/3`、`vocabulary_guard 4/4`；
 - 状态机：`scripts/check_stages.py`（正式入口/legacy silent）；换机器全检 `scripts/check_machine.py`（指令见 `docs/COMMANDS.md`）；
 - 待办：`docs/BACKLOG.md`（BL-001 库默认切新、BL-002 S1/S2 legacy 标注）；S0-05 规划 `docs/s0-05-session-loop-plan-20261115.md`；router 策略 `docs/s0-05-router-strategy-20261115.md`；
 - 台账：`run_ledger --check` = **111 条，0 issue**；

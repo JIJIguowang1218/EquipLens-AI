@@ -42,6 +42,7 @@
 | [BC-S05-003](S0-05-session.md#bc-s05-003) | S0-05 | “第三张图错了”纠错 vs 替换的 hard/soft | by-design |
 | [BC-S05-004](S0-05-session.md#bc-s05-004) | S0-05 | “只要沙漠版”范围 vs 排除（两轴） | by-design |
 | [BC-S05-005](S0-05-session.md#bc-s05-005) | S0-05 | “全都换成进口的”reset vs scope | by-design |
+| [BC-S05-006](S0-05-session.md#bc-s05-006) | S0-05 | “这个不够，再补”数量 vs 同款加图 | open |
 
 ## 3. 流程
 

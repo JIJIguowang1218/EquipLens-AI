@@ -670,3 +670,17 @@ h3 2.0（1–4）、h4 2.7（1–4）。
   - 修正两处 prompt/guard：“只要/仅限”归 scope.ratio；plan.negative 不再覆盖已有的 hard；
 - 说明：dev30 已参与提示词迭代，**不作为泛化证据**；M3.4 将用新 holdout 只跑一次；
 - 影响面：新增 S4 原型模块 + 单测；未接引擎、未改 S0–S3、未新增 run。
+
+
+### 43. S0-05 M3.4 新 holdout + M3.5 接入（2026-11-15）
+
+- **M3.4 一次性 holdout（24 条，新写，未参与调参）**：
+  - LLM + context + 守卫：**23/24（95.8%）**，hard 23/24、target 23/24、
+    destructive/confirm **8/8（100%）**；
+  - 规则版：13/24（同义/指代仍弱）；
+  - 达到验收门槛（destructive 100%、hard ≥90%、target ≥80%），未据此调 prompt；
+  - 唯一失败 H-14“这个不够，再补”：被判 `plan.quantity`，期望 `fill.quota`，
+    登记 **BC-S05-006**（open），下一轮在新 dev 修、用新 holdout 验收；
+- **M3.5**：`session_router.make_router(api_key)` 工厂，可直接注入 `Session`；
+  `tests/test_session_router.py` **15/15**；
+- 影响面：S4 原型 + 文档；未接引擎、未改 S0–S3、未新增 run。

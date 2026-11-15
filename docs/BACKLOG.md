@@ -7,7 +7,7 @@
 |---|---|---|---|
 | **BL-001** | 把 `briefing.generate_brief` 的**库默认**切到 `use_taskspec=True`，并同步改 `scripts/eval_task_brief.py` 等旧调用方；补一条“默认即新路径”的单测 | pending | 等 S0-05 session 接口稳定后再切，避免评估脚本同时受两层改动影响 |
 | **BL-002** | 更新 S1/S2 的 **legacy 标注**（`docs/stages.json`）：把仍有历史引用、但已不在正式路径的旧模块/参数显式标 `silent`，并在 `STAGES.md` 记录 | pending | 等 S1/S2 阶段评审时逐项确认，避免误标 |
-| **BL-003** | S0-05 Session/Loop 开发与测试（M1–M6） | in_progress | M2 完成（`session.py` 14/14）；M3.1–M3.3 完成（`session_router.py` 14/14，dev30 30/30）；M3.4 新 holdout 只跑一次 |
+| **BL-003** | S0-05 Session/Loop 开发与测试（M1–M6） | in_progress | M2 完成（`session.py` 14/14）；M3.1–M3.5 完成（`session_router.py` 15/15；dev30 30/30；holdout 23/24）；下一步 M4 FakeWorld |
 | **BL-004** | S4 在 `stages.json` 落正式入口 | pending | 依赖 BL-003 完成 |
 | **BL-005** | 把 `scripts/check_machine.py` 纳入发布前检查清单 | done | 2026-11-15 已加 `COMMANDS.md` / `AGENTS.md` |
 

@@ -101,6 +101,15 @@ def test_fallback_rules():
     assert r["targets"] == ["fetch.filters.views"], r
 
 
+def test_make_router():
+    r = R.make_router("", chat_fn=fake({"targets": ["fetch.filters.views"], "confidence": 0.9}))
+    out = r("全要正面", {})
+    assert out["targets"] == ["fetch.filters.views"], out
+    s = Session({"request": {"class": "沙漠牵引车"}}, router=r)
+    res = s.interrupt("全要正面", msg_id="mk1")
+    assert res["ok"] and s.pending[0].target == "fetch.filters.views", res
+
+
 def test_session_uses_router():
     s = Session({"request": {"class": "沙漠牵引车", "page_budget": {"vehicle_slots": 10}}},
                 router=lambda text, ctx: {"targets": ["fetch.filters.views"], "hard": False,

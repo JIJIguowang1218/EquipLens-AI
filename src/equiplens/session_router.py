@@ -159,6 +159,13 @@ def guard(text: str, proposal: dict) -> dict:
     return out
 
 
+def make_router(api_key: str, *, model: str = "deepseek-flash", chat_fn=None):
+    """生产入口：返回 Session 可直接注入的 router(text, context)。"""
+    def _router(text: str, context: dict | None = None) -> dict:
+        return classify(text, context=context, api_key=api_key, model=model, chat_fn=chat_fn)
+    return _router
+
+
 def classify(text: str, *, context: dict | None = None, api_key: str = "",
              model: str = "deepseek-flash", chat_fn=None, rules_fallback: bool = True) -> dict:
     """LLM 提议 + 守卫；无 key/失败时回退规则版。"""
