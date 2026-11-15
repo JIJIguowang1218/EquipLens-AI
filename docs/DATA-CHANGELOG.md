@@ -566,3 +566,18 @@ h3 2.0（1–4）、h4 2.7（1–4）。
   临时记录 `tmp/s0-probe-20261115/regress-v4.md`（未入库）；
 - badcase 状态：001–005 → `proto-fixed`（待生产），006 → `by-design`；
 - 影响面：**仅临时原型 + 文档**；未改 `src/`、默认值，未新增 run。
+
+
+### 36. S0-01 生产化：TaskSpec 规范化 + 50 条全量回归（2026-11-15）
+
+- 新增 `src/equiplens/taskspec.py`：`normalize()`（固定 policy 枚举、软字段不得进 hard、
+  自由词降级、modify→delta、brand_quota/foreign_ratio/origin/powertrain 归一、parts 去重、
+  provided 无 model 过滤、提问最多 1 条且必须有 blocking）、`validate()`、`to_brief()`；
+  **不含领域实体词表**；类目别名只能通过显式 `alias_map` 传入（policy §5）；
+- 新增 `tests/test_taskspec.py`：19/19，不调网络；
+- **V9 全量回归**（50 条授权复用：历史 10 + 合成 40）：50/50 通过、`validate` 0 问题；
+  核对采用等价口径（环境同义、吨位进软约束、前脸可作 view、日系进 exclude）；
+  临时审核稿 `tmp/s0-probe-20261115/bench-review-v4.md`（未入库）；
+- badcase：001–005 升 `verified`，新增 013（无图却产出 provided）并修复；006 保持 by-design；
+- 影响面：新增模块 + 单测 + 文档；未改 `briefing.generate_brief`、未改默认、未新增 run；
+  `to_brief()` 已提供但**尚未接入主链**（合并语义留待 S0-05 session 设计时确认）。

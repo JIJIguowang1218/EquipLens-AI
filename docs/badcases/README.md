@@ -24,16 +24,17 @@
 
 | ID | 模块 | 一句话 | 状态 |
 |---|---|---|---|
-| [BC-S01-001](S0-01-input.md#bc-s01-001) | S0-01 | “同类参考”被记成 `backup`，应进 `scope.adjacent` | proto-fixed |
-| [BC-S01-002](S0-01-input.md#bc-s01-002) | S0-01 | 部件词“前脸格栅”被记成 `views=front` | proto-fixed |
-| [BC-S01-003](S0-01-input.md#bc-s01-003) | S0-01 | “沙漠车”未归一为“沙漠牵引车” | proto-fixed |
-| [BC-S01-004](S0-01-input.md#bc-s01-004) | S0-01 | 品牌配额（至少 3 台奔驰/沃尔沃）未自动估计 | proto-fixed |
-| [BC-S01-005](S0-01-input.md#bc-s01-005) | S0-01 | `policy.hard/soft` 输出自由词，未用固定枚举 | proto-fixed |
+| [BC-S01-001](S0-01-input.md#bc-s01-001) | S0-01 | “同类参考”被记成 `backup`，应进 `scope.adjacent` | verified |
+| [BC-S01-002](S0-01-input.md#bc-s01-002) | S0-01 | 部件词“前脸格栅”被记成 `views=front` | verified |
+| [BC-S01-003](S0-01-input.md#bc-s01-003) | S0-01 | “沙漠车”未归一为“沙漠牵引车” | verified |
+| [BC-S01-004](S0-01-input.md#bc-s01-004) | S0-01 | 品牌配额（至少 3 台奔驰/沃尔沃）未自动估计 | verified |
+| [BC-S01-005](S0-01-input.md#bc-s01-005) | S0-01 | `policy.hard/soft` 输出自由词，未用固定枚举 | verified |
 | [BC-S01-006](S0-01-input.md#bc-s01-006) | S0-01 | “同类参考”与“加同型号”语义歧义 | by-design |
 | [BC-S01-007](S0-01-input.md#bc-s01-007) | S0-01 | 缺类目时提问 1 次（正确行为） | by-design |
 | [BC-S01-008](S0-01-input.md#bc-s01-008) | S0-01 | 未指定替换型号时自动另选（正确行为） | by-design |
 | [BC-S01-009](S0-01-input.md#bc-s01-009) | S0-01 | 文本“(图)”无真图时要求补图（正确行为） | by-design |
 | [BC-S01-010](S0-01-input.md#bc-s01-010) | S0-01 | class 混入 environment（v0.2 已修） | verified |
+| [BC-S01-013](S0-01-input.md#bc-s01-013) | S0-01 | 文本“(图)”无真图却产出 `models_provided` | verified |
 | [BC-S01-011](S0-01-input.md#bc-s01-011) | S0-01 | modify 被当新任务数量（v0.2 已修） | verified |
 | [BC-S01-012](S0-01-input.md#bc-s01-012) | S0-01 | 软/硬偏好不分（v0.2 已修） | verified |
 

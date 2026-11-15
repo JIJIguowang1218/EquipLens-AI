@@ -6,7 +6,7 @@
 
 ## BC-S01-001
 
-- **状态**：proto-fixed（v0.4 原型，待生产）
+- **状态**：verified（生产 `taskspec.py` + 50 条全量回归）
 - **现象**：“再配两台同类参考车”被记成 `quantity.backup=2`，`scope=null`。
 - **触发输入（[test]）**：`这是我在展会上拍的图，型号牌上写着 X3000，帮我把这个型号找全，再配两台同类参考车`
 - **期望**：先确认类目（blocking，1 个问题）；`models_provided=[X3000]`；
@@ -21,7 +21,7 @@
 
 ## BC-S01-002
 
-- **状态**：proto-fixed（v0.4 原型，待生产）
+- **状态**：verified（生产 `taskspec.py` + 50 条全量回归）
 - **现象**：部件词“前脸格栅”被记成 `views=["front"]`，`parts=[]`。
 - **触发输入（[test]）**：`上次那批不行，换一批，重点看前脸格栅，再加两台徐工的吊车`
 - **期望**：`parts=["前脸格栅"]`、`views=[]`；`intent=modify`、`delta=2`、`brands_include=["徐工"]`。
@@ -33,7 +33,7 @@
 
 ## BC-S01-003
 
-- **状态**：proto-fixed（v0.4 原型，待生产）
+- **状态**：verified（生产 `taskspec.py` + 50 条全量回归）
 - **现象**：“沙漠车”未归一为“沙漠牵引车”。
 - **触发输入（[test]）**：`沙漠车 10 个 6x6 要外国牌子的 国内外都行 别给我内饰 高清`
 - **期望**：`class="沙漠牵引车"`、`class_raw="沙漠车"`、`class_aliases=["沙漠车"]`。
@@ -45,7 +45,7 @@
 
 ## BC-S01-004
 
-- **状态**：proto-fixed（v0.4 原型，待生产）
+- **状态**：verified（生产 `taskspec.py` + 50 条全量回归）
 - **现象**：“至少 3 台奔驰或沃尔沃”没有产出品牌配额。
 - **触发输入（[test]）**：`必须 10 台，其中至少 3 台是奔驰或沃尔沃，其他随便`
 - **期望**：`preferences.brand_quota={"brands":["奔驰","沃尔沃"],"min":3,"of":10}`；
@@ -58,7 +58,7 @@
 
 ## BC-S01-005
 
-- **状态**：proto-fixed（v0.4 原型，待生产）
+- **状态**：verified（生产 `taskspec.py` + 50 条全量回归）
 - **现象**：`policy.hard/soft` 输出自由词（`domestic_only`、`electric_only`、`road_legal`、
   `constraints.exclude`、`quantity_backup`），无法被程序稳定消费。
 - **触发输入（[test]）**：`8 台，必须都是国产` / `10 台，只要电动车` / `10 台，不要带挂车…`
@@ -81,6 +81,17 @@
   无 context 且明确说“加”才 `delta`；两者都不明确 → 1 个 blocking 问题
   （选项：同型号再加 / 邻近类目参考）。v0.4 回归 R-08/R-09 已验证两条分支。
 - **关联**：bench N-28。
+
+## BC-S01-013
+
+- **状态**：verified（生产 `taskspec.py`）
+- **现象**：文本只有“(图)”没有真图时，仍产出 `models_provided=[{"image":true}]`（无 model）。
+- **触发输入（[test]）**：`分析一下这个车型（图）`
+- **期望**：不编造 `models_provided`；缺类目/缺图 → 1 个 blocking 问题。
+- **实际**：产出了空 model 的 provided 条目。
+- **修复**：`taskspec.normalize()` 过滤 `model` 为空的 provided 条目；单测
+  `test_provided_without_model_dropped`。
+- **关联**：bench N-16。
 
 ## BC-S01-007（by-design）
 
@@ -130,4 +141,5 @@
 - 修复顺序建议：BC-S01-001（scope/backup）→ 004（brand_quota）→ 005（enum）→ 002/003；
   006 已拍板；007–009 不再改动。
 - **v0.4 定向回归**：10 条新输入（未复用旧 50 条）10/10 通过；
-  临时记录 `tmp/s0-probe-20261115/regress-v4.md`（未入库）。下一步是把 v0.4 生产化。
+- **生产化 + 全量回归**：`src/equiplens/taskspec.py`（19 条单测）+ 50 条全量回归 50/50；
+  001–005 升为 `verified`，013 新增并修复。
