@@ -72,6 +72,11 @@ def test_reset_asks():
     assert r.get("clarify") and s.state == SessionState.CLARIFYING, r
 
 
+def test_chinese_index_clear_target():
+    r = classify_text("第三张换掉")
+    assert r["asset_index"] == 3 and r["confirm"] is False, r
+
+
 def test_negative_is_hard_constraint_soft_interrupt():
     r = classify_text("不要挂车，不要内饰")
     assert r["hard"] is False and r["enforce"] == "hard", r

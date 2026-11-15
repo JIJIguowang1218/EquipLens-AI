@@ -82,6 +82,28 @@ def test_session_delivery_edit_no_confirm():
     assert any(d["status"] == "superseded" for d in s.delivered)
 
 
+def test_correction_marks_only_one_asset():
+    s = Session({"request": {"class": "沙漠牵引车"}})
+    s.deliver([{"asset_id": "a1", "url": "u1", "sha1": "s1", "model": "X3000", "target": "u-exact"},
+               {"asset_id": "a2", "url": "u2", "sha1": "s2", "model": "X3000", "target": "u-exact"},
+               {"asset_id": "a3", "url": "u3", "sha1": "s3", "model": "X3000", "target": "u-exact"}])
+    r = s.interrupt("第 2 张不对，不是沙漠版", msg_id="e3")
+    assert r["ok"] and not r.get("clarify"), r
+    s.checkpoint("VERIFY")
+    superseded = [d for d in s.delivered if d["status"] == "superseded"]
+    assert len(superseded) == 1 and superseded[0]["asset_id"] == "a2", s.delivered
+    assert s.blacklist and s.blacklist[0]["asset"] == "a2", s.blacklist
+
+
+def test_delete_marks_only_one_asset():
+    s = Session({"request": {"class": "沙漠牵引车"}})
+    s.deliver([{"asset_id": "b1", "url": "u1", "sha1": "s1", "model": "X3000", "target": "u-exact"},
+               {"asset_id": "b2", "url": "u2", "sha1": "s2", "model": "X3000", "target": "u-exact"}])
+    s.interrupt("删掉第 2 张", msg_id="e4")
+    s.checkpoint("FILL")
+    assert [d["status"] for d in s.delivered] == ["active", "superseded"], s.delivered
+
+
 def test_added_brand_delta_run():
     """新增品牌走 delta run：旧 target 不重抓，交付只增不减。"""
     b1 = TE.base_brief(parts=("bumper",), slots=1)

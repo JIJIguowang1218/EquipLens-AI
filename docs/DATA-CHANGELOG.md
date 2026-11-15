@@ -697,3 +697,19 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - **未覆盖**（M4.1）：单张纠错（verify.blacklist 后旧资产标 superseded）、
   “只重跑受影响 target”的真实 brief 变更（当前用 delta run 模拟）、3 个 live case；
 - 影响面：引擎新增只读 step API；Session 仍为 S4 原型，未接正式 CLI/引擎默认；未新增 run。
+
+
+### 45. S0-05 M4.1：纠错定位与 live 冒烟（2026-11-15）
+
+- `Session.apply_pending` 支持**资产定位**：`asset_index`（第 N 张，含中文数字“第三张”）
+  只降级目标资产，不再“删一张=全标 superseded”；同一消息多 patch 用**同一快照**，
+  避免 `verify.blacklist` 后再按新列表错位；
+- `verify.blacklist` 记录具体资产；`fill.replace`/`delivered.*` 共用定位；
+- 测试：`test_session` **15/15**、`test_session_engine` **6/6**（新增纠错只降一张、
+  删除只降一张）；引擎 48/48；
+- **live router 冒烟 3 条**（真实 API）：`fill.quota`、`pause+scope` 稳定；
+  多意图“第三张图换个正脸，另外再补两台重汽的”在两次调用间 target 组合有波动
+  （置信度 0.72–0.82），不据此改 prompt；
+- 未覆盖（M4.2）：全 live 检索会话（进度/打断/续跑）、真实 brief 增量重排、
+  3 个 live case 的完整指标；
+- 影响面：S4 原型 + 文档；S4 仍 planned，未接正式 CLI/引擎默认，未新增 run。

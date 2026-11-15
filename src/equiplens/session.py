@@ -69,7 +69,14 @@ def classify_text(text: str) -> dict:
     t = (text or "").strip()
     low = t.lower()
     out = {"intent": "modify", "hard": False, "targets": [], "destructive": False,
-           "confirm": False, "confidence": 0.8, "reason": ""}
+           "confirm": False, "confidence": 0.8, "reason": "", "asset_index": None}
+    import re as _re0
+    _m = _re0.search(r"第\s*([一二三四五六七八九十\d]+)\s*张", t)
+    if _m:
+        _v = _m.group(1)
+        _cn = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6,
+               "七": 7, "八": 8, "九": 9, "十": 10}
+        out["asset_index"] = int(_v) if _v.isdigit() else _cn.get(_v[0])
 
     def add(target, reason):
         if target not in out["targets"]:
@@ -95,7 +102,7 @@ def classify_text(text: str) -> dict:
         out.update(hard=True, enforce="hard")
         add("plan.configuration", "修改驱动构型，需重排候选")
         return out
-    clear_target = bool(_re.search(r"第\s*\d+\s*张", t)) or bool(_re.search(r"[A-Za-z]{2,}\d{2,}", t))
+    clear_target = bool(_re.search(r"第\s*[一二三四五六七八九十\d]+\s*张", t)) or bool(_re.search(r"[A-Za-z]{2,}\d{2,}", t))
     image_ctx = clear_target or any(k in t for k in ("张", "图", "照片"))
     destructive_verb = any(k in low for k in ("删", "去掉", "换掉", "换成"))
     if destructive_verb and image_ctx and clear_target:
@@ -193,7 +200,10 @@ class Session:
         req = (self.brief or {}).get("request") or {}
         return {"class": req.get("class") or "",
                 "targets": (self.brief or {}).get("targets") or [],
-                "delivered": {"count": len(self.delivered), "last_round": self.version},
+                "delivered": {"count": len(self.delivered), "last_round": self.version,
+                              "assets": [{"index": i + 1, "asset_id": d.get("asset_id") or d.get("sha1"),
+                                          "model": d.get("model"), "status": d.get("status")}
+                                         for i, d in enumerate(self.delivered[:20])]},
                 "last_patches": self.patches[-3:],
                 "preferences": self.preferences}
 
@@ -232,7 +242,8 @@ class Session:
             self.state = SessionState.CLARIFYING
             return {"ok": True, "intent": res.get("intent"), "clarify": True,
                     "question": "你想改哪一部分？（视角/数量/品牌/删除/范围）", "status": self.status()}
-        patches = [Patch(target=t, value={"text": text}, confidence=res.get("confidence", 0.8),
+        patches = [Patch(target=t, value={"text": text, "asset_index": res.get("asset_index")},
+                         confidence=res.get("confidence", 0.8),
                          destructive=bool(res.get("destructive")),
                          enforce=res.get("enforce", "soft"),
                          source_msg_id=msg_id, note=res.get("reason", ""), base_version=self.version)
@@ -280,17 +291,28 @@ class Session:
         return self.status()
 
     def apply_pending(self) -> None:
+        active_snapshot = [d for d in self.delivered if d.get("status") == "active"]
         for p in self.pending:
             self.patches.append(p.as_dict())
             self.brief.setdefault("session_patches", []).append(p.as_dict())
-            if p.target in ("delivered.remove", "delivered.replace"):
-                # 标记已交付为 superseded，不物理删除
+            idx = (p.value or {}).get("asset_index") if isinstance(p.value, dict) else None
+            if p.target == "session.reset":
                 for d in self.delivered:
                     if d.get("status") == "active":
                         d["status"] = "superseded"
                         d["superseded_by"] = p.patch_id
-            if p.target == "verify.blacklist":
-                self.blacklist.append({"patch_id": p.patch_id, "value": p.value})
+            elif p.target in ("delivered.remove", "delivered.replace",
+                              "verify.blacklist", "fill.replace"):
+                # 只降级目标资产；不物理删除
+                hit = None
+                if idx and 0 < idx <= len(active_snapshot):
+                    hit = active_snapshot[idx - 1]
+                if hit is not None:
+                    hit["status"] = "superseded"
+                    hit["superseded_by"] = p.patch_id
+                if p.target == "verify.blacklist":
+                    self.blacklist.append({"patch_id": p.patch_id, "value": p.value,
+                                           "asset": (hit or {}).get("asset_id") or (hit or {}).get("sha1")})
         self.pending = []
         self._bump()
         self.state = SessionState.PLANNING

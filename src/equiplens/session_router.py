@@ -33,7 +33,7 @@ ACTIONS = {
 PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用户会对当前任务追加一句话要求。
 只输出 JSON：
 {"hard":bool,"targets":[...],"destructive":bool,"confirm":bool,"enforce":"hard|soft",
- "confidence":0.0,"evidence":"","reason":""}
+ "confidence":0.0,"evidence":"","reason":"","asset_index":null}
 
 判定规则：
 1) hard=true 只用于改变任务定义：范围/类目（scope.ratio）、数量（plan.quantity）、
@@ -90,7 +90,7 @@ def propose(text: str, context: dict | None, api_key: str, *,
 
 
 def _clear_target(text: str) -> bool:
-    return bool(re.search(r"第\s*\d+\s*张", text)) or bool(re.search(r"[A-Za-z]{2,}\d{2,}", text))
+    return bool(re.search(r"第\s*[一二三四五六七八九十\d]+\s*张", text)) or bool(re.search(r"[A-Za-z]{2,}\d{2,}", text))
 
 
 def guard(text: str, proposal: dict) -> dict:
@@ -109,7 +109,15 @@ def guard(text: str, proposal: dict) -> dict:
             uniq.append(t)
     out["targets"] = uniq[:3]
     out["confidence"] = float(proposal.get("confidence") or 0.0)
+    try:
+        out["asset_index"] = int(proposal.get("asset_index")) if proposal.get("asset_index") else None
+    except (TypeError, ValueError):
+        out["asset_index"] = None
     out["evidence"] = str(proposal.get("evidence") or "")[:120]
+    try:
+        out["asset_index"] = int(proposal.get("asset_index")) if proposal.get("asset_index") else None
+    except (TypeError, ValueError):
+        out["asset_index"] = None
     out["reason"] = str(proposal.get("reason") or "")[:160]
     if len(uniq) > 3:
         out["clarify"] = True
