@@ -46,8 +46,8 @@ def main(argv=None) -> int:
     ap.add_argument("--input-file", default="", help="或从文件读用户原话")
     ap.add_argument("--class", dest="klass", default="", help="车型类别（可选的强制值）")
     ap.add_argument("--parts", default="", help="可选：逗号分隔的期望部件（提示，不强制）")
-    ap.add_argument("--slots", type=int, required=True,
-                    help="要分析几台（业务输入，必填；不再默认 12）")
+    ap.add_argument("--slots", type=int, default=None,
+                    help="要分析几台；TaskSpec 已解析出台数时可省略（不再默认 12）")
     ap.add_argument("--out", required=True)
     ap.add_argument("--meta", default="", help="默认 <out>.meta.json")
     ap.add_argument("--brief-id", default="")
@@ -56,6 +56,8 @@ def main(argv=None) -> int:
                     help="仅用于必要性 A/B：不加载 task-brief skill 的基线")
     ap.add_argument("--prompt-mode", default="v2", choices=["v2", "v1", "none"],
                     help="v2=方法引导；v1=只给格式；none=裸基线")
+    ap.add_argument("--legacy-brief", action="store_true",
+                    help="静默回退旧的一次性 brief 解析（仅对照/回滚；默认走 TaskSpec v0.4）")
     args = ap.parse_args(argv)
 
     raw = args.input.strip()
@@ -71,7 +73,8 @@ def main(argv=None) -> int:
         out = briefing.generate_brief(raw, key, slots=args.slots, class_hint=args.klass,
                                       part_hints=hints, brief_id=args.brief_id,
                                       model=args.model, use_skill=not args.no_skill,
-                                      prompt_mode=args.prompt_mode)
+                                      prompt_mode=args.prompt_mode,
+                                      use_taskspec=not args.legacy_brief)
     except Exception as e:  # noqa: BLE001
         print(json.dumps({"ok": False, "error": type(e).__name__, "message": str(e)[:400]},
                          ensure_ascii=False))
@@ -87,6 +90,8 @@ def main(argv=None) -> int:
         "source": "deepseek-chat",
         "model": out["response"].get("model") or args.model,
         "skill_version": briefing.SKILL_VERSION,
+        "s0": {"mechanism": "legacy" if args.legacy_brief else "taskspec", "version": "v0.4"},
+        "taskspec": out.get("taskspec"),
         "skill_path": "skills/task-brief/SKILL.md",
         "created_at": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "raw_input": raw,
@@ -101,6 +106,7 @@ def main(argv=None) -> int:
     print(json.dumps({
         "ok": True,
         "brief_id": brief["brief_id"],
+        "s0": "legacy" if args.legacy_brief else "taskspec",
         "class": brief["request"]["class"],
         "parts": [p["part"] for p in brief["part_requirements"]],
         "units": [(u["unit_id"], u["quota"]) for u in brief["research_units"]],

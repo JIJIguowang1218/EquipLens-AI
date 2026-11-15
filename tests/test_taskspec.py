@@ -159,6 +159,40 @@ def test_provided_without_model_dropped():
     assert s["models_provided"] == [{"model": "X3000", "image": True}], s["models_provided"]
 
 
+def test_apply_taskspec_overlay():
+    from equiplens import briefing
+    brief = {"request": {"class": "旧类目", "page_budget": {"vehicle_slots": 4}},
+             "part_requirements": [{"part": "step", "label": "登车踏步"}]}
+    spec = taskspec.normalize(base())
+    out = briefing.apply_taskspec(brief, spec)
+    assert out["request"]["class"] == "沙漠牵引车"
+    assert out["request"]["page_budget"]["vehicle_slots"] == 10
+    assert out["request"]["environment"]["value"] == "沙漠/油田"
+    assert out["s0"] == {"mechanism": "taskspec", "version": "v0.4"}
+    assert out["part_requirements"][0]["part"] == "step"      # 其它字段不被覆盖
+    assert out["taskspec"] is spec
+
+
+def test_generate_brief_with_taskspec():
+    from equiplens import briefing
+    payload = {"request": {"class": "沙漠牵引车", "base_platform": "6x6 底盘",
+                           "configuration": "6x6"},
+               "regions": [], "parts": [{"part": "step", "label": "登车踏步"}],
+               "assumptions": [], "negative": []}
+
+    def fake_chat(prompt, key, model):
+        return {"payload": payload, "usage": {}, "model": model}
+
+    spec = taskspec.normalize(base())
+    out = briefing.generate_brief("沙漠牵引车 10 台", "sk-test", taskspec=spec,
+                                  chat_fn=fake_chat)
+    b = out["brief"]
+    assert b["s0"]["mechanism"] == "taskspec"
+    assert b["request"]["class"] == "沙漠牵引车"
+    assert b["request"]["page_budget"]["vehicle_slots"] == 10
+    assert out["taskspec"] is spec
+
+
 def test_no_mutation():
     src = base()
     snapshot = copy.deepcopy(src)

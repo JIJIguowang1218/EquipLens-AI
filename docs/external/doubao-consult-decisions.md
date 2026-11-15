@@ -29,7 +29,7 @@
 
 | ID | 专家意见（中性摘要，原文位置） | 我们的对应 | 状态 | 备注 |
 |---|---|---|---|---|
-| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `briefing.generate_brief`：一次 LLM 解析 + schema 校验 | 生产化完成（v0.4） | V9 全量 50/50、`taskspec` 19/19；badcase 001–005/013 verified、006 by-design |
+| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`（CLI 默认） | **已接入正式链路（A2）** | V9 全量 50/50、`taskspec` 21/21；`STAGES.md` S0 active；旧路径 silent |
 | S0-02 | 识别约束属性：整车图、排除内饰/配件/挂车 | `DEFAULT_NEGATIVE`（客车/SUV/房车/内饰/广告）+ brief negative | 待评（建议降为可选） | 默认规则已覆盖大部分；仅用户显式提出时进 TaskSpec.constraints，不占 S0 主流程 |
 | S0-03 | 用户只给品类词时，用 LLM **参数化领域知识**冷启动生成型号池（不联网） | 无；我们坚持“候选必须来自检索结果” | 测试完成（待拍板） | V6：65 个型号 86.2% 可搜索证实、仅 7.7% 与我方池重合；建议“仅作查询种子” |
 | S0-04 | 先定义需求边界与类目核心特征（沙漠牵引车 vs 公路牵引车） | brief 的 `class/environment/configuration` | 待评（限查询侧） | 只能生成查询/假设，**不得作为准入过滤器**；否则误差会沿长链累积 |

@@ -18,6 +18,8 @@ import re
 import time
 from pathlib import Path
 
+from . import taskspec
+
 ROOT = Path(__file__).resolve().parents[2]
 SKILL_PATH = ROOT / "skills" / "task-brief" / "SKILL.md"
 SCHEMA_PATH = ROOT / "schemas" / "task-brief-v3.schema.json"
@@ -49,7 +51,8 @@ environment_protection/regulation/manufacturing。
 def build_prompt(raw: str, *, class_hint: str = "",
                  part_hints: list[str] | None = None,
                  use_skill: bool = True,
-                 prompt_mode: str = "v2") -> str:
+                 prompt_mode: str = "v2",
+                 taskspec: dict | None = None) -> str:
     """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束。
 
     不再向模型提供任何部件/类目词表（2026-11-14 口径：词表不得进入主体代码）。
@@ -73,6 +76,8 @@ def build_prompt(raw: str, *, class_hint: str = "",
         "allowed_axes": list(ALLOWED_AXES),
         "output": "只输出 JSON：{request, regions, parts, assumptions, negative}",
     }
+    if taskspec:
+        hints["taskspec"] = taskspec
     return (skill + "\n\n---\n\n## 本次输入\n\n"
             + json.dumps(hints, ensure_ascii=False, indent=1))
 
@@ -324,24 +329,66 @@ def chat(prompt: str, api_key: str, model: str = "deepseek-flash") -> dict:
     }
 
 
+def apply_taskspec(brief: dict, spec: dict) -> dict:
+    """把 TaskSpec 的权威字段覆盖到 brief（class/env/config/台数），并挂载 taskspec。"""
+    if not isinstance(spec, dict):
+        return brief
+    partial = taskspec.to_brief(spec).get("request") or {}
+    req = brief.setdefault("request", {})
+    if partial.get("class"):
+        req["class"] = partial["class"]
+    if partial.get("configuration"):
+        req["configuration"] = partial["configuration"]
+    if partial.get("environment"):
+        env = partial["environment"]
+        if isinstance(env, dict):
+            req["environment"] = {**env, "source": "taskspec"}
+        else:
+            req["environment"] = {"value": env, "source": "taskspec"}
+    pb = partial.get("page_budget") or {}
+    budget = req.setdefault("page_budget", {})
+    if pb.get("vehicle_slots") is not None:
+        budget["vehicle_slots"] = pb["vehicle_slots"]
+    if pb.get("backup_slots") is not None:
+        budget["backup_slots"] = pb["backup_slots"]
+    brief["taskspec"] = spec
+    brief["s0"] = {"mechanism": "taskspec", "version": "v0.4"}
+    return brief
+
+
 def generate_brief(raw: str, api_key: str, *, slots: int | None = None, class_hint: str = "",
                    part_hints: list[str] | None = None, brief_id: str = "",
                    model: str = "deepseek-flash",
                    chat_fn=None, use_skill: bool = True,
-                   prompt_mode: str = "v2") -> dict:
-    """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。"""
+                   prompt_mode: str = "v2",
+                   taskspec: dict | None = None,
+                   use_taskspec: bool = False) -> dict:
+    """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。
+
+    `use_taskspec=True` 时先走 S0-01 的 TaskSpec 解析（taskspec_llm.parse），
+    再把权威字段覆盖到 brief；旧路径保持默认，供对照/回滚（静默，无告警）。
+    """
+    spec = taskspec
+    if spec is None and use_taskspec:
+        from . import taskspec_llm
+        spec = taskspec_llm.parse(raw, api_key, model=model, chat_fn=chat_fn)
+    slots_eff = slots
+    if slots_eff is None and spec:
+        slots_eff = (spec.get("quantity") or {}).get("primary")
     prompt = build_prompt(raw, class_hint=class_hint,
                           part_hints=part_hints, use_skill=use_skill,
-                          prompt_mode=prompt_mode)
+                          prompt_mode=prompt_mode, taskspec=spec)
     result = (chat_fn or chat)(prompt, api_key, model)
     last_error = ""
     for attempt in range(2):
         try:
-            brief = assemble_brief(result["payload"], raw, slots=slots, brief_id=brief_id,
+            brief = assemble_brief(result["payload"], raw, slots=slots_eff, brief_id=brief_id,
                                    class_hint=class_hint)
+            if spec:
+                brief = apply_taskspec(brief, spec)
             return {"brief": brief, "prompt": prompt, "response": result,
                     "attempts": attempt + 1, "use_skill": use_skill,
-                    "prompt_mode": prompt_mode}
+                    "prompt_mode": prompt_mode, "taskspec": spec}
         except ValueError as e:
             last_error = str(e)
             if attempt == 1:

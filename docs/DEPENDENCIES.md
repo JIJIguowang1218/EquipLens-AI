@@ -35,7 +35,8 @@ PYTHONPATH=src python tests/test_retrieval_engine.py   # 48/48，需 test fixtur
 PYTHONPATH=src python tests/test_imagesearch.py        # 16/16
 PYTHONPATH=src python tests/test_planning.py           # 17/17
 PYTHONPATH=src python tests/test_identity.py           # 10/10（标识归一化）
-PYTHONPATH=src python tests/test_taskspec.py           # 19/19（任务单规范化，不调网络）
+PYTHONPATH=src python tests/test_taskspec.py           # 21/21（任务单规范化/接入，不调网络）
+PYTHONPATH=src python scripts/check_stages.py          # 状态机：正式入口存在 + legacy 标 silent
 PYTHONPATH=src python scripts/run_ledger.py --check     # 111 records，0 issue
 ```
 

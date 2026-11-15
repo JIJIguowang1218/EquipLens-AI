@@ -1,0 +1,73 @@
+{
+  "updated": "2026-11-15",
+  "note": "正式链路状态机：active=真实业务使用；silent=保留但默认不可达；planned=设计已定未实现。变更机制必须同步本文件、CODE-INDEX、DATA-CHANGELOG。",
+  "stages": [
+    {
+      "id": "S0",
+      "name": "用户输入识别 / 任务单",
+      "status": "active",
+      "version": "taskspec-v0.4",
+      "entries": [
+        {"path": "src/equiplens/taskspec_llm.py", "symbol": "def parse"},
+        {"path": "src/equiplens/taskspec.py", "symbol": "def normalize"},
+        {"path": "src/equiplens/briefing.py", "symbol": "def apply_taskspec"},
+        {"path": "scripts/build_brief.py", "symbol": "use_taskspec=not args.legacy_brief"}
+      ],
+      "legacy": [
+        {"path": "src/equiplens/briefing.py", "symbol": "use_taskspec: bool = False", "status": "silent",
+         "note": "库函数默认旧路径（兼容/评估）；正式 CLI 默认走 TaskSpec，旧路径仅 --legacy-brief 可达"},
+        {"path": "scripts/build_brief.py", "symbol": "--legacy-brief", "status": "silent",
+         "note": "显式回退旧的一次性 brief 解析，仅对照/回滚"}
+      ]
+    },
+    {
+      "id": "S1",
+      "name": "第一段检索：查询规划 + 候选召回",
+      "status": "active",
+      "version": "p8-idmatch",
+      "entries": [
+        {"path": "src/equiplens/planning.py", "symbol": "def build_query_plan"},
+        {"path": "scripts/plan_candidates.py", "symbol": "def main"}
+      ],
+      "legacy": []
+    },
+    {
+      "id": "S2",
+      "name": "第二段检索：抓取/门卫/核验/填槽",
+      "status": "active",
+      "version": "p8-idmatch",
+      "entries": [
+        {"path": "src/equiplens/retrieval_engine/web.py", "symbol": "class WebWorld"},
+        {"path": "src/equiplens/gate.py", "symbol": "def"},
+        {"path": "src/equiplens/identity.py", "symbol": "def primary_code"}
+      ],
+      "legacy": []
+    },
+    {
+      "id": "S3",
+      "name": "交付验收",
+      "status": "active",
+      "version": "manifest-v1",
+      "entries": [
+        {"path": "scripts/build_delivery_manifest.py", "symbol": "def main"}
+      ],
+      "legacy": []
+    },
+    {
+      "id": "S4",
+      "name": "Loop / 反馈 / 记忆",
+      "status": "planned",
+      "version": "session-v0",
+      "entries": [],
+      "legacy": []
+    },
+    {
+      "id": "S5",
+      "name": "产品 / 工程 / 护城河",
+      "status": "n/a",
+      "version": "",
+      "entries": [],
+      "legacy": []
+    }
+  ]
+}

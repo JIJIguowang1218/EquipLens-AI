@@ -1,8 +1,9 @@
 # 代码位置索引（封装前）
 
-更新：2026-11-13  
+更新：2026-11-15  
 原则：先读 `CURRENT-ARCHITECTURE.md`，再按本索引找代码；实验脚本不能当生产入口。
 已毙/归档策略见 `docs/killed-strategies.md`（三证②③、part_views、stategy 文件等）。
+**正式链路以 [`docs/STAGES.md`](STAGES.md) 为准**（`stages.json` + `scripts/check_stages.py`），本索引是代码位置。
 
 ## 1. 项目怎么管代码
 
@@ -20,7 +21,10 @@
 
 | 职责 | 代码 |
 |---|---|
-| brief 生成 | `src/equiplens/briefing.py`、`scripts/build_brief.py`、`skills/task-brief/SKILL.md` |
+| **S0 任务单（正式）** | `src/equiplens/taskspec_llm.py`（parse）→ `src/equiplens/taskspec.py`（normalize/validate）→ `src/equiplens/briefing.py::apply_taskspec`；CLI `scripts/build_brief.py` 默认走此路径 |
+| brief 组装（LLM） | `src/equiplens/briefing.py`、`skills/task-brief/SKILL.md` |
+| brief 旧路径（silent） | `briefing.generate_brief(use_taskspec=False)`（库默认）、`build_brief.py --legacy-brief`；仅对照/回滚 |
+| 状态机检查 | `docs/stages.json`、`scripts/check_stages.py` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |
@@ -85,7 +89,7 @@
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
 | `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验（17） |
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
-| `tests/test_taskspec.py` | TaskSpec 规范化：policy 枚举/软硬分流/品牌配额/修改 delta/parts 去重/提问策略（19） |
+| `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（21） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
 | `tests/test_no_legacy_tables.py` | 词表守卫（src 全量禁旧表名、三表必须不存在、品牌组为空、主链不 import 旧链路，4） |

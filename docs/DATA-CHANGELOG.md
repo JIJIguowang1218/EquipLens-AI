@@ -581,3 +581,21 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - badcase：001–005 升 `verified`，新增 013（无图却产出 provided）并修复；006 保持 by-design；
 - 影响面：新增模块 + 单测 + 文档；未改 `briefing.generate_brief`、未改默认、未新增 run；
   `to_brief()` 已提供但**尚未接入主链**（合并语义留待 S0-05 session 设计时确认）。
+
+
+### 37. A2：TaskSpec v0.4 接入正式链路 + 状态机索引（2026-11-15）
+
+- 新增 `src/equiplens/taskspec_llm.py`：S0-01 的正式 LLM 抽取（v0.4 prompt），
+  出口固定走 `taskspec.normalize/validate`；
+- `src/equiplens/briefing.py` 新增 `apply_taskspec()`：把 TaskSpec 的 class/env/config/台数
+  覆盖到 brief，并写 `brief.s0={mechanism:"taskspec",version:"v0.4"}` 与 `brief.taskspec`；
+  `generate_brief(..., use_taskspec=True)` 时先 parse 再覆盖；
+- `scripts/build_brief.py`：**默认走 TaskSpec**；`--legacy-brief` 显式回退旧的一次性解析
+  （静默、无告警）；`--slots` 改为可选（TaskSpec 已给台数时可省）；
+- 新增状态机索引：[`docs/STAGES.md`](STAGES.md) + [`docs/stages.json`](stages.json) +
+  `scripts/check_stages.py`（6 阶段、0 问题）；S0 active=taskspec-v0.4，旧路径标 silent；
+- 冒烟：`build_brief.py` 12 台沙漠牵引车 → `s0=taskspec`、class 正确、台数 12、
+  parts/units 正常（临时产物 `tmp/s0-probe-20261115/smoke/`，未入库）；
+- 测试：`test_taskspec` 21/21、`test_briefing` 6/6、`vocabulary_guard` 4/4、
+  `check_stages` 0 问题；
+- 影响面：S0 主路径切换；旧路径保留但默认不可达；未改 S1/S2/S3，未新增 run。
