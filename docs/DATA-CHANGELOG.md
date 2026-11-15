@@ -613,3 +613,19 @@ h3 2.0（1–4）、h4 2.7（1–4）。
   patch 契约、打断语义、去重/幂等、Router、编排选型、T1–T16 测试计划、M1–M6 里程碑、
   V10–V12 实验与 6 个拍板点；
 - 影响面：**纯文档 + 检查脚本**；不改 `src/` 行为、不改默认、不新增 run。
+
+
+### 39. S0-05 Session 状态机与 Router 测试（2026-11-15）
+
+- 新增 `src/equiplens/session.py`：Session 状态机（IDLE/ANALYZING/CLARIFYING/PLANNING/
+  RUNNING/PAUSED/DELIVERED）、Patch（白名单 target）、soft/hard 打断、checkpoint 应用、
+  交付去重、最大轮次、JSON 持久化；**未接引擎**（S4 仍 planned）；
+- 新增 `tests/test_session.py`：**11/11**（创建/软补丁/破坏性确认/暂停恢复/幂等/非法 target/
+  交付去重/轮次上限/持久化/分类规则）；
+- 临时测试（`tmp/s0-05/`，未入库）：
+  - 规则 router 调参集 28/28，但 **holdout 仅 7/14**（同义改写脆弱）；
+  - LLM 探针 holdout **9/14**，hard 判定 13/14，但“同款更多图”会误判成加车型；
+  - 结论：M3 采用 **LLM 提议 + 规则守卫 + 歧义提问**，规则不再单独决策；
+- 新增 badcase：BC-S05-001/002 open，003/004/005 product-decision；
+  参数按建议默认：max_rounds=5、delta 查询 25%/抓取 20%、提问 1 条/轮、JSON 持久化；
+- 影响面：新增会话原型 + 单测 + 文档；不改 S0–S3、不改默认、未新增 run。

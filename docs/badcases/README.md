@@ -37,6 +37,11 @@
 | [BC-S01-013](S0-01-input.md#bc-s01-013) | S0-01 | 文本“(图)”无真图却产出 `models_provided` | verified |
 | [BC-S01-011](S0-01-input.md#bc-s01-011) | S0-01 | modify 被当新任务数量（v0.2 已修） | verified |
 | [BC-S01-012](S0-01-input.md#bc-s01-012) | S0-01 | 软/硬偏好不分（v0.2 已修） | verified |
+| [BC-S05-001](S0-05-session.md#bc-s05-001) | S0-05 | 规则 router 对同义改写脆弱（holdout 7/14） | open |
+| [BC-S05-002](S0-05-session.md#bc-s05-002) | S0-05 | LLM 把“同款更多图”判成加车型 | open |
+| [BC-S05-003](S0-05-session.md#bc-s05-003) | S0-05 | “第三张图错了”纠错 vs 替换的 hard/soft | product-decision |
+| [BC-S05-004](S0-05-session.md#bc-s05-004) | S0-05 | “只要沙漠版”范围 vs 排除 | product-decision |
+| [BC-S05-005](S0-05-session.md#bc-s05-005) | S0-05 | “全都换成进口的”reset vs scope | product-decision |
 
 ## 3. 流程
 
