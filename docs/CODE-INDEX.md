@@ -26,6 +26,7 @@
 | brief 旧路径（silent） | `briefing.generate_brief(use_taskspec=False)`（库默认）、`build_brief.py --legacy-brief`；仅对照/回滚 |
 | 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
+| S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |
