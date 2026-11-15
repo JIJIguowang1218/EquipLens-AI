@@ -732,3 +732,15 @@ h3 2.0（1–4）、h4 2.7（1–4）。
   2. brief 增量/只重跑受影响 target 仍是 delta run 模拟；
   3. 编辑后“第 N 张”按**活跃列表**取号，登记 BC-S05-008（product-decision）；
 - S4 仍 `planned`；未新增正式 run。
+
+
+### 47. 交付编号口径与续接清理（2026-11-15）
+
+- 拍板 **BC-S05-008**：交付资产用稳定 `seq`（原始编号），新资产 `seq+1`，旧编号不回收；
+  删除/替换只标 `superseded`，不物理删除；“第 N 张”永远指 `seq=N`；
+- `Session` 实现 `next_seq`/`seq`，`apply_pending` 按 `seq` 定位；新增
+  `test_original_index_after_supersede`；`test_session_engine` **7/7**；
+- 续接文档清理：`HANDOFF.md` 顶部“当前断点”设为权威（> STAGES > 历史章节），
+  标记 §0.0/§0.1 为历史，补 M4.3 范围、seq 口径、push 状态与待办；
+  `CURRENT-ARCHITECTURE.md` 顶部加 2026-11-15 覆盖说明，避免旧“feedback router/LangGraph”描述误导；
+- 影响面：Session 原型编号语义 + 文档；未接引擎、未改 S0–S3、未新增 run。

@@ -5,31 +5,37 @@
 | 更新日期 | **2026-11-15** |
 | 当前阶段 | **S0-05 原型（S4 planned）；M4.2 三个 live 会话完成，M4.3 未开始**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
-| 最新提交 | `d37e586`（M4.2 live 会话）；完整测试报告 `docs/fulltest-report-20261114.md`。 |
-| 工作树提醒 | 2026-11-15：`main` ahead **23 未 push**；仅未跟踪 PDF/promo 文件，无未提交源码。 |
+| 最新提交 | 见 `git log -1`（本文件不锁 commit）；完整测试报告 `docs/fulltest-report-20261114.md`（历史）。 |
+| 工作树提醒 | 2026-11-15：已 push 到 `origin/main`；仅未跟踪 PDF/promo 文件，无未提交源码。 |
 
 > 换机/接续只需读 **§0.0（进度与下一步）** 和 **§0.1（30 分钟环境）**；
 > §1 之后是历史记录，不必通读。
 
 ## ⏸ 当前断点（2026-11-15，换机用）
 
-- **分支 `main`，ahead 23，未 push**。换电脑前二选一：
-  1. 授权 `git push`（推荐，最省事）；
-  2. 整目录拷贝（含 `.git`），否则新机器只有远程 `80981bb`，会丢掉最近 23 个提交。
-- 正式链路（`scripts/check_stages.py`）：`S0=taskspec-v0.4`、`S1/S2=p8-idmatch`、
-  `S3=manifest-v1`、`S4=planned`；6 阶段 0 问题。
-- 换机检查：对 agent 说 **“检查主体代码索引”**；它跑
-  `PYTHONPATH=src python scripts/check_machine.py`，预期 9 项全 PASS
-  （taskspec 21/21、briefing 6/6、identity 10/10、planning 17/17、ledger 111/0、scan 0）。
-- 最近验证：`test_session` 15/15、`session_router` 15/15、`session_engine` 6/6、
-  `retrieval_engine` 48/48；M4.2 三个 live 会话 18/18 交付（704.6s、123 查询）。
-- **下一步**：M4.3（中途 patch 真正影响引擎 / 增量重排；复跑 3 live）；
-  之后 S4 才从 planned → active。BL-006 扩大测试仍排期。
-- **待拍板**：
-  1. BC-S05-008：“第 N 张”按当前活跃列表还是原始交付编号（影响纠错/删除）；
-  2. M4.3 是否按“先 view/quality 过滤，再 add_targets delta plan”的范围做；
-  3. 换机前是否 push（否则需整目录拷贝）。
+> **权威优先级**：本节 > `docs/STAGES.md` / `stages.json` > 本文 §0.0 及以后历史章节。
+> 历史章节保留背景，但其中的“下一步/最新数据/旧计数”不代表当前状态；冲突时以本节和 STAGES 为准。
 
+- 分支 `main`，已 push；新机器直接 `git pull --ff-only origin main`。
+- 正式链路：`S0=taskspec-v0.4`、`S1/S2=p8-idmatch`、`S3=manifest-v1`、`S4=planned`；
+  `scripts/check_stages.py` = 6 阶段 0 问题。
+- 换机检查：说 **“检查主体代码索引”** → `scripts/check_machine.py`；预期 9 项 PASS
+  （taskspec 21/21、briefing 6/6、identity 10/10、planning 17/17、ledger 111/0、scan 0）。
+- 最近验证：`session 15/15`、`session_router 15/15`、`session_engine 7/7`、
+  `retrieval_engine 48/48`；M4.2 三个 live 会话 18/18（704.6s、123 查询、degraded 10/18）。
+- **索引口径（2026-11-15 拍板）**：
+  - 交付资产用**稳定序号 `seq`**（原始编号），不因删除/纠错而重排；
+  - 新资产 `seq+1`，`asset_id` 不可变；被删/被换只标 `superseded`，不物理删除；
+  - “第 N 张”永远指 `seq=N`；新图不占用旧编号；UI 可隐藏 superseded，但编号不回收。
+- **下一步 M4.3（已同意范围）**：
+  1. `views/quality/parts` 在下一个 FETCH 边界写入引擎过滤；
+  2. `plan.negative` 下一轮查询加负词 + FILL 过滤；
+  3. `plan.add_targets` 走 delta plan，只检索新增 target；
+  4. 复跑 M4.2 的 3 个 live case，指标：delta 查询 ≤25%、重复交付 0、
+     exact 完整 100%、耗时增量 ≤20%；
+  5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
+- **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
+  BL-002 S1/S2 legacy 标注。
 
 ### 提交约定（2026-11-13 修订）
 
@@ -65,7 +71,7 @@
 > - 单轮 12 槽实测：约 ¥0.3–0.5（含规划/引用核验/抓取），5 输入合计约 ¥2.06（峰时）
 
 
-## 0.0 当前进度与下一步（2026-11-13 交接版）
+## 0.0 历史进度（2026-11-13/14 交接版，非当前状态）
 
 **位置**：检索 v1 已收敛；交付链路（5 输入泛化测试）已跑通；**第一次正式用户交付尚未发出**。
 
@@ -194,7 +200,7 @@
   `p7-screen-r{2,3}-20261114/`、`p8b/p8c-topup4-20261114/`；
   `images/` 不同步，审核页可能缺图。
 
-### 下一步（2026-11-14 定）
+### 历史下一步（2026-11-14 定，已被顶部 M4.3 取代）
 
 1. **候选池供给**：`--topup 4` 已 opt-in 验证（h4 2/4→4/4 与 3/4；s6 两次 4/4），
    但波动未消除；下一步评估 wide+**离类护栏**，仍不按类目写死。
@@ -262,7 +268,7 @@ cost_usd, latency_sec, source, caveat
 没有这些字段的实验，只能算探索，不能拿来做“优化提升”统计。  
 初始 vs 最终的边界见 `docs/INITIAL-VS-FINAL.md`。
 
-## 0.1 换电脑 30 分钟接续（2026-11-13）
+## 0.1 换电脑 30 分钟接续（2026-11-13 历史步骤；当前命令以顶部断点为准）
 
 ### 1) 拉代码与 Python
 

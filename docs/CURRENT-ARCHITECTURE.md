@@ -1,11 +1,17 @@
 # 当前整体技术框架（单一事实源）
 
-更新：2026-11-13  
+更新：2026-11-15  
 用途：任何打包/封装/新会话先读这里，避免把旧策略、fixture、预置假数据带进产品。
 
 ## 1. 当前产品阶段
 
-**检索模块 v1 收敛中；第一次用户交付准备阶段。**
+**检索模块 v1 已收敛；S0 任务单切到 TaskSpec v0.4；S0-05 Session 原型（S4 planned）。**
+
+> 2026-11-15 覆盖说明：正式链路以 [`STAGES.md`](STAGES.md) / `stages.json` 为准。
+> 本文下方“下一步 feedback router → LangGraph spike”等描述已被
+> [`s0-05-session-loop-plan-20261115.md`](s0-05-session-loop-plan-20261115.md) 与
+> [`s0-05-router-strategy-20261115.md`](s0-05-router-strategy-20261115.md) 取代；
+> 其余历史段落仅作背景。
 
 - 正常检索：360 主通道，**N 槽（N = brief.request.page_budget.vehicle_slots，用户输入）**，意图排序，gate v4，RuleVerifier，fill，audit，交付 **N 主 + 4 备**；
 - 已停止继续扩源（Query/Source/Platform 实验收口）；

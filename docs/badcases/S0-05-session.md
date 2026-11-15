@@ -111,10 +111,12 @@ LLM 的 hard 判定明显更稳（13/14），但 target 粒度仍会错（“同
 
 ## BC-S05-008
 
-- **状态**：product-decision
+- **状态**：by-design（2026-11-15 拍板）
 - **现象**：live 中先纠错第 1 张（标 superseded），再“删掉第 2 张”；
   当前实现按**活跃交付列表**取第 2 张（原第 3 张），不是原始第 2 张。
 - **触发输入（[test]）**：`第 1 张不对` → `删掉第 2 张`（同一会话）。
-- **两种口径**：① 按当前可见列表（隐藏 superseded 后重新编号）；② 按原始交付编号。
-- **建议**：UI 显示“当前列表”就按 ①；若显示“原始编号”则按 ②。需产品定；
-  在定之前，patch 里记录 `index_basis: active|original`，避免歧义。
+- **拍板**：按**原始交付编号 `seq`**（②）。新资产 `seq+1`，旧编号不回收；
+  被删/被换的资产保留 `seq` 并标 `superseded`，不参与后续交付，但不物理删除；
+  “第 N 张”永远指 `seq=N`；patch 记录 `index_basis=original`。
+- **实现**：`Session` 增加 `next_seq`/`seq`；`deliver` 编号；`apply_pending` 按 `seq` 定位；
+  测试 `test_original_index_after_supersede`。

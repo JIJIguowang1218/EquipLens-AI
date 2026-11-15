@@ -185,6 +185,7 @@ class Session:
         self.patches: list[dict] = []
         self.events: list[dict] = []
         self.delivered: list[dict] = []
+        self.next_seq = 0
         self.blacklist: list[dict] = []
         self.preferences: dict = {}
         self.rounds = 0
@@ -201,9 +202,9 @@ class Session:
         return {"class": req.get("class") or "",
                 "targets": (self.brief or {}).get("targets") or [],
                 "delivered": {"count": len(self.delivered), "last_round": self.version,
-                              "assets": [{"index": i + 1, "asset_id": d.get("asset_id") or d.get("sha1"),
+                              "assets": [{"seq": d.get("seq"), "asset_id": d.get("asset_id") or d.get("sha1"),
                                           "model": d.get("model"), "status": d.get("status")}
-                                         for i, d in enumerate(self.delivered[:20])]},
+                                         for d in self.delivered[:20]]},
                 "last_patches": self.patches[-3:],
                 "preferences": self.preferences}
 
@@ -291,7 +292,6 @@ class Session:
         return self.status()
 
     def apply_pending(self) -> None:
-        active_snapshot = [d for d in self.delivered if d.get("status") == "active"]
         for p in self.pending:
             self.patches.append(p.as_dict())
             self.brief.setdefault("session_patches", []).append(p.as_dict())
@@ -305,8 +305,8 @@ class Session:
                               "verify.blacklist", "fill.replace"):
                 # 只降级目标资产；不物理删除
                 hit = None
-                if idx and 0 < idx <= len(active_snapshot):
-                    hit = active_snapshot[idx - 1]
+                if idx:
+                    hit = next((d for d in self.delivered if d.get("seq") == idx), None)
                 if hit is not None:
                     hit["status"] = "superseded"
                     hit["superseded_by"] = p.patch_id
@@ -342,7 +342,10 @@ class Session:
             if any(self.asset_key(d) == key and d.get("status") == "active" for d in self.delivered):
                 skipped.append(key)
                 continue
-            item = dict(a, status="active", round=self.version)
+            self.next_seq += 1
+            item = dict(a, seq=self.next_seq,
+                        asset_id=a.get("asset_id") or f"a-{self.next_seq:06d}",
+                        status="active", round=self.version)
             self.delivered.append(item)
             added.append(key)
         self.state = SessionState.DELIVERED
@@ -355,6 +358,7 @@ class Session:
                 "brief": self.brief, "brief_versions": self.brief_versions,
                 "patches": self.patches, "events": self.events, "delivered": self.delivered,
                 "blacklist": self.blacklist, "preferences": self.preferences,
+                "next_seq": self.next_seq,
                 "rounds": self.rounds, "max_rounds": self.max_rounds,
                 "last_checkpoint": self.last_checkpoint}
 
@@ -370,6 +374,7 @@ class Session:
         s.delivered = data.get("delivered") or []
         s.blacklist = data.get("blacklist") or []
         s.preferences = data.get("preferences") or {}
+        s.next_seq = data.get("next_seq") or max([d.get("seq", 0) for d in s.delivered] + [0])
         s.rounds = data.get("rounds", 0)
         s.last_checkpoint = data.get("last_checkpoint", "PLANNING")
         return s
