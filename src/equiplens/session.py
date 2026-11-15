@@ -48,6 +48,7 @@ class Patch:
     value: object = None
     confidence: float = 0.9
     destructive: bool = False
+    enforce: str = "soft"
     source_msg_id: str = ""
     note: str = ""
     patch_id: str = field(default_factory=lambda: "p-" + uuid.uuid4().hex[:8])
@@ -58,6 +59,7 @@ class Patch:
             "patch_id": self.patch_id, "base_version": self.base_version,
             "target": self.target, "op": self.op, "value": self.value,
             "confidence": self.confidence, "destructive": self.destructive,
+            "enforce": self.enforce,
             "source_msg_id": self.source_msg_id, "note": self.note,
         }
 
@@ -75,35 +77,49 @@ def classify_text(text: str) -> dict:
         out["reason"] = reason
 
     import re as _re
-    if _re.search(r"第\s*\d+\s*张.*(删|去掉|不要)", t) or _re.search(r"第\s*\d+\s*张.*删了", t):
-        out.update(hard=True, destructive=True, confirm=True)
-        add("delivered.remove", "删除已交付内容，需确认")
-        return out
-    if any(k in low for k in ("删除第", "删掉第", "去掉第", "不要第", "把第")):
-        out.update(hard=True, destructive=True, confirm=True)
-        add("delivered.remove" if "删" in low or "去掉" in low else "delivered.replace",
-            "涉及已交付内容删除/替换，需确认")
-        return out
-    if "换掉" in low or ("换成" in low and "第" in low):
-        out.update(hard=True, destructive=True, confirm=True)
-        add("delivered.replace", "替换已交付内容，需确认")
-        return out
     if any(k in low for k in ("重新来", "全部重来", "重做一遍", "全部重做",
                               "全都不要", "全部不要", "重新选", "全部重选")):
-        out.update(hard=True, destructive=True, confirm=True)
-        add("session.reset", "重置整批，需确认")
+        out.update(hard=True, destructive=True, confirm=True, enforce="hard")
+        add("session.reset", "重大调整，先确认")
         return out
-    if ("数量" in t or "台数" in t) and any(k in t for k in ("改成", "改为", "调到")):
-        out.update(hard=True)
+    if "品牌" in t and ("不要" in t or "换成" in t):
+        out["enforce"] = "hard"
+        add("plan.negative", "排除旧品牌")
+        add("plan.add_targets", "补入新品牌")
+        return out
+    if ("数量" in t or "台数" in t) and any(k in t for k in ("改成", "改为", "调到", "加到")):
+        out.update(hard=True, enforce="hard")
         add("plan.quantity", "修改总量，需重排交付")
         return out
     if any(k in t for k in ("6×6", "6x6", "8×8", "8x8", "4×2", "4x2")) and any(k in t for k in ("换", "改")):
-        out.update(hard=True)
+        out.update(hard=True, enforce="hard")
+        add("plan.configuration", "修改驱动构型，需重排候选")
+        return out
+    clear_target = bool(_re.search(r"第\s*\d+\s*张", t)) or bool(_re.search(r"[A-Za-z]{2,}\d{2,}", t))
+    image_ctx = clear_target or any(k in t for k in ("张", "图", "照片"))
+    destructive_verb = any(k in low for k in ("删", "去掉", "换掉", "换成"))
+    if destructive_verb and image_ctx and clear_target:
+        out.update(hard=False, destructive=True, confirm=False, enforce="hard")
+        if "删" in low or "去掉" in low:
+            add("delivered.remove", "目标明确：降级旧图，不删除")
+        else:
+            add("delivered.replace", "目标明确：降级旧图并补新图")
+        return out
+    if destructive_verb and image_ctx:
+        out.update(hard=False, destructive=True, confirm=True, enforce="hard")
+        add("delivered.remove", "未指明哪张/哪个型号，先确认")
+        return out
+    if ("数量" in t or "台数" in t) and any(k in t for k in ("改成", "改为", "调到")):
+        out.update(hard=True, enforce="hard")
+        add("plan.quantity", "修改总量，需重排交付")
+        return out
+    if any(k in t for k in ("6×6", "6x6", "8×8", "8x8", "4×2", "4x2")) and any(k in t for k in ("换", "改")):
+        out.update(hard=True, enforce="hard")
         add("plan.configuration", "修改驱动构型，需重排候选")
         return out
     if any(k in low for k in ("改成", "改做", "换类目", "换个类目", "只要精确",
                               "不要邻近", "比例改", "邻近改")):
-        out.update(hard=True, confirm=False)
+        out.update(hard=True, confirm=False, enforce="hard")
         add("scope.ratio", "范围/类目切换，需重启受影响节点")
         return out
     if any(k in low for k in ("先停", "暂停", "等一下", "停一下")):
@@ -132,9 +148,11 @@ def classify_text(text: str) -> dict:
             add("fill.quota", "增加数量")
         return out
     if any(k in t for k in ("不要", "排除", "去掉", "别给")):
-        add("plan.negative", "排除项")
+        out["enforce"] = "hard"
+        add("plan.negative", "排除是硬约束；检索侧 soft 打断，FILL 过滤 + 负词")
         return out
     if any(k in t for k in ("不对", "不是", "错了", "搞错")):
+        out["enforce"] = "hard"
         add("verify.blacklist", "纠正错误款型")
         add("fill.replace", "替换错误图")
         return out
@@ -198,6 +216,7 @@ class Session:
                     "question": "你想改哪一部分？（视角/数量/品牌/删除/范围）", "status": self.status()}
         patches = [Patch(target=t, value={"text": text}, confidence=res.get("confidence", 0.8),
                          destructive=bool(res.get("destructive")),
+                         enforce=res.get("enforce", "soft"),
                          source_msg_id=msg_id, note=res.get("reason", ""), base_version=self.version)
                    for t in res["targets"]]
         for p in patches:

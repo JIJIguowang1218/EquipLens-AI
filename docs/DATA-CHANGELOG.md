@@ -629,3 +629,18 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - 新增 badcase：BC-S05-001/002 open，003/004/005 product-decision；
   参数按建议默认：max_rounds=5、delta 查询 25%/抓取 20%、提问 1 条/轮、JSON 持久化；
 - 影响面：新增会话原型 + 单测 + 文档；不改 S0–S3、不改默认、未新增 run。
+
+
+### 40. S0-05 两轴语义与交付编辑策略（2026-11-15，拍板后修订）
+
+- 拍板：**约束强度**与**打断类型**分开——排除项（不要品牌/挂车）是 `enforce=hard` 的硬约束，
+  但 `hard=False` 的 soft 打断（checkpoint 应用 FILL 过滤 + 下一轮负词），不取消在途、不重排配额；
+  只有范围/数量/构型/重置才 hard 打断；
+- 交付编辑：目标明确（“第 3 张/该型号”）→ **不确认**，旧资产标 `superseded` 并补新图，
+  **交付前不物理删除**；目标不明确 → 1 个问题；“全部/整批重来” → 1 个问题；
+- `session.py`：Patch 增 `enforce` 字段；clear destructive → hard=False/confirm=False；
+  ambiguous → confirm=True；reset → hard=True/confirm=True；新增品牌替换分支；
+- 测试：`test_session` **14/14**；调参集 28/28 按新口径重跑（调参集非泛化证据，
+  holdout 仍以 M3 hybrid 复测为准）；
+- badcase：BC-S05-003/004/005 → `by-design`；001/002 仍 open；
+- 影响面：会话原型 + 文档；未接引擎、未改 S0–S3、未新增 run。

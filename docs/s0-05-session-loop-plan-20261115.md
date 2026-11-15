@@ -56,7 +56,7 @@ IDLE                                        BRIEF_READY
 | 类型 | 例子 | Patch 目标 | 起始节点 | 默认打断 |
 |---|---|---|---|---|
 | F1 视图/角度 | “要正脸” | `fetch.filters.views` | FETCH 或 FILL 重排 | soft |
-| F2 款型纠错 | “第 3 张不是沙漠版” | `verify.blacklist` + `fill.replace` | VERIFY → FILL | soft |
+| F2 款型纠错 | “第 3 张不是沙漠版” | `verify.blacklist` + `fill.replace` | VERIFY → FILL | soft（目标明确不确认） |
 | F3 质量 | “高清、不要水印” | `fetch.filters.quality` | FETCH/FILL | soft |
 | F4 同型号扩充 | “这个型号还有图吗” | `fill.quota` / `fetch.more` | FETCH | soft |
 | F5 品牌/车型扩充 | “再找陕汽的” | `plan.add_targets` | EXTERNAL_DISCOVER/plan | soft |
@@ -64,10 +64,18 @@ IDLE                                        BRIEF_READY
 | F7 部件细节 | “看前脸格栅” | `fetch.parts` | FETCH | soft |
 | F8 范围/配额 | “多来点邻近/只要精确” | `scope.ratio` | plan | hard（改变任务定义） |
 | F9 交付/呈现 | “再补 2 台/按品牌分组” | `presentation` / `fill.quota` | FILL/交付 | soft |
-| FX 破坏性 | “删掉第 2 台/换掉已交付的” | `delivered.remove` | 需要确认 | hard + confirm |
+| FX 破坏性 | “删掉第 2 张/换掉已交付的” | `delivered.remove` | 目标明确：不确认；不明确：确认 | soft（降级不删） |
+| FX2 重置 | “全部重来” | `session.reset` | 先问 1 个问题 | hard + confirm |
 
-**判定规则**：涉及“已交付内容删除/替换”或“类目/范围切换”→ hard + confirm；
-其余默认 soft，在下一个 checkpoint 生效。
+**判定规则**（两个轴，不要混）：
+
+1. **约束强度**：是否必须满足（“不要挂车”是硬约束，必须排除；“要正脸”是软偏好）；
+2. **打断类型**：是否要取消在途/重排计划（范围/数量/构型/重置=hard；排除/视角/质量/交付编辑=soft）。
+
+- 交付编辑目标明确（“第 3 张”“该型号”）→ **不必确认**，标 `superseded` 并补新图，交付前不删除；
+- 目标不明确（“删掉一张”）→ 先问 1 个问题；
+- “全部/整批 + 重来/换”→ 先问 1 个问题，不自动 reset；
+- 排除项：`enforce=hard`、`hard=False`，在 checkpoint 应用 FILL 过滤 + 下一轮负词。
 
 ## 3. Patch 契约
 
@@ -226,7 +234,8 @@ PYTHONPATH=src python scripts/run_session.py --session tmp/session.json --input 
 缓存键不稳导致重复抓取。
 
 **需要拍板**：
-1. soft/hard 默认是否按 §2 表（范围/删除=hard，其余 soft）？
+1. ~~soft/hard 默认~~ **已拍板**：范围/数量/构型/重置=hard；排除=约束 hard + 打断 soft；
+   交付编辑目标明确不确认、不明确才确认；交付前不删除。
 2. 单 session 最大轮次（建议 5）与 delta 预算（25%/20%）？
 3. 破坏性操作是否一律二次确认（建议是）？
 4. 持久化先用 JSON（建议）还是直接 SQLite？

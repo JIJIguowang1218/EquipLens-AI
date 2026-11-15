@@ -49,19 +49,33 @@ def test_soft_patch_at_checkpoint():
     assert s.brief_versions[0]["hash"] != s.brief_versions[1]["hash"]
 
 
-def test_destructive_requires_confirm():
+def test_clear_destructive_no_confirm():
     s = Session(brief())
     s.deliver([asset(1), asset(2)])
     r = s.interrupt("删掉第2张", msg_id="m2")
-    assert r["clarify"] and s.state == SessionState.CLARIFYING, r
-    assert s.version == 1
-    r2 = s.confirm(False)
-    assert r2["accepted"] is False and s.version == 1
-    r3 = s.interrupt("删掉第2张", msg_id="m3")
-    assert r3["clarify"]
-    r4 = s.confirm(True)
-    assert r4["accepted"] and s.version == 2
+    assert not r.get("clarify") and r["hard"] is False, r
+    s.checkpoint("FILL")
+    assert s.version == 2
     assert any(d["status"] == "superseded" for d in s.delivered)
+    assert len(s.delivered) == 2  # 不物理删除
+
+
+def test_ambiguous_destructive_asks():
+    s = Session(brief())
+    r = s.interrupt("删掉一张", msg_id="m2b")
+    assert r.get("clarify") and s.state == SessionState.CLARIFYING, r
+
+
+def test_reset_asks():
+    s = Session(brief())
+    r = s.interrupt("全部重来", msg_id="m2c")
+    assert r.get("clarify") and s.state == SessionState.CLARIFYING, r
+
+
+def test_negative_is_hard_constraint_soft_interrupt():
+    r = classify_text("不要挂车，不要内饰")
+    assert r["hard"] is False and r["enforce"] == "hard", r
+    assert "plan.negative" in r["targets"]
 
 
 def test_pause_resume():
