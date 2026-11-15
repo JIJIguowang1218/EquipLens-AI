@@ -188,6 +188,11 @@
 > 第一段有界回环、增量交付）——设计见
 > [`docs/adjacent-scope-design-20261114.md`](adjacent-scope-design-20261114.md)；
 > 未实现、默认关闭。
+>
+> **外部咨询（2026-11-15，已评估）**：豆包检索链路意见已归档
+> [`docs/external/2026-11-15-doubao-retrieval-consult.md`](external/2026-11-15-doubao-retrieval-consult.md)，
+> 评估与事实核查见 [`docs/doubao-consult-review-20261115.md`](doubao-consult-review-20261115.md)；
+> 结论：视觉证据/通道接入“部分采纳”，LLM 型号冷启动仅作查询种子，待拍板项见该文 §8。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 
