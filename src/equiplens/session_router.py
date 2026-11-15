@@ -33,7 +33,8 @@ ACTIONS = {
 PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用户会对当前任务追加一句话要求。
 只输出 JSON：
 {"hard":bool,"targets":[...],"destructive":bool,"confirm":bool,"enforce":"hard|soft",
- "confidence":0.0,"evidence":"","reason":"","asset_index":null}
+ "confidence":0.0,"evidence":"","reason":"","asset_index":null,
+ "values":{"<target>":{...}}}
 
 判定规则：
 1) hard=true 只用于改变任务定义：范围/类目（scope.ratio）、数量（plan.quantity）、
@@ -48,6 +49,10 @@ PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用�
 6) “全部/全都/整批 + 重来/换” → session.reset, hard=true, destructive=true, confirm=true；
 7) targets 只能从下面的动作里选（可多选，最多 3 个）；无法判断就空数组；
 8) evidence 必须引用用户原话片段；confidence 0–1。
+9) values 可选，给出该 target 的结构化值：fetch.filters.views={"views":["front"|"side"|"45"|"rear"|"roof"]}；
+   fetch.filters.quality={"min_width":1200} 或 {"no_watermark":true}；fetch.parts={"parts":["格栅"]}；
+   plan.negative={"terms":["北奔"]}；plan.add_targets={"models":["HOWO TX"]}；
+   plan.quantity={"primary":12}；plan.configuration={"value":"8x8"}。
 
 动作定义：
 {actions}
@@ -119,6 +124,9 @@ def guard(text: str, proposal: dict) -> dict:
     except (TypeError, ValueError):
         out["asset_index"] = None
     out["reason"] = str(proposal.get("reason") or "")[:160]
+    vals = proposal.get("values") if isinstance(proposal.get("values"), dict) else {}
+    out["values"] = {k: v for k, v in vals.items()
+                     if k in ALLOWED_TARGETS and isinstance(v, dict)}
     if len(uniq) > 3:
         out["clarify"] = True
         out["targets"] = uniq[:3]

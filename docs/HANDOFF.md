@@ -35,7 +35,39 @@
      exact 完整 100%、耗时增量 ≤20%；
   5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
 - **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
-  BL-002 S1/S2 legacy 标注。
+  BL-002 S1/S2 legacy 标注；BL-010 TaskSpec 字段接线（P0 是首次交付硬门槛）。
+- **M4.3 进度（2026-11-15 晚）**：patch → 引擎接线已完成（`engine.apply_patches` +
+  `session.apply_to_brief`；views/parts/quality 写 brief、negative 进 `brief.negative` + FILL 过滤、
+  add_targets 只抓新增 target）。`test_session_engine` **12/12**。**live 3 case 尚未复跑**：
+  M4.2 的冻结 brief/plan 与 `tmp/s0-05/live_session.py` 在另一台机器上，需拷过来或重生成计划后再跑。
+
+## 0.2 推进流程（单一事实源，2026-11-15）
+
+> 任何"机制 / 决策 / 缺陷"都走同一条流水线，不在聊天里定案。
+> 顺序固定：先台账定状态，再动代码；先有实验结论，再改状态机。
+
+1. **建条目**：外部意见 → [`docs/external/doubao-consult-decisions.md`](external/doubao-consult-decisions.md)（ID `S0-01`…）；
+   实现缺陷 → [`docs/badcases/`](badcases/README.md)（`BC-<模块>-<序号>`）；工程待办 → [`docs/BACKLOG.md`](BACKLOG.md)（`BL-xxx`）。
+   编号只增不改、永不复用。
+2. **预注册实验**：单变量，先写判据/停止阈值；编号沿用 `E*`（历史）或 `V*`（外部意见验证）。
+   数据落 `data-test/evals/` 或 `data-test/runs/`，必须能从脚本重建；`tmp/` 只放临时资产（机器本地、gitignored）。
+3. **回填决策**：结论写回台账（`待评 → 测试中 → 采纳/改进/不采纳/已归档`），**必须写依据**（实验 ID / 数据 / 拍板人），
+   同时在 §7 决策日志追加一行。**没有依据不改状态**；`待评` 只表示"尚未开始评估"。
+4. **改代码/机制**：先改 [`docs/stages.json`](stages.json)（旧条目移 `legacy` 并标 `silent`），再改代码；
+   跑 `check_stages.py` + 受影响的单测。
+5. **同步索引**（缺一不可）：
+   - [`docs/STAGES.md`](STAGES.md)：人读状态机；
+   - [`docs/CODE-INDEX.md`](CODE-INDEX.md)：代码在哪、正式/legacy 标注；
+   - [`docs/DATA-CHANGELOG.md`](DATA-CHANGELOG.md)：替换原因、影响面、回滚方式；
+   - [`docs/EXPERIMENTS-INDEX.md`](EXPERIMENTS-INDEX.md)：结论 → 数据 → 脚本 → commit；
+   - [`docs/BACKLOG.md`](BACKLOG.md)：完成写 commit/验证，新待办挂 ID；
+   - 本节顶部"⏸ 当前断点"：每次收口更新。
+6. **提交**：英文 Conventional Commits，一 commit 一类事；提交前 `python scripts/scan_secrets.py`。
+7. **收口检查**：`check_machine.py`（或 `--full`）+ `check_stages.py`，并确认台账/索引没有过期状态
+   （典型：代码已实现、台账还写 `待评`）。
+
+反模式（明确禁止）：代码已切但状态机没改；状态机改了但入口没接；台账状态没依据就改；
+实验数据只在聊天里、不入 `data-test/`；同一个 holdout 反复调参。
 
 ### 提交约定（2026-11-13 修订）
 

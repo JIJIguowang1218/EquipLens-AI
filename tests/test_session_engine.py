@@ -136,6 +136,108 @@ def test_added_brand_delta_run():
         assert all(d["status"] == "active" for d in s.delivered)
 
 
+def _advance(e, st, pred, limit=14):
+    for _ in range(limit):
+        if pred(st) or st.get("finished"):
+            return st
+        st = e.step(st)
+    return st
+
+
+def _at_fetch_with_targets(e, st):
+    return _advance(e, st, lambda s: s.get("state") == "FETCH" and s.get("active_targets"))
+
+
+def test_views_patch_reaches_part_requirement():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world_for()), run_root=td, run_id="v1")
+        st = _at_fetch_with_targets(e, e._load_or_init())
+        s = Session(b)
+        s.start()
+        r = s.interrupt("都要侧面", msg_id="v1")
+        assert r["ok"] and not r.get("clarify"), r
+        s.apply_pending()
+        assert s.patches[0]["target"] == "fetch.filters.views", s.patches
+        assert s.patches[0]["value"]["data"] == {"views": ["side"]}, s.patches[0]["value"]
+        res = e.apply_patches(st, s.patches)
+        assert res["applied"] == ["fetch.filters.views"], res
+        assert "side" in e.brief.parts_by_key["bumper"].views
+        out = s.apply_to_brief(b)
+        assert "side" in out["part_requirements"][0]["views"]
+
+
+def test_quality_patch_sets_min_width():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world_for()), run_root=td, run_id="q1")
+        st = e._load_or_init()
+        res = e.apply_patches(st, [{"target": "fetch.filters.quality",
+                                    "value": {"data": {"min_width": 1600}}}])
+        assert res["applied"] == ["fetch.filters.quality"], res
+        assert e.brief.request["min_width"] == 1600
+
+
+def test_negative_patch_filters_fill():
+    def world(model):
+        return {"external": {"u-exact": [TE.target("t-howo", ["bumper"])]},
+                "assets": {"t-howo": {"bumper": [dict(TE.asset("a1"), model=model)]}},
+                "verify": {"a1": TE.ok()}}
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world("HOWO TX")), run_root=td, run_id="n1")
+        st = _at_fetch_with_targets(e, e._load_or_init())
+        s = Session(b)
+        s.start()
+        r = s.interrupt("不要 HOWO", msg_id="n1",
+                        result={"targets": ["plan.negative"],
+                                "values": {"plan.negative": {"terms": ["HOWO"]}},
+                                "confidence": 0.9})
+        assert r["ok"], r
+        s.apply_pending()
+        e.apply_patches(st, s.patches)
+        summary = e.run()
+        assert summary["delivery"]["delivered"] == 0, summary["delivery"]
+        e2 = RetrievalEngine(Brief.from_dict(b), FakeWorld(world("HOWO TX")), run_root=td, run_id="n2")
+        assert e2.run()["delivery"]["delivered"] == 1
+
+
+def test_add_targets_patch_only_fetches_new():
+    w = {"external": {"u-exact": [TE.target("old", ["bumper"])]},
+         "assets": {"old": {"bumper": [TE.asset("a-old")]},
+                    "howo-8x4": {"bumper": [TE.asset("a-new")]}},
+         "verify": {"a-old": TE.ok(), "a-new": TE.ok()}}
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(w), run_root=td, run_id="d1")
+        st = _at_fetch_with_targets(e, e._load_or_init())
+        s = Session(b)
+        s.start()
+        r = s.interrupt("把 HOWO 8x4 加进来", msg_id="d1",
+                        result={"targets": ["plan.add_targets"],
+                                "values": {"plan.add_targets": {"models": ["HOWO 8x4"]}},
+                                "confidence": 0.9})
+        assert r["ok"], r
+        s.apply_pending()
+        res = e.apply_patches(st, s.patches)
+        assert res["added_targets"] == ["HOWO 8x4"], res
+        assert st["active_targets"] == ["howo-8x4"], st["active_targets"]
+        summary = e.run()
+        assert summary["delivery"]["delivered"] == 1, summary["delivery"]
+        assert e.world.calls["fetch"] == 1, e.world.calls
+
+
+def test_parts_patch_adds_requirement():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world_for()), run_root=td, run_id="p1")
+        st = e._load_or_init()
+        res = e.apply_patches(st, [{"target": "fetch.parts",
+                                    "value": {"data": {"parts": ["grille"]}}}])
+        assert res["applied"] == ["fetch.parts:grille"], res
+        assert "grille" in e.brief.parts_by_key
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

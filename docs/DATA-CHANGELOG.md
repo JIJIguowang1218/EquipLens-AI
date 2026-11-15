@@ -734,6 +734,18 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - S4 仍 `planned`；未新增正式 run。
 
 
+### 48. M4.3：Session patch 接入引擎（2026-11-15）
+
+- `engine.apply_patches(state, patches)`：`fetch.filters.views/parts/quality` 写进 brief（views 只产生核验
+  warning，不做硬过滤——视角不否决是 K3 已定案）；`plan.negative` 追加 `brief.negative` 并成为 FILL 过滤集；
+  `plan.add_targets` 新增 Target 并让本轮只抓新增 target（delta）。
+- `session.apply_to_brief(brief)`：同一套 patch 语义的纯函数版本；`session_router` 新增 `values` 结构化值透传。
+- 测试：`test_session_engine` **12/12**（新增 views/quality/parts/negative/add_targets 五条）；
+  `test_session` 15/15、`test_session_router` 15/15 不回归。
+- **未做（需另一台机器资产）**：M4.2 三 case 的 live 复跑与四项指标（delta 查询 ≤25%、重复交付 0、
+  exact 完整 100%、耗时增量 ≤20%）；S4 仍 `planned`。
+- 影响面：S0-05 原型 + 引擎 `apply_patches`；未接正式 CLI/默认链路，未新增 run。
+
 ### 47. 交付编号口径与续接清理（2026-11-15）
 
 - 拍板 **BC-S05-008**：交付资产用稳定 `seq`（原始编号），新资产 `seq+1`，旧编号不回收；

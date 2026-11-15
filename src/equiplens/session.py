@@ -171,6 +171,43 @@ def classify_text(text: str) -> dict:
     return out
 
 
+VIEW_WORDS = (("正脸", "front"), ("前脸", "front"), ("侧脸", "side"), ("侧面", "side"),
+              ("45度", "45"), ("四十五", "45"), ("车尾", "rear"), ("后部", "rear"),
+              ("顶部", "roof"), ("俯视", "roof"))
+PART_WORDS = ("格栅", "保险杠", "大灯", "吊臂", "支腿", "踏步", "后视镜",
+              "罐体", "料斗", "机罩", "配重", "护栏", "前脸格栅")
+
+
+def extract_values(text: str, targets: list[str]) -> dict:
+    """规则抽取 patch 的结构化值（LLM 未给 values 时的兜底）。
+
+    只做“用户原话 → 字段”的映射，不引入领域实体表；negative / add_targets
+    这类需要语义切分的，只信 router 的 values。
+    """
+    t = text or ""
+    out: dict[str, dict] = {}
+    if "fetch.filters.views" in targets:
+        views: list[str] = []
+        for word, v in VIEW_WORDS:
+            if word in t and v not in views:
+                views.append(v)
+        if views:
+            out["fetch.filters.views"] = {"views": views}
+    if "fetch.filters.quality" in targets:
+        q: dict = {}
+        if any(k in t for k in ("高清", "清晰", "分辨率")):
+            q["min_width"] = 1200
+        if "水印" in t:
+            q["no_watermark"] = True
+        if q:
+            out["fetch.filters.quality"] = q
+    if "fetch.parts" in targets:
+        parts = [p for p in PART_WORDS if p in t]
+        if parts:
+            out["fetch.parts"] = {"parts": parts}
+    return out
+
+
 class Session:
     def __init__(self, brief: dict, *, session_id: str = "", max_rounds: int = DEFAULT_MAX_ROUNDS,
                  router=None):
@@ -214,6 +251,37 @@ class Session:
                 "pending": [p.as_dict() for p in self.pending],
                 "delivered": len(self.delivered), "last_checkpoint": self.last_checkpoint}
 
+    def apply_to_brief(self, brief: dict) -> dict:
+        """把已生效 patch 落到 brief（深拷贝，不动引擎）；M4.3 起与引擎共用同一语义。"""
+        import copy as _copy
+        out = _copy.deepcopy(brief or {})
+        for p in self.patches:
+            target = p.get("target")
+            data = ((p.get("value") or {}).get("data") or {}) if isinstance(p.get("value"), dict) else {}
+            if target == "fetch.filters.views" and data.get("views"):
+                for req in out.get("part_requirements") or []:
+                    req["views"] = list(dict.fromkeys(list(req.get("views") or []) + list(data["views"])))
+            elif target == "fetch.parts" and data.get("parts"):
+                existing = {r.get("part") for r in out.get("part_requirements") or []}
+                for part in data["parts"]:
+                    if part not in existing:
+                        out.setdefault("part_requirements", []).append(
+                            {"part": part, "label": part, "location": "",
+                             "design_relevance": "medium", "views": [], "accept": "A",
+                             "mechanism": []})
+            elif target == "fetch.filters.quality" and data.get("min_width"):
+                out.setdefault("request", {})["min_width"] = int(data["min_width"])
+            elif target == "plan.negative":
+                terms = [str(x).strip() for x in (data.get("terms") or []) if str(x).strip()]
+                if terms:
+                    out["negative"] = list(dict.fromkeys(list(out.get("negative") or []) + terms))
+            elif target == "plan.quantity" and data.get("primary"):
+                req = out.setdefault("request", {})
+                req.setdefault("page_budget", {})["vehicle_slots"] = int(data["primary"])
+            elif target == "plan.configuration" and data.get("value"):
+                out.setdefault("request", {})["configuration"] = str(data["value"])
+        return out
+
     def _bump(self) -> None:
         self.version += 1
         self.rounds += 1
@@ -243,13 +311,22 @@ class Session:
             self.state = SessionState.CLARIFYING
             return {"ok": True, "intent": res.get("intent"), "clarify": True,
                     "question": "你想改哪一部分？（视角/数量/品牌/删除/范围）", "status": self.status()}
-        patches = [Patch(target=t, value={"text": text, "asset_index": res.get("asset_index"),
-                                          "index_basis": "original"},
-                         confidence=res.get("confidence", 0.8),
-                         destructive=bool(res.get("destructive")),
-                         enforce=res.get("enforce", "soft"),
-                         source_msg_id=msg_id, note=res.get("reason", ""), base_version=self.version)
-                   for t in res["targets"]]
+        values = res.get("values") if isinstance(res.get("values"), dict) else {}
+        patches = []
+        for t in res["targets"]:
+            data = values.get(t) if isinstance(values.get(t), dict) else None
+            if not data:
+                data = extract_values(text, [t]).get(t)
+            value = {"text": text, "asset_index": res.get("asset_index"),
+                     "index_basis": "original"}
+            if data:
+                value["data"] = data
+            patches.append(Patch(target=t, value=value,
+                                 confidence=res.get("confidence", 0.8),
+                                 destructive=bool(res.get("destructive")),
+                                 enforce=res.get("enforce", "soft"),
+                                 source_msg_id=msg_id, note=res.get("reason", ""),
+                                 base_version=self.version))
         for p in patches:
             if p.target not in ALLOWED_TARGETS:
                 return {"ok": False, "error": f"bad_target:{p.target}", "status": self.status()}

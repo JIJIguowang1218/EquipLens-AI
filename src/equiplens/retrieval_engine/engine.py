@@ -5,12 +5,13 @@ P1 只依赖适配器协议与夹具；不联网、不碰数据库。
 """
 from __future__ import annotations
 
+import re
 import subprocess
 import time
 from pathlib import Path
 from typing import Any
 
-from .contracts import Asset, Brief, ResearchUnit, Target, Verification
+from .contracts import Asset, Brief, PartRequirement, ResearchUnit, Target, Verification
 from .state import RunStore, new_state, record_decision
 
 _CODE_VERSION: str | None = None
@@ -44,6 +45,7 @@ class RetrievalEngine:
         self.run_id = run_id
         self.evidence_writer = evidence_writer
         self.max_steps = max_steps
+        self._negative = {str(x).lower() for x in (brief.negative or []) if str(x).strip()}
         self.handlers = {
             "BRIEF_READY": self._state_brief_ready,
             "LIBRARY_SEARCH": self._state_library_search,
@@ -59,6 +61,61 @@ class RetrievalEngine:
         }
 
     # ---------------------------------------------------------------- public
+    def apply_patches(self, state: dict, patches: list[dict]) -> dict:
+        """把 Session patch 落到 brief/state（M4.3，在状态边界调用）。
+
+        - views/parts/quality → 写 part_requirements / request（核验 warning + 查询词）；
+          **不做硬过滤**：视角不否决是 2026-11-12 已定案（K3）。
+        - plan.negative → brief.negative + FILL 过滤集（下一轮 plan 也会消费）；
+        - plan.add_targets → 新增 Target，并让本轮只抓新增 target（delta）。
+        """
+        applied: list[str] = []
+        added: list[str] = []
+        for p in patches or []:
+            target = p.get("target")
+            data = ((p.get("value") or {}).get("data") or {}) if isinstance(p.get("value"), dict) else {}
+            if target == "fetch.filters.views" and data.get("views"):
+                for req in self.brief.part_requirements:
+                    req.views = tuple(dict.fromkeys(list(req.views) + list(data["views"])))
+                applied.append(target)
+            elif target == "fetch.parts" and data.get("parts"):
+                existing = set(self.brief.parts_by_key)
+                for part in data["parts"]:
+                    if part not in existing:
+                        self.brief.part_requirements.append(
+                            PartRequirement(part=str(part), label=str(part)))
+                        applied.append(f"{target}:{part}")
+            elif target == "fetch.filters.quality" and data.get("min_width"):
+                self.brief.request["min_width"] = int(data["min_width"])
+                for obj in (self.world, getattr(self.world, "verifier", None)):
+                    if obj is not None and hasattr(obj, "min_width"):
+                        obj.min_width = int(data["min_width"])
+                applied.append(target)
+            elif target == "plan.negative":
+                terms = [str(x).strip() for x in (data.get("terms") or []) if str(x).strip()]
+                if terms:
+                    self.brief.negative = list(dict.fromkeys(list(self.brief.negative) + terms))
+                    self._negative = {str(x).lower() for x in self.brief.negative if str(x).strip()}
+                    applied.append(target)
+            elif target == "plan.add_targets":
+                models = [str(m).strip() for m in (data.get("models") or []) if str(m).strip()]
+                unit_id = next(iter(state.get("units") or {}), "")
+                new = []
+                for model in models:
+                    tid = re.sub(r"\s+", "-", model).lower()
+                    if tid in state.get("targets"):
+                        continue
+                    new.append(Target(target_id=tid, model=model, source="session",
+                                      tier="exact",
+                                      parts=tuple(p_.part for p_ in self.brief.part_requirements),
+                                      unit_id=unit_id, role="primary"))
+                    added.append(model)
+                if new:
+                    self._add_targets(state, new)
+                    state["active_targets"] = [t.target_id for t in new]
+                    applied.append(target)
+        return {"applied": applied, "added_targets": added, "negative": sorted(self._negative)}
+
     def _load_or_init(self) -> dict:
         state = self.store.load()
         if state is None:
@@ -302,9 +359,15 @@ class RetrievalEngine:
                 quota = int(unit.get("quota") or 0) or 10 ** 9
                 if len(unit["accepted_targets"]) >= quota:
                     continue
+                def _blocked(aid: str) -> bool:
+                    """负词命中车型：约束必须排除（2026-11-15 两轴口径）。"""
+                    meta = (state.get("asset_meta") or {}).get(aid) or {}
+                    model = str(meta.get("model") or "").lower()
+                    return bool(model) and any(term in model for term in self._negative)
+
                 avail = [aid for part in unit["parts"]
                          for aid in state.get("assets", {}).get(tid, {}).get(part, [])
-                         if aid not in used_assets]
+                         if aid not in used_assets and not _blocked(aid)]
                 _meta = state.get("asset_meta") or {}
 
                 def _primary_tier(aid: str) -> bool:
@@ -319,7 +382,7 @@ class RetrievalEngine:
                         aid for part in unit["parts"]
                         for aid in state.get("assets", {}).get(tid, {}).get(part, [])
                         if state["verifications"].get(f"{aid}:{part}", {}).get("accepted")
-                        and aid not in used_assets and _primary_tier(aid)
+                        and aid not in used_assets and _primary_tier(aid) and not _blocked(aid)
                     ]
                     if not chosen and target.get("citation_ok"):
                         chosen = [aid for aid in avail if _primary_tier(aid)]

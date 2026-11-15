@@ -56,7 +56,7 @@
 | 审核服务 | `review.py`、`reviewserver.py`、`scripts/build_*_review.py` |
 | L3 段落质检 | `passage.py`、`l3gate.py`、`scripts/eval_l3gate.py` |
 | 旧 text/workflow | `textrun.py`、`workflow.py`、`runner.py`、`strategy.py`、`query.py`、`roster.py` |
-| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S0-05 Session 原型，S4 未激活）、`session_router.py`（LLM 提议 + context + 守卫）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
+| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S0-05 Session 原型 + `apply_to_brief`；S4 未激活）、`session_router.py`（LLM 提议 + context + 守卫 + `values` 结构化值）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
 
 ## 4. 实验脚本（不得默认进生产）
 
@@ -93,7 +93,7 @@
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
 | `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化、资产定位（15） |
 | `tests/test_session_router.py` | Router 守卫：白名单/硬软/删除确认/上下文/回退/工厂（15） |
-| `tests/test_session_engine.py` | Session × FakeWorld：step 续跑、checkpoint、交付编辑、纠错定位、原始编号、delta run（7） |
+| `tests/test_session_engine.py` | Session × FakeWorld：step 续跑、checkpoint、交付编辑、纠错定位、原始编号、delta run；M4.3 接线（views/quality/parts/negative/add_targets）（12） |
 | `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（21） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
