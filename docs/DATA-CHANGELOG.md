@@ -655,3 +655,18 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - 明确不写“同义词→target”词表；修正方式为“动作定义 + few-shot 例子”，
   且新 holdout 只用于验收、不参与调参；
 - 影响面：**纯文档**；未改代码/默认，未新增 run。
+
+
+### 42. S0-05 Router M3.1–M3.3：LLM 提议 + 上下文 + 守卫（2026-11-15）
+
+- 新增 `src/equiplens/session_router.py`：动作 schema（16 个 target，非实体表）、
+  LLM 提议 prompt（含 8 个语义示例）、context digest、确定性守卫（白名单/hard/enforce/
+  删除确认/最多 3 target/低置信提问）、无 key 回退规则版；
+- `Session` 支持注入 router；`interrupt` 自动带 `context()`（class/targets/delivered/last_patches）；
+- 新增 `tests/test_session_router.py`：14/14（不联网）；
+- **dev30 四变体**（临时 `tmp/s0-05/`，dev 用于调参）：
+  - 规则 15/30；LLM 无上下文 29/30；LLM+上下文 **30/30**；+守卫 **30/30**；
+  - hard 30/30、destructive/confirm 12/12；
+  - 修正两处 prompt/guard：“只要/仅限”归 scope.ratio；plan.negative 不再覆盖已有的 hard；
+- 说明：dev30 已参与提示词迭代，**不作为泛化证据**；M3.4 将用新 holdout 只跑一次；
+- 影响面：新增 S4 原型模块 + 单测；未接引擎、未改 S0–S3、未新增 run。

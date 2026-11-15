@@ -165,8 +165,10 @@ def classify_text(text: str) -> dict:
 
 
 class Session:
-    def __init__(self, brief: dict, *, session_id: str = "", max_rounds: int = DEFAULT_MAX_ROUNDS):
+    def __init__(self, brief: dict, *, session_id: str = "", max_rounds: int = DEFAULT_MAX_ROUNDS,
+                 router=None):
         self.session_id = session_id or "s-" + uuid.uuid4().hex[:8]
+        self.router = router  # callable(text, context) -> result dict；None 时用规则版
         self.brief = copy.deepcopy(brief or {})
         self.max_rounds = max_rounds
         self.state = SessionState.PLANNING
@@ -186,6 +188,14 @@ class Session:
     # ---------- 基础 ----------
     def _event(self, kind: str, **kw) -> None:
         self.events.append({"at": round(time.time(), 3), "kind": kind, **kw})
+
+    def context(self) -> dict:
+        req = (self.brief or {}).get("request") or {}
+        return {"class": req.get("class") or "",
+                "targets": (self.brief or {}).get("targets") or [],
+                "delivered": {"count": len(self.delivered), "last_round": self.version},
+                "last_patches": self.patches[-3:],
+                "preferences": self.preferences}
 
     def status(self) -> dict:
         return {"session_id": self.session_id, "state": self.state.value,
@@ -208,7 +218,15 @@ class Session:
         if self.rounds >= self.max_rounds:
             self._event("rejected_max_rounds", msg_id=msg_id)
             return {"ok": False, "error": "max_rounds", "status": self.status()}
-        res = result or classify_text(text)
+        res = result
+        if res is None:
+            if self.router:
+                try:
+                    res = self.router(text, self.context())
+                except Exception:  # noqa: BLE001
+                    res = classify_text(text)
+            else:
+                res = classify_text(text)
         self._event("user_msg", msg_id=msg_id, text=text[:120], result=res)
         if not res.get("targets"):
             self.state = SessionState.CLARIFYING

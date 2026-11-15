@@ -37,6 +37,7 @@ PYTHONPATH=src python tests/test_planning.py           # 17/17
 PYTHONPATH=src python tests/test_identity.py           # 10/10（标识归一化）
 PYTHONPATH=src python tests/test_taskspec.py           # 21/21（任务单规范化/接入，不调网络）
 PYTHONPATH=src python tests/test_session.py            # 14/14（Session 状态机，不调网络）
+PYTHONPATH=src python tests/test_session_router.py     # 14/14（Router 守卫，不调网络）
 PYTHONPATH=src python scripts/check_stages.py          # 状态机：正式入口存在 + legacy 标 silent
 PYTHONPATH=src python scripts/check_machine.py         # 换机器全检（状态机+单测+台账+密钥）
 PYTHONPATH=src python scripts/run_ledger.py --check     # 111 records，0 issue
