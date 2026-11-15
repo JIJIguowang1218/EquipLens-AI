@@ -193,6 +193,11 @@
 > [`docs/external/2026-11-15-doubao-retrieval-consult.md`](external/2026-11-15-doubao-retrieval-consult.md)，
 > 评估与事实核查见 [`docs/doubao-consult-review-20261115.md`](doubao-consult-review-20261115.md)；
 > 结论：视觉证据/通道接入“部分采纳”，LLM 型号冷启动仅作查询种子，待拍板项见该文 §8。
+>
+> **逐阶段决策台账（2026-11-15 起）**：外部意见已按 S0–S5 拆成 51 条，状态机推进
+> [`docs/external/doubao-consult-decisions.md`](external/doubao-consult-decisions.md)；
+> S0 输入识别评估完成（冷启动 V6：86.2% 可证实、7.7% 重合，建议仅作查询种子），
+> 见 [`docs/input-recognition-design-20261115.md`](input-recognition-design-20261115.md)。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 

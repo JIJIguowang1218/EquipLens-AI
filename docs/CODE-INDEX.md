@@ -61,6 +61,7 @@
 - `scripts/probe_platforms.py`
 - `scripts/probe_class_query.py`
 - `scripts/probe_query_fallback.py`（E44 判死回退探针）
+- `scripts/probe_cold_start.py`（V6：LLM 冷启动型号 → 搜索验证）
 - `scripts/probe_english_query.py`（E51/E53 英文条件档）
 - `scripts/evaluate_kill_chain_offline.py`（E46 判死链离线回放）
 - `scripts/evaluate_source_provenance.py`（E50 A1 来源降权评估）
