@@ -12,6 +12,7 @@
 | **BL-006** | 扩大测试：router holdout 扩到 100+ 条、加入真实用户话术；S4 集成后做 3 个 live case | pending | 产品负责人 2026-11-15 明确要求；不得用合成集当线上准确率 |
 | **BL-007** | 第三方图文/搜索通道获取与测试（豆包 image API 为主）：申请 key/预算 → 冻结 plan 3 case A/B（覆盖率 / 标题带码率 / 成本）→ 决定接不接 | pending | 产品负责人 2026-11-15 指定：S1-06 与 S1-08 是同一个问题，合并处理；到 S1 通道决策（D1）时提醒其开通/付费；官方 Count≤5、免费额度≈1 轮 |
 | **BL-008** | 冷启动种子层 `ColdStartSeeder`（默认关、池 short 开、≤8 查询/类目、证据门槛） | pending | S0-03 已采纳为“改进”；实现后先跑 V7 A/B（池扩大 ≥20% 且 confirmed 不降），不得默认开启 |
+| **BL-010** | TaskSpec 剩余字段接线：`brands_include/exclude` → 查询/negative、`models_pinned` → `plan.pins`、`constraints.exclude/views` → negative/FILL、`brand_quota/foreign_ratio` → 软配额 + 交付披露、`scope` → 邻近设计 | pending | 2026-11-15 核对：确定性覆盖只有 class/env/config/slots，其余仅作 skill prompt hint；第一次真实交付前接；每项单独 A/B，不一次全接 |
 | **BL-005** | 把 `scripts/check_machine.py` 纳入发布前检查清单 | done | 2026-11-15 已加 `COMMANDS.md` / `AGENTS.md` |
 
 ## 记录
@@ -19,3 +20,4 @@
 - 2026-11-15：BL-001/BL-002 由产品负责人明确要求“记住，后续再考虑”；不丢，不提前做。
 - 2026-11-15：BL-007 由产品负责人指定：S1-06（现有通道）与 S1-08（豆包）是同一问题；到 D1 前提醒其提供 key/预算。
 - 2026-11-15：S0 收口（6/6）；S0-03 种子层落 BL-008，S0-06 归档移交 S3-05。
+- 2026-11-15：核对发现 TaskSpec 仅 class/env/config/slots 确定性落 brief，其余字段未消费；落 BL-010（会影响 S1 的品牌/指定车型接线）。

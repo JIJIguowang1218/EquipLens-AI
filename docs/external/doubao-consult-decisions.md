@@ -30,8 +30,8 @@
 
 | ID | 专家意见（中性摘要，原文位置） | 我们的对应 | 状态 | 备注 |
 |---|---|---|---|---|
-| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`（CLI 默认） | **已接入正式链路（A2）** | V9 全量 50/50、`taskspec` 21/21；`STAGES.md` S0 active；旧路径 silent |
-| S0-02 | 识别约束属性：整车图、排除内饰/配件/挂车 | `briefing.DEFAULT_NEGATIVE` + `taskspec.constraints.exclude` | **采纳（已实现）** | 默认负词留在 brief 层；TaskSpec 只在用户显式提出时记录排除项，不追问、不占主流程；BC-S01-005；E38 负词 A/B 零交付差异 |
+| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`（CLI 默认） | **已接入正式链路（A2）** | V9 全量 50/50、`taskspec` 21/21；`STAGES.md` S0 active；旧路径 silent；用户图不检索，判级后额外交付 + 进分析（§3.2，2026-11-15）；**确定性覆盖仅 class/env/config/slots**，brands/pins/constraints/preferences 仅作 skill hint（BL-010） |
+| S0-02 | 识别约束属性：整车图、排除内饰/配件/挂车 | `briefing.DEFAULT_NEGATIVE` + `taskspec.constraints.exclude` | **采纳（已实现）** | 默认负词留在 brief 层；TaskSpec 只在用户显式提出时记录排除项，不追问、不占主流程；BC-S01-005；E38 负词 A/B 零交付差异；外国品牌占比：origin 硬 / 占比软（2026-11-15）；**`constraints.exclude` 尚未确定性写入 `brief.negative`**（BL-010） |
 | S0-03 | 用户只给品类词时，用 LLM **参数化领域知识**冷启动生成型号池（不联网） | 原型 `scripts/probe_cold_start.py`；尚无生产实现 | **采纳（改进）** | 只做**查询种子层**：`ColdStartSeeder` 默认关、池 short 时开、≤8 查询/类目、必须过证据门槛；V6：65 型号/86.2% 可证实/7.7% 与三轮池重合，专业类目弱（消防 2/6、扫路 4/6）；实现见 BL-008 |
 | S0-04 | 先定义需求边界与类目核心特征（沙漠牵引车 vs 公路牵引车） | brief 的 `class/environment/configuration` | **采纳（限定查询侧）** | 边界特征只生成查询/assumptions，**不得作准入过滤器**；BC-S01-010 已验证 class/environment 拆分 |
 | S0-05 | 多轮反馈中识别口语化调整方向/约束（意图分类） | `session_router.py`（LLM 提议 + context digest + 规则守卫 + 歧义提问） | **采纳（改进）** | 原型已验收：V10 规则 holdout 7/14 → LLM 9/14；V11 dev30 30/30；V12 新 holdout 23/24、destructive 8/8；`tests/test_session_router.py` 15/15；正式接入等 M4.3（S4） |
@@ -134,6 +134,8 @@
 | 2026-11-15 | S0-04 | 采纳（限定查询侧） | TaskSpec `class/environment/configuration` 已落 brief（BC-S01-010）；边界仅作查询/假设 | 仅文档/台账 |
 | 2026-11-15 | S0-05 | 采纳（改进） | V10/V11/V12：规则 7/14 → LLM+context dev30 30/30 → 新 holdout 23/24；`test_session_router` 15/15 | 原型；M4.3 后接正式链路 |
 | 2026-11-15 | S0-06 | 已归档（S0 → S3-05） | 供给现实：E64 三轮 degraded 181→158（58.5%）、交付 269/270；无 A/B，效果未测 | 修 `input-recognition-design` §5/§6/§8 表述 |
+| 2026-11-15 | S0-01/§8#3 | 用户图**不检索**：有有效车型信息 → A/B/C 判级 → `user_delivery.extra` 额外交付 + 与抓取图一起进分析；无 → 补问；不计入 N 主/4 备/交付率 | 产品负责人 2026-11-15 拍板；判级复用门卫 `scene`+分辨率、只标注不淘汰；BC-S01-009/013 仍有效 | 改设计稿 §1/§3.2/§8；交付清单加 `extra`；分析指标分开统计 |
+| 2026-11-15 | S0-01/§8#4 | 外国品牌占比：`origin` 走硬（“只要进口”），`brand_quota`/`foreign_ratio` 保持软 + 交付披露；**不做硬占比** | BC-S01-004 已定软配额+披露、BC-S01-012 语气分强弱、E15 占比波动大、V8 无单独指标、V16 未跑 | 仅文档；硬占比需 V16 |
 
 ## 8. 当前进度
 
