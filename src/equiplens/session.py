@@ -243,7 +243,8 @@ class Session:
             self.state = SessionState.CLARIFYING
             return {"ok": True, "intent": res.get("intent"), "clarify": True,
                     "question": "你想改哪一部分？（视角/数量/品牌/删除/范围）", "status": self.status()}
-        patches = [Patch(target=t, value={"text": text, "asset_index": res.get("asset_index")},
+        patches = [Patch(target=t, value={"text": text, "asset_index": res.get("asset_index"),
+                                          "index_basis": "original"},
                          confidence=res.get("confidence", 0.8),
                          destructive=bool(res.get("destructive")),
                          enforce=res.get("enforce", "soft"),

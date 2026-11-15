@@ -109,7 +109,9 @@ def test_original_index_after_supersede():
     s.deliver([{"asset_id": "c1", "url": "u1", "sha1": "s1", "model": "X3000", "target": "u-exact"},
                {"asset_id": "c2", "url": "u2", "sha1": "s2", "model": "X3000", "target": "u-exact"},
                {"asset_id": "c3", "url": "u3", "sha1": "s3", "model": "X3000", "target": "u-exact"}])
-    s.interrupt("第 1 张不对", msg_id="o1"); s.checkpoint("VERIFY")
+    r = s.interrupt("第 1 张不对", msg_id="o1")
+    assert r["patches"][0]["value"]["index_basis"] == "original", r
+    s.checkpoint("VERIFY")
     s.interrupt("删掉第 2 张", msg_id="o2"); s.checkpoint("FILL")
     status = {d["seq"]: d["status"] for d in s.delivered}
     assert status == {1: "superseded", 2: "superseded", 3: "active"}, status
