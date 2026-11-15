@@ -2,14 +2,34 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-14** |
-| 当前阶段 | **收敛验收完成（P0–P4）；功能冻结，等待第一次用户交付决策**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
+| 更新日期 | **2026-11-15** |
+| 当前阶段 | **S0-05 原型（S4 planned）；M4.2 三个 live 会话完成，M4.3 未开始**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
-| 最新提交 | 见 `git log -1`；完整测试报告 `docs/fulltest-report-20261114.md`。 |
-| 工作树提醒 | 2026-11-14 交接文档已提交；工作树以 `git status` 为准（仅 3 个未跟踪的 run 图片目录）。 |
+| 最新提交 | `d37e586`（M4.2 live 会话）；完整测试报告 `docs/fulltest-report-20261114.md`。 |
+| 工作树提醒 | 2026-11-15：`main` ahead **23 未 push**；仅未跟踪 PDF/promo 文件，无未提交源码。 |
 
 > 换机/接续只需读 **§0.0（进度与下一步）** 和 **§0.1（30 分钟环境）**；
 > §1 之后是历史记录，不必通读。
+
+## ⏸ 当前断点（2026-11-15，换机用）
+
+- **分支 `main`，ahead 23，未 push**。换电脑前二选一：
+  1. 授权 `git push`（推荐，最省事）；
+  2. 整目录拷贝（含 `.git`），否则新机器只有远程 `80981bb`，会丢掉最近 23 个提交。
+- 正式链路（`scripts/check_stages.py`）：`S0=taskspec-v0.4`、`S1/S2=p8-idmatch`、
+  `S3=manifest-v1`、`S4=planned`；6 阶段 0 问题。
+- 换机检查：对 agent 说 **“检查主体代码索引”**；它跑
+  `PYTHONPATH=src python scripts/check_machine.py`，预期 9 项全 PASS
+  （taskspec 21/21、briefing 6/6、identity 10/10、planning 17/17、ledger 111/0、scan 0）。
+- 最近验证：`test_session` 15/15、`session_router` 15/15、`session_engine` 6/6、
+  `retrieval_engine` 48/48；M4.2 三个 live 会话 18/18 交付（704.6s、123 查询）。
+- **下一步**：M4.3（中途 patch 真正影响引擎 / 增量重排；复跑 3 live）；
+  之后 S4 才从 planned → active。BL-006 扩大测试仍排期。
+- **待拍板**：
+  1. BC-S05-008：“第 N 张”按当前活跃列表还是原始交付编号（影响纠错/删除）；
+  2. M4.3 是否按“先 view/quality 过滤，再 add_targets delta plan”的范围做；
+  3. 换机前是否 push（否则需整目录拷贝）。
+
 
 ### 提交约定（2026-11-13 修订）
 
