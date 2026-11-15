@@ -198,6 +198,7 @@
 > [`docs/external/doubao-consult-decisions.md`](external/doubao-consult-decisions.md)；
 > S0 输入识别评估完成（冷启动 V6：86.2% 可证实、7.7% 重合，建议仅作查询种子），
 > 见 [`docs/input-recognition-design-20261115.md`](input-recognition-design-20261115.md)。
+> 测试异常/边界统一登记在 [`docs/badcases/README.md`](badcases/README.md)（S0-01 首批 12 条）。
 
 ### 整体计划（产品负责人 2026-11-12 定）
 

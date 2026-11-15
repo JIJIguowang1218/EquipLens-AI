@@ -541,3 +541,17 @@ h3 2.0（1–4）、h4 2.7（1–4）。
   **未入库**，复用需申请），结论已写入 S0 设计文档 §4.5；
 - 决策台账更新：S0-01 → 测试完成；S0-06 → 归档并改为 S3-05（交付透明化）；S0-02/04/05 加限定说明；
 - 影响面：**纯文档 + 临时脚本**；不改 brief/plan/engine，不新增 run。
+
+
+### 34. Badcase 登记册（2026-11-15）
+
+- 新增 [`docs/badcases/README.md`](badcases/README.md)：编号规则 `BC-<模块>-<序号>`、
+  状态机（open/fixed/verified/by-design/product-decision）、最小复现输入必须标 `[test]`；
+- 新增 [`docs/badcases/S0-01-input.md`](badcases/S0-01-input.md)：S0-01 的 12 条 badcase：
+  - open：scope vs backup（BC-S01-001）、部件 vs 视角（002）、class 别名（003）、
+    品牌配额自动估计（004）、policy 枚举（005）；
+  - product-decision：“同类参考”歧义（006）；
+  - by-design：缺类目提问（007）、未指定替换型号自动另选（008，产品负责人确认）、
+    文本“(图)”要求补图（009）；
+  - verified：class/environment 拆分（010）、modify delta（011）、软/硬偏好（012）。
+- 本轮**纯文档**：不改 `src/`、不改默认值、不新增 run；50 条基准输入仍在 `tmp/`（未入库）。
