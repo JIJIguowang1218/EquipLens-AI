@@ -6,7 +6,7 @@
 
 ## BC-S01-001
 
-- **状态**：open
+- **状态**：proto-fixed（v0.4 原型，待生产）
 - **现象**：“再配两台同类参考车”被记成 `quantity.backup=2`，`scope=null`。
 - **触发输入（[test]）**：`这是我在展会上拍的图，型号牌上写着 X3000，帮我把这个型号找全，再配两台同类参考车`
 - **期望**：先确认类目（blocking，1 个问题）；`models_provided=[X3000]`；
@@ -21,7 +21,7 @@
 
 ## BC-S01-002
 
-- **状态**：open
+- **状态**：proto-fixed（v0.4 原型，待生产）
 - **现象**：部件词“前脸格栅”被记成 `views=["front"]`，`parts=[]`。
 - **触发输入（[test]）**：`上次那批不行，换一批，重点看前脸格栅，再加两台徐工的吊车`
 - **期望**：`parts=["前脸格栅"]`、`views=[]`；`intent=modify`、`delta=2`、`brands_include=["徐工"]`。
@@ -33,7 +33,7 @@
 
 ## BC-S01-003
 
-- **状态**：open
+- **状态**：proto-fixed（v0.4 原型，待生产）
 - **现象**：“沙漠车”未归一为“沙漠牵引车”。
 - **触发输入（[test]）**：`沙漠车 10 个 6x6 要外国牌子的 国内外都行 别给我内饰 高清`
 - **期望**：`class="沙漠牵引车"`、`class_raw="沙漠车"`、`class_aliases=["沙漠车"]`。
@@ -45,7 +45,7 @@
 
 ## BC-S01-004
 
-- **状态**：open
+- **状态**：proto-fixed（v0.4 原型，待生产）
 - **现象**：“至少 3 台奔驰或沃尔沃”没有产出品牌配额。
 - **触发输入（[test]）**：`必须 10 台，其中至少 3 台是奔驰或沃尔沃，其他随便`
 - **期望**：`preferences.brand_quota={"brands":["奔驰","沃尔沃"],"min":3,"of":10}`；
@@ -58,7 +58,7 @@
 
 ## BC-S01-005
 
-- **状态**：open
+- **状态**：proto-fixed（v0.4 原型，待生产）
 - **现象**：`policy.hard/soft` 输出自由词（`domestic_only`、`electric_only`、`road_legal`、
   `constraints.exclude`、`quantity_backup`），无法被程序稳定消费。
 - **触发输入（[test]）**：`8 台，必须都是国产` / `10 台，只要电动车` / `10 台，不要带挂车…`
@@ -73,12 +73,13 @@
 
 ## BC-S01-006
 
-- **状态**：product-decision
+- **状态**：by-design（2026-11-15 拍板）
 - **现象**：“再找 2 台同类参考”里“同类”到底指同型号还是邻近类目，无法判定。
 - **触发输入（[test]）**：`再找 2 台同类的参考`
 - **两种读法**：① 同型号/同车系再加 2 台（`delta=2`）；② 邻近类目参考 2 台（`scope.adjacent=2`）。
-- **建议**：有 session context 时按“上一批同类”→ `scope.adjacent`；无 context 且明确说“加”才 `delta`；
-  两者都不明确 → 1 个 blocking 问题（选项：同型号再加 / 邻近类目参考）。
+- **规则（已拍板）**：有 session context 时按“上一批同类”→ `scope.adjacent`；
+  无 context 且明确说“加”才 `delta`；两者都不明确 → 1 个 blocking 问题
+  （选项：同型号再加 / 邻近类目参考）。v0.4 回归 R-08/R-09 已验证两条分支。
 - **关联**：bench N-28。
 
 ## BC-S01-007（by-design）
@@ -127,4 +128,6 @@
 - 本册只记“实现/行为”问题；外部意见的采纳与否在
   [`docs/external/doubao-consult-decisions.md`](../external/doubao-consult-decisions.md)。
 - 修复顺序建议：BC-S01-001（scope/backup）→ 004（brand_quota）→ 005（enum）→ 002/003；
-  006 等产品拍板；007–009 不再改动。
+  006 已拍板；007–009 不再改动。
+- **v0.4 定向回归**：10 条新输入（未复用旧 50 条）10/10 通过；
+  临时记录 `tmp/s0-probe-20261115/regress-v4.md`（未入库）。下一步是把 v0.4 生产化。
