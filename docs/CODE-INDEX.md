@@ -24,7 +24,8 @@
 | **S0 任务单（正式）** | `src/equiplens/taskspec_llm.py`（parse）→ `src/equiplens/taskspec.py`（normalize/validate）→ `src/equiplens/briefing.py::apply_taskspec`；CLI `scripts/build_brief.py` 默认走此路径 |
 | brief 组装（LLM） | `src/equiplens/briefing.py`、`skills/task-brief/SKILL.md` |
 | brief 旧路径（silent） | `briefing.generate_brief(use_taskspec=False)`（库默认）、`build_brief.py --legacy-brief`；仅对照/回滚 |
-| 状态机检查 | `docs/stages.json`、`scripts/check_stages.py` |
+| 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
+| 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |

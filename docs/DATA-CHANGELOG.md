@@ -599,3 +599,17 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - 测试：`test_taskspec` 21/21、`test_briefing` 6/6、`vocabulary_guard` 4/4、
   `check_stages` 0 问题；
 - 影响面：S0 主路径切换；旧路径保留但默认不可达；未改 S1/S2/S3，未新增 run。
+
+
+### 38. 换机器检查、待办与 S0-05 规划（2026-11-15）
+
+- 新增 `scripts/check_machine.py`：一次跑状态机、S0/S1 相关单测、台账、密钥扫描；
+  默认 9 项、`--full` 追加引擎/图片/分析；输出正式阶段版本（S0=taskspec-v0.4 等）；
+- 新增 `AGENTS.md` + `docs/COMMANDS.md`：触发词“检查主体代码索引/新机器检查/换电脑检查”
+  对应固定命令 `PYTHONPATH=src python scripts/check_machine.py`；
+- 新增 `docs/BACKLOG.md`：BL-001（`generate_brief` 库默切换 TaskSpec + 改评估脚本）、
+  BL-002（S1/S2 legacy 标注）、BL-003（S0-05 开发）；
+- 新增 `docs/s0-05-session-loop-plan-20261115.md`：两层状态机、F1–F9 节点映射、
+  patch 契约、打断语义、去重/幂等、Router、编排选型、T1–T16 测试计划、M1–M6 里程碑、
+  V10–V12 实验与 6 个拍板点；
+- 影响面：**纯文档 + 检查脚本**；不改 `src/` 行为、不改默认、不新增 run。
