@@ -43,6 +43,7 @@
 | [BC-S05-004](S0-05-session.md#bc-s05-004) | S0-05 | “只要沙漠版”范围 vs 排除（两轴） | by-design |
 | [BC-S05-005](S0-05-session.md#bc-s05-005) | S0-05 | “全都换成进口的”reset vs scope | by-design |
 | [BC-S05-006](S0-05-session.md#bc-s05-006) | S0-05 | “这个不够，再补”数量 vs 同款加图 | open |
+| [BC-S05-008](S0-05-session.md#bc-s05-008) | S0-05 | 删除/纠错后“第 N 张”的编号口径 | product-decision |
 
 ## 3. 流程
 
