@@ -5,6 +5,16 @@
 
 ## 2026-11-16
 
+### 59. L2 第二轮：5/5 意图（2026-11-16）
+
+- 修复三处后复跑同一份用户脚本（5 轮）：
+  1. `delivery.report` 动作（出报告/PPT）进 ACTIONS + 白名单，交付意图不再 clarify；
+  2. “再加/再补/凑 N” 从 hard `plan.quantity` 降为 soft `fill.quota`（只有“改成/调到 N”才 hard）；
+  3. LLM 提议加 3 次重试/退避（此前 `httpx.RemoteProtocolError` 中断过 loop）。
+- 结果：**5/5 意图正确** —— fill.quota / plan.negative / delivered.replace(asset_index=3) /
+  fetch.filters.quality / delivery.report；`session_runner` 测试 **6/6**。
+- 仍未解决：首轮建单（M6）；交付后资产编辑的引擎侧效果；报告/PPT 只记录意图、未生成文件。
+
 ### 58. L2 用户模拟第一轮（2026-11-16）
 
 - 方法：子代理**盲写** 6 轮“真实用户”脚本（含错字/模糊反馈），主体用 `run_session.py --script`

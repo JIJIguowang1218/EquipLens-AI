@@ -30,7 +30,7 @@ ALLOWED_TARGETS = {
     "plan.add_targets", "plan.negative", "fill.quota",
     "verify.blacklist", "fill.replace", "scope.ratio",
     "plan.quantity", "plan.configuration", "session.reset",
-    "delivered.remove", "delivered.replace",
+    "delivered.remove", "delivered.replace", "delivery.report",
     "session.pause", "session.resume",
 }
 HARD_TARGETS = {"scope.ratio", "plan.quantity", "plan.configuration", "session.reset",

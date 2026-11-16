@@ -26,6 +26,7 @@ ACTIONS = {
     "session.reset": "整批重来/重新选（重大调整）",
     "delivered.remove": "从交付中移除某张/某型号（降级，不物理删除）",
     "delivered.replace": "替换已交付的某张图",
+    "delivery.report": "生成/更新报告或 PPT 交付物（不改检索）",
     "session.pause": "暂停当前 run",
     "session.resume": "继续/恢复",
 }
@@ -88,10 +89,21 @@ def build_prompt(text: str, context: dict | None) -> str:
 
 
 def propose(text: str, context: dict | None, api_key: str, *,
-            model: str = "deepseek-flash", chat_fn=None) -> dict:
+            model: str = "deepseek-flash", chat_fn=None, retries: int = 3) -> dict:
+    """LLM 提议；网络抖动重试（2026-11-16 实测 httpx.RemoteProtocolError 中断过 loop）。"""
+    import time as _time
     from .briefing import chat
-    res = (chat_fn or chat)(build_prompt(text, context), api_key, model)
-    return res.get("payload") or {}
+    fn = chat_fn or chat
+    last = None
+    for i in range(max(1, retries)):
+        try:
+            res = fn(build_prompt(text, context), api_key, model)
+            return res.get("payload") or {}
+        except Exception as e:  # noqa: BLE001
+            last = e
+            if i < retries - 1:
+                _time.sleep(1.5 * (i + 1))
+    raise last
 
 
 def _clear_target(text: str) -> bool:
@@ -143,6 +155,13 @@ def guard(text: str, proposal: dict) -> dict:
     if "session.pause" in out["targets"]:
         out["hard"] = True
 
+    # “再加/再补/凑 N”是增量，不是改总量：把 hard 的 plan.quantity 降为 fill.quota
+    if ("plan.quantity" in out["targets"]
+            and any(k in text for k in ("再加", "再补", "凑", "多来", "加两台", "加几台"))
+            and not any(k in text for k in ("改成", "调到", "改为", "改到"))):
+        out["targets"] = [("fill.quota" if t == "plan.quantity" else t) for t in out["targets"]]
+        out["hard"] = False
+        out["enforce"] = "soft"
     # 排除项：约束硬、打断软
     if "plan.negative" in out["targets"]:
         out["enforce"] = "hard"

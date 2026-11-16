@@ -92,6 +92,32 @@ def test_no_message_no_patches():
         assert cfg.get("session_patches") == 0, cfg
 
 
+def test_report_intent_recorded():
+    from equiplens.session_router import guard
+    out = guard("出报告吧，PPT 版本给我", {"targets": ["delivery.report"], "confidence": 0.9})
+    assert out["targets"] == ["delivery.report"] and not out["hard"], out
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s5",
+                          store_path=Path(td) / "s.json")
+        r.send("出报告吧，PPT 版本给我", msg_id="m5",
+               result={"targets": ["delivery.report"], "confidence": 0.9})
+        r.run()
+        from equiplens.session import Patch  # noqa: F401
+        assert any(p.get("target") == "delivery.report" for p in r.session.patches), r.session.patches
+        assert r.summary()["report_requested"] is True
+
+
+def test_increment_is_soft_quota_not_hard_quantity():
+    from equiplens.session_router import guard
+    out = guard("同款再加两台吧，凑 12 个。", {"targets": ["plan.quantity"], "hard": True,
+                                              "confidence": 0.9})
+    assert out["targets"] == ["fill.quota"], out
+    assert out["hard"] is False, out
+    out2 = guard("数量改成 12 台", {"targets": ["plan.quantity"], "hard": True, "confidence": 0.9})
+    assert out2["targets"] == ["plan.quantity"] and out2["hard"] is True, out2
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

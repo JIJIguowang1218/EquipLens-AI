@@ -155,7 +155,9 @@ class SessionRunner:
 
     def summary(self) -> dict:
         delivery = (self.engine._summary(self.state).get("delivery") or {})
+        report = any(p.get("target") == "delivery.report" for p in self.session.patches)
         return {"session_id": self.session_id, "run_id": self.run_id,
+                "report_requested": report,
                 "engine_state": self.state.get("state"),
                 "delivered": delivery.get("delivered"),
                 "required": delivery.get("required"),
