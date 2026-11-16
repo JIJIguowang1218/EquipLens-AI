@@ -126,6 +126,40 @@ def test_session_router_confirm():
     assert r.get("clarify") and s.state == SessionState.CLARIFYING, r
 
 
+def test_composite_targets_preserved():
+    r = R.classify("驾驶室要高顶的，平顶的不要",
+                   chat_fn=fake({"targets": ["plan.negative", "plan.configuration"],
+                                 "confidence": 0.9}))
+    assert set(r["targets"]) == {"plan.negative", "plan.configuration"}, r
+
+
+def test_config_not_parts():
+    r = R.guard("配置按沙漠版那种来，双备胎加涉水喉",
+                {"targets": ["fetch.parts"], "confidence": 0.9})
+    assert r["targets"] == ["plan.configuration"], r
+    r2 = R.guard("要格栅和大灯的细节图", {"targets": ["fetch.parts"], "confidence": 0.9})
+    assert r2["targets"] == ["fetch.parts"], r2
+
+
+def test_clarify_has_options():
+    r = R.guard("嗯", {"targets": [], "confidence": 0.3})
+    assert r["clarify"] and r["options"], r
+    r2 = R.guard("删掉一张", {"targets": [], "confidence": 0.9})
+    assert r2["clarify"] and r2["options"], r2
+
+
+def test_report_not_per_model():
+    r = R.guard("报告里每个车型配一张图就行",
+                {"targets": ["plan.quantity_per_model"], "confidence": 0.9})
+    assert r["targets"] == ["delivery.report"], r
+
+
+def test_image_edit_not_configuration():
+    r = R.guard("第4张是8x8的，我们要的是6x6，这张不能进",
+                {"targets": ["delivered.remove", "plan.configuration"], "confidence": 0.9})
+    assert r["targets"] == ["delivered.remove"], r
+
+
 if __name__ == "__main__":
     tests = [(k, v) for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     for name, fn in tests:

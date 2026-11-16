@@ -1,12 +1,12 @@
 {
  "n": 100,
- "exact_subset": 0.82,
- "exact_with_capability": 0.87,
+ "exact_subset": 0.86,
+ "exact_with_capability": 0.91,
  "capability_refused": 6,
  "capability_expected_ok": 6,
  "capability_expected": 6,
- "any_overlap": 0.82,
- "hard_match": 0.61,
+ "any_overlap": 0.83,
+ "hard_match": 0.64,
  "errors": 0,
  "rows": [
   {
@@ -19,7 +19,7 @@
    "hard": false,
    "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
@@ -66,9 +66,10 @@
    "expect_hard": false,
    "note": "加三一",
    "got": [
-    "plan.add_targets"
+    "plan.add_targets",
+    "scope.ratio"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",
@@ -102,7 +103,8 @@
    "expect_hard": true,
    "note": "排除挂车",
    "got": [
-    "plan.negative"
+    "plan.negative",
+    "fetch.filters.views"
    ],
    "hard": false,
    "clarify": false,
@@ -189,7 +191,7 @@
    "hard": false,
    "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
@@ -235,9 +237,10 @@
    "expect_hard": true,
    "note": "排除内饰",
    "got": [
-    "plan.negative"
+    "plan.negative",
+    "scope.ratio"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",
@@ -305,7 +308,8 @@
    "expect_hard": true,
    "note": "范围收窄到沙漠版",
    "got": [
-    "scope.ratio"
+    "scope.ratio",
+    "plan.negative"
    ],
    "hard": true,
    "clarify": false,
@@ -675,9 +679,9 @@
    "expect_hard": true,
    "note": "按沙漠配置，带错字",
    "got": [
-    "fetch.parts"
+    "plan.configuration"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",
@@ -715,7 +719,7 @@
    "clarify": true,
    "feasibility": "supported",
    "action": "clarify",
-   "message": "你是要同一台车多几张，还是总数改？"
+   "message": ""
   },
   {
    "id": 43,
@@ -729,9 +733,9 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false,
+   "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
@@ -743,7 +747,7 @@
    "expect_hard": true,
    "note": "有他牌logo",
    "got": [
-    "delivered.remove"
+    "verify.blacklist"
    ],
    "hard": false,
    "clarify": false,
@@ -794,7 +798,7 @@
    "expect_hard": true,
    "note": "第3张车型认错，拉黑",
    "got": [
-    "verify.blacklist"
+    "delivered.remove"
    ],
    "hard": false,
    "clarify": false,
@@ -811,6 +815,7 @@
    "expect_hard": false,
    "note": "前脸格栅大灯",
    "got": [
+    "fetch.filters.views",
     "fetch.parts"
    ],
    "hard": false,
@@ -865,7 +870,7 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": true,
+   "clarify": false,
    "feasibility": "supported",
    "action": "apply",
    "message": ""
@@ -880,7 +885,7 @@
    "note": "长句补图，用于内部评审",
    "got": [
     "fill.quota",
-    "fetch.parts"
+    "fetch.filters.views"
    ],
    "hard": false,
    "clarify": false,
@@ -898,7 +903,7 @@
    "hard": false,
    "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
@@ -944,9 +949,10 @@
    "expect_hard": true,
    "note": "高顶驾驶室",
    "got": [
-    "plan.negative"
+    "plan.negative",
+    "plan.configuration"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",
@@ -978,8 +984,8 @@
    "expect_hard": true,
    "note": "排除矿卡",
    "got": [
-    "scope.ratio",
-    "plan.negative"
+    "plan.negative",
+    "scope.ratio"
    ],
    "hard": true,
    "clarify": false,
@@ -1064,8 +1070,7 @@
    "expect_hard": true,
    "note": "配置不符，拉黑",
    "got": [
-    "delivered.remove",
-    "verify.blacklist"
+    "delivered.remove"
    ],
    "hard": false,
    "clarify": false,
@@ -1154,9 +1159,9 @@
    "note": "新增品牌+补图",
    "got": [
     "plan.add_targets",
-    "plan.quantity"
+    "fill.quota"
    ],
-   "hard": true,
+   "hard": false,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",
@@ -1240,7 +1245,8 @@
    "expect_hard": true,
    "note": "补图+改总数",
    "got": [
-    "plan.quantity"
+    "plan.quantity",
+    "fill.quota"
    ],
    "hard": true,
    "clarify": false,
@@ -1428,7 +1434,7 @@
    "hard": false,
    "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
@@ -1638,7 +1644,6 @@
    "expect_hard": true,
    "note": "改装车不算原厂",
    "got": [
-    "delivered.remove",
     "verify.blacklist"
    ],
    "hard": false,
@@ -1707,24 +1712,6 @@
    "note": "删+重来，需确认",
    "got": [
     "session.reset"
-   ],
-   "hard": true,
-   "clarify": false,
-   "feasibility": "supported",
-   "action": "apply",
-   "message": ""
-  },
-  {
-   "id": 18,
-   "text": "只要沙漠版，普通版不要了",
-   "expect_targets": [
-    "scope.ratio",
-    "plan.negative"
-   ],
-   "expect_hard": true,
-   "note": "范围收窄到沙漠版",
-   "got": [
-    "scope.ratio"
    ],
    "hard": true,
    "clarify": false,
@@ -1814,23 +1801,6 @@
    "message": ""
   },
   {
-   "id": 40,
-   "text": "配置按沙莫版那种来，双备胎加涉水喉",
-   "expect_targets": [
-    "plan.configuration"
-   ],
-   "expect_hard": true,
-   "note": "按沙漠配置，带错字",
-   "got": [
-    "fetch.parts"
-   ],
-   "hard": false,
-   "clarify": false,
-   "feasibility": "supported",
-   "action": "apply",
-   "message": ""
-  },
-  {
    "id": 43,
    "text": "把那个换掉",
    "expect_targets": [
@@ -1842,19 +1812,19 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false,
+   "clarify": true,
    "feasibility": "supported",
-   "action": "apply",
+   "action": "clarify",
    "message": ""
   },
   {
-   "id": 44,
-   "text": "中间那张有别的品牌logo，别用",
+   "id": 47,
+   "text": "第3张不对，那不是X3000，是F3000",
    "expect_targets": [
     "verify.blacklist"
    ],
    "expect_hard": true,
-   "note": "有他牌logo",
+   "note": "第3张车型认错，拉黑",
    "got": [
     "delivered.remove"
    ],
@@ -1865,15 +1835,15 @@
    "message": ""
   },
   {
-   "id": 56,
-   "text": "驾驶室要高顶的，平顶的不要",
+   "id": 63,
+   "text": "第4张是8x8的，我们要的是6x6，这张不能进",
    "expect_targets": [
-    "plan.configuration"
+    "verify.blacklist"
    ],
    "expect_hard": true,
-   "note": "高顶驾驶室",
+   "note": "配置不符，拉黑",
    "got": [
-    "plan.negative"
+    "delivered.remove"
    ],
    "hard": false,
    "clarify": false,
@@ -1912,43 +1882,6 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false,
-   "feasibility": "supported",
-   "action": "apply",
-   "message": ""
-  },
-  {
-   "id": 68,
-   "text": "再加个徐工，顺便图也多来几张",
-   "expect_targets": [
-    "plan.add_targets",
-    "fill.quota"
-   ],
-   "expect_hard": false,
-   "note": "新增品牌+补图",
-   "got": [
-    "plan.add_targets",
-    "plan.quantity"
-   ],
-   "hard": true,
-   "clarify": false,
-   "feasibility": "supported",
-   "action": "apply",
-   "message": ""
-  },
-  {
-   "id": 73,
-   "text": "杰狮那台多弄几张，顺便总数改成12张",
-   "expect_targets": [
-    "fill.quota",
-    "plan.quantity"
-   ],
-   "expect_hard": true,
-   "note": "补图+改总数",
-   "got": [
-    "plan.quantity"
-   ],
-   "hard": true,
    "clarify": false,
    "feasibility": "supported",
    "action": "apply",

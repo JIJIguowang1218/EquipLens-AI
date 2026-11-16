@@ -143,6 +143,7 @@ def main(argv=None) -> int:
         res = runner.send(msg)
         out["turns"].append({"msg": msg, "clarify": bool(res.get("clarify")),
                              "question": res.get("question"), "hard": bool(res.get("hard")),
+                             "options": res.get("options") or [],
                              "targets": [p.get("target") for p in res.get("patches") or []]})
     actions = []
     if args.script:
@@ -154,6 +155,7 @@ def main(argv=None) -> int:
                 res = runner.send(str(act["message"]))
                 out["turns"].append({"msg": act["message"], "clarify": bool(res.get("clarify")),
                                      "question": res.get("question"),
+                                     "options": res.get("options") or [],
                                      "hard": bool(res.get("hard")),
                                      "targets": [p.get("target") for p in res.get("patches") or []]})
             elif "confirm" in act:
@@ -197,6 +199,8 @@ def main(argv=None) -> int:
             line = f"  msg: {t['msg']} -> {t.get('targets', [])}"
             if t.get("clarify"):
                 line += f"  [clarify] {t['question']}"
+                if t.get("options"):
+                    line += "  选项：" + " / ".join(t["options"])
             print(line)
         if "summary" in out:
             s = out["summary"]

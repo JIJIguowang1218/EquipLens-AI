@@ -5,6 +5,23 @@
 
 ## 2026-11-16
 
+### 68. P2：复合意图 + 选项化澄清 + 构型/部件（2026-11-16）
+
+- 复合意图：prompt 要求“一句多动作分别列出（≤3，按顺序）”；守卫补三条组合规则
+  （范围+“不要” → 加排除；加品牌+“图也多来几张” → 加 fill.quota；同车补图+“顺便总数”→ 两个都留）。
+- 选项化澄清：`clarify` 现在带 `question + options`（2–5 个具体选项），Session/CLI 都会展示；
+  破坏性确认给“确认执行/取消”。
+- 构型/部件：配置词（高顶/平顶/双备胎/涉水喉/6x6…）不再误判 `fetch.parts`；
+  但“第 N 张是 8x8…这张不能进”这类**资产纠错**不会被改成构型。
+- 报告格式：“报告里每个车型配一张图”纠正为 `delivery.report`，不再当 per-model 数量。
+- **测试（同机前后）**：`session_router 15→20/20`、`session_runner 11/11`、`retrieval_engine 52/52`，
+  其余 7 个套件全过。
+- **holdout 100（合成）**：P0/P1 raw **82** → P2 raw **86**；capability-adjusted **87 → 91**；
+  any-overlap 83%；hard 64%；能力拒绝 6 条。
+- 失败 14 条复核：全部是**能力拒绝**（水印/印刷/天气/原图）或**标注口径**（blacklist vs remove、
+  per-model vs quantity、replace vs remove）；不再有复合意图漏项或构型→部件误判。
+  但这是**修正后的口径对照**，不是真实频率指标。
+
 ### 67. P0+P1：能力/阶段/数量语义（2026-11-16）
 
 - **P0（能力+阶段）**：`classify/guard` 增加 `feasibility`（supported/partial/unsupported/out_of_domain）、

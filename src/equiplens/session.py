@@ -328,14 +328,18 @@ class Session:
             self._event("explain", msg_id=msg_id, message=str(res.get("message") or "")[:200])
             return {"ok": True, "explain": True, "message": res.get("message"),
                     "feasibility": res.get("feasibility"), "status": self.status()}
-        if res.get("action") == "clarify" and res.get("message") and not res.get("targets"):
+        if res.get("action") == "clarify" and (res.get("message") or res.get("question"))                 and not res.get("targets"):
             self.state = SessionState.CLARIFYING
-            return {"ok": True, "clarify": True, "question": res.get("message"),
+            return {"ok": True, "clarify": True,
+                    "question": res.get("question") or res.get("message"),
+                    "options": res.get("options") or [],
                     "status": self.status()}
         if not res.get("targets"):
             self.state = SessionState.CLARIFYING
             return {"ok": True, "intent": res.get("intent"), "clarify": True,
-                    "question": "你想改哪一部分？（视角/数量/品牌/删除/范围）", "status": self.status()}
+                    "question": (res.get("question") or res.get("message")
+                                 or "你想改哪一部分？（视角/数量/品牌/删除/范围）"),
+                    "options": res.get("options") or [], "status": self.status()}
         values = res.get("values") if isinstance(res.get("values"), dict) else {}
         patches = []
         for t in res["targets"]:
@@ -359,7 +363,8 @@ class Session:
         if res.get("destructive") and res.get("confirm"):
             self.state = SessionState.CLARIFYING
             return {"ok": True, "clarify": True, "patches": [p.as_dict() for p in patches],
-                    "question": "这会删除/替换已交付内容，确认执行吗？", "status": self.status()}
+                    "question": "这会删除/替换已交付内容，确认执行吗？",
+                    "options": ["确认执行", "取消"], "status": self.status()}
         if res.get("hard"):
             self.state = SessionState.PAUSED
             return {"ok": True, "hard": True, "patches": [p.as_dict() for p in patches],

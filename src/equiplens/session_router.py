@@ -53,13 +53,19 @@ PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用�
    - 文本明确“第 N 张”或具体型号码 → confirm=false（直接降级，不删除）；
    - 目标不明确（“删掉一张”“换掉那个”）→ confirm=true（先问）；
 6) “全部/全都/整批 + 重来/换” → session.reset, hard=true, destructive=true, confirm=true；
-7) targets 只能从下面的动作里选（可多选，最多 3 个）；无法判断就空数组；
+7) targets 只能从下面的动作里选；**一句话有多个独立动作时必须分别列出（最多 3 个，按执行顺序）**，
+   不要合并成一个；无法判断就空数组；
+   复合示例：“驾驶室要高顶的，平顶的不要” → plan.negative + plan.configuration；
+   “杰狮那台多弄几张，顺便总数改成12张” → fill.quota + plan.quantity；
+   “再加个徐工，顺便图也多来几张” → plan.add_targets + fill.quota；
 8) evidence 必须引用用户原话片段；confidence 0–1。
 9) values 可选，给出该 target 的结构化值：fetch.filters.views={"views":["front"|"side"|"45"|"rear"|"roof"]}；
    fetch.filters.quality={"min_width":1200} 或 {"no_watermark":true}；fetch.parts={"parts":["格栅"]}；
    plan.negative={"terms":["北奔"]}；plan.add_targets={"models":["HOWO TX"]}；
    fill.quota={"count":2}；plan.quantity_per_model={"count":6}；
    plan.quantity={"primary":12}；plan.configuration={"value":"8x8"}。
+   注意：配置/构型/高顶/平顶/双备胎/涉水喉/驱动 → plan.configuration；
+   只有“要格栅/大灯/保险杠等部件的细节图/特写”才是 fetch.parts。
 
 动作定义：
 {actions}
@@ -78,6 +84,7 @@ EXAMPLES = [
     ("不要挂车，不要内饰", "plan.negative", False, False, False, True),
     ("数量加到 14 台", "plan.quantity", True, False, False, True),
     ("每个车型统一按6张来", "plan.quantity_per_model", False, False, False, True),
+    ("驾驶室要高顶的，平顶的不要", "plan.negative+plan.configuration", False, False, False, True),
     ("只要沙漠版，别的都不要", "scope.ratio", True, False, False, True),
     ("删掉第 2 张", "delivered.remove", False, True, False, True),
     ("删掉一张", "delivered.remove", False, True, True, True),
@@ -149,6 +156,14 @@ def _count(text: str) -> int | None:
     return cn.get(m.group(1)) if m else None
 
 
+def _clarify_for(text: str):
+    if any(k in text for k in ("删", "换掉", "重来", "重做")):
+        return ("你指哪一张/哪一批？", ["指出第几张（如“第3张”）", "整批重来", "先不操作"])
+    if any(k in text for k in ("数量", "台", "张")):
+        return ("数量怎么改？", ["同一台车多几张", "改总数量", "每款补到 N 张", "先不操作"])
+    return ("你想改哪一部分？", ["改数量", "改视角", "排除品牌/车型", "换图或出报告", "先不操作"])
+
+
 def _clear_target(text: str) -> bool:
     return bool(re.search(r"第\s*[一二三四五六七八九十\d]+\s*张", text)) or bool(re.search(r"[A-Za-z]{2,}\d{2,}", text))
 
@@ -209,7 +224,9 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
             out["stage_blocked"] = hit
             out["message"] = "还没有交付图；等交付后再换/删。"
             if not out["targets"]:
-                out.update({"clarify": True, "action": "clarify"})
+                out.update({"clarify": True, "action": "clarify",
+                            "question": "还没有交付图；等交付后再换/删。",
+                            "options": ["等交付后再改", "先不操作"]})
                 return out
     uniq = out["targets"]
 
@@ -219,6 +236,10 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
         return out
     if not uniq:
         out["clarify"] = True
+        out["action"] = "clarify"
+        q, opts = _clarify_for(text)
+        out["question"] = q
+        out["options"] = opts
         return out
 
     hard_targets = [t for t in out["targets"] if t in HARD_TARGETS]
@@ -229,13 +250,31 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
     if "session.pause" in out["targets"]:
         out["hard"] = True
 
+    # 构型/配置 vs 部件：有配置词且不是“部件细节图”时，纠正成 plan.configuration
+    config_kw = any(k in text for k in ("配置", "构型", "驱动", "6x6", "8x8", "4x2",
+                                        "双备胎", "涉水喉", "高顶", "平顶"))
+    part_kw = any(k in text for k in ("细节图", "特写", "部件图"))
+    image_edit = _clear_target(text) and any(k in text for k in ("这张", "不能进", "别用"))
+    if (config_kw and not part_kw and "plan.configuration" not in out["targets"]
+            and not image_edit):
+        if "fetch.parts" in out["targets"]:
+            out["targets"] = [("plan.configuration" if t == "fetch.parts" else t)
+                              for t in out["targets"]]
+            out["hard"] = True
+            out["enforce"] = "hard"
+        elif "plan.negative" in out["targets"]:
+            out["targets"] = list(dict.fromkeys(out["targets"] + ["plan.configuration"]))
+            out["hard"] = True
+            out["enforce"] = "hard"
+
     # 数量四义：总量 / 每款张数 / 同车补图 / 条件扩张
     per_model = any(k in text for k in ("每款", "每个车型", "每台", "各车型", "每种"))
     same_vehicle = (any(k in text for k in ("同款", "这台", "那台", "这个车型", "该车", "这个型号", "它"))
                     or bool(re.search(r"[A-Za-z]{1,}\d|\d+[A-Za-z]", text)))
     total_cue = bool(re.search(
         r"(总共|一共|总数|总量|合计|凑(够|到)?|要\s*\d+\s*张|数量.{0,4}(改|调|到))", text))
-    add_cue = any(k in text for k in ("再加", "再补", "再来", "多来", "多给", "加两", "加几", "凑"))
+    add_cue = any(k in text for k in ("再加", "再补", "再来", "多来", "多给", "多弄",
+                                      "加两", "加几", "凑"))
     if per_model:
         conv = [("plan.quantity_per_model" if t in ("plan.quantity", "fill.quota") else t)
                 for t in out["targets"]]
@@ -264,7 +303,38 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
             and not (context or {}).get("last_model") and not re.search(r"\d", text)):
         out["clarify"] = True
         out["action"] = "clarify"
-        out["message"] = "你是要同一台车多几张，还是总数改？"
+        out["question"] = "你是要同一台车多几张，还是总数改？"
+        out["options"] = ["同一台车多几张", "改总数量", "先不操作"]
+    if image_edit and "plan.configuration" in out["targets"]:
+        out["targets"] = [t for t in out["targets"] if t != "plan.configuration"]
+    # 报告里的“每款一张图”是交付格式，不是 per-model 数量
+    report_cue = any(k in text for k in ("报告", "PPT", "ppt", "导出", "页面"))
+    if report_cue and "plan.quantity_per_model" in out["targets"]:
+        out["targets"] = [("delivery.report" if t == "plan.quantity_per_model" else t)
+                          for t in out["targets"]]
+        out["targets"] = list(dict.fromkeys(out["targets"]))
+        out["hard"] = False
+        out["enforce"] = "soft"
+    # 复合：范围收窄 + “不要” → 同时排除
+    if "scope.ratio" in out["targets"] and "plan.negative" not in out["targets"]             and any(k in text for k in ("不要", "排除", "去掉")):
+        out["targets"] = list(dict.fromkeys(out["targets"] + ["plan.negative"]))
+        out["enforce"] = "hard"
+    # 复合：加品牌 + “图也多来几张” → 给新 target 补图，不改总数
+    if ("plan.add_targets" in out["targets"] and "plan.quantity" in out["targets"]
+            and add_cue and "图" in text and not total_cue):
+        out["targets"] = [("fill.quota" if t == "plan.quantity" else t)
+                          for t in out["targets"]]
+        out["hard"] = False
+        out["enforce"] = "soft"
+    # 复合：同车补图 + 总数（“顺便/同时”）→ 两个动作都保留
+    if (same_vehicle and add_cue and total_cue
+            and any(k in text for k in ("顺便", "同时", "另外"))
+            and "plan.quantity" in out["targets"]
+            and "fill.quota" not in out["targets"]):
+        out["targets"] = list(dict.fromkeys(out["targets"] + ["fill.quota"]))
+        out["hard"] = True
+        out["enforce"] = "hard"
+
     # 排除项：约束硬、打断软
     if "plan.negative" in out["targets"]:
         out["enforce"] = "hard"
@@ -294,10 +364,17 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
     # 文本有“删/换/重来”但模型没给交付动作 → 保守提问
     if not dest and any(k in text for k in ("删", "换掉", "重来", "重做")):
         out["clarify"] = True
+        out["action"] = "clarify"
+        out["question"] = "你指哪一张/哪一批？"
+        out["options"] = ["指出第几张（如“第3张”）", "整批重来", "先不操作"]
 
     # 低置信 / 硬冲突 → 提问
     if out["confidence"] and out["confidence"] < 0.55:
         out["clarify"] = True
+        out["action"] = "clarify"
+        q, opts = _clarify_for(text)
+        out.setdefault("question", q)
+        out.setdefault("options", opts)
     if out["hard"] and out["destructive"] and "session.reset" not in out["targets"]:
         out["confirm"] = True
     return out

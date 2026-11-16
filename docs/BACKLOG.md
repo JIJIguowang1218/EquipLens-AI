@@ -17,7 +17,7 @@
 | **BL-015** | 10-case 交付回归（5 新类目）：80/80、missing 0；h2e 池不足→备选 2/4 | **done** | 2026-11-16：见 DATA-CHANGELOG §65；新类目覆盖洒水/汽车吊/搅拌/高空/矿卡 |
 | **BL-014** | 分析模块过程引导：建 `skills/analysis/SKILL.md`（观察→定位→可见性→证据→自检→输出）+ 两段式（观察清单→结构化）+ 字段级证据 + 质量评测（20–30 张人工标注） | pending | 2026-11-16 评估：现有分析模块只有出口契约（prompt 字段+事后校验+一次重试），无分析过程 skill/证据/质量评测；14/14 单测只覆盖输出格式 |
 | **BL-016** | 分阶段高频真实测试集：输入 / 运行中 / 看到结果后 三阶段，各 100+，按真实频率加权，优先真实日志/客服话术 | pending | 2026-11-16 用户审核结论：合成 100 条不代表真实分布；验收指标=分阶段准确率、破坏性误操作率(0)、能力外识别率、澄清命中率 |
-| **BL-017** | Router 能力/阶段/数量语义重构：capability gate + stage gate + 数量四义 + 澄清选项化 | in_progress | 2026-11-16：**P0（能力/阶段）+ P1（数量四义、per-model、replenish 记录）已完成**；P2（复合意图/选项化澄清）pending；对应 BC-S4-006/007/008 已部分修复，009 待 P2 |
+| **BL-017** | Router 能力/阶段/数量语义重构：capability gate + stage gate + 数量四义 + 澄清选项化 | **done** | 2026-11-16：P0（能力/阶段）+ P1（数量四义/per-model/replenish）+ P2（复合意图/选项化澄清/构型区分）完成；holdout raw 82→86、cap 87→91；BC-S4-006/007/008/009 已处理；P3 真实分阶段测试见 BL-016 |
 | **BL-013** | tmp 原始实验资产归档（V8–V12：输入集/holdout/错误分层/探针脚本）→ `data-test/evals/` 或对象存储 | pending | 产品负责人 2026-11-16：数据必须任意机器可取，临时代码可不入库；当前在另一台机器 `tmp/`，清单见 `data-test/evals/tmp-assets-inventory.md` |
 | **BL-012** | 离线视觉参考库（S2-06 条件性 go）：≥30 型号、≥10 图/型号、≥300 run-disjoint + 人工核验测试图；目标 top-1 ≥75%、balanced ≥70%、margin p10 > 0 | pending | 达标前只允许 top-3 短名单，不得 accept/reject；数据采集是主要成本；V19 探针：53.0% vs 6.7% |
 | **BL-005** | 把 `scripts/check_machine.py` 纳入发布前检查清单 | done | 2026-11-15 已加 `COMMANDS.md` / `AGENTS.md` |
