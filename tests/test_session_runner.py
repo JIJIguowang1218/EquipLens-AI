@@ -210,6 +210,19 @@ def test_post_delivery_remove_records_replenish():
         assert any(d.get("status") == "superseded" for d in r.session.delivered), r.session.delivered
 
 
+def test_per_model_patch_reaches_engine():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s10",
+                          store_path=Path(td) / "s.json")
+        r.run_until("FETCH", require_targets=True)
+        r.send("每款6张", msg_id="pm1",
+               result={"targets": ["plan.quantity_per_model"], "confidence": 0.9,
+                       "values": {"plan.quantity_per_model": {"count": 6}}})
+        r.run()
+        assert r.state.get("per_model_quota") == 6, r.state.get("per_model_quota")
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

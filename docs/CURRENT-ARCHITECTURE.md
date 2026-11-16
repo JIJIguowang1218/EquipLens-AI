@@ -1,11 +1,11 @@
 # 当前整体技术框架（单一事实源）
 
-更新：2026-11-15  
+更新：2026-11-17  
 用途：任何打包/封装/新会话先读这里，避免把旧策略、fixture、预置假数据带进产品。
 
 ## 1. 当前产品阶段
 
-**检索模块 v1 已收敛；S0 任务单切到 TaskSpec v0.4；S0-05 Session 原型（S4 planned）。**
+**检索模块 v1 已收敛；S0 任务单切到 TaskSpec v0.4；S4 Loop 已 active（仅后端入口，patch 执行范围见 `S4-EFFECTIVENESS-AUDIT-20261117.md`）。**
 
 > 2026-11-15 覆盖说明：正式链路以 [`STAGES.md`](STAGES.md) / `stages.json` 为准。
 > 本文下方“下一步 feedback router → LangGraph spike”等描述已被

@@ -141,7 +141,8 @@ class SessionRunner:
         if self.state.get("state") != "FETCH" or not self.session.pending:
             return None
         ENGINE_TARGETS = {"fetch.filters.views", "fetch.parts", "fetch.filters.quality",
-                          "plan.negative", "plan.add_targets", "fill.quota"}
+                          "plan.negative", "plan.add_targets", "fill.quota",
+                          "plan.quantity_per_model"}
         engine_p = [p for p in self.session.pending if p.target in ENGINE_TARGETS]
         session_p = [p for p in self.session.pending if p.target not in ENGINE_TARGETS]
         out = {"applied": [], "added_targets": [], "negative": []}

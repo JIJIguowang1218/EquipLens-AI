@@ -129,3 +129,13 @@
 - **触发**：`这不是我要的那款，别放进来`（P3 C074）
 - **期望（当前标签）**：`verify.blacklist`；**实际**：`delivered.remove`。
 - **问题**：没有第 N 张，无法定位资产；应澄清“哪一张”，还是标黑整批？需产品定。
+
+## BC-S4-016（hard 动作只记录、不执行）
+
+- **状态**：open（BL-025）
+- **触发**：`数量改成12台`、`6x6换8x8`、`只看沙漠版`、`全部重来`、`先停一下`
+- **现象**：Session 记录 patch/状态，但引擎没有对应分支；runner 也不检查 pause/reset。
+  用户会以为已改，实际交付不变。
+- **证据**：`engine.apply_patches` 只有 views/parts/quality/fill.quota/quantity_per_model/
+  negative/add_targets；`session_runner.py` 无 pause/reset 处理。
+- **下一步**：delta 前先 gate 为 clarify/explain，或实现重排/重跑；不能继续静默记录。

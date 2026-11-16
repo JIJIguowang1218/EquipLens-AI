@@ -17,27 +17,22 @@
 > 历史章节保留背景，但其中的“下一步/最新数据/旧计数”不代表当前状态；冲突时以本节和 STAGES 为准。
 
 - 分支 `main`，已 push；新机器直接 `git pull --ff-only origin main`。
-- 正式链路：`S0=taskspec-v0.4`、`S1/S2=p8-idmatch`、`S3=manifest-v1`、`S4=planned`；
+- 正式链路：`S0=taskspec-v0.4`、`S1/S2=p8-idmatch`、`S3=manifest-v1`、`S4=active（后端入口，session-v3）`；
   `scripts/check_stages.py` = 6 阶段 0 问题。
 - 换机检查：说 **“检查主体代码索引”** → `scripts/check_machine.py`；预期 9 项 PASS
-  （taskspec 21/21、briefing 6/6、identity 10/10、planning 17/17、ledger 111/0、scan 0）。
-- 最近验证：`session 15/15`、`session_router 15/15`、`session_engine 7/7`、
-  `retrieval_engine 48/48`；M4.2 三个 live 会话 18/18（704.6s、123 查询、degraded 10/18）。
+  （taskspec 22/22、briefing 7/7、identity 10/10、planning 21/21、ledger 144/0、scan 0）。
+- 最近验证：`session 15/15`、`session_router 24/24`、`session_engine 12/12`、
+  `retrieval_engine 52/52`、`session_runner 12/12`；P3 290 条 288/290。
 - **索引口径（2026-11-15 拍板）**：
   - 交付资产用**稳定序号 `seq`**（原始编号），不因删除/纠错而重排；
   - 新资产 `seq+1`，`asset_id` 不可变；被删/被换只标 `superseded`，不物理删除；
   - “第 N 张”永远指 `seq=N`；新图不占用旧编号；UI 可隐藏 superseded，但编号不回收。
-- **下一步 M4.3（已同意范围）**：
-  1. `views/quality/parts` 在下一个 FETCH 边界写入引擎过滤；
-  2. `plan.negative` 下一轮查询加负词 + FILL 过滤；
-  3. `plan.add_targets` 走 delta plan，只检索新增 target；
-  4. 复跑 M4.2 的 3 个 live case，指标：delta 查询 ≤25%、重复交付 0、
-     exact 完整 100%、耗时增量 ≤20%；
-  5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
+- **当前下一步**：S4 后端入口已 `active`；先按 `docs/S4-EFFECTIVENESS-AUDIT-20261117.md` 处理
+  hard 动作 no-op（BL-025），再实现交付后 delta 编辑。M4.3/M6 已完成，不再是下一步。
 - **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
   BL-002 S1/S2 legacy 标注；BL-010 TaskSpec 字段接线（P0 是首次交付硬门槛）。
-- **Session 入口原型（M4.3 后，2026-11-16）**：`session_runner.py` + `scripts/run_session.py`；
-  offline 4/4、live c1 10/10、pending patch 持久化、崩溃续跑；S4 仍 planned。
+- **Session 入口（S4 后端入口，2026-11-16）**：`session_runner.py` + `scripts/run_session.py`；
+  offline 4/4、live c1 10/10、pending patch 持久化、崩溃续跑；S4 已 active（仅后端）。
 - **M4.3 完成（2026-11-16）**：patch → 引擎接线 + 5 case A/B（新建 brief/plan 统一基线）。
   - 接线：`engine.apply_patches` + `session.apply_to_brief`；views/parts/quality 写 brief、
     negative 进 `brief.negative` + FILL 过滤、add_targets 只抓新增 target；`test_session_engine` 12/12。
