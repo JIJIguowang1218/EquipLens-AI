@@ -223,6 +223,19 @@ def test_per_model_patch_reaches_engine():
         assert r.state.get("per_model_quota") == 6, r.state.get("per_model_quota")
 
 
+def test_hard_action_gated_in_runner():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s11",
+                          store_path=Path(td) / "s.json")
+        r.run_until("FETCH", require_targets=True)
+        res = r.send("数量改成12台", msg_id="g1",
+                     result={"targets": ["plan.quantity"], "hard": True, "confidence": 0.9})
+        assert res["clarify"] and "plan.quantity" in res["gated"], res
+        assert not r.session.pending and not r.session.patches, (r.session.pending, r.session.patches)
+        assert r.summary()["gated_actions"] == 1, r.summary()
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

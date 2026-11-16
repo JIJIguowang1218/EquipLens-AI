@@ -30,7 +30,7 @@
 | P3 分阶段输入 | `docs/p3-staged-input-plan-20261117.md`、`data-test/evals/p3-staged-290-*`、`scripts/eval_p3_staged.py`、`scripts/render_p3_review.py` |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
-| S4 Session 后端入口（active） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（已入库）；测试 `tests/test_session_runner.py`（12） |
+| S4 Session 后端入口（active） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（已入库）；测试 `tests/test_session_runner.py`（13） |
 | S4 Session/Router/M4.3 接线 | `src/equiplens/session.py`、`session_router.py`、`retrieval_engine/engine.py::apply_patches`；A/B：`scripts/run_session_case.py`、`scripts/compare_m43_ab.py`；数据 `data-test/runs/m43-*`、`data-test/evals/m43-*.json` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
@@ -96,7 +96,7 @@
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
 | `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验/离类护栏（21） |
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
-| `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化、资产定位（15） |
+| `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化、资产定位、hard gate（16） |
 | `tests/test_session_router.py` | Router 守卫：白名单/硬软/删除确认/能力/阶段/数量四义/复合/澄清选项/UI 引导/角度部件澄清/上下文/回退/工厂（24） |
 | `tests/test_session_engine.py` | Session × FakeWorld：step 续跑、checkpoint、交付编辑、纠错定位、原始编号、delta run；M4.3 接线（views/quality/parts/negative/add_targets）（12） |
 | `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（22） |

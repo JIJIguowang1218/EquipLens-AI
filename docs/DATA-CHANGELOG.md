@@ -5,6 +5,15 @@
 
 ## 2026-11-16
 
+### 73. S4 hard 动作 gate（2026-11-17）
+
+- `Session.interrupt` 对 `plan.quantity`/`plan.configuration`/`scope.ratio`/`session.reset`/`session.pause`
+  统一返回 **clarify**（“需要重建任务，是否重开一轮？”/暂停提示），**不产生 patch、不静默记录**。
+- 新增 `gated_action` 事件；`SessionRunner.summary.gated_actions` 计数，便于统计触发频率。
+- 真实重排/重跑留 **BL-026（待后续版本开发）**；BL-025 done；BC-S4-016 fixed（gate）。
+- 测试：`session 16/16`、`session_runner 13/13`；P3 分类指标不受影响（gate 在执行层，不改变识别）。
+- 说明：S4 入口仍 active；hard 动作现在会明确告知“当前版本不做”，而不是假执行。
+
 ### 72. 角度/部件改为澄清 + P3 终版（2026-11-17）
 
 - 产品决定：当前版本**不保留角度/部件要求**；识别到 `fetch.filters.views`/`fetch.parts` 时

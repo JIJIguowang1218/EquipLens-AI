@@ -87,9 +87,19 @@ def test_pause_resume():
     s = Session(brief())
     s.start()
     r = s.interrupt("先停一下", msg_id="m4")
-    assert r["hard"] and s.state == SessionState.PAUSED, r
+    assert r["clarify"] and r["gated"] == ["session.pause"], r
+    assert s.state == SessionState.CLARIFYING and not s.pending, (s.state, s.pending)
+    s.pause()
     s.resume()
-    assert s.state == SessionState.RUNNING and s.version == 2
+    assert s.state == SessionState.RUNNING
+
+
+def test_hard_quantity_gated():
+    s = Session(brief())
+    s.start()
+    r = s.interrupt("数量改成12台", msg_id="m5")
+    assert r["clarify"] and "plan.quantity" in r["gated"], r
+    assert not s.pending and s.state == SessionState.CLARIFYING, (s.pending, s.state)
 
 
 def test_idempotent_message():

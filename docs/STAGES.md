@@ -57,7 +57,7 @@ PYTHONPATH=src python scripts/check_stages.py
 ## 5. 已知缺口
 
 - **S4 的 patch 执行只覆盖子集**：`plan.add_targets`/`fill.quota`/`plan.negative`/`quality`/`per_model` 生效；
-  `plan.quantity`/`plan.configuration`/`scope.ratio`/`session.reset`/`session.pause` 只记录不执行（BL-025，见 S4 生效性审计）；
+  `plan.quantity`/`plan.configuration`/`scope.ratio`/`session.reset`/`session.pause` **已 gate 为 clarify**（BL-025 done；真实重排见 BL-026）；
 - **S4 扩展“角度/部件补充”未做**：当前识别为澄清（建议“多找几张这辆车”），后续版本再按“主交付后剩余预算 delta”开发（状态：待后续版本开发）；
 - **S4 的 `active` 只覆盖后端入口**（`run_session.py` + SessionRunner）；前端/HTTP 入口、多用户并发、鉴权未接，
   接上后需在本表和 `stages.json` 补充说明；

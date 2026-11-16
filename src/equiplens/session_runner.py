@@ -216,6 +216,8 @@ class SessionRunner:
                 "report_requested": report,
                 "delivery_format": delivery_pref.get("format"),
                 "pending_replenish": (self.session.preferences or {}).get("pending_replenish") or 0,
+                "gated_actions": sum(1 for e in self.session.events
+                                     if e.get("kind") == "gated_action"),
                 "engine_state": self.state.get("state"),
                 "delivered": delivery.get("delivered"),
                 "required": delivery.get("required"),

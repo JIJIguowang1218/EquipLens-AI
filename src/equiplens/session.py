@@ -37,6 +37,25 @@ ALLOWED_TARGETS = {
 HARD_TARGETS = {"scope.ratio", "plan.quantity", "plan.configuration", "session.reset",
                 "delivered.remove", "delivered.replace", "session.pause"}
 DESTRUCTIVE_TARGETS = {"delivered.remove", "delivered.replace", "session.reset"}
+# 当前版本没有引擎/runner 执行分支的 hard 动作：不静默记录，统一 gate 为澄清
+GATED_NOOP_TARGETS = {"plan.quantity", "plan.configuration", "scope.ratio",
+                      "session.reset", "session.pause"}
+
+
+def gate_question(gated: list[str]) -> str:
+    g = set(gated)
+    if "session.reset" in g:
+        return "整批重来会重建任务；当前版本是否重开一轮？"
+    if "session.pause" in g:
+        return "当前版本暂停不会中断已启动的检索；是否等本轮结束？"
+    what = []
+    if "plan.quantity" in g:
+        what.append("数量")
+    if "plan.configuration" in g:
+        what.append("构型/配置")
+    if "scope.ratio" in g:
+        what.append("范围")
+    return f"修改{'/'.join(what) or '任务'}需要重建任务；当前版本是否重开一轮？"
 DEFAULT_MAX_ROUNDS = 5
 DELTA_QUERY_RATIO = 0.25
 DELTA_FETCH_RATIO = 0.20
@@ -323,6 +342,13 @@ class Session:
             else:
                 res = classify_text(text)
         self._event("user_msg", msg_id=msg_id, text=text[:120], result=res)
+        gated = [t for t in (res.get("targets") or []) if t in GATED_NOOP_TARGETS]
+        if gated:
+            self._event("gated_action", msg_id=msg_id, targets=gated, text=text[:120])
+            self.state = SessionState.CLARIFYING
+            return {"ok": True, "clarify": True, "gated": gated,
+                    "question": gate_question(gated),
+                    "options": ["重开一轮", "先不操作"], "status": self.status()}
         if res.get("action") in ("explain", "guide") or res.get("feasibility") in (
                 "unsupported", "out_of_domain"):
             self._event("explain", msg_id=msg_id, message=str(res.get("message") or "")[:200])

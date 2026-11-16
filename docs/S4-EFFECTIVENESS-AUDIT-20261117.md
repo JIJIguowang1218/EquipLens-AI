@@ -10,11 +10,11 @@
 
 | 动作 | 引擎/runner 是否执行 | 现状 | 建议级别 |
 |---|---|---|---|
-| `plan.quantity`（总量） | ❌ 无分支、不重排 | 只进 session patches | **原型/未生效** |
-| `plan.configuration`（构型） | ❌ | 只进 session patches | **原型/未生效** |
-| `scope.ratio`（范围比例） | ❌ | 只进 session patches | **原型/未生效** |
-| `session.reset`（整批重来） | ❌ 只把 delivered 标 superseded | 不重启引擎 | **原型/未生效** |
-| `session.pause`（暂停） | ❌ runner 不检查 | 仍会继续跑完 | **原型/未生效** |
+| `plan.quantity`（总量） | ❌ 无分支、不重排 | **已 gate：Session 返回 clarify，不产 patch** | **gate（未执行）** |
+| `plan.configuration`（构型） | ❌ | **已 gate：clarify** | **gate（未执行）** |
+| `scope.ratio`（范围比例） | ❌ | **已 gate：clarify** | **gate（未执行）** |
+| `session.reset`（整批重来） | ❌ 只把 delivered 标 superseded | **已 gate：clarify** | **gate（未执行）** |
+| `session.pause`（暂停） | ❌ runner 不检查 | **已 gate：clarify** | **gate（未执行）** |
 | `delivered.remove/replace` | ⚠️ 只标 superseded + `pending_replenish` | 无 delta 重抓/替换 | **原型（部分）** |
 | `verify.blacklist` / `fill.replace` | ⚠️ 只标记 | 无重抓 | **原型（部分）** |
 | `delivery.report` | ⚠️ 只记 `preferences.delivery` | 不生成文件 | **计划/原型** |
@@ -42,7 +42,13 @@
 - `AGENTS.md` 写“六个词”，但表里有 7 行（含“计划”）；
 - `STAGES.md` S4 虽写“仅后端入口”，但没有写“patch 只覆盖子集”。
 
-## 5. 建议下一步（阻塞项）
+## 5. Gate 已落地（2026-11-17）
+
+`Session.interrupt` 对上述 5 个 hard 动作统一返回 `clarify` + “重开一轮/先不操作”，
+并记录 `gated_action` 事件；`SessionRunner.summary` 增加 `gated_actions` 计数。
+不产生 patch、不静默记录。真实重排/重跑留待后续（BL-026）。
+
+## 6. 建议下一步（阻塞项）
 
 在 delta 编辑之前，先处理**无效果的 hard 动作**，否则用户说“改成 12 台”后系统会记录但交付不变：
 
