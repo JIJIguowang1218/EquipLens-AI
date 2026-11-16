@@ -32,11 +32,11 @@
 
 | ID | 专家意见（中性摘要，原文位置） | 我们的对应 | 状态 | 备注 |
 |---|---|---|---|---|
-| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`（CLI 默认） | **已接入正式链路（A2）** | V9 全量 50/50、`taskspec` 21/21；`STAGES.md` S0 active；旧路径 silent；用户图不检索，判级后额外交付 + 进分析（§3.2，2026-11-15）；**确定性覆盖仅 class/env/config/slots**，brands/pins/constraints/preferences 仅作 skill hint（BL-010） |
-| S0-02 | 识别约束属性：整车图、排除内饰/配件/挂车 | `briefing.DEFAULT_NEGATIVE` + `taskspec.constraints.exclude` | **采纳（已实现）** | 默认负词留在 brief 层；TaskSpec 只在用户显式提出时记录排除项，不追问、不占主流程；BC-S01-005；E38 负词 A/B 零交付差异；外国品牌占比：origin 硬 / 占比软（2026-11-15）；**`constraints.exclude` 尚未确定性写入 `brief.negative`**（BL-010） |
-| S0-03 | 用户只给品类词时，用 LLM **参数化领域知识**冷启动生成型号池（不联网） | 原型 `scripts/probe_cold_start.py`；尚无生产实现 | **采纳（改进）** | 只做**查询种子层**：`ColdStartSeeder` 默认关、池 short 时开、≤8 查询/类目、必须过证据门槛；V6：65 型号/86.2% 可证实/7.7% 与三轮池重合，专业类目弱（消防 2/6、扫路 4/6）；实现见 BL-008 |
+| S0-01 | LLM 把口语化/模糊需求拆成结构化要素（品牌/型号/品类/工况），补中英文别名与行业叫法，识别隐含要求（实拍/带标注） | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`（CLI 默认） | **已接入正式链路（A2）** | V9 全量 50/50、`taskspec` 22/22；**2026-11-16 起 brands_include/exclude、models_pinned、constraints.exclude 已确定性接线（BL-010 P0）**；preferences（brand_quota/foreign_ratio）仍只作 hint；用户图不检索、判级后额外交付 + 进分析（§3.2） |
+| S0-02 | 识别约束属性：整车图、排除内饰/配件/挂车 | `briefing.DEFAULT_NEGATIVE` + `taskspec.constraints.exclude` | **采纳（已实现）** | 默认负词留在 brief 层；TaskSpec 只在用户显式提出时记录排除项，不追问、不占主流程；BC-S01-005；E38 负词 A/B 零交付差异；外国品牌占比：origin 硬 / 占比软（2026-11-15）；`constraints.exclude` 已于 2026-11-16 写入 `negative_terms`（BC-S01-014 修复后用户项优先） |
+| S0-03 | 用户只给品类词时，用 LLM **参数化领域知识**冷启动生成型号池（不联网） | 原型 `scripts/probe_cold_start.py`；尚无生产实现 | **采纳（改进，待实现）** | 只做**查询种子层**：`ColdStartSeeder` 默认关、池 short 时开、≤8 查询/类目、必须过证据门槛；V6：65 型号/86.2% 可证实/7.7% 与三轮池重合，专业类目弱（消防 2/6、扫路 4/6）；实现见 BL-008 |
 | S0-04 | 先定义需求边界与类目核心特征（沙漠牵引车 vs 公路牵引车） | brief 的 `class/environment/configuration` | **采纳（限定查询侧）** | 边界特征只生成查询/assumptions，**不得作准入过滤器**；BC-S01-010 已验证 class/environment 拆分 |
-| S0-05 | 多轮反馈中识别口语化调整方向/约束（意图分类） | `session_router.py`（LLM 提议 + context digest + 规则守卫 + 歧义提问） | **采纳（改进）** | 原型已验收：V10 规则 holdout 7/14 → LLM 9/14；V11 dev30 30/30；V12 新 holdout 23/24、destructive 8/8；`tests/test_session_router.py` 15/15；正式接入等 M4.3（S4） |
+| S0-05 | 多轮反馈中识别口语化调整方向/约束（意图分类） | `session_router.py`（LLM 提议 + context digest + 规则守卫 + 歧义提问） | **采纳（改进）** | 原型已验收：V10 规则 holdout 7/14 → LLM 9/14；V11 dev30 30/30；V12 新 holdout 23/24、destructive 8/8；`tests/test_session_router.py` 15/15；M4.3 已完成（2026-11-16，5 case A/B PASS）；正式接入待 M6 生产入口 |
 | S0-06 | 判断需求是否在能力边界内（专家提“判断需求是否在能力边界内”） | 无；越界时会硬跑并交付弱结果 | **已归档（S0 内归档 → S3-05）** | 不能作 S0 准入：弱交付是供给现实（E64 三轮 degraded 181→158/58.5%、交付 269/270）；改为**交付时透明标注**；S3-05 仍待评 |
 
 ## 2. S1：第一段检索（查询规划 + 候选召回 + 排序）
@@ -44,7 +44,7 @@
 | ID | 专家意见（中性摘要，原文位置） | 我们的对应 | 状态 | 备注 |
 |---|---|---|---|---|
 | S1-01 | 不用原句搜索，生成多组精准关键词组合 | `build_query_plan` 多查询 | **采纳（已实现）** | 正式链路按 base/model/env/unit/extra 出查询，不用原句；E34/E35；查询层已收口（K10），不再叠组合策略 |
-| S1-02 | 三组查询：精准（品牌+完整型号+工况+品类）/ 泛化（场景+结构）/ 补漏（行业别称+英文） | 现有维度查询 + `topup` + 条件英文档（A3） | **采纳（改进）** | 第一段补漏（英文/翻译）**不做**（A3 §5）；第二段英文条件档**做**（仅车名内有证据的拉丁 token + 前三档 0 命中触发）→ D3 实现 |
+| S1-02 | 三组查询：精准（品牌+完整型号+工况+品类）/ 泛化（场景+结构）/ 补漏（行业别称+英文） | 现有维度查询 + `topup`；**第二段英文条件档未实现** | **采纳（改进，部分实现）** | 第一段补漏不做（A3 §5）；第二段条件档**待实现**（D3：拉丁 token + 前三档 0 命中触发）。注意：当前第一段 `q-en` 是**无条件**英文查询，与 E51“不默认”不一致，待 D3 一并收敛 |
 | S1-03 | 6 维结构化要素：主体/工况/品牌/型号/结构/约束 | `dimensions` + `slots{brand,series,model_code,config}` | **不采纳（不加约束维度）** | 现有 base/model/env/unit/extra 五维；E38 证明 negative 后缀对交付零差异，再加“约束”维度无依据 |
 | S1-04 | 型号池三优先级：官方命名量产 → 行业常用 → 定制补漏 | 只有 `identity_kind`/`intent_rank`，无“官方命名优先” | 待评（不推荐：无“官方命名量产”的可审计来源，叠加会变成不可复现的 LLM 先验；`identity_kind`/`intent_rank` 已覆盖排序） | V3 可测 |
 | S1-05 | 先覆盖第一梯队 70% 目标，再补长尾 | 无显式配额；靠排序与池 | 待评（可选（等前置：D2 池供给实验；先补池再谈配额）） | 可能与 `intent_rank` 复用 |
@@ -84,16 +84,16 @@
 |---|---|---|---|---|
 | S3-01 | 结果整合：双重校验后按置信度排序（权威/清晰/图文双匹配） | `DELIVERY` + `rank_plan`；无“权威/清晰”联合分 | 待评（可选（等前置：S2-01 视觉证据 + 阈值校准；权威分已被 E50 否决，不得复活）） | 需定义统一排序分 |
 | S3-02 | 从来源网页提取结构化参数（驱动/功率/牵引质量/工况） | `channels.py` 有 th→td 解析但只服务 R1 夹具；生产引用正文被丢弃 | 待评（可选（等前置：出处/正文留存 + 字段口径；按 K8 §4 单变量预注册）） | 设计分析场景有用；错抽参数比不抽更贵 |
-| S3-03 | 输出 10 台车型的图片与资料 | `DELIVERY.md/json` 已输出图片与型号；`evidence.db` 已有 `source_url` | 待评（推荐尝试：纯渲染加“出处 + 证据等级”两列，零新增 API；与 S3-05 合并为一次 manifest 改动） | 已有；缺参数/出处表 |
+| S3-03 | 输出 10 台车型的图片与资料 | `DELIVERY.md/json` 已输出图片与型号；**2026-11-16 已加“出处 + 证据等级”两列**（`source_url`/`evidence_grade`） | **采纳（部分）** | 出处/证据等级已落地（DATA-CHANGELOG §51）；仍缺“参数”（S3-02） |
 | S3-04 | 多轮结果融合：完全匹配置顶、偏好记忆 | `Session.deliver` 有跨轮去重 + active/superseded；`preferences` 字段存在但无写入 | 待评（可选（等前置：M4.3 + S3-01 排序口径）） | 见 S4 |
-| S3-05 | （由 S0-06 改）能力边界与弱结果透明化：交付时标注证据等级/预期缺口，必要时给替代建议 | `DELIVERY` 有 degraded/citation_only 标记；`evidence_grade` 已落库 | 待评（推荐尝试：纯渲染 + 文案，数据齐；与 S3-03 合并） | 不阻止交付，只管理期望 |
+| S3-05 | （由 S0-06 改）能力边界与弱结果透明化：交付时标注证据等级/预期缺口，必要时给替代建议 | `DELIVERY` 有 degraded/citation_only 标记；`evidence_grade` 已落库；**2026-11-16 已加“边界与缺口”小节** | **采纳（改进）** | “边界与缺口”已落地（DATA-CHANGELOG §51）；degraded 占比口径仍待产品定 |
 
 ## 5. S4：Loop / 反馈 / 记忆
 
 | ID | 专家意见（中性摘要，原文位置） | 我们的对应 | 状态 | 备注 |
 |---|---|---|---|---|
 | S4-01 | 6 类反馈：视图/款型/质量/扩充/排除/部件 | `session_router.py` 16 个动作，覆盖 6 类并扩到 9+ | 待评（已具备：分类层有白名单 + holdout 验证） | 建议扩到 8 类（+范围、+交付） |
-| S4-02 | 四层 Loop：意图识别→策略生成→重召回校验→融合记忆 | 第 1 层在 `session_router`；第 2/3 层是 M4.3 范围 | 待评（可选（等前置：M4.3 接线 + S4 落 `stages.json`）） | 需 session/router |
+| S4-02 | 四层 Loop：意图识别→策略生成→重召回校验→融合记忆 | 第 1 层在 `session_router`；第 2/3 层已由 M4.3 接线（`engine.apply_patches`）并通过 5 case A/B | 待评（可选（等前置：S4 落 `stages.json` + M6 生产入口）） | 需 session/router |
 | S4-03 | 策略增量修改，不重新生成整套 | `DELTA_QUERY_RATIO/DELTA_FETCH_RATIO` 常量已定但无消费点 | 待评（可选（等前置：M4.3；节点缓存按 `(brief_hash,node,params)` 命中未实现）） | 与“最小节点重跑”一致 |
 | S4-04 | 复跑去重（上一轮 URL/特征过滤） | 交付后去重已有；run 内 `used_assets` 去重 | 待评（可选（等前置：M4.3；跨 run 过滤随 delta 一起做）） | 跨 run 去重缺 |
 | S4-05 | 偏好记忆 / 基准库增量 / 负样本沉淀 | `Session.preferences/blacklist` 字段有，无读写；run 内 host 拉黑 | 待评（可选（等前置：M4.3 跑通 + 污染/隐私口径；基准库依赖 S2-06）） | 数据资产的一部分 |
@@ -137,7 +137,7 @@
 | 2026-11-15 | S0-05 | 采纳（改进） | V10/V11/V12：规则 7/14 → LLM+context dev30 30/30 → 新 holdout 23/24；`test_session_router` 15/15 | 原型；M4.3 后接正式链路 |
 | 2026-11-15 | S0-06 | 已归档（S0 → S3-05） | 供给现实：E64 三轮 degraded 181→158（58.5%）、交付 269/270；无 A/B，效果未测 | 修 `input-recognition-design` §5/§6/§8 表述 |
 | 2026-11-15 | S0-01/§8#3 | 用户图**不检索**：有有效车型信息 → A/B/C 判级 → `user_delivery.extra` 额外交付 + 与抓取图一起进分析；无 → 补问；不计入 N 主/4 备/交付率 | 产品负责人 2026-11-15 拍板；判级复用门卫 `scene`+分辨率、只标注不淘汰；BC-S01-009/013 仍有效 | 改设计稿 §1/§3.2/§8；交付清单加 `extra`；分析指标分开统计 |
-| 2026-11-15 | S0-01/§8#4 | 外国品牌占比：`origin` 走硬（“只要进口”），`brand_quota`/`foreign_ratio` 保持软 + 交付披露；**不做硬占比** | BC-S01-004 已定软配额+披露、BC-S01-012 语气分强弱、E15 占比波动大、V8 无单独指标、V16 未跑 | 仅文档；硬占比需 V16 |
+| 2026-11-15 | S0-01/§8#4 | 外国品牌占比：`origin` 走硬（“只要进口”），`brand_quota`/`foreign_ratio` 保持软 + 交付披露；**不做硬占比** | BC-S01-004、BC-S01-012、E15；**V16 已评估：No-Go（2026-11-16，`docs/v16-origin-signal-20261116.md`）** | 仅文档；软约束结论不变 |
 | 2026-11-15 | S1-02 | 采纳（改进） | 第一段补漏不做（A3 §5）；第二段条件档做（A3 设计，品牌+码+构型 3/10→5/10） | D3 实现 |
 | 2026-11-15 | S1-03 | 不采纳（不加维度） | E38 negative 后缀零交付差异；现有五维已够 | 仅台账 |
 | 2026-11-15 | S1-09 | 采纳（维持兜底） | 生产降级链已含 Bing；E28 Bing 0 accepted；海外专项无证据 | 仅台账 |

@@ -1,0 +1,369 @@
+{
+ "brief_id": "m43v-v-brand",
+ "request": {
+  "raw": "只要陕汽的，8 台沙漠牵引车，6x6",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "沙漠",
+   "source": "taskspec"
+  },
+  "base_platform": {
+   "value": "重型牵引车底盘（6×6 全驱，越野/沙漠工况底盘，带分动箱与越野胎）",
+   "confidence": 0.8
+  },
+  "configuration": "6x6",
+  "page_budget": {
+   "vehicle_slots": 8
+  },
+  "brands_include": [
+   "陕汽"
+  ],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  }
+ },
+ "assumptions": [
+  {
+   "field": "brands_include",
+   "value": "陕汽（Shacman）",
+   "why": "用户明确“只要陕汽的”，作为硬约束保留",
+   "confidence": 0.95
+  },
+  {
+   "field": "quantity",
+   "value": "8 台",
+   "why": "用户明示数量",
+   "confidence": 0.95
+  },
+  {
+   "field": "configuration",
+   "value": "6x6",
+   "why": "用户明示驱动形式",
+   "confidence": 0.95
+  },
+  {
+   "field": "environment",
+   "value": "沙漠",
+   "why": "用户明示“沙漠牵引车”，按高温、沙尘、松软地面处理",
+   "confidence": 0.9
+  },
+  {
+   "field": "parts",
+   "value": "沙漠空滤/进气防沙罩、侧防护栏、登车踏步、牵引座/后部工作区、轮拱/越野胎包覆区",
+   "why": "用户未点名任何部件，仅给出品类+构型+工况；为满足检索需要，从“沙漠牵引车”这一品类的功能构成出发，按环境驱动与构型必需项推导出上述设计对象，均为可验证的形态/结构问题",
+   "confidence": 0.55
+  },
+  {
+   "field": "base_platform",
+   "value": "陕汽重型越野牵引车底盘（6×6，带分动箱与越野胎）",
+   "why": "由品类与构型推断，未锁定具体型号",
+   "confidence": 0.6
+  },
+  {
+   "field": "models_pinned",
+   "value": "未指定具体车型",
+   "why": "用户只给品牌与构型，不给型号，不猜型号",
+   "confidence": 0.8
+  },
+  {
+   "field": "page_budget",
+   "value": 8,
+   "why": "规则：exact 5 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸（含进气/空滤防沙区域）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面（底盘侧部与登车区域）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_sand_intake",
+   "label": "沙漠空滤/进气防沙罩",
+   "kind": "function",
+   "location": "驾驶室后方/侧面高位进气，引气管沿驾驶室侧或顶部布置",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "environment_protection",
+    "structure",
+    "proportion"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "高位取气避开扬沙层",
+    "防沙罩/预滤器与管路的接口分缝与固定节点",
+    "与驾驶室、上装的相对高度关系"
+   ],
+   "why": "能提供沙漠工况下进气系统的取气高度、防沙罩形态与管路固定节点的证据，是判断该车是否真为沙漠特化的关键；同时反映前脸/侧面造型是否被功能件主导"
+  },
+  {
+   "part": "custom_side_guard",
+   "label": "侧防护栏（底盘侧部防护）",
+   "kind": "part",
+   "location": "前后轮之间、底盘侧下部",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "structure",
+    "environment_protection",
+    "regulation"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "型材/板金框架与车架的连接节点",
+    "离地高度与越野通过性、排沙间隙",
+    "法规侧防护覆盖范围"
+   ],
+   "why": "能提供高离地底盘上侧防护的构造方式、分缝与离地间隙证据，说明造型与越野通过性、排沙需求如何折中"
+  },
+  {
+   "part": "custom_step",
+   "label": "登车踏步（驾驶室侧登车）",
+   "kind": "part",
+   "location": "驾驶室侧下方，可能为多级踏步",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "cross_vehicle",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "踏步步距与驾驶室地板高度匹配",
+    "防滑表面处理与积沙排出（开孔/镂空）",
+    "与侧防护、油箱的相对位置"
+   ],
+   "why": "高离地 6×6 车型登车高度大，踏步能提供人机步距、防滑与排沙处理的证据，也体现侧面造型与实用件的整合方式"
+  },
+  {
+   "part": "custom_fifth_wheel",
+   "label": "牵引座（鞍座）/后部工作区",
+   "kind": "function",
+   "location": "车架后部、后轴上方",
+   "part_family": "cast_forged",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "rear",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "鞍座与车架的连接与加强结构",
+    "拖挂作业空间与操作可达性",
+    "沙尘环境下的防护与润滑维护可达性"
+   ],
+   "why": "牵引车区别于自卸/载货车的核心功能件，能提供后部工作区结构与维护可达性的证据，确认该车是真正的牵引构型而非普通越野载货车"
+  },
+  {
+   "part": "custom_wheel_arch",
+   "label": "轮拱/越野胎包覆区",
+   "kind": "part",
+   "location": "前后轮上方及侧围下部",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "proportion",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "轮拱开口与越野胎尺寸的包覆关系",
+    "挡泥/防飞沙结构与分缝",
+    "侧围下部离地与体量比例"
+   ],
+   "why": "能提供越野大胎与车身侧围的比例关系和挡沙包覆结构的证据，是判断 6×6 沙漠构型造型是否成立的主要依据之一"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车 6x6",
+   "parts": [
+    "custom_sand_intake",
+    "custom_side_guard",
+    "custom_step",
+    "custom_fifth_wheel",
+    "custom_wheel_arch"
+   ],
+   "quota": 5,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "5 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠（高温、沙尘、强风、松软沙地） 工程车",
+   "parts": [
+    "custom_sand_intake",
+    "custom_side_guard",
+    "custom_step",
+    "custom_fifth_wheel",
+    "custom_wheel_arch"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 28
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠牵引车",
+  "class_aliases": [],
+  "environment": "沙漠",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 8,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [
+   "陕汽"
+  ],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "brands_include",
+    "configuration",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠",
+   "configuration": "6x6",
+   "quantity": "8 台",
+   "brands": "只要陕汽的",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

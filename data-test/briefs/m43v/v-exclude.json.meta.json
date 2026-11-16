@@ -1,0 +1,276 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠牵引车",
+  "class_aliases": [],
+  "environment": "沙漠",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 10,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [
+   "北奔"
+  ],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "brands_exclude",
+    "configuration",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠",
+   "configuration": "6x6",
+   "quantity": "10 台",
+   "brands": "不要北奔",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T13:28:56",
+ "raw_input": "不要北奔，10 台沙漠牵引车，6x6",
+ "brief_path": "data-test\\briefs\\m43v\\v-exclude.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2675,
+  "completion_tokens": 2177,
+  "total_tokens": 4852,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 1162
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 243
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠（沙尘、高温、强日照）",
+   "base_platform": "6×6 重型牵引车底盘（驾驶室+车架+牵引鞍座）",
+   "configuration": "6x6",
+   "design_questions": [
+    "沙漠 6×6 牵引车在整体造型与布置上，哪些特征由沙尘/高温环境驱动？",
+    "进气防沙、轮拱挡泥、底盘管线防护等环境功能件如何影响外饰结构与分缝？",
+    "在排除北奔的前提下，10 台规模应优先收集哪些能支撑造型/结构判断的视图与证据？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_air_intake_sand",
+    "label": "进气/空滤防沙",
+    "kind": "function",
+    "location": "驾驶室后/侧面或前围",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "function_ergonomics"
+    ],
+    "views": [
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "高位进气",
+     "多级空滤/预滤",
+     "防沙罩或旋风预滤",
+     "维护可达性"
+    ],
+    "why": "沙漠牵引车的可用性高度依赖进气防沙；能提供进气道布置、预滤器形态、与驾驶室/车架的连接结构及维修开口证据。"
+   },
+   {
+    "part": "custom_fender_mudguard",
+    "label": "轮拱/挡泥板",
+    "kind": "part",
+    "location": "车轮上方/侧后",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "proportion"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "加宽挡泥",
+     "防沙帘/橡胶挡板",
+     "分段可拆",
+     "与轮拱/车架的固定节点"
+    ],
+    "why": "6×6 多轴布置下轮拱与挡泥板直接决定侧面比例和沙尘防护；能提供分缝、材料、离地与固定方式的证据。"
+   },
+   {
+    "part": "custom_chassis_guard",
+    "label": "底盘管线防护",
+    "kind": "function",
+    "location": "底盘/侧下部",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure"
+    ],
+    "views": [
+     "detail",
+     "side"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "护板/护罩",
+     "管线抬高与捆扎",
+     "防沙封堵",
+     "检修开口"
+    ],
+    "why": "沙漠工况下底盘管线易积沙与磨损；能提供下部防护形态、离地间隙与维护可达性的结构证据。"
+   },
+   {
+    "part": "custom_fifth_wheel",
+    "label": "牵引鞍座",
+    "kind": "function",
+    "location": "后部车架",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "鞍座布置与高度",
+     "载荷传递节点",
+     "润滑/防沙措施",
+     "气管与线束走向"
+    ],
+    "why": "牵引车核心功能件，决定后部布置与载荷节点；能提供鞍座区域结构、离地与附件布置证据。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "quantity.primary",
+    "value": "10",
+    "why": "用户明确“10 台”，按主选图片数量理解",
+    "confidence": 0.95
+   },
+   {
+    "field": "brands_exclude",
+    "value": "北奔",
+    "why": "用户明确“不要北奔”，排除北奔品牌及北奔底盘/驾驶室车型",
+    "confidence": 0.98
+   },
+   {
+    "field": "environment",
+    "value": "沙漠（沙尘、高温、强日照）",
+    "why": "用户只写“沙漠牵引车”，按沙漠工况的典型环境载荷推断",
+    "confidence": 0.8
+   },
+   {
+    "field": "base_platform",
+    "value": "6×6 重型牵引车底盘",
+    "why": "由“沙漠牵引车 6x6”推断为三轴全驱牵引车基型，具体吨位/驾驶室平台待确认",
+    "confidence": 0.7
+   }
+  ],
+  "negative": [
+   "北奔品牌（含北奔底盘/驾驶室）",
+   "非 6×6 构型",
+   "非沙漠工况特化车型",
+   "与沙漠环境防护无关的普通公路牵引车造型样本"
+  ]
+ },
+ "duration_ms": 32044
+}

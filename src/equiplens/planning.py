@@ -234,9 +234,11 @@ def negative_terms(brief: dict) -> list[str]:
               "仅", "除非", "标注", "拆", "扩展", "补充", "跨")
     meta = {"模型", "品牌", "型号", "车型", "汽车", "卡车", "车", "图片", "素材"}
     req = brief.get("request") or {}
-    raw = list(brief.get("negative") or [])
-    raw += list(req.get("brands_exclude") or [])
+    # 用户显式排除项优先：negative_terms 只保留前 4 个，若排在 LLM negative 之后
+    # 会被截断（2026-11-16 定向验证复现：不要北奔 → 北奔未进 query）。
+    raw = list(req.get("brands_exclude") or [])
     raw += list((req.get("constraints") or {}).get("exclude") or [])
+    raw += list(brief.get("negative") or [])
     out: list[str] = []
     for x in raw[:12]:
         t = normalize_text(x).strip("“”\"'")

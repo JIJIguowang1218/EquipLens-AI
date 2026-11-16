@@ -2,8 +2,8 @@
 
 | 属性 | 内容 |
 |---|---|
-| 更新日期 | **2026-11-15** |
-| 当前阶段 | **S0-05 原型（S4 planned）；M4.2 三个 live 会话完成，M4.3 未开始**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
+| 更新日期 | **2026-11-16** |
+| 当前阶段 | **S0-05 原型（S4 planned）；M4.3 接线 + 5 case A/B 通过（2026-11-16）**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | 见 `git log -1`（本文件不锁 commit）；完整测试报告 `docs/fulltest-report-20261114.md`（历史）。 |
 | 工作树提醒 | 2026-11-15：已 push 到 `origin/main`；仅未跟踪 PDF/promo 文件，无未提交源码。 |

@@ -12,7 +12,7 @@
 | **BL-006** | 扩大测试：router holdout 扩到 100+ 条、加入真实用户话术；S4 集成后做 3 个 live case | pending | 产品负责人 2026-11-15 明确要求；不得用合成集当线上准确率 |
 | **BL-007** | 第三方图文/搜索通道获取与测试（豆包 image API 为主）：申请 key/预算 → 冻结 plan 3 case A/B（覆盖率 / 标题带码率 / 成本）→ 决定接不接 | pending | 产品负责人 2026-11-15 指定：S1-06 与 S1-08 是同一个问题，合并处理；到 S1 通道决策（D1）时提醒其开通/付费；官方 Count≤5、免费额度≈1 轮 |
 | **BL-008** | 冷启动种子层 `ColdStartSeeder`（默认关、池 short 开、≤8 查询/类目、证据门槛） | pending | S0-03 已采纳为“改进”；实现后先跑 V7 A/B（池扩大 ≥20% 且 confirmed 不降），不得默认开启 |
-| **BL-010** | TaskSpec 剩余字段接线（**P0 已完成 2026-11-16**：`brands_include/exclude` → 品牌查询 + negative、`models_pinned` → engine pins；P1：`constraints.exclude/views` → negative/FILL、`brand_quota/foreign_ratio` → 软配额 + 交付披露；P2：`scope` → 邻近设计） | in_progress | P0 已接：`taskspec.to_brief` → `briefing.apply_taskspec` → `planning.build_query_plan`/`negative_terms` → engine `pins`；P1/P2 未做；P1 仍是首次交付硬门槛的一半（配额披露） |
+| **BL-010** | TaskSpec 剩余字段接线（**P0 已完成 2026-11-16**：`brands_include/exclude` → 品牌查询 + negative、`models_pinned` → engine pins；P1（部分完成：`constraints.exclude` → negative 已生效；剩 `views`、`brand_quota/foreign_ratio` 软配额 + 披露）；P2：`scope` → 邻近设计） | in_progress | P0 已接：`taskspec.to_brief` → `briefing.apply_taskspec` → `planning.build_query_plan`/`negative_terms` → engine `pins`；P1/P2 未做；P1 仍是首次交付硬门槛的一半（配额披露） |
 | **BL-011** | rank 默认对照：先比 plan 层 top-N 与每 target 分布，有实质差异再跑 5 brief × 2 臂 loop（LLM vs 确定性） | pending | E41 仅 2 case；门槛：交付/备选/degraded 一致且省 ≥20 s 才切默认；排 M4.3 验收后、第一次用户交付前 |
 | **BL-005** | 把 `scripts/check_machine.py` 纳入发布前检查清单 | done | 2026-11-15 已加 `COMMANDS.md` / `AGENTS.md` |
 
@@ -23,4 +23,6 @@
 - 2026-11-15：S0 收口（6/6）；S0-03 种子层落 BL-008，S0-06 归档移交 S3-05。
 - 2026-11-15：核对发现 TaskSpec 仅 class/env/config/slots 确定性落 brief，其余字段未消费；落 BL-010（会影响 S1 的品牌/指定车型接线）。
 - 2026-11-15：S1 拍板 4 条（02/03/09/10）；S1-14 排 BL-011（M4.3 之后）；BL-010 拆 P0/P1/P2，P0 定为首次用户交付硬门槛。
-- 2026-11-16：BL-010 P0 完成（品牌/指定车型/排除项接通 brief→plan→engine）；P1 配额/披露未做。
+- 2026-11-16：BL-010 P0 完成（品牌/指定车型/排除项接通 brief→plan→engine）；定向验证 3 条通过，
+  过程中修了 BC-S01-014（用户排除项截断）；P1 配额/披露未做。
+- 2026-11-16：定向验证发现“品牌约束下 plan 池 7<需求 20 → 7/8 交付”，归 D2 池供给，不归接线。

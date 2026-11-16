@@ -29,7 +29,27 @@
 - 机制决策 → `docs/external/doubao-consult-decisions.md` 或 `BACKLOG.md`；
 - 测试异常 → `docs/badcases/` 按 `BC-<模块>-<序号>` 登记，状态机式推进。
 
-## 5. 当前待办
+## 5. 术语口径（2026-11-16 统一）
+
+> 目的：避免“正式 / 生效 / 能用”各说各话。以后所有汇报只用下表六个词之一。
+
+| 词 | 定义 | 判定方法 |
+|---|---|---|
+| **生产代码 / 生产链路** | 真实用户任务从 `build_brief` → `plan_candidates` → `retrieval_engine` → `build_delivery_manifest` 默认执行的代码 | 一条用户输入不传实验参数就能跑到 |
+| **生产生效** | 在生产链路里且**默认**执行（无需开关） | 读 CLI 默认值 |
+| **生产可用（opt-in / 无调用方）** | 代码在 `src/`、质量达标，但需显式开关或尚无生产入口 | grep 调用方/开关 |
+| **实验** | 只在 `scripts/` 实验脚本或测试里用 | 不在生产入口 |
+| **原型** | 有实现有测试，但无生产入口、接入方案未定 | 无 import 链到 CLI |
+| **静默下线（silent / legacy）** | 保留兼容、默认不可达 | `stages.json` 的 `legacy` |
+| **计划（planned）** | 已设计未实现 | `stages.json` 的 `status` |
+
+规则：
+
+- 禁用孤立说法：“默认生效”（必须写“生产生效”或“开关默认值”）、“能用/可用”（必须限定为生产生效 / 生产可用 / 仅实验）。
+- 阶段状态只用 `active` / `silent` / `planned` / `n-a`；**`active` = 生产生效**，不只是“代码存在”。
+- 任何 A/B 必须同时记录 `stages` 版本 + `summary.config`（含 `s0_mechanism`、`session_patches`），否则结果作废。
+
+## 6. 当前待办
 
 见 [`docs/BACKLOG.md`](docs/BACKLOG.md)；S0-05 规划见
 [`docs/s0-05-session-loop-plan-20261115.md`](docs/s0-05-session-loop-plan-20261115.md)。

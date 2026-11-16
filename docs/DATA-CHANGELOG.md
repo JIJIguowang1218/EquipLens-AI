@@ -3,6 +3,35 @@
 > 目的：换机器/新会话时知道哪些测试产物被重算、哪些结论是有效的、哪些是历史污染数据。
 > 原则：**只追加，不改写历史**；作废的实验保留目录，但在本文件和 `EXPERIMENTS-INDEX` 里标清楚。
 
+## 2026-11-16
+
+### 52. BL-010 P0 定向验证（2026-11-16）
+
+- 3 份 brief：`v-brand`（只要陕汽 8 台）、`v-exclude`（不要北奔 10 台）、`v-pin`（必须含 X3000 8 台）。
+- 结果：
+  - brand 查询 `陕汽 沙漠牵引车 6x6` 出现，候选含 3 台陕汽系；
+  - pinned 查询 `X3000 沙漠牵引车` 出现，候选含德龙 X3000；
+  - `v-exclude` **首次复现 BC-S01-014**：`-"北奔"` 被前 4 条 LLM negative 截断 → 修
+    `planning.negative_terms`（用户排除项优先）+ 回归测试；重跑后 query 含 `-"北奔"`。
+- `v-brand` 真跑（8 槽）：**7/8 交付、missing 1、degraded 4、state FAILED**；7 台里 3 台陕汽系
+  （通力 STL5250TSM、德龙 X3000 ×2）→ 品牌约束生效；缺 1 台是 **plan 池 7 < 需求 20**，
+  归 D2 池供给，不是接线 bug。
+- 指纹：`summary.config` 新增 `session_patches`（生产必须 0）与 `s0_mechanism/s0_version`（CLI 落盘）。
+- 产物：`data-test/briefs/m43v/`、`data-test/plans/m43v-*`（gitignored）、
+  `data-test/runs/m43v-v-brand/`、`data-test/evals/m43v-v-brand.json`。
+
+### 51. 交付清单透明化：出处 + 证据等级 + 边界与缺口（S3-03/S3-05）
+
+- `scripts/build_delivery_manifest.py`：`DELIVERY.json` 每个交付车型新增
+  `source_url`（取 `state.asset_meta` 代表图 url，缺失为空串）和 `evidence_grade`
+  （`accepted/probable/unknown/degraded`，由 `state.verifications` 的
+  `accepted/identity` 与 `target.degraded_fill` 归一；不新增数据源）。
+- `DELIVERY.md`：用户交付表新增“出处 / 证据等级”两列；新增“边界与缺口”小节，
+  只渲染已有数字（degraded、citation_only、无图交付车型、`summary.delivery.unavailable` 归因）。
+- 向后兼容：旧 `DELIVERY.json`（无新字段）仍可渲染；无网络、无 LLM、无新依赖。
+- 测试：`tests/test_manifest.py` **5/5**；`tests/test_delivery_manifest.py` **3/3** 不回归。
+- 影响面：只改交付清单脚本 + 测试 + 文档；未改 `src/`、`stages.json`、正式链路。
+
 ## 2026-11-12（交接版）
 
 ### 1. 台账语义变更（影响所有 `RUN.json` / `INDEX.*`）

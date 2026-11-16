@@ -134,6 +134,16 @@
 - **现象**：“最好有齐格勒/卢森堡亚”被当硬性 `brands_include`。
 - **修复**：`preferences.soft_brands`；S-10 复测 soft，include 为空。
 
+## BC-S01-014
+
+- **状态**：fixed（2026-11-16，`planning.negative_terms` 用户排除项优先 + 回归测试）
+- **现象**：用户说“不要北奔”，`brands_exclude=["北奔"]` 已进 brief，但 plan 查询里没有 `-"北奔"`。
+- **触发输入（[test]）**：`不要北奔，10 台沙漠牵引车，6x6`
+- **根因**：`negative_terms` 把 `brands_exclude` 追加在 `brief.negative` 之后并 `out[:4]`，用户项被截断。
+- **修复**：用户排除项（`brands_exclude` + `constraints.exclude`）排最前，保留 4 条上限；
+  测试 `test_user_exclude_survives_negative_cap`。
+- **关联**：BL-010 P0。
+
 ## 附：与决策台账的关系
 
 - 本册只记“实现/行为”问题；外部意见的采纳与否在

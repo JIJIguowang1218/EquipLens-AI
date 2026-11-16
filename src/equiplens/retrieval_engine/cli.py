@@ -125,6 +125,14 @@ def main(argv=None) -> int:
     engine = RetrievalEngine(brief, world, run_root=args.run_root,
                              run_id=run_id, evidence_writer=writer)
     summary = engine.run()
+    try:
+        brief_doc = json.loads(Path(args.brief).read_text(encoding="utf-8"))
+        s0 = brief_doc.get("s0") or {}
+        summary.setdefault("config", {})["s0_mechanism"] = s0.get("mechanism")
+        summary["config"]["s0_version"] = s0.get("version")
+        engine.store.save_summary(summary)
+    except Exception:  # noqa: BLE001
+        pass
     if args.evidence_db:
         summary["evidence_db"] = args.evidence_db
     if args.json:

@@ -1,0 +1,288 @@
+{
+  "run_id": "m43v-v-brand",
+  "brief_id": "m43v-v-brand",
+  "state": "FAILED",
+  "slots": {
+    "target": 8,
+    "accepted": 7,
+    "filled": false
+  },
+  "delivery": {
+    "required": 8,
+    "delivered": 7,
+    "missing": 1,
+    "degraded": 4,
+    "degraded_ratio": 0.571,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "豪沃 6X6 油田专用全驱牵引车（TAZ4922）",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Zetros 4051 AS 6×6",
+      "6×6 越野牵引头（460马力 OTTC 越野底盘）"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "豪沃 6X6 油田专用全驱牵引车（TAZ4922）",
+      "Zetros 4051 AS 6×6"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 0,
+      "images": 0
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 0,
+      "status": "short",
+      "models": [],
+      "images": 0,
+      "no_image_models": [],
+      "short": 4
+    },
+    "backup_short": 4,
+    "query_tiers": {
+      "model": 155
+    },
+    "unavailable": [],
+    "status": "short"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 5,
+      "accepted": 5,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 3,
+      "accepted": 2,
+      "filled": false
+    }
+  },
+  "gaps": [
+    "u-env"
+  ],
+  "accepted_targets": {
+    "u-exact": [
+      "豪沃 6X6 油田专用全驱牵引车（TAZ4922）",
+      "东风 6×6 沙漠卡车（400马力 25吨级）",
+      "Zetros 4051 AS 6×6",
+      "6×6 越野牵引头（460马力 OTTC 越野底盘）",
+      "德龙X3000 6X6 沙漠越野载货车底盘"
+    ],
+    "u-env": [
+      "陕汽通力牌 STL5250TSM 沙漠车",
+      "陕汽重卡 德龙X3000 6X6 沙漠越野载货车底盘（SX5258TYT5V385）"
+    ]
+  },
+  "budget_used": {
+    "queries": 21,
+    "models": 7,
+    "fetches": 155,
+    "verifies": 155
+  },
+  "config": {
+    "code_version": "81f2ec6",
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": null,
+    "platform_extra": "",
+    "code_prefilter": false,
+    "session_patches": 0,
+    "s0_mechanism": "taskspec",
+    "s0_version": "v0.4"
+  },
+  "downloads": {
+    "hits": 195,
+    "downloaded": 170,
+    "failed": 25,
+    "blocked": 0,
+    "gate_pass": 160,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "img.jdzj.com",
+      "img2.fr-trading.com"
+    ],
+    "fail_counts": {
+      "img.jdzj.com": 5,
+      "img2.fr-trading.com": 15
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-16T13:33:52"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/8，池中仍有候选",
+      "ts": "2026-11-16T13:33:52"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 5 个",
+      "ts": "2026-11-16T13:33:57"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 5/8，池中仍有候选",
+      "ts": "2026-11-16T13:34:50"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-16T13:34:50"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-16T13:34:50"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-16T13:34:54"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 7/8，池中仍有候选",
+      "ts": "2026-11-16T13:35:12"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-16T13:35:12"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "all_tiers_exhausted",
+      "reason": "所有层级耗尽，仍缺 1 台，报缺口",
+      "ts": "2026-11-16T13:35:12"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T13:33:52"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 4799,
+      "at": "2026-11-16T13:33:57"
+    },
+    {
+      "state": "FETCH",
+      "ms": 53225,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 9,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-16T13:34:50"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 4479,
+      "at": "2026-11-16T13:34:54"
+    },
+    {
+      "state": "FETCH",
+      "ms": 17733,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 15,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "FAILED",
+      "ms": 0,
+      "at": "2026-11-16T13:35:12"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 1,
+      "at": "2026-11-16T13:35:12"
+    }
+  ],
+  "elapsed_ms": 80261,
+  "state_path": "data-test\\runs\\m43v-v-brand\\state.json",
+  "events_path": "data-test\\runs\\m43v-v-brand\\events.jsonl",
+  "evidence_path": "data-test\\runs\\m43v-v-brand\\evidence.json"
+}

@@ -87,19 +87,20 @@
 
 | 测试 | 覆盖 |
 |---|---|
-| `tests/test_briefing.py` | brief API/组装/校验（6） |
+| `tests/test_briefing.py` | brief API/组装/校验（7） |
 | `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划（48） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
-| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验（17） |
+| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验（20） |
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
 | `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化、资产定位（15） |
 | `tests/test_session_router.py` | Router 守卫：白名单/硬软/删除确认/上下文/回退/工厂（15） |
 | `tests/test_session_engine.py` | Session × FakeWorld：step 续跑、checkpoint、交付编辑、纠错定位、原始编号、delta run；M4.3 接线（views/quality/parts/negative/add_targets）（12） |
-| `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（21） |
+| `tests/test_taskspec.py` | TaskSpec 规范化/接入：policy 枚举、软硬分流、品牌配额、修改 delta、parts 去重、提问策略、apply_taskspec 覆盖（22） |
 | `tests/test_gate.py` | 门卫 |
 | `tests/test_run_ledger.py` | 台账 |
 | `tests/test_no_legacy_tables.py` | 词表守卫（src 全量禁旧表名、三表必须不存在、品牌组为空、主链不 import 旧链路，4） |
 | `tests/test_analysis.py` | 分析（去表化口径，14） |
+| `tests/test_manifest.py` | 交付清单透明化：source_url / evidence_grade / 边界与缺口（5） |
 
 ## 6. 契约/数据
 

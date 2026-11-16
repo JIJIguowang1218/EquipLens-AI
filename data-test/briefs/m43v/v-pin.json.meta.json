@@ -1,0 +1,375 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠牵引车",
+  "class_aliases": [],
+  "environment": "沙漠",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 8,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [
+   "X3000"
+  ],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity",
+    "models_pinned",
+    "configuration",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠",
+   "configuration": "6x6",
+   "quantity": "8 台",
+   "brands": "",
+   "models": "X3000",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T13:29:34",
+ "raw_input": "必须包含 X3000，8 台沙漠牵引车，6x6",
+ "brief_path": "data-test\\briefs\\m43v\\v-pin.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2677,
+  "completion_tokens": 2520,
+  "total_tokens": 5197,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 674
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 245
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠（高温、强风沙、干热、沙尘磨蚀）",
+   "base_platform": "重型牵引车底盘（X3000 平台，需确认是否为陕汽 X3000 系列）",
+   "configuration": "6x6",
+   "design_questions": [
+    "X3000 平台在沙漠工况下的环境特化部位（进气/防沙/散热/登车）在形态与分缝上如何与基型平台区分？",
+    "6x6 高离地、长轴距构型下，前脸比例、轮拱与驾驶室关系、鞍座区布置呈现什么造型语言？",
+    "沙漠环境驱动的功能件（空滤、防沙板、防护栏）以什么结构形态与 CMF 处理回应沙尘与高温？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸（含进气/散热开口与保险杠区）",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面（驾驶室侧围、轮拱、底盘侧向与登车区）",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "function_ergonomics"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后部（鞍座/牵引上装区与后防护）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "regulation",
+     "environment_protection"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_desert_air_intake",
+    "label": "沙漠空滤/进气系统（高位进气、预滤器）",
+    "kind": "function",
+    "location": "驾驶室后方/侧面高位",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "沙尘分离/预滤",
+     "高位取气避开扬沙",
+     "管路走向与支架固定"
+    ],
+    "why": "沙漠工况最典型的环境特化件，能提供进气口位置、滤清器壳体形态、支架与管路布置的证据，用于判断环境驱动改造的形态语言与装配逻辑。"
+   },
+   {
+    "part": "custom_sand_deflector",
+    "label": "防沙板/挡沙导流板",
+    "kind": "part",
+    "location": "底盘前轮后方/车架两侧",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "阻挡轮后扬沙",
+     "板金折弯与加强筋",
+     "与车架/挡泥板的连接节点"
+    ],
+    "why": "用户未点名，但沙漠牵引车通常有此类环境防护件；可提供板金分块、折弯半径、加强筋与紧固节点的证据，用于判断环境防护件与平台件的分缝关系。"
+   },
+   {
+    "part": "custom_front_intake_grille",
+    "label": "前脸进气/散热格栅区",
+    "kind": "function",
+    "location": "前脸",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "environment_protection",
+     "structure"
+    ],
+    "views": [
+     "front",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "散热进风面积",
+     "防沙网/百叶结构",
+     "与前围板金的分缝"
+    ],
+    "why": "高温+沙尘环境直接影响格栅开孔率与防沙网形态，可提供前脸开口比例、网格/百叶构造与分缝证据，用于回答前脸造型与散热需求的耦合方式。"
+   },
+   {
+    "part": "custom_step_ladder",
+    "label": "登车踏步/爬梯",
+    "kind": "function",
+    "location": "驾驶室侧下方",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "高离地带来的踏步级数与踏面防滑",
+     "型材/板金支架",
+     "沙尘环境下的防积沙开孔"
+    ],
+    "why": "6x6 高离地构型使登车人机成为构型带来的直接问题，可提供踏步级数、踏面防滑处理、支架形式与离地间隙的证据。"
+   },
+   {
+    "part": "custom_fifth_wheel",
+    "label": "牵引鞍座/牵引上装区",
+    "kind": "part",
+    "location": "后部车架上平面",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "鞍座安装板与车架连接",
+     "上平面高度与轴距关系",
+     "附件（气管、电气接头）布置"
+    ],
+    "why": "牵引车的品类核心界面，可提供鞍座区体量比例、安装板结构、附件布置与后悬关系的证据，用于判断后部构型与平台一致性。"
+   },
+   {
+    "part": "custom_side_guard",
+    "label": "侧防护栏/底盘侧防护",
+    "kind": "part",
+    "location": "车架两侧",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "regulation",
+     "environment_protection",
+     "structure"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "法规侧防护尺寸与离地",
+     "型材/管件框架",
+     "沙尘与碎石冲击防护"
+    ],
+    "why": "法规与沙漠碎石环境双重约束，可提供侧防护的框架形式、离地高度、与油箱/储气筒的相对关系证据。"
+   },
+   {
+    "part": "custom_desert_tire_wheel",
+    "label": "沙漠轮胎/轮毂（含胎压与轮位布置）",
+    "kind": "part",
+    "location": "底盘行走系（前轴+双后桥）",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "environment_protection",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "宽基/低气压沙地胎",
+     "轮拱与轮胎间隙",
+     "轮毂涂装与沙尘磨蚀"
+    ],
+    "why": "6x6 三轴布置与沙地胎直接决定轮拱-驾驶室比例关系与侧面体量感，可提供轮位、胎宽与轮拱间隙的造型证据。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "base_platform",
+    "value": "重型牵引车 6×6 底盘，X3000 平台",
+    "why": "用户给出 class=沙漠牵引车、configuration=6x6 与型号 X3000，未说明品牌，按型号字面归入该平台系列",
+    "confidence": 0.6
+   },
+   {
+    "field": "models_pinned",
+    "value": "X3000 作为硬约束，仅收该型号",
+    "why": "taskspec 将 models_pinned 列为 hard 约束",
+    "confidence": 0.9
+   },
+   {
+    "field": "environment",
+    "value": "沙漠（高温、强风沙、沙尘磨蚀、干热）",
+    "why": "class 为沙漠牵引车，environment 字段为沙漠，据此推导环境敏感件",
+    "confidence": 0.85
+   },
+   {
+    "field": "parts",
+    "value": "用户未点名任何部件，parts 由“沙漠+6x6+牵引”工况与构型推导，均为待确认的检索方向",
+    "why": "校验要求提供可用部件；这些部件均为沙漠牵引车的环境/构型必然涉及的对象，检索时可降权或按需剔除",
+    "confidence": 0.45
+   },
+   {
+    "field": "quantity",
+    "value": "8 台为检索/选取总量，非单车多视角总数",
+    "why": "taskspec quantity.primary=8",
+    "confidence": 0.8
+   }
+  ],
+  "negative": [
+   "不要非沙漠/普通公路工况的同型号牵引车图充当沙漠构型证据",
+   "不要 4×2、6×4 等其他驱动形式的 X3000 图，除非明确标注用于平台造型对照",
+   "不要未标注型号或型号不可辨的“相似平台”车辆图",
+   "不要纯影棚渲染、无结构细节、无法看清分缝与节点的图",
+   "不要把乘用车/轻卡的防沙、进气、踏步件直接当作本车型证据",
+   "不要将上装挂车/半挂车造型混入牵引车本体分析"
+  ]
+ },
+ "duration_ms": 37727
+}

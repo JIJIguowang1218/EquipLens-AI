@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T13:18:25 · 共 121 条 · 待补人工结论 79 条
+> 生成时间：2026-11-16T13:35:45 · 共 122 条 · 待补人工结论 80 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -125,6 +125,7 @@
 | other | `m43-sess-c5-roller` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=92 · gate_pass=70 · degraded=5 · $0.01425 | [—](data-test/runs/m43-sess-c5-roller/summary.json) |
 | other | `m43-sess-h2-wrecker` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=36 · gate_pass=27 · degraded=5 · $0.012 | [—](data-test/runs/m43-sess-h2-wrecker/summary.json) |
 | other | `m43-sess-h3-sweeper` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=59 · gate_pass=53 · degraded=2 · $0.0105 | [—](data-test/runs/m43-sess-h3-sweeper/summary.json) |
+| other | `m43v-v-brand` | run | 2026-11-16 | FAILED | delivery=7/8 · backup=0/4 · images=33 · gate_pass=31 · degraded=4 · $0.00525 | [—](data-test/runs/m43v-v-brand/summary.json) |
 
 ## 空目录 / 归档
 

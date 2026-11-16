@@ -10,7 +10,7 @@
 | 阶段 | 状态 | 当前版本 | 正式入口 | 静默下线 |
 |---|---|---|---|---|
 | **S0 用户输入识别 / 任务单** | active | **taskspec-v0.4** | `taskspec_llm.parse` → `taskspec.normalize/validate` → `briefing.apply_taskspec`；CLI `build_brief.py` 默认走此路径 | `briefing.generate_brief(use_taskspec=False)`（库默认，兼容/评估）；`build_brief.py --legacy-brief` |
-| **S1 第一段检索** | active | p8-idmatch | `planning.build_query_plan`、`scripts/plan_candidates.py` | — |
+| **S1 第一段检索** | active | p8-idmatch | `planning.build_query_plan`、`scripts/plan_candidates.py`、`scripts/rank_plan.py`（intent N+4） | — |
 | **S2 第二段检索** | active | p8-idmatch | `retrieval_engine/web.py`、`gate.py`、`identity.py` | — |
 | **S3 交付验收** | active | manifest-v1 | `scripts/build_delivery_manifest.py` | — |
 | **S4 Loop / 反馈 / 记忆** | planned | session-v0 | 未实现 | — |

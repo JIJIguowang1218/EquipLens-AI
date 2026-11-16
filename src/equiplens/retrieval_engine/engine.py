@@ -114,6 +114,8 @@ class RetrievalEngine:
                     self._add_targets(state, new)
                     state["active_targets"] = [t.target_id for t in new]
                     applied.append(target)
+        if applied:
+            state["session_patches"] = int(state.get("session_patches") or 0) + len(applied)
         return {"applied": applied, "added_targets": added, "negative": sorted(self._negative)}
 
     def _load_or_init(self) -> dict:
@@ -804,6 +806,7 @@ class RetrievalEngine:
                 "rank_method": getattr(self.world, "plan_meta", {}).get("rank_method"),
                 "platform_extra": getattr(self.world, "platform_extra", ""),
                 "code_prefilter": bool(getattr(self.world, "code_prefilter", False)),
+                "session_patches": int(state.get("session_patches") or 0),
             },
             "downloads": (self.world.download_stats()
                           if hasattr(self.world, "download_stats") else {}),
