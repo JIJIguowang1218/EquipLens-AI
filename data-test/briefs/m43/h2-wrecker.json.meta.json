@@ -1,0 +1,291 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "清障车",
+  "class_raw": "清障车",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [
+    "主流品牌"
+   ],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "实拍图"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [
+   {
+    "field": "environment",
+    "text": "未说明使用工况（城市道路/高速救援/厂区等）",
+    "severity": "defaultable",
+    "proposal": "城市道路与高速救援通用工况"
+   },
+   {
+    "field": "configuration",
+    "text": "未说明驱动形式",
+    "severity": "defaultable",
+    "proposal": "按主流 4x2 底盘"
+   },
+   {
+    "field": "preferences.soft_brands",
+    "text": "仅给出“主流品牌”，未指定具体品牌",
+    "severity": "informational",
+    "proposal": "按市场主流清障车品牌筛选"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "清障车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "主流品牌",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T11:48:29",
+ "raw_input": "清障车 6 台 主流品牌 要实拍图",
+ "brief_path": "data-test\\briefs\\m43\\h2-wrecker.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2818,
+  "completion_tokens": 2091,
+  "total_tokens": 4909,
+  "prompt_tokens_details": {
+   "cached_tokens": 2560
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 824
+  },
+  "prompt_cache_hit_tokens": 2560,
+  "prompt_cache_miss_tokens": 258
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "清障车",
+   "environment": "城市道路与高速救援通用工况（未指明，按默认）",
+   "base_platform": "4x2 中型卡车底盘（按主流清障车基型，待确认）",
+   "configuration": "未指定；清障车存在托举（拖吊）、平板背载、吊臂等多种上装构型",
+   "design_questions": [
+    "主流品牌清障车在同一底盘基型上的上装构型与整体造型差异是什么",
+    "上装作业装置与驾驶室、底盘之间的比例与结构分缝关系如何",
+    "实拍图中可见的结构节点、型材与涂装（CMF）做法有哪些"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸（驾驶室正面）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面（驾驶室+底盘+上装整体侧视）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后部/上装作业区",
+    "views": [
+     "rear",
+     "detail",
+     "side"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_tow_boom",
+    "label": "上装作业装置（托举臂/吊臂）",
+    "kind": "function",
+    "location": "后部/上装",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "构型区分（托举式/吊臂式/平板式）",
+     "上装与底盘比例关系",
+     "型材断面与铰点、油缸节点做法"
+    ],
+    "why": "清障车的构型差异主要由上装作业装置决定，实拍图能提供托举臂/吊臂与底盘的比例、结构节点、油缸与管路布置的直接证据，是区分车型与判断设计语言的关键"
+   },
+   {
+    "part": "custom_flatbed",
+    "label": "背载平板/台板",
+    "kind": "part",
+    "location": "上装/后部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "平板与驾驶室的高度/长度比例",
+     "板面分块与折边、防滑处理",
+     "涂装与反光标识"
+    ],
+    "why": "平板背载是清障车主要构型之一，只在图片为平板式车型时提供证据：板面结构分块、与底盘的高度关系与涂装做法"
+   },
+   {
+    "part": "custom_outrigger",
+    "label": "支腿/支撑装置",
+    "kind": "part",
+    "location": "底盘侧部/后部",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "支腿与车架连接节点",
+     "收起状态的离地与包覆",
+     "液压/机械形式区分"
+    ],
+    "why": "作业稳定性装置能反映上装与底盘的接口设计；仅在有支腿的车型实拍中提供节点与离地间隙证据，无则跳过"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "environment",
+    "value": "城市道路与高速救援通用工况",
+    "why": "用户未说明使用工况，清障车主流出货场景为城市与高速救援",
+    "confidence": 0.5
+   },
+   {
+    "field": "configuration",
+    "value": "4x2 中型底盘，托举/平板构型为主",
+    "why": "用户未指定驱动形式与上装形式，按市场主流默认",
+    "confidence": 0.45
+   },
+   {
+    "field": "parts",
+    "value": "上装作业装置、平板台板、支腿为按清障车类别定义推断的设计对象，非用户点名",
+    "why": "用户只给出品类与数量，无部件；为保证可检索到能区分构型的证据，按类别必备功能件补充并标记为 new/conditional",
+    "confidence": 0.4
+   },
+   {
+    "field": "preferences.soft_brands",
+    "value": "按市场主流清障车品牌（含国内外主流商用车改装品牌）筛选",
+    "why": "用户仅说“主流品牌”，未指定具体品牌",
+    "confidence": 0.5
+   },
+   {
+    "field": "quantity",
+    "value": "6 台为整车主图数量，可按品牌/构型分布",
+    "why": "用户给定 6 台，未指定品牌分配",
+    "confidence": 0.6
+   }
+  ],
+  "negative": [
+   "不要非实拍素材（渲染图、官方棚拍合成图、CG 概念图）",
+   "不要乘用车/皮卡底盘的小型清障车，除非明确作为跨车型参考",
+   "不要无关的消防、随车吊、普通载货车整车图",
+   "不要引入用户未点名的细分配件（格栅、大灯、保险杠等）单独成条"
+  ]
+ },
+ "duration_ms": 28738
+}

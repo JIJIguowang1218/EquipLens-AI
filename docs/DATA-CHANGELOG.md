@@ -734,6 +734,28 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - S4 仍 `planned`；未新增正式 run。
 
 
+### 50. M4.3 A/B：5 case 基线与 session 对照（2026-11-16）
+
+- 统一基线：新建 5 份 brief（`data-test/briefs/m43/`）+ 5 份 plan（`data-test/plans/m43-*.json`；
+  **plan 是 gitignore 的可再生中间产物**，重跑 `scripts/plan_candidates.py` 即可得到同参数计划），
+  两个臂共用同一 brief/plan；基线 `m43-base-*`（`-m equiplens.retrieval_engine --json`），
+  session 臂 `m43-sess-*`（`scripts/run_session_case.py`，在第 2 个真实 FETCH 边界打
+  `plan.add_targets` patch）。
+- 结果（交付/备选/degraded/查询/耗时）：
+  | case | base | session | degraded | patch 轮 Δ查询 | 占比 | base 秒 | sess 秒 | 耗时增幅 |
+  |---|---|---|---|---:|---:|---:|---:|---:|
+  | c1-desert | 10/10 + 4/4 | 10/10 + 4/4 | 7 -> 7 | 6 | 9.5% | 256.0 | 193.2 | -24.5% |
+  | h2-wrecker | 6/6 + 4/4 | 6/6 + 4/4 | 5 -> 5 | 3 | 7.7% | 172.3 | 191.1 | +10.9% |
+  | h3-sweeper | 6/6 + 4/4 | 6/6 + 4/4 | 4 -> 2 | 3 | 8.3% | 304.1 | 160.3 | -47.3% |
+  | c4-forklift | 6/6 + 4/4 | 6/6 + 4/4 | 3 -> 4 | 3 | 5.3% | 395.4 | 235.5 | -40.5% |
+  | c5-roller | 14/14 + 4/4 | 14/14 + 4/4 | 7 -> 5 | 3 | 5.3% | 248.4 | 171.4 | -31.0% |
+- 四项门槛：exact 完整 **5/5**、重复交付 **0**、patch 轮增量查询 **3–6 条（4.5%–9.5% ≤25%）**、
+  耗时 **4 降 1 升（最差 +10.9% ≤20%）** → **M4.3 PASS**。
+- 数据：`data-test/runs/m43-{base,sess}-*`、`data-test/evals/m43-*.json`、`m43-ab-compare.json`。
+- **S4 仍 `planned`**：A/B 只证明 patch 语义成立；session 尚未接生产入口（`build_brief`/
+  交付链路，M6），按“active = 真实业务使用”的口径不提前切。
+- 影响面：S0-05 原型 + 引擎 `apply_patches` + 新增两个脚本；未改 S0–S3。
+
 ### 49. BL-010 P0：TaskSpec 品牌/指定车型/排除项接线（2026-11-16）
 
 - `taskspec.to_brief` 增加 `brands_include/brands_exclude/models_pinned/constraints`；

@@ -27,6 +27,7 @@
 | 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
+| S0-05 Session（原型）/ M4.3 | `src/equiplens/session.py`、`session_router.py`、`retrieval_engine/engine.py::apply_patches`；A/B：`scripts/run_session_case.py`、`scripts/compare_m43_ab.py`；数据 `data-test/runs/m43-*`、`data-test/evals/m43-*.json` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
 | 检索 loop | `src/equiplens/retrieval_engine/engine.py`（FILL 正选优先，可跨 unit 借位） |

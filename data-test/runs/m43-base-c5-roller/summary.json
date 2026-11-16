@@ -1,0 +1,360 @@
+{
+  "run_id": "m43-base-c5-roller",
+  "brief_id": "m43-c5-roller",
+  "state": "DONE",
+  "slots": {
+    "target": 14,
+    "accepted": 14,
+    "filled": true
+  },
+  "delivery": {
+    "required": 14,
+    "delivered": 14,
+    "missing": 0,
+    "degraded": 7,
+    "degraded_ratio": 0.5,
+    "degraded_warn": false,
+    "degraded_targets": [
+      "悍马320",
+      "国机洛建 YZ7G 单钢轮压路机",
+      "中联 YZK19 凸块式单钢轮振动压路机",
+      "斗山Moxy-MT26铰接式卡车",
+      "沃尔沃A25E铰接式卡车",
+      "沃尔沃A30E铰接式卡车",
+      "卡特彼勒725铰接式卡车"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "悍马320",
+      "斗山Moxy-MT26铰接式卡车"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 4,
+      "images": 21
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 4,
+      "status": "complete",
+      "models": [
+        "卡特彼勒735铰接式卡车",
+        "悍马 320 单钢轮振动压路机",
+        "洛阳路通 LTS308H 全液压单钢轮压路机",
+        "科泰 26H 单钢轮振动压路机"
+      ],
+      "images": 21,
+      "no_image_models": [],
+      "short": 0
+    },
+    "backup_short": 0,
+    "query_tiers": {
+      "model": 64,
+      "exact": 164
+    },
+    "unavailable": [
+      {
+        "model": "路星 YZ20H-I 单钢轮振动压路机",
+        "reason": "gate_or_verify_rejected",
+        "hits": 4,
+        "downloaded": 4,
+        "blocked": 0
+      },
+      {
+        "model": "科泰 26H 单钢轮振动压路机",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 16,
+        "blocked": 0
+      },
+      {
+        "model": "悍马 320 单钢轮振动压路机",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 24,
+        "blocked": 0
+      },
+      {
+        "model": "洛阳路通 LTS308H 全液压单钢轮压路机",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 24,
+        "blocked": 0
+      },
+      {
+        "model": "卡特彼勒735铰接式卡车",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 24,
+        "blocked": 0
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 9,
+      "accepted": 9,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 5,
+      "accepted": 5,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "LSS320B",
+      "LSS2101-2",
+      "6312D",
+      "YZ7G",
+      "LSS1001",
+      "26H",
+      "悍马320",
+      "YZ18JC",
+      "国机洛建 YZ7G 单钢轮压路机"
+    ],
+    "u-env": [
+      "中联 YZK19 凸块式单钢轮振动压路机",
+      "斗山Moxy-MT26铰接式卡车",
+      "沃尔沃A25E铰接式卡车",
+      "沃尔沃A30E铰接式卡车",
+      "卡特彼勒725铰接式卡车"
+    ]
+  },
+  "budget_used": {
+    "queries": 57,
+    "models": 19,
+    "fetches": 312,
+    "verifies": 312
+  },
+  "config": {
+    "code_version": "b8e5c51",
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": null,
+    "platform_extra": "",
+    "code_prefilter": false
+  },
+  "downloads": {
+    "hits": 436,
+    "downloaded": 396,
+    "failed": 40,
+    "blocked": 0,
+    "gate_pass": 316,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "5b0988e595225.cdn.sohucs.com",
+      "cos.solepic.com",
+      "img.cmol.com",
+      "img6.makepolo.net",
+      "img67.chem17.com",
+      "img68.gkzhan.com",
+      "static.cnmasike.com"
+    ],
+    "fail_counts": {
+      "5b0988e595225.cdn.sohucs.com": 4,
+      "cos.solepic.com": 4,
+      "img.cmol.com": 4,
+      "img6.makepolo.net": 4,
+      "img67.chem17.com": 4,
+      "img68.gkzhan.com": 4,
+      "static.cnmasike.com": 12
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-16T12:13:23"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/14，池中仍有候选",
+      "ts": "2026-11-16T12:13:23"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 9 个",
+      "ts": "2026-11-16T12:13:55"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 9/14，池中仍有候选",
+      "ts": "2026-11-16T12:15:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-16T12:15:02"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-16T12:15:02"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 5 个",
+      "ts": "2026-11-16T12:15:28"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 10/14，池中仍有候选",
+      "ts": "2026-11-16T12:16:42"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 5 个",
+      "ts": "2026-11-16T12:16:57"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "done",
+      "reason": "全局槽位 14/14 已满",
+      "ts": "2026-11-16T12:17:31"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T12:13:23"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 31928,
+      "at": "2026-11-16T12:13:55"
+    },
+    {
+      "state": "FETCH",
+      "ms": 67477,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 10,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-16T12:15:02"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 25764,
+      "at": "2026-11-16T12:15:28"
+    },
+    {
+      "state": "FETCH",
+      "ms": 74266,
+      "at": "2026-11-16T12:16:42"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 6,
+      "at": "2026-11-16T12:16:42"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T12:16:42"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T12:16:42"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 15260,
+      "at": "2026-11-16T12:16:57"
+    },
+    {
+      "state": "FETCH",
+      "ms": 33669,
+      "at": "2026-11-16T12:17:31"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 7,
+      "at": "2026-11-16T12:17:31"
+    },
+    {
+      "state": "FILL",
+      "ms": 1,
+      "at": "2026-11-16T12:17:31"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T12:17:31"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-16T12:17:31"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 2,
+      "at": "2026-11-16T12:17:31"
+    }
+  ],
+  "elapsed_ms": 248390,
+  "state_path": "data-test\\runs\\m43-base-c5-roller\\state.json",
+  "events_path": "data-test\\runs\\m43-base-c5-roller\\events.jsonl",
+  "evidence_path": "data-test\\runs\\m43-base-c5-roller\\evidence.json"
+}

@@ -1,0 +1,299 @@
+{
+ "brief_id": "m43-c1-desert",
+ "request": {
+  "raw": "沙漠车 10 个 6x6 要外国牌子的 国内外都行 别给我内饰 高清",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "沙漠",
+   "source": "taskspec"
+  },
+  "base_platform": {
+   "value": "6×6 重型越野卡车底盘（军警/油田/矿区越野底盘，带分动箱与越野轮胎）",
+   "confidence": 0.8
+  },
+  "configuration": "6x6",
+  "page_budget": {
+   "vehicle_slots": 10
+  }
+ },
+ "assumptions": [
+  {
+   "field": "class",
+   "value": "沙漠牵引车 = 沙漠/沙尘工况用 6×6 重型越野卡车（含越野载货与牵引）",
+   "why": "用户只说“沙漠车”，需要确认是越野卡车底盘而非沙漠越野 SUV/沙滩车",
+   "confidence": 0.7
+  },
+  {
+   "field": "constraints.origin",
+   "value": "外国品牌优先，国内品牌也可接受",
+   "why": "用户原话“要外国牌子的 国内外都行”，按进口品牌优先、国产可接受的软偏好处理",
+   "confidence": 0.6
+  },
+  {
+   "field": "quantity.primary",
+   "value": "10（按 10 台/组图片计）",
+   "why": "“10 个”按 10 台车理解",
+   "confidence": 0.75
+  },
+  {
+   "field": "parts",
+   "value": "进气防沙罩、防沙挡沙件、越野轮胎轮系为按“沙漠工况 + 6×6”推断的环境特化对象",
+   "why": "用户未点名部件，为回答沙漠环境造型问题而选取环境敏感件，均可按需删减",
+   "confidence": 0.5
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "整车前脸（沙漠车外部造型）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "整车侧面（6×6 轮系与底盘姿态）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_sand_intake",
+   "label": "进气/空滤防沙罩（高位进气）",
+   "kind": "function",
+   "location": "驾驶室后方或侧面高位进气口",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "environment_protection",
+    "structure",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "沙尘分离/预滤",
+    "高位取气",
+    "滤芯可维护开启"
+   ],
+   "why": "沙漠工况最典型的环境特化件，能提供沙尘环境下进气防护的形态、布置高度与拆装节点的直接视觉证据。"
+  },
+  {
+   "part": "custom_dust_guard",
+   "label": "防沙板/挡沙帘（轮后与底盘挡沙件）",
+   "kind": "part",
+   "location": "轮拱后方、底盘侧面、驾驶室下沿",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "environment_protection",
+    "structure",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "阻挡扬沙回卷",
+    "橡胶/板金柔性挡板",
+    "支架固定与快拆"
+   ],
+   "why": "能看出沙尘环境如何改变覆盖件形态：挡沙件的材料、悬垂长度、与轮拱和车架的分缝关系。"
+  },
+  {
+   "part": "custom_wheel_tire",
+   "label": "越野轮胎与轮拱/轮系布置",
+   "kind": "part",
+   "location": "6×6 前轴、双后轴轮位",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "proportion",
+    "environment_protection",
+    "function_ergonomics"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "低气压越野胎",
+    "离地间隙",
+    "轮拱包覆与轮胎的间隙"
+   ],
+   "why": "用户明确 6×6 构型，轮系与轮拱关系是判断沙漠车体量比例与通过性的主要视觉证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车（沙漠工况 6×6 越野卡车/牵引车） 6×6",
+   "parts": [
+    "custom_sand_intake",
+    "custom_dust_guard",
+    "custom_wheel_tire"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠/高温沙尘（foreign 品牌优先，国内外品牌均可） 工程车",
+   "parts": [
+    "custom_sand_intake",
+    "custom_dust_guard",
+    "custom_wheel_tire"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 34
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠车",
+  "class_aliases": [
+   "沙漠车"
+  ],
+  "environment": "沙漠",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 10,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "高清"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [
+    "内饰"
+   ],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "configuration"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [
+   {
+    "field": "constraints.origin",
+    "text": "要外国牌子的 国内外都行",
+    "severity": "defaultable",
+    "proposal": "进口（外国）品牌优先，国产亦可接受"
+   }
+  ],
+  "assumptions": [
+   "“10 个”按 10 台车理解",
+   "“别给我内饰”按排除内饰相关图片/内容处理",
+   "“高清”按图片清晰度偏好处理"
+  ],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "沙漠车",
+   "environment": "沙漠车",
+   "configuration": "6x6",
+   "quantity": "10 个",
+   "brands": "要外国牌子的 国内外都行",
+   "models": "",
+   "constraints": "别给我内饰",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

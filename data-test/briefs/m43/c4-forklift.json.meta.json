@@ -1,0 +1,362 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "叉车",
+  "class_raw": "电动叉车",
+  "class_aliases": [
+   "电动叉车"
+  ],
+  "environment": "仓储物流工况",
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": "electric",
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "environment",
+    "constraints.powertrain"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "电动叉车",
+   "environment": "仓储物流工况",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "电动",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T11:49:43",
+ "raw_input": "电动叉车 6 台 仓储物流工况",
+ "brief_path": "data-test\\briefs\\m43\\c4-forklift.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2665,
+  "completion_tokens": 2457,
+  "total_tokens": 5122,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 612
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 233
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "电动叉车（平衡重式，仓储物流工况，电动）",
+   "environment": "仓储物流工况（室内/库内平坦硬地、频繁起停与装卸、通道狭窄、需低噪零排放、换班连续作业）",
+   "base_platform": "电动平衡重叉车基型平台（电驱动桥+电池仓+护顶架）",
+   "configuration": "电动；平衡重式布置（门架前置、配重后置）；吨位与具体构型未指定，需确认",
+   "design_questions": [
+    "电动叉车在仓储物流工况下的整车造型语言与体量比例，如何兼顾平台继承与电驱特征表达？",
+    "护顶架/门架/配重/覆盖件在结构分缝、人机（登车、视野、维修/换电）与法规约束下如何取舍？",
+    "库内工况对表面处理、色彩分区、防撞与清洁维护（CMF 与环境防护）提出哪些形态要求？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "整车前部（门架—前桥—驾驶舱前界面）",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "整车侧面（车身覆盖件—电池仓—登车界面）",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "整车后部（配重—后部覆盖件）",
+    "views": [
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "roof",
+    "label": "顶部区域（护顶架—顶棚界面）",
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_ohg01",
+    "label": "护顶架（顶棚/立柱）",
+    "kind": "part",
+    "location": "roof",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "views": [
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "型材断面与节点连接方式决定视觉轻量化",
+     "立柱位置与落物防护/视野的平衡",
+     "法规对护顶架强度与开口的约束"
+    ],
+    "why": "护顶架是电动叉车最显著的顶部轮廓，可提供型材断面、节点接头、与车架连接方式的证据，用于判断整车骨架语言与人机视野取舍。"
+   },
+   {
+    "part": "custom_cwt01",
+    "label": "配重（后配重块）",
+    "kind": "part",
+    "location": "rear",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ],
+    "views": [
+     "rear",
+     "hero_45",
+     "side"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "铸造体量决定尾部姿态与整车前后配重比例",
+     "表面分模线与圆角过渡体现制造约束",
+     "涂装与色块分区提供品牌识别"
+    ],
+    "why": "配重是平衡重式叉车尾部体量与比例的决定件，可提供大件铸造形态、分模线、色块划分的证据，用于回答整车体量与尾部造型问题。"
+   },
+   {
+    "part": "custom_mast01",
+    "label": "门架（含货叉总成）",
+    "kind": "function",
+    "location": "front",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "views": [
+     "front",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "多级型材嵌套决定前部竖向线条密度",
+     "门架高度与驾驶舱、护顶架的高度关系影响比例",
+     "前视野通道与管路布置影响人机"
+    ],
+    "why": "门架是前部最主要的竖向结构与功能件，可提供型材嵌套、油管/线束布置、与前桥连接节点的证据，用于判断前部比例与前视野设计。"
+   },
+   {
+    "part": "custom_step01",
+    "label": "登车踏板/扶手（驾驶舱登乘界面）",
+    "kind": "function",
+    "location": "side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "cross_vehicle",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "踏板高度/踏面防滑处理决定频繁上下车效率",
+     "折弯板件与车架的搭接方式体现结构简洁度",
+     "积水/积尘的自清洁开孔设计"
+    ],
+    "why": "仓储工况下司机每班高频上下车，踏板与扶手是高频接触界面，可提供防滑踏面、折弯结构与搭接节点的证据；跨类目参考需标注 borrowed，仅作功能件比较。"
+   },
+   {
+    "part": "custom_bat01",
+    "label": "电池仓/侧拉换电开口（电驱特征区）",
+    "kind": "part",
+    "location": "side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "侧拉/吊装的开口尺度与分缝位置决定换电效率",
+     "仓盖板金分块与锁止结构体现装配逻辑",
+     "开口与车架、覆盖件的界面处理影响密封与清洁"
+    ],
+    "why": "电动化在库内多班制工况下直接体现在换电/充电界面，可提供仓门分缝、锁止件、密封条与周边覆盖件搭接的证据，用于回答电驱特征如何被造型化表达。"
+   },
+   {
+    "part": "custom_cov01",
+    "label": "车身覆盖件/机罩（侧面与前围板件）",
+    "kind": "part",
+    "location": "side",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "板件折弯与加强筋走向形成侧面线性语言",
+     "分缝线与检修口位置反映维修可达性",
+     "冲压/折弯工艺对圆角与曲面过渡的约束"
+    ],
+    "why": "覆盖件承载整车侧面造型语言与分缝体系，可提供折弯半径、加强筋、检修口分块的证据，用于回答侧面比例与制造约束问题。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "电动平衡重式叉车（counterbalance）",
+    "why": "输入仅写“电动叉车”，仓储物流工况最常见的对位形态为平衡重式；若为仓储式/前移式需另行确认",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.configuration",
+    "value": "四轮平衡重、门架前置、配重后置；吨位与起升高度未指定",
+    "why": "taskspec 中 configuration 与 tonnage 为空，按基型默认推断",
+    "confidence": 0.5
+   },
+   {
+    "field": "parts",
+    "value": "零件清单由“品类+工况”分析推断（护顶架/配重/门架/踏板/电池仓/覆盖件），非用户明确点名",
+    "why": "用户未给出任何部件提示，但任务单校验要求可检索部件；均取该品类在仓储物流工况下必然存在的设计对象，且未引入用户语境外的装饰性附件",
+    "confidence": 0.65
+   },
+   {
+    "field": "parts[3].relation_axis",
+    "value": "cross_vehicle（borrowed）",
+    "why": "登车踏板/扶手为功能件，可跨车型比较，但仅作为功能参考，不作为同品类证据",
+    "confidence": 0.55
+   }
+  ],
+  "negative": [
+   "不要检索内燃叉车/柴油叉车的进气、排气、散热相关形态作为造型证据（powertrain 硬约束为 electric）",
+   "不要引入仓储物流工况之外的矿用、越野、防沙、涉水类防护附件",
+   "不要补入用户未提且本清单未列的外观附件（如导流罩、随车吊、爬梯等）",
+   "不要把“电动叉车”替换为牵引车、堆高车等他类目车型",
+   "不要用“相似/同系列”作为检索理由，理由须写明可提供的设计证据"
+  ]
+ },
+ "duration_ms": 37059
+}

@@ -1,0 +1,307 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "单钢轮压路机",
+  "class_raw": "单钢轮压路机",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 14,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": "6吨以上",
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": [
+    "tonnage"
+   ]
+  },
+  "unknowns": [
+   {
+    "field": "delivery",
+    "text": "未提供交付时间/地点",
+    "severity": "informational",
+    "proposal": ""
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "单钢轮压路机",
+   "environment": "",
+   "configuration": "",
+   "quantity": "14 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T11:50:14",
+ "raw_input": "单钢轮压路机 14 台 6 吨以上",
+ "brief_path": "data-test\\briefs\\m43\\c5-roller.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2700,
+  "completion_tokens": 2380,
+  "total_tokens": 5080,
+  "prompt_tokens_details": {
+   "cached_tokens": 2560
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 890
+  },
+  "prompt_cache_hit_tokens": 2560,
+  "prompt_cache_miss_tokens": 140
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "单钢轮压路机（single-drum vibratory roller）",
+   "environment": "",
+   "base_platform": "自行式单钢轮振动压路机底盘（铰接车架 + 单钢轮 + 后车体发动机/驾驶台）",
+   "configuration": "铰接式自行走、单钢轮前置、后轮为充气轮胎或双钢轮驱动（待确认）",
+   "design_questions": [
+    "6 吨以上单钢轮压路机在钢轮—车架—机罩—驾驶台的整体体量与比例关系上呈现哪些造型语言（家族化与平台差异）？",
+    "单钢轮工作装置（钢轮端板、激振结构、刮泥板/洒水布置）与车架铰接处的结构分缝、节点如何处理？",
+    "驾驶台/操作棚（含 ROPS/FOPS）的人机布置、视野与登车/扶手布置在 6 吨级机型上如何体现？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前部钢轮区域正视",
+    "views": [
+     "front",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "整机侧面（钢轮—铰接—后车体）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "form_gesture",
+     "function_ergonomics"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后车体/驾驶台与机罩侧后视",
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_drum",
+    "label": "钢轮（振动轮）",
+    "kind": "part",
+    "location": "前部（前置单钢轮）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "proportion"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "钢轮直径与整机长度/高度构成的比例关系",
+     "端板、激振块、减振块与轮体焊接分缝的构造表达",
+     "钢面处理、涂装色带与轮体标识的 CMF"
+    ],
+    "why": "钢轮是单钢轮压路机唯一不可替代的识别特征，能直接提供整机比例、结构与 CMF 证据，也是与双钢轮/轮胎压路机区分的判据"
+   },
+   {
+    "part": "custom_engine_hood",
+    "label": "后车体机罩（发动机罩壳）",
+    "kind": "part",
+    "location": "后部车体（驾驶台后方/下方）",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "罩壳大面折弯与倒角形成的体量走向",
+     "散热开口、检修口盖板的分缝与铰接节点",
+     "板金分块、涂装与标识布置"
+    ],
+    "why": "机罩是压路机侧面最大的连续曲面体，决定整机姿态与家族化语言，并能提供板金分缝/散热开口的构造证据"
+   },
+   {
+    "part": "custom_operator_station",
+    "label": "驾驶台/操作棚（含 ROPS/FOPS 与操纵布置）",
+    "kind": "part",
+    "location": "后车体上方（中后置）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "form_gesture",
+     "regulation"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail",
+     "interior"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "操作台高度、座椅与操纵杆布置、前后视野",
+     "棚架立柱断面、顶棚形态与整机比例的关系",
+     "ROPS/FOPS 与警示灯、后视镜等法规件布置"
+    ],
+    "why": "6 吨级机型的操作台形态直接反映人机与法规取舍，也是侧视轮廓的关键构成，能提供人机与棚架结构的证据"
+   },
+   {
+    "part": "custom_articulation_frame",
+    "label": "铰接车架（铰接转向机构与车架连接段）",
+    "kind": "part",
+    "location": "中部（钢轮与后车体之间）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "铰接销轴、摆架与车架箱型梁的节点处理",
+     "前后车体长度比与离地间隙比例",
+     "转向油缸、限位与维护可达性"
+    ],
+    "why": "铰接段决定整机前后比例与转折姿态，是判断平台构型与结构节点的证据；仅在侧视/细节图中可读，故为条件相关"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "单钢轮振动压路机（自行式）",
+    "why": "用户原话“单钢轮压路机”，未指明拖式或手扶式，按主流自行式理解",
+    "confidence": 0.85
+   },
+   {
+    "field": "preferences.tonnage",
+    "value": "工作质量 ≥ 6 t（6 吨以上，含 6 t 级）",
+    "why": "用户给出“6 吨以上”，未说明是工作质量还是名义吨位，按行业惯例取工作质量",
+    "confidence": 0.7
+   },
+   {
+    "field": "configuration",
+    "value": "铰接式、单钢轮前置、后轴为充气轮胎（或双轮驱动）待确认",
+    "why": "6 吨以上单钢轮机型主流为铰接自行式，具体后轴形式未给出",
+    "confidence": 0.55
+   },
+   {
+    "field": "parts",
+    "value": "用户未点名部件，按该品类必看的四个构成对象（钢轮、机罩、操作台、铰接车架）建立检索对象",
+    "why": "为保证可检索性，仅取品类核心构成，不扩到防沙板/爬梯等未提及附件",
+    "confidence": 0.6
+   },
+   {
+    "field": "environment",
+    "value": "未限定工况（通用土方/道路基层压实）",
+    "why": "用户未提供工况、地区、品牌与交付信息",
+    "confidence": 0.4
+   }
+  ],
+  "negative": [
+   "不要双钢轮压路机、轮胎压路机、手扶/拖式压路机",
+   "不要工作质量低于 6 t 的小型压路机",
+   "不要用“相似/同系列”作为入选理由，理由须写明可提供的设计证据",
+   "不要补入用户未提及的附件（防沙板、爬梯、随车吊等）",
+   "不要编造具体品牌型号、吨位精确值或价格"
+  ]
+ },
+ "duration_ms": 30323
+}

@@ -1,0 +1,313 @@
+{
+ "brief_id": "m43-h3-sweeper",
+ "request": {
+  "raw": "扫路车 6 台 市政道路清扫工况 高清",
+  "class": "扫路车",
+  "environment": {
+   "value": "市政道路清扫工况",
+   "source": "taskspec"
+  },
+  "base_platform": {
+   "value": "二类载货汽车底盘 + 后置上装（假设，具体吨位未指定）",
+   "confidence": 0.8
+  },
+  "configuration": "中置扫盘 + 底盘下吸口 + 后置垃圾箱（主流市政扫路车构型假设）",
+  "page_budget": {
+   "vehicle_slots": 6
+  }
+ },
+ "assumptions": [
+  {
+   "field": "base_platform",
+   "value": "二类载货汽车底盘 + 后置上装",
+   "why": "扫路车通常由二类底盘改装，用户未指定底盘吨位与品牌。",
+   "confidence": 0.7
+  },
+  {
+   "field": "configuration",
+   "value": "中置扫盘 + 底盘下吸口 + 后置垃圾箱",
+   "why": "市政道路清扫车主流构型，用户未明确构型。",
+   "confidence": 0.65
+  },
+  {
+   "field": "parts",
+   "value": "按品类核心功能件补充清扫装置、吸口、垃圾箱",
+   "why": "用户未点名部件，但为满足部件级检索与校验，补充扫路车不可缺的核心功能件。",
+   "confidence": 0.6
+  },
+  {
+   "field": "quantity",
+   "value": "6 台",
+   "why": "用户明确给出数量。",
+   "confidence": 1.0
+  },
+  {
+   "field": "quality",
+   "value": "高清",
+   "why": "用户明确要求高清图片。",
+   "confidence": 1.0
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸/驾驶室前部",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面/底盘与上装关系",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后部/上装箱体与作业装置",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "rear",
+    "side",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_9f2a1c",
+   "label": "扫刷/清扫装置",
+   "kind": "function",
+   "location": "底盘两侧/前轴后方中置扫盘区域",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "扫刷布置与避让",
+    "磨损件更换",
+    "防尘与防飞溅"
+   ],
+   "why": "决定清扫宽度、贴地性和作业效率，是扫路车功能构型与市政工况适应的核心证据。"
+  },
+  {
+   "part": "custom_4b7d2e",
+   "label": "吸口/吸尘装置",
+   "kind": "function",
+   "location": "底盘下方/后轴前后吸拾区域",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "environment",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "environment_protection",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "detail",
+    "side",
+    "rear"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "负压吸拾",
+    "离地间隙与通过性",
+    "防堵塞与耐磨"
+   ],
+   "why": "吸口形态和离地关系直接影响吸拾效率、通过性和维护，是清扫工况环境适应的关键证据。"
+  },
+  {
+   "part": "custom_c3e8f0",
+   "label": "垃圾箱/上装箱体",
+   "kind": "part",
+   "location": "后部上装",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "cmf",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "side",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "箱体分缝与骨架",
+    "倾倒/卸料",
+    "容积与轴荷关系"
+   ],
+   "why": "箱体是扫路车上装主体，能提供分缝、比例、涂装和卸料维护的设计证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "扫路车 中置扫盘 + 底盘下吸口 + 后置垃圾箱（主流市政扫路车构型假设）",
+   "parts": [
+    "custom_9f2a1c",
+    "custom_4b7d2e",
+    "custom_c3e8f0"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "市政道路清扫工况 工程车",
+   "parts": [
+    "custom_9f2a1c",
+    "custom_4b7d2e",
+    "custom_c3e8f0"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 22
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "扫路车",
+  "class_raw": "扫路车",
+  "class_aliases": [],
+  "environment": "市政道路清扫工况",
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "高清"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "environment"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "扫路车",
+   "environment": "市政道路清扫工况",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

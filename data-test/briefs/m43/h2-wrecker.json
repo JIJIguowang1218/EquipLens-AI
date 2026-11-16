@@ -1,0 +1,327 @@
+{
+ "brief_id": "m43-h2-wrecker",
+ "request": {
+  "raw": "清障车 6 台 主流品牌 要实拍图",
+  "class": "清障车",
+  "environment": {
+   "value": "城市道路与高速救援通用工况（未指明，按默认）",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "4x2 中型卡车底盘（按主流清障车基型，待确认）",
+   "confidence": 0.8
+  },
+  "configuration": "未指定；清障车存在托举（拖吊）、平板背载、吊臂等多种上装构型",
+  "page_budget": {
+   "vehicle_slots": 6
+  }
+ },
+ "assumptions": [
+  {
+   "field": "environment",
+   "value": "城市道路与高速救援通用工况",
+   "why": "用户未说明使用工况，清障车主流出货场景为城市与高速救援",
+   "confidence": 0.5
+  },
+  {
+   "field": "configuration",
+   "value": "4x2 中型底盘，托举/平板构型为主",
+   "why": "用户未指定驱动形式与上装形式，按市场主流默认",
+   "confidence": 0.45
+  },
+  {
+   "field": "parts",
+   "value": "上装作业装置、平板台板、支腿为按清障车类别定义推断的设计对象，非用户点名",
+   "why": "用户只给出品类与数量，无部件；为保证可检索到能区分构型的证据，按类别必备功能件补充并标记为 new/conditional",
+   "confidence": 0.4
+  },
+  {
+   "field": "preferences.soft_brands",
+   "value": "按市场主流清障车品牌（含国内外主流商用车改装品牌）筛选",
+   "why": "用户仅说“主流品牌”，未指定具体品牌",
+   "confidence": 0.5
+  },
+  {
+   "field": "quantity",
+   "value": "6 台为整车主图数量，可按品牌/构型分布",
+   "why": "用户给定 6 台，未指定品牌分配",
+   "confidence": 0.6
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸（驾驶室正面）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面（驾驶室+底盘+上装整体侧视）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "后部/上装作业区",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "rear",
+    "detail",
+    "side"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_tow_boom",
+   "label": "上装作业装置（托举臂/吊臂）",
+   "kind": "function",
+   "location": "后部/上装",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "构型区分（托举式/吊臂式/平板式）",
+    "上装与底盘比例关系",
+    "型材断面与铰点、油缸节点做法"
+   ],
+   "why": "清障车的构型差异主要由上装作业装置决定，实拍图能提供托举臂/吊臂与底盘的比例、结构节点、油缸与管路布置的直接证据，是区分车型与判断设计语言的关键"
+  },
+  {
+   "part": "custom_flatbed",
+   "label": "背载平板/台板",
+   "kind": "part",
+   "location": "上装/后部",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "cmf"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "rear",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "平板与驾驶室的高度/长度比例",
+    "板面分块与折边、防滑处理",
+    "涂装与反光标识"
+   ],
+   "why": "平板背载是清障车主要构型之一，只在图片为平板式车型时提供证据：板面结构分块、与底盘的高度关系与涂装做法"
+  },
+  {
+   "part": "custom_outrigger",
+   "label": "支腿/支撑装置",
+   "kind": "part",
+   "location": "底盘侧部/后部",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics",
+    "environment_protection"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "rear",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "支腿与车架连接节点",
+    "收起状态的离地与包覆",
+    "液压/机械形式区分"
+   ],
+   "why": "作业稳定性装置能反映上装与底盘的接口设计；仅在有支腿的车型实拍中提供节点与离地间隙证据，无则跳过"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "清障车 未指定；清障车存在托举（拖吊）、平板背载、吊臂等多种上装构型",
+   "parts": [
+    "custom_tow_boom",
+    "custom_flatbed",
+    "custom_outrigger"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "城市道路与高速救援通用工况（未指明，按默认） 工程车",
+   "parts": [
+    "custom_tow_boom",
+    "custom_flatbed",
+    "custom_outrigger"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 22
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "清障车",
+  "class_raw": "清障车",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [
+    "主流品牌"
+   ],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "实拍图"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [
+   {
+    "field": "environment",
+    "text": "未说明使用工况（城市道路/高速救援/厂区等）",
+    "severity": "defaultable",
+    "proposal": "城市道路与高速救援通用工况"
+   },
+   {
+    "field": "configuration",
+    "text": "未说明驱动形式",
+    "severity": "defaultable",
+    "proposal": "按主流 4x2 底盘"
+   },
+   {
+    "field": "preferences.soft_brands",
+    "text": "仅给出“主流品牌”，未指定具体品牌",
+    "severity": "informational",
+    "proposal": "按市场主流清障车品牌筛选"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "清障车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "主流品牌",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

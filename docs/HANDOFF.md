@@ -36,10 +36,14 @@
   5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
 - **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
   BL-002 S1/S2 legacy 标注；BL-010 TaskSpec 字段接线（P0 是首次交付硬门槛）。
-- **M4.3 进度（2026-11-15 晚）**：patch → 引擎接线已完成（`engine.apply_patches` +
-  `session.apply_to_brief`；views/parts/quality 写 brief、negative 进 `brief.negative` + FILL 过滤、
-  add_targets 只抓新增 target）。`test_session_engine` **12/12**。**live 3 case 尚未复跑**：
-  M4.2 的冻结 brief/plan 与 `tmp/s0-05/live_session.py` 在另一台机器上，需拷过来或重生成计划后再跑。
+- **M4.3 完成（2026-11-16）**：patch → 引擎接线 + 5 case A/B（新建 brief/plan 统一基线）。
+  - 接线：`engine.apply_patches` + `session.apply_to_brief`；views/parts/quality 写 brief、
+    negative 进 `brief.negative` + FILL 过滤、add_targets 只抓新增 target；`test_session_engine` 12/12。
+  - A/B：基线 `m43-base-*` vs session `m43-sess-*`（同 brief/plan），交付 42/42 对 42/42、
+    missing 0、重复 0、patch 轮增量查询 3–6 条（4.5%–9.5%）、耗时 4 降 1 升（+10.9%）。
+  - **S4 仍 `planned`**：session 未接生产入口（M6），不按“active = 真实业务使用”提前切。
+  - 数据：`data-test/runs/m43-*`、`data-test/evals/m43-*.json`；脚本 `scripts/run_session_case.py`、
+    `scripts/compare_m43_ab.py`。
 
 ## 0.2 推进流程（单一事实源，2026-11-15）
 
