@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """交付清单 / 内容监控：把一次 run 拆成三块。
 
-1. **用户交付物**：N 台主交付车型的图（按部件分组）+ 任务单摘要；
+1. **用户交付物**：N 台主交付车型的图（按部件分组）+ 出处/证据等级 + 任务单摘要；
 2. **内部监控**：每台的实现状态（交付/备选/缺图原因）、degraded/citation_only、
    下载质量、loop 节点耗时、API 成本（峰/谷两个口径）；
 3. **可复用中间产物**：任务单 JSON、plan（优先级先验）、部件图（分析/知识库候选）、
@@ -97,6 +97,56 @@ def _images_for(state: dict, run_dir: Path, tid: str) -> dict:
     return out
 
 
+def _chosen_asset(state: dict, tid: str) -> tuple | None:
+    """车型的代表图：优先第一条核验通过的图，否则第一条有元数据的图。
+
+    返回 ``(asset_id, part, verification, asset_meta)``；该车型没有图时返回 None。
+    只读 state 里已有字段，不做任何网络/文件探测。
+    """
+    assets = (state.get("assets") or {}).get(tid) or {}
+    verifs = state.get("verifications") or {}
+    meta = state.get("asset_meta") or {}
+    first = None
+    for part, ids in assets.items():
+        for aid in ids or []:
+            rec = (aid, part, verifs.get(f"{aid}:{part}") or {}, meta.get(aid) or {})
+            if first is None:
+                first = rec
+            if rec[2].get("accepted"):
+                return rec
+    return first
+
+
+def _source_url(chosen: tuple | None) -> str:
+    """代表图的来源 URL；老 run 没有 asset_meta 时返回空串。"""
+    if not chosen:
+        return ""
+    meta = chosen[3]
+    return str(meta.get("url") or meta.get("source_url") or "")
+
+
+def _evidence_grade(state: dict, tid: str, chosen: tuple | None) -> str:
+    """把已有字段归一成 accepted / probable / unknown / degraded。
+
+    - degraded：``target.degraded_fill``（回退来源填图，引擎已有标记）；
+    - accepted：代表图核验通过且 identity=confirmed（E1）；
+    - probable：代表图核验通过，或 identity=probable（E2）；
+    - unknown ：没有核验记录，或未通过且身份未知。
+    """
+    target = (state.get("targets") or {}).get(tid) or {}
+    if target.get("degraded_fill"):
+        return "degraded"
+    verif = (chosen[2] if chosen else {}) or {}
+    if not verif:
+        return "unknown"
+    identity = str(verif.get("identity") or "unknown")
+    if verif.get("accepted") and identity == "confirmed":
+        return "accepted"
+    if verif.get("accepted") or identity == "probable":
+        return "probable"
+    return "unknown"
+
+
 def build_manifest(run_dir: Path, brief_path: Path | None = None,
                    plan_path: Path | None = None) -> dict:
     run_dir = Path(run_dir)
@@ -109,6 +159,7 @@ def build_manifest(run_dir: Path, brief_path: Path | None = None,
     for unit_id, tids in (summary.get("accepted_targets") or {}).items():
         for tid in tids:
             t = targets.get(tid) or {}
+            chosen = _chosen_asset(state, tid)
             delivered.append({
                 "model": t.get("model") or tid,
                 "unit": unit_id,
@@ -116,14 +167,19 @@ def build_manifest(run_dir: Path, brief_path: Path | None = None,
                 "intent_rank": t.get("intent_rank", 0),
                 "degraded": tid in (delivery.get("degraded_targets") or []),
                 "citation_only": tid in (delivery.get("citation_only_targets") or []),
+                "source_url": _source_url(chosen),
+                "evidence_grade": _evidence_grade(state, tid, chosen),
                 "images": _images_for(state, run_dir, tid),
             })
     backup = []
     for tid in ((delivery.get("backup") or {}).get("models") or []):
         t = targets.get(tid) or {}
+        chosen = _chosen_asset(state, tid)
         backup.append({"model": t.get("model") or tid,
                        "role": t.get("role", ""),
                        "intent_rank": t.get("intent_rank", 0),
+                       "source_url": _source_url(chosen),
+                       "evidence_grade": _evidence_grade(state, tid, chosen),
                        "images": _images_for(state, run_dir, tid)})
 
     brief = json.loads(Path(brief_path).read_text(encoding="utf-8")) if brief_path else {}
@@ -181,8 +237,8 @@ def render_md(m: dict) -> str:
         "",
         "## 一、用户交付物",
         "",
-        "| # | 车型 | 优先级 | 名次 | 图 | 标记 |",
-        "|---:|---|---|---:|---:|---|",
+        "| # | 车型 | 优先级 | 名次 | 图 | 出处 | 证据等级 | 标记 |",
+        "|---:|---|---|---:|---:|---|---|---|",
     ]
     for i, row in enumerate(d["delivered"], 1):
         n = sum(len(v) for v in row["images"].values())
@@ -191,8 +247,12 @@ def render_md(m: dict) -> str:
             tags.append("degraded")
         if row["citation_only"]:
             tags.append("citation_only")
+        src = row.get("source_url") or ""
+        src_cell = f"[链接](<{src}>)" if src else "—"
+        grade = row.get("evidence_grade") or "—"
         lines.append(f"| {i} | {row['model']} | {row['role'] or '—'} | "
-                     f"{row['intent_rank'] or '—'} | {n} | {'/'.join(tags) or '—'} |")
+                     f"{row['intent_rank'] or '—'} | {n} | {src_cell} | {grade} | "
+                     f"{'/'.join(tags) or '—'} |")
     if d["backup"]:
         lines += ["", "**备选（随包）**：", ""]
         for i, row in enumerate(d["backup"], 1):
@@ -200,6 +260,27 @@ def render_md(m: dict) -> str:
             lines.append(f"- {i}. {row['model']}（role={row['role'] or '—'}，rank={row['intent_rank'] or '—'}，{n} 图）")
 
     mon = m["monitoring"]
+    # 边界与缺口：只渲染已有字段；老 run 缺字段时按 delivered 行回算，不猜数。
+    no_image = sum(1 for row in d["delivered"]
+                   if not any((row.get("images") or {}).values()))
+    degraded_n = s.get("degraded")
+    if degraded_n is None:
+        degraded_n = sum(1 for row in d["delivered"] if row.get("degraded"))
+    citation_n = s.get("citation_only")
+    if citation_n is None:
+        citation_n = sum(1 for row in d["delivered"] if row.get("citation_only"))
+    lines += [
+        "",
+        "### 边界与缺口",
+        "",
+        f"- degraded：{degraded_n} 台",
+        f"- citation_only：{citation_n} 台",
+        f"- 无图交付车型：{no_image} 台",
+    ]
+    if mon["unavailable"]:
+        lines.append("- 缺图归因（summary.delivery.unavailable）："
+                     f"{_reason_counts(mon['unavailable'])}")
+
     cost = mon["cost_cny"]
     lines += [
         "",
