@@ -1,8 +1,8 @@
 {
  "n": 100,
- "exact_subset": 0.83,
- "any_overlap": 0.8,
- "hard_match": 0.62,
+ "exact_subset": 0.81,
+ "any_overlap": 0.79,
+ "hard_match": 0.63,
  "errors": 0,
  "rows": [
   {
@@ -320,9 +320,9 @@
    "expect_hard": true,
    "note": "总20张，重算",
    "got": [
-    "fill.quota"
+    "plan.quantity"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false
   },
   {
@@ -460,7 +460,7 @@
    "expect_hard": true,
    "note": "排除车展摆拍",
    "got": [
-    "plan.negative"
+    "fetch.filters.quality"
    ],
    "hard": false,
    "clarify": false
@@ -474,9 +474,9 @@
    "expect_hard": true,
    "note": "统一每款6张",
    "got": [
-    "plan.quantity"
+    "fill.quota"
    ],
-   "hard": true,
+   "hard": false,
    "clarify": false
   },
   {
@@ -518,7 +518,7 @@
    "got": [
     "fill.quota"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false
   },
   {
@@ -615,7 +615,6 @@
    "expect_hard": true,
    "note": "有他牌logo",
    "got": [
-    "delivered.remove",
     "verify.blacklist"
    ],
    "hard": false,
@@ -643,7 +642,9 @@
    ],
    "expect_hard": true,
    "note": "第4张换高清",
-   "got": [],
+   "got": [
+    "fetch.filters.quality"
+   ],
    "hard": true,
    "clarify": false
   },
@@ -656,8 +657,7 @@
    "expect_hard": true,
    "note": "第3张车型认错，拉黑",
    "got": [
-    "verify.blacklist",
-    "fill.replace"
+    "verify.blacklist"
    ],
    "hard": false,
    "clarify": false
@@ -671,7 +671,8 @@
    "expect_hard": false,
    "note": "前脸格栅大灯",
    "got": [
-    "fetch.parts"
+    "fetch.parts",
+    "fetch.filters.views"
    ],
    "hard": false,
    "clarify": false
@@ -727,7 +728,8 @@
    "expect_hard": false,
    "note": "长句补图，用于内部评审",
    "got": [
-    "fill.quota"
+    "fill.quota",
+    "fetch.filters.views"
    ],
    "hard": false,
    "clarify": false
@@ -863,9 +865,11 @@
    ],
    "expect_hard": false,
    "note": "底盘悬挂细节",
-   "got": [],
+   "got": [
+    "fetch.parts"
+   ],
    "hard": false,
-   "clarify": true
+   "clarify": false
   },
   {
    "id": 63,
@@ -967,7 +971,8 @@
    "expect_hard": true,
    "note": "最后一张替换",
    "got": [
-    "delivered.replace"
+    "delivered.replace",
+    "fill.replace"
    ],
    "hard": false,
    "clarify": false
@@ -1123,8 +1128,7 @@
    "expect_hard": true,
    "note": "只看牵引车",
    "got": [
-    "scope.ratio",
-    "plan.negative"
+    "scope.ratio"
    ],
    "hard": true,
    "clarify": false
@@ -1356,7 +1360,6 @@
    "expect_hard": true,
    "note": "改装车不算原厂",
    "got": [
-    "verify.blacklist",
     "delivered.remove"
    ],
    "hard": false,
@@ -1479,20 +1482,6 @@
    "clarify": false
   },
   {
-   "id": 23,
-   "text": "两台车一共要20张图，你算一下",
-   "expect_targets": [
-    "plan.quantity"
-   ],
-   "expect_hard": true,
-   "note": "总20张，重算",
-   "got": [
-    "fill.quota"
-   ],
-   "hard": false,
-   "clarify": false
-  },
-  {
    "id": 27,
    "text": "第一张是渲染图不是实车，拉掉",
    "expect_targets": [
@@ -1502,6 +1491,34 @@
    "note": "渲染图非实车",
    "got": [
     "delivered.remove"
+   ],
+   "hard": false,
+   "clarify": false
+  },
+  {
+   "id": 33,
+   "text": "别找那种车展上摆着的图，我要工地上真实干活的，脏点旧点都没事",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_hard": true,
+   "note": "排除车展摆拍",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "hard": false,
+   "clarify": false
+  },
+  {
+   "id": 34,
+   "text": "每个车型统一按6张来",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_hard": true,
+   "note": "统一每款6张",
+   "got": [
+    "fill.quota"
    ],
    "hard": false,
    "clarify": false
@@ -1517,7 +1534,7 @@
    "got": [
     "fill.quota"
    ],
-   "hard": false,
+   "hard": true,
    "clarify": false
   },
   {
@@ -1542,7 +1559,9 @@
    ],
    "expect_hard": true,
    "note": "第4张换高清",
-   "got": [],
+   "got": [
+    "fetch.filters.quality"
+   ],
    "hard": true,
    "clarify": false
   },
@@ -1575,18 +1594,6 @@
    "clarify": false
   },
   {
-   "id": 62,
-   "text": "我想看底盘和悬挂那块，最好能看清大梁和钢板弹簧，有这种图吗",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_hard": false,
-   "note": "底盘悬挂细节",
-   "got": [],
-   "hard": false,
-   "clarify": true
-  },
-  {
    "id": 67,
    "text": "第5张太模糊了，重新找一张补上，原来那张别用了",
    "expect_targets": [
@@ -1612,6 +1619,32 @@
    "note": "图片不压缩",
    "got": [
     "fetch.filters.quality"
+   ],
+   "hard": false,
+   "clarify": false
+  },
+  {
+   "id": 90,
+   "text": "帮我写个周报吧",
+   "expect_targets": [],
+   "expect_hard": false,
+   "note": "离题，clarify",
+   "got": [
+    "delivery.report"
+   ],
+   "hard": false,
+   "clarify": false
+  },
+  {
+   "id": 97,
+   "text": "第2张是同款改装过的，不算原厂，别用了",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_hard": true,
+   "note": "改装车不算原厂",
+   "got": [
+    "delivered.remove"
    ],
    "hard": false,
    "clarify": false

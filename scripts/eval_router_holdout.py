@@ -36,17 +36,15 @@ def main() -> int:
         results.append({**r, "got": got.get("targets") or [],
                         "hard": bool(got.get("hard")), "clarify": bool(got.get("clarify"))})
 
-    def score(items):
-        if not items:
-            return 0.0
-        hit = sum(1 for r in items if set(r["expect_targets"]) <= set(r["got"]))
-        return hit / len(items)
+    def ok(r):
+        exp, got = set(r["expect_targets"]), set(r["got"])
+        return (got == set()) if not exp else exp <= got
 
-    exact = score(results)
+    exact = sum(1 for r in results if ok(r)) / max(1, len(results))
     any_hit = sum(1 for r in results
                   if set(r["expect_targets"]) & set(r["got"])) / max(1, len(results))
     hard_ok = sum(1 for r in results if r.get("hard") == r.get("expect_hard")) / max(1, len(results))
-    fails = [r for r in results if not set(r["expect_targets"]) <= set(r["got"])]
+    fails = [r for r in results if not ok(r)]
 
     out = {"n": len(results), "exact_subset": round(exact, 3),
            "any_overlap": round(any_hit, 3), "hard_match": round(hard_ok, 3),

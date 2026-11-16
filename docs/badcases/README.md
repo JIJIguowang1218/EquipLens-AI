@@ -37,6 +37,12 @@
 | [BC-S01-013](S0-01-input.md#bc-s01-013) | S0-01 | 文本“(图)”无真图却产出 `models_provided` | verified |
 | [BC-S01-011](S0-01-input.md#bc-s01-011) | S0-01 | modify 被当新任务数量（v0.2 已修） | verified |
 | [BC-S01-012](S0-01-input.md#bc-s01-012) | S0-01 | 软/硬偏好不分（v0.2 已修） | verified |
+| [BC-S1-001](S1-planning.md#bc-s1-001) | S1 | 清障车 plan 池 8<16，备选 2/4 | open |
+| [BC-S4-001](S4-router.md#bc-s4-001) | S4 | 显式总数被降级为增量 | open |
+| [BC-S4-002](S4-router.md#bc-s4-002) | S4 | 质量诉求被标成排除项（标注口径） | by-design |
+| [BC-S4-003](S4-router.md#bc-s4-003) | S4 | 部件请求漏识别 | open |
+| [BC-S4-004](S4-router.md#bc-s4-004) | S4 | 多意图漏项 | open |
+| [BC-S4-005](S4-router.md#bc-s4-005) | S4 | 破坏性 hard/soft 口径 | product-decision |
 | [BC-S01-014](S0-01-input.md#bc-s01-014) | S0-01 | 用户排除项被 negative 前 4 条截断 | fixed |
 | [BC-S05-001](S0-05-session.md#bc-s05-001) | S0-05 | 规则 router 对同义改写脆弱（holdout 7/14） | open |
 | [BC-S05-002](S0-05-session.md#bc-s05-002) | S0-05 | LLM 把“同款更多图”判成加车型 | open |
