@@ -5,6 +5,16 @@
 
 ## 2026-11-16
 
+### 63. S4 状态机落正式入口（后端，2026-11-16）
+
+- 拍板：`run_session.py` 作为**后端 Loop 入口**，S4 从 `planned` 改 `active`；
+  `stages.json` S4 entries = `session.py::class Session`、`session_router.py::def make_router`、
+  `session_runner.py::class SessionRunner`、`scripts/run_session.py::def main`。
+- `STAGES.md`：S4 标“active（仅后端入口）”，§5 记录已知缺口（前端/HTTP 入口、多用户并发、鉴权未接；
+  报告/PPT 生成未接）。
+- `check_stages.py`：6 阶段 0 问题；BL-003/BL-004 关闭。
+- 影响面：状态机 + 文档；不改检索/交付代码。
+
 ### 62. M6 首轮建单（Session，2026-11-16）
 
 - `SessionRunner.create_from_text()`：第一句走 **S0 正式链路**（`generate_brief(use_taskspec=True)`）

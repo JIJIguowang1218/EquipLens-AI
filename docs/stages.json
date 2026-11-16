@@ -8,17 +8,40 @@
       "status": "active",
       "version": "taskspec-v0.4",
       "entries": [
-        {"path": "src/equiplens/taskspec_llm.py", "symbol": "def parse"},
-        {"path": "src/equiplens/taskspec.py", "symbol": "def normalize"},
-        {"path": "src/equiplens/briefing.py", "symbol": "def apply_taskspec"},
-        {"path": "scripts/build_brief.py", "symbol": "use_taskspec=not args.legacy_brief"},
-        {"path": "src/equiplens/taskspec.py", "symbol": "def validate"}
+        {
+          "path": "src/equiplens/taskspec_llm.py",
+          "symbol": "def parse"
+        },
+        {
+          "path": "src/equiplens/taskspec.py",
+          "symbol": "def normalize"
+        },
+        {
+          "path": "src/equiplens/briefing.py",
+          "symbol": "def apply_taskspec"
+        },
+        {
+          "path": "scripts/build_brief.py",
+          "symbol": "use_taskspec=not args.legacy_brief"
+        },
+        {
+          "path": "src/equiplens/taskspec.py",
+          "symbol": "def validate"
+        }
       ],
       "legacy": [
-        {"path": "src/equiplens/briefing.py", "symbol": "use_taskspec: bool = False", "status": "silent",
-         "note": "库函数默认旧路径（兼容/评估）；正式 CLI 默认走 TaskSpec，旧路径仅 --legacy-brief 可达"},
-        {"path": "scripts/build_brief.py", "symbol": "--legacy-brief", "status": "silent",
-         "note": "显式回退旧的一次性 brief 解析，仅对照/回滚"}
+        {
+          "path": "src/equiplens/briefing.py",
+          "symbol": "use_taskspec: bool = False",
+          "status": "silent",
+          "note": "库函数默认旧路径（兼容/评估）；正式 CLI 默认走 TaskSpec，旧路径仅 --legacy-brief 可达"
+        },
+        {
+          "path": "scripts/build_brief.py",
+          "symbol": "--legacy-brief",
+          "status": "silent",
+          "note": "显式回退旧的一次性 brief 解析，仅对照/回滚"
+        }
       ]
     },
     {
@@ -27,9 +50,18 @@
       "status": "active",
       "version": "p8-idmatch",
       "entries": [
-        {"path": "src/equiplens/planning.py", "symbol": "def build_query_plan"},
-        {"path": "scripts/plan_candidates.py", "symbol": "def main"},
-        {"path": "scripts/rank_plan.py", "symbol": "def main"}
+        {
+          "path": "src/equiplens/planning.py",
+          "symbol": "def build_query_plan"
+        },
+        {
+          "path": "scripts/plan_candidates.py",
+          "symbol": "def main"
+        },
+        {
+          "path": "scripts/rank_plan.py",
+          "symbol": "def main"
+        }
       ],
       "legacy": []
     },
@@ -39,9 +71,18 @@
       "status": "active",
       "version": "p8-idmatch",
       "entries": [
-        {"path": "src/equiplens/retrieval_engine/web.py", "symbol": "class WebWorld"},
-        {"path": "src/equiplens/gate.py", "symbol": "def"},
-        {"path": "src/equiplens/identity.py", "symbol": "def primary_code"}
+        {
+          "path": "src/equiplens/retrieval_engine/web.py",
+          "symbol": "class WebWorld"
+        },
+        {
+          "path": "src/equiplens/gate.py",
+          "symbol": "def"
+        },
+        {
+          "path": "src/equiplens/identity.py",
+          "symbol": "def primary_code"
+        }
       ],
       "legacy": []
     },
@@ -51,16 +92,36 @@
       "status": "active",
       "version": "manifest-v1",
       "entries": [
-        {"path": "scripts/build_delivery_manifest.py", "symbol": "def main"}
+        {
+          "path": "scripts/build_delivery_manifest.py",
+          "symbol": "def main"
+        }
       ],
       "legacy": []
     },
     {
       "id": "S4",
       "name": "Loop / 反馈 / 记忆",
-      "status": "planned",
+      "status": "active",
       "version": "session-v0",
-      "entries": [],
+      "entries": [
+        {
+          "path": "src/equiplens/session.py",
+          "symbol": "class Session"
+        },
+        {
+          "path": "src/equiplens/session_router.py",
+          "symbol": "def make_router"
+        },
+        {
+          "path": "src/equiplens/session_runner.py",
+          "symbol": "class SessionRunner"
+        },
+        {
+          "path": "scripts/run_session.py",
+          "symbol": "def main"
+        }
+      ],
       "legacy": []
     },
     {

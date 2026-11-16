@@ -13,7 +13,7 @@
 | **S1 第一段检索** | active | p8-idmatch | `planning.build_query_plan`、`scripts/plan_candidates.py`、`scripts/rank_plan.py`（intent N+4） | — |
 | **S2 第二段检索** | active | p8-idmatch | `retrieval_engine/web.py`、`gate.py`、`identity.py` | — |
 | **S3 交付验收** | active | manifest-v1 | `scripts/build_delivery_manifest.py` | — |
-| **S4 Loop / 反馈 / 记忆** | planned | session-v0 | 原型已有（Session/Router + 入口），未接生产入口（M6） | — |
+| **S4 Loop / 反馈 / 记忆** | **active（仅后端入口）** | session-v0 | `session.py::Session`、`session_router.py::make_router`、`session_runner.py::SessionRunner`、`scripts/run_session.py` | 前端/API 入口未接（见 §5） |
 | **S5 产品/工程** | n/a | — | 不驱动代码 | — |
 
 ## 2. S0 正式链路
@@ -55,6 +55,10 @@ PYTHONPATH=src python scripts/check_stages.py
 5. 禁止“代码里已经切了但状态机没改”，也禁止“状态机改了但入口没接”。
 
 ## 5. 已知缺口
+
+- **S4 的 `active` 只覆盖后端入口**（`run_session.py` + SessionRunner）；前端/HTTP 入口、多用户并发、鉴权未接，
+  接上后需在本表和 `stages.json` 补充说明；
+- 报告/PPT 生成尚未接（`delivery.report` 只记 `preferences.delivery`）；
 
 - `briefing.generate_brief` 的库默认仍是旧路径（CLI 已是新路径）；是否把库默认也切成 `use_taskspec=True`，等 S0-05 session 接口稳定后再定；
 - S4（Loop/反馈）仍是 planned，`stages.json` 里没有入口，属预期；

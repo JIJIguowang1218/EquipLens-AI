@@ -58,7 +58,7 @@
 | 审核服务 | `review.py`、`reviewserver.py`、`scripts/build_*_review.py` |
 | L3 段落质检 | `passage.py`、`l3gate.py`、`scripts/eval_l3gate.py` |
 | 旧 text/workflow | `textrun.py`、`workflow.py`、`runner.py`、`strategy.py`、`query.py`、`roster.py` |
-| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S0-05 Session 原型 + `apply_to_brief`；S4 未激活）、`session_router.py`（LLM 提议 + context + 守卫 + `values` 结构化值）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`src/equiplens/retrieval_engine/discover.py`、`src/equiplens/retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
+| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S4 后端入口：Session + `apply_to_brief`；前端入口未接）、`session_router.py`（LLM 提议 + context + 守卫 + `values` 结构化值）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`src/equiplens/retrieval_engine/discover.py`、`src/equiplens/retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
 
 ## 4. 实验脚本（不得默认进生产）
 
