@@ -5,6 +5,29 @@
 
 ## 2026-11-16
 
+### 61. L2 5-case live 验收（2026-11-16）
+
+- 隔离：5 份**新** brief（`m43e-*`）+ 5 份**新** plan（`m43e/*`）+ 全新 run/session；
+  不复用 m43 历史 run；每 case 独立目录，跑前删除同名目录。
+- 真实输入：盲写用户脚本 5 轮（加量/排除/纠错/画质/出报告），LLM router，`--no-citation`，
+  HF 模型离线。
+- 结果（全部 `missing=0`、重复 0、`DELIVERED`）：
+  | case | 交付 | degraded | 意图 |
+  |---|---|---:|---:|
+  | c1e 沙漠 | 10/10 | 9 | 5/5 |
+  | h2e 清障 | 6/6 | 4 | 5/5 |
+  | h3e 扫路 | 6/6 | 4 | 5/5 |
+  | c4e 叉车 | 6/6 | 4 | 5/5 |
+  | c5e 压路机 | 14/14 | 2 | 5/5 |
+  | **合计** | **42/42** | — | **25/25** |
+- 每个 case 的 5 个 patch 都是：fill.quota / plan.negative / delivered.replace /
+  fetch.filters.quality / delivery.report。
+- 修了两处验收中暴露的问题：`再+加` 转换后 target 重复（会重复 fill.quota）；
+  “高清/水印”被误判成交付编辑（现在画质类表述不再触发删除/替换）。
+- 仍未做：首轮建单（M6）、交付后编辑的引擎侧效果、报告/PPT 生成（按产品决定放 L3 前）。
+- 产物：`data-test/runs/l2e-*`、`data-test/sessions/l2e-*.json`、
+  `data-test/evals/l2-acceptance-20261116.json`、`scripts/eval_l2_acceptance.py`。
+
 ### 60. L2 live 5 轮：10/10、5/5 意图、applied 2（2026-11-16）
 
 - 脚本：`data-test/sessions/l2-live5.jsonl`（跳过首轮建单；在第 1/2/3 个 FETCH 边界插

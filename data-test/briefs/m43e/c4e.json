@@ -1,0 +1,413 @@
+{
+ "brief_id": "m43e-c4e",
+ "request": {
+  "raw": "电动叉车 6 台 仓储物流",
+  "class": "叉车",
+  "environment": {
+   "value": "仓储物流",
+   "source": "taskspec"
+  },
+  "base_platform": {
+   "value": "四轮平衡重式电动叉车底盘（假设，需确认是否含三支点/前移式）",
+   "confidence": 0.8
+  },
+  "configuration": "平衡重式，门架前置、配重后置（假设）",
+  "page_budget": {
+   "vehicle_slots": 6
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  },
+  "brand_quota": null,
+  "foreign_ratio": null
+ },
+ "assumptions": [
+  {
+   "field": "configuration",
+   "value": "四轮平衡重式电动叉车",
+   "why": "用户只给了“电动叉车 + 仓储物流”，未指定三支点/前移式/仓储车；平衡重式是仓储物流中最常见且造型信息最完整的构型",
+   "confidence": 0.6
+  },
+  {
+   "field": "preferences.tonnage",
+   "value": "1.5–3.0 t 级",
+   "why": "仓储物流室内作业的主流吨位区间，未指定则不锁定具体吨位",
+   "confidence": 0.55
+  },
+  {
+   "field": "constraints.powertrain_detail",
+   "value": "锂电或铅酸电池，未指定换电方式",
+   "why": "输入只约束“电动”，电池形式影响电池舱盖与侧板设计，需在检索中两类都覆盖",
+   "confidence": 0.5
+  },
+  {
+   "field": "environment",
+   "value": "室内平整地面仓库/配送中心，通道较窄、需频繁起停与上下车",
+   "why": "“仓储物流”是场景词而非具体工况参数，按最常见的室内仓储理解",
+   "confidence": 0.65
+  },
+  {
+   "field": "quantity",
+   "value": "6 台按整车外观参考图计（每台 1 组外观视角）",
+   "why": "用户给出“6 台”，按整车级参考理解，而非单部件 6 张",
+   "confidence": 0.7
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front",
+   "label": "前部（门架与货叉作业区）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面（车身侧板、电池舱、登车区）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "rear",
+   "label": "尾部（配重与后部轮廓）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "rear",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "roof",
+   "label": "顶部（护顶架与上部框架）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "hero_45",
+    "side"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_mast",
+   "label": "门架",
+   "kind": "function",
+   "location": "front",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "型材截面与导轨层级决定前部竖向框架的视觉节奏",
+    "门架高度与车身高度比例决定整车姿态是“高瘦”还是“敦实”",
+    "前视野开档与滚轮/链条布置影响驾驶员视线遮挡"
+   ],
+   "why": "门架是叉车前部最强的竖向构图元素，能直接提供“前部体量与视野关系”的证据，也是电动叉车区别于内燃车造型叙事的核心件。"
+  },
+  {
+   "part": "custom_fork",
+   "label": "货叉",
+   "kind": "function",
+   "location": "front",
+   "part_family": "cast_forged",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "function_ergonomics"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "front",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "货叉厚度与叉架宽度关系影响前部横向比例",
+    "叉架与门架的连接节点暴露结构装配方式"
+   ],
+   "why": "用于判断前部作业件的结构尺度与整车离地/接近关系，属辅助证据，不是造型主体。"
+  },
+  {
+   "part": "custom_overhead_guard",
+   "label": "护顶架",
+   "kind": "part",
+   "location": "roof",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "hero_45",
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "立柱截面与顶部格栅分格方式决定上部框架的轻重感",
+    "立柱位置与车身肩线的对齐关系决定侧面连续性",
+    "格栅开档与顶部净空影响落物防护与人机感受"
+   ],
+   "why": "护顶架是叉车上部轮廓的唯一决定件，能提供“框架式结构如何与钣金车身衔接”的直接证据。"
+  },
+  {
+   "part": "custom_counterweight",
+   "label": "配重",
+   "kind": "part",
+   "location": "rear",
+   "part_family": "cast_forged",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "form_gesture",
+    "cmf",
+    "structure"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "rear",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "配重曲面与圆角过渡塑造尾部体量收放",
+    "铸件表面处理与涂装方式决定尾部质感层次",
+    "配重与车架、护顶架立柱的连接分缝暴露结构逻辑"
+   ],
+   "why": "配重是电动叉车尾部最大的单体，能提供“大曲面铸造件如何与钣金覆盖件拼合”的证据，也是品牌识别最强的部位。"
+  },
+  {
+   "part": "custom_battery_cover",
+   "label": "电池舱盖/侧板",
+   "kind": "part",
+   "location": "side",
+   "part_family": "sheet_metal",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "cmf",
+    "function_ergonomics"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "侧板分缝走向与开启方式决定侧面图形的完整性",
+    "钣金折弯与加强筋布置反映制造约束对造型的限制",
+    "换电/检修开口位置影响侧面的功能分区表达"
+   ],
+   "why": "电动叉车的电池舱是“电动化”最直接的可视证据，能提供覆盖件分缝、开合结构与表面处理的实证。"
+  },
+  {
+   "part": "custom_operator_station",
+   "label": "操作台/驾驶区",
+   "kind": "part",
+   "location": "interior",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "proportion",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "interior",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "方向盘/操纵杆/踏板布置反映人机尺度与操作逻辑",
+    "仪表与按键分区体现信息层级",
+    "内饰材料与色彩反映仓储环境下的清洁与耐污要求"
+   ],
+   "why": "仓储物流场景的高频上下车与窄通道作业直接落在操作台上，能提供人机布置与登车便利性的证据。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "电动叉车 平衡重式，门架前置、配重后置（假设）",
+   "parts": [
+    "custom_mast",
+    "custom_fork",
+    "custom_overhead_guard",
+    "custom_counterweight",
+    "custom_battery_cover",
+    "custom_operator_station"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "仓储物流（室内仓库/配送中心，平整地面、窄通道、频繁起停与上下车） 工程车",
+   "parts": [
+    "custom_mast",
+    "custom_fork",
+    "custom_overhead_guard",
+    "custom_counterweight",
+    "custom_battery_cover",
+    "custom_operator_station"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 22
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "叉车",
+  "class_raw": "电动叉车",
+  "class_aliases": [
+   "叉车"
+  ],
+  "environment": "仓储物流",
+  "configuration": "",
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": "electric",
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "constraints.powertrain",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "电动叉车",
+   "environment": "仓储物流",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "电动",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

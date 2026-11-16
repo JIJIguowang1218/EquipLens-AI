@@ -1,0 +1,1286 @@
+{
+ "session_id": "l2e-h3e",
+ "run_id": "l2e-h3e",
+ "run_root": "data-test/runs",
+ "brief": {
+  "brief_id": "m43e-h3e",
+  "request": {
+   "raw": "扫路车 6 台 市政道路清扫",
+   "class": "扫路车",
+   "environment": {
+    "value": "市政道路清扫",
+    "source": "taskspec"
+   },
+   "base_platform": {
+    "value": "环卫专用车基型：二类载货汽车底盘（4×2 为主，可能有 6×4）+ 上装（副发动机/风机/水箱/垃圾箱）",
+    "confidence": 0.8
+   },
+   "configuration": "后装式或中置扫刷式；单发动机或双发动机（副机驱动风机与扫刷）；干式或湿式除尘",
+   "page_budget": {
+    "vehicle_slots": 6
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "models_pinned": [],
+   "constraints": {
+    "exclude": [],
+    "views": []
+   },
+   "brand_quota": null,
+   "foreign_ratio": null
+  },
+  "assumptions": [
+   {
+    "field": "quantity.primary",
+    "value": "6 台 = 6 张参考图",
+    "why": "用户只给数量，按检索图像张数理解，不涉及采购或车队规模",
+    "confidence": 0.7
+   },
+   {
+    "field": "parts",
+    "value": "用户未点名部件，按‘扫路车’这一品类的构成性作业装置（扫刷、吸盘、箱体、副机舱、尾部警示防护）给出最小分析集",
+    "why": "任务硬约束只有品类/数量/工况，无部件输入；若不给出品类构成对象，检索无法聚焦到扫路车与普通载货车/环卫车的差异点",
+    "confidence": 0.55
+   },
+   {
+    "field": "configuration",
+    "value": "后装式或中置扫刷、干湿两用未定",
+    "why": "用户未说明上装形式与除尘方式，两者会显著改变上装布置与箱体形态",
+    "confidence": 0.4
+   },
+   {
+    "field": "base_platform",
+    "value": "二类载货汽车底盘改装（4×2 为主）",
+    "why": "市政清扫车主流为轻中卡二类底盘改装；未排除 6×4 大型车",
+    "confidence": 0.6
+   },
+   {
+    "field": "region 拆分",
+    "value": "只拆前脸/侧面/尾部三个区域，不把前脸细分格栅、大灯、保险杠",
+    "why": "用户未点名任何具体部件，避免过度拆分",
+    "confidence": 0.8
+   },
+   {
+    "field": "page_budget",
+    "value": 6,
+    "why": "规则：exact 4 + environment 2",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸与驾驶室正视",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "侧面（驾驶室+上装整体侧视）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "尾部（箱体尾门、作业警示）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_sweeper_brush_assembly",
+    "label": "扫刷总成（前置/侧置扫盘）",
+    "kind": "function",
+    "location": "前下部/侧下部，车头前方或前轴两侧",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "扫盘直径与离地间隙决定清扫宽度与越障能力",
+     "摆臂/升降机构的型材与关节形式决定避障与维修可达性",
+     "挡尘罩/喷淋环的包覆形式影响扬尘控制与视觉收口"
+    ],
+    "why": "扫刷是扫路车区别于其他环卫车的定义性装置，能提供‘作业装置如何与底盘前部共存’的布置、结构与防护证据；公开图通常能看清扫盘数量、摆臂与挡尘罩。"
+   },
+   {
+    "part": "custom_suction_nozzle",
+    "label": "吸盘/吸口（吸嘴总成）",
+    "kind": "function",
+    "location": "底盘下方，前后轴之间或后轴后",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "C",
+    "mechanism": [
+     "吸口的板金折弯与加强筋形式反映负压密封设计",
+     "离地与随动/浮动机构决定贴地性与通过性",
+     "与箱体之间的吸管走向影响底盘空间分配"
+    ],
+    "why": "吸盘决定清扫效果与底盘离地关系，能提供‘底盘下部空间如何被作业装置占用’的结构证据；但多数侧视/前视图中被遮挡，只在低机位或细节图中可见。"
+   },
+   {
+    "part": "custom_hopper_body",
+    "label": "垃圾箱体（上装箱体）",
+    "kind": "part",
+    "location": "上装中部至后部，驾驶室后方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "箱体高度与驾驶室顶线的关系决定整车体量姿态",
+     "侧板分缝、加强筋与折边反映板金成型与刚度策略",
+     "尾门铰接、锁紧与举升倾卸机构决定尾部构成"
+    ],
+    "why": "箱体是上车视觉主体，也是与驾驶室共同构成整车比例的最大单件；能提供体量关系、板金分缝、尾门结构与涂装分色的直接证据，是判断这类车型造型语言最有效的一块。"
+   },
+   {
+    "part": "custom_aux_engine_cover",
+    "label": "副发动机舱/风机罩（上装动力舱盖）",
+    "kind": "part",
+    "location": "驾驶室后方、箱体前部或侧部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "检修门/掀盖的铰链与锁具位置反映维护可达性",
+     "散热百叶、进气口的开孔阵列是造型与功能的结合点",
+     "舱盖与箱体的分缝关系决定上装侧面的视觉秩序"
+    ],
+    "why": "副机舱是上装侧面上唯一高频出现的‘开口与百叶’元素，能提供功能开孔如何组织进板金分缝的证据；对判断上装侧面的细节密度很有用。"
+   },
+   {
+    "part": "custom_rear_work_warning",
+    "label": "尾部作业警示与后防护（警示灯/标识板/后防护栏）",
+    "kind": "part",
+    "location": "尾部，箱体尾门及底盘后端",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "后防护栏的型材断面与支架形式受法规尺寸约束",
+     "反光标识带/箭头板的排布方式反映作业警示策略",
+     "尾门与防护栏的相对位置决定尾部层次"
+    ],
+    "why": "市政道路清扫属低速占道作业，尾部警示与后防护是法规强约束且正视图中最显眼的构成；能提供法规件与造型如何整合的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "扫路车（环卫清扫车，二类载货汽车底盘改装专用车） 后装式或中置扫刷式；单发动机或双发动机（副机驱动风机与扫刷）；干式或湿式除尘",
+    "parts": [
+     "custom_sweeper_brush_assembly",
+     "custom_suction_nozzle",
+     "custom_hopper_body",
+     "custom_aux_engine_cover",
+     "custom_rear_work_warning"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "市政道路清扫（城市道路、低速作业、人口密集区、湿/干两种清扫模式） 工程车",
+    "parts": [
+     "custom_sweeper_brush_assembly",
+     "custom_suction_nozzle",
+     "custom_hopper_body",
+     "custom_aux_engine_cover",
+     "custom_rear_work_warning"
+    ],
+    "quota": 2,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "2 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 22
+  },
+  "stop_rules": {},
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "广告"
+  ],
+  "strategy_ref": "default@v1",
+  "taskspec": {
+   "intent": "new_task",
+   "class": "扫路车",
+   "class_raw": "扫路车",
+   "class_aliases": [],
+   "environment": "市政道路清扫",
+   "configuration": null,
+   "quantity": {
+    "primary": 6,
+    "backup": null,
+    "delta": null
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "preferences": {
+    "soft_brands": [],
+    "brand_quota": null,
+    "foreign_ratio": null,
+    "views": [],
+    "quality": [],
+    "year": null,
+    "tonnage": null,
+    "price": null
+   },
+   "models_pinned": [],
+   "models_provided": [],
+   "parts": [],
+   "constraints": {
+    "exclude": [],
+    "origin": null,
+    "powertrain": null,
+    "min_width": null
+   },
+   "scope": null,
+   "delivery": null,
+   "policy": {
+    "hard": [
+     "class",
+     "quantity",
+     "environment"
+    ],
+    "soft": []
+   },
+   "unknowns": [],
+   "assumptions": [],
+   "questions": [],
+   "session_context_used": false,
+   "evidence": {
+    "class": "扫路车",
+    "environment": "市政道路清扫",
+    "configuration": "",
+    "quantity": "6 台",
+    "brands": "",
+    "models": "",
+    "constraints": "",
+    "scope": ""
+   }
+  },
+  "s0": {
+   "mechanism": "taskspec",
+   "version": "v0.4"
+  }
+ },
+ "router_name": "llm",
+ "session": {
+  "session_id": "l2e-h3e",
+  "state": "DELIVERED",
+  "version": 6,
+  "brief": {
+   "brief_id": "m43e-h3e",
+   "request": {
+    "raw": "扫路车 6 台 市政道路清扫",
+    "class": "扫路车",
+    "environment": {
+     "value": "市政道路清扫",
+     "source": "taskspec"
+    },
+    "base_platform": {
+     "value": "环卫专用车基型：二类载货汽车底盘（4×2 为主，可能有 6×4）+ 上装（副发动机/风机/水箱/垃圾箱）",
+     "confidence": 0.8
+    },
+    "configuration": "后装式或中置扫刷式；单发动机或双发动机（副机驱动风机与扫刷）；干式或湿式除尘",
+    "page_budget": {
+     "vehicle_slots": 6
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "models_pinned": [],
+    "constraints": {
+     "exclude": [],
+     "views": []
+    },
+    "brand_quota": null,
+    "foreign_ratio": null
+   },
+   "assumptions": [
+    {
+     "field": "quantity.primary",
+     "value": "6 台 = 6 张参考图",
+     "why": "用户只给数量，按检索图像张数理解，不涉及采购或车队规模",
+     "confidence": 0.7
+    },
+    {
+     "field": "parts",
+     "value": "用户未点名部件，按‘扫路车’这一品类的构成性作业装置（扫刷、吸盘、箱体、副机舱、尾部警示防护）给出最小分析集",
+     "why": "任务硬约束只有品类/数量/工况，无部件输入；若不给出品类构成对象，检索无法聚焦到扫路车与普通载货车/环卫车的差异点",
+     "confidence": 0.55
+    },
+    {
+     "field": "configuration",
+     "value": "后装式或中置扫刷、干湿两用未定",
+     "why": "用户未说明上装形式与除尘方式，两者会显著改变上装布置与箱体形态",
+     "confidence": 0.4
+    },
+    {
+     "field": "base_platform",
+     "value": "二类载货汽车底盘改装（4×2 为主）",
+     "why": "市政清扫车主流为轻中卡二类底盘改装；未排除 6×4 大型车",
+     "confidence": 0.6
+    },
+    {
+     "field": "region 拆分",
+     "value": "只拆前脸/侧面/尾部三个区域，不把前脸细分格栅、大灯、保险杠",
+     "why": "用户未点名任何具体部件，避免过度拆分",
+     "confidence": 0.8
+    },
+    {
+     "field": "page_budget",
+     "value": 6,
+     "why": "规则：exact 4 + environment 2",
+     "confidence": 1.0
+    }
+   ],
+   "region_requirements": [
+    {
+     "region": "front_face",
+     "label": "前脸与驾驶室正视",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "front",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "side",
+     "label": "侧面（驾驶室+上装整体侧视）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "rear",
+     "label": "尾部（箱体尾门、作业警示）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "rear",
+      "detail"
+     ],
+     "accept": "C"
+    }
+   ],
+   "part_requirements": [
+    {
+     "part": "custom_sweeper_brush_assembly",
+     "label": "扫刷总成（前置/侧置扫盘）",
+     "kind": "function",
+     "location": "前下部/侧下部，车头前方或前轴两侧",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "function_ergonomics",
+      "structure",
+      "environment_protection"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "detail",
+      "hero_45"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "扫盘直径与离地间隙决定清扫宽度与越障能力",
+      "摆臂/升降机构的型材与关节形式决定避障与维修可达性",
+      "挡尘罩/喷淋环的包覆形式影响扬尘控制与视觉收口"
+     ],
+     "why": "扫刷是扫路车区别于其他环卫车的定义性装置，能提供‘作业装置如何与底盘前部共存’的布置、结构与防护证据；公开图通常能看清扫盘数量、摆臂与挡尘罩。"
+    },
+    {
+     "part": "custom_suction_nozzle",
+     "label": "吸盘/吸口（吸嘴总成）",
+     "kind": "function",
+     "location": "底盘下方，前后轴之间或后轴后",
+     "part_family": "sheet_metal",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "structure",
+      "function_ergonomics",
+      "environment_protection"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "side",
+      "detail"
+     ],
+     "accept": "C",
+     "mechanism": [
+      "吸口的板金折弯与加强筋形式反映负压密封设计",
+      "离地与随动/浮动机构决定贴地性与通过性",
+      "与箱体之间的吸管走向影响底盘空间分配"
+     ],
+     "why": "吸盘决定清扫效果与底盘离地关系，能提供‘底盘下部空间如何被作业装置占用’的结构证据；但多数侧视/前视图中被遮挡，只在低机位或细节图中可见。"
+    },
+    {
+     "part": "custom_hopper_body",
+     "label": "垃圾箱体（上装箱体）",
+     "kind": "part",
+     "location": "上装中部至后部，驾驶室后方",
+     "part_family": "sheet_metal",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "proportion",
+      "structure",
+      "cmf"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "rear",
+      "hero_45"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "箱体高度与驾驶室顶线的关系决定整车体量姿态",
+      "侧板分缝、加强筋与折边反映板金成型与刚度策略",
+      "尾门铰接、锁紧与举升倾卸机构决定尾部构成"
+     ],
+     "why": "箱体是上车视觉主体，也是与驾驶室共同构成整车比例的最大单件；能提供体量关系、板金分缝、尾门结构与涂装分色的直接证据，是判断这类车型造型语言最有效的一块。"
+    },
+    {
+     "part": "custom_aux_engine_cover",
+     "label": "副发动机舱/风机罩（上装动力舱盖）",
+     "kind": "part",
+     "location": "驾驶室后方、箱体前部或侧部",
+     "part_family": "sheet_metal",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "structure",
+      "function_ergonomics",
+      "cmf"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "side",
+      "hero_45",
+      "detail"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "检修门/掀盖的铰链与锁具位置反映维护可达性",
+      "散热百叶、进气口的开孔阵列是造型与功能的结合点",
+      "舱盖与箱体的分缝关系决定上装侧面的视觉秩序"
+     ],
+     "why": "副机舱是上装侧面上唯一高频出现的‘开口与百叶’元素，能提供功能开孔如何组织进板金分缝的证据；对判断上装侧面的细节密度很有用。"
+    },
+    {
+     "part": "custom_rear_work_warning",
+     "label": "尾部作业警示与后防护（警示灯/标识板/后防护栏）",
+     "kind": "part",
+     "location": "尾部，箱体尾门及底盘后端",
+     "part_family": "frame_profile",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "regulation",
+      "structure",
+      "cmf"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "rear",
+      "detail"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "后防护栏的型材断面与支架形式受法规尺寸约束",
+      "反光标识带/箭头板的排布方式反映作业警示策略",
+      "尾门与防护栏的相对位置决定尾部层次"
+     ],
+     "why": "市政道路清扫属低速占道作业，尾部警示与后防护是法规强约束且正视图中最显眼的构成；能提供法规件与造型如何整合的证据。"
+    }
+   ],
+   "research_units": [
+    {
+     "unit_id": "u-exact",
+     "tier": "exact",
+     "scope": "扫路车（环卫清扫车，二类载货汽车底盘改装专用车） 后装式或中置扫刷式；单发动机或双发动机（副机驱动风机与扫刷）；干式或湿式除尘",
+     "parts": [
+      "custom_sweeper_brush_assembly",
+      "custom_suction_nozzle",
+      "custom_hopper_body",
+      "custom_aux_engine_cover",
+      "custom_rear_work_warning"
+     ],
+     "quota": 4,
+     "budget": {
+      "max_queries": 6,
+      "max_rounds": 2
+     },
+     "stop": "4 台占满即停"
+    },
+    {
+     "unit_id": "u-env",
+     "tier": "environment",
+     "scope": "市政道路清扫（城市道路、低速作业、人口密集区、湿/干两种清扫模式） 工程车",
+     "parts": [
+      "custom_sweeper_brush_assembly",
+      "custom_suction_nozzle",
+      "custom_hopper_body",
+      "custom_aux_engine_cover",
+      "custom_rear_work_warning"
+     ],
+     "quota": 2,
+     "budget": {
+      "max_queries": 4,
+      "max_rounds": 2
+     },
+     "stop": "2 台占满即停"
+    }
+   ],
+   "tiers": [
+    "exact",
+    "environment"
+   ],
+   "budget": {
+    "max_queries": 22
+   },
+   "stop_rules": {},
+   "negative": [
+    "客车",
+    "SUV",
+    "房车",
+    "多车拼图",
+    "内饰",
+    "广告"
+   ],
+   "strategy_ref": "default@v1",
+   "taskspec": {
+    "intent": "new_task",
+    "class": "扫路车",
+    "class_raw": "扫路车",
+    "class_aliases": [],
+    "environment": "市政道路清扫",
+    "configuration": null,
+    "quantity": {
+     "primary": 6,
+     "backup": null,
+     "delta": null
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "preferences": {
+     "soft_brands": [],
+     "brand_quota": null,
+     "foreign_ratio": null,
+     "views": [],
+     "quality": [],
+     "year": null,
+     "tonnage": null,
+     "price": null
+    },
+    "models_pinned": [],
+    "models_provided": [],
+    "parts": [],
+    "constraints": {
+     "exclude": [],
+     "origin": null,
+     "powertrain": null,
+     "min_width": null
+    },
+    "scope": null,
+    "delivery": null,
+    "policy": {
+     "hard": [
+      "class",
+      "quantity",
+      "environment"
+     ],
+     "soft": []
+    },
+    "unknowns": [],
+    "assumptions": [],
+    "questions": [],
+    "session_context_used": false,
+    "evidence": {
+     "class": "扫路车",
+     "environment": "市政道路清扫",
+     "configuration": "",
+     "quantity": "6 台",
+     "brands": "",
+     "models": "",
+     "constraints": "",
+     "scope": ""
+    }
+   },
+   "s0": {
+    "mechanism": "taskspec",
+    "version": "v0.4"
+   },
+   "session_patches": [
+    {
+     "patch_id": "p-e48cd2fe",
+     "base_version": 1,
+     "target": "fill.quota",
+     "op": "set",
+     "value": {
+      "text": "同款再加两台吧，凑 12 个。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "count": 2
+      }
+     },
+     "confidence": 0.95,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-582d0483",
+     "note": "用户明确把总数量凑到 12 个，属于修改总交付台数，因此判为 plan.quantity（hard）。"
+    },
+    {
+     "patch_id": "p-96119f35",
+     "base_version": 2,
+     "target": "plan.negative",
+     "op": "set",
+     "value": {
+      "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "terms": [
+        "北奔"
+       ]
+      }
+     },
+     "confidence": 0.95,
+     "destructive": false,
+     "enforce": "hard",
+     "source_msg_id": "m-179a0fae",
+     "note": "用户将“北奔”品牌排除出检索范围，属于排除项（plan.negative），是硬约束，但不改变任务定义，因此 hard=false；其余品牌保持不变，不涉及已交付内容的删除。"
+    },
+    {
+     "patch_id": "p-2956c672",
+     "base_version": 3,
+     "target": "delivered.replace",
+     "op": "set",
+     "value": {
+      "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+      "asset_index": 3,
+      "index_basis": "original",
+      "data": {
+       "asset_index": 3,
+       "index_basis": "original"
+      }
+     },
+     "confidence": 0.92,
+     "destructive": true,
+     "enforce": "hard",
+     "source_msg_id": "m-d581c736",
+     "note": "用户明确提出第 3 张，并对已交付内容要求替换，属于对已交付图片的替换（delivered.replace）；因编号明确（第 3 张），可直接执行替换，无需二次确认，confirm=false；该动作不改任务定义（范围/数量/构型），故 hard=false；但涉及替换已交付内容，destructive=true。"
+    },
+    {
+     "patch_id": "p-daee4984",
+     "base_version": 4,
+     "target": "fetch.filters.quality",
+     "op": "set",
+     "value": {
+      "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "no_watermark": true,
+       "min_width": 1200
+      }
+     },
+     "confidence": 0.82,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-41a47032",
+     "note": "用户提出清晰度与去水印要求，属于质量过滤 fetch.filters.quality（hard=false）；同时要求“前面那几张一起弄”，即对已交付内容做高清无水印替换，属 delivered.replace，涉及已交付内容，故 destructive=true；但“那几张”指代不明确，无法确定具体序号，需先确认，c"
+    },
+    {
+     "patch_id": "p-ab4fb1ac",
+     "base_version": 5,
+     "target": "delivery.report",
+     "op": "set",
+     "value": {
+      "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "format": "ppt"
+      }
+     },
+     "confidence": 0.95,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-589c8959",
+     "note": "用户要求生成报告/PPT交付物，属于 delivery.report，不改变检索任务定义（范围/数量/构型），因此 hard=false、destructive=false；无需确认。"
+    }
+   ]
+  },
+  "brief_versions": [
+   {
+    "v": 1,
+    "hash": "754903738304966240"
+   },
+   {
+    "v": 2,
+    "hash": "410307160687864799"
+   },
+   {
+    "v": 3,
+    "hash": "7469146114045151235"
+   },
+   {
+    "v": 4,
+    "hash": "1337821669778115879"
+   },
+   {
+    "v": 5,
+    "hash": "8792390690676565643"
+   },
+   {
+    "v": 6,
+    "hash": "6372116713066893814"
+   }
+  ],
+  "patches": [
+   {
+    "patch_id": "p-e48cd2fe",
+    "base_version": 1,
+    "target": "fill.quota",
+    "op": "set",
+    "value": {
+     "text": "同款再加两台吧，凑 12 个。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "count": 2
+     }
+    },
+    "confidence": 0.95,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-582d0483",
+    "note": "用户明确把总数量凑到 12 个，属于修改总交付台数，因此判为 plan.quantity（hard）。"
+   },
+   {
+    "patch_id": "p-96119f35",
+    "base_version": 2,
+    "target": "plan.negative",
+    "op": "set",
+    "value": {
+     "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "terms": [
+       "北奔"
+      ]
+     }
+    },
+    "confidence": 0.95,
+    "destructive": false,
+    "enforce": "hard",
+    "source_msg_id": "m-179a0fae",
+    "note": "用户将“北奔”品牌排除出检索范围，属于排除项（plan.negative），是硬约束，但不改变任务定义，因此 hard=false；其余品牌保持不变，不涉及已交付内容的删除。"
+   },
+   {
+    "patch_id": "p-2956c672",
+    "base_version": 3,
+    "target": "delivered.replace",
+    "op": "set",
+    "value": {
+     "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+     "asset_index": 3,
+     "index_basis": "original",
+     "data": {
+      "asset_index": 3,
+      "index_basis": "original"
+     }
+    },
+    "confidence": 0.92,
+    "destructive": true,
+    "enforce": "hard",
+    "source_msg_id": "m-d581c736",
+    "note": "用户明确提出第 3 张，并对已交付内容要求替换，属于对已交付图片的替换（delivered.replace）；因编号明确（第 3 张），可直接执行替换，无需二次确认，confirm=false；该动作不改任务定义（范围/数量/构型），故 hard=false；但涉及替换已交付内容，destructive=true。"
+   },
+   {
+    "patch_id": "p-daee4984",
+    "base_version": 4,
+    "target": "fetch.filters.quality",
+    "op": "set",
+    "value": {
+     "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "no_watermark": true,
+      "min_width": 1200
+     }
+    },
+    "confidence": 0.82,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-41a47032",
+    "note": "用户提出清晰度与去水印要求，属于质量过滤 fetch.filters.quality（hard=false）；同时要求“前面那几张一起弄”，即对已交付内容做高清无水印替换，属 delivered.replace，涉及已交付内容，故 destructive=true；但“那几张”指代不明确，无法确定具体序号，需先确认，c"
+   },
+   {
+    "patch_id": "p-ab4fb1ac",
+    "base_version": 5,
+    "target": "delivery.report",
+    "op": "set",
+    "value": {
+     "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "format": "ppt"
+     }
+    },
+    "confidence": 0.95,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-589c8959",
+    "note": "用户要求生成报告/PPT交付物，属于 delivery.report，不改变检索任务定义（范围/数量/构型），因此 hard=false、destructive=false；无需确认。"
+   }
+  ],
+  "pending": [],
+  "events": [
+   {
+    "at": 1794819686.125,
+    "kind": "created"
+   },
+   {
+    "at": 1794819688.976,
+    "kind": "user_msg",
+    "msg_id": "m-582d0483",
+    "text": "同款再加两台吧，凑 12 个。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fill.quota"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.95,
+     "clarify": false,
+     "evidence": "同款再加两台吧，凑 12 个",
+     "reason": "用户明确把总数量凑到 12 个，属于修改总交付台数，因此判为 plan.quantity（hard）。",
+     "asset_index": null,
+     "values": {
+      "plan.quantity": {
+       "primary": 12
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819690.818,
+    "kind": "user_msg",
+    "msg_id": "m-179a0fae",
+    "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "plan.negative"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "hard",
+     "confidence": 0.95,
+     "clarify": false,
+     "evidence": "北奔的别放了……其他牌子照旧",
+     "reason": "用户将“北奔”品牌排除出检索范围，属于排除项（plan.negative），是硬约束，但不改变任务定义，因此 hard=false；其余品牌保持不变，不涉及已交付内容的删除。",
+     "asset_index": null,
+     "values": {
+      "plan.negative": {
+       "terms": [
+        "北奔"
+       ]
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819693.683,
+    "kind": "user_msg",
+    "msg_id": "m-d581c736",
+    "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivered.replace"
+     ],
+     "destructive": true,
+     "confirm": false,
+     "enforce": "hard",
+     "confidence": 0.92,
+     "clarify": false,
+     "evidence": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+     "reason": "用户明确提出第 3 张，并对已交付内容要求替换，属于对已交付图片的替换（delivered.replace）；因编号明确（第 3 张），可直接执行替换，无需二次确认，confirm=false；该动作不改任务定义（范围/数量/构型），故 hard=false；但涉及替换已交付内容，destructive=true。",
+     "asset_index": 3,
+     "values": {
+      "delivered.replace": {
+       "asset_index": 3,
+       "index_basis": "original"
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819697.521,
+    "kind": "user_msg",
+    "msg_id": "m-41a47032",
+    "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+    "result": {
+     "intent": "modify",
+     "hard": true,
+     "targets": [
+      "fetch.filters.quality"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.82,
+     "clarify": false,
+     "evidence": "图都换成高清的，右下角的水印也去掉……前面那几张一起弄",
+     "reason": "用户提出清晰度与去水印要求，属于质量过滤 fetch.filters.quality（hard=false）；同时要求“前面那几张一起弄”，即对已交付内容做高清无水印替换，属 delivered.replace，涉及已交付内容，故 destructive=true；但“那几张”指代不明确，无法确定具体序号，需先确认，c",
+     "asset_index": null,
+     "values": {
+      "fetch.filters.quality": {
+       "no_watermark": true,
+       "min_width": 1200
+      },
+      "delivered.replace": {
+       "asset_index": null,
+       "index_basis": "original"
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819698.802,
+    "kind": "user_msg",
+    "msg_id": "m-589c8959",
+    "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivery.report"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.95,
+     "clarify": false,
+     "evidence": "出报告吧，PPT 版本给我",
+     "reason": "用户要求生成报告/PPT交付物，属于 delivery.report，不改变检索任务定义（范围/数量/构型），因此 hard=false、destructive=false；无需确认。",
+     "asset_index": null,
+     "values": {
+      "delivery.report": {
+       "format": "ppt"
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819852.544,
+    "kind": "delivered",
+    "added": 16,
+    "skipped": 64
+   }
+  ],
+  "delivered": [
+   {
+    "asset_id": "311dbf8ba712",
+    "url": "http://source.cn-truck.com/ggimg/clcp/257/n61890205.jpg",
+    "model": "中洁牌 XZL5163TSL5 扫路车",
+    "target": "中洁牌 XZL5163TSL5 扫路车",
+    "seq": 1,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "870b9e7f2095",
+    "url": "http://source.cn-truck.com/ggimg/clcp/286/o83352274.jpg",
+    "model": "中洁牌 XZL5163TSL5 扫路车",
+    "target": "中洁牌 XZL5163TSL5 扫路车",
+    "seq": 2,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "11de2276b588",
+    "url": "https://img2.baidu.com/it/u=4067923293,62407156&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=427",
+    "model": "CLW 8立方东风多利卡扫路车",
+    "target": "CLW 8立方东风多利卡扫路车",
+    "seq": 3,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "d154900683af",
+    "url": "https://img2.baidu.com/it/u=4282389736,84648249&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=427",
+    "model": "CLW 8立方东风多利卡扫路车",
+    "target": "CLW 8立方东风多利卡扫路车",
+    "seq": 4,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "7b61b4a1edcd",
+    "url": "https://img1.baidu.com/it/u=1481800927,939245283&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=427",
+    "model": "CLW 8立方东风多利卡扫路车",
+    "target": "CLW 8立方东风多利卡扫路车",
+    "seq": 5,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "2db1e3438882",
+    "url": "https://img1.baidu.com/it/u=3559552277,1672666801&fm=253&fmt=auto&app=138&f=JPEG?w=667&h=500",
+    "model": "CLW 5立方江淮康铃扫路车",
+    "target": "CLW 5立方江淮康铃扫路车",
+    "seq": 6,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "daf261ae4587",
+    "url": "https://img0.baidu.com/it/u=855611342,2135273424&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=427",
+    "model": "CLW 5立方江淮康铃扫路车",
+    "target": "CLW 5立方江淮康铃扫路车",
+    "seq": 7,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "c8b86c3f9b08",
+    "url": "https://img2.baidu.com/it/u=1543220662,2588681017&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+    "model": "CLW 东风天锦干湿两用扫路吸尘车",
+    "target": "CLW 东风天锦干湿两用扫路吸尘车",
+    "seq": 8,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "39a34ebb0005",
+    "url": "http://m.cnr.cn/auto/20180504/W020180504511520657019.jpg",
+    "model": "福田2600mm扫路车",
+    "target": "福田2600mm扫路车",
+    "seq": 9,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "f465ba8c6f7a",
+    "url": "http://finance.youth.cn/finance_cyxfgsxw/201808/W020180814417263317796.jpg",
+    "model": "福田2600mm扫路车",
+    "target": "福田2600mm扫路车",
+    "seq": 10,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "426b29e71e36",
+    "url": "http://finance.youth.cn/finance_cyxfgsxw/201901/W020190117657734136635.jpg",
+    "model": "福田2600mm扫路车",
+    "target": "福田2600mm扫路车",
+    "seq": 11,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "03d25a5b166d",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20191024/496bea03fa4e4fff83ca4a488d796cdc.jpeg",
+    "model": "CLW5041TSL6CD扫路车",
+    "target": "CLW5041TSL6CD扫路车",
+    "seq": 12,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "a9f8ca436b58",
+    "url": "https://gss0.baidu.com/70cFfyinKgQFm2e88IuM_a/baike/pic/item/90cebeec0d8d476427979175.jpg",
+    "model": "CLW5041TSL6CD扫路车",
+    "target": "CLW5041TSL6CD扫路车",
+    "seq": 13,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "1d665e21c888",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20190613/4c22ced9192c498ca5fd4ea75939e06a.jpeg",
+    "model": "CLW5041TSL6CD扫路车",
+    "target": "CLW5041TSL6CD扫路车",
+    "seq": 14,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "f53ce2d2cf31",
+    "url": "https://s9.rr.itc.cn/r/wapChange/20177_4_14/a8zat59890630441619.jpg",
+    "model": "CLW5041TSL6CD扫路车",
+    "target": "CLW5041TSL6CD扫路车",
+    "seq": 15,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "2126560718a5",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20191023/3594e2bf746f418f83854664336158a2.jpeg",
+    "model": "CLW5041TSL6CD扫路车",
+    "target": "CLW5041TSL6CD扫路车",
+    "seq": 16,
+    "status": "active",
+    "round": 6
+   }
+  ],
+  "blacklist": [],
+  "preferences": {
+   "delivery": {
+    "format": "both",
+    "requested": true
+   }
+  },
+  "next_seq": 16,
+  "rounds": 5,
+  "max_rounds": 5,
+  "last_checkpoint": "WRITEBACK"
+ },
+ "steps": 28,
+ "applied": 2,
+ "updated_at": "2026-11-16T17:04:12"
+}

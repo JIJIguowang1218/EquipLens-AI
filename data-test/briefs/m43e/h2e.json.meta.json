@@ -1,0 +1,299 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "清障车",
+  "class_raw": "清障车",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [
+    "主流品牌"
+   ],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "高清"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": [
+    "soft_brands",
+    "quality"
+   ]
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "清障车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "主流品牌",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T16:28:20",
+ "raw_input": "清障车 6 台 主流品牌 高清",
+ "brief_path": "data-test\\briefs\\m43e\\h2e.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2665,
+  "completion_tokens": 1778,
+  "total_tokens": 4443,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 546
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 233
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "清障车",
+   "environment": "",
+   "base_platform": "轻/中重型商用车二类底盘（驾驶室沿用卡车基型，上装为清障专用改装）",
+   "configuration": "道路清障车：拖吊式与平板背负式（未锁定，需确认）",
+   "design_questions": [
+    "清障车在主流品牌之间，驾驶室前脸与整车体量姿态如何体现家族化与专业感？",
+    "后部清障上装（托举平台、托臂、侧防护、警示灯具）的结构分缝与功能布置有哪些主流做法？",
+    "上装与底盘的色彩/标识/材质处理如何在高清整车图上体现品牌识别？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸（驾驶室正面）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "整车侧面（底盘与上装关系）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "尾部作业区（上装尾部与托举结构）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_wrecker_body",
+    "label": "清障车专用上装（托举平台/平板本体）",
+    "kind": "part",
+    "location": "后部上装，覆盖后轴至车尾",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "分缝与板面划分",
+     "上装与底盘的高度/长度比例",
+     "涂装与标识布局"
+    ],
+    "why": "上装是清障车与普通卡车造型差异最大的部位，能提供“底盘—上装衔接比例、板面分缝、涂装分区”的直接证据。"
+   },
+   {
+    "part": "custom_tow_boom",
+    "label": "托臂/举升托举机构",
+    "kind": "function",
+    "location": "车尾中部，向后伸出",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "views": [
+     "rear",
+     "detail",
+     "side"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "型材框架与铰点节点",
+     "离地与后悬尺寸",
+     "作业操作可达性"
+    ],
+    "why": "托臂是清障功能的核心构造，能提供“型材规格、节点加强、与尾部空间的收放关系”证据，判断上装结构语言。"
+   },
+   {
+    "part": "custom_side_guard",
+    "label": "侧防护栏（上装侧下部防护）",
+    "kind": "part",
+    "location": "整车侧面下部，后轴至车尾",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "管/型材断面与排列",
+     "离地与遮挡范围",
+     "与上装裙板的整合方式"
+    ],
+    "why": "侧防护既受法规约束又影响侧面体量观感，能提供“法规件如何被造型整合”的证据。"
+   },
+   {
+    "part": "custom_warning_light",
+    "label": "警示灯具/警灯排（上装顶部与尾部）",
+    "kind": "part",
+    "location": "驾驶室顶或上装顶部、车尾",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "regulation",
+     "form_gesture",
+     "cmf"
+    ],
+    "views": [
+     "front",
+     "rear",
+     "hero_45"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "灯具排布与体量",
+     "支架与安装节点",
+     "色彩与对比"
+    ],
+    "why": "警示灯是清障车最显性的行业符号，能提供“法规灯具如何参与整车姿态与识别”的证据。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "configuration",
+    "value": "道路清障车（拖吊式/平板背负式均纳入）",
+    "why": "用户只给品类，未指明上装形式；两种构型在主流品牌中并存",
+    "confidence": 0.6
+   },
+   {
+    "field": "class",
+    "value": "公路用清障车（非矿用/非工程场内专用救援车）",
+    "why": "“主流品牌 + 高清”语境指向市售公路车型目录",
+    "confidence": 0.7
+   },
+   {
+    "field": "preferences.quality",
+    "value": "高清=高分辨率整车外观图，优先单车主视角",
+    "why": "用户以‘高清’作为质量约束，指向可读细节的整车图而非作业场景图",
+    "confidence": 0.75
+   },
+   {
+    "field": "preferences.soft_brands",
+    "value": "国内主流商用车/专用车品牌（如东风、解放、重汽、江淮、福田等）",
+    "why": "‘主流品牌’为软偏好，按市场保有量理解",
+    "confidence": 0.55
+   },
+   {
+    "field": "parts",
+    "value": "按品类推定的上装/托臂/侧防护/警示灯具为分析对象，非用户点名",
+    "why": "用户未点名部件，为覆盖清障车的造型差异来源而补充，允许检索时降权",
+    "confidence": 0.5
+   }
+  ],
+  "negative": [
+   "不要乘用车救援/拖车（皮卡改装、SUV拖挂）",
+   "不要作业现场杂乱、遮挡主体的救援过程照片",
+   "不要仅有驾驶室局部或内饰的图片",
+   "不要低分辨率、带大面积水印或经销商店面图的素材",
+   "不要工程场内专用拖车、矿用拖拽设备"
+  ]
+ },
+ "duration_ms": 32245
+}

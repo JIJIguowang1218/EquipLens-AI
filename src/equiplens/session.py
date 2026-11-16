@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -201,6 +202,13 @@ def extract_values(text: str, targets: list[str]) -> dict:
             q["no_watermark"] = True
         if q:
             out["fetch.filters.quality"] = q
+    if "fill.quota" in targets:
+        m = re.search(r"(?:再|多)?(?:加|补|来)\s*([一二两三四五六七八九十\d]+)\s*(?:台|张|个)", t)
+        if m:
+            cn = {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
+                  "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+            v = m.group(1)
+            out["fill.quota"] = {"count": int(v) if v.isdigit() else cn.get(v[0], 1)}
     if "fetch.parts" in targets:
         parts = [p for p in PART_WORDS if p in t]
         if parts:

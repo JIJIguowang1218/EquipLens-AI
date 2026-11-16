@@ -1,0 +1,341 @@
+{
+  "run_id": "l2e-h2e",
+  "brief_id": "m43e-h2e",
+  "state": "DONE",
+  "slots": {
+    "target": 6,
+    "accepted": 6,
+    "filled": true
+  },
+  "delivery": {
+    "required": 6,
+    "delivered": 6,
+    "missing": 0,
+    "degraded": 4,
+    "degraded_ratio": 0.667,
+    "degraded_warn": true,
+    "degraded_targets": [
+      "庆铃五十铃 700P 平板清障车",
+      "斯太尔后双桥清障车（ZZ1256M4646C）",
+      "豪沃牌清障车（HTW5097TQZPZZ6）",
+      "东风多利卡清障车（平板式）"
+    ],
+    "citation_only": 2,
+    "citation_only_targets": [
+      "庆铃五十铃 700P 平板清障车",
+      "豪沃牌清障车（HTW5097TQZPZZ6）"
+    ],
+    "degraded_fill": [],
+    "bonus": {
+      "models": 2,
+      "images": 4
+    },
+    "backup": {
+      "required": 4,
+      "delivered": 2,
+      "status": "short",
+      "models": [
+        "程力 托吊型清障车（拖吊式）",
+        "解放J6一拖二带吊清障车（国六）"
+      ],
+      "images": 4,
+      "no_image_models": [],
+      "short": 2
+    },
+    "backup_short": 2,
+    "brand_quota": null,
+    "foreign_ratio": null,
+    "query_tiers": {
+      "model": 40,
+      "exact": 16
+    },
+    "unavailable": [
+      {
+        "model": "程力 托吊型清障车（拖吊式）",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 4,
+        "blocked": 0
+      },
+      {
+        "model": "解放J6一拖二带吊清障车（国六）",
+        "reason": "not_delivered",
+        "hits": 24,
+        "downloaded": 12,
+        "blocked": 12
+      }
+    ],
+    "status": "complete"
+  },
+  "coverage": {
+    "u-exact": {
+      "quota": 4,
+      "accepted": 4,
+      "filled": true
+    },
+    "u-env": {
+      "quota": 2,
+      "accepted": 2,
+      "filled": true
+    }
+  },
+  "gaps": [],
+  "accepted_targets": {
+    "u-exact": [
+      "庆铃五十铃 KV100 平板清障车",
+      "庆铃五十铃 700P 平板清障车",
+      "江淮骏铃一拖二平板清障车",
+      "斯太尔后双桥清障车（ZZ1256M4646C）"
+    ],
+    "u-env": [
+      "豪沃牌清障车（HTW5097TQZPZZ6）",
+      "东风多利卡清障车（平板式）"
+    ]
+  },
+  "budget_used": {
+    "queries": 24,
+    "models": 8,
+    "fetches": 72,
+    "verifies": 72
+  },
+  "config": {
+    "code_version": "d0981a1",
+    "download_workers": 4,
+    "plan_concurrency": 4,
+    "rank_method": null,
+    "platform_extra": "",
+    "code_prefilter": false,
+    "session_patches": 2
+  },
+  "downloads": {
+    "hits": 188,
+    "downloaded": 80,
+    "failed": 84,
+    "blocked": 24,
+    "gate_pass": 72,
+    "early_stop_models": 0,
+    "blocked_hosts": [
+      "cos3.solepic.com",
+      "file.youboy.com",
+      "img.jdzj.com",
+      "img1.fr-trading.com",
+      "img2.fr-trading.com",
+      "img69.gkzhan.com",
+      "oss-mirror.huangye88.net",
+      "oss.huangye88.net",
+      "www.chinacar.com.cn",
+      "www.tydzyqc.com"
+    ],
+    "fail_counts": {
+      "cos3.solepic.com": 4,
+      "file.youboy.com": 8,
+      "img.jdzj.com": 4,
+      "img1.fr-trading.com": 4,
+      "img2.fr-trading.com": 4,
+      "img69.gkzhan.com": 4,
+      "oss-mirror.huangye88.net": 4,
+      "oss.huangye88.net": 12,
+      "www.chinacar.com.cn": 4,
+      "www.tydzyqc.com": 12
+    }
+  },
+  "decisions": [
+    {
+      "at": "LIBRARY_SEARCH",
+      "action": "library_scanned",
+      "reason": "库内候选 0 个",
+      "ts": "2026-11-16T16:59:34"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 0/6，池中仍有候选",
+      "ts": "2026-11-16T16:59:34"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 exact 候选 4 个",
+      "ts": "2026-11-16T16:59:34"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "refill",
+      "reason": "槽位 4/6，池中仍有候选",
+      "ts": "2026-11-16T17:00:22"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "no_targets",
+      "reason": "当前层级没有候选",
+      "ts": "2026-11-16T17:00:22"
+    },
+    {
+      "at": "DEGRADE",
+      "action": "open_next_tier",
+      "reason": "exact 耗尽，开 environment",
+      "ts": "2026-11-16T17:00:22"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "discover",
+      "reason": "层级 environment 候选 2 个",
+      "ts": "2026-11-16T17:00:22"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 4 台有图车型，从 plan 池补抓（第 1 轮，不新增规划）",
+      "ts": "2026-11-16T17:00:37"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_targets",
+      "reason": "备选补抓 2 个候选",
+      "ts": "2026-11-16T17:00:37"
+    },
+    {
+      "at": "GAP_CHECK",
+      "action": "backup_refill",
+      "reason": "备选缺 2 台有图车型，从 plan 池补抓（第 2 轮，不新增规划）",
+      "ts": "2026-11-16T17:01:25"
+    },
+    {
+      "at": "EXTERNAL_DISCOVER",
+      "action": "backup_exhausted",
+      "reason": "plan 池已无候选，备选按实际数量交付",
+      "ts": "2026-11-16T17:01:25"
+    }
+  ],
+  "timings": [
+    {
+      "state": "BRIEF_READY",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "LIBRARY_SEARCH",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "FETCH",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 2,
+      "at": "2026-11-16T16:59:34"
+    },
+    {
+      "state": "FETCH",
+      "ms": 35260,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 3,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "DEGRADE",
+      "ms": 0,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T17:00:22"
+    },
+    {
+      "state": "FETCH",
+      "ms": 15027,
+      "at": "2026-11-16T17:00:37"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 1,
+      "at": "2026-11-16T17:00:37"
+    },
+    {
+      "state": "FILL",
+      "ms": 0,
+      "at": "2026-11-16T17:00:37"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T17:00:37"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T17:00:37"
+    },
+    {
+      "state": "FETCH",
+      "ms": 47815,
+      "at": "2026-11-16T17:01:25"
+    },
+    {
+      "state": "VERIFY",
+      "ms": 0,
+      "at": "2026-11-16T17:01:25"
+    },
+    {
+      "state": "GAP_CHECK",
+      "ms": 0,
+      "at": "2026-11-16T17:01:25"
+    },
+    {
+      "state": "EXTERNAL_DISCOVER",
+      "ms": 0,
+      "at": "2026-11-16T17:01:25"
+    },
+    {
+      "state": "DONE",
+      "ms": 0,
+      "at": "2026-11-16T17:01:25"
+    },
+    {
+      "state": "WRITEBACK",
+      "ms": 1,
+      "at": "2026-11-16T17:01:25"
+    }
+  ],
+  "elapsed_ms": 98109,
+  "state_path": "data-test\\runs\\l2e-h2e\\state.json",
+  "events_path": "data-test\\runs\\l2e-h2e\\events.jsonl",
+  "evidence_path": "data-test\\runs\\l2e-h2e\\evidence.json"
+}

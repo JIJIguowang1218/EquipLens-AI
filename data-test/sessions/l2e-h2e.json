@@ -1,0 +1,1204 @@
+{
+ "session_id": "l2e-h2e",
+ "run_id": "l2e-h2e",
+ "run_root": "data-test/runs",
+ "brief": {
+  "brief_id": "m43e-h2e",
+  "request": {
+   "raw": "清障车 6 台 主流品牌 高清",
+   "class": "清障车",
+   "environment": null,
+   "base_platform": {
+    "value": "轻/中重型商用车二类底盘（驾驶室沿用卡车基型，上装为清障专用改装）",
+    "confidence": 0.8
+   },
+   "configuration": "道路清障车：拖吊式与平板背负式（未锁定，需确认）",
+   "page_budget": {
+    "vehicle_slots": 6
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "models_pinned": [],
+   "constraints": {
+    "exclude": [],
+    "views": []
+   },
+   "brand_quota": null,
+   "foreign_ratio": null
+  },
+  "assumptions": [
+   {
+    "field": "configuration",
+    "value": "道路清障车（拖吊式/平板背负式均纳入）",
+    "why": "用户只给品类，未指明上装形式；两种构型在主流品牌中并存",
+    "confidence": 0.6
+   },
+   {
+    "field": "class",
+    "value": "公路用清障车（非矿用/非工程场内专用救援车）",
+    "why": "“主流品牌 + 高清”语境指向市售公路车型目录",
+    "confidence": 0.7
+   },
+   {
+    "field": "preferences.quality",
+    "value": "高清=高分辨率整车外观图，优先单车主视角",
+    "why": "用户以‘高清’作为质量约束，指向可读细节的整车图而非作业场景图",
+    "confidence": 0.75
+   },
+   {
+    "field": "preferences.soft_brands",
+    "value": "国内主流商用车/专用车品牌（如东风、解放、重汽、江淮、福田等）",
+    "why": "‘主流品牌’为软偏好，按市场保有量理解",
+    "confidence": 0.55
+   },
+   {
+    "field": "parts",
+    "value": "按品类推定的上装/托臂/侧防护/警示灯具为分析对象，非用户点名",
+    "why": "用户未点名部件，为覆盖清障车的造型差异来源而补充，允许检索时降权",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 6,
+    "why": "规则：exact 4 + environment 2",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "前脸（驾驶室正面）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "整车侧面（底盘与上装关系）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "rear",
+    "label": "尾部作业区（上装尾部与托举结构）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_wrecker_body",
+    "label": "清障车专用上装（托举平台/平板本体）",
+    "kind": "part",
+    "location": "后部上装，覆盖后轴至车尾",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "分缝与板面划分",
+     "上装与底盘的高度/长度比例",
+     "涂装与标识布局"
+    ],
+    "why": "上装是清障车与普通卡车造型差异最大的部位，能提供“底盘—上装衔接比例、板面分缝、涂装分区”的直接证据。"
+   },
+   {
+    "part": "custom_tow_boom",
+    "label": "托臂/举升托举机构",
+    "kind": "function",
+    "location": "车尾中部，向后伸出",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "rear",
+     "detail",
+     "side"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "型材框架与铰点节点",
+     "离地与后悬尺寸",
+     "作业操作可达性"
+    ],
+    "why": "托臂是清障功能的核心构造，能提供“型材规格、节点加强、与尾部空间的收放关系”证据，判断上装结构语言。"
+   },
+   {
+    "part": "custom_side_guard",
+    "label": "侧防护栏（上装侧下部防护）",
+    "kind": "part",
+    "location": "整车侧面下部，后轴至车尾",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "environment_protection"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "管/型材断面与排列",
+     "离地与遮挡范围",
+     "与上装裙板的整合方式"
+    ],
+    "why": "侧防护既受法规约束又影响侧面体量观感，能提供“法规件如何被造型整合”的证据。"
+   },
+   {
+    "part": "custom_warning_light",
+    "label": "警示灯具/警灯排（上装顶部与尾部）",
+    "kind": "part",
+    "location": "驾驶室顶或上装顶部、车尾",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "regulation",
+    "design_axes": [
+     "regulation",
+     "form_gesture",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "front",
+     "rear",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "灯具排布与体量",
+     "支架与安装节点",
+     "色彩与对比"
+    ],
+    "why": "警示灯是清障车最显性的行业符号，能提供“法规灯具如何参与整车姿态与识别”的证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "清障车 道路清障车：拖吊式与平板背负式（未锁定，需确认）",
+    "parts": [
+     "custom_wrecker_body",
+     "custom_tow_boom",
+     "custom_side_guard",
+     "custom_warning_light"
+    ],
+    "quota": 4,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "4 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "清障车 工程车",
+    "parts": [
+     "custom_wrecker_body",
+     "custom_tow_boom",
+     "custom_side_guard",
+     "custom_warning_light"
+    ],
+    "quota": 2,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "2 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 22
+  },
+  "stop_rules": {},
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "广告"
+  ],
+  "strategy_ref": "default@v1",
+  "taskspec": {
+   "intent": "new_task",
+   "class": "清障车",
+   "class_raw": "清障车",
+   "class_aliases": [],
+   "environment": null,
+   "configuration": null,
+   "quantity": {
+    "primary": 6,
+    "backup": null,
+    "delta": null
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "preferences": {
+    "soft_brands": [
+     "主流品牌"
+    ],
+    "brand_quota": null,
+    "foreign_ratio": null,
+    "views": [],
+    "quality": [
+     "高清"
+    ],
+    "year": null,
+    "tonnage": null,
+    "price": null
+   },
+   "models_pinned": [],
+   "models_provided": [],
+   "parts": [],
+   "constraints": {
+    "exclude": [],
+    "origin": null,
+    "powertrain": null,
+    "min_width": null
+   },
+   "scope": null,
+   "delivery": null,
+   "policy": {
+    "hard": [
+     "quantity",
+     "class"
+    ],
+    "soft": [
+     "soft_brands",
+     "quality"
+    ]
+   },
+   "unknowns": [],
+   "assumptions": [],
+   "questions": [],
+   "session_context_used": false,
+   "evidence": {
+    "class": "清障车",
+    "environment": "",
+    "configuration": "",
+    "quantity": "6 台",
+    "brands": "主流品牌",
+    "models": "",
+    "constraints": "",
+    "scope": ""
+   }
+  },
+  "s0": {
+   "mechanism": "taskspec",
+   "version": "v0.4"
+  }
+ },
+ "router_name": "llm",
+ "session": {
+  "session_id": "l2e-h2e",
+  "state": "DELIVERED",
+  "version": 6,
+  "brief": {
+   "brief_id": "m43e-h2e",
+   "request": {
+    "raw": "清障车 6 台 主流品牌 高清",
+    "class": "清障车",
+    "environment": null,
+    "base_platform": {
+     "value": "轻/中重型商用车二类底盘（驾驶室沿用卡车基型，上装为清障专用改装）",
+     "confidence": 0.8
+    },
+    "configuration": "道路清障车：拖吊式与平板背负式（未锁定，需确认）",
+    "page_budget": {
+     "vehicle_slots": 6
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "models_pinned": [],
+    "constraints": {
+     "exclude": [],
+     "views": []
+    },
+    "brand_quota": null,
+    "foreign_ratio": null
+   },
+   "assumptions": [
+    {
+     "field": "configuration",
+     "value": "道路清障车（拖吊式/平板背负式均纳入）",
+     "why": "用户只给品类，未指明上装形式；两种构型在主流品牌中并存",
+     "confidence": 0.6
+    },
+    {
+     "field": "class",
+     "value": "公路用清障车（非矿用/非工程场内专用救援车）",
+     "why": "“主流品牌 + 高清”语境指向市售公路车型目录",
+     "confidence": 0.7
+    },
+    {
+     "field": "preferences.quality",
+     "value": "高清=高分辨率整车外观图，优先单车主视角",
+     "why": "用户以‘高清’作为质量约束，指向可读细节的整车图而非作业场景图",
+     "confidence": 0.75
+    },
+    {
+     "field": "preferences.soft_brands",
+     "value": "国内主流商用车/专用车品牌（如东风、解放、重汽、江淮、福田等）",
+     "why": "‘主流品牌’为软偏好，按市场保有量理解",
+     "confidence": 0.55
+    },
+    {
+     "field": "parts",
+     "value": "按品类推定的上装/托臂/侧防护/警示灯具为分析对象，非用户点名",
+     "why": "用户未点名部件，为覆盖清障车的造型差异来源而补充，允许检索时降权",
+     "confidence": 0.5
+    },
+    {
+     "field": "page_budget",
+     "value": 6,
+     "why": "规则：exact 4 + environment 2",
+     "confidence": 1.0
+    }
+   ],
+   "region_requirements": [
+    {
+     "region": "front_face",
+     "label": "前脸（驾驶室正面）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "front",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "side",
+     "label": "整车侧面（底盘与上装关系）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "rear",
+     "label": "尾部作业区（上装尾部与托举结构）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "rear",
+      "detail"
+     ],
+     "accept": "C"
+    }
+   ],
+   "part_requirements": [
+    {
+     "part": "custom_wrecker_body",
+     "label": "清障车专用上装（托举平台/平板本体）",
+     "kind": "part",
+     "location": "后部上装，覆盖后轴至车尾",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "structure",
+      "function_ergonomics",
+      "cmf"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "rear",
+      "hero_45"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "分缝与板面划分",
+      "上装与底盘的高度/长度比例",
+      "涂装与标识布局"
+     ],
+     "why": "上装是清障车与普通卡车造型差异最大的部位，能提供“底盘—上装衔接比例、板面分缝、涂装分区”的直接证据。"
+    },
+    {
+     "part": "custom_tow_boom",
+     "label": "托臂/举升托举机构",
+     "kind": "function",
+     "location": "车尾中部，向后伸出",
+     "part_family": "frame_profile",
+     "taxonomy_status": "new",
+     "relation_axis": "exact",
+     "design_axes": [
+      "structure",
+      "function_ergonomics",
+      "manufacturing"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "rear",
+      "detail",
+      "side"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "型材框架与铰点节点",
+      "离地与后悬尺寸",
+      "作业操作可达性"
+     ],
+     "why": "托臂是清障功能的核心构造，能提供“型材规格、节点加强、与尾部空间的收放关系”证据，判断上装结构语言。"
+    },
+    {
+     "part": "custom_side_guard",
+     "label": "侧防护栏（上装侧下部防护）",
+     "kind": "part",
+     "location": "整车侧面下部，后轴至车尾",
+     "part_family": "frame_profile",
+     "taxonomy_status": "new",
+     "relation_axis": "regulation",
+     "design_axes": [
+      "regulation",
+      "structure",
+      "environment_protection"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "side",
+      "detail"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "管/型材断面与排列",
+      "离地与遮挡范围",
+      "与上装裙板的整合方式"
+     ],
+     "why": "侧防护既受法规约束又影响侧面体量观感，能提供“法规件如何被造型整合”的证据。"
+    },
+    {
+     "part": "custom_warning_light",
+     "label": "警示灯具/警灯排（上装顶部与尾部）",
+     "kind": "part",
+     "location": "驾驶室顶或上装顶部、车尾",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "regulation",
+     "design_axes": [
+      "regulation",
+      "form_gesture",
+      "cmf"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "front",
+      "rear",
+      "hero_45"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "灯具排布与体量",
+      "支架与安装节点",
+      "色彩与对比"
+     ],
+     "why": "警示灯是清障车最显性的行业符号，能提供“法规灯具如何参与整车姿态与识别”的证据。"
+    }
+   ],
+   "research_units": [
+    {
+     "unit_id": "u-exact",
+     "tier": "exact",
+     "scope": "清障车 道路清障车：拖吊式与平板背负式（未锁定，需确认）",
+     "parts": [
+      "custom_wrecker_body",
+      "custom_tow_boom",
+      "custom_side_guard",
+      "custom_warning_light"
+     ],
+     "quota": 4,
+     "budget": {
+      "max_queries": 6,
+      "max_rounds": 2
+     },
+     "stop": "4 台占满即停"
+    },
+    {
+     "unit_id": "u-env",
+     "tier": "environment",
+     "scope": "清障车 工程车",
+     "parts": [
+      "custom_wrecker_body",
+      "custom_tow_boom",
+      "custom_side_guard",
+      "custom_warning_light"
+     ],
+     "quota": 2,
+     "budget": {
+      "max_queries": 4,
+      "max_rounds": 2
+     },
+     "stop": "2 台占满即停"
+    }
+   ],
+   "tiers": [
+    "exact",
+    "environment"
+   ],
+   "budget": {
+    "max_queries": 22
+   },
+   "stop_rules": {},
+   "negative": [
+    "客车",
+    "SUV",
+    "房车",
+    "多车拼图",
+    "内饰",
+    "广告"
+   ],
+   "strategy_ref": "default@v1",
+   "taskspec": {
+    "intent": "new_task",
+    "class": "清障车",
+    "class_raw": "清障车",
+    "class_aliases": [],
+    "environment": null,
+    "configuration": null,
+    "quantity": {
+     "primary": 6,
+     "backup": null,
+     "delta": null
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "preferences": {
+     "soft_brands": [
+      "主流品牌"
+     ],
+     "brand_quota": null,
+     "foreign_ratio": null,
+     "views": [],
+     "quality": [
+      "高清"
+     ],
+     "year": null,
+     "tonnage": null,
+     "price": null
+    },
+    "models_pinned": [],
+    "models_provided": [],
+    "parts": [],
+    "constraints": {
+     "exclude": [],
+     "origin": null,
+     "powertrain": null,
+     "min_width": null
+    },
+    "scope": null,
+    "delivery": null,
+    "policy": {
+     "hard": [
+      "quantity",
+      "class"
+     ],
+     "soft": [
+      "soft_brands",
+      "quality"
+     ]
+    },
+    "unknowns": [],
+    "assumptions": [],
+    "questions": [],
+    "session_context_used": false,
+    "evidence": {
+     "class": "清障车",
+     "environment": "",
+     "configuration": "",
+     "quantity": "6 台",
+     "brands": "主流品牌",
+     "models": "",
+     "constraints": "",
+     "scope": ""
+    }
+   },
+   "s0": {
+    "mechanism": "taskspec",
+    "version": "v0.4"
+   },
+   "session_patches": [
+    {
+     "patch_id": "p-1a15af46",
+     "base_version": 1,
+     "target": "fill.quota",
+     "op": "set",
+     "value": {
+      "text": "同款再加两台吧，凑 12 个。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "count": 2
+      }
+     },
+     "confidence": 0.82,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-79504399",
+     "note": "“同款再加两台”表示在现有同款车型上补 2 张，因此归为 fill.quota；“凑 12 个”明确总量目标为 12 台，因此属于 plan.quantity，改变任务定义且 hard=true，不涉及删除已交付内容。"
+    },
+    {
+     "patch_id": "p-cc8eded4",
+     "base_version": 2,
+     "target": "plan.negative",
+     "op": "set",
+     "value": {
+      "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "terms": [
+        "北奔"
+       ]
+      }
+     },
+     "confidence": 0.97,
+     "destructive": false,
+     "enforce": "hard",
+     "source_msg_id": "m-c5fa7f54",
+     "note": "用户明确将北奔加入排除项，并说明其他品牌维持不变，属于检索范围的硬性排除约束；不改变任务定义，因此 hard=false，不涉及删除已交付内容。"
+    },
+    {
+     "patch_id": "p-17c5ab3b",
+     "base_version": 3,
+     "target": "delivered.replace",
+     "op": "set",
+     "value": {
+      "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+      "asset_index": 3,
+      "index_basis": "original",
+      "data": {
+       "asset_index": 3
+      }
+     },
+     "confidence": 0.9,
+     "destructive": true,
+     "enforce": "hard",
+     "source_msg_id": "m-1e9e0e51",
+     "note": "用户明确指出第 3 张有问题并要求换一张，属于替换已交付内容；由于文本明确指定“第 3 张”，目标确定，因此 destructive=true 且 confirm=false（直接降级并替换，不删除）。替换不改变任务定义中的范围、数量或构型，因此 hard=false。"
+    },
+    {
+     "patch_id": "p-1087b32f",
+     "base_version": 4,
+     "target": "fetch.filters.quality",
+     "op": "set",
+     "value": {
+      "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "min_width": 1200,
+       "no_watermark": true
+      }
+     },
+     "confidence": 0.72,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-69ef6621",
+     "note": "“高清、去水印”属于质量过滤条件，不改变任务定义，因此 hard=false、enforce=soft；“前面那几张一起弄”涉及把已交付的图一并换成高清无水印版本，属于替换已交付内容，所以 destructive=true；但用户没有指明具体是哪几张、哪一型号，属于目标不明确，按规则需先确认，因此 confirm=tr"
+    },
+    {
+     "patch_id": "p-4e3a329b",
+     "base_version": 5,
+     "target": "delivery.report",
+     "op": "set",
+     "value": {
+      "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+      "asset_index": null,
+      "index_basis": "original"
+     },
+     "confidence": 0.96,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-88a6274c",
+     "note": "用户要求基于当前结果生成/更新 PPT 报告，不改变检索范围、数量、构型或排除项，也不涉及删除或替换已交付内容，因此为交付物动作，hard=false、destructive=false、无需确认。"
+    }
+   ]
+  },
+  "brief_versions": [
+   {
+    "v": 1,
+    "hash": "2668080609423171618"
+   },
+   {
+    "v": 2,
+    "hash": "7227065322846485510"
+   },
+   {
+    "v": 3,
+    "hash": "5069392026548311412"
+   },
+   {
+    "v": 4,
+    "hash": "6662600266384076876"
+   },
+   {
+    "v": 5,
+    "hash": "3663379657112067541"
+   },
+   {
+    "v": 6,
+    "hash": "7228318270397644797"
+   }
+  ],
+  "patches": [
+   {
+    "patch_id": "p-1a15af46",
+    "base_version": 1,
+    "target": "fill.quota",
+    "op": "set",
+    "value": {
+     "text": "同款再加两台吧，凑 12 个。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "count": 2
+     }
+    },
+    "confidence": 0.82,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-79504399",
+    "note": "“同款再加两台”表示在现有同款车型上补 2 张，因此归为 fill.quota；“凑 12 个”明确总量目标为 12 台，因此属于 plan.quantity，改变任务定义且 hard=true，不涉及删除已交付内容。"
+   },
+   {
+    "patch_id": "p-cc8eded4",
+    "base_version": 2,
+    "target": "plan.negative",
+    "op": "set",
+    "value": {
+     "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "terms": [
+       "北奔"
+      ]
+     }
+    },
+    "confidence": 0.97,
+    "destructive": false,
+    "enforce": "hard",
+    "source_msg_id": "m-c5fa7f54",
+    "note": "用户明确将北奔加入排除项，并说明其他品牌维持不变，属于检索范围的硬性排除约束；不改变任务定义，因此 hard=false，不涉及删除已交付内容。"
+   },
+   {
+    "patch_id": "p-17c5ab3b",
+    "base_version": 3,
+    "target": "delivered.replace",
+    "op": "set",
+    "value": {
+     "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+     "asset_index": 3,
+     "index_basis": "original",
+     "data": {
+      "asset_index": 3
+     }
+    },
+    "confidence": 0.9,
+    "destructive": true,
+    "enforce": "hard",
+    "source_msg_id": "m-1e9e0e51",
+    "note": "用户明确指出第 3 张有问题并要求换一张，属于替换已交付内容；由于文本明确指定“第 3 张”，目标确定，因此 destructive=true 且 confirm=false（直接降级并替换，不删除）。替换不改变任务定义中的范围、数量或构型，因此 hard=false。"
+   },
+   {
+    "patch_id": "p-1087b32f",
+    "base_version": 4,
+    "target": "fetch.filters.quality",
+    "op": "set",
+    "value": {
+     "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "min_width": 1200,
+      "no_watermark": true
+     }
+    },
+    "confidence": 0.72,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-69ef6621",
+    "note": "“高清、去水印”属于质量过滤条件，不改变任务定义，因此 hard=false、enforce=soft；“前面那几张一起弄”涉及把已交付的图一并换成高清无水印版本，属于替换已交付内容，所以 destructive=true；但用户没有指明具体是哪几张、哪一型号，属于目标不明确，按规则需先确认，因此 confirm=tr"
+   },
+   {
+    "patch_id": "p-4e3a329b",
+    "base_version": 5,
+    "target": "delivery.report",
+    "op": "set",
+    "value": {
+     "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+     "asset_index": null,
+     "index_basis": "original"
+    },
+    "confidence": 0.96,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-88a6274c",
+    "note": "用户要求基于当前结果生成/更新 PPT 报告，不改变检索范围、数量、构型或排除项，也不涉及删除或替换已交付内容，因此为交付物动作，hard=false、destructive=false、无需确认。"
+   }
+  ],
+  "pending": [],
+  "events": [
+   {
+    "at": 1794819574.443,
+    "kind": "created"
+   },
+   {
+    "at": 1794819577.661,
+    "kind": "user_msg",
+    "msg_id": "m-79504399",
+    "text": "同款再加两台吧，凑 12 个。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fill.quota"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.82,
+     "clarify": false,
+     "evidence": "同款再加两台吧，凑 12 个",
+     "reason": "“同款再加两台”表示在现有同款车型上补 2 张，因此归为 fill.quota；“凑 12 个”明确总量目标为 12 台，因此属于 plan.quantity，改变任务定义且 hard=true，不涉及删除已交付内容。",
+     "asset_index": null,
+     "values": {
+      "fill.quota": {
+       "count": 2
+      },
+      "plan.quantity": {
+       "primary": 12
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819579.606,
+    "kind": "user_msg",
+    "msg_id": "m-c5fa7f54",
+    "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "plan.negative"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "hard",
+     "confidence": 0.97,
+     "clarify": false,
+     "evidence": "北奔的别放了……其他牌子照旧",
+     "reason": "用户明确将北奔加入排除项，并说明其他品牌维持不变，属于检索范围的硬性排除约束；不改变任务定义，因此 hard=false，不涉及删除已交付内容。",
+     "asset_index": null,
+     "values": {
+      "plan.negative": {
+       "terms": [
+        "北奔"
+       ]
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819582.073,
+    "kind": "user_msg",
+    "msg_id": "m-1e9e0e51",
+    "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivered.replace"
+     ],
+     "destructive": true,
+     "confirm": false,
+     "enforce": "hard",
+     "confidence": 0.9,
+     "clarify": false,
+     "evidence": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+     "reason": "用户明确指出第 3 张有问题并要求换一张，属于替换已交付内容；由于文本明确指定“第 3 张”，目标确定，因此 destructive=true 且 confirm=false（直接降级并替换，不删除）。替换不改变任务定义中的范围、数量或构型，因此 hard=false。",
+     "asset_index": 3,
+     "values": {
+      "delivered.replace": {
+       "asset_index": 3
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819585.446,
+    "kind": "user_msg",
+    "msg_id": "m-69ef6621",
+    "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+    "result": {
+     "intent": "modify",
+     "hard": true,
+     "targets": [
+      "fetch.filters.quality"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.72,
+     "clarify": false,
+     "evidence": "图都换成高清的，右下角的水印也去掉……前面那几张一起弄",
+     "reason": "“高清、去水印”属于质量过滤条件，不改变任务定义，因此 hard=false、enforce=soft；“前面那几张一起弄”涉及把已交付的图一并换成高清无水印版本，属于替换已交付内容，所以 destructive=true；但用户没有指明具体是哪几张、哪一型号，属于目标不明确，按规则需先确认，因此 confirm=tr",
+     "asset_index": null,
+     "values": {
+      "fetch.filters.quality": {
+       "min_width": 1200,
+       "no_watermark": true
+      }
+     }
+    }
+   },
+   {
+    "at": 1794819587.233,
+    "kind": "user_msg",
+    "msg_id": "m-88a6274c",
+    "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivery.report"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.96,
+     "clarify": false,
+     "evidence": "出报告吧，PPT 版本给我",
+     "reason": "用户要求基于当前结果生成/更新 PPT 报告，不改变检索范围、数量、构型或排除项，也不涉及删除或替换已交付内容，因此为交付物动作，hard=false、destructive=false、无需确认。",
+     "asset_index": null,
+     "values": {}
+    }
+   },
+   {
+    "at": 1794819685.453,
+    "kind": "delivered",
+    "added": 14,
+    "skipped": 42
+   }
+  ],
+  "delivered": [
+   {
+    "asset_id": "5162f9db5d70",
+    "url": "http://www.xgcs55.com/UpFile/202211/2022112954610045.jpg",
+    "model": "庆铃五十铃 KV100 平板清障车",
+    "target": "庆铃五十铃 KV100 平板清障车",
+    "seq": 1,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "b85f00a70a2c",
+    "url": "http://www.jnzycw.com/static/upload/image/20210806/1628239347716682.jpg",
+    "model": "庆铃五十铃 700P 平板清障车",
+    "target": "庆铃五十铃 700P 平板清障车",
+    "seq": 2,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "4a74eda0eb14",
+    "url": "https://img2.baidu.com/it/u=2189881504,2579465373&fm=253&fmt=auto&app=138&f=JPEG?w=774&h=500",
+    "model": "江淮骏铃一拖二平板清障车",
+    "target": "江淮骏铃一拖二平板清障车",
+    "seq": 3,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "29f99b7e2588",
+    "url": "http://upload.17350.com/2019/1028/20191028011202496.jpg",
+    "model": "江淮骏铃一拖二平板清障车",
+    "target": "江淮骏铃一拖二平板清障车",
+    "seq": 4,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "8edded9aa3d9",
+    "url": "https://img0.baidu.com/it/u=3872771279,1817931567&fm=253&fmt=auto&app=138&f=JPEG?w=1067&h=800",
+    "model": "江淮骏铃一拖二平板清障车",
+    "target": "江淮骏铃一拖二平板清障车",
+    "seq": 5,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "53c4f4088ec5",
+    "url": "https://img0.baidu.com/it/u=2561602195,4217693982&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=559",
+    "model": "江淮骏铃一拖二平板清障车",
+    "target": "江淮骏铃一拖二平板清障车",
+    "seq": 6,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "2b431abb7d9b",
+    "url": "https://img.lmjx.net/zjupload/201501/100/20150121104158_34160.jpg!400x220.jpg",
+    "model": "斯太尔后双桥清障车（ZZ1256M4646C）",
+    "target": "斯太尔后双桥清障车（ZZ1256M4646C）",
+    "seq": 7,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "3ba46abdae6e",
+    "url": "https://img0.baidu.com/it/u=4045751924,2461422232&fm=253&app=138&f=JPEG?w=1067&h=800",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 8,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "86b57fc62d45",
+    "url": "https://img4.kcimg.cn/imgc/0/82/82355.jpg_800x533.jpg",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 9,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "fdcfce300589",
+    "url": "https://img1.baidu.com/it/u=322209826,4002046549&fm=253&app=138&f=JPEG?w=1067&h=800",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 10,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "60ee02806476",
+    "url": "https://img2.baidu.com/it/u=1496143538,428095974&fm=253&fmt=auto&app=120&f=JPEG?w=1067&h=800",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 11,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "660ad38826c3",
+    "url": "https://img1.baidu.com/it/u=2484244123,2664112713&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 12,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "696a29db01ae",
+    "url": "https://img1.baidu.com/it/u=94235016,1789010481&fm=253&fmt=auto&app=138&f=JPEG?w=998&h=500",
+    "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "target": "豪沃牌清障车（HTW5097TQZPZZ6）",
+    "seq": 13,
+    "status": "active",
+    "round": 6
+   },
+   {
+    "asset_id": "ab7ad091913c",
+    "url": "https://img2.baidu.com/it/u=186615822,2632994215&fm=253&fmt=auto&app=120&f=JPEG?w=889&h=500",
+    "model": "东风多利卡清障车（平板式）",
+    "target": "东风多利卡清障车（平板式）",
+    "seq": 14,
+    "status": "active",
+    "round": 6
+   }
+  ],
+  "blacklist": [],
+  "preferences": {
+   "delivery": {
+    "format": "both",
+    "requested": true
+   }
+  },
+  "next_seq": 14,
+  "rounds": 5,
+  "max_rounds": 5,
+  "last_checkpoint": "WRITEBACK"
+ },
+ "steps": 25,
+ "applied": 2,
+ "updated_at": "2026-11-16T17:01:25"
+}

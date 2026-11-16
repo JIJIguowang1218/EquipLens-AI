@@ -132,6 +132,14 @@ def test_two_messages_before_run_keep_both_patches():
         assert "fetch.filters.quality" in targets, targets
 
 
+def test_extract_values_fill_quota_and_views():
+    from equiplens.session import extract_values
+    v = extract_values("同款再加两台吧", ["fill.quota"])
+    assert v["fill.quota"]["count"] == 2, v
+    v2 = extract_values("都要侧面", ["fetch.filters.views"])
+    assert v2["fetch.filters.views"]["views"] == ["side"], v2
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

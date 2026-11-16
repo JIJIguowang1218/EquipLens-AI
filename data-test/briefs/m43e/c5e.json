@@ -1,0 +1,284 @@
+{
+ "brief_id": "m43e-c5e",
+ "request": {
+  "raw": "单钢轮压路机 14 台",
+  "class": "单钢轮压路机",
+  "environment": {
+   "value": "未指定工况，按通用路基/土方压实工况处理",
+   "confidence": 0.8
+  },
+  "base_platform": {
+   "value": "自行式单钢轮振动压路机底盘（铰接车架 + 前振动钢轮 + 后充气轮胎组 + 中置/后置驾驶室）",
+   "confidence": 0.8
+  },
+  "configuration": "单钢轮前置于铰接前车架，后部双轮胎驱动桥，驾驶室多为后置或中置偏后",
+  "page_budget": {
+   "vehicle_slots": 14
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  },
+  "brand_quota": null,
+  "foreign_ratio": null
+ },
+ "assumptions": [
+  {
+   "field": "class_detail",
+   "value": "单钢轮振动压路机（非双钢轮、非轮胎压路机、非履带式）",
+   "why": "用户只说“单钢轮压路机”，按行业常规理解为单振动钢轮+后充气轮胎的自行式振动压路机",
+   "confidence": 0.85
+  },
+  {
+   "field": "environment",
+   "value": "通用路基/土方压实工况",
+   "why": "用户未提供工况信息，环境驱动类形态（防尘、强化散热、特殊防护）暂不作为检索主轴",
+   "confidence": 0.5
+  },
+  {
+   "field": "configuration",
+   "value": "铰接式车架、驾驶室后置或中置偏后",
+   "why": "该类目主流布置形式，未指定具体配置时按类目常规处理",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts_scope",
+   "value": "仅纳入由“单钢轮”这一原话与类目构型直接导出的钢轮与后轮胎组",
+   "why": "用户未点名其他部件，不额外补充格栅、大灯、扶手等未提及对象",
+   "confidence": 0.7
+  },
+  {
+   "field": "brands_include",
+   "value": "开放品牌",
+   "why": "未指定品牌，按 14 台数量在品牌维度上开放取样",
+   "confidence": 0.8
+  },
+  {
+   "field": "page_budget",
+   "value": 14,
+   "why": "规则：exact 9 + environment 5",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "side",
+   "label": "整机侧面（钢轮—铰接—轮胎—驾驶室序列）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "front_face",
+   "label": "前视（钢轮正立面与机架、驾驶室的关系）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "vibration_drum",
+   "label": "单钢轮（振动钢轮）",
+   "kind": "part",
+   "location": "front / 前车架下方，直接接地",
+   "part_family": "cast_forged",
+   "taxonomy_status": "known",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "cmf",
+    "manufacturing"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "front",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "钢轮直径与宽度决定整机姿态与接地比例，是单钢轮压路机最强的类目识别特征",
+    "端板形式、轴承座/减振块连接、刮泥板与洒水管路的布置反映结构与分缝逻辑",
+    "钢面加工痕迹、涂装与端板配色是主要 CMF 证据"
+   ],
+   "why": "用户原话即为“单钢轮”，钢轮是本类目的定义性功能件；其直径/宽度比例、端板构造、附件布置能直接回答整机体量与结构分缝问题"
+  },
+  {
+   "part": "rear_tire_group",
+   "label": "后轮胎组（驱动桥双胎）",
+   "kind": "part",
+   "location": "rear / 后车架下方",
+   "part_family": "function_attachment",
+   "taxonomy_status": "known",
+   "relation_axis": "platform",
+   "design_axes": [
+    "proportion",
+    "structure"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "rear",
+    "hero_45"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "后轮胎的直径与轮距同前钢轮形成前后比例对照，决定整机侧视平衡",
+    "挡泥板/配重/轮毂形式与车架的连接关系"
+   ],
+   "why": "单钢轮构型由“前钢轮+后轮胎”共同定义，后轮胎组提供前后比例与车架收尾的证据；属平台通用件，非工况特化，故为条件性观察"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "单钢轮压路机（振动压路机，单钢轮+轮胎组合式） 单钢轮前置于铰接前车架，后部双轮胎驱动桥，驾驶室多为后置或中置偏后",
+   "parts": [
+    "vibration_drum",
+    "rear_tire_group"
+   ],
+   "quota": 9,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "9 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "未指定工况，按通用路基/土方压实工况处理 工程车",
+   "parts": [
+    "vibration_drum",
+    "rear_tire_group"
+   ],
+   "quota": 5,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "5 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 46
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "单钢轮压路机",
+  "class_raw": "单钢轮压路机",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 14,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "brands_include",
+    "text": "未指定品牌",
+    "severity": "defaultable",
+    "proposal": "开放品牌"
+   },
+   {
+    "field": "environment",
+    "text": "未指定工况",
+    "severity": "defaultable",
+    "proposal": "按通用工况"
+   },
+   {
+    "field": "configuration",
+    "text": "未指定配置形式",
+    "severity": "defaultable",
+    "proposal": "按类目常规配置"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "单钢轮压路机",
+   "environment": "",
+   "configuration": "",
+   "quantity": "14 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

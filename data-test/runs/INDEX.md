@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T16:20:07 · 共 127 条 · 待补人工结论 83 条
+> 生成时间：2026-11-16T17:04:27 · 共 132 条 · 待补人工结论 88 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -119,6 +119,11 @@
 | other | `l2-live-c1-v3` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=80 · gate_pass=72 · degraded=8 | [—](data-test/runs/l2-live-c1-v3/summary.json) |
 | other | `l2-live-c1-v4` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=82 · gate_pass=73 · degraded=8 | [—](data-test/runs/l2-live-c1-v4/summary.json) |
 | other | `l2-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [prototype acceptance; conclusions in DATA-CHANGELOG §57/§59](data-test/runs/l2-offline/summary.json) |
+| other | `l2e-c1e` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=64 · gate_pass=60 · degraded=9 | [—](data-test/runs/l2e-c1e/summary.json) |
+| other | `l2e-c4e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=56 · gate_pass=41 · degraded=4 | [—](data-test/runs/l2e-c4e/summary.json) |
+| other | `l2e-c5e` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=115 · gate_pass=85 · degraded=2 | [—](data-test/runs/l2e-c5e/summary.json) |
+| other | `l2e-h2e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=2/4 · images=20 · gate_pass=18 · degraded=4 | [—](data-test/runs/l2e-h2e/summary.json) |
+| other | `l2e-h3e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=38 · gate_pass=29 · degraded=4 | [—](data-test/runs/l2e-h3e/summary.json) |
 | other | `m43-base-c1-desert` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=96 · gate_pass=85 · degraded=7 · $0.01425 | [—](data-test/runs/m43-base-c1-desert/summary.json) |
 | other | `m43-base-c4-forklift` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=71 · gate_pass=42 · degraded=3 · $0.01275 | [—](data-test/runs/m43-base-c4-forklift/summary.json) |
 | other | `m43-base-c5-roller` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=97 · gate_pass=78 · degraded=7 · $0.012 | [—](data-test/runs/m43-base-c5-roller/summary.json) |

@@ -53,6 +53,7 @@ PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用�
 9) values 可选，给出该 target 的结构化值：fetch.filters.views={"views":["front"|"side"|"45"|"rear"|"roof"]}；
    fetch.filters.quality={"min_width":1200} 或 {"no_watermark":true}；fetch.parts={"parts":["格栅"]}；
    plan.negative={"terms":["北奔"]}；plan.add_targets={"models":["HOWO TX"]}；
+   fill.quota={"count":2}；
    plan.quantity={"primary":12}；plan.configuration={"value":"8x8"}。
 
 动作定义：
@@ -159,7 +160,8 @@ def guard(text: str, proposal: dict) -> dict:
     if ("plan.quantity" in out["targets"]
             and any(k in text for k in ("再加", "再补", "凑", "多来", "加两台", "加几台"))
             and not any(k in text for k in ("改成", "调到", "改为", "改到"))):
-        out["targets"] = [("fill.quota" if t == "plan.quantity" else t) for t in out["targets"]]
+        converted = [("fill.quota" if t == "plan.quantity" else t) for t in out["targets"]]
+        out["targets"] = list(dict.fromkeys(converted))
         out["hard"] = False
         out["enforce"] = "soft"
     # 排除项：约束硬、打断软
@@ -167,6 +169,11 @@ def guard(text: str, proposal: dict) -> dict:
         out["enforce"] = "hard"
         if not hard_targets:
             out["hard"] = False
+
+    # 画质类表述（高清/水印/清晰度）不是删除/替换：去掉误判的交付编辑
+    if (any(k in text for k in ("高清", "水印", "清晰", "分辨率"))
+            and not any(k in text for k in ("删", "去掉第", "换掉第"))):
+        out["targets"] = [t for t in out["targets"] if t not in DESTRUCTIVE_TARGETS]
 
     # 交付编辑
     dest = [t for t in out["targets"] if t in DESTRUCTIVE_TARGETS]

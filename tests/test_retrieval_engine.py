@@ -575,6 +575,25 @@ def test_budget_queries_are_issued_queries_not_targets():
         assert used["models"] == 1, used            # 候选车型数单独记
 
 
+def test_fill_quota_patch_reactivates_target():
+    b = base_brief(parts=("bumper",), slots=1)
+    world = {"external": {"u-exact": [target("t1", ["bumper"])]},
+             "assets": {"t1": {"bumper": [asset("a1")]}},
+             "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world), run_root=td, run_id="q2")
+        st = e._load_or_init()
+        for _ in range(12):
+            if st.get("state") == "FETCH" and st.get("active_targets"):
+                break
+            st = e.step(st)
+        res = e.apply_patches(st, [{"target": "fill.quota",
+                                    "value": {"data": {"count": 2, "model": "t1"}}}])
+        assert res["applied"] == ["fill.quota"], res
+        assert st["fill_quota"]["t1"] == 2, st.get("fill_quota")
+        assert "t1" in st["active_targets"], st["active_targets"]
+
+
 def test_delivery_brand_quota_and_foreign_ratio():
     b = base_brief(parts=("bumper",), slots=1)
     b["request"]["brand_quota"] = {"brands": ["HOWO"], "min": 1, "of": 1}
@@ -983,6 +1002,7 @@ if __name__ == "__main__":
     check("预算按真实查询计数", test_budget_queries_are_issued_queries_not_targets)
     check("交付台数跟随用户输入", test_delivery_required_follows_user_slots)
     check("交付披露：品牌配额/外国占比", test_delivery_brand_quota_and_foreign_ratio)
+    check("fill.quota：目标重新激活", test_fill_quota_patch_reactivates_target)
     check("备选固定 4 台按优先级", test_delivery_backup_four_by_priority)
     check("备选不足要显式报短", test_delivery_backup_short_is_visible)
     check("备选排除无图车型", test_backup_excludes_models_without_images)

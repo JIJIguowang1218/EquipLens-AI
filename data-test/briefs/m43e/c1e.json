@@ -1,0 +1,239 @@
+{
+ "brief_id": "m43e-c1e",
+ "request": {
+  "raw": "沙漠牵引车 10 台 6x6 越野底盘 要实拍图",
+  "class": "沙漠牵引车",
+  "environment": {
+   "value": "越野",
+   "source": "taskspec"
+  },
+  "base_platform": {
+   "value": "重型卡车底盘（6×6 越野牵引底盘，驾驶室位于发动机上方或采用常规长驾驶室布局）",
+   "confidence": 0.8
+  },
+  "configuration": "6x6",
+  "page_budget": {
+   "vehicle_slots": 10
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  },
+  "brand_quota": null,
+  "foreign_ratio": null
+ },
+ "assumptions": [
+  {
+   "field": "request.class",
+   "value": "沙漠牵引车按重型（牵引/油田/沙漠运输）越野牵引车理解",
+   "why": "用户仅给“沙漠牵引车 + 6×6 越野底盘”，未给吨位与用途细分",
+   "confidence": 0.6
+  },
+  {
+   "field": "quantity.primary",
+   "value": "10 表示需要 10 台车的实拍图，而非车辆批量配置参数",
+   "why": "上下文为图片检索任务，quality 为“实拍图”",
+   "confidence": 0.7
+  },
+  {
+   "field": "request.base_platform",
+   "value": "按重型卡车 6×6 越野底盘基型处理，未指定具体品牌/型号",
+   "why": "用户未提供品牌与型号，不猜测具体车型",
+   "confidence": 0.5
+  },
+  {
+   "field": "parts",
+   "value": "仅将用户原话中的“越野底盘”作为设计对象；未补充用户未点名的部件",
+   "why": "用户未点名前脸/防护栏/踏步等具体部件，避免无依据扩展",
+   "confidence": 0.8
+  },
+  {
+   "field": "page_budget",
+   "value": 10,
+   "why": "规则：exact 7 + environment 3",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "整车侧面（含车轮/轮拱与底盘关系）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "chassis",
+   "label": "越野底盘",
+   "kind": "part",
+   "location": "底盘（整车下部，贯通前后）",
+   "part_family": "frame_profile",
+   "taxonomy_status": "known",
+   "relation_axis": "environment",
+   "design_axes": [
+    "proportion",
+    "structure",
+    "environment_protection"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "离地间隙与轴距/轮距布置影响整车姿态与通过性",
+    "车架、悬挂与传动外露件在沙尘环境的防护形态",
+    "6×6 三轴布置决定轮拱与驾驶室的相对比例"
+   ],
+   "why": "用户明确提到“6×6 越野底盘”，底盘布置与离地形态是判断沙漠工况特化程度的直接证据；实拍侧视图可同时读到轴数、离地与车架外露关系"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "沙漠牵引车（重型沙漠/越野牵引车） 6×6 越野底盘",
+   "parts": [
+    "chassis"
+   ],
+   "quota": 7,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "7 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "沙漠/越野底盘工况（高温、沙尘、松软沙地） 工程车",
+   "parts": [
+    "chassis"
+   ],
+   "quota": 3,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "3 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 34
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠牵引车",
+  "class_aliases": [],
+  "environment": "越野",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 10,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "实拍图"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class",
+    "configuration",
+    "environment"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "沙漠牵引车",
+   "environment": "越野底盘",
+   "configuration": "6x6",
+   "quantity": "10 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

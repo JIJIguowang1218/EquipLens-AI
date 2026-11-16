@@ -91,6 +91,28 @@ class RetrievalEngine:
                     if obj is not None and hasattr(obj, "min_width"):
                         obj.min_width = int(data["min_width"])
                 applied.append(target)
+            elif target == "fill.quota":
+                data = data or {}
+                count = int(data.get("count") or 1)
+                want = str(data.get("model") or "").strip().lower()
+                tid = ""
+                if want:
+                    for k, t in (state.get("targets") or {}).items():
+                        if want in str(t.get("model") or "").lower():
+                            tid = k
+                            break
+                if not tid:
+                    for u in (state.get("units") or {}).values():
+                        if u.get("accepted_targets"):
+                            tid = u["accepted_targets"][0]
+                            break
+                if tid:
+                    fq = state.setdefault("fill_quota", {})
+                    fq[tid] = int(fq.get(tid, 0)) + max(1, count)
+                    active = state.setdefault("active_targets", [])
+                    if tid not in active:
+                        active.append(tid)
+                    applied.append(target)
             elif target == "plan.negative":
                 terms = [str(x).strip() for x in (data.get("terms") or []) if str(x).strip()]
                 if terms:

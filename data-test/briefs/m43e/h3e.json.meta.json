@@ -1,0 +1,322 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "扫路车",
+  "class_raw": "扫路车",
+  "class_aliases": [],
+  "environment": "市政道路清扫",
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "扫路车",
+   "environment": "市政道路清扫",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T16:28:55",
+ "raw_input": "扫路车 6 台 市政道路清扫",
+ "brief_path": "data-test\\briefs\\m43e\\h3e.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2647,
+  "completion_tokens": 2711,
+  "total_tokens": 5358,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 694
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 215
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "扫路车（环卫清扫车，二类载货汽车底盘改装专用车）",
+   "environment": "市政道路清扫（城市道路、低速作业、人口密集区、湿/干两种清扫模式）",
+   "base_platform": "环卫专用车基型：二类载货汽车底盘（4×2 为主，可能有 6×4）+ 上装（副发动机/风机/水箱/垃圾箱）",
+   "configuration": "后装式或中置扫刷式；单发动机或双发动机（副机驱动风机与扫刷）；干式或湿式除尘",
+   "design_questions": [
+    "这类清扫车的上装工作装置（扫刷、吸盘、箱体）与底盘、驾驶室之间的整体比例和布置关系如何呈现？",
+    "上装覆盖件的分缝、检修开口与板金/型材构成是什么样，如何服务作业与维护？",
+    "作为市政作业车辆，尾部与侧部的安全标识、防护和警示视觉如何组织？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸与驾驶室正视",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面（驾驶室+上装整体侧视）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf",
+     "function_ergonomics"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "尾部（箱体尾门、作业警示）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_sweeper_brush_assembly",
+    "label": "扫刷总成（前置/侧置扫盘）",
+    "kind": "function",
+    "location": "前下部/侧下部，车头前方或前轴两侧",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "扫盘直径与离地间隙决定清扫宽度与越障能力",
+     "摆臂/升降机构的型材与关节形式决定避障与维修可达性",
+     "挡尘罩/喷淋环的包覆形式影响扬尘控制与视觉收口"
+    ],
+    "why": "扫刷是扫路车区别于其他环卫车的定义性装置，能提供‘作业装置如何与底盘前部共存’的布置、结构与防护证据；公开图通常能看清扫盘数量、摆臂与挡尘罩。"
+   },
+   {
+    "part": "custom_suction_nozzle",
+    "label": "吸盘/吸口（吸嘴总成）",
+    "kind": "function",
+    "location": "底盘下方，前后轴之间或后轴后",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "C",
+    "mechanism": [
+     "吸口的板金折弯与加强筋形式反映负压密封设计",
+     "离地与随动/浮动机构决定贴地性与通过性",
+     "与箱体之间的吸管走向影响底盘空间分配"
+    ],
+    "why": "吸盘决定清扫效果与底盘离地关系，能提供‘底盘下部空间如何被作业装置占用’的结构证据；但多数侧视/前视图中被遮挡，只在低机位或细节图中可见。"
+   },
+   {
+    "part": "custom_hopper_body",
+    "label": "垃圾箱体（上装箱体）",
+    "kind": "part",
+    "location": "上装中部至后部，驾驶室后方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "箱体高度与驾驶室顶线的关系决定整车体量姿态",
+     "侧板分缝、加强筋与折边反映板金成型与刚度策略",
+     "尾门铰接、锁紧与举升倾卸机构决定尾部构成",
+     "涂装分色与标识带位置影响市政车辆的识别性"
+    ],
+    "why": "箱体是上车视觉主体，也是与驾驶室共同构成整车比例的最大单件；能提供体量关系、板金分缝、尾门结构与涂装分色的直接证据，是判断这类车型造型语言最有效的一块。"
+   },
+   {
+    "part": "custom_aux_engine_cover",
+    "label": "副发动机舱/风机罩（上装动力舱盖）",
+    "kind": "part",
+    "location": "驾驶室后方、箱体前部或侧部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "检修门/掀盖的铰链与锁具位置反映维护可达性",
+     "散热百叶、进气口的开孔阵列是造型与功能的结合点",
+     "舱盖与箱体的分缝关系决定上装侧面的视觉秩序"
+    ],
+    "why": "副机舱是上装侧面上唯一高频出现的‘开口与百叶’元素，能提供功能开孔如何组织进板金分缝的证据；对判断上装侧面的细节密度很有用。"
+   },
+   {
+    "part": "custom_rear_work_warning",
+    "label": "尾部作业警示与后防护（警示灯/标识板/后防护栏）",
+    "kind": "part",
+    "location": "尾部，箱体尾门及底盘后端",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "regulation",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "后防护栏的型材断面与支架形式受法规尺寸约束",
+     "反光标识带/箭头板的排布方式反映作业警示策略",
+     "尾门与防护栏的相对位置决定尾部层次"
+    ],
+    "why": "市政道路清扫属低速占道作业，尾部警示与后防护是法规强约束且正视图中最显眼的构成；能提供法规件与造型如何整合的证据。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "quantity.primary",
+    "value": "6 台 = 6 张参考图",
+    "why": "用户只给数量，按检索图像张数理解，不涉及采购或车队规模",
+    "confidence": 0.7
+   },
+   {
+    "field": "parts",
+    "value": "用户未点名部件，按‘扫路车’这一品类的构成性作业装置（扫刷、吸盘、箱体、副机舱、尾部警示防护）给出最小分析集",
+    "why": "任务硬约束只有品类/数量/工况，无部件输入；若不给出品类构成对象，检索无法聚焦到扫路车与普通载货车/环卫车的差异点",
+    "confidence": 0.55
+   },
+   {
+    "field": "configuration",
+    "value": "后装式或中置扫刷、干湿两用未定",
+    "why": "用户未说明上装形式与除尘方式，两者会显著改变上装布置与箱体形态",
+    "confidence": 0.4
+   },
+   {
+    "field": "base_platform",
+    "value": "二类载货汽车底盘改装（4×2 为主）",
+    "why": "市政清扫车主流为轻中卡二类底盘改装；未排除 6×4 大型车",
+    "confidence": 0.6
+   },
+   {
+    "field": "region 拆分",
+    "value": "只拆前脸/侧面/尾部三个区域，不把前脸细分格栅、大灯、保险杠",
+    "why": "用户未点名任何具体部件，避免过度拆分",
+    "confidence": 0.8
+   }
+  ],
+  "negative": [
+   "不补入用户未提及的部件（如爬梯、导流罩、除雪铲、洒水炮等），上述 parts 仅为品类构成性作业装置的最小集",
+   "不猜品牌、不猜具体型号或吨位",
+   "不引入任何部件/类目词表键名，未知件一律用 custom_ 原词 slug",
+   "不输出 quota / tiers / budget / page_budget 等由代码生成的字段",
+   "不以‘同系列/相似车型’作为检索理由，理由只写能提供什么设计证据",
+   "不把‘市政道路清扫’当作造型驱动工况去强行开 environment 轴（外观形态主要由上装与法规决定）"
+  ]
+ },
+ "duration_ms": 35149
+}
