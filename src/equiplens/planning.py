@@ -255,6 +255,21 @@ def negative_terms(brief: dict) -> list[str]:
     return out[:4]
 
 
+def guard_off_class(candidates: list[dict]) -> tuple[list[dict], list[dict]]:
+    """wide 抽取的离类护栏：只丢抽取器明确标 `class_match="no"` 的候选。
+
+    不能用车名做关键词匹配（代码名如 LSS320B、ZLJ5163TSL 不含类目词会被误杀，
+    2026-11-16 实测 c5 36→14）；`yes/unknown` 一律保留，避免误杀。
+    """
+    kept, dropped = [], []
+    for c in candidates:
+        if str(c.get("class_match") or "").lower() == "no":
+            dropped.append(c)
+        else:
+            kept.append(c)
+    return kept, dropped
+
+
 def build_query_plan(brief: dict, extra: list[str] | None = None, *,
                      use_negative: bool = True) -> list[dict]:
     """任务单 → 查询计划（每条带 query_id / dimension / purpose）。
@@ -379,6 +394,9 @@ def validate_extraction(payload: dict, allowed_urls: set[str], query_meta: dict,
             # 抽取阶段顺带给出的检索键（品牌/车系/码+构型），来自同一批来源文本；
             # 没给就用槽位派生（见 derive_search_key）
             "search_key": sk,
+            "class_match": (str(cand.get("class_match") or "unknown").lower()
+                            if str(cand.get("class_match") or "unknown").lower() in
+                            ("yes", "no", "unknown") else "unknown"),
             "reason": normalize_text(cand.get("reason"))[:200],
             "sources": valid,
             "source_query": query_meta["query"],

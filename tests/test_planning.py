@@ -358,6 +358,16 @@ def test_user_exclude_survives_negative_cap():
     assert "北奔" in terms, terms
 
 
+def test_offclass_guard_uses_class_match_only():
+    cands = [{"model": "A", "class_match": "no"},
+             {"model": "B", "class_match": "yes"},
+             {"model": "C"},
+             {"model": "D", "class_match": "unknown"}]
+    kept, dropped = planning.guard_off_class(cands)
+    assert [c["model"] for c in kept] == ["B", "C", "D"], kept
+    assert [c["model"] for c in dropped] == ["A"], dropped
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -379,6 +389,7 @@ if __name__ == "__main__":
     check("品牌/指定车型进查询", test_brand_and_pinned_queries)
     check("排除项进 negative", test_negative_terms_from_request)
     check("用户排除项不被截断", test_user_exclude_survives_negative_cap)
+    check("离类护栏：只丢 class_match=no", test_offclass_guard_uses_class_match_only)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

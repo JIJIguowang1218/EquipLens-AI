@@ -33,7 +33,7 @@ except Exception:  # noqa: BLE001
     pass
 
 from equiplens.planning import (auto_limits, build_query_plan, coverage_report,  # noqa: E402
-                                dedupe_stats, merge_candidates,
+                                dedupe_stats, guard_off_class, merge_candidates,
                                 pool_requirement, pool_warning, top_up_queries,
                                 validate_extraction)
 
@@ -83,10 +83,10 @@ def extract(key: str, brief: dict, query_meta: dict, results: list[dict],
             "   必须来自结果文本，不要编造；没把握就留空；\n"
             "7) 同时给结构化槽位 `slots`：brand/series/model_code/config（只写结果里出现的；\n"
             "   config 只写驱动形式 6x6/8x8/4x4/6x4/4x2 等；没有就空字符串）；\n"
-            "8) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\","
-            "\"slots\":{\"brand\":\"\",\"series\":\"\",\"model_code\":\"\",\"config\":\"\"},"
-            "\"search_key\":\"\",\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
+            "8) 每条候选加 `class_match`：yes/no/unknown —— 该候选是否属于本任务类目（依据标题判断，不要凭记忆）；\n"
+            "9) 输出 JSON：{\"candidates\":[{\"model\":\"\",\"brand\":\"\",\"slots\":{\"brand\":\"\",\"series\":\"\",\"model_code\":\"\",\"config\":\"\"},\"search_key\":\"\",\"class_match\":\"unknown\",\"reason\":\"\",\"sources\":[\"url\"]}]}。\n\n"
         )
+
     else:
         task = (
             f"请只从这些结果里抽最多 {want} 个候选车型（品牌 + 车系/型号），要求：\n"
@@ -235,6 +235,8 @@ def main(argv=None) -> int:
                     help="额外的覆盖查询（只写市场段/工况，不写品牌名单；可重复）")
     ap.add_argument("--no-negative", action="store_true",
                     help="A/B 用：查询不追加 -\"短词\"（brief 不变，其余逐字相同）")
+    ap.add_argument("--no-offclass-guard", action="store_true",
+                    help="wide 抽取时关闭离类护栏（默认开启）")
     ap.add_argument("--concurrency", type=int, default=4,
                     help="查询并发数；默认 4=生产（A 测试 3.3×），1=串行对照臂")
     args = ap.parse_args(argv)
@@ -296,6 +298,14 @@ def main(argv=None) -> int:
             uniq.append(r)
 
     merged_all = merge_candidates(extracted)
+    offclass = {"enabled": False, "dropped": 0, "unknown": 0, "samples": []}
+    if args.extract_mode == "wide" and not args.no_offclass_guard:
+        kept, dropped = guard_off_class(merged_all)
+        offclass = {"enabled": True, "dropped": len(dropped),
+                    "unknown": sum(1 for c in merged_all
+                                    if str(c.get("class_match") or "unknown").lower() == "unknown"),
+                    "samples": [c.get("model") for c in dropped[:5]]}
+        merged_all = kept
     need = limits["need"]
     candidates = merged_all[:limits["limit"]]
     warn = pool_warning(len(candidates), slots, backup)
@@ -325,6 +335,7 @@ def main(argv=None) -> int:
                  "ok": not warn, "warning": warn},
         "coverage": coverage_report(query_plan, candidates,
                                      slots=((brief.get("request") or {}).get("page_budget") or {}).get("vehicle_slots")),
+        "offclass": offclass,
         "dedupe": dedupe_stats(extracted, candidates),
         "dropped_without_valid_source": sum(int(q.get("dropped_no_source") or 0)
                                             for q in per_query),

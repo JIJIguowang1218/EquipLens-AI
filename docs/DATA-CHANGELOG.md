@@ -15,6 +15,9 @@
 - 结论：不改全局默认；紧供/品牌约束用 `wide` + 离类护栏（护栏待做）；70% 配额先不做。
 - 产物：`data-test/plans/pool/*.json`（gitignored 中间产物）、`data-test/evals/pool-supply-20261116.json`、
   `docs/pool-supply-plan-20261116.md` §9。
+- **护栏验收（同上日）**：wide 默认开 `class_match` 护栏（只丢 `no`）。v-brand 31→12、
+  c5 36→27、h3 21→22（不误杀）→ wide 的高候选含离类虚高；护栏后仍 SHORT，
+  **紧供是真实供给问题**，下一步为品牌专用查询/向用户澄清，而非继续加宽。
 
 ### 55. S2-06 image-to-image 参考库探针（2026-11-16）
 
