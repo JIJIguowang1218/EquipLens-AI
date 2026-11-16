@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T15:48:46 · 共 124 条 · 待补人工结论 82 条
+> 生成时间：2026-11-16T15:55:27 · 共 126 条 · 待补人工结论 84 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -116,6 +116,8 @@
 | other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `verify-identity-20261114` | suite | 2026-11-14 | — | — | — |
 | other | `demo-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [—](data-test/runs/demo-offline/summary.json) |
+| other | `l2-intents` | run | 2026-11-16 | — | — | — |
+| other | `l2-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [—](data-test/runs/l2-offline/summary.json) |
 | other | `m43-base-c1-desert` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=96 · gate_pass=85 · degraded=7 · $0.01425 | [—](data-test/runs/m43-base-c1-desert/summary.json) |
 | other | `m43-base-c4-forklift` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=71 · gate_pass=42 · degraded=3 · $0.01275 | [—](data-test/runs/m43-base-c4-forklift/summary.json) |
 | other | `m43-base-c5-roller` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=97 · gate_pass=78 · degraded=7 · $0.012 | [—](data-test/runs/m43-base-c5-roller/summary.json) |

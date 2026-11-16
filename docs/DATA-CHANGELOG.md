@@ -5,6 +5,24 @@
 
 ## 2026-11-16
 
+### 58. L2 用户模拟第一轮（2026-11-16）
+
+- 方法：子代理**盲写** 6 轮“真实用户”脚本（含错字/模糊反馈），主体用 `run_session.py --script`
+  回放；离线（rules）与 live（LLM router）各跑一次。
+- rules 版（离线 6 轮）：交付 3/3，但意图 3 处明显错——
+  “北奔别放”未识别、“高清/去水印”被误判成 `delivered.remove`、“出报告”只会 clarify。
+- LLM 版（5 轮，跳过首轮建单）：**4/5 可接受**——加量 `plan.quantity+fill.quota`（偏硬）、
+  排除 `plan.negative`、纠错 `delivered.replace`（带 asset_index=3）、画质 `fetch.filters.quality`；
+  “出报告/PPT”仍 clarify（ACTIONS 没有交付意图）。
+- 设计结论（重要）：
+  1. **首轮不能当 patch**：真实流程里第 1 句应生成 brief（M6），不是修改；否则会出现
+     `plan.quantity/configuration` 误判；
+  2. 资产级纠错只在**交付后**有意义（本轮在交付前，`verify.blacklist` 无资产可指）；
+  3. 缺“交付/报告”动作，需在 ACTIONS/路由里补；
+  4. live 6 轮因 DeepSeek `httpx.RemoteProtocolError` 中断 → 需要重试/退避，loop 测试默认 `--no-citation`。
+- 产物：`data-test/sessions/l2-user-script.jsonl`（盲写）、`l2-interleaved.jsonl`（回放动作）、
+  `l2-intents.jsonl`、`l2-offline.json`、`l2-intents.json`；失败的 live 目录已删除，不入账。
+
 ### 57. L1 Session 入口（原型）：SessionRunner + run_session CLI（2026-11-16）
 
 - 新模块 `src/equiplens/session_runner.py`：Session 外层驱动（引擎 step / 状态边界应用 patch /
