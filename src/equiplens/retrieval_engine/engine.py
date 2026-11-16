@@ -106,6 +106,12 @@ class RetrievalEngine:
                         if u.get("accepted_targets"):
                             tid = u["accepted_targets"][0]
                             break
+                if not tid:
+                    # 首轮 FETCH 时还没有 accepted_targets：退到第一个待抓 target，
+                    # 否则“同款再加”会在第一轮静默失效（2026-11-16 实测 applied=0）。
+                    active = state.get("active_targets") or []
+                    if active:
+                        tid = active[0]
                 if tid:
                     fq = state.setdefault("fill_quota", {})
                     fq[tid] = int(fq.get(tid, 0)) + max(1, count)

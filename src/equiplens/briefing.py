@@ -52,7 +52,8 @@ def build_prompt(raw: str, *, class_hint: str = "",
                  part_hints: list[str] | None = None,
                  use_skill: bool = True,
                  prompt_mode: str = "v2",
-                 taskspec: dict | None = None) -> str:
+                 taskspec: dict | None = None,
+                 session_context: dict | None = None) -> str:
     """LLM 的系统提示 = skill 文件；用户提示 = 原始输入 + 约束。
 
     不再向模型提供任何部件/类目词表（2026-11-14 口径：词表不得进入主体代码）。
@@ -78,6 +79,8 @@ def build_prompt(raw: str, *, class_hint: str = "",
     }
     if taskspec:
         hints["taskspec"] = taskspec
+    if session_context:
+        hints["session_context"] = session_context
     return (skill + "\n\n---\n\n## 本次输入\n\n"
             + json.dumps(hints, ensure_ascii=False, indent=1))
 
@@ -370,6 +373,7 @@ def generate_brief(raw: str, api_key: str, *, slots: int | None = None, class_hi
                    chat_fn=None, use_skill: bool = True,
                    prompt_mode: str = "v2",
                    taskspec: dict | None = None,
+                   session_context: dict | None = None,
                    use_taskspec: bool = False) -> dict:
     """真实调用：一次 LLM 解析；校验失败时用错误信息重试一次。
 
@@ -385,7 +389,8 @@ def generate_brief(raw: str, api_key: str, *, slots: int | None = None, class_hi
         slots_eff = (spec.get("quantity") or {}).get("primary")
     prompt = build_prompt(raw, class_hint=class_hint,
                           part_hints=part_hints, use_skill=use_skill,
-                          prompt_mode=prompt_mode, taskspec=spec)
+                          prompt_mode=prompt_mode, taskspec=spec,
+                          session_context=session_context)
     result = (chat_fn or chat)(prompt, api_key, model)
     last_error = ""
     for attempt in range(2):

@@ -5,6 +5,23 @@
 
 ## 2026-11-16
 
+### 62. M6 首轮建单（Session，2026-11-16）
+
+- `SessionRunner.create_from_text()`：第一句走 **S0 正式链路**（`generate_brief(use_taskspec=True)`）
+  生成 brief，**不进 router、不当 patch**；CLI 新增 `--create`，并落 `data-test/briefs/<run-id>.json`。
+- `generate_brief` 新增可选 `session_context`（M6 的“接 session 上下文”入口，偏好/黑名单可注入）。
+- live 验收：输入“沙漠牵引车 10 台 6x6 越野底盘 要实拍图” → 自动 brief（10 槽）→
+  plan **29 候选/需求 23（ok）** → 会话 2 轮（fill.quota、delivery.report）→
+  **交付 10/10、missing 0、degraded 7、applied 1**、session=DELIVERED。
+- 验收中修了 3 个真问题：
+  1. `fill.quota` 在首轮 FETCH（无 accepted/无模型）静默失效 → 退到第一个 active target；
+  2. 引擎“没落地任何 patch”时也会清 pending → 改为保留；
+  3. `delivery.report` 这类**非引擎 patch** 被一起扣住 → 边界处拆成“引擎类/会话类”分别应用。
+- 测试：`session_runner 9/9`、`retrieval_engine 51/51`。
+- 未做：S4 是否 `active`（取决于“run_session 是否算生产入口”的拍板）、报告/PPT 生成、交付后编辑落引擎。
+- 产物：`data-test/runs/m6-live{,-3}/`、`data-test/sessions/m6-live{,-3}.json`、
+  `data-test/briefs/m6-live.json`、`data-test/plans/m6-live.json`。
+
 ### 61. Session 5-case live 验收（M5 前，2026-11-16）
 
 - 隔离：5 份**新** brief（`m43e-*`）+ 5 份**新** plan（`m43e/*`）+ 全新 run/session；

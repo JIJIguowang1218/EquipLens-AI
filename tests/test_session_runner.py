@@ -140,6 +140,26 @@ def test_extract_values_fill_quota_and_views():
     assert v2["fetch.filters.views"]["views"] == ["side"], v2
 
 
+def test_create_from_text_builds_brief_without_patch():
+    import equiplens.briefing as B
+    from unittest import mock
+
+    def fake_generate(text, key, **kw):
+        assert kw.get("use_taskspec") is True, kw
+        return {"brief": TE.base_brief(parts=("bumper",), slots=1), "taskspec": {}}
+
+    with tempfile.TemporaryDirectory() as td:
+        with mock.patch.object(B, "generate_brief", fake_generate):
+            r = SessionRunner.create_from_text(
+                "沙漠牵引车 10 台", "sk-test", run_root=td, run_id="s7",
+                store_path=Path(td) / "s.json",
+                build_world=lambda brief: FakeWorld(world_for()))
+        assert r.session.patches == [] and not r.session.pending, r.session.patches
+        assert r.created_from_text == "沙漠牵引车 10 台"
+        out = r.run()
+        assert out["delivered"] == 1, out
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

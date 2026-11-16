@@ -27,7 +27,7 @@
 | 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
-| S0-05 Session 入口原型（M4.3 后） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（gitignored）；测试 `tests/test_session_runner.py`（8） |
+| S0-05 Session 入口原型（M4.3 后） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（gitignored）；测试 `tests/test_session_runner.py`（9） |
 | S0-05 Session（原型）/ M4.3 | `src/equiplens/session.py`、`session_router.py`、`retrieval_engine/engine.py::apply_patches`；A/B：`scripts/run_session_case.py`、`scripts/compare_m43_ab.py`；数据 `data-test/runs/m43-*`、`data-test/evals/m43-*.json` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
@@ -89,7 +89,7 @@
 | 测试 | 覆盖 |
 |---|---|
 | `tests/test_briefing.py` | brief API/组装/校验（7） |
-| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划/fill.quota（50） |
+| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划/fill.quota（51） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
 | `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验/离类护栏（21） |
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |

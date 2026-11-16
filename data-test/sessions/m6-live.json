@@ -1,0 +1,1103 @@
+{
+ "session_id": "m6-live",
+ "run_id": "m6-live",
+ "run_root": "data-test/runs",
+ "brief": {
+  "brief_id": "auto-20261116-173627",
+  "request": {
+   "raw": "沙漠牵引车 10 台 6x6 越野底盘 要实拍图",
+   "class": "沙漠牵引车",
+   "environment": {
+    "value": "沙漠越野",
+    "source": "taskspec"
+   },
+   "base_platform": {
+    "value": "6×6 重型越野牵引车底盘",
+    "confidence": 0.8
+   },
+   "configuration": "6x6",
+   "page_budget": {
+    "vehicle_slots": 10
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "models_pinned": [],
+   "constraints": {
+    "exclude": [],
+    "views": []
+   },
+   "brand_quota": null,
+   "foreign_ratio": null
+  },
+  "assumptions": [
+   {
+    "field": "preferences.views",
+    "value": "默认 front / hero_45 / side 三视角实拍，底盘另补 detail",
+    "why": "用户只要求“实拍图”未指定视角，按整车识别所需的最小视角集合补齐",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.class",
+    "value": "沙漠牵引车按重型 6×6 越野牵引车（牵引鞍座/牵引工况）理解",
+    "why": "用户原文“沙漠牵引车 + 6x6 越野底盘”，未说明上装形式",
+    "confidence": 0.7
+   },
+   {
+    "field": "parts.label",
+    "value": "“6x6 越野底盘”按底盘总成（车架+传动+悬架+车轮）作为单一设计对象处理，不拆分为具体零件",
+    "why": "用户未点名任何具体零件，按原话保留整体层级，避免臆造部件",
+    "confidence": 0.75
+   },
+   {
+    "field": "page_budget",
+    "value": 10,
+    "why": "规则：exact 7 + environment 3",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "整车前部（含驾驶室前脸与底盘前端）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "整车侧面（驾驶室—底盘—车轮）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_chassis6x6",
+    "label": "6x6 越野底盘",
+    "kind": "part",
+    "location": "底盘（车架、传动、悬架、车轮总成）",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "6×6 三轴布置与分动/传动路径",
+     "离地间隙与悬架形式对沙漠通过性的影响",
+     "底盘防护（防沙板、护板、管路走向）与沙尘环境适配"
+    ],
+    "why": "用户明确点名“6x6 越野底盘”，这是本次唯一硬性构型条件；实拍侧视/细节可提供轴距布置、离地高度、悬架与防护件的直接证据，用于判断沙漠工况下的底盘形态与整车比例。"
+   },
+   {
+    "part": "custom_wheel_tire",
+    "label": "越野车轮/轮胎总成",
+    "kind": "part",
+    "location": "底盘（前轴、中轴、后轴）",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "environment_protection",
+     "cmf"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "轮胎规格与胎纹对沙地附着的影响",
+     "轮距/轮拱与驾驶室的体量关系",
+     "轮毂涂装与整车 CMF 一致性"
+    ],
+    "why": "6×6 越野底盘的外观识别很大程度由三轴车轮关系决定；实拍可提供轮径、轮距与离地比例的量化观感证据，用于判断整车姿态是否符合沙漠越野牵引车的比例特征。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "沙漠牵引车 6×6",
+    "parts": [
+     "custom_chassis6x6",
+     "custom_wheel_tire"
+    ],
+    "quota": 7,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "7 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "沙漠越野（沙尘、高温、松软路面） 工程车",
+    "parts": [
+     "custom_chassis6x6",
+     "custom_wheel_tire"
+    ],
+    "quota": 3,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "3 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 34
+  },
+  "stop_rules": {},
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "广告"
+  ],
+  "strategy_ref": "default@v1",
+  "taskspec": {
+   "intent": "new_task",
+   "class": "沙漠牵引车",
+   "class_raw": "沙漠牵引车",
+   "class_aliases": [],
+   "environment": "沙漠越野",
+   "configuration": "6x6",
+   "quantity": {
+    "primary": 10,
+    "backup": null,
+    "delta": null
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "preferences": {
+    "soft_brands": [],
+    "brand_quota": null,
+    "foreign_ratio": null,
+    "views": [],
+    "quality": [
+     "实拍图"
+    ],
+    "year": null,
+    "tonnage": null,
+    "price": null
+   },
+   "models_pinned": [],
+   "models_provided": [],
+   "parts": [],
+   "constraints": {
+    "exclude": [],
+    "origin": null,
+    "powertrain": null,
+    "min_width": null
+   },
+   "scope": null,
+   "delivery": null,
+   "policy": {
+    "hard": [
+     "class",
+     "quantity",
+     "configuration"
+    ],
+    "soft": [
+     "quality"
+    ]
+   },
+   "unknowns": [
+    {
+     "field": "preferences.views",
+     "text": "仅要求实拍图，未指定拍摄视角",
+     "severity": "informational",
+     "proposal": "可默认提供 front/45/side 三视角实拍"
+    }
+   ],
+   "assumptions": [],
+   "questions": [],
+   "session_context_used": false,
+   "evidence": {
+    "class": "沙漠牵引车",
+    "environment": "沙漠牵引车 10 台 6x6 越野底盘",
+    "configuration": "6x6",
+    "quantity": "10 台",
+    "brands": "",
+    "models": "",
+    "constraints": "",
+    "scope": ""
+   }
+  },
+  "s0": {
+   "mechanism": "taskspec",
+   "version": "v0.4"
+  }
+ },
+ "created_from_text": "沙漠牵引车 10 台 6x6 越野底盘 要实拍图",
+ "router_name": "rules",
+ "session": {
+  "session_id": "m6-live",
+  "state": "DELIVERED",
+  "version": 3,
+  "brief": {
+   "brief_id": "auto-20261116-173627",
+   "request": {
+    "raw": "沙漠牵引车 10 台 6x6 越野底盘 要实拍图",
+    "class": "沙漠牵引车",
+    "environment": {
+     "value": "沙漠越野",
+     "source": "taskspec"
+    },
+    "base_platform": {
+     "value": "6×6 重型越野牵引车底盘",
+     "confidence": 0.8
+    },
+    "configuration": "6x6",
+    "page_budget": {
+     "vehicle_slots": 10
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "models_pinned": [],
+    "constraints": {
+     "exclude": [],
+     "views": []
+    },
+    "brand_quota": null,
+    "foreign_ratio": null
+   },
+   "assumptions": [
+    {
+     "field": "preferences.views",
+     "value": "默认 front / hero_45 / side 三视角实拍，底盘另补 detail",
+     "why": "用户只要求“实拍图”未指定视角，按整车识别所需的最小视角集合补齐",
+     "confidence": 0.6
+    },
+    {
+     "field": "request.class",
+     "value": "沙漠牵引车按重型 6×6 越野牵引车（牵引鞍座/牵引工况）理解",
+     "why": "用户原文“沙漠牵引车 + 6x6 越野底盘”，未说明上装形式",
+     "confidence": 0.7
+    },
+    {
+     "field": "parts.label",
+     "value": "“6x6 越野底盘”按底盘总成（车架+传动+悬架+车轮）作为单一设计对象处理，不拆分为具体零件",
+     "why": "用户未点名任何具体零件，按原话保留整体层级，避免臆造部件",
+     "confidence": 0.75
+    },
+    {
+     "field": "page_budget",
+     "value": 10,
+     "why": "规则：exact 7 + environment 3",
+     "confidence": 1.0
+    }
+   ],
+   "region_requirements": [
+    {
+     "region": "front_face",
+     "label": "整车前部（含驾驶室前脸与底盘前端）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "front",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "side",
+     "label": "整车侧面（驾驶室—底盘—车轮）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "accept": "C"
+    }
+   ],
+   "part_requirements": [
+    {
+     "part": "custom_chassis6x6",
+     "label": "6x6 越野底盘",
+     "kind": "part",
+     "location": "底盘（车架、传动、悬架、车轮总成）",
+     "part_family": "frame_profile",
+     "taxonomy_status": "new",
+     "relation_axis": "environment",
+     "design_axes": [
+      "structure",
+      "proportion",
+      "environment_protection"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "hero_45",
+      "detail"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "6×6 三轴布置与分动/传动路径",
+      "离地间隙与悬架形式对沙漠通过性的影响",
+      "底盘防护（防沙板、护板、管路走向）与沙尘环境适配"
+     ],
+     "why": "用户明确点名“6x6 越野底盘”，这是本次唯一硬性构型条件；实拍侧视/细节可提供轴距布置、离地高度、悬架与防护件的直接证据，用于判断沙漠工况下的底盘形态与整车比例。"
+    },
+    {
+     "part": "custom_wheel_tire",
+     "label": "越野车轮/轮胎总成",
+     "kind": "part",
+     "location": "底盘（前轴、中轴、后轴）",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "environment",
+     "design_axes": [
+      "proportion",
+      "environment_protection",
+      "cmf"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "side",
+      "detail"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "轮胎规格与胎纹对沙地附着的影响",
+      "轮距/轮拱与驾驶室的体量关系",
+      "轮毂涂装与整车 CMF 一致性"
+     ],
+     "why": "6×6 越野底盘的外观识别很大程度由三轴车轮关系决定；实拍可提供轮径、轮距与离地比例的量化观感证据，用于判断整车姿态是否符合沙漠越野牵引车的比例特征。"
+    }
+   ],
+   "research_units": [
+    {
+     "unit_id": "u-exact",
+     "tier": "exact",
+     "scope": "沙漠牵引车 6×6",
+     "parts": [
+      "custom_chassis6x6",
+      "custom_wheel_tire"
+     ],
+     "quota": 7,
+     "budget": {
+      "max_queries": 6,
+      "max_rounds": 2
+     },
+     "stop": "7 台占满即停"
+    },
+    {
+     "unit_id": "u-env",
+     "tier": "environment",
+     "scope": "沙漠越野（沙尘、高温、松软路面） 工程车",
+     "parts": [
+      "custom_chassis6x6",
+      "custom_wheel_tire"
+     ],
+     "quota": 3,
+     "budget": {
+      "max_queries": 4,
+      "max_rounds": 2
+     },
+     "stop": "3 台占满即停"
+    }
+   ],
+   "tiers": [
+    "exact",
+    "environment"
+   ],
+   "budget": {
+    "max_queries": 34
+   },
+   "stop_rules": {},
+   "negative": [
+    "客车",
+    "SUV",
+    "房车",
+    "多车拼图",
+    "内饰",
+    "广告"
+   ],
+   "strategy_ref": "default@v1",
+   "taskspec": {
+    "intent": "new_task",
+    "class": "沙漠牵引车",
+    "class_raw": "沙漠牵引车",
+    "class_aliases": [],
+    "environment": "沙漠越野",
+    "configuration": "6x6",
+    "quantity": {
+     "primary": 10,
+     "backup": null,
+     "delta": null
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "preferences": {
+     "soft_brands": [],
+     "brand_quota": null,
+     "foreign_ratio": null,
+     "views": [],
+     "quality": [
+      "实拍图"
+     ],
+     "year": null,
+     "tonnage": null,
+     "price": null
+    },
+    "models_pinned": [],
+    "models_provided": [],
+    "parts": [],
+    "constraints": {
+     "exclude": [],
+     "origin": null,
+     "powertrain": null,
+     "min_width": null
+    },
+    "scope": null,
+    "delivery": null,
+    "policy": {
+     "hard": [
+      "class",
+      "quantity",
+      "configuration"
+     ],
+     "soft": [
+      "quality"
+     ]
+    },
+    "unknowns": [
+     {
+      "field": "preferences.views",
+      "text": "仅要求实拍图，未指定拍摄视角",
+      "severity": "informational",
+      "proposal": "可默认提供 front/45/side 三视角实拍"
+     }
+    ],
+    "assumptions": [],
+    "questions": [],
+    "session_context_used": false,
+    "evidence": {
+     "class": "沙漠牵引车",
+     "environment": "沙漠牵引车 10 台 6x6 越野底盘",
+     "configuration": "6x6",
+     "quantity": "10 台",
+     "brands": "",
+     "models": "",
+     "constraints": "",
+     "scope": ""
+    }
+   },
+   "s0": {
+    "mechanism": "taskspec",
+    "version": "v0.4"
+   },
+   "session_patches": [
+    {
+     "patch_id": "p-d5e62570",
+     "base_version": 1,
+     "target": "fill.quota",
+     "op": "set",
+     "value": {
+      "text": "同款再加两台吧，凑 12 个。",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "count": 2
+      }
+     },
+     "confidence": 0.82,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-a46e9301",
+     "note": "用户明确要求把总量凑到 12 个，属于修改总交付台数"
+    },
+    {
+     "patch_id": "p-6099fec2",
+     "base_version": 2,
+     "target": "delivery.report",
+     "op": "set",
+     "value": {
+      "text": "出报告吧，PPT 版本给我。",
+      "asset_index": null,
+      "index_basis": "original"
+     },
+     "confidence": 0.98,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-25752bf6",
+     "note": "用户要求生成/更新交付报告，指定 PPT 版本，不改变检索任务定义或已交付内容。"
+    }
+   ]
+  },
+  "brief_versions": [
+   {
+    "v": 1,
+    "hash": "2355683640512956232"
+   },
+   {
+    "v": 2,
+    "hash": "1377759312253763630"
+   },
+   {
+    "v": 3,
+    "hash": "6698410664891667673"
+   }
+  ],
+  "patches": [
+   {
+    "patch_id": "p-d5e62570",
+    "base_version": 1,
+    "target": "fill.quota",
+    "op": "set",
+    "value": {
+     "text": "同款再加两台吧，凑 12 个。",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "count": 2
+     }
+    },
+    "confidence": 0.82,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-a46e9301",
+    "note": "用户明确要求把总量凑到 12 个，属于修改总交付台数"
+   },
+   {
+    "patch_id": "p-6099fec2",
+    "base_version": 2,
+    "target": "delivery.report",
+    "op": "set",
+    "value": {
+     "text": "出报告吧，PPT 版本给我。",
+     "asset_index": null,
+     "index_basis": "original"
+    },
+    "confidence": 0.98,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-25752bf6",
+    "note": "用户要求生成/更新交付报告，指定 PPT 版本，不改变检索任务定义或已交付内容。"
+   }
+  ],
+  "pending": [],
+  "events": [
+   {
+    "at": 1794821788.12,
+    "kind": "created"
+   },
+   {
+    "at": 1794821840.422,
+    "kind": "user_msg",
+    "msg_id": "m-a46e9301",
+    "text": "同款再加两台吧，凑 12 个。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fill.quota"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.82,
+     "clarify": false,
+     "evidence": "同款再加两台吧，凑 12 个",
+     "reason": "用户明确要求把总量凑到 12 个，属于修改总交付台数",
+     "asset_index": null,
+     "values": {
+      "plan.quantity": {
+       "primary": 12
+      }
+     }
+    }
+   },
+   {
+    "at": 1794821842.061,
+    "kind": "user_msg",
+    "msg_id": "m-25752bf6",
+    "text": "出报告吧，PPT 版本给我。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivery.report"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "enforce": "soft",
+     "confidence": 0.98,
+     "clarify": false,
+     "evidence": "出报告吧，PPT 版本给我",
+     "reason": "用户要求生成/更新交付报告，指定 PPT 版本，不改变检索任务定义或已交付内容。",
+     "asset_index": null,
+     "values": {}
+    }
+   },
+   {
+    "at": 1794821992.818,
+    "kind": "delivered",
+    "added": 44,
+    "skipped": 44
+   }
+  ],
+  "delivered": [
+   {
+    "asset_id": "80ebe76d83ab",
+    "url": "https://img9.kcimg.cn/imga/0/274/274797.jpg!1200",
+    "model": "豪沃TAZ4922 6X6油田牵引车",
+    "target": "豪沃TAZ4922 6X6油田牵引车",
+    "seq": 1,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "20ff63134e8d",
+    "url": "https://img9.kcimg.cn/imga/0/274/274796.jpg!1200",
+    "model": "豪沃TAZ4922 6X6油田牵引车",
+    "target": "豪沃TAZ4922 6X6油田牵引车",
+    "seq": 2,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "066a4a5be0fd",
+    "url": "https://q4.itc.cn/images01/20260519/e3873d88cee74acbb2586bcc8ab33dba.jpeg",
+    "model": "豪沃TAZ4922 6X6油田牵引车",
+    "target": "豪沃TAZ4922 6X6油田牵引车",
+    "seq": 3,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "e5c0bd2f7793",
+    "url": "http://www.dfc123.com/prodpic/20171127165803996.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 4,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "fc51ed511ed9",
+    "url": "http://www.qcgq168.com/prodpic/20170122200045435.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 5,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "8585e1f0168b",
+    "url": "https://t10.baidu.com/it/u=852192264,3481855241&fm=199&app=68&f=JPEG?w=480&h=480&s=F3A69B40E8136ACE3410F8010300F0C1",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 6,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "d91811044c39",
+    "url": "https://b2b-material.cdn.bcebos.com/_J7rbuh405-xlbgYQuAlwRABK6g.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 7,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "5010e584bd69",
+    "url": "https://t11.baidu.com/it/u=2108595391,789154470&fm=199&app=68&f=JPEG?w=750&h=487&s=89B26F910E4226C65510A1060300E0E1",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 8,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "580ff5ffacd1",
+    "url": "https://p6.itc.cn/q_70/images01/20230412/fe9fbfbdfe1c4eaf84c15f4694d481ea.jpeg",
+    "model": "东风EQ2082E6D",
+    "target": "东风EQ2082E6D",
+    "seq": 9,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "fc7ae4b4904a",
+    "url": "https://p8.itc.cn/q_70/images01/20211204/496e138a0b20493d9e8916d58aa8ab67.jpeg",
+    "model": "东风EQ2082E6D",
+    "target": "东风EQ2082E6D",
+    "seq": 10,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "381eb40444c2",
+    "url": "http://www.fanya158.com/d/file/p/2022/02-28/64f4fceaa6ed16be29ecafcf982982a2.jpg",
+    "model": "东风EQ2082E6D",
+    "target": "东风EQ2082E6D",
+    "seq": 11,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "871afe617bcf",
+    "url": "https://p9.itc.cn/q_70/images01/20220226/8e165d9ce2004f60afdd37f7e02e7b76.jpeg",
+    "model": "东风EQ2082E6D",
+    "target": "东风EQ2082E6D",
+    "seq": 12,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "de2a39f4d069",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20200317/069077e2972145ad85cc5907bc6f2a9f.jpeg",
+    "model": "东风EQ2082E6D",
+    "target": "东风EQ2082E6D",
+    "seq": 13,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "2e049d935f7b",
+    "url": "http://www.51dfc.com/prodpic/20150708071056949.jpg",
+    "model": "东风EQ2102G",
+    "target": "东风EQ2102G",
+    "seq": 14,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "9e8ff6dffadf",
+    "url": "https://q4.itc.cn/images01/20240525/1d819a4c31264da4815653f9b96c196a.jpeg",
+    "model": "东风EQ2102G",
+    "target": "东风EQ2102G",
+    "seq": 15,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "2c870669660b",
+    "url": "http://www.51dfc.com/prodpic/220915/62.jpg",
+    "model": "东风EQ2102G",
+    "target": "东风EQ2102G",
+    "seq": 16,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "e9ad4a6980d5",
+    "url": "https://q9.itc.cn/q_70/images01/20250213/c1ee56037c6d460a85286ae011c59441.jpeg",
+    "model": "东风EQ2102G",
+    "target": "东风EQ2102G",
+    "seq": 17,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "3b0aadc1dc61",
+    "url": "https://img0.baidu.com/it/u=1872170178,2861143808&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 18,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "e29bd1bb8dd0",
+    "url": "https://img0.baidu.com/it/u=1964970585,4101312688&fm=253&fmt=auto&app=138&f=JPEG?w=538&h=500",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 19,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "95215fa33427",
+    "url": "https://img2.baidu.com/it/u=1860581769,2779237001&fm=253&fmt=auto&app=138&f=JPEG?w=586&h=500",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 20,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "9c53dcc8fed8",
+    "url": "https://img2.baidu.com/it/u=1312963081,3761603112&fm=253&fmt=auto&app=138&f=JPEG?w=567&h=500",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 21,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "7845a224b3c0",
+    "url": "https://img1.baidu.com/it/u=3330822637,1281916720&fm=253&fmt=auto&app=138&f=JPEG?w=646&h=500",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 22,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "a537756bf880",
+    "url": "https://img2.baidu.com/it/u=2643406463,2020227275&fm=253&fmt=auto&app=138&f=JPEG?w=522&h=413",
+    "model": "东风DFS5160TSML",
+    "target": "东风DFS5160TSML",
+    "seq": 23,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "9f47bc24f08b",
+    "url": "http://www.qcgq168.com/prodpic/20170122191651567.jpg",
+    "model": "东风EQ2250AX",
+    "target": "东风EQ2250AX",
+    "seq": 24,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "2dbe8a985d19",
+    "url": "http://www.qcgq168.com/prodpic/20180412160104555.jpg",
+    "model": "东风EQ2250AX",
+    "target": "东风EQ2250AX",
+    "seq": 25,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "e39f36974f4c",
+    "url": "https://img4.kcimg.cn/imgc/0/77/77073.jpg!550",
+    "model": "东风EQ2250AX",
+    "target": "东风EQ2250AX",
+    "seq": 26,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "b9b2b992191b",
+    "url": "https://img.wjw.cn/mbr1204/mbr120413141312531072/PicNatural/IMG150106141618953566.jpg",
+    "model": "东风EQ2250AX",
+    "target": "东风EQ2250AX",
+    "seq": 27,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "65d1550ddf64",
+    "url": "http://www.dfc123.com/prodpic/220309/2.jpg",
+    "model": "东风沙豹DFV5253GP6DJ",
+    "target": "东风沙豹DFV5253GP6DJ",
+    "seq": 28,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "323b4270f2c7",
+    "url": "http://www.dfc123.com/prodpic/220309/3.jpg",
+    "model": "东风沙豹DFV5253GP6DJ",
+    "target": "东风沙豹DFV5253GP6DJ",
+    "seq": 29,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "ad661f159f23",
+    "url": "http://www.dfc123.com/prodpic/220309/4.jpg",
+    "model": "东风沙豹DFV5253GP6DJ",
+    "target": "东风沙豹DFV5253GP6DJ",
+    "seq": 30,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "aa252440a55a",
+    "url": "http://www.cn-truck.com/uploadfile/2015/0924/20150924084331316.jpeg",
+    "model": "HOWO 6X6 油田专用牵引车（泰安五岳 TAZ4922）",
+    "target": "HOWO 6X6 油田专用牵引车（泰安五岳 TAZ4922）",
+    "seq": 31,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "8a5e2a66b445",
+    "url": "http://www.erachinatruck.com/upload/images/201603/145818255675.jpg",
+    "model": "HOWO 6X6 油田专用牵引车（泰安五岳 TAZ4922）",
+    "target": "HOWO 6X6 油田专用牵引车（泰安五岳 TAZ4922）",
+    "seq": 32,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "5ed785eb37ea",
+    "url": "https://img2.baidu.com/it/u=2191847769,484489239&fm=253&fmt=auto&app=138&f=JPEG?w=696&h=500",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 33,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "d7807ab7f4de",
+    "url": "https://img1.baidu.com/it/u=2257458983,1319958877&fm=253&fmt=auto&app=138&f=JPEG?w=934&h=500",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 34,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "c5522b794097",
+    "url": "https://img0.baidu.com/it/u=2710234490,181770898&fm=253&fmt=auto&app=138&f=JPEG?w=607&h=368",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 35,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "311c49f7326a",
+    "url": "https://img1.baidu.com/it/u=155589696,1953030387&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 36,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "d8b91c5449c7",
+    "url": "https://img1.baidu.com/it/u=3382224899,3894329179&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 37,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "f132fc04e239",
+    "url": "https://img2.baidu.com/it/u=2940686657,2026393379&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Zetros 4051 AS 6×6 牵引车",
+    "target": "Zetros 4051 AS 6×6 牵引车",
+    "seq": 38,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "07ae5d2f71c2",
+    "url": "https://img0.baidu.com/it/u=4129333021,501555237&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 39,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "9905cede1387",
+    "url": "https://img1.baidu.com/it/u=2715093241,3113645198&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 40,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "0024765de028",
+    "url": "https://img0.baidu.com/it/u=1759698952,3912702578&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 41,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "891820a0f93b",
+    "url": "https://img1.baidu.com/it/u=2228706086,715500104&fm=253&fmt=auto&app=138&f=JPEG?w=783&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 42,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "29f11e530cc1",
+    "url": "https://img1.baidu.com/it/u=2872044970,668266402&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 43,
+    "status": "active",
+    "round": 3
+   },
+   {
+    "asset_id": "7807ff1ab2ae",
+    "url": "https://img1.baidu.com/it/u=582885121,4066395572&fm=253&fmt=auto&app=138&f=JPEG?w=649&h=500",
+    "model": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "target": "Arocs 全驱牵引车（6x6/8x8 重型越野牵引）",
+    "seq": 44,
+    "status": "active",
+    "round": 3
+   }
+  ],
+  "blacklist": [],
+  "preferences": {
+   "delivery": {
+    "format": "both",
+    "requested": true
+   }
+  },
+  "next_seq": 44,
+  "rounds": 2,
+  "max_rounds": 5,
+  "last_checkpoint": "WRITEBACK"
+ },
+ "steps": 24,
+ "applied": 0,
+ "updated_at": "2026-11-16T17:39:52"
+}

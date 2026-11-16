@@ -377,8 +377,9 @@ class Session:
             self.apply_pending()
         return self.status()
 
-    def apply_pending(self) -> None:
-        for p in self.pending:
+    def apply_pending(self, subset=None) -> None:
+        items = list(self.pending if subset is None else subset)
+        for p in items:
             self.patches.append(p.as_dict())
             self.brief.setdefault("session_patches", []).append(p.as_dict())
             idx = (p.value or {}).get("asset_index") if isinstance(p.value, dict) else None
@@ -406,7 +407,11 @@ class Session:
                 if p.target == "verify.blacklist":
                     self.blacklist.append({"patch_id": p.patch_id, "value": p.value,
                                            "asset": (hit or {}).get("asset_id") or (hit or {}).get("sha1")})
-        self.pending = []
+        if subset is None:
+            self.pending = []
+        else:
+            keep = [p for p in self.pending if p not in items]
+            self.pending = keep
         self._bump()
         self.state = SessionState.PLANNING
 

@@ -20,6 +20,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -89,6 +90,8 @@ def main(argv=None) -> int:
     ap.add_argument("--max-steps", type=int, default=240)
     ap.add_argument("--download-workers", type=int, default=4)
     ap.add_argument("--no-citation", action="store_true")
+    ap.add_argument("--create", action="store_true",
+                    help="首轮建单：用第一条 --message 走 S0 生成 brief（需 key）")
     ap.add_argument("--router", choices=["rules", "llm"], default="rules",
                     help="rules=规则版（默认）；llm=LLM 提议+守卫")
     ap.add_argument("--script", default="", help="JSONL 动作脚本：message/confirm/run/run_to_end")
@@ -96,15 +99,36 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
 
     router = build_router(args.router)
+    if not args.run_id:
+        args.run_id = f"sess-{time.strftime('%Y%m%d-%H%M%S')}"
     session_path = Path(args.session)
+    created = False
     if session_path.exists():
         brief_doc = json.loads(Path(args.brief).read_text(encoding="utf-8")) if args.brief else \
             json.loads(session_path.read_text(encoding="utf-8")).get("brief") or {}
         world = build_world(args, brief_doc)
         runner = SessionRunner.load(session_path, world, router=router)
+    elif args.create:
+        if not args.message:
+            ap.error("--create 需要第一条 --message 作为建单输入")
+        runner = SessionRunner.create_from_text(
+            args.message[0], load_key(), run_root=args.run_root,
+            run_id=args.run_id or None, store_path=session_path,
+            router=router,
+            build_world=lambda brief: build_world(args, brief))
+        created = True
+        brief_out = Path("data-test/briefs") / f"{runner.run_id}.json"
+        brief_out.parent.mkdir(parents=True, exist_ok=True)
+        brief_out.write_text(json.dumps(runner.brief_dict, ensure_ascii=False, indent=1),
+                             encoding="utf-8")
+        out = {"run_id": runner.run_id, "session": runner.session_id,
+               "brief_path": str(brief_out), "turns": [
+            {"msg": args.message[0], "created": True,
+             "brief_id": (runner.brief_dict or {}).get("brief_id")}]}
+        args.message = args.message[1:]
     else:
         if not args.brief:
-            ap.error("新建会话需要 --brief")
+            ap.error("新建会话需要 --brief 或 --create")
         brief_doc = json.loads(Path(args.brief).read_text(encoding="utf-8"))
         world = build_world(args, brief_doc)
         runner = SessionRunner(brief_doc, world, run_root=args.run_root,
@@ -113,7 +137,8 @@ def main(argv=None) -> int:
                                router_name=args.router)
 
     run_id = runner.run_id if not args.run_id else args.run_id
-    out = {"run_id": run_id, "session": runner.session_id, "turns": []}
+    if not created:
+        out = {"run_id": run_id, "session": runner.session_id, "turns": []}
     for msg in args.message:
         res = runner.send(msg)
         out["turns"].append({"msg": msg, "clarify": bool(res.get("clarify")),
@@ -163,8 +188,11 @@ def main(argv=None) -> int:
         print(f"session: {runner.session_id}  engine: {runner.state.get('state')}  "
               f"steps: {runner.steps}  applied: {runner.applied}")
         for t in out["turns"]:
-            line = f"  msg: {t['msg']} -> {t['targets']}"
-            if t["clarify"]:
+            if t.get("created"):
+                print(f"  created brief: {t.get('brief_id')}")
+                continue
+            line = f"  msg: {t['msg']} -> {t.get('targets', [])}"
+            if t.get("clarify"):
                 line += f"  [clarify] {t['question']}"
             print(line)
         if "summary" in out:

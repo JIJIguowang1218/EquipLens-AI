@@ -49,6 +49,7 @@ class SessionRunner:
             "run_id": self.run_id,
             "run_root": self.run_root,
             "brief": self.brief_dict,
+            "created_from_text": getattr(self, "created_from_text", ""),
             "router_name": self.router_name,
             "session": self.session.to_dict(),
             "steps": self.steps,
@@ -70,8 +71,30 @@ class SessionRunner:
                      router_name=payload.get("router_name") or "rules")
         runner.session = Session.from_dict(payload.get("session") or {})
         runner.session.router = router
+        runner.created_from_text = payload.get("created_from_text") or ""
         runner.steps = int(payload.get("steps") or 0)
         runner.applied = int(payload.get("applied") or 0)
+        return runner
+
+    @classmethod
+    def create_from_text(cls, text: str, api_key: str, *, run_root: str | Path = "data-test/runs",
+                         run_id: str | None = None, session_id: str | None = None,
+                         store_path: str | Path | None = None, router=None,
+                         build_world=None, chat_fn=None,
+                         session_context: dict | None = None,
+                         brief_kwargs: dict | None = None) -> "SessionRunner":
+        """M6 首轮建单：第一句走 S0 正式链路生成 brief，**不经过 router/patch**。"""
+        from .briefing import generate_brief
+        out = generate_brief(text, api_key, use_taskspec=True,
+                             session_context=session_context, chat_fn=chat_fn,
+                             **(brief_kwargs or {}))
+        brief = out["brief"]
+        world = build_world(brief) if build_world else None
+        runner = cls(brief, world, run_root=run_root, run_id=run_id,
+                     session_id=session_id, store_path=store_path, router=router,
+                     router_name="llm" if router else "rules")
+        runner.created_from_text = text
+        runner.save()
         return runner
 
     # ---------------- 交互 ----------------
@@ -101,10 +124,19 @@ class SessionRunner:
         """在 FETCH 边界把 pending patch 交给引擎（M4.3 语义）。"""
         if self.state.get("state") != "FETCH" or not self.session.pending:
             return None
-        patches = [p.as_dict() for p in self.session.pending]
-        out = self.engine.apply_patches(self.state, patches)
-        self.session.apply_pending()
-        self.applied += len(out.get("applied") or [])
+        ENGINE_TARGETS = {"fetch.filters.views", "fetch.parts", "fetch.filters.quality",
+                          "plan.negative", "plan.add_targets", "fill.quota"}
+        engine_p = [p for p in self.session.pending if p.target in ENGINE_TARGETS]
+        session_p = [p for p in self.session.pending if p.target not in ENGINE_TARGETS]
+        out = {"applied": [], "added_targets": [], "negative": []}
+        if engine_p:
+            out = self.engine.apply_patches(self.state, [p.as_dict() for p in engine_p])
+            # 只有真落地了才清引擎类 pending：首轮空 FETCH（无 target）不能吞 patch
+            if out.get("applied"):
+                self.session.apply_pending(engine_p)
+                self.applied += len(out.get("applied") or [])
+        if session_p:
+            self.session.apply_pending(session_p)
         return out
 
     def step(self) -> dict:
