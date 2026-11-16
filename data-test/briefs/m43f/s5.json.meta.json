@@ -1,0 +1,290 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "矿用宽体自卸车",
+  "class_raw": "矿用宽体自卸车",
+  "class_aliases": [],
+  "environment": "矿山",
+  "configuration": null,
+  "quantity": {
+   "primary": 8,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": "60吨",
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "configuration",
+    "text": "未指定驱动形式",
+    "severity": "defaultable",
+    "proposal": "按 60 吨矿用宽体自卸车常见驱动形式推荐"
+   },
+   {
+    "field": "brands_include",
+    "text": "未指定品牌",
+    "severity": "defaultable",
+    "proposal": "按主流矿用宽体自卸车品牌推荐"
+   },
+   {
+    "field": "constraints.origin",
+    "text": "未说明国产/进口",
+    "severity": "defaultable",
+    "proposal": "默认国产"
+   }
+  ],
+  "assumptions": [
+   "“载重 60 吨”按额定载重理解"
+  ],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "矿用宽体自卸车",
+   "environment": "矿用",
+   "configuration": "",
+   "quantity": "8 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T20:06:02",
+ "raw_input": "矿用宽体自卸车 8 台 载重 60 吨",
+ "brief_path": "data-test\\briefs\\m43f\\s5.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2827,
+  "completion_tokens": 1927,
+  "total_tokens": 4754,
+  "prompt_tokens_details": {
+   "cached_tokens": 2688
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 638
+  },
+  "prompt_cache_hit_tokens": 2688,
+  "prompt_cache_miss_tokens": 139
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "矿用宽体自卸车",
+   "environment": "矿山（露天矿剥离/运煤等重载循环工况）",
+   "base_platform": "宽体矿用自卸车底盘（宽体车架 + 中置/偏置驾驶室 + 后翻自卸货箱）",
+   "configuration": "6×4 宽体自卸（未指定，按 60 吨级主流构型假设）",
+   "design_questions": [
+    "60 吨级矿用宽体自卸车的整车体量与货箱-驾驶室比例关系是什么样（宽体车的“宽、矮、长”姿态如何体现）？",
+    "货箱（容积/板厚/加强筋/卸料角）与车架、驾驶室在重载矿山工况下的形态与结构处理有何典型做法？",
+    "矿山工况下整车离地、防护与关键区域（前脸、侧面、尾部卸料区）的环境适应性设计如何表现？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸（驾驶室前部造型区域）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面（整车姿态：驾驶室—车架—货箱的横向关系）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "后部（货箱尾板与卸料区）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "environment_protection",
+     "manufacturing"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "dump_body",
+    "label": "货箱（自卸车厢）",
+    "kind": "part",
+    "location": "上装/后部",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "货箱容积/截面形状与 60 吨额定载重的匹配关系",
+     "板厚、加强筋与立柱布置反映矿山重载冲击下的结构处理",
+     "尾板与卸料角、举升点布置影响卸料与整车比例"
+    ],
+    "why": "宽体自卸车的品类定义核心就是“货箱 + 宽体底盘”，60 吨级的载重直接体现在货箱尺度、板厚与加强筋上；这是判断该品类造型与结构最直接的可视证据。"
+   },
+   {
+    "part": "cab",
+    "label": "驾驶室",
+    "kind": "part",
+    "location": "前部/中置偏左布置",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "known",
+    "relation_axis": "platform",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "function_ergonomics"
+    ],
+    "views": [
+     "front",
+     "hero_45",
+     "side",
+     "interior"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "驾驶室体量与货箱、轮胎的尺度对比决定整车姿态",
+     "前脸造型语言与灯具/格栅布局反映平台家族化",
+     "登车踏步、视野与矿山作业人机关系"
+    ],
+    "why": "驾驶室是整车比例与造型语言的承载面，也是与货箱形成“头-箱”关系的关键；能提供体量对比与家族化前脸的设计证据。"
+   },
+   {
+    "part": "chassis_frame",
+    "label": "车架/底盘（含悬架与轮胎布置）",
+    "kind": "part",
+    "location": "底盘",
+    "part_family": "frame_profile",
+    "taxonomy_status": "known",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "宽体车架的宽度与截面决定整车宽高比与离地姿态",
+     "悬架与轮胎规格反映 60 吨级承载与矿山路面适应",
+     "底盘离地与防护处理体现矿山环境适应性"
+    ],
+    "why": "宽体自卸车的“宽体”特征主要落在车架与轮距上，是判断姿态比例与承载等级的结构证据；对造型语言影响较弱，故为条件相关。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "configuration",
+    "value": "6×4 宽体自卸（主流构型）",
+    "why": "用户未指定驱动形式，60 吨级矿用宽体自卸车以 6×4 为主流",
+    "confidence": 0.6
+   },
+   {
+    "field": "preferences.tonnage",
+    "value": "额定载重 60 吨（非总重）",
+    "why": "“载重 60 吨”按行业惯例理解为额定载重",
+    "confidence": 0.75
+   },
+   {
+    "field": "constraints.origin",
+    "value": "国产为主",
+    "why": "用户未说明国产/进口，矿用宽体自卸车市场以国产为主",
+    "confidence": 0.7
+   },
+   {
+    "field": "parts",
+    "value": "货箱、驾驶室、车架/底盘为按品类定义推断的设计对象",
+    "why": "用户未点名任何部件，仅给出品类+载重+台数；为保证任务可检索，仅纳入由“矿用宽体自卸车”品类定义直接蕴含、且与 60 吨载重强相关的对象，未补入防沙板、爬梯等未提及附件",
+    "confidence": 0.55
+   },
+   {
+    "field": "environment",
+    "value": "露天矿山重载循环运输（剥离/运煤）",
+    "why": "由 class 与 environment 字段推得，未细化矿种与坡度",
+    "confidence": 0.65
+   }
+  ],
+  "negative": [
+   "不纳入公路自卸车、公路重卡及非矿用宽体车",
+   "不纳入用户未提及的加装件与附件（防沙板、爬梯、涉水喉、导流罩等）",
+   "不纳入随车吊、侧帘、冷藏等非自卸上装",
+   "不以“同品牌/同系列”作为相似理由",
+   "不将“载重 60 吨”理解为整车总重"
+  ]
+ },
+ "duration_ms": 37993
+}

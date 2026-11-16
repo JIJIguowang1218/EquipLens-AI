@@ -5,6 +5,33 @@
 
 ## 2026-11-16
 
+### 65. 10-case 交付回归（含 5 个新类目，2026-11-16）
+
+- 样本：5 个既有类目（沙漠/清障/扫路/叉车/压路机）+ **5 个新类目**（洒水车/汽车吊/搅拌车/
+  高空作业车/矿用宽体自卸车）；全部为**新 brief + 新 plan + 新 run**，不复用历史。
+- 结果：**交付 80/80、missing 0**；备选 38/40（仅 h2e 2/4，因 plan 池 8<16）；
+  degraded 2–9/台；单 case 221–302s；pool_ok 9/10（h2e 池不足）。
+- 说明：新类目（s1–s5）均满交付，说明交付链路不依赖已知类目；但 degraded 仍高，
+  与身份证据天花板一致。
+- 产物：`data-test/runs/del10-*`、`data-test/evals/del10-*.json`、
+  `data-test/evals/del10-summary-20261116.json`、`scripts/eval_del10.py`。
+
+### 64. Router 100 条盲测 holdout（2026-11-16）
+
+- 数据：子代理**盲写** 100 条中文用户话术（不读 src；含 7 处错字、7 条双意图、5 条空目标 clarify），
+  `data-test/evals/router-holdout100-20261116.jsonl`。
+- LLM router（deepseek-flash + 守卫）结果：**exact 83/100（83%）**、any-overlap 80%、
+  hard 判定 62/100、0 调用错误。
+- 17 条失败**逐条复核**：约 **11 条是标注口径分歧**（“不要水印/不要压缩”被标成 `plan.negative`，
+  我们判 `fetch.filters.quality` 更合理；“每款 6 张/凑 10 张”标 `plan.quantity`，我们按增量
+  `fill.quota`；破坏性明确目标标 hard，我们按 BC-S05-003 判 soft）；**约 6 条是真错**：
+  第 37 条（“从4张调到6张”应 quantity）、第 46 条（“第4张换高清”漏掉 replace）、
+  第 62 条（底盘/悬挂部件请求漏 parts）、第 67 条（替换+拉黑只出了一半）、
+  第 3/18 条（多意图漏一个）。
+- 结论：**raw 83% 不能直接当线上准确率**；按现有产品口径复核后约 **94%**，但需要先固化
+  “标注口径”（质量类=quality、增量=fill.quota、明确目标=soft），再把 holdout 重标一次。
+- 未满足 BL-006：这是**合成盲写**，不是真实用户话术；真实 100+ 仍需收集。
+
 ### 63. S4 状态机落正式入口（后端，2026-11-16）
 
 - 拍板：`run_session.py` 作为**后端 Loop 入口**，S4 从 `planned` 改 `active`；

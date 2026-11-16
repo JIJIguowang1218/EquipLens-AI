@@ -1,0 +1,269 @@
+{
+ "brief_id": "m43f-s4",
+ "request": {
+  "raw": "高空作业车 6 台 自行式",
+  "class": "高空作业车",
+  "environment": null,
+  "base_platform": {
+   "value": "自行式高空作业车底盘（轮式或履带，待确认）",
+   "confidence": 0.8
+  },
+  "configuration": "自行式（自走底盘，非驱动形式表述）",
+  "page_budget": {
+   "vehicle_slots": 6
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  },
+  "brand_quota": null,
+  "foreign_ratio": null
+ },
+ "assumptions": [
+  {
+   "field": "quantity",
+   "value": "6 台",
+   "why": "用户原话给定台数，属硬约束，用于样本配比",
+   "confidence": 1.0
+  },
+  {
+   "field": "configuration",
+   "value": "自行式",
+   "why": "用户原词“自行式”指自走底盘能力，不是驱动形式（4×2/4×4 等）；驱动形式与转向形式仍需确认",
+   "confidence": 0.6
+  },
+  {
+   "field": "base_platform",
+   "value": "轮式自走底盘（可能含履带变体）",
+   "why": "用户未指定底盘形式，按自行式高空作业车主流基型推断，待确认",
+   "confidence": 0.4
+  },
+  {
+   "field": "parts",
+   "value": "臂架、工作斗",
+   "why": "用户未点名任何部件，但为满足可检索的设计对象，仅按品类定义性功能件（上装工作装置）补入，未补格栅/大灯/保险杠等未提及件",
+   "confidence": 0.5
+  },
+  {
+   "field": "environment",
+   "value": "",
+   "why": "输入未给工况，默认不启用环境轴，形态按平台继承/同品类比较",
+   "confidence": 0.7
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "前脸（驾驶室/机罩正面）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "侧面整机轮廓（底盘 + 臂架收起姿态）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_boom",
+   "label": "臂架（工作臂）",
+   "kind": "function",
+   "location": "上装/车体上部，转台至臂端",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "臂架截面形式（箱型/桁架）与伸缩节分缝方式决定上装结构语言与视觉轻重",
+    "收起姿态与折叠方式决定整机侧面剪影、重心视觉与高度比例",
+    "臂体涂装分色与警示标识影响整机色彩节奏与安全辨识"
+   ],
+   "why": "臂架是自行式高空作业车品类的定义性功能件，决定整机轮廓、比例与结构表达，是判断上装造型语言与制造工艺约束的核心证据，且可跨台数比较构型差异。"
+  },
+  {
+   "part": "custom_work_platform",
+   "label": "工作斗/作业平台",
+   "kind": "function",
+   "location": "臂架末端",
+   "part_family": "function_attachment",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "function_ergonomics",
+    "structure",
+    "cmf"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "detail",
+    "hero_45"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "平台尺寸、栏杆分档与进出口形式体现人机与安全法规要求",
+    "栏杆管件/板件连接节点与折弯工艺反映制造与装配水平",
+    "平台与臂端的连接接口与配色关系影响上装整体收口"
+   ],
+   "why": "作业平台是上装末端可见度最高的功能界面，能提供人机尺度、栏杆构造与安全件细节证据，用于校核上装造型收口与合规细节；仅在平台可见时纳入。"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "高空作业车 自行式（自走底盘，非驱动形式表述）",
+   "parts": [
+    "custom_boom",
+    "custom_work_platform"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "高空作业车 工程车",
+   "parts": [
+    "custom_boom",
+    "custom_work_platform"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 22
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "高空作业车",
+  "class_raw": "高空作业车",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "configuration",
+    "text": "自行式",
+    "severity": "defaultable",
+    "proposal": "“自行式”不是驱动形式，如需要请补充驱动形式"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "高空作业车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

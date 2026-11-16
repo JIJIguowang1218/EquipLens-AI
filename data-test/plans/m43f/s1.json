@@ -1,0 +1,1071 @@
+{
+ "brief_id": "m43f-s1",
+ "created_at": "2026-11-16T20:06:43",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "市政环卫 罐式上装 + 取力器 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "市政环卫 工程车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 104,
+ "candidates": [
+  {
+   "model": "解放J6L 15方绿化洒水车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6L",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "解放J6L 15方洒水车",
+   "class_match": "unknown",
+   "reason": "结果明确为解放J6L绿化洒水车、容积15方，属于罐式洒水车；结果给出底盘型号与上装信息，适合市政环卫洒水作业候选。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/16649683#pvareaid=28086821202",
+    "http://chejiahao.m.autohome.com.cn/pingan/chejiahao/detailinfo/16649683"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放J6L15方绿化洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放J6L 15方绿化洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "福田瑞沃15方洒水车",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "瑞沃",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田瑞沃15方洒水车",
+   "class_match": "unknown",
+   "reason": "结果标题即福田瑞沃15方洒水车，并列出罐体容积15立方、前冲后洒及平台水炮等洒水车上装功能，符合罐式洒水车方向。",
+   "sources": [
+    "http://www.clwqcb.com/Prodview/index/id/653",
+    "http://clwqcb.com/wap/Prodview/index/id/653"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福田瑞沃15方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田瑞沃15方洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东风多利卡D9新款洒水车 15方",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风多利卡D9新款洒水车 15方",
+   "class_match": "unknown",
+   "reason": "结果标题为东风多利卡D9新款洒水车15方市政环卫园林绿化喷洒车，并描述前冲、后洒、侧喷、后工作平台及水炮，符合市政环卫罐式洒水车。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzI4OTUwMTM4MA==&mid=2247619804&idx=8&sn=8e9b6d867ecb67eb044d8cad94794fc9"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风多利卡D9新款洒水车15方",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风多利卡D9新款洒水车 15方"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃TX15方洒水车",
+   "brand": "豪沃",
+   "slots": {
+    "brand": "豪沃",
+    "series": "TX",
+    "model_code": "ZZ1187K501GF1",
+    "config": ""
+   },
+   "search_key": "豪沃TX 15方洒水车 ZZ1187K501GF1 原厂法兰式取力器",
+   "class_match": "unknown",
+   "reason": "结果标题为豪沃TX15方洒水车，配置中明确原厂法兰式取力器，且为洒水车车型，适合作为市政环卫洒水车候选。",
+   "sources": [
+    "https://news.lmjx.net/2025/202507/2025072108523805.shtml"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "TX15",
+   "identity": "generic/豪沃TX15方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃TX15方洒水车",
+    "豪沃TX 15方洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风天龙后双桥18吨洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天龙",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风天龙后双桥18吨洒水车",
+   "class_match": "unknown",
+   "reason": "结果明确为东风天龙后双桥18吨洒水车，并说明采用东风天龙底盘加装水罐、取力器、洒水泵、管道系统，构型匹配。",
+   "sources": [
+    "http://www.clwsac.com/html/sashuiche/3169.html"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风天龙后双桥洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风天龙后双桥18吨洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽斯太尔后双桥洒水车（18-22方）",
+   "brand": "重汽斯太尔",
+   "slots": {
+    "brand": "重汽斯太尔",
+    "series": "斯太尔后双桥",
+    "model_code": "",
+    "config": "6x4"
+   },
+   "search_key": "重汽斯太尔后双桥洒水车（18-22方）",
+   "class_match": "unknown",
+   "reason": "结果标题为重汽斯太尔后双桥洒水车18-22方，底盘配置含取力器，上装为洒水罐体并具备喷洒、喷雾降尘等功能，符合市政环卫洒水车方向。",
+   "sources": [
+    "http://www.hbdpqc.com/index-show_70_118.html",
+    "http://www.clw5087.com/sell/itemid-425245.shtml"
+   ],
+   "source_query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/重汽斯太尔后双桥洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽斯太尔后双桥洒水车（18-22方）",
+    "斯太尔后双桥洒水车（18-22方）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政环卫 洒水车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东风多利卡D9洒水车（12~15方）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "EQ1165LJ9CDE",
+    "config": ""
+   },
+   "search_key": "东风多利卡D9洒水车 取力器 罐式",
+   "class_match": "unknown",
+   "reason": "结果中明确为东风多利卡D9底盘洒水车，轴距3950/4500mm对应12/15方罐体，底盘配置写明“带取力器”，上装为罐体+水泵，符合罐式上装+取力器驱泵的市政环卫洒水车构型。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/17184485",
+    "https://chejiahao.autohome.com.cn/info/25559201?reply=reply#pvareaid=2808221#1#1"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风多利卡D9洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风多利卡D9洒水车（12~15方）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东风天锦12吨洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风天锦洒水车 12方 取力器",
+   "class_match": "unknown",
+   "reason": "结果为国六东风天锦3950轴距洒水车，实际容积12立方，上装配置明确“取力器：底盘原厂自带”，属罐式上装+取力器驱泵车型。",
+   "sources": [
+    "http://www.clwztw.com/show-12-1041-340.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风天锦洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风天锦12吨洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风福瑞卡12方洒水车/喷雾车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "福瑞卡",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风福瑞卡洒水车 取力器 12方",
+   "class_match": "unknown",
+   "reason": "结果标题为国六东风福瑞卡12方喷雾车，正文为“东风新款12方洒水车配置”，福瑞卡3950轴距底盘，明确“原厂取力器”，罐式上装配洒水泵，符合任务构型。",
+   "sources": [
+    "http://hbcltm.com/wap/showpic/677"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风福瑞卡12方洒水车喷雾车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风福瑞卡12方洒水车/喷雾车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风御虎12吨洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "御虎",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风御虎洒水车 原厂取力器",
+   "class_match": "unknown",
+   "reason": "结果写明采用东风御虎底盘、3950mm轴距、原厂取力器，并含上装配置段落，属罐式洒水车+取力器车型。",
+   "sources": [
+    "http://hkcar.net/show-132-1219-1.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风御虎洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风御虎12吨洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙L5000 16方洒水车",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "德龙L5000",
+    "model_code": "CLH5183GPSSX6",
+    "config": ""
+   },
+   "search_key": "陕汽德龙L5000洒水车 法士特8档 取力器",
+   "class_match": "unknown",
+   "reason": "结果含整车型号CLH5183GPSSX6、底盘SX1189LA1F1C，变速箱“法士特8档（带取力器）”，上装为16.3方罐体，符合罐式上装+取力器构型。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzYzMzM2ODkxMQ==&mid=2247484668&idx=1&sn=ffcbcfa718c5efeeb86395d528bab1ae"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "L5000",
+   "identity": "generic/陕汽德龙L500016方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "陕汽德龙L5000 16方洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "轩德X9 12方洒水车",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "轩德X9",
+    "model_code": "CLW5160GSSSDP",
+    "config": ""
+   },
+   "search_key": "轩德X9洒水车 12方",
+   "class_match": "unknown",
+   "reason": "结果为“轩德X9 12方上装配置洒水车”，整车型号CLW5160GSSSDP、底盘SX1160GP6411，用于道路冲洗洒水抑尘，属罐式上装洒水车。",
+   "sources": [
+    "https://www.chengliz.com/product/sashuiyichenlei/34578.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/轩德X912方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "轩德X9 12方洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放J6L绿化洒水车（15方）",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "J6L",
+    "model_code": "CA1180P62K1L2A1E6Z",
+    "config": ""
+   },
+   "search_key": "解放J6L洒水车 15方",
+   "class_match": "unknown",
+   "reason": "结果为解放J6L绿化洒水车，容积15方，底盘型号CA1180P62K1L2A1E6Z、4500mm轴距、陕齿8JS85E变速器，属市政绿化洒水罐式上装车型。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/16649683#pvareaid=28086821202"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放J6L绿化洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放J6L绿化洒水车（15方）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "洒水车 罐式上装 + 取力器 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放J6 12吨环卫洒水车",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "J6",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "解放J6 12吨 环卫洒水车",
+   "class_match": "unknown",
+   "reason": "结果明确推荐解放J6 12吨环卫洒水车，属于市政环卫罐式洒水车，底盘与上装描述与任务单的洒水车场景相符；驱动形式未在结果中明示，故 config 留空。",
+   "sources": [
+    "http://www.chengli520.com/chenglixinwen/7982.html"
+   ],
+   "source_query": "市政环卫 罐式上装 + 取力器 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放J6环卫洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放J6 12吨环卫洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政环卫 罐式上装 + 取力器 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "一汽解放12方多功能抑尘车",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "一汽解放 12方 抑尘车 取力器",
+   "class_match": "unknown",
+   "reason": "结果详述国六一汽解放12方多功能抑尘车，上装含洒水泵、取力器、前冲、后洒、水炮等，属于市政环卫罐式洒水/抑尘构型，与任务单配置高度接近；驱动形式未在结果中明示，故 config 留空。",
+   "sources": [
+    "http://www.duohuanbao.com/archives/529171.html"
+   ],
+   "source_query": "市政环卫 罐式上装 + 取力器 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/一汽解放12方多功能抑尘车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "一汽解放12方多功能抑尘车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政环卫 罐式上装 + 取力器 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃NX/TX 20方洒水车（20吨）",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽",
+    "series": "豪沃NX/TX",
+    "model_code": "",
+    "config": "6x4"
+   },
+   "search_key": "重汽豪沃20方洒水车 6×4 后双桥 国六",
+   "class_match": "unknown",
+   "reason": "结果为重汽HOWO 20方大型环卫洒水车，后双桥6×4驱动，常见豪沃NX、TX系列，适配市政大规模洒水作业，符合罐式上装环卫构型。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/24514554?isfrom=m"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "TX20",
+   "identity": "generic/豪沃NXTX20方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃NX/TX 20方洒水车（20吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福瑞卡F9 12方洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "福瑞卡F9",
+    "model_code": "EQ1165S8EDF",
+    "config": ""
+   },
+   "search_key": "东风福瑞卡F9 云内170马力 12方洒水车",
+   "class_match": "unknown",
+   "reason": "结果为东风福瑞卡F9底盘（EQ1165S8EDF）12方洒水车，两轴中卡底盘，云内170马力，属市政/绿化洒水常规构型。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/20810513#pvareaid=28086820716"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福瑞卡F912方洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福瑞卡F9 12方洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "华神T1洒水车（CLW5120GPSABS绿化喷洒车）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "华神T1",
+    "model_code": "CLW5120GPSABS",
+    "config": ""
+   },
+   "search_key": "东风华神T1 洒水车 CLW5120GPSABS 罐体9.2方",
+   "class_match": "unknown",
+   "reason": "结果为东风华神T1底盘（EQ1120GL6DJ）的程力威牌CLW5120GPSABS型绿化喷洒车，变速箱带取力器，罐体容积9.2方，前冲/后洒/侧喷+洒水泵，与任务单构型一致。",
+   "sources": [
+    "http://www.ssctp.com/gsxw/7137.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLW5120GPSABS",
+   "identity": "generic/华神T1洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "华神T1洒水车（CLW5120GPSABS绿化喷洒车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "德龙L5000 小三轴20方洒水车（HLW5251GPSSX6）",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "德龙L5000",
+    "model_code": "HLW5251GPSSX6",
+    "config": ""
+   },
+   "search_key": "陕汽德龙L5000 小三轴20方洒水车",
+   "class_match": "unknown",
+   "reason": "结果为陕汽小三轴绿化喷洒车，德龙L5000驾驶室、潍柴270马力、罐体20方，可用于市政及路况较差地区道路洒水降尘。",
+   "sources": [
+    "http://www.ssctp.com/qtssc/7072.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "L5000",
+   "identity": "code/HLW5251GPSSX6",
+   "identity_kind": "code",
+   "model_variants": [
+    "德龙L5000 小三轴20方洒水车（HLW5251GPSSX6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放J6L绿化洒水车 15方",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6L",
+    "model_code": "CA1180P62K1L2A1E6Z",
+    "config": ""
+   },
+   "search_key": "解放J6L 15方绿化洒水车 CA1180P62K1L2A1E6Z",
+   "class_match": "unknown",
+   "reason": "结果为解放J6L底盘（CA1180P62K1L2A1E6Z）15方绿化洒水车，大柴225马力、陕齿8JS85E，属市政绿化洒水常用两轴车型。",
+   "sources": [
+    "http://chejiahao.m.autohome.com.cn/pingan/chejiahao/detailinfo/16649683"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放J6L绿化洒水车15方",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放J6L绿化洒水车 15方"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "汕德卡前四后八洒水车 30立方",
+   "brand": "重汽汕德卡",
+   "slots": {
+    "brand": "重汽汕德卡",
+    "series": "汕德卡G5-K",
+    "model_code": "ZZ5316XXYN466GF1",
+    "config": "8x4"
+   },
+   "search_key": "重汽汕德卡前四后八30方洒水车 ZZ5316XXYN466GF1",
+   "class_match": "unknown",
+   "reason": "结果为汕德卡环卫底盘（ZZ5316XXYN466GF1）前四后八30方洒水车，配HW70法兰式取力器，环保免征齐全，适配市政环卫大批量洒水作业。",
+   "sources": [
+    "http://www.szclzq.com/show-12-1041-1062.html"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/汕德卡前四后八洒水车30立方",
+   "identity_kind": "generic",
+   "model_variants": [
+    "汕德卡前四后八洒水车 30立方"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "洒水车 罐式上装 + 取力器 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "一汽解放国六13方洒水车 CLW5180GSSC6",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "解放",
+    "model_code": "CLW5180GSSC6",
+    "config": ""
+   },
+   "search_key": "CLW5180GSSC6 洒水车",
+   "class_match": "unknown",
+   "reason": "结果列出一汽解放国六底盘、车辆型号CLW5180GSSC6型洒水车及罐体上装配置，属于可检索的整车公告型号。",
+   "sources": [
+    "http://www.clwqcb.com/wap/Prodview/index/id/660"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5180GSSC6",
+   "identity": "code/CLW5180GSSC6",
+   "identity_kind": "code",
+   "model_variants": [
+    "一汽解放国六13方洒水车 CLW5180GSSC6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CHD5180GSSDFE6 洒水车",
+   "brand": "海德",
+   "slots": {
+    "brand": "海德",
+    "series": "",
+    "model_code": "CHD5180GSSDFE6",
+    "config": ""
+   },
+   "search_key": "CHD5180GSSDFE6 洒水车",
+   "class_match": "unknown",
+   "reason": "结果说明采用东风国六底盘，加装罐体、低压水泵、管路、控制系统，底盘取力器驱动低压水泵，符合任务构型。",
+   "sources": [
+    "https://www.haideclean.com/cn/product/chd5180gssdfe6-watering-truck/"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CHD5180GSSDFE6",
+   "identity": "code/CHD5180GSSDFE6",
+   "identity_kind": "code",
+   "model_variants": [
+    "CHD5180GSSDFE6 洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风多利卡D9 14方洒水车 CLW5182GSSD5",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "CLW5182GSSD5",
+    "config": ""
+   },
+   "search_key": "CLW5182GSSD5 洒水车",
+   "class_match": "unknown",
+   "reason": "结果给出整车型号CLW5182GSSD5、东风多利卡D9底盘及罐体、取力器、自吸式洒水泵、前冲后洒侧喷等上装组成。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzUxNjQzMzMyNA==&mid=2247483963&idx=1&sn=2c1bd1aaed1fc7321b3af8224b85cf04"
+   ],
+   "source_query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5182GSSD5",
+   "identity": "code/CLW5182GSSD5",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风多利卡D9 14方洒水车 CLW5182GSSD5"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "洒水车 罐式上装 + 取力器驱动水泵 + -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "12T混动新能源绿化喷洒车",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "绿化喷洒车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "12T混动新能源绿化喷洒车",
+   "class_match": "unknown",
+   "reason": "结果中出现“12T混动新能源绿化喷洒车”，并给出罐体尺寸、总质量与底盘参数，属于绿化喷洒/洒水类罐式上装；结果未明确品牌及驱动形式。",
+   "sources": [
+    "https://club.autohome.com.cn/bbs/thread/6519e2897df33784/112220549-1.html?pvareaid=28086821202"
+   ],
+   "source_query": "市政环卫 工程车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/12T混动新能源绿化喷洒车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "12T混动新能源绿化喷洒车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政环卫 工程车 罐式上装 + 取力器 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 25
+ },
+ "pool": {
+  "count": 25,
+  "required": 20,
+  "verifiable": 8,
+  "verifiable_share": 0.32,
+  "slots": 8,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 6
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 25,
+  "slots": 8,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 36,
+  "unique": 25,
+  "removed": 11,
+  "generic": 21
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

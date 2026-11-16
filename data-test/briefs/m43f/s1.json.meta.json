@@ -1,0 +1,301 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "洒水车",
+  "class_raw": "洒水车",
+  "class_aliases": [],
+  "environment": "市政环卫",
+  "configuration": null,
+  "quantity": {
+   "primary": 8,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "实拍"
+   ],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity",
+    "environment"
+   ],
+   "soft": [
+    "quality"
+   ]
+  },
+  "unknowns": [],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "洒水车",
+   "environment": "市政环卫",
+   "configuration": "",
+   "quantity": "8 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T20:03:32",
+ "raw_input": "洒水车 8 台 市政环卫 要实拍",
+ "brief_path": "data-test\\briefs\\m43f\\s1.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2661,
+  "completion_tokens": 1663,
+  "total_tokens": 4324,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 367
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 229
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "洒水车",
+   "environment": "市政环卫",
+   "base_platform": "二类载货汽车底盘（如 4×2/6×4 环卫底盘）为假设，待确认",
+   "configuration": "罐式上装 + 取力器驱动水泵 + 前喷/侧喷/后洒/水炮，具体构型待确认",
+   "design_questions": [
+    "市政环卫洒水车的上装（罐体、喷洒管路、水炮）在实车上有哪些造型与结构做法？",
+    "罐体与底盘的连接、管路的布置和操作件的人机界面是如何组织的？",
+    "市政涂装与标识（CMF、法规反光条）在实拍中呈现什么规律？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "side",
+    "label": "整车侧面（罐体侧面 + 底盘）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "form_gesture",
+     "cmf",
+     "regulation"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "车尾作业区（后洒、水炮、操作面板）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "front",
+    "label": "前脸（驾驶室 + 前喷装置）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "regulation",
+     "proportion"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "tank_body",
+    "label": "罐体",
+    "kind": "part",
+    "location": "整车中后部上装",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "罐体截面与长径比例决定整车体量姿态",
+     "罐体与驾驶室的间隙、封头形式、加强筋与分缝",
+     "市政涂装分色、标识与反光条位置"
+    ],
+    "why": "罐体是洒水车的体量主体，可提供整车比例、封头/加强筋结构与市政涂装分色的直接实拍证据"
+   },
+   {
+    "part": "spray_system",
+    "label": "喷洒装置（前喷/侧喷/后洒喷头与管路）",
+    "kind": "function",
+    "location": "车头下方、车侧下部、车尾",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ],
+    "views": [
+     "front",
+     "side",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "喷头排布与管路的走管路径、支架固定方式",
+     "喷头高度与离地间隙对路面作业覆盖的影响",
+     "管路阀门操作件的位置与可达性"
+    ],
+    "why": "喷洒装置是洒水车的核心功能件，可提供管路走向、支架结构与作业人机的实拍证据"
+   },
+   {
+    "part": "water_cannon",
+    "label": "水炮（后置高射喷枪）",
+    "kind": "function",
+    "location": "罐体顶部后端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "cmf"
+    ],
+    "views": [
+     "rear",
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "炮座回转/俯仰机构的支架与底座形式",
+     "操作把手、脚踏位置与站台人机",
+     "金属件表面处理与防腐"
+    ],
+    "why": "水炮及其操作站台是洒水车辨识度最高的功能件，可提供机构节点、人机与表面处理的实拍证据"
+   },
+   {
+    "part": "pump_pto",
+    "label": "水泵与取力器（含泵室/侧仓）",
+    "kind": "part",
+    "location": "底盘中部/罐体下部侧仓",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "structure",
+     "manufacturing",
+     "function_ergonomics"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "侧仓/泵室的开孔、门板与检修可达性",
+     "取力器与传动轴布置对侧部造型的影响",
+     "管路穿仓的密封与防水做法"
+    ],
+    "why": "泵室与取力布置决定侧面下方的结构分缝与检修人机，可提供结构与装配方面的证据；若实拍不可见则为条件相关"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "quantity.primary",
+    "value": "8",
+    "why": "用户直接给出 8 台实拍图量需求",
+    "confidence": 0.9
+   },
+   {
+    "field": "preferences.quality",
+    "value": "实拍",
+    "why": "用户明确要求实拍，排除渲染图与示意图",
+    "confidence": 0.95
+   },
+   {
+    "field": "request.base_platform",
+    "value": "二类载货汽车底盘（4×2 或 6×4 环卫底盘）",
+    "why": "市政洒水车通常为二类底盘加罐式上装，用户未指明具体底盘",
+    "confidence": 0.65
+   },
+   {
+    "field": "parts",
+    "value": "罐体、喷洒装置、水炮、泵/取力器",
+    "why": "用户未点名具体部件，按洒水车上装的核心可见件推导出这些检索对象",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.configuration",
+    "value": "罐式上装 + 取力器驱动水泵 + 前喷/侧喷/后洒/水炮",
+    "why": "市政环卫洒水车的典型作业构型，待实拍确认",
+    "confidence": 0.55
+   }
+  ],
+  "negative": [
+   "排除非实拍（渲染图、效果图、手绘图、AI 生成图）",
+   "排除非洒水车品类（吸污车、洗扫车、垃圾车）",
+   "排除矿区/工地重载洒水车与军用/消防水罐车，避免工况错配",
+   "排除仅展示驾驶室内饰或无上装的底盘图",
+   "不补充用户未提及的部件（如爬梯、支腿、导流罩）"
+  ]
+ },
+ "duration_ms": 28162
+}

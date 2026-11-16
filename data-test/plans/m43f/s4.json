@@ -1,0 +1,863 @@
+{
+ "brief_id": "m43f-s4",
+ "created_at": "2026-11-16T20:09:25",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "自行式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "高空作业车 工程车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 88,
+ "candidates": [
+  {
+   "model": "法兰泰克 FMWP-9J 自行走桅杆高空作业平台",
+   "brand": "法兰泰克（Fronteqlift）",
+   "slots": {
+    "brand": "法兰泰克（Fronteqlift）",
+    "series": "桅杆高空作业平台",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "FMWP-9J 自行走式 桅杆高空作业平台",
+   "class_match": "unknown",
+   "reason": "结果明确为自行走式桅杆高空作业平台，型号FMWP-9J，属于自行式高空作业设备。",
+   "sources": [
+    "https://fronteqlift.com.cn/products/72.html"
+   ],
+   "source_query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/法兰泰克FMWP9J自行走桅杆高空作业平台",
+   "identity_kind": "generic",
+   "model_variants": [
+    "法兰泰克 FMWP-9J 自行走桅杆高空作业平台"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中汇申特 10米自行曲臂式高空作业车",
+   "brand": "中汇申特",
+   "slots": {
+    "brand": "中汇申特",
+    "series": "曲臂式高空作业车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "中汇申特 10米 自行曲臂式高空作业车",
+   "class_match": "unknown",
+   "reason": "结果明确为10米自行曲臂式液压升降平台/全自行高空作业车，品牌为中汇申特。",
+   "sources": [
+    "https://big5.made-in-china.com/gongying/zhst1234-wqLxOpEPbdrz.html"
+   ],
+   "source_query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中汇申特10米自行曲臂式高空作业车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中汇申特 10米自行曲臂式高空作业车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "济南霸力 GTJZD-6 全自行高空作业车",
+   "brand": "济南霸力",
+   "slots": {
+    "brand": "济南霸力",
+    "series": "全自行升降平台/全自行高空作业车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "GTJZD-6 全自行高空作业车",
+   "class_match": "unknown",
+   "reason": "结果给出全自行升降平台/全自行高空作业车，型号GTJZD-6，品牌为济南霸力。",
+   "sources": [
+    "https://cn.made-in-china.com/gongying/jinanbali000-eXSQEVHGgYRO.html#1"
+   ],
+   "source_query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/济南霸力GTJZD6全自行高空作业车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "济南霸力 GTJZD-6 全自行高空作业车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HYNEE HI10 自行式铝制高空作业平台",
+   "brand": "HYNEE",
+   "slots": {
+    "brand": "HYNEE",
+    "series": "自行式铝制高空作业平台",
+    "model_code": "HI10",
+    "config": ""
+   },
+   "search_key": "HYNEE HI10 自行式铝制高空作业平台",
+   "class_match": "unknown",
+   "reason": "结果明确为HYNEE自行式铝制高空作业平台，型号HI10，属于自行式高空作业设备。",
+   "sources": [
+    "https://www.hyneelift.com/zh-tw/p-self-propelled-aluminum-aerial-work-platform-by-hynee.html"
+   ],
+   "source_query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "HI10",
+   "identity": "generic/HYNEEHI10自行式铝制高空作业平台",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HYNEE HI10 自行式铝制高空作业平台"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "宏耀 GTJZ 自行式移动升降机",
+   "brand": "宏耀",
+   "slots": {
+    "brand": "宏耀",
+    "series": "自行式移动升降机/高空作业车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "宏耀 GTJZ 自行式移动升降机",
+   "class_match": "unknown",
+   "reason": "结果标题为高空作业车、自行式移动升降机，品牌宏耀，型号GTJZ。",
+   "sources": [
+    "http://www.hc360.com/supplyself/702434412.html"
+   ],
+   "source_query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/宏耀GTJZ自行式移动升降机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "宏耀 GTJZ 自行式移动升降机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "高空作业车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Z-30/20 曲臂车",
+   "brand": "吉尼 Genie",
+   "slots": {
+    "brand": "吉尼（Genie）",
+    "series": "Z 曲臂",
+    "model_code": "Z-30/20",
+    "config": ""
+   },
+   "search_key": "Genie Z-30/20 曲臂车",
+   "class_match": "unknown",
+   "reason": "结果明确写明吉尼于1984年推出Z®-30/20曲臂车，属于自行式曲臂高空作业平台，与任务单要求的自行式构型相符。",
+   "sources": [
+    "https://baike.baidu.com/item/%e6%9b%b2%e8%87%82?forcehttps=1%3ffr%3dkg_hanyu&bst=1791008273.939da5a1784f1b6f#1#1#1"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "Z30",
+   "identity": "generic/Z3020曲臂车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Z-30/20 曲臂车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Z-135/70 曲臂车",
+   "brand": "吉尼 Genie",
+   "slots": {
+    "brand": "吉尼（Genie）",
+    "series": "Z 曲臂",
+    "model_code": "Z-135/70",
+    "config": ""
+   },
+   "search_key": "Genie Z-135/70 曲臂车",
+   "class_match": "unknown",
+   "reason": "结果写明吉尼于2006年推出Z®-135/70曲臂车，最大工作高度43.15米，属于自行式曲臂车，符合自行式要求。",
+   "sources": [
+    "https://baike.baidu.com/item/%e6%9b%b2%e8%87%82?forcehttps=1%3ffr%3dkg_hanyu&bst=1791008273.939da5a1784f1b6f#1#1#1"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "Z135",
+   "identity": "code/Z135",
+   "identity_kind": "code",
+   "model_variants": [
+    "Z-135/70 曲臂车",
+    "Z-135/70"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "S-85 自行式直臂型高空作业车",
+   "brand": "吉尼 Genie",
+   "slots": {
+    "brand": "美国吉尼",
+    "series": "S 直臂",
+    "model_code": "S-85",
+    "config": ""
+   },
+   "search_key": "吉尼 S-85 自行式直臂型高空作业车",
+   "class_match": "unknown",
+   "reason": "结果逐条说明S-45/S-65/S-85/S-105/S-125为自行式直臂型高空作业车，S-85工作高度27.7米，可选两轮/四轮驱动，属于自行式底盘。",
+   "sources": [
+    "https://shop.hbzhan.com/sale/detail-16008607.html",
+    "https://yb.hbzhan.com/product/25224739.html"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "S85",
+   "identity": "generic/S85自行式直臂型高空作业车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "S-85 自行式直臂型高空作业车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "E450A 曲臂高空车",
+   "brand": "JLG",
+   "slots": {
+    "brand": "JLG",
+    "series": "曲臂",
+    "model_code": "E450A",
+    "config": ""
+   },
+   "search_key": "JLG E450A 曲臂高空车",
+   "class_match": "unknown",
+   "reason": "结果写明E450A是JLG开发的自行走式高空作业设备，48V电动驱动、工作高度13.72米，属于自行式（自走底盘）构型。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%9B%B2%E8%87%82%E9%AB%98%E7%A9%BA%E8%BD%A6E450A/2014433?bst=1789988225.1e4cb40a4a796e24"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "E450",
+   "identity": "code/E450A",
+   "identity_kind": "code",
+   "model_variants": [
+    "E450A 曲臂高空车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "860SJ",
+   "brand": "JLG",
+   "slots": {
+    "brand": "JLG",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "JLG 860SJ 自行式高空作业车",
+   "class_match": "unknown",
+   "reason": "结果参数表中类型为“自行式”、品牌JLG、型号860SJ、工作高度29米，与任务单自行式高空作业车直接对应。",
+   "sources": [
+    "https://big5.made-in-china.com/gongying/zd1993-ubyECnVDZZct.html"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/860SJ",
+   "identity_kind": "generic",
+   "model_variants": [
+    "860SJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "GKS28E",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "GKS",
+    "model_code": "GKS28E",
+    "config": ""
+   },
+   "search_key": "徐工 GKS28E 自行式高空作业平台",
+   "class_match": "unknown",
+   "reason": "结果写明徐工GKS28E是28米自行式高空作业平台，四轮驱动、360°连续回转，属自行式构型。",
+   "sources": [
+    "https://baike.baidu.com/item/%E5%BE%90%E5%B7%A5GKS28E%E9%AB%98%E7%A9%BA%E4%BD%9C%E4%B8%9A%E6%9C%BA%E6%A2%B0?bst=1790685514.dd5d662e44317f33#1"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "GKS28",
+   "identity": "generic/GKS28E",
+   "identity_kind": "generic",
+   "model_variants": [
+    "GKS28E"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BA28RT 曲臂车",
+   "brand": "鼎力",
+   "slots": {
+    "brand": "鼎力（BA28RT）",
+    "series": "曲臂",
+    "model_code": "BA28RT",
+    "config": ""
+   },
+   "search_key": "鼎力 BA28RT 曲臂高空作业车",
+   "class_match": "unknown",
+   "reason": "结果在曲臂条目中列出市场主要参与品牌包括鼎力（BA28RT型号），曲臂条目的定义已说明曲臂即自行式曲臂高空作业车。",
+   "sources": [
+    "https://baike.baidu.com/item/%e6%9b%b2%e8%87%82?forcehttps=1%3ffr%3dkg_hanyu&bst=1791008273.939da5a1784f1b6f#1#1#1"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "BA28",
+   "identity": "generic/BA28RT曲臂车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "BA28RT 曲臂车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "ZS0808HDS",
+   "brand": "中联重科 ZOOMLION",
+   "slots": {
+    "brand": "中联重科 ZOOMLION",
+    "series": "ZS",
+    "model_code": "ZS0808HDS",
+    "config": ""
+   },
+   "search_key": "中联重科 ZS0808HDS 自行走高空作业平台",
+   "class_match": "unknown",
+   "reason": "结果在剪叉式高空作业平台参数表中标注品牌中联重科ZOOMLION、型号ZS0808HDS、类别“自行走”，符合自行式自走底盘要求。",
+   "sources": [
+    "https://www.ehsy.com/category-16550?k=10#1"
+   ],
+   "source_query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "ZS0808HDS",
+   "identity": "code/ZS0808HDS",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZS0808HDS"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "高空作业车 自行式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HEC5096JGKZZ32SK",
+   "brand": "豪沃",
+   "slots": {
+    "brand": "豪沃",
+    "series": "",
+    "model_code": "HEC5096JGKZZ32SK",
+    "config": ""
+   },
+   "search_key": "豪沃 HEC5096JGKZZ32SK 高空作业车",
+   "class_match": "unknown",
+   "reason": "结果页面列出豪沃牌HEC5096JGKZZ32SK高空作业车，并给出底盘型号，属于轮式高空作业车候选。",
+   "sources": [
+    "http://www.aivehicle.cn/gkzyc/index_55.html"
+   ],
+   "source_query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HEC5096JGKZZ32",
+   "identity": "code/HEC5096JGKZZ32SK",
+   "identity_kind": "code",
+   "model_variants": [
+    "HEC5096JGKZZ32SK"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "RRR5040JGKB",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "",
+    "model_code": "RRR5040JGKB",
+    "config": ""
+   },
+   "search_key": "福田 RRR5040JGKB 高空作业车",
+   "class_match": "unknown",
+   "reason": "结果页面列出福田牌RRR5040JGKB高空作业车，可作为自行式轮式底盘高空作业车候选。",
+   "sources": [
+    "http://www.aivehicle.cn/gkzyc/index_55.html"
+   ],
+   "source_query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "RRR5040JGKB",
+   "identity": "code/RRR5040JGKB",
+   "identity_kind": "code",
+   "model_variants": [
+    "RRR5040JGKB"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BA28RT",
+   "brand": "鼎力",
+   "slots": {
+    "brand": "鼎力",
+    "series": "曲臂",
+    "model_code": "BA28RT",
+    "config": ""
+   },
+   "search_key": "鼎力 BA28RT 自行式曲臂高空作业车",
+   "class_match": "unknown",
+   "reason": "结果明确说明曲臂指自行式曲臂高空作业车，并列出鼎力BA28RT型号。",
+   "sources": [
+    "https://baike.baidu.com/item/%e6%9b%b2%e8%87%82?forcehttps=1%3ffr%3dkg_hanyu&bst=1791008273.939da5a1784f1b6f#1#1#1"
+   ],
+   "source_query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "BA28",
+   "identity": "generic/BA28RT",
+   "identity_kind": "generic",
+   "model_variants": [
+    "BA28RT"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Z-30/20",
+   "brand": "吉尼",
+   "slots": {
+    "brand": "吉尼",
+    "series": "Z",
+    "model_code": "Z-30/20",
+    "config": ""
+   },
+   "search_key": "吉尼 Genie Z-30/20 曲臂车",
+   "class_match": "unknown",
+   "reason": "结果提到吉尼推出Z-30/20曲臂车，标志其进入自行式高空作业平台领域。",
+   "sources": [
+    "https://baike.baidu.com/item/%e6%9b%b2%e8%87%82?forcehttps=1%3ffr%3dkg_hanyu&bst=1791008273.939da5a1784f1b6f#1#1#1"
+   ],
+   "source_query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "Z30",
+   "identity": "generic/Z3020",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Z-30/20"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "P480",
+   "brand": "Palfinger",
+   "slots": {
+    "brand": "Palfinger",
+    "series": "",
+    "model_code": "P480",
+    "config": ""
+   },
+   "search_key": "Palfinger P480 bucket truck",
+   "class_match": "unknown",
+   "reason": "对比表列出Palfinger P480及其工作高度、平台容量、侧伸和绝缘等级等参数，可作为高空作业车候选。",
+   "sources": [
+    "https://heavyvehicleinspection.com/equipment/bucket-trucks-comparison-guide#1"
+   ],
+   "source_query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "P480",
+   "identity": "code/P480",
+   "identity_kind": "code",
+   "model_variants": [
+    "P480"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "高空作业车 自行式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Delong Automobile 33m 直臂式自行式高空作业平台",
+   "brand": "Delong Automobile",
+   "slots": {
+    "brand": "Delong Automobile",
+    "series": "直臂式",
+    "model_code": "33m",
+    "config": "4x2"
+   },
+   "search_key": "Delong Automobile 33m 直臂 自行式",
+   "class_match": "unknown",
+   "reason": "结果标题给出 Delong Automobile 33m 液压伸缩直臂高空作业平台，参数含 Self-propelled 与 4x2。",
+   "sources": [
+    "https://www.madeinchina.com/mall/show-Delong-Automobile-Lifting-Height-33m-Hydraulic-Telescopic-Straight-Arm-Aerial-Work-Platform_15362.html#1"
+   ],
+   "source_query": "高空作业车 工程车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "33",
+   "identity": "generic/DELONGAUTOMOBILE33M直臂式自行式高空作业平台",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Delong Automobile 33m 直臂式自行式高空作业平台"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高空作业车 工程车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "程力威 江铃10米高空作业升降平台车",
+   "brand": "程力威",
+   "slots": {
+    "brand": "程力威",
+    "series": "江铃10米高空作业升降平台车",
+    "model_code": "JX1041TSG25",
+    "config": ""
+   },
+   "search_key": "程力威 江铃10米 高空作业升降平台车",
+   "class_match": "unknown",
+   "reason": "结果产品参数表列出商标程力威、产品名江铃10米高空作业升降平台车及底盘型号JX1041TSG25。",
+   "sources": [
+    "http://dfclzyc.com/m/cp/324.html"
+   ],
+   "source_query": "高空作业车 工程车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/程力威江铃10米高空作业升降平台车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "程力威 江铃10米高空作业升降平台车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "高空作业车 工程车 自行式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 20
+ },
+ "pool": {
+  "count": 20,
+  "required": 16,
+  "verifiable": 14,
+  "verifiable_share": 0.7,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "unit": {
+    "queries": 1,
+    "candidates": 2
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 5,
+  "candidates": 20,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 26,
+  "unique": 20,
+  "removed": 6,
+  "generic": 14
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

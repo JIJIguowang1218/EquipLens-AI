@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T17:47:43 · 共 134 条 · 待补人工结论 90 条
+> 生成时间：2026-11-16T20:59:44 · 共 144 条 · 待补人工结论 100 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -115,6 +115,16 @@
 | other | `p8b-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `verify-identity-20261114` | suite | 2026-11-14 | — | — | — |
+| other | `del10-c1e` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=93 · gate_pass=87 · degraded=8 · $0.01425 | [—](data-test/runs/del10-c1e/summary.json) |
+| other | `del10-c4e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=55 · gate_pass=39 · degraded=4 · $0.009 | [—](data-test/runs/del10-c4e/summary.json) |
+| other | `del10-c5e` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=116 · gate_pass=86 · degraded=2 · $0.0135 | [—](data-test/runs/del10-c5e/summary.json) |
+| other | `del10-h2e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=2/4 · images=19 · gate_pass=17 · degraded=4 · $0.00375 | [—](data-test/runs/del10-h2e/summary.json) |
+| other | `del10-h3e` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=38 · gate_pass=30 · degraded=4 · $0.0105 | [—](data-test/runs/del10-h3e/summary.json) |
+| other | `del10-s1` | run | 2026-11-16 | DONE | delivery=8/8 · backup=4/4 · images=60 · gate_pass=56 · degraded=5 · $0.009 | [—](data-test/runs/del10-s1/summary.json) |
+| other | `del10-s2` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=46 · gate_pass=38 · degraded=2 · $0.009 | [—](data-test/runs/del10-s2/summary.json) |
+| other | `del10-s3` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=70 · gate_pass=63 · degraded=9 · $0.0105 | [—](data-test/runs/del10-s3/summary.json) |
+| other | `del10-s4` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=46 · gate_pass=32 · degraded=3 · $0.00825 | [—](data-test/runs/del10-s4/summary.json) |
+| other | `del10-s5` | run | 2026-11-16 | DONE | delivery=8/8 · backup=4/4 · images=58 · gate_pass=51 · degraded=5 · $0.00825 | [—](data-test/runs/del10-s5/summary.json) |
 | other | `demo-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [prototype acceptance; conclusions in DATA-CHANGELOG §57/§59](data-test/runs/demo-offline/summary.json) |
 | other | `l2-live-c1-v3` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=80 · gate_pass=72 · degraded=8 | [—](data-test/runs/l2-live-c1-v3/summary.json) |
 | other | `l2-live-c1-v4` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=82 · gate_pass=73 · degraded=8 | [—](data-test/runs/l2-live-c1-v4/summary.json) |

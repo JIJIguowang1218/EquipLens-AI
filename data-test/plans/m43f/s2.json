@@ -1,0 +1,1203 @@
+{
+ "brief_id": "m43f-s2",
+ "created_at": "2026-11-16T20:07:38",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 85,
+ "candidates": [
+  {
+   "model": "QY70K-I 汽车起重机",
+   "brand": "徐工集团",
+   "slots": {
+    "brand": "徐工集团",
+    "series": "QY",
+    "model_code": "QY70K-I",
+    "config": ""
+   },
+   "search_key": "徐工 QY70K-I 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果明确为徐工 QY70K-I 移动式汽车起重机，含底盘、双H型支腿与360°动臂操作，符合卡车底盘+转台上装构型；吨位非25吨级。",
+   "sources": [
+    "https://www.xcmgmachinery.com/zh/portfolio-item/qy70k-i/3"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "QY70",
+   "identity": "generic/QY70KI汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "QY70K-I 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "QY12 汽车起重机",
+   "brand": "楚天",
+   "slots": {
+    "brand": "楚天",
+    "series": "QY",
+    "model_code": "QY12",
+    "config": ""
+   },
+   "search_key": "楚天 QY12 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果称楚天-QY12为安装在东风8吨载重汽车底盘上的全回转伸缩式液压起重机，符合汽车底盘+转台+伸缩臂构型。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/JZJH198608007.html"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "QY12",
+   "identity": "generic/QY12汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "QY12 汽车起重机",
+    "楚天 QY12 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "QY32B 汽车式起重机",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "QY",
+    "model_code": "QY32B",
+    "config": "8x4"
+   },
+   "search_key": "QY32B 汽车式起重机 8×4",
+   "class_match": "unknown",
+   "reason": "结果给出QY32B汽车式起重机示例，采用专用汽车底盘、驱动形式8×4，并具有四节伸缩主起重臂、H型支腿。",
+   "sources": [
+    "http://www.ahjj.org.cn/uploadfile/2021/0405/20210405055354500.pdf#1#1#1",
+    "http://zgjjzyjy.org/jsfls.asp?id=362"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "QY32",
+   "identity": "generic/QY32B汽车式起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "QY32B 汽车式起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "三一16吨 8×4 汽车起重机",
+   "brand": "中国重汽豪沃",
+   "slots": {
+    "brand": "中国重汽豪沃",
+    "series": "豪沃",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "中国重汽豪沃 三一16吨 8*4 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果标题明确为中国重汽豪沃三一16吨起重机8*4汽车起重机，并说明是安装在标准卡车底盘上的起重机。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601579545773"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/三一8X4汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "三一16吨 8×4 汽车起重机",
+    "豪沃 三一16吨 8x4 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "FTR 重型伸缩式汽车起重机",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "FTR",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "五十铃 FTR 16吨 伸缩式汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果明确为五十铃FTR 16吨卡车起重机，采用FTR底盘，配4根液压支腿，驾驶室与转盘升降控制室分开设置。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/isuzu-ftr-heavy-telescopic-truck-crane_p1691.html"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/FTR重型伸缩式汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FTR 重型伸缩式汽车起重机",
+    "五十铃 FTR 重型伸缩式汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "VC66 GIGA 伸缩式起重机卡车（SPS25000）",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "GIGA",
+    "model_code": "VC66",
+    "config": ""
+   },
+   "search_key": "五十铃 VC66 GIGA 伸缩式起重机卡车 SPS25000",
+   "class_match": "unknown",
+   "reason": "结果称VC66 GIGA为伸缩式起重机卡车/汽车起重机，采用高强度直臂、360°全回转作业，最大起重量10吨。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/blog/isuzu-vc66-giga-460hp-telescopic-crane-truck-with-sps25000-crane_b269"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "VC66",
+   "identity": "code/SPS25000",
+   "identity_kind": "code",
+   "model_variants": [
+    "VC66 GIGA 伸缩式起重机卡车（SPS25000）",
+    "五十铃 VC66 GIGA 伸缩式起重机卡车（配 SPS25000）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "QY 汽车起重机",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "QY",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "QY 汽车起重机 25吨级",
+   "class_match": "unknown",
+   "reason": "结果明确QY型汽车起重机为起重机装在汽车底盘上，由底盘、转台、吊臂、支腿和液压系统组成，主流吨位覆盖25吨到130吨。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=Mzg4MjU2MjQyOA==&mid=2247491341&idx=1&sn=51156ac8c71a5169cd46567b2b1571ad"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/QY汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "QY 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "汽车起重机 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "25T汽车起重机",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "雷萨",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田 雷萨 25T汽车起重机",
+   "class_match": "unknown",
+   "reason": "福田官网雷萨25T汽车起重机，额定起重量25000kg，符合25吨级；结果未明确驱动形式/轴数。",
+   "sources": [
+    "https://www.foton.com.cn/webback/about/honor/carDetailfcdb45a3.html?car=fcdb45a3"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/25T汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "25T汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JZX5329JQZQY25V",
+   "brand": "锦重牌",
+   "slots": {
+    "brand": "锦重牌",
+    "series": "QY25V",
+    "model_code": "JZX5329JQZQY25V",
+    "config": ""
+   },
+   "search_key": "锦重 QY25V 25吨汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果明确最大额定起重量25吨，专用装置含吊臂、转台和支腿，底盘TAZ5325JQZA，符合卡车底盘+转台构型；驱动形式未给出。",
+   "sources": [
+    "http://www.chinacar.com.cn/prodprice/680919.html"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "JZX5329JQZQY25",
+   "identity": "code/JZX5329JQZQY25V",
+   "identity_kind": "code",
+   "model_variants": [
+    "JZX5329JQZQY25V"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BJ5184JQZHPFG-01",
+   "brand": "福田瑞沃",
+   "slots": {
+    "brand": "福田瑞沃",
+    "series": "大金刚ES5",
+    "model_code": "BJ5184JQZHPFG-01",
+    "config": "4X2"
+   },
+   "search_key": "福田瑞沃 大金刚ES5 4X2 24吨汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果标题为福田瑞沃大金刚ES5 4X2 24吨汽车起重机，吨位接近25吨级；4X2驱动形式与任务单推断的3–4轴不完全一致，列为待复核候选。",
+   "sources": [
+    "https://product.360che.com/m448/112192_param.html"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "BJ5184JQZHPFG",
+   "identity": "code/BJ5184JQZHPFG01",
+   "identity_kind": "code",
+   "model_variants": [
+    "BJ5184JQZHPFG-01"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "汽车起重机 卡车底盘 + 转台 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "五十铃FTR卡车起重机",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "FTR",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "五十铃FTR 卡车起重机 中心回转 支腿",
+   "class_match": "unknown",
+   "reason": "结果明确为新款FTR底盘改装，带中心回转、4根液压支腿和单板臂。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/isuzu-ftr-truck-with-crane-lift_sp"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/五十铃FTR卡车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "五十铃FTR卡车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沙克曼8x4重型车载起重机（三一-帕尔芬格20/25/30吨）",
+   "brand": "沙克曼",
+   "slots": {
+    "brand": "沙克曼",
+    "series": "",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "沙克曼8x4 车载起重机 25吨 液压",
+   "class_match": "unknown",
+   "reason": "结果直接列出8x4重型车载起重机，并覆盖20/25/30吨，匹配25吨级卡车底盘起重构型。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1600654102011#1"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/沙克曼8X4重型车载起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沙克曼8x4重型车载起重机（三一-帕尔芬格20/25/30吨）",
+    "沙克曼 8x4 重型车载起重机（三一-帕尔芬格 20/25/30吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Shacman 6x6卡车起重机",
+   "brand": "Shacman",
+   "slots": {
+    "brand": "Shacman",
+    "series": "",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "Shacman 6x6 卡车 直臂起重机",
+   "class_match": "unknown",
+   "reason": "结果给出Shacman 6x6卡车配8-10吨直臂或转向节臂起重机，含卡车底盘+起重上装。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601201422122"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SHACMAN6X6卡车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Shacman 6x6卡车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Shacman M3000 6x4重型车载起重机牵引车",
+   "brand": "Shacman",
+   "slots": {
+    "brand": "Shacman",
+    "series": "M3000",
+    "model_code": "M3000",
+    "config": "6x4"
+   },
+   "search_key": "Shacman M3000 6x4 35吨 可折叠起重机",
+   "class_match": "unknown",
+   "reason": "结果为M3000 6x4底盘配35吨可折叠起重机，属重型卡车底盘起重车型。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1600944522821"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "M3000",
+   "identity": "code/M3000",
+   "identity_kind": "code",
+   "model_variants": [
+    "Shacman M3000 6x4重型车载起重机牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "斯堪尼亚R730 8轴16x4起重机底盘",
+   "brand": "斯堪尼亚",
+   "slots": {
+    "brand": "斯堪尼亚",
+    "series": "R730",
+    "model_code": "R730",
+    "config": "16x4"
+   },
+   "search_key": "斯堪尼亚R730 16x4 起重机底盘",
+   "class_match": "unknown",
+   "reason": "结果明确为R730 16x4特种底盘用于起重机改装，匹配多轴卡车底盘+起重上装。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/11703551?reply=reply#pvareaid=2808221#1"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "R730",
+   "identity": "generic/斯堪尼亚R7308轴16X4起重机底盘",
+   "identity_kind": "generic",
+   "model_variants": [
+    "斯堪尼亚R730 8轴16x4起重机底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "DAF CF 440 HIAB 85 tm起重机",
+   "brand": "DAF",
+   "slots": {
+    "brand": "DAF",
+    "series": "CF",
+    "model_code": "CF 440",
+    "config": ""
+   },
+   "search_key": "DAF CF 440 HIAB 85 tm CRANE",
+   "class_match": "unknown",
+   "reason": "结果为DAF CF 440底盘配HIAB 85 tm起重机，含转台/起重上装描述。",
+   "sources": [
+    "https://autoline.info/-/sale/platform-trucks/DAF/CF-440-HIAB-85-tm-CRANE-KRAN-ROTATOR--26111317543621705700"
+   ],
+   "source_query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CF440",
+   "identity": "code/CF440",
+   "identity_kind": "code",
+   "model_variants": [
+    "DAF CF 440 HIAB 85 tm起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "卡车底盘 + 转台 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5530JQZZ6型汽车起重机",
+   "brand": "程力（CLW）",
+   "slots": {
+    "brand": "程力",
+    "series": "CLW5530JQZZ6",
+    "model_code": "CLW5530JQZZ6",
+    "config": ""
+   },
+   "search_key": "CLW5530JQZZ6 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果中唯一以“汽车起重机”为产品名称并给出整车公告型号与底盘型号（ZZ1317N466GF1）的成品车型，总质量53000kg、多轴卡车底盘，符合“卡车底盘+转台”的汽车起重机形态；未标注驱动形式，故 config 留空。",
+   "sources": [
+    "http://hbcljtgs.com/8377.html"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLW5530JQZZ6",
+   "identity": "generic/CLW5530JQZZ6型汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5530JQZZ6型汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "恒旺 HWKM10T 汽车起重机",
+   "brand": "HengWang（恒旺）",
+   "slots": {
+    "brand": "HengWang",
+    "series": "HWKM",
+    "model_code": "HWKM10T",
+    "config": ""
+   },
+   "search_key": "恒旺HWKM10T 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果直接标注为“汽车起重机”，列有底盘型号 KAIMA3600、U型伸缩臂 6mx6节、最大起升高度31m、双腿支腿跨度，属卡车底盘+伸缩臂上装结构；驱动形式未给出。",
+   "sources": [
+    "https://www.machinio.com.cn/bucket-boom-crane-trucks?page=8&search=3+3+5%27#1"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HWKM10",
+   "identity": "generic/恒旺HWKM10T汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "恒旺 HWKM10T 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HW 25吨 汽车起重机（移动式卡车起重机，HW8）",
+   "brand": "HengWang（恒旺）",
+   "slots": {
+    "brand": "HengWang",
+    "series": "HW",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "HW 25吨 汽车起重机 truck crane",
+   "class_match": "unknown",
+   "reason": "标题即“25 Ton Crane Mobile Truck Crane”，吨位与任务单25吨级吻合，说明为“crane mounted on a common automobile chassis”的液压卡车起重机（卡车底盘+回转上装）；具体驱动形式未标注。",
+   "sources": [
+    "https://www.machinio.au/hengwang/construction?page=2&search=cab+and+chassis+truck"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HW25",
+   "identity": "generic/HW汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HW 25吨 汽车起重机（移动式卡车起重机，HW8）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Shacman 6x6 卡车配 8–10 吨直臂/折臂起重机",
+   "brand": "沙克曼（Shacman）",
+   "slots": {
+    "brand": "Shacman",
+    "series": "",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "Shacman 6x6 直臂起重机卡车",
+   "class_match": "unknown",
+   "reason": "结果为6x6多轴卡车底盘加装直臂（伸缩）或折臂起重机，含取力器与转台回转机构，属卡车底盘+转台上装构型；吨位低于25吨级，仅作底盘形式补充候选。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601201422122"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SHACMAN6X6卡车配8直臂折臂起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Shacman 6x6 卡车配 8–10 吨直臂/折臂起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "北奔2638型 折臂式汽车起重机",
+   "brand": "北奔（Beiben）",
+   "slots": {
+    "brand": "北奔",
+    "series": "2638",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "北奔2638 折臂式汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果中明确称为“折臂式汽车起重机”，具备液压驱动360°全回转、多节伸缩臂与力矩限制器，属卡车底盘+转台+吊臂上装；但为折臂型式，与任务单伸缩式上装略有差异，驱动形式未标注。",
+   "sources": [
+    "https://zh-cn.ceectrucks.com/blog/blog-truk-derek_bc5"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/北奔2638型折臂式汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "北奔2638型 折臂式汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "汽车起重机 卡车底盘 + 转台 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LTF 1045-4.1 车载伸缩式起重机",
+   "brand": "Liebherr",
+   "slots": {
+    "brand": "Liebherr",
+    "series": "LTF 1045-4.1",
+    "model_code": "LTF 1045-4.1",
+    "config": ""
+   },
+   "search_key": "Liebherr LTF 1045-4.1 车载伸缩式起重机",
+   "class_match": "unknown",
+   "reason": "结果明确为Liebherr LTF 1045-4.1车载伸缩式起重机，采用四轴标准卡车底盘和伸缩臂；底盘+伸缩臂构型符合，但吨位为45t。",
+   "sources": [
+    "https://www.liebherr.com/zh-cn/%e7%a7%bb%e5%8a%a8%e5%bc%8f%e5%92%8c%e5%b1%a5%e5%b8%a6%e5%bc%8f%e8%b5%b7%e9%87%8d%e6%9c%ba/%e7%a7%bb%e5%8a%a8%e5%bc%8f%e8%b5%b7%e9%87%8d%e6%9c%ba/ltf%e8%bd%a6%e8%bd%bd%e8%b5%b7%e9%87%8d%e6%9c%ba/ltf-1045-4-1-4043682"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "LTF1045",
+   "identity": "code/LTF1045",
+   "identity_kind": "code",
+   "model_variants": [
+    "LTF 1045-4.1 车载伸缩式起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "五十铃 VC66 GIGA 伸缩式起重机卡车",
+   "brand": "五十铃",
+   "slots": {
+    "brand": "五十铃",
+    "series": "VC66 GIGA",
+    "model_code": "VC66",
+    "config": ""
+   },
+   "search_key": "五十铃 VC66 GIGA 伸缩式起重机卡车",
+   "class_match": "unknown",
+   "reason": "结果给出五十铃VC66 GIGA伸缩式起重机卡车，采用直臂伸缩和360°全回转作业；构型符合，但最大起重量为10t，吨位偏小。",
+   "sources": [
+    "https://zh-cn.isuzutruckscn.com/blog/isuzu-vc66-giga-460hp-telescopic-crane-truck-with-sps25000-crane_b269"
+   ],
+   "source_query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "VC66",
+   "identity": "generic/五十铃VC66GIGA伸缩式起重机卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "五十铃 VC66 GIGA 伸缩式起重机卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "汽车起重机 卡车底盘 + 转台 + 伸缩 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃NX 12吨起重卡车（徐工GSQS300）",
+   "brand": "中国重汽豪沃",
+   "slots": {
+    "brand": "中国重汽豪沃",
+    "series": "豪沃NX",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "豪沃NX 12吨 徐工GSQS300 起重卡车",
+   "class_match": "unknown",
+   "reason": "结果写明采用豪沃NX底盘，配徐工GSQS300起重机，可起重12吨，符合卡车底盘+起重上装构型；吨位低于25吨级。",
+   "sources": [
+    "https://zh-cn.ceectrucks.com/howo-truck-with-12ton-crane-lift_p2101.html"
+   ],
+   "source_query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "NX12",
+   "identity": "generic/豪沃NX起重卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃NX 12吨起重卡车（徐工GSQS300）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "鲁济家庆牌 LFV5041JQZEQ6 汽车起重机",
+   "brand": "鲁济家庆",
+   "slots": {
+    "brand": "鲁济家庆",
+    "series": "鲁济家庆牌",
+    "model_code": "LFV5041JQZEQ6",
+    "config": ""
+   },
+   "search_key": "鲁济家庆 LFV5041JQZEQ6 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果明确为鲁济家庆牌LFV5041JQZEQ6型汽车起重机，属专用汽车起重机；蓝牌小吨位，与25吨级需求有差距。",
+   "sources": [
+    "https://m.sohu.com/a/1049757296_122014422?scm=10008.1475_13-1475_13-11_11.0-0.0-1-0-0-0.0&spm=smwp.content.fd-d.39.1784526312591QHI8DkC&_trans_=020013_zntg"
+   ],
+   "source_query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "LFV5041JQZEQ6",
+   "identity": "code/LFV5041JQZEQ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "鲁济家庆牌 LFV5041JQZEQ6 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "鲁济家庆牌 LFV5110JQZCA6 汽车起重机",
+   "brand": "鲁济家庆",
+   "slots": {
+    "brand": "鲁济家庆",
+    "series": "鲁济家庆牌",
+    "model_code": "LFV5110JQZCA6",
+    "config": ""
+   },
+   "search_key": "鲁济家庆 LFV5110JQZCA6 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果明确为鲁济家庆牌LFV5110JQZCA6型汽车起重机，定位中小吨位工程起重；最大总质量11.2吨，非25吨级。",
+   "sources": [
+    "https://m.sohu.com/a/1049758080_122014422?scm=10008.1475_13-1475_13-11_11.0-0.0-1-0-0-0.0&spm=smwp.content.fd-d.17.1786443420908RLC88hc&_trans_=000012"
+   ],
+   "source_query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "LFV5110JQZCA6",
+   "identity": "code/LFV5110JQZCA6",
+   "identity_kind": "code",
+   "model_variants": [
+    "鲁济家庆牌 LFV5110JQZCA6 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田牌 HFL5170JQZ 汽车起重机",
+   "brand": "福田牌",
+   "slots": {
+    "brand": "福田牌",
+    "series": "",
+    "model_code": "HFL5170JQZ",
+    "config": ""
+   },
+   "search_key": "福田 HFL5170JQZ 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果给出福田牌HFL5170JQZ汽车起重机及底盘型号BJ1184VKPFG-01、总质量17450kg，属卡车底盘汽车起重机；吨位低于25吨级。",
+   "sources": [
+    "https://www.aivehicle.cn/aeoqw7ebhc7fthy4c/"
+   ],
+   "source_query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "HFL5170JQZ",
+   "identity": "code/HFL5170JQZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田牌 HFL5170JQZ 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "QY32B 汽车起重机",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "QY",
+    "model_code": "QY32B",
+    "config": "8x4"
+   },
+   "search_key": "QY32B 8x4 汽车起重机",
+   "class_match": "unknown",
+   "reason": "结果示例明确QY32B汽车式起重机采用K303LA汽车专用底盘，驱动形式8×4，四节伸缩主起重臂、H型支腿，构型较接近任务单。",
+   "sources": [
+    "http://zgjjzyjy.org/jsfls.asp?id=362"
+   ],
+   "source_query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "QY32",
+   "identity": "generic/QY32B汽车起重机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "QY32B 汽车起重机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "汽车起重机 工程车 卡车底盘 + 转台 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 28
+ },
+ "pool": {
+  "count": 28,
+  "required": 16,
+  "verifiable": 19,
+  "verifiable_share": 0.679,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 12
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 28,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 38,
+  "unique": 28,
+  "removed": 10,
+  "generic": 19
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

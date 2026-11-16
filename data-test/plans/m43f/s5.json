@@ -1,0 +1,1254 @@
+{
+ "brief_id": "m43f-s5",
+ "created_at": "2026-11-16T20:10:07",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "矿用宽体自卸车 6×4 宽体自卸 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 67,
+ "candidates": [
+  {
+   "model": "北奔 北驰系列 375马力 6X4 宽体矿用自卸车",
+   "brand": "北奔",
+   "slots": {
+    "brand": "北奔",
+    "series": "北驰系列",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "北奔 北驰 375马力 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题与参数明确为6X4宽体矿用自卸车，额定载重33000kg，符合矿山宽体自卸构型。",
+   "sources": [
+    "https://www.yunshuren.com/product-1685.html",
+    "http://dealerm.360che.com/25812/price81490.html"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/北奔北驰系列6X4宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "北奔 北驰系列 375马力 6X4 宽体矿用自卸车",
+    "北奔 北驰系列 480马力 6X4 宽体矿用自卸车(带取力器)",
+    "北驰系列 375马力 6X4 宽体矿用自卸车",
+    "北驰系列 480马力 6X4 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "北奔 北驰系列 310马力 6X4 宽体偏置矿用自卸车",
+   "brand": "北奔",
+   "slots": {
+    "brand": "北奔",
+    "series": "北驰系列",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "北奔 北驰 310马力 6X4 宽体偏置矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题明确为6X4宽体偏置矿用自卸车，偏置驾驶室与宽体矿用自卸底盘相符。",
+   "sources": [
+    "https://www.yunshuren.com/product-16676.html"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/北奔北驰系列6X4宽体偏置矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "北奔 北驰系列 310马力 6X4 宽体偏置矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "北奔 6×4 5538KK 宽体矿用自卸车",
+   "brand": "北奔",
+   "slots": {
+    "brand": "北奔",
+    "series": "",
+    "model_code": "",
+    "config": "6X4"
+   },
+   "search_key": "北奔 5538KK 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题明确为北奔6×4 5538KK宽体矿用自卸车，并提到矿用偏置驾驶室。",
+   "sources": [
+    "https://m.d1cm.com/schq/201607290116125.shtml",
+    "https://product.d1cm.com/beiben002/116125/"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/北奔6X45538KK宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "北奔 6×4 5538KK 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "同力重工 DTE145 型矿用宽体自卸车",
+   "brand": "同力重工",
+   "slots": {
+    "brand": "同力重工",
+    "series": "DTE",
+    "model_code": "DTE145",
+    "config": "6×4"
+   },
+   "search_key": "同力重工 DTE145 6×4 宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果说明DTE145型矿用宽体自卸车采用6×4驱动形式，用于矿山运输。",
+   "sources": [
+    "https://baike.baidu.com/item/DTE145%E5%9E%8B%E7%9F%BF%E7%94%A8%E5%AE%BD%E4%BD%93%E8%87%AA%E5%8D%B8%E8%BD%A6/68755753?bst=1790228306.e5387dc646e7acae"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "DTE145",
+   "identity": "code/DTE145",
+   "identity_kind": "code",
+   "model_variants": [
+    "同力重工 DTE145 型矿用宽体自卸车",
+    "DTE145 矿用宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽 HOWO 370马力 6X4 宽体矿用自卸车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "ZZ5707S3840AJ",
+    "config": "6X4"
+   },
+   "search_key": "中国重汽 HOWO 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "参数页显示型号ZZ5707S3840AJ，驱动形式6X4，额定载重52吨，属宽体矿用自卸车。",
+   "sources": [
+    "https://productedit.360che.com.cn/m47/11838_param.html"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "HOWO370",
+   "identity": "generic/中国重汽HOWO6X4宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中国重汽 HOWO 370马力 6X4 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工 祺龙 375马力 6X4 宽体矿用自卸车",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "祺龙",
+    "model_code": "NXG5640DT",
+    "config": "6X4"
+   },
+   "search_key": "徐工 祺龙 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "参数页显示型号NXG5640DT，驱动形式6X4，额定载重41吨，属宽体矿用自卸车。",
+   "sources": [
+    "https://productedit.360che.com.cn/m46/11596_param.html"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/徐工祺龙6X4宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "徐工 祺龙 375马力 6X4 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "宇通重工 375马力 6X4 宽体矿用自卸车(40吨)",
+   "brand": "宇通重工",
+   "slots": {
+    "brand": "宇通重工",
+    "series": "",
+    "model_code": "YT3621",
+    "config": "6X4"
+   },
+   "search_key": "宇通重工 YT3621 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "参数页显示型号YT3621，驱动形式6X4，额定载重40吨，标题明确为宽体矿用自卸车。",
+   "sources": [
+    "https://productedit.360che.com.cn/m43/10975_param.html"
+   ],
+   "source_query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/宇通重工6X4宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "宇通重工 375马力 6X4 宽体矿用自卸车(40吨)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "矿山 矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "山河智能 SWK 90B 矿用（宽体）自卸车",
+   "brand": "山河智能",
+   "slots": {
+    "brand": "山河智能",
+    "series": "SWK",
+    "model_code": "SWK 90B",
+    "config": "6×4"
+   },
+   "search_key": "山河智能 SWK 90B 6×4 矿用宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果参数显示最大总重 90t、额定载重 60t、驱动形式 6×4，与任务单 60 吨级 6×4 宽体矿用自卸车最贴合。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/72023_param.htm"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "SWK90",
+   "identity": "generic/山河智能SWK90B矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山河智能 SWK 90B 矿用（宽体）自卸车",
+    "SWK 90B 矿用（宽体）自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "山河智能 SWK105E 矿用（宽体）自卸车",
+   "brand": "山河智能",
+   "slots": {
+    "brand": "山河智能",
+    "series": "SWK",
+    "model_code": "SWK105E",
+    "config": "6×4"
+   },
+   "search_key": "山河智能 SWK105E 6×4 矿用宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果标注最大总重 105t、额定载重 70t、驱动形式 6×4，适用露天矿开采工况，属同构型更高吨位备选。",
+   "sources": [
+    "https://product.21-sun.com/proDetail/72027.shtm#1"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "SWK105",
+   "identity": "code/SWK105E",
+   "identity_kind": "code",
+   "model_variants": [
+    "山河智能 SWK105E 矿用（宽体）自卸车",
+    "SWK105E 矿用（宽体）自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工 祺龙 375马力 6×4 宽体矿用自卸车(NXG5640DT)",
+   "brand": "徐工汽车",
+   "slots": {
+    "brand": "徐工汽车",
+    "series": "祺龙",
+    "model_code": "NXG5640DT",
+    "config": "6×4"
+   },
+   "search_key": "徐工 祺龙 NXG5640DT 6×4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题与参数均为“徐工汽车 祺龙 375马力 6×4 宽体矿用自卸车(NXG5640DT)”，驱动形式 6×4、宽体矿用自卸上装，符合任务单构型。",
+   "sources": [
+    "https://www.86huoche.com/brand/268660.html",
+    "https://productedit.360che.com.cn/m46/11596_param.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "NXG5640",
+   "identity": "code/NXG5640DT",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 祺龙 375马力 6×4 宽体矿用自卸车(NXG5640DT)",
+    "祺龙 NXG5640DT 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃宽体矿用自卸车 ZZ5707S3640AJ",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "ZZ5707S3640AJ",
+    "config": "6×4"
+   },
+   "search_key": "中国重汽 豪沃 ZZ5707S3640AJ 6×4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果页明确“豪沃宽体矿用自卸车”，型号 ZZ5707S3640AJ，驱动方式 6×4，整车宽 3326mm 属宽体矿用构型。",
+   "sources": [
+    "https://www.chinavantruck.com/cn/product/howo-mining-dump-truck.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "ZZ5707S3640",
+   "identity": "code/ZZ5707S3640AJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃宽体矿用自卸车 ZZ5707S3640AJ",
+    "HOWO 宽体矿用自卸车 ZZ5707S3640AJ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽 80吨宽体矿用自卸车",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "",
+    "model_code": "",
+    "config": "6×4"
+   },
+   "search_key": "陕汽 80吨宽体矿用自卸车 6×4",
+   "class_match": "unknown",
+   "reason": "结果说明该车采用 6×4 驱动形式、装载 56 吨、大箱 29 方，为宽体矿用自卸车，吨位与任务单 60 吨级接近。",
+   "sources": [
+    "https://www.qcgys.com/show_article-58889.html",
+    "https://www.chinatruck.org/news/201309/21_43871.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/陕汽宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "陕汽 80吨宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "DTE145型矿用宽体自卸车",
+   "brand": "同力重工",
+   "slots": {
+    "brand": "同力重工",
+    "series": "DTE145",
+    "model_code": "DTE145",
+    "config": "6×4"
+   },
+   "search_key": "DTE145 6×4",
+   "class_match": "unknown",
+   "reason": "结果明确为同力重工矿用宽体自卸车，采用6×4驱动；额定载质量91吨，需核对与60吨级任务的匹配。",
+   "sources": [
+    "https://baike.baidu.com/item/DTE145%E5%9E%8B%E7%9F%BF%E7%94%A8%E5%AE%BD%E4%BD%93%E8%87%AA%E5%8D%B8%E8%BD%A6/68755753?bst=1790228306.e5387dc646e7acae"
+   ],
+   "source_query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "DTE145",
+   "identity": "generic/DTE145型矿用宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "DTE145型矿用宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SWK105E矿用（宽体）自卸车",
+   "brand": "山河智能",
+   "slots": {
+    "brand": "山河智能",
+    "series": "SWK105E",
+    "model_code": "SWK105E",
+    "config": "6×4"
+   },
+   "search_key": "SWK105E 6×4",
+   "class_match": "unknown",
+   "reason": "结果明确为山河智能矿用宽体自卸车，驱动形式6×4，额定载重量70吨，属于矿山宽体自卸车型。",
+   "sources": [
+    "https://product.21-sun.com/proDetail/72027.shtm#1"
+   ],
+   "source_query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "SWK105",
+   "identity": "generic/SWK105E矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SWK105E矿用（宽体）自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XG105宽体矿用卡车",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XG105",
+    "model_code": "XG105",
+    "config": "6×4"
+   },
+   "search_key": "XG105 6×4",
+   "class_match": "unknown",
+   "reason": "结果明确为徐工XG105宽体非公路矿用卡车，采用6×4驱动布局，额定载重70吨级。",
+   "sources": [
+    "https://cn.globalmachex.com/products/xcmg-xg105-wide-body-mining-truck-english-introduction"
+   ],
+   "source_query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "XG105",
+   "identity": "generic/XG105宽体矿用卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XG105宽体矿用卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "6×4/90t纯电动矿用自卸车",
+   "brand": "质子汽车",
+   "slots": {
+    "brand": "质子汽车",
+    "series": "纯电动矿用自卸车",
+    "model_code": "",
+    "config": "6×4"
+   },
+   "search_key": "质子汽车 6×4 90t",
+   "class_match": "unknown",
+   "reason": "结果页面列出质子汽车6×4/90t纯电动矿用自卸车，并注明3.6m宽体偏置驾驶室，符合矿山宽体自卸方向。",
+   "sources": [
+    "https://zzqckj.com/cpzx1/qx/6_4_cddkyc/6_4_cddkyc.htm#miaodian"
+   ],
+   "source_query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/6X490T纯电动矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "6×4/90t纯电动矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃矿山霸王（K40）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃矿山霸王",
+    "model_code": "ZZ5707S3840A",
+    "config": "6×4"
+   },
+   "search_key": "豪沃矿山霸王 6×4",
+   "class_match": "unknown",
+   "reason": "结果包含豪沃K40新款宽体矿山霸王自卸车及公告型号ZZ5707S3840A；另一结果明确豪沃矿山霸王为非公路矿用6×4自卸车。",
+   "sources": [
+    "https://www.360che.com/tech/171228/88222_all.html",
+    "https://cn.made-in-china.com/gongying/jnxlxwcy123-LKlQHdBjCRpY.html"
+   ],
+   "source_query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "K40",
+   "identity": "generic/豪沃矿山霸王",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃矿山霸王（K40）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "矿山 6×4 宽体自卸 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "SWK 90B 矿用宽体自卸车",
+   "brand": "山河智能",
+   "slots": {
+    "brand": "山河智能",
+    "series": "SWK",
+    "model_code": "SWK 90B",
+    "config": "6×4"
+   },
+   "search_key": "山河智能 SWK 90B 6×4 矿用宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果中明确为矿用宽体自卸车，额定载重量60t、驱动形式6×4，与任务单60吨级、6×4宽体矿卡最匹配。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/72023_param.htm"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SWK90",
+   "identity": "generic/SWK90B矿用宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SWK 90B 矿用宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO 宽体矿用自卸车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "ZZ5707S3840AJ",
+    "config": "6X4"
+   },
+   "search_key": "中国重汽 HOWO ZZ5707S3840AJ 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果中为6X4宽体矿用自卸车，额定载重52吨，接近任务单60吨级宽体矿卡。",
+   "sources": [
+    "https://productedit.360che.com.cn/m47/11838_param.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HOWO宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "5538KK 宽体矿用自卸车",
+   "brand": "北奔",
+   "slots": {
+    "brand": "北奔",
+    "series": "",
+    "model_code": "",
+    "config": "6×4"
+   },
+   "search_key": "北奔 5538KK 6×4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果中明确为北奔6×4 5538KK宽体矿用自卸车，采用矿用偏置驾驶室，符合同类矿山宽体自卸车构型。",
+   "sources": [
+    "https://m.d1cm.com/schq/201607290116125.shtml"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/5538KK宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "5538KK 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "YT3621 宽体矿用自卸车",
+   "brand": "宇通重工",
+   "slots": {
+    "brand": "宇通重工",
+    "series": "",
+    "model_code": "YT3621",
+    "config": "6X4"
+   },
+   "search_key": "宇通重工 YT3621 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果中型号YT3621，驱动形式6X4，额定载重40吨，为宽体矿用自卸车候选。",
+   "sources": [
+    "https://productedit.360che.com.cn/m43/10975_param.html"
+   ],
+   "source_query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "YT3621",
+   "identity": "code/YT3621",
+   "identity_kind": "code",
+   "model_variants": [
+    "YT3621 宽体矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "矿用宽体自卸车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工NXG5640DT矿用自卸车",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "NXG5640DT",
+    "model_code": "NXG5640DT",
+    "config": "6×4"
+   },
+   "search_key": "徐工 NXG5640DT 6×4 矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果明确为6×4非公路矿用自卸车、最大载重65吨，并标注为矿用宽体自卸车，与矿山宽体、6×4、约60吨级任务单高度吻合。",
+   "sources": [
+    "https://baike.baidu.com/item/%E5%BE%90%E5%B7%A5NXG5640DT%E7%9F%BF%E7%94%A8%E8%87%AA%E5%8D%B8%E8%BD%A6/682390?bst=1791525291.6629baf0553deec8"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "NXG5640",
+   "identity": "generic/徐工NXG5640DT矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "徐工NXG5640DT矿用自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "同力重工TL875H燃油宽体自卸车",
+   "brand": "同力重工",
+   "slots": {
+    "brand": "同力重工",
+    "series": "TL875H",
+    "model_code": "TL875H",
+    "config": ""
+   },
+   "search_key": "同力重工 TL875H 宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果给出额定载质量60t、面向大中型露天矿山场地运输的燃油宽体自卸车，是任务单60吨级宽体矿卡的正向匹配；结果未写明驱动形式，故config留空。",
+   "sources": [
+    "https://www.21-sun.com/guosi/proDetail/76670.htm"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "TL875",
+   "identity": "generic/同力重工TL875H燃油宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "同力重工TL875H燃油宽体自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽HOWO 370马力 6X4 宽体矿用自卸车（ZZ5707S3840AJ）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO",
+    "model_code": "ZZ5707S3840AJ",
+    "config": "6X4"
+   },
+   "search_key": "HOWO ZZ5707S3840AJ 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题即标注6X4宽体矿用自卸车，额定载重52吨、总质量75吨，宽体矿卡+6×4构型与任务单一致。",
+   "sources": [
+    "https://product.360che.com/m47/11838_param.html"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "HOWO370",
+   "identity": "code/ZZ5707S3840AJ",
+   "identity_kind": "code",
+   "model_variants": [
+    "中国重汽HOWO 370马力 6X4 宽体矿用自卸车（ZZ5707S3840AJ）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽HOWO矿山霸王宽体自卸车（70矿/50矿）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "HOWO矿山霸王",
+    "model_code": "",
+    "config": "6*4"
+   },
+   "search_key": "豪沃 矿山霸王 6*4 宽体自卸车",
+   "class_match": "unknown",
+   "reason": "结果以“矿山霸王价格宽体自卸车配置价格，70矿，50矿”出现，驱动形式6*4，属矿山宽体自卸序列；另有结果说明矿山霸王马力段420–540、采用矿用变速箱与车桥，适配矿山重载。",
+   "sources": [
+    "https://haowoqiche.gys.cn/supply/3781882048.html",
+    "http://ch.sinotrukafrica.com.cn/africadepartment-chinese/%e5%b8%82%e5%9c%ba/%e5%88%9a%e6%9e%9c%e9%87%91/%e7%95%85%e9%94%80%e8%bd%a6%e5%9e%8b/index.html"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中国重汽HOWO矿山霸王宽体自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中国重汽HOWO矿山霸王宽体自卸车（70矿/50矿）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "中国重汽105吨矿用自卸车（非公路宽体矿车系列）",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "非公路宽体矿车系列",
+    "model_code": "ZZ5A5HV404KF3B",
+    "config": "6x4"
+   },
+   "search_key": "中国重汽 105吨 6x4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果明确为“非公路宽体矿车系列”最新型号，驱动形式6x4，用于露天矿场土石方与矿石运输；吨位高于60吨，属同构型（宽体矿卡6×4）的高吨位备选，需在成像时按吨位注明差异。",
+   "sources": [
+    "http://www.sinotruk.com:8088/eportal/ui?pageId=c41d3dd3f8e54439b12a9fb47661ba68&articleKey=7e9f46c5c35845ea8cf9afc807bec70e&columnId=0cd200d85a354f939749dc177012cf5c"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中国重汽矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中国重汽105吨矿用自卸车（非公路宽体矿车系列）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "三一SYM3251ZZX1PHEV 6×4矿山坑口混动自卸车",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "SYM3251ZZX1PHEV",
+    "model_code": "SYM3251ZZX1PHEV",
+    "config": "6×4"
+   },
+   "search_key": "三一 SYM3251ZZX1PHEV 6×4 矿山自卸车",
+   "class_match": "unknown",
+   "reason": "结果标题直接给出“6×4矿山坑口混动自卸车（321）”及型号SYM3251ZZX1PHEV，属矿山6×4自卸构型；结果未给出载重，需用图时补充核对。",
+   "sources": [
+    "https://www.sanygroup.com/productList/?cate=9&childid=184"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SYM3251ZZX1PHEV",
+   "identity": "generic/三一SYM3251ZZX1PHEV6X4矿山坑口混动自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "三一SYM3251ZZX1PHEV 6×4矿山坑口混动自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "宇通重工YT3621 375马力 6X4 宽体矿用自卸车（40吨）",
+   "brand": "宇通重工",
+   "slots": {
+    "brand": "宇通重工",
+    "series": "YT3621",
+    "model_code": "YT3621",
+    "config": "6X4"
+   },
+   "search_key": "宇通重工 YT3621 6X4 宽体矿用自卸车",
+   "class_match": "unknown",
+   "reason": "结果为6X4宽体矿用自卸车，额定载重40吨、总质量62吨、车宽3.25米，属宽体矿卡同构型；吨位低于60吨级，作为同构型备选。",
+   "sources": [
+    "https://productedit.360che.com.cn/m43/10975_param.html"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "YT3621",
+   "identity": "generic/宇通重工YT36216X4宽体矿用自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "宇通重工YT3621 375马力 6X4 宽体矿用自卸车（40吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田欧曼GTL矿用工程型 400马力 6X4 5.6米自卸车（BJ3259DLPKB-AB）",
+   "brand": "福田欧曼（福田戴姆勒）",
+   "slots": {
+    "brand": "福田欧曼",
+    "series": "欧曼GTL",
+    "model_code": "BJ3259DLPKB-AB",
+    "config": "6X4"
+   },
+   "search_key": "欧曼GTL BJ3259DLPKB-AB 6X4 矿用工程自卸车",
+   "class_match": "unknown",
+   "reason": "结果为细分市场“矿用工程”的6X4自卸车，可用于矿山工况场景补充；但额定载重约12.76吨、总质量25吨，属公路矿用工程自卸，非60吨级宽体矿卡，仅作场景补充候选。",
+   "sources": [
+    "https://www.yunshuren.com/product-15782.html",
+    "https://dealer.360che.com/13986/price55621.html"
+   ],
+   "source_query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "BJ3259DLPKB",
+   "identity": "code/BJ3259DLPKBAB",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田欧曼GTL矿用工程型 400马力 6X4 5.6米自卸车（BJ3259DLPKB-AB）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "矿山 工程车 6×4 宽体自卸 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 29
+ },
+ "pool": {
+  "count": 29,
+  "required": 20,
+  "verifiable": 18,
+  "verifiable_share": 0.621,
+  "slots": 8,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 15
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 29,
+  "slots": 8,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 41,
+  "unique": 29,
+  "removed": 12,
+  "generic": 22
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

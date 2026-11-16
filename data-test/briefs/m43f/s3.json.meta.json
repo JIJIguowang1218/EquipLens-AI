@@ -1,0 +1,335 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "混凝土搅拌车",
+  "class_raw": "混凝土搅拌车",
+  "class_aliases": [
+   "搅拌车"
+  ],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 10,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": []
+  },
+  "unknowns": [],
+  "assumptions": [
+   "“12方”为搅拌筒容积/装载方量表述，schema 无对应容积字段（tonnage 为吨位），故未落入 hard/soft 约束"
+  ],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "混凝土搅拌车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "10 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T20:04:52",
+ "raw_input": "混凝土搅拌车 10 台 12 方",
+ "brief_path": "data-test\\briefs\\m43f\\s3.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2684,
+  "completion_tokens": 2702,
+  "total_tokens": 5386,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 1051
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 252
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "混凝土搅拌车",
+   "environment": "常规公路/城建工况（未指定矿山、寒区、高原等特化工况）",
+   "base_platform": "8×4 重型卡车底盘（前四后八），上装为 12 m³ 搅拌筒",
+   "configuration": "8×4 底盘 + 后倾式搅拌筒上装 + 尾部进出料装置",
+   "design_questions": [
+    "12 方搅拌筒与 8×4 底盘的体量与布置比例如何组织：筒体倾角与直径、后悬长度、筒体与前轴/驾驶室之间的体量过渡关系？",
+    "尾部进出料装置、操作平台与爬梯的人机与安全防护如何组织：站位、高度、扶手的连续性和可视可达性？",
+    "上装与底盘的连接逻辑如何表达：副车架与主梁的贴合方式、液压驱动（泵—马达—减速机）的布置与检修可达性？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "side",
+    "label": "整车侧面（搅拌筒与底盘关系主视区）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "尾部进出料与操作区",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "environment_protection"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "mixer_drum",
+    "label": "搅拌筒",
+    "kind": "part",
+    "location": "上装中部至尾部，前高后低倾斜布置",
+    "part_family": "welded_shell",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "筒体直径与长度决定整车体量观感与重心视觉",
+     "前后锥段与中段圆柱的分段比例、入孔/检修盖位置",
+     "筒体倾角与后悬长度构成侧面轮廓的关键斜线",
+     "涂装分色与筒体分段线如何呼应"
+    ],
+    "why": "搅拌车最核心的上装体量件，决定侧面轮廓与 12 方容量的视觉表达；可直接对比不同厂家在同一方量下的筒体比例与分段做法。"
+   },
+   {
+    "part": "mixer_charging_discharging",
+    "label": "进料斗与出料溜槽（进出料装置）",
+    "kind": "function",
+    "location": "尾部，进料斗在筒体上方后端，出料溜槽在尾门下方",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "function_ergonomics",
+     "regulation"
+    ],
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "尾门与进出料口的板金围合与加强筋布置",
+     "溜槽的摆动/回转机构与锁止形式",
+     "是否具备尾部防护、反光标识与防溅遮挡"
+    ],
+    "why": "尾部是搅拌车的作业面与法规密集区，能提供进出料结构、人机操作位与尾部防护的具体证据。"
+   },
+   {
+    "part": "mixer_subframe",
+    "label": "副车架（上装与底盘连接）",
+    "kind": "part",
+    "location": "底盘主梁上方，贯穿前后",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "platform",
+    "design_axes": [
+     "structure",
+     "manufacturing"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "副车架与主梁的连接方式（U 型螺栓/焊接座）",
+     "副车架断面高度对筒体离地与重心的影响",
+     "与前后支腿、水箱、挡泥板的接口"
+    ],
+    "why": "上装与底盘的接口决定了整车高度、重心与侧面轮廓下缘的连续感，是判断 12 方布置合理性的结构证据。"
+   },
+   {
+    "part": "mixer_access_platform",
+    "label": "操作平台与爬梯（含尾部踏板）",
+    "kind": "part",
+    "location": "尾部工作平台、筒体侧向爬梯",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "cross_vehicle",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "rear",
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "踏板高度、间距与防滑处理",
+     "扶手与护栏的连续性和收放方式",
+     "平台在泥浆/冲洗环境下的排液与防积料"
+    ],
+    "why": "人机与安全件，可跨车型比较做法；对判断尾部作业安全性与冲洗维护便利性有直接帮助。"
+   },
+   {
+    "part": "mixer_hydraulic_drive",
+    "label": "液压驱动与减速机（泵—马达—减速机）",
+    "kind": "function",
+    "location": "底盘取力处至筒体前端减速机",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "manufacturing",
+     "function_ergonomics"
+    ],
+    "views": [
+     "detail",
+     "side"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "减速机与筒体前端的连接法兰与支架",
+     "液压管路走向与固定点",
+     "检修空间与防护罩形式"
+    ],
+    "why": "决定筒体前端支架与前端体量收头的做法，也反映检修可达性与管路布置质量，适合特写视角取证。"
+   },
+   {
+    "part": "mixer_water_tank",
+    "label": "水箱与冲洗系统",
+    "kind": "part",
+    "location": "底盘侧面或副车架前端",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "cmf",
+     "function_ergonomics"
+    ],
+    "views": [
+     "side",
+     "detail"
+    ],
+    "design_relevance": "conditional",
+    "accept": "C",
+    "mechanism": [
+     "水箱形态与侧面体量的融合方式",
+     "加水口、放水阀与冲洗枪的取用位置",
+     "与挡泥板、侧防护的相对关系"
+    ],
+    "why": "属上装附件，可作为侧面下缘体量连续性与维护便利性的补充证据，非必需。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.configuration",
+    "value": "12 方对应 8×4 底盘（前四后八），常规城建工况",
+    "why": "12 m³ 搅拌筒在国内通常配 8×4 底盘；用户未说明驱动形式，按主流构型推断",
+    "confidence": 0.7
+   },
+   {
+    "field": "request.environment",
+    "value": "常规公路/城建工况",
+    "why": "用户未提出矿山、寒区、高原、腐蚀等特殊环境要求",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.base_platform",
+    "value": "外购重卡底盘 + 专用上装",
+    "why": "搅拌车普遍为改装类专用车，上装与前脸造型分属不同供应体系",
+    "confidence": 0.75
+   },
+   {
+    "field": "quantity",
+    "value": "10 台为选图数量，非采购台数",
+    "why": "本次输入为图片收集任务，台数按目标图片量理解",
+    "confidence": 0.8
+   },
+   {
+    "field": "preferences",
+    "value": "不限品牌、年份、排放标准与图片视角",
+    "why": "用户未给出品牌/年代/视角偏好，保留开放检索",
+    "confidence": 0.85
+   }
+  ],
+  "negative": [
+   "不收集泵车、自卸车、干混砂浆车等其他上装形式",
+   "不收集 6 方以下或 16 方以上非 12 方量级车型作为主体样本（如需比例对照须单独标注）",
+   "不以“同系列/造型相似”作为选图理由，理由须写明可提供的设计证据",
+   "不收集内饰与驾驶室内部视角",
+   "不推断具体品牌型号与底盘配置参数"
+  ]
+ },
+ "duration_ms": 36132
+}

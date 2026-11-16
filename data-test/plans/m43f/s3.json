@@ -1,0 +1,1100 @@
+{
+ "brief_id": "m43f-s3",
+ "created_at": "2026-11-16T20:08:44",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "混凝土搅拌车 8×4 底盘 + 后 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "常规公路/城建工况 8×4 底盘 + 后 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 2,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "常规公路/城建工况 工程车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 2,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "混凝土搅拌车 8×4 底盘 + 后 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "混凝土搅拌车 8×4 底盘 + 后 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 126,
+ "candidates": [
+  {
+   "model": "程力 CLW5310GJBS 12方混凝土搅拌车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "",
+    "model_code": "CLW5310GJBS",
+    "config": "8×4"
+   },
+   "search_key": "程力 CLW5310GJBS 8×4 12方搅拌车",
+   "class_match": "unknown",
+   "reason": "结果明确为12立方、8×4（前四后八）、国六底盘，匹配常规公路/城建12方搅拌车。",
+   "sources": [
+    "http://icljt.com/jiaobanche/453.html",
+    "https://www.cxqcxs.com/products/12-fang-hun-ning-tu-jiao-ban-che/"
+   ],
+   "source_query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5310GJBS",
+   "identity": "code/CLW5310GJBS",
+   "identity_kind": "code",
+   "model_variants": [
+    "程力 CLW5310GJBS 12方混凝土搅拌车",
+    "程信专汽 CLW5310GJBS 12方混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "上汽红岩杰狮 WL5310GJBCQG6BF 混凝土搅拌运输车",
+   "brand": "上汽红岩",
+   "slots": {
+    "brand": "上汽红岩",
+    "series": "杰狮",
+    "model_code": "WL5310GJBCQG6BF",
+    "config": "8×4"
+   },
+   "search_key": "上汽红岩杰狮 WL5310GJBCQG6BF 8×4 12方搅拌车",
+   "class_match": "unknown",
+   "reason": "结果标题为12方前四后八，正文为8×4四轴底盘、罐体可选8-12方，匹配任务单。",
+   "sources": [
+    "https://gkc1.com/jbc/2520.html"
+   ],
+   "source_query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "WL5310GJBCQG6",
+   "identity": "code/WL5310GJBCQG6BF",
+   "identity_kind": "code",
+   "model_variants": [
+    "上汽红岩杰狮 WL5310GJBCQG6BF 混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙 CLW5313GJBS6 混凝土搅拌运输车",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "德龙",
+    "model_code": "CLW5313GJBS6",
+    "config": "8×4"
+   },
+   "search_key": "陕汽德龙 CLW5313GJBS6 8×4 12方搅拌车",
+   "class_match": "unknown",
+   "reason": "结果给出8×4四轴重载国六底盘、罐体可选8-12方，可覆盖12方搅拌车需求。",
+   "sources": [
+    "https://clgsgfz.com/jbc/2521.html"
+   ],
+   "source_query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5313GJBS6",
+   "identity": "code/CLW5313GJBS6",
+   "identity_kind": "code",
+   "model_variants": [
+    "陕汽德龙 CLW5313GJBS6 混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽豪沃 CLH5311GJBZ6 混凝土搅拌运输车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃",
+    "model_code": "CLH5311GJBZ6",
+    "config": "8×4"
+   },
+   "search_key": "中国重汽豪沃 CLH5311GJBZ6 8×4 12方搅拌车",
+   "class_match": "unknown",
+   "reason": "结果虽标题为10方，但正文明确8×4四轴底盘、罐体可选8-12方，可按12方候选。",
+   "sources": [
+    "https://gkc1.com/jbc/2522.html"
+   ],
+   "source_query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLH5311GJBZ6",
+   "identity": "code/CLH5311GJBZ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "重汽豪沃 CLH5311GJBZ6 混凝土搅拌运输车",
+    "重汽豪沃 前四后八混凝土搅拌运输车（CLH5311GJBZ6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙新M3000 8×4 10/12方搅拌车",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "德龙新M3000",
+    "model_code": "",
+    "config": "8×4"
+   },
+   "search_key": "陕汽德龙新M3000 8×4 10/12方搅拌车",
+   "class_match": "unknown",
+   "reason": "结果明确为陕汽德龙8×4轻量化10方12方搅拌车，采用德龙新M3000驾驶室，匹配12方与常规城建工况。",
+   "sources": [
+    "http://huayidhj.b2b.huangye88.com/xinxi/ca37kcg6oa68ae.html"
+   ],
+   "source_query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "M3000",
+   "identity": "series/M3000",
+   "identity_kind": "series",
+   "model_variants": [
+    "陕汽德龙新M3000 8×4 10/12方搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "常规公路/城建工况 混凝土搅拌车 8×4 底盘 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "联合卡车U380 8X4 混凝土搅拌车",
+   "brand": "联合卡车",
+   "slots": {
+    "brand": "联合卡车",
+    "series": "U380",
+    "model_code": "SQR5311GJBD6T6-1",
+    "config": "8X4"
+   },
+   "search_key": "联合卡车U380 8X4 混凝土搅拌车",
+   "class_match": "unknown",
+   "reason": "结果标题直接给出联合卡车U380 380马力 8X4混凝土搅拌车，型号为SQR5311GJBD6T6-1。",
+   "sources": [
+    "https://www.yunshuren.com/product-1221.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "U380",
+   "identity": "generic/联合卡车U3808X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "联合卡车U380 8X4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中国重汽汕德卡SITRAK C7H 8X4 混凝土搅拌车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "汕德卡 SITRAK C7H",
+    "model_code": "ZZ1316N326MD1",
+    "config": "8X4"
+   },
+   "search_key": "中国重汽汕德卡SITRAK C7H 8X4 混凝土搅拌车",
+   "class_match": "unknown",
+   "reason": "结果标题为中国重汽SITRAK C7H重卡360马力8X4混凝土搅拌车(底盘)，型号ZZ1316N326MD1。",
+   "sources": [
+    "https://www.yunshuren.com/product-1177.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中国重汽汕德卡SITRAKC7H8X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中国重汽汕德卡SITRAK C7H 8X4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Sinotruk HOWO 8x4 混凝土搅拌车",
+   "brand": "Sinotruk HOWO",
+   "slots": {
+    "brand": "Sinotruk Howo",
+    "series": "HOWO",
+    "model_code": "ZZ1317N3667D1",
+    "config": "8x4"
+   },
+   "search_key": "Howo 8x4 Cement Mixer Trucks 16 CBM",
+   "class_match": "unknown",
+   "reason": "结果页明确为 HOWO 8x4 搅拌车（底盘型号 ZZ1317N3667D1，搅拌筒容积 16 CBM，可与 12 方级别上装匹配）；另有 HOWO 380hp 搅拌车条目注明 Drive type 8x4，同属 8×4 后倾式搅拌筒上装构型。",
+   "sources": [
+    "https://www.sinotrukhowotruck.com/sinotruk-cement-mixer-trucks/howo-8x4-cement-mixer-trucks-16-cbm.html",
+    "https://www.sinotruk-group.com/trucks/sinotruk-howo-380hp-concrete-mixer-truck/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SINOTRUKHOWO8X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Sinotruk HOWO 8x4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "Sinotruk Howo NX 8x4 Mixer Truck",
+   "brand": "Sinotruk HOWO",
+   "slots": {
+    "brand": "Sinotruk Howo",
+    "series": "HOWO NX",
+    "model_code": "ZZ1317V466JB1R",
+    "config": "8x4"
+   },
+   "search_key": "Sinotruk Howo NX 8x4 Mixer Truck",
+   "class_match": "unknown",
+   "reason": "结果页标题即 HOWO NX 8x4 搅拌车，标注 Drive type 8x4、搅拌容积 14m³，属 8×4 底盘 + 搅拌筒上装构型；另一处同车系条目给出型号 ZZ5315GJBN3063E1。",
+   "sources": [
+    "https://www.sinotruk-group.com/trucks/sinotruk-howo-nx-8x4-mixer-truck/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SINOTRUKHOWONX8X4MIXERTRUCK",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Sinotruk Howo NX 8x4 Mixer Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Sinotruk Howo T7H 8x4 Mixer Truck",
+   "brand": "Sinotruk HOWO",
+   "slots": {
+    "brand": "Sinotruk Howo",
+    "series": "HOWO T7H",
+    "model_code": "ZZ5317GJBV366HD1",
+    "config": "8x4"
+   },
+   "search_key": "Sinotruk Howo T7H 8x4 Mixer Truck",
+   "class_match": "unknown",
+   "reason": "结果页为 HOWO T7H 8x4 搅拌车，型号 ZZ5317GJBV366HD1，整备/外形尺寸与 8×4 重卡底盘一致，符合任务单底盘构型。",
+   "sources": [
+    "https://www.sinotruk-howo.com/trucks/sinotruk-howo-t7h-8x4-mixer-truck/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SINOTRUKHOWOT7H8X4MIXERTRUCK",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Sinotruk Howo T7H 8x4 Mixer Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SINOTRUK HOWO TX 8X4 混凝土搅拌车",
+   "brand": "Sinotruk HOWO",
+   "slots": {
+    "brand": "SINOTRUK HOWO",
+    "series": "HOWO TX",
+    "model_code": "ZZ4186V391HE",
+    "config": "8x4"
+   },
+   "search_key": "SINOTRUK HOWO TX 8X4 CONCRETE MIXER",
+   "class_match": "unknown",
+   "reason": "两条结果均为 HOWO TX 8×4 搅拌车页面，Drive type 8x4，前桥 9.5T+9.5T、后桥 16T×2，典型 8×4 搅拌车底盘布置。",
+   "sources": [
+    "https://www.sinotruk-group.com/trucks/sinotruk-howo-tx-8x4-concrete-mixer-truck/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SINOTRUKHOWOTX8X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SINOTRUK HOWO TX 8X4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SINOTRUK SITRAK 8×4 搅拌车",
+   "brand": "SINOTRUK SITRAK",
+   "slots": {
+    "brand": "SINOTRUK SITRAK",
+    "series": "SITRAK",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "SINOTRUK SITRAK 8x4 Mixer Truck",
+   "class_match": "unknown",
+   "reason": "结果明确列出 SINOTRUK SITRAK 8×4 Mixer Truck（大容量混凝土搅拌车，MAN 技术），构型为 8×4 底盘 + 搅拌筒，适用于常规公路/城建工况。",
+   "sources": [
+    "https://cimcint.com/mixer-truck-for-sale/",
+    "https://www.huawin.cn/es/producto/camion-hormigonera-sinotruk-sitrak-8x4/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SINOTRUKSITRAK8X4搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SINOTRUK SITRAK 8×4 搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "中集凌宇 HOWO(T5G)底盘 8X4 混凝土搅拌运输车",
+   "brand": "中集凌宇（凌宇牌）",
+   "slots": {
+    "brand": "凌宇牌",
+    "series": "HOWO T5G",
+    "model_code": "CLY5317GJB30E54",
+    "config": "8X4"
+   },
+   "search_key": "CLY5317GJB30E54 8X4",
+   "class_match": "unknown",
+   "reason": "上装品牌凌宇牌、底盘品牌重汽豪沃(HOWO)、底盘车系 HOWO T5G，页面标 8X4 且为混凝土搅拌运输车，属任务单要求的 8×4 底盘 + 搅拌筒上装组合。",
+   "sources": [
+    "https://product.360che.com/price/c8_s67_b417_s6235_p2%e4%b8%ad%e5%9b%bd%e9%87%8d%e6%b1%bd.html#1"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中集凌宇HOWO底盘8X4混凝土搅拌运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中集凌宇 HOWO(T5G)底盘 8X4 混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Shacman F2000 8X4 Mixer Truck",
+   "brand": "Shacman",
+   "slots": {
+    "brand": "Shacman",
+    "series": "F2000",
+    "model_code": "",
+    "config": "8X4"
+   },
+   "search_key": "Shacman F2000 8X4 Mixer Truck",
+   "class_match": "unknown",
+   "reason": "结果页标题为 Shacman F2000 8X4 搅拌车，强调大容积搅拌筒与稳健底盘，符合 8×4 底盘搅拌车构型。",
+   "sources": [
+    "https://cimcint.com/product-category/truck-for-sale/mixer-truck-for-sale/"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "F2000",
+   "identity": "code/F2000",
+   "identity_kind": "code",
+   "model_variants": [
+    "Shacman F2000 8X4 Mixer Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XCMG XS412 8x4 Twin-Steer Mixer Truck",
+   "brand": "XCMG",
+   "slots": {
+    "brand": "XCMG",
+    "series": "",
+    "model_code": "XS412",
+    "config": "8x4"
+   },
+   "search_key": "XCMG XS412 8x4",
+   "class_match": "unknown",
+   "reason": "结果标题直接给出XCMG XS412 8x4搅拌车车型。",
+   "sources": [
+    "https://eu-pl.ironplanet.com/for-sale/Ci%C4%99%C5%BCar%C3%B3wki-mikser-CHN/16177740?h=5000&rr=0.02222&hitprm=&pnLink=yes"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "XS412",
+   "identity": "code/XS412",
+   "identity_kind": "code",
+   "model_variants": [
+    "XCMG XS412 8x4 Twin-Steer Mixer Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙 8×4混凝土搅拌车（SX5315GJBJT346）",
+   "brand": "陕汽德龙",
+   "slots": {
+    "brand": "陕汽德龙",
+    "series": "德龙",
+    "model_code": "SX5315GJBJT346",
+    "config": "8×4"
+   },
+   "search_key": "陕汽德龙 8×4 12-16m³",
+   "class_match": "unknown",
+   "reason": "结果为陕汽德龙8×4混凝土搅拌车，产品规格12-16m³，覆盖12方需求。",
+   "sources": [
+    "http://www.hwalgs.com/products/jiaobanche451.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SX5315GJBJT346",
+   "identity": "code/SX5315GJBJT346",
+   "identity_kind": "code",
+   "model_variants": [
+    "陕汽德龙 8×4混凝土搅拌车（SX5315GJBJT346）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XCMG XG1 DH400M 8x4 Twin-Steer Mixer Truck",
+   "brand": "XCMG",
+   "slots": {
+    "brand": "XCMG",
+    "series": "XG1",
+    "model_code": "DH400M",
+    "config": "8x4"
+   },
+   "search_key": "XCMG XG1 DH400M 8x4",
+   "class_match": "unknown",
+   "reason": "结果标题直接给出XCMG XG1 DH400M 8x4搅拌车车型。",
+   "sources": [
+    "https://eu-es.ironplanet.com/for-sale/Camiones-Hormigonera-CHN/16177742?h=5000&rr=0.02&hitprm=&pnLink=yes"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "DH400",
+   "identity": "code/DH400M",
+   "identity_kind": "code",
+   "model_variants": [
+    "XCMG XG1 DH400M 8x4 Twin-Steer Mixer Truck"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HOWO 8X4 12cbm 混凝土搅拌车（CLW5319GPI）",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽豪沃",
+    "series": "HOWO",
+    "model_code": "CLW5319GPI",
+    "config": "8x4"
+   },
+   "search_key": "HOWO 8X4 12cbm CLW5319GPI",
+   "class_match": "unknown",
+   "reason": "结果标题含HOWO 8X4 12cbm，并给出型号CLW5319GPI，构型与容积匹配。",
+   "sources": [
+    "https://www.machinio.com/listings/82058197-hot-sale-howo-8x4-12cbm-construction-vehicle-cment-transportation-machine-beton-machine-truck-concrete-mixer-truck-in-hubei-china#1"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5319GPI",
+   "identity": "code/CLW5319GPI",
+   "identity_kind": "code",
+   "model_variants": [
+    "HOWO 8X4 12cbm 混凝土搅拌车（CLW5319GPI）",
+    "CLW5319GPI HOWO 8X4 12cbm 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "混凝土搅拌车 8×4 底盘 + 后倾式搅 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 实车"
+    }
+   ],
+   "dimensions": [
+    "unit",
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽豪沃 前四后八 10方混凝土搅拌运输车（罐体可选8-12方）",
+   "brand": "重汽",
+   "slots": {
+    "brand": "重汽",
+    "series": "豪沃",
+    "model_code": "CLH5311GJBZ6",
+    "config": "8X4"
+   },
+   "search_key": "重汽豪沃 前四后八 8X4 搅拌车 ZZ1317N306GF1",
+   "class_match": "unknown",
+   "reason": "结果明确为8×4四轴重载底盘，罐体可选8-12方，符合12方搅拌车及常规城建工况需求。",
+   "sources": [
+    "https://gkc1.com/jbc/2522.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/重汽豪沃前四后八10方混凝土搅拌运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽豪沃 前四后八 10方混凝土搅拌运输车（罐体可选8-12方）",
+    "重汽豪沃 前四后八 10方混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙 前四后八 混凝土搅拌运输车（罐体可选8-12方）",
+   "brand": "陕汽",
+   "slots": {
+    "brand": "陕汽",
+    "series": "德龙",
+    "model_code": "SX1319MB6F1",
+    "config": "8X4"
+   },
+   "search_key": "陕汽德龙 8X4 搅拌车 CLW5313GJBS6 SX1319MB6F1",
+   "class_match": "unknown",
+   "reason": "结果说明为8×4四轴重载国六底盘，罐体可选8-12方，并给出德龙底盘型号，适配12方搅拌车。",
+   "sources": [
+    "https://clgsgfz.com/jbc/2521.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/陕汽德龙前四后八混凝土搅拌运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "陕汽德龙 前四后八 混凝土搅拌运输车（罐体可选8-12方）",
+    "陕汽德龙 前四后八混凝土搅拌运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "联合卡车 U380 8X4 混凝土搅拌车",
+   "brand": "联合卡车",
+   "slots": {
+    "brand": "联合卡车",
+    "series": "U380",
+    "model_code": "SQR5311GJBD6T6-1",
+    "config": "8X4"
+   },
+   "search_key": "联合卡车U380 8X4 混凝土搅拌车",
+   "class_match": "unknown",
+   "reason": "结果标题明确为联合卡车U380 380马力 8X4混凝土搅拌车，并给出公告型号，符合8×4底盘构型。",
+   "sources": [
+    "https://www.yunshuren.com/product-1221.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "U380",
+   "identity": "code/U380",
+   "identity_kind": "code",
+   "model_variants": [
+    "联合卡车 U380 8X4 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Mercedes-Benz Arocs 4142 8x4 12 M3 IMER 混凝土搅拌车",
+   "brand": "Mercedes-Benz",
+   "slots": {
+    "brand": "Mercedes-Benz",
+    "series": "Arocs",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "Mercedes Arocs 4142 8x4 12 M3 concrete m",
+   "class_match": "unknown",
+   "reason": "结果标题明确为Mercedes-Benz Arocs 4142、8x4底盘、12 M3搅拌上装，直接匹配8×4与12方构型。",
+   "sources": [
+    "https://machineryline.com/-/sale/concrete-mixer-trucks/Mercedes-Benz/2023-MODEL-4142-MERCEDES-AROCS-12-M3-iMER--26103015574717510100?openFromPage=list&openFromPageReason=price_request&openMessageFormType=list_without_pri"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/AROCS/4142",
+   "identity_kind": "series",
+   "model_variants": [
+    "Mercedes-Benz Arocs 4142 8x4 12 M3 IMER 混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中集凌宇 重汽豪沃(HOWO)底盘混凝土搅拌车",
+   "brand": "中集凌宇",
+   "slots": {
+    "brand": "中集凌宇",
+    "series": "豪沃(HOWO)底盘",
+    "model_code": "CLY5317GJB30E54",
+    "config": "8X4"
+   },
+   "search_key": "中集凌宇 豪沃 8X4 搅拌车 CLY5317GJB30E54",
+   "class_match": "unknown",
+   "reason": "结果明确给出驱动形式8X4、上装型号CLY5317GJB30E54，属四轴前四后八搅拌车底盘+搅拌上装，符合任务单构型。",
+   "sources": [
+    "https://product.360che.com/price/c8_s67_b417_s6235_p1%e4%b8%ad%e5%9b%bd%e9%87%8d%e6%b1%bd-2%e9%87%8d%e6%b1%bd-4%e5%9b%bd%e4%ba%94.html#1"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/中集凌宇重汽豪沃底盘混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中集凌宇 重汽豪沃(HOWO)底盘混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "唐鸿重工 重汽豪沃(HOWO)底盘混凝土搅拌车",
+   "brand": "唐鸿重工",
+   "slots": {
+    "brand": "唐鸿重工",
+    "series": "豪沃(HOWO)底盘",
+    "model_code": "",
+    "config": "8X4"
+   },
+   "search_key": "唐鸿重工 豪沃 8X4 混凝土搅拌车",
+   "class_match": "unknown",
+   "reason": "参数页显示驱动形式8X4、整车为混凝土搅拌车，轴距1800+3050+1350mm，为四轴搅拌车构型。",
+   "sources": [
+    "https://product.360che.com/s33/8361_67_param.html#1"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/唐鸿重工重汽豪沃底盘混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "唐鸿重工 重汽豪沃(HOWO)底盘混凝土搅拌车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陕汽德龙 8×4混凝土搅拌车（12-16m³）",
+   "brand": "陕汽德龙",
+   "slots": {
+    "brand": "陕汽德龙",
+    "series": "德龙",
+    "model_code": "SX5315GJBJT346",
+    "config": "8X4"
+   },
+   "search_key": "陕汽德龙 8×4 混凝土搅拌车 12-16m³",
+   "class_match": "unknown",
+   "reason": "标题与正文明确为陕汽德龙8×4混凝土搅拌车，产品规格12-16m³，含尾部进出料系统，符合构型与容积。",
+   "sources": [
+    "http://www.hwalgs.com/products/jiaobanche451.html"
+   ],
+   "source_query": "混凝土搅拌车 8×4 底盘 + 后 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "16",
+   "identity": "generic/陕汽德龙8X4混凝土搅拌车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "陕汽德龙 8×4混凝土搅拌车（12-16m³）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "混凝土搅拌车 8×4 底盘 + 后 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 16,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 25,
+  "required": 23,
+  "verifiable": 13,
+  "verifiable_share": 0.52,
+  "slots": 10,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 6
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 25,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 48,
+  "unique": 25,
+  "removed": 23,
+  "generic": 13
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 2
+}

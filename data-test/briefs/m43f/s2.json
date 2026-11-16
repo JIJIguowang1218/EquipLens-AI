@@ -1,0 +1,301 @@
+{
+ "brief_id": "m43f-s2",
+ "request": {
+  "raw": "汽车起重机 6 台 25 吨级 高清",
+  "class": "汽车起重机",
+  "environment": null,
+  "base_platform": {
+   "value": "多轴通用卡车底盘改装的汽车起重机专用底盘（3–4 轴，带前后支腿与转台）",
+   "confidence": 0.8
+  },
+  "configuration": "卡车底盘 + 转台 + 伸缩式吊臂上装；具体驱动形式与轴数未说明",
+  "page_budget": {
+   "vehicle_slots": 6
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "models_pinned": [],
+  "constraints": {
+   "exclude": [],
+   "views": []
+  },
+  "brand_quota": null,
+  "foreign_ratio": null
+ },
+ "assumptions": [
+  {
+   "field": "environment",
+   "value": "通用工地/道路（非特定极端工况）",
+   "why": "输入未说明使用环境，按 25 吨级汽车起重机最常见工况默认；若为沙漠/寒区/矿山需重开环境轴",
+   "confidence": 0.5
+  },
+  {
+   "field": "configuration",
+   "value": "多轴卡车底盘 + 转台 + 伸缩吊臂的常规汽车起重机布置",
+   "why": "输入只给吨位与类别，未给驱动形式/轴数/上装形式，按该类产品常规构型推断",
+   "confidence": 0.6
+  },
+  {
+   "field": "parts",
+   "value": "吊臂、支腿、转台为按品类定义推断的对象，非用户点名",
+   "why": "用户只给了品类+吨位+数量+画质要求，未点名任何部件；为使任务单可检索，仅取该品类定义性的三个上装/功能件，并在 label 中保留可读中文名",
+   "confidence": 0.4
+  },
+  {
+   "field": "preferences.tonnage",
+   "value": "25 吨级（约 20–30 t 起重能力区间）",
+   "why": "输入明确写 25 吨级，检索时按该吨位段而非精确型号筛选",
+   "confidence": 0.9
+  },
+  {
+   "field": "page_budget",
+   "value": 6,
+   "why": "规则：exact 4 + environment 2",
+   "confidence": 1.0
+  }
+ ],
+ "region_requirements": [
+  {
+   "region": "front_face",
+   "label": "驾驶室前脸（起重机底盘驾驶室）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "front",
+    "hero_45"
+   ],
+   "accept": "C"
+  },
+  {
+   "region": "side",
+   "label": "整车侧面（底盘+转台+吊臂侧视轮廓）",
+   "fields": [
+    "gesture",
+    "proportion",
+    "character_lines",
+    "cmf",
+    "judgement"
+   ],
+   "views": [
+    "side",
+    "hero_45"
+   ],
+   "accept": "C"
+  }
+ ],
+ "part_requirements": [
+  {
+   "part": "custom_boom",
+   "label": "吊臂（伸缩起重臂）",
+   "kind": "part",
+   "location": "上装/转台之上，向前上方伸出",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "cmf"
+   ],
+   "design_relevance": "strong",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "A",
+   "mechanism": [
+    "伸缩节数与节间搭接关系决定侧视分段节奏",
+    "臂截面形状（多边形/椭圆）与涂装分区影响体量感",
+    "臂头与托架、卷扬的相对位置关系反映上装布局"
+   ],
+   "why": "汽车起重机与普通卡车最本质的造型差异就在吊臂与转台的组合关系；侧视/45°高清图能提供臂节分段、截面与涂装分区的直接证据，是判断该品类设计语言的核心样本"
+  },
+  {
+   "part": "custom_outrigger",
+   "label": "支腿（H 型液压支腿）",
+   "kind": "function",
+   "location": "底盘两侧中后部，向外伸出",
+   "part_family": "frame_profile",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "function_ergonomics"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "detail",
+    "hero_45"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "支腿箱体与底盘大梁的连接节点与加强结构",
+    "展开/收回状态下的横向体量与离地关系",
+    "支腿盘与地面接触件的形态"
+   ],
+   "why": "支腿是汽车起重机区别于普通载货车最显眼的功能附件，决定了侧面剪影的下部轮廓与横向体量；只有在支腿伸出或部分伸出、且视角能看到侧下部时才提供有效证据，故为条件性"
+  },
+  {
+   "part": "custom_turntable",
+   "label": "转台（上车回转平台）",
+   "kind": "part",
+   "location": "底盘后部上方，吊臂与操纵室的安装基座",
+   "part_family": "cast_forged",
+   "taxonomy_status": "new",
+   "relation_axis": "exact",
+   "design_axes": [
+    "structure",
+    "proportion",
+    "cmf"
+   ],
+   "design_relevance": "conditional",
+   "views": [
+    "side",
+    "hero_45",
+    "detail"
+   ],
+   "accept": "B",
+   "mechanism": [
+    "转台与底盘车架的界面与回转支承外露关系",
+    "转台侧板的分缝、加强筋与涂装分区",
+    "转台与吊臂根部、操纵室的体量过渡"
+   ],
+   "why": "转台是底盘与上装的造型衔接点，能说明“卡车底盘如何过渡到起重机上装”；侧视与 45° 高清图可读出分缝与体量过渡，但小吨位机型上装较紧凑，可见度受角度限制，故为条件性"
+  }
+ ],
+ "research_units": [
+  {
+   "unit_id": "u-exact",
+   "tier": "exact",
+   "scope": "汽车起重机 卡车底盘 + 转台 + 伸缩式吊臂上装；具体驱动形式与轴数未说明",
+   "parts": [
+    "custom_boom",
+    "custom_outrigger",
+    "custom_turntable"
+   ],
+   "quota": 4,
+   "budget": {
+    "max_queries": 6,
+    "max_rounds": 2
+   },
+   "stop": "4 台占满即停"
+  },
+  {
+   "unit_id": "u-env",
+   "tier": "environment",
+   "scope": "汽车起重机 工程车",
+   "parts": [
+    "custom_boom",
+    "custom_outrigger",
+    "custom_turntable"
+   ],
+   "quota": 2,
+   "budget": {
+    "max_queries": 4,
+    "max_rounds": 2
+   },
+   "stop": "2 台占满即停"
+  }
+ ],
+ "tiers": [
+  "exact",
+  "environment"
+ ],
+ "budget": {
+  "max_queries": 22
+ },
+ "stop_rules": {},
+ "negative": [
+  "客车",
+  "SUV",
+  "房车",
+  "多车拼图",
+  "内饰",
+  "广告"
+ ],
+ "strategy_ref": "default@v1",
+ "taskspec": {
+  "intent": "new_task",
+  "class": "汽车起重机",
+  "class_raw": "汽车起重机",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [
+    "高清"
+   ],
+   "year": null,
+   "tonnage": "25吨级",
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "environment",
+    "text": "使用工况未说明",
+    "severity": "defaultable",
+    "proposal": "通用工地/道路"
+   },
+   {
+    "field": "configuration",
+    "text": "驱动形式未说明",
+    "severity": "defaultable",
+    "proposal": "按汽车起重机常规底盘"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "汽车起重机",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ }
+}

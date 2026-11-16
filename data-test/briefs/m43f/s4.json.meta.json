@@ -1,0 +1,232 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "高空作业车",
+  "class_raw": "高空作业车",
+  "class_aliases": [],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "quantity",
+    "class"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "configuration",
+    "text": "自行式",
+    "severity": "defaultable",
+    "proposal": "“自行式”不是驱动形式，如需要请补充驱动形式"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "高空作业车",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T20:05:24",
+ "raw_input": "高空作业车 6 台 自行式",
+ "brief_path": "data-test\\briefs\\m43f\\s4.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2686,
+  "completion_tokens": 2230,
+  "total_tokens": 4916,
+  "prompt_tokens_details": {
+   "cached_tokens": 2432
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 985
+  },
+  "prompt_cache_hit_tokens": 2432,
+  "prompt_cache_miss_tokens": 254
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "高空作业车",
+   "environment": "",
+   "base_platform": "自行式高空作业车底盘（轮式或履带，待确认）",
+   "configuration": "自行式（自走底盘，非驱动形式表述）",
+   "design_questions": [
+    "自行式高空作业车的上装（臂架 + 作业平台）与底盘、驾驶室之间如何形成体量关系与家族化造型语言？",
+    "臂架收起姿态、轮组与离地关系如何决定整机侧面轮廓与识别度？",
+    "上装结构件（臂架截面、伸缩节、平台栏杆）的分缝与材料工艺如何约束外观？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸（驾驶室/机罩正面）",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "cmf"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面整机轮廓（底盘 + 臂架收起姿态）",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "structure"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_boom",
+    "label": "臂架（工作臂）",
+    "kind": "function",
+    "location": "上装/车体上部，转台至臂端",
+    "part_family": "frame_profile",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "structure",
+     "proportion",
+     "cmf"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "臂架截面形式（箱型/桁架）与伸缩节分缝方式决定上装结构语言与视觉轻重",
+     "收起姿态与折叠方式决定整机侧面剪影、重心视觉与高度比例",
+     "臂体涂装分色与警示标识影响整机色彩节奏与安全辨识"
+    ],
+    "why": "臂架是自行式高空作业车品类的定义性功能件，决定整机轮廓、比例与结构表达，是判断上装造型语言与制造工艺约束的核心证据，且可跨台数比较构型差异。"
+   },
+   {
+    "part": "custom_work_platform",
+    "label": "工作斗/作业平台",
+    "kind": "function",
+    "location": "臂架末端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "function_ergonomics",
+     "structure",
+     "cmf"
+    ],
+    "views": [
+     "detail",
+     "hero_45"
+    ],
+    "design_relevance": "conditional",
+    "accept": "B",
+    "mechanism": [
+     "平台尺寸、栏杆分档与进出口形式体现人机与安全法规要求",
+     "栏杆管件/板件连接节点与折弯工艺反映制造与装配水平",
+     "平台与臂端的连接接口与配色关系影响上装整体收口"
+    ],
+    "why": "作业平台是上装末端可见度最高的功能界面，能提供人机尺度、栏杆构造与安全件细节证据，用于校核上装造型收口与合规细节；仅在平台可见时纳入。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "quantity",
+    "value": "6 台",
+    "why": "用户原话给定台数，属硬约束，用于样本配比",
+    "confidence": 1.0
+   },
+   {
+    "field": "configuration",
+    "value": "自行式",
+    "why": "用户原词“自行式”指自走底盘能力，不是驱动形式（4×2/4×4 等）；驱动形式与转向形式仍需确认",
+    "confidence": 0.6
+   },
+   {
+    "field": "base_platform",
+    "value": "轮式自走底盘（可能含履带变体）",
+    "why": "用户未指定底盘形式，按自行式高空作业车主流基型推断，待确认",
+    "confidence": 0.4
+   },
+   {
+    "field": "parts",
+    "value": "臂架、工作斗",
+    "why": "用户未点名任何部件，但为满足可检索的设计对象，仅按品类定义性功能件（上装工作装置）补入，未补格栅/大灯/保险杠等未提及件",
+    "confidence": 0.5
+   },
+   {
+    "field": "environment",
+    "value": "",
+    "why": "输入未给工况，默认不启用环境轴，形态按平台继承/同品类比较",
+    "confidence": 0.7
+   }
+  ],
+  "negative": [
+   "不要把用户未提及的部件补入（如格栅、大灯、保险杠、支腿、爬梯）；如需拆解须用户点名",
+   "不要引用任何部件/类目词表，只按用户原话与品类定义写 label",
+   "不要编造 page_budget / research_units / quota / tiers / budget 等代码侧字段",
+   "不要用“相似/同系列”作为纳入理由，理由须写明能提供什么设计证据",
+   "不要把“自行式”当作驱动形式写进构型结论，需保留 needs_confirmation"
+  ]
+ },
+ "duration_ms": 32180
+}
