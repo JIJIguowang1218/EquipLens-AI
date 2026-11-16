@@ -14,6 +14,7 @@
 | **BL-008** | 冷启动种子层 `ColdStartSeeder`（默认关、池 short 开、≤8 查询/类目、证据门槛） | pending | S0-03 已采纳为“改进”；实现后先跑 V7 A/B（池扩大 ≥20% 且 confirmed 不降），不得默认开启 |
 | **BL-010** | TaskSpec 剩余字段接线（**P0 已完成 2026-11-16**：`brands_include/exclude` → 品牌查询 + negative、`models_pinned` → engine pins；P1 已完成（2026-11-16：`constraints.exclude` → negative、`constraints.views` → part_requirements、`brand_quota` 软执行+披露、`foreign_ratio` 未核验标记）；P2：`scope` → 邻近设计） | in_progress | P0 已接：`taskspec.to_brief` → `briefing.apply_taskspec` → `planning.build_query_plan`/`negative_terms` → engine `pins`；P1/P2 未做；P1 仍是首次交付硬门槛的一半（配额披露） |
 | **BL-011** | rank 默认对照：先比 plan 层 top-N 与每 target 分布，有实质差异再跑 5 brief × 2 臂 loop（LLM vs 确定性） | pending | E41 仅 2 case；门槛：交付/备选/degraded 一致且省 ≥20 s 才切默认；排 M4.3 验收后、第一次用户交付前 |
+| **BL-012** | 离线视觉参考库（S2-06 条件性 go）：≥30 型号、≥10 图/型号、≥300 run-disjoint + 人工核验测试图；目标 top-1 ≥75%、balanced ≥70%、margin p10 > 0 | pending | 达标前只允许 top-3 短名单，不得 accept/reject；数据采集是主要成本；V19 探针：53.0% vs 6.7% |
 | **BL-005** | 把 `scripts/check_machine.py` 纳入发布前检查清单 | done | 2026-11-15 已加 `COMMANDS.md` / `AGENTS.md` |
 
 ## 记录

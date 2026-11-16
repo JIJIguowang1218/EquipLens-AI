@@ -1,0 +1,5318 @@
+{
+  "probe": "visual-reference-library",
+  "status": "ok",
+  "generated_at": "2026-11-16T14:00:17+0800",
+  "task": "S2-06",
+  "question": "image-to-image 每型号参考图库能否比零样本文本标签更好地区分型号身份？",
+  "model": {
+    "name": "unum-cloud/uform3-image-text-english-small",
+    "backend": "UForm3 ONNX (CPU) via src/equiplens/gate.py",
+    "image_embed_dim": 256,
+    "preprocessing": "gate._get_gate()['ip'] / ['ie']，与门卫同一权重"
+  },
+  "method": {
+    "image": "UForm3 image encoder，单位向量，余弦相似度",
+    "prototype": "每型号参考图均值向量，L2 归一化",
+    "leave_one_out": "测试图 i 的真型号质心 = 该型号其余 N-1 张图的均值；其它型号质心用其全部图；top-1 over 全部合格型号",
+    "candidates": "只含图片数 >= min_images_per_model 的型号（主结果 15 个）",
+    "chance": "1 / num_candidate_models",
+    "identity_primary": "verifications[*].identity == 'confirmed'（标题/型号码命中目标型号）",
+    "identity_fallback": "未使用（confirmed 已满足门槛）",
+    "text_baseline": "跳过：文本标签已在 S2-01 测过（3 选 1 11.0% vs 33.3%）",
+    "near_duplicate": "dHash 64bit，同型号参考 Hamming <= 8 视为近重复",
+    "within_family": "候选限制在同 family（desert/forklift/roller/wrecker/sweeper）内",
+    "binomial_test": "精确二项双侧检验，H0: top1 == 1/num_models"
+  },
+  "corpus": {
+    "source": "data-test/runs/m43-*/state.json (asset_meta + verifications)",
+    "n_pairs_total": 335,
+    "n_runs": 10,
+    "runs_used": [
+      "m43-base-c1-desert",
+      "m43-base-c4-forklift",
+      "m43-base-c5-roller",
+      "m43-base-h2-wrecker",
+      "m43-base-h3-sweeper",
+      "m43-sess-c1-desert",
+      "m43-sess-c4-forklift",
+      "m43-sess-c5-roller",
+      "m43-sess-h2-wrecker",
+      "m43-sess-h3-sweeper"
+    ],
+    "identity_counts": {
+      "confirmed": 92,
+      "probable": 80,
+      "unknown": 163
+    },
+    "primary_policy": "confirmed",
+    "fallback_to_verified": false,
+    "min_images_per_model": 3,
+    "min_models_required": 10,
+    "min_test_images_required": 30,
+    "confirmed": {
+      "identity_policy": "confirmed",
+      "identity_policy_description": "verifications[*].identity == 'confirmed'（标题/型号码命中目标型号）",
+      "n_pairs_before_identity_filter": 335,
+      "n_pairs_after_identity_filter": 92,
+      "n_filtered_by_identity": 243,
+      "n_missing_verification": 0,
+      "n_models_with_images": 35,
+      "n_models_qualified": 15,
+      "n_images_qualified": 66,
+      "n_loo_tests": 66,
+      "models": [
+        {
+          "model": "26H",
+          "family": "roller",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "family": "sweeper",
+          "n_images": 4,
+          "runs": [
+            "m43-base-h3-sweeper"
+          ]
+        },
+        {
+          "model": "CPD25",
+          "family": "forklift",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c4-forklift"
+          ]
+        },
+        {
+          "model": "EQ245（EQ2100E6D）六驱沙漠车",
+          "family": "desert",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "LSS1001",
+          "family": "roller",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "LSS2101-2",
+          "family": "roller",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "LSS320B",
+          "family": "roller",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "MOL H6066 6x6 特种运输车",
+          "family": "desert",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "Mol HF8066 6x6 重型沙漠运输车",
+          "family": "desert",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "SHACMAN F3000 6x6 沙漠洒水车",
+          "family": "desert",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "YZ18JC",
+          "family": "roller",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "YZ7G",
+          "family": "roller",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "东风大多利卡扫路车国VI",
+          "family": "sweeper",
+          "n_images": 3,
+          "runs": [
+            "m43-sess-h3-sweeper"
+          ]
+        },
+        {
+          "model": "东风小多利卡扫路车国VI",
+          "family": "sweeper",
+          "n_images": 3,
+          "runs": [
+            "m43-sess-h3-sweeper"
+          ]
+        },
+        {
+          "model": "陕汽德御Q200一拖二平板型清障车",
+          "family": "wrecker",
+          "n_images": 5,
+          "runs": [
+            "m43-base-h2-wrecker"
+          ]
+        }
+      ],
+      "dropped_models_below_min": [
+        {
+          "model": "DFV5253TSMGP6D 沙漠车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "XC系列新能源叉车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风 EQ2082E6D 6x6 沙漠运输车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "五十铃扫路车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "卡特彼勒740铰接式卡车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "豪沃牌ZZ5187XXYN711GF1厢式运输车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "6312D",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "C90",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "CPD20/25/30/35/38",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "ND5250TSMZ04 沙漠车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "TA25 铰接式自卸车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风 EQ2102G 6x6 沙漠越野卡车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风多利卡扫路车 CLW5120TSL6",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风天锦扫路车 CLW5180TSLD6",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "卡特彼勒735铰接式卡车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "悍马HC 208i P",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "福田时代蓝牌扫路车 CLW5040TSLB6",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "解放牌CA1040K2L3E6B3载货汽车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "豪沃牌CAA5070XXHZZ6救险车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        }
+      ],
+      "two_image_models": [
+        {
+          "model": "DFV5253TSMGP6D 沙漠车",
+          "n_images": 2
+        },
+        {
+          "model": "东风 EQ2082E6D 6x6 沙漠运输车",
+          "n_images": 2
+        },
+        {
+          "model": "XC系列新能源叉车",
+          "n_images": 2
+        },
+        {
+          "model": "五十铃扫路车",
+          "n_images": 2
+        },
+        {
+          "model": "卡特彼勒740铰接式卡车",
+          "n_images": 2
+        },
+        {
+          "model": "豪沃牌ZZ5187XXYN711GF1厢式运输车",
+          "n_images": 2
+        }
+      ]
+    },
+    "verified": {
+      "identity_policy": "verified",
+      "identity_policy_description": "verifications[*].accepted == True（confirmed + probable）",
+      "n_pairs_before_identity_filter": 335,
+      "n_pairs_after_identity_filter": 172,
+      "n_filtered_by_identity": 163,
+      "n_missing_verification": 0,
+      "n_models_with_images": 56,
+      "n_models_qualified": 33,
+      "n_images_qualified": 140,
+      "n_loo_tests": 140,
+      "models": [
+        {
+          "model": "26H",
+          "family": "roller",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "family": "sweeper",
+          "n_images": 4,
+          "runs": [
+            "m43-base-h3-sweeper"
+          ]
+        },
+        {
+          "model": "CLW5070TSLD6 东风（小）多利卡D6扫路车",
+          "family": "sweeper",
+          "n_images": 3,
+          "runs": [
+            "m43-base-h3-sweeper"
+          ]
+        },
+        {
+          "model": "CPD25",
+          "family": "forklift",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c4-forklift"
+          ]
+        },
+        {
+          "model": "EQ245（EQ2100E6D）六驱沙漠车",
+          "family": "desert",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "LSS1001",
+          "family": "roller",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "LSS2101-2",
+          "family": "roller",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "LSS320B",
+          "family": "roller",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "MOL H6066 6x6 特种运输车",
+          "family": "desert",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "Mercedes-Benz Arocs 6x6 牵引车",
+          "family": "desert",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "Mol HF8066 6x6 重型沙漠运输车",
+          "family": "desert",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "SHACMAN F3000 6x6 沙漠洒水车",
+          "family": "desert",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "YZ18JC",
+          "family": "roller",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "YZ7G",
+          "family": "roller",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "Zetros 4051 AS 6×6",
+          "family": "desert",
+          "n_images": 6,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "东风 EQ2102G 6x6 沙漠越野卡车",
+          "family": "desert",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "东风6x6沙漠卡车",
+          "family": "desert",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c1-desert"
+          ]
+        },
+        {
+          "model": "东风多利卡D8 平板清障车（一拖二）",
+          "family": "wrecker",
+          "n_images": 3,
+          "runs": [
+            "m43-base-h2-wrecker"
+          ]
+        },
+        {
+          "model": "东风多利卡扫路车 CLW5120TSL6",
+          "family": "sweeper",
+          "n_images": 6,
+          "runs": [
+            "m43-base-h3-sweeper"
+          ]
+        },
+        {
+          "model": "东风大多利卡扫路车国VI",
+          "family": "sweeper",
+          "n_images": 4,
+          "runs": [
+            "m43-sess-h3-sweeper"
+          ]
+        },
+        {
+          "model": "东风天锦扫路车 CLW5180TSLD6",
+          "family": "sweeper",
+          "n_images": 4,
+          "runs": [
+            "m43-base-h3-sweeper",
+            "m43-sess-h3-sweeper"
+          ]
+        },
+        {
+          "model": "东风小多利卡扫路车国VI",
+          "family": "sweeper",
+          "n_images": 3,
+          "runs": [
+            "m43-sess-h3-sweeper"
+          ]
+        },
+        {
+          "model": "中联 YZK19 凸块式单钢轮振动压路机",
+          "family": "roller",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "中联重科ZLJ5160TSLE3扫路车",
+          "family": "sweeper",
+          "n_images": 4,
+          "runs": [
+            "m43-base-h3-sweeper"
+          ]
+        },
+        {
+          "model": "卡特彼勒735铰接式卡车",
+          "family": "roller",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "卡特彼勒740铰接式卡车",
+          "family": "roller",
+          "n_images": 4,
+          "runs": [
+            "m43-sess-c5-roller"
+          ]
+        },
+        {
+          "model": "比亚迪 EL25 四支点平衡重电动叉车",
+          "family": "forklift",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c4-forklift"
+          ]
+        },
+        {
+          "model": "沃尔沃A25E铰接式卡车",
+          "family": "roller",
+          "n_images": 4,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "沃尔沃A30E铰接式卡车",
+          "family": "roller",
+          "n_images": 3,
+          "runs": [
+            "m43-base-c5-roller"
+          ]
+        },
+        {
+          "model": "解放牌CA1040K2L3E6B3载货汽车",
+          "family": "wrecker",
+          "n_images": 4,
+          "runs": [
+            "m43-sess-h2-wrecker"
+          ]
+        },
+        {
+          "model": "豪沃牌ZZ5187XXYN711GF1厢式运输车",
+          "family": "wrecker",
+          "n_images": 3,
+          "runs": [
+            "m43-sess-h2-wrecker"
+          ]
+        },
+        {
+          "model": "陕汽德御Q200一拖二平板型清障车",
+          "family": "wrecker",
+          "n_images": 5,
+          "runs": [
+            "m43-base-h2-wrecker"
+          ]
+        },
+        {
+          "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+          "family": "forklift",
+          "n_images": 5,
+          "runs": [
+            "m43-base-c4-forklift"
+          ]
+        }
+      ],
+      "dropped_models_below_min": [
+        {
+          "model": "DFV5253TSMGP6D 沙漠车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "Titan 沙漠用越野卡车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "XC系列新能源叉车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风 EQ2082E6D 6x6 沙漠运输车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风天锦5吨平板带PK15500折臂吊清障车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "东风福瑞卡扫路车（国六）",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "五十铃扫路车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "国机洛建 YZ7G 单钢轮压路机",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "解放J6F 4X2 清障车",
+          "n_images": 2,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "6312D",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "C90",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "CPD20/25/30/35/38",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "ND5250TSMZ04 沙漠车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "TA25 铰接式自卸车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "中联重科ZLJ5164TSLE3扫路车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "卡特彼勒725铰接式卡车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "悍马HC 208i P",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "江铃 PFT5042TQZP6C 清障车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "盈峰环境 ZLJ5163TSLE3/E4 清扫机",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "福田 JZD5044TQZFTP6-GY 清障车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "福田时代蓝牌扫路车 CLW5040TSLB6",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "程力 CXF5120TQZEQ6 清障车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        },
+        {
+          "model": "豪沃牌CAA5070XXHZZ6救险车",
+          "n_images": 1,
+          "reason": "below_min_images(3)"
+        }
+      ],
+      "two_image_models": [
+        {
+          "model": "Titan 沙漠用越野卡车",
+          "n_images": 2
+        },
+        {
+          "model": "DFV5253TSMGP6D 沙漠车",
+          "n_images": 2
+        },
+        {
+          "model": "东风 EQ2082E6D 6x6 沙漠运输车",
+          "n_images": 2
+        },
+        {
+          "model": "XC系列新能源叉车",
+          "n_images": 2
+        },
+        {
+          "model": "国机洛建 YZ7G 单钢轮压路机",
+          "n_images": 2
+        },
+        {
+          "model": "东风天锦5吨平板带PK15500折臂吊清障车",
+          "n_images": 2
+        },
+        {
+          "model": "解放J6F 4X2 清障车",
+          "n_images": 2
+        },
+        {
+          "model": "五十铃扫路车",
+          "n_images": 2
+        },
+        {
+          "model": "东风福瑞卡扫路车（国六）",
+          "n_images": 2
+        }
+      ]
+    }
+  },
+  "metrics": {
+    "n_test": 66,
+    "n_models": 15,
+    "overall_top1": 0.5303,
+    "overall_top1_wilson95": [
+      0.4116,
+      0.6457
+    ],
+    "chance_uniform": 0.0667,
+    "accuracy_vs_chance_lift": 7.955,
+    "binomial_p_vs_chance": 5.52e-24,
+    "balanced_accuracy": 0.4967,
+    "balanced_accuracy_vs_chance_lift": 7.45,
+    "majority_class_baseline": 0.0909,
+    "top3_accuracy": 0.7727,
+    "top3_chance_uniform": 0.2,
+    "centroid_margins": {
+      "note": "margin = cos(test, true LOO centroid) - max cos(test, 其它型号质心)",
+      "all": {
+        "mean": 0.0013,
+        "median": 0.0027,
+        "min": -0.1325,
+        "max": 0.1273,
+        "p10": -0.0538,
+        "p25": -0.0319,
+        "p50": 0.0027,
+        "p75": 0.0303,
+        "p90": 0.0637
+      },
+      "correct": {
+        "mean": 0.0357,
+        "median": 0.0262,
+        "min": 0.0012,
+        "max": 0.1273,
+        "p10": 0.0065,
+        "p25": 0.0156,
+        "p50": 0.0262,
+        "p75": 0.0585,
+        "p90": 0.0682
+      },
+      "incorrect": {
+        "mean": -0.0375,
+        "median": -0.0338,
+        "min": -0.1325,
+        "max": -0.0002,
+        "p10": -0.069,
+        "p25": -0.0519,
+        "p50": -0.0338,
+        "p75": -0.0138,
+        "p90": -0.0055
+      },
+      "positive_rate": 0.5303
+    },
+    "centroid_pairwise": [
+      {
+        "model": "26H",
+        "nearest_other_model": "LSS320B",
+        "nearest_centroid_cosine": 0.9228,
+        "centroid_separation": 0.0772
+      },
+      {
+        "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "nearest_other_model": "东风小多利卡扫路车国VI",
+        "nearest_centroid_cosine": 0.9386,
+        "centroid_separation": 0.0614
+      },
+      {
+        "model": "CPD25",
+        "nearest_other_model": "YZ7G",
+        "nearest_centroid_cosine": 0.9195,
+        "centroid_separation": 0.0805
+      },
+      {
+        "model": "EQ245（EQ2100E6D）六驱沙漠车",
+        "nearest_other_model": "MOL H6066 6x6 特种运输车",
+        "nearest_centroid_cosine": 0.8441,
+        "centroid_separation": 0.1559
+      },
+      {
+        "model": "LSS1001",
+        "nearest_other_model": "LSS320B",
+        "nearest_centroid_cosine": 0.955,
+        "centroid_separation": 0.045
+      },
+      {
+        "model": "LSS2101-2",
+        "nearest_other_model": "LSS320B",
+        "nearest_centroid_cosine": 0.9526,
+        "centroid_separation": 0.0474
+      },
+      {
+        "model": "LSS320B",
+        "nearest_other_model": "LSS1001",
+        "nearest_centroid_cosine": 0.955,
+        "centroid_separation": 0.045
+      },
+      {
+        "model": "MOL H6066 6x6 特种运输车",
+        "nearest_other_model": "Mol HF8066 6x6 重型沙漠运输车",
+        "nearest_centroid_cosine": 0.9335,
+        "centroid_separation": 0.0665
+      },
+      {
+        "model": "Mol HF8066 6x6 重型沙漠运输车",
+        "nearest_other_model": "MOL H6066 6x6 特种运输车",
+        "nearest_centroid_cosine": 0.9335,
+        "centroid_separation": 0.0665
+      },
+      {
+        "model": "SHACMAN F3000 6x6 沙漠洒水车",
+        "nearest_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "nearest_centroid_cosine": 0.9141,
+        "centroid_separation": 0.0859
+      },
+      {
+        "model": "YZ18JC",
+        "nearest_other_model": "LSS320B",
+        "nearest_centroid_cosine": 0.9481,
+        "centroid_separation": 0.0519
+      },
+      {
+        "model": "YZ7G",
+        "nearest_other_model": "YZ18JC",
+        "nearest_centroid_cosine": 0.9447,
+        "centroid_separation": 0.0553
+      },
+      {
+        "model": "东风大多利卡扫路车国VI",
+        "nearest_other_model": "东风小多利卡扫路车国VI",
+        "nearest_centroid_cosine": 0.9329,
+        "centroid_separation": 0.0671
+      },
+      {
+        "model": "东风小多利卡扫路车国VI",
+        "nearest_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "nearest_centroid_cosine": 0.9386,
+        "centroid_separation": 0.0614
+      },
+      {
+        "model": "陕汽德御Q200一拖二平板型清障车",
+        "nearest_other_model": "LSS320B",
+        "nearest_centroid_cosine": 0.9043,
+        "centroid_separation": 0.0957
+      }
+    ],
+    "min_centroid_separation": 0.045,
+    "within_model_cohesion": {
+      "mean": 0.9329,
+      "median": 0.9409,
+      "min": 0.8069,
+      "max": 0.9804,
+      "p10": 0.8955,
+      "p25": 0.916,
+      "p50": 0.9409,
+      "p75": 0.9578,
+      "p90": 0.9659
+    },
+    "centroid_to_global_cosine": {
+      "26H": 0.9388,
+      "CLW5040TSLB6型福田时代蓝牌扫路车": 0.9413,
+      "CPD25": 0.9364,
+      "EQ245（EQ2100E6D）六驱沙漠车": 0.8674,
+      "LSS1001": 0.9542,
+      "LSS2101-2": 0.9349,
+      "LSS320B": 0.9654,
+      "MOL H6066 6x6 特种运输车": 0.9489,
+      "Mol HF8066 6x6 重型沙漠运输车": 0.9237,
+      "SHACMAN F3000 6x6 沙漠洒水车": 0.921,
+      "YZ18JC": 0.9507,
+      "YZ7G": 0.9622,
+      "东风大多利卡扫路车国VI": 0.9078,
+      "东风小多利卡扫路车国VI": 0.9513,
+      "陕汽德御Q200一拖二平板型清障车": 0.948
+    },
+    "hubness": {
+      "note": "被预测次数远高于自身测试数 = hub（质心靠近全局均值，会把别的型号吸过来）",
+      "top_absorbers": [
+        {
+          "model": "东风小多利卡扫路车国VI",
+          "absorbed_from_other_models": 8,
+          "times_predicted": 8
+        },
+        {
+          "model": "LSS320B",
+          "absorbed_from_other_models": 5,
+          "times_predicted": 7
+        },
+        {
+          "model": "YZ18JC",
+          "absorbed_from_other_models": 5,
+          "times_predicted": 9
+        },
+        {
+          "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "absorbed_from_other_models": 3,
+          "times_predicted": 6
+        },
+        {
+          "model": "LSS1001",
+          "absorbed_from_other_models": 2,
+          "times_predicted": 5
+        }
+      ]
+    },
+    "within_family": {
+      "desert": {
+        "n_models": 4,
+        "n_test": 18,
+        "top1": 0.8333,
+        "chance": 0.25,
+        "accuracy_vs_chance_lift": 3.3333
+      },
+      "roller": {
+        "n_models": 6,
+        "n_test": 29,
+        "top1": 0.4828,
+        "chance": 0.1667,
+        "accuracy_vs_chance_lift": 2.8966
+      },
+      "sweeper": {
+        "n_models": 3,
+        "n_test": 10,
+        "top1": 0.3,
+        "chance": 0.3333,
+        "accuracy_vs_chance_lift": 0.9
+      }
+    },
+    "by_family": {
+      "desert": {
+        "n": 18,
+        "n_models": 4,
+        "top1": 0.7778
+      },
+      "forklift": {
+        "n": 4,
+        "n_models": 1,
+        "top1": 0.0
+      },
+      "roller": {
+        "n": 29,
+        "n_models": 6,
+        "top1": 0.4483
+      },
+      "sweeper": {
+        "n": 10,
+        "n_models": 3,
+        "top1": 0.3
+      },
+      "wrecker": {
+        "n": 5,
+        "n_models": 1,
+        "top1": 1.0
+      }
+    },
+    "by_view": {
+      "detail": {
+        "n": 28,
+        "top1": 0.5357
+      },
+      "front": {
+        "n": 13,
+        "top1": 0.5385
+      },
+      "hero_45": {
+        "n": 12,
+        "top1": 0.4167
+      },
+      "rear": {
+        "n": 9,
+        "top1": 0.5556
+      },
+      "side": {
+        "n": 4,
+        "top1": 0.75
+      }
+    },
+    "errors": {
+      "n_errors": 31,
+      "cross_family_errors": 9,
+      "cross_family_share_of_errors": 0.2903,
+      "models_with_zero_hits": [
+        "26H",
+        "CPD25",
+        "东风大多利卡扫路车国VI",
+        "东风小多利卡扫路车国VI"
+      ],
+      "top_confusion_pairs": [
+        {
+          "true_model": "东风大多利卡扫路车国VI",
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 3
+        },
+        {
+          "true_model": "26H",
+          "predicted_model": "LSS320B",
+          "count": 2
+        },
+        {
+          "true_model": "CPD25",
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 2
+        },
+        {
+          "true_model": "MOL H6066 6x6 特种运输车",
+          "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+          "count": 2
+        },
+        {
+          "true_model": "YZ7G",
+          "predicted_model": "YZ18JC",
+          "count": 2
+        },
+        {
+          "true_model": "东风小多利卡扫路车国VI",
+          "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "count": 2
+        },
+        {
+          "true_model": "26H",
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 1
+        },
+        {
+          "true_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 1
+        },
+        {
+          "true_model": "CPD25",
+          "predicted_model": "LSS1001",
+          "count": 1
+        },
+        {
+          "true_model": "CPD25",
+          "predicted_model": "LSS320B",
+          "count": 1
+        }
+      ]
+    },
+    "near_duplicate_control": {
+      "method": "dHash 64bit 同型号参考图 Hamming <= 8 视为近重复",
+      "threshold_hamming": 8,
+      "n_flagged_test_images": 4,
+      "flagged_asset_ids": [
+        "98051bac4940",
+        "d5eb534e404e",
+        "ddcc32969b9c",
+        "feaeb0a8be41"
+      ],
+      "accuracy_excluding_flagged": 0.5161,
+      "n_after_excluding_flagged": 62,
+      "exact_duplicate_groups": [],
+      "accuracy_excluding_exact_duplicate_tests": 0.5303,
+      "n_after_excluding_exact": 66,
+      "same_source_title_control": {
+        "note": "同型号参考图与测试图 title 完全相同 = 很可能同一网页/同一台车；这是来源相关代理，不是严格的同车判定",
+        "n_images_with_same_title_reference": 37,
+        "accuracy_excluding_same_title": 0.5172,
+        "n_after_excluding_same_title": 29,
+        "source_diversity": {
+          "n_images": 66,
+          "n_unique_titles": 43,
+          "models_all_images_same_title": [
+            "EQ245（EQ2100E6D）六驱沙漠车",
+            "MOL H6066 6x6 特种运输车"
+          ]
+        }
+      }
+    },
+    "elapsed_s": 6.43,
+    "read_errors": []
+  },
+  "per_model": [
+    {
+      "model": "26H",
+      "family": "roller",
+      "n_images": 3,
+      "n_test": 3,
+      "hits": 0,
+      "accuracy": 0.0,
+      "accuracy_wilson95": [
+        0.0,
+        0.5615
+      ],
+      "mean_margin": -0.089,
+      "min_margin": -0.1325,
+      "max_margin": -0.0563,
+      "n_unique_titles": 2,
+      "times_predicted": 0,
+      "absorbed_from_other_models": 0,
+      "nearest_centroid": {
+        "model": "LSS320B",
+        "cosine": 0.9228,
+        "separation": 0.0772
+      },
+      "confused_with": [
+        {
+          "predicted_model": "LSS320B",
+          "count": 2
+        },
+        {
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "family": "sweeper",
+      "n_images": 4,
+      "n_test": 4,
+      "hits": 3,
+      "accuracy": 0.75,
+      "accuracy_wilson95": [
+        0.3006,
+        0.9544
+      ],
+      "mean_margin": -0.0054,
+      "min_margin": -0.0515,
+      "max_margin": 0.0172,
+      "n_unique_titles": 4,
+      "times_predicted": 6,
+      "absorbed_from_other_models": 3,
+      "nearest_centroid": {
+        "model": "东风小多利卡扫路车国VI",
+        "cosine": 0.9386,
+        "separation": 0.0614
+      },
+      "confused_with": [
+        {
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "CPD25",
+      "family": "forklift",
+      "n_images": 4,
+      "n_test": 4,
+      "hits": 0,
+      "accuracy": 0.0,
+      "accuracy_wilson95": [
+        0.0,
+        0.4899
+      ],
+      "mean_margin": -0.0331,
+      "min_margin": -0.0471,
+      "max_margin": -0.0181,
+      "n_unique_titles": 4,
+      "times_predicted": 1,
+      "absorbed_from_other_models": 1,
+      "nearest_centroid": {
+        "model": "YZ7G",
+        "cosine": 0.9195,
+        "separation": 0.0805
+      },
+      "confused_with": [
+        {
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 2
+        },
+        {
+          "predicted_model": "LSS1001",
+          "count": 1
+        },
+        {
+          "predicted_model": "LSS320B",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "family": "desert",
+      "n_images": 3,
+      "n_test": 3,
+      "hits": 3,
+      "accuracy": 1.0,
+      "accuracy_wilson95": [
+        0.4385,
+        1.0
+      ],
+      "mean_margin": 0.0761,
+      "min_margin": 0.0383,
+      "max_margin": 0.1273,
+      "n_unique_titles": 1,
+      "times_predicted": 3,
+      "absorbed_from_other_models": 0,
+      "nearest_centroid": {
+        "model": "MOL H6066 6x6 特种运输车",
+        "cosine": 0.8441,
+        "separation": 0.1559
+      },
+      "confused_with": []
+    },
+    {
+      "model": "LSS1001",
+      "family": "roller",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 3,
+      "accuracy": 0.6,
+      "accuracy_wilson95": [
+        0.2307,
+        0.8824
+      ],
+      "mean_margin": -0.0025,
+      "min_margin": -0.0213,
+      "max_margin": 0.0206,
+      "n_unique_titles": 3,
+      "times_predicted": 5,
+      "absorbed_from_other_models": 2,
+      "nearest_centroid": {
+        "model": "LSS320B",
+        "cosine": 0.955,
+        "separation": 0.045
+      },
+      "confused_with": [
+        {
+          "predicted_model": "YZ18JC",
+          "count": 1
+        },
+        {
+          "predicted_model": "LSS320B",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "LSS2101-2",
+      "family": "roller",
+      "n_images": 4,
+      "n_test": 4,
+      "hits": 2,
+      "accuracy": 0.5,
+      "accuracy_wilson95": [
+        0.15,
+        0.85
+      ],
+      "mean_margin": -0.0042,
+      "min_margin": -0.0642,
+      "max_margin": 0.0242,
+      "n_unique_titles": 3,
+      "times_predicted": 4,
+      "absorbed_from_other_models": 2,
+      "nearest_centroid": {
+        "model": "LSS320B",
+        "cosine": 0.9526,
+        "separation": 0.0474
+      },
+      "confused_with": [
+        {
+          "predicted_model": "YZ18JC",
+          "count": 1
+        },
+        {
+          "predicted_model": "LSS320B",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "LSS320B",
+      "family": "roller",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 2,
+      "accuracy": 0.4,
+      "accuracy_wilson95": [
+        0.1176,
+        0.7693
+      ],
+      "mean_margin": -0.0103,
+      "min_margin": -0.0554,
+      "max_margin": 0.0143,
+      "n_unique_titles": 3,
+      "times_predicted": 7,
+      "absorbed_from_other_models": 5,
+      "nearest_centroid": {
+        "model": "LSS1001",
+        "cosine": 0.955,
+        "separation": 0.045
+      },
+      "confused_with": [
+        {
+          "predicted_model": "LSS1001",
+          "count": 1
+        },
+        {
+          "predicted_model": "LSS2101-2",
+          "count": 1
+        },
+        {
+          "predicted_model": "YZ18JC",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "MOL H6066 6x6 特种运输车",
+      "family": "desert",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 2,
+      "accuracy": 0.4,
+      "accuracy_wilson95": [
+        0.1176,
+        0.7693
+      ],
+      "mean_margin": 0.0004,
+      "min_margin": -0.0497,
+      "max_margin": 0.0422,
+      "n_unique_titles": 1,
+      "times_predicted": 4,
+      "absorbed_from_other_models": 2,
+      "nearest_centroid": {
+        "model": "Mol HF8066 6x6 重型沙漠运输车",
+        "cosine": 0.9335,
+        "separation": 0.0665
+      },
+      "confused_with": [
+        {
+          "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+          "count": 2
+        },
+        {
+          "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "family": "desert",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 4,
+      "accuracy": 0.8,
+      "accuracy_wilson95": [
+        0.3755,
+        0.9638
+      ],
+      "mean_margin": 0.0262,
+      "min_margin": -0.0353,
+      "max_margin": 0.0739,
+      "n_unique_titles": 3,
+      "times_predicted": 6,
+      "absorbed_from_other_models": 2,
+      "nearest_centroid": {
+        "model": "MOL H6066 6x6 特种运输车",
+        "cosine": 0.9335,
+        "separation": 0.0665
+      },
+      "confused_with": [
+        {
+          "predicted_model": "MOL H6066 6x6 特种运输车",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "family": "desert",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 5,
+      "accuracy": 1.0,
+      "accuracy_wilson95": [
+        0.5655,
+        1.0
+      ],
+      "mean_margin": 0.0568,
+      "min_margin": 0.0262,
+      "max_margin": 0.0794,
+      "n_unique_titles": 5,
+      "times_predicted": 5,
+      "absorbed_from_other_models": 0,
+      "nearest_centroid": {
+        "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "cosine": 0.9141,
+        "separation": 0.0859
+      },
+      "confused_with": []
+    },
+    {
+      "model": "YZ18JC",
+      "family": "roller",
+      "n_images": 6,
+      "n_test": 6,
+      "hits": 4,
+      "accuracy": 0.6667,
+      "accuracy_wilson95": [
+        0.3,
+        0.9032
+      ],
+      "mean_margin": -0.0039,
+      "min_margin": -0.069,
+      "max_margin": 0.0349,
+      "n_unique_titles": 3,
+      "times_predicted": 9,
+      "absorbed_from_other_models": 5,
+      "nearest_centroid": {
+        "model": "LSS320B",
+        "cosine": 0.9481,
+        "separation": 0.0519
+      },
+      "confused_with": [
+        {
+          "predicted_model": "YZ7G",
+          "count": 1
+        },
+        {
+          "predicted_model": "LSS2101-2",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "YZ7G",
+      "family": "roller",
+      "n_images": 6,
+      "n_test": 6,
+      "hits": 2,
+      "accuracy": 0.3333,
+      "accuracy_wilson95": [
+        0.0968,
+        0.7
+      ],
+      "mean_margin": -0.0084,
+      "min_margin": -0.0522,
+      "max_margin": 0.0382,
+      "n_unique_titles": 5,
+      "times_predicted": 3,
+      "absorbed_from_other_models": 1,
+      "nearest_centroid": {
+        "model": "YZ18JC",
+        "cosine": 0.9447,
+        "separation": 0.0553
+      },
+      "confused_with": [
+        {
+          "predicted_model": "YZ18JC",
+          "count": 2
+        },
+        {
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 1
+        },
+        {
+          "predicted_model": "CPD25",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "东风大多利卡扫路车国VI",
+      "family": "sweeper",
+      "n_images": 3,
+      "n_test": 3,
+      "hits": 0,
+      "accuracy": 0.0,
+      "accuracy_wilson95": [
+        0.0,
+        0.5615
+      ],
+      "mean_margin": -0.0224,
+      "min_margin": -0.0437,
+      "max_margin": -0.0102,
+      "n_unique_titles": 2,
+      "times_predicted": 0,
+      "absorbed_from_other_models": 0,
+      "nearest_centroid": {
+        "model": "东风小多利卡扫路车国VI",
+        "cosine": 0.9329,
+        "separation": 0.0671
+      },
+      "confused_with": [
+        {
+          "predicted_model": "东风小多利卡扫路车国VI",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "model": "东风小多利卡扫路车国VI",
+      "family": "sweeper",
+      "n_images": 3,
+      "n_test": 3,
+      "hits": 0,
+      "accuracy": 0.0,
+      "accuracy_wilson95": [
+        0.0,
+        0.5615
+      ],
+      "mean_margin": -0.0519,
+      "min_margin": -0.1039,
+      "max_margin": -0.0143,
+      "n_unique_titles": 2,
+      "times_predicted": 8,
+      "absorbed_from_other_models": 8,
+      "nearest_centroid": {
+        "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "cosine": 0.9386,
+        "separation": 0.0614
+      },
+      "confused_with": [
+        {
+          "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+          "count": 2
+        },
+        {
+          "predicted_model": "MOL H6066 6x6 特种运输车",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "family": "wrecker",
+      "n_images": 5,
+      "n_test": 5,
+      "hits": 5,
+      "accuracy": 1.0,
+      "accuracy_wilson95": [
+        0.5655,
+        1.0
+      ],
+      "mean_margin": 0.0479,
+      "min_margin": 0.0169,
+      "max_margin": 0.0694,
+      "n_unique_titles": 2,
+      "times_predicted": 5,
+      "absorbed_from_other_models": 0,
+      "nearest_centroid": {
+        "model": "LSS320B",
+        "cosine": 0.9043,
+        "separation": 0.0957
+      },
+      "confused_with": []
+    }
+  ],
+  "failures": [
+    {
+      "asset_id": "63aa7cd88eb1",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/63aa7cd88eb1.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "side",
+      "scene": "part",
+      "title": "芳恒适用雅迪g26h电动车坐垫套雅迪g26m电车g26座套g26d防晒防水加厚",
+      "width": 500,
+      "height": 500,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.5907,
+      "sim_best_other": 0.7232,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.1325,
+      "rank_of_true": 15,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "ee5c4b2657b1",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/ee5c4b2657b1.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "detail",
+      "scene": "part",
+      "title": "楚胜汽车集团有限公司销售分公司网站-东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.7419,
+      "sim_best_other": 0.8458,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": -0.1039,
+      "rank_of_true": 13,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "d51e88b7a9af",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/d51e88b7a9af.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "颠覆升级:全新山推SR26H-C6压路机演绎智控传奇",
+      "width": 550,
+      "height": 412,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8335,
+      "sim_best_other": 0.9118,
+      "best_other_model": "LSS320B",
+      "margin": -0.0783,
+      "rank_of_true": 8,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 35,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "27eb55bc94d9",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/27eb55bc94d9.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "徐工yz18jc压路机配件:传动轴 变速箱齿轮轴,安排顺丰快",
+      "width": 475,
+      "height": 845,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.8544,
+      "sim_best_other": 0.9234,
+      "best_other_model": "LSS2101-2",
+      "margin": -0.069,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 33,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "b3a5b7a2cd8d",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/b3a5b7a2cd8d.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "洛建LSS2101压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8647,
+      "sim_best_other": 0.9289,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0642,
+      "rank_of_true": 6,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "6dcd559bfbd1",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/6dcd559bfbd1.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "颠覆升级:全新山推SR26H-C6压路机演绎智控传奇",
+      "width": 550,
+      "height": 734,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8424,
+      "sim_best_other": 0.8987,
+      "best_other_model": "LSS320B",
+      "margin": -0.0563,
+      "rank_of_true": 7,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 35,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "36a719d389ae",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/36a719d389ae.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "洛建lss320b压路机",
+      "width": 503,
+      "height": 403,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.9011,
+      "sim_best_other": 0.9565,
+      "best_other_model": "LSS1001",
+      "margin": -0.0554,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "66796ea30b17",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/66796ea30b17.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手洛建YZ7G压路机-二手压路机洛建YZ7G价格-洛建二手压路机YZ7G出售_铁甲二手机",
+      "width": 640,
+      "height": 360,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8596,
+      "sim_best_other": 0.9118,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0522,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 29,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "d05f40dad598",
+      "image": "data-test/runs/m43-base-h3-sweeper/images/CLW5040TSLB6型福田时代蓝牌扫路车/d05f40dad598.jpg",
+      "run": "m43-base-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "CLW5040TSLB6型主路快速路扫地车 福田小卡次路支干路清扫车",
+      "width": 750,
+      "height": 750,
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.7945,
+      "sim_best_other": 0.846,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0515,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "45dd6549629c",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/45dd6549629c.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 215,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.7744,
+      "sim_best_other": 0.8242,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0497,
+      "rank_of_true": 8,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "38602fcd676e",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/38602fcd676e.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "cpd25蓄电池平衡重式叉车",
+      "width": 500,
+      "height": 499,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8044,
+      "sim_best_other": 0.8516,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0471,
+      "rank_of_true": 7,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "014cb3c238d4",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/014cb3c238d4.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手徐工YZ18JC压路机-二手压路机徐工YZ18JC价格-徐工二手压路机YZ18JC出售_铁甲二手机",
+      "width": 640,
+      "height": 853,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ7G",
+      "predicted_family": "roller",
+      "sim_true": 0.8756,
+      "sim_best_other": 0.9196,
+      "best_other_model": "YZ7G",
+      "margin": -0.044,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 24,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "50fa90d74a97",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/50fa90d74a97.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "detail",
+      "scene": "part",
+      "title": "程力专用汽车股份有限公司销售六分公司-东风大多利卡扫路车国VI",
+      "width": 771,
+      "height": 433,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.743,
+      "sim_best_other": 0.7867,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0437,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "cb96da2c4d90",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/cb96da2c4d90.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8787,
+      "sim_best_other": 0.9161,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0374,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "2efbb06b02c2",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/2efbb06b02c2.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "专用油田和沙漠的超级卡车最大车重高达230吨molhf80666x6越野底盘",
+      "width": 626,
+      "height": 310,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.8744,
+      "sim_best_other": 0.9097,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": -0.0353,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "eb5630114abc",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/eb5630114abc.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "detail",
+      "scene": "part",
+      "title": "5吨电动叉车cpd25三节自由门架升降中缸 升高4.5米中间 - 爱企查",
+      "width": 566,
+      "height": 500,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.704,
+      "sim_best_other": 0.7378,
+      "best_other_model": "LSS320B",
+      "margin": -0.0338,
+      "rank_of_true": 6,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "ca0889b6a3dd",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/ca0889b6a3dd.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "china forklift cpd25 2.",
+      "width": 500,
+      "height": 500,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8687,
+      "sim_best_other": 0.9023,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0336,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "ddcc32969b9c",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/ddcc32969b9c.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "【东方红YZ7G单钢轮压路机】 东方红YZ7G单钢轮压路机价格表|东方红YZ7G单钢轮压路机图片 - 中国工程机械商贸网",
+      "width": 567,
+      "height": 477,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "CPD25",
+      "predicted_family": "forklift",
+      "sim_true": 0.8772,
+      "sim_best_other": 0.9042,
+      "best_other_model": "CPD25",
+      "margin": -0.0269,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": true,
+      "min_ref_hamming": 3,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "218604218dfc",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/218604218dfc.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "洛建lss1001压路机",
+      "width": 500,
+      "height": 375,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8701,
+      "sim_best_other": 0.8914,
+      "best_other_model": "LSS320B",
+      "margin": -0.0213,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "c8ab9d4e5260",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/c8ab9d4e5260.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "part",
+      "title": "供应洛阳一拖洛建lss1001型10吨单钢轮振动压路机",
+      "width": 808,
+      "height": 500,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8997,
+      "sim_best_other": 0.9187,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0189,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "4b9f99d4c0c2",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/4b9f99d4c0c2.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "比亚迪CPD25平衡重式叉车",
+      "width": 900,
+      "height": 600,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.8399,
+      "sim_best_other": 0.858,
+      "best_other_model": "LSS1001",
+      "margin": -0.0181,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "fa06bc3b76e6",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/fa06bc3b76e6.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 400,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9129,
+      "sim_best_other": 0.9296,
+      "best_other_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "margin": -0.0167,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 15,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "18cac7f7a288",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/18cac7f7a288.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8792,
+      "sim_best_other": 0.8935,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0143,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "2b67b579df67",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/2b67b579df67.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "东风大多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8894,
+      "sim_best_other": 0.9027,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0133,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "03bdaebf4c76",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/03bdaebf4c76.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "front",
+      "scene": "part",
+      "title": "我公司供应一拖洛建7吨YZ7G单钢轮振动压路机_品牌_供求市场_摊铺机网",
+      "width": 1024,
+      "height": 768,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8885,
+      "sim_best_other": 0.9015,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0129,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "1a5a08ca17d2",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/1a5a08ca17d2.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "hero_45",
+      "scene": "part",
+      "title": "东风大多利卡扫路车国vi",
+      "width": 668,
+      "height": 500,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.9067,
+      "sim_best_other": 0.9169,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0102,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 38,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "0b1167f1ac77",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/0b1167f1ac77.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "洛建lss320b压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.9258,
+      "sim_best_other": 0.9321,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0063,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 31,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "da9a32f3fd24",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/da9a32f3fd24.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 395,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.8815,
+      "sim_best_other": 0.887,
+      "best_other_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "margin": -0.0055,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 19,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "155ffd641bd4",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/155ffd641bd4.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "国机洛建lss320b压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.9385,
+      "sim_best_other": 0.9438,
+      "best_other_model": "LSS2101-2",
+      "margin": -0.0053,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 19,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "2b40e189c757",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/2b40e189c757.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手洛建YZ7G压路机-二手压路机洛建YZ7G价格-洛建二手压路机YZ7G出售_铁甲二手机",
+      "width": 640,
+      "height": 360,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8786,
+      "sim_best_other": 0.8826,
+      "best_other_model": "YZ18JC",
+      "margin": -0.004,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 29,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "b377ec8c6a11",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/b377ec8c6a11.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "【洛建LSS2101压路机】-邵阳市二手洛建LSS2101转让出售信息_铁甲二手机",
+      "width": 640,
+      "height": 853,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8485,
+      "sim_best_other": 0.8487,
+      "best_other_model": "LSS320B",
+      "margin": -0.0002,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    }
+  ],
+  "sensitivity_other_identity_policy": {
+    "identity_policy": "verified",
+    "description": "verifications[*].accepted == True（confirmed + probable）",
+    "n_images": 140,
+    "n_models": 33,
+    "n_test": 140,
+    "overall_top1": 0.4214,
+    "chance_uniform": 0.0303,
+    "accuracy_vs_chance_lift": 13.907,
+    "balanced_accuracy": 0.398,
+    "binomial_p_vs_chance": 3.7e-51,
+    "accuracy_excluding_near_dup": 0.4254,
+    "per_model": [
+      {
+        "model": "26H",
+        "family": "roller",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.5615
+        ],
+        "mean_margin": -0.089,
+        "min_margin": -0.1325,
+        "max_margin": -0.0563,
+        "n_unique_titles": 2,
+        "times_predicted": 0,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "LSS320B",
+          "cosine": 0.9228,
+          "separation": 0.0772
+        },
+        "confused_with": [
+          {
+            "predicted_model": "LSS320B",
+            "count": 2
+          },
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+        "family": "sweeper",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 2,
+        "accuracy": 0.5,
+        "accuracy_wilson95": [
+          0.15,
+          0.85
+        ],
+        "mean_margin": -0.0241,
+        "min_margin": -0.0783,
+        "max_margin": 0.0088,
+        "n_unique_titles": 4,
+        "times_predicted": 4,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "东风小多利卡扫路车国VI",
+          "cosine": 0.9386,
+          "separation": 0.0614
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风多利卡扫路车 CLW5120TSL6",
+            "count": 1
+          },
+          {
+            "predicted_model": "解放牌CA1040K2L3E6B3载货汽车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "CLW5070TSLD6 东风（小）多利卡D6扫路车",
+        "family": "sweeper",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.5615
+        ],
+        "mean_margin": -0.0113,
+        "min_margin": -0.0206,
+        "max_margin": -0.002,
+        "n_unique_titles": 3,
+        "times_predicted": 1,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "东风多利卡扫路车 CLW5120TSL6",
+          "cosine": 0.9711,
+          "separation": 0.0289
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风多利卡扫路车 CLW5120TSL6",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "model": "CPD25",
+        "family": "forklift",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.4899
+        ],
+        "mean_margin": -0.0516,
+        "min_margin": -0.0918,
+        "max_margin": -0.0336,
+        "n_unique_titles": 4,
+        "times_predicted": 2,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+          "cosine": 0.9458,
+          "separation": 0.0542
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 2
+          },
+          {
+            "predicted_model": "比亚迪 EL25 四支点平衡重电动叉车",
+            "count": 1
+          },
+          {
+            "predicted_model": "LSS320B",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "EQ245（EQ2100E6D）六驱沙漠车",
+        "family": "desert",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 3,
+        "accuracy": 1.0,
+        "accuracy_wilson95": [
+          0.4385,
+          1.0
+        ],
+        "mean_margin": 0.0432,
+        "min_margin": 0.0232,
+        "max_margin": 0.0744,
+        "n_unique_titles": 1,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "东风6x6沙漠卡车",
+          "cosine": 0.8835,
+          "separation": 0.1165
+        },
+        "confused_with": []
+      },
+      {
+        "model": "LSS1001",
+        "family": "roller",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 1,
+        "accuracy": 0.2,
+        "accuracy_wilson95": [
+          0.0362,
+          0.6245
+        ],
+        "mean_margin": -0.0152,
+        "min_margin": -0.041,
+        "max_margin": 0.006,
+        "n_unique_titles": 3,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "LSS320B",
+          "cosine": 0.955,
+          "separation": 0.045
+        },
+        "confused_with": [
+          {
+            "predicted_model": "沃尔沃A30E铰接式卡车",
+            "count": 2
+          },
+          {
+            "predicted_model": "YZ18JC",
+            "count": 1
+          },
+          {
+            "predicted_model": "LSS320B",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "LSS2101-2",
+        "family": "roller",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 2,
+        "accuracy": 0.5,
+        "accuracy_wilson95": [
+          0.15,
+          0.85
+        ],
+        "mean_margin": -0.0042,
+        "min_margin": -0.0642,
+        "max_margin": 0.0242,
+        "n_unique_titles": 3,
+        "times_predicted": 4,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "LSS320B",
+          "cosine": 0.9526,
+          "separation": 0.0474
+        },
+        "confused_with": [
+          {
+            "predicted_model": "YZ18JC",
+            "count": 1
+          },
+          {
+            "predicted_model": "LSS320B",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "LSS320B",
+        "family": "roller",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 2,
+        "accuracy": 0.4,
+        "accuracy_wilson95": [
+          0.1176,
+          0.7693
+        ],
+        "mean_margin": -0.0103,
+        "min_margin": -0.0554,
+        "max_margin": 0.0143,
+        "n_unique_titles": 3,
+        "times_predicted": 8,
+        "absorbed_from_other_models": 6,
+        "nearest_centroid": {
+          "model": "卡特彼勒735铰接式卡车",
+          "cosine": 0.9554,
+          "separation": 0.0446
+        },
+        "confused_with": [
+          {
+            "predicted_model": "LSS1001",
+            "count": 1
+          },
+          {
+            "predicted_model": "LSS2101-2",
+            "count": 1
+          },
+          {
+            "predicted_model": "YZ18JC",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "MOL H6066 6x6 特种运输车",
+        "family": "desert",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 1,
+        "accuracy": 0.2,
+        "accuracy_wilson95": [
+          0.0362,
+          0.6245
+        ],
+        "mean_margin": -0.0071,
+        "min_margin": -0.0497,
+        "max_margin": 0.0422,
+        "n_unique_titles": 1,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "Mol HF8066 6x6 重型沙漠运输车",
+          "cosine": 0.9335,
+          "separation": 0.0665
+        },
+        "confused_with": [
+          {
+            "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+            "count": 2
+          },
+          {
+            "predicted_model": "Zetros 4051 AS 6×6",
+            "count": 1
+          },
+          {
+            "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "Mercedes-Benz Arocs 6x6 牵引车",
+        "family": "desert",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.4899
+        ],
+        "mean_margin": -0.059,
+        "min_margin": -0.1125,
+        "max_margin": -0.008,
+        "n_unique_titles": 4,
+        "times_predicted": 0,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "中联重科ZLJ5160TSLE3扫路车",
+          "cosine": 0.932,
+          "separation": 0.068
+        },
+        "confused_with": [
+          {
+            "predicted_model": "中联重科ZLJ5160TSLE3扫路车",
+            "count": 2
+          },
+          {
+            "predicted_model": "东风6x6沙漠卡车",
+            "count": 1
+          },
+          {
+            "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "Mol HF8066 6x6 重型沙漠运输车",
+        "family": "desert",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 4,
+        "accuracy": 0.8,
+        "accuracy_wilson95": [
+          0.3755,
+          0.9638
+        ],
+        "mean_margin": 0.0295,
+        "min_margin": -0.0353,
+        "max_margin": 0.0786,
+        "n_unique_titles": 3,
+        "times_predicted": 6,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "MOL H6066 6x6 特种运输车",
+          "cosine": 0.9335,
+          "separation": 0.0665
+        },
+        "confused_with": [
+          {
+            "predicted_model": "MOL H6066 6x6 特种运输车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "SHACMAN F3000 6x6 沙漠洒水车",
+        "family": "desert",
+        "n_images": 6,
+        "n_test": 6,
+        "hits": 5,
+        "accuracy": 0.8333,
+        "accuracy_wilson95": [
+          0.4365,
+          0.9699
+        ],
+        "mean_margin": 0.022,
+        "min_margin": -0.007,
+        "max_margin": 0.0459,
+        "n_unique_titles": 6,
+        "times_predicted": 10,
+        "absorbed_from_other_models": 5,
+        "nearest_centroid": {
+          "model": "东风多利卡D8 平板清障车（一拖二）",
+          "cosine": 0.9569,
+          "separation": 0.0431
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风6x6沙漠卡车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "YZ18JC",
+        "family": "roller",
+        "n_images": 6,
+        "n_test": 6,
+        "hits": 4,
+        "accuracy": 0.6667,
+        "accuracy_wilson95": [
+          0.3,
+          0.9032
+        ],
+        "mean_margin": -0.0039,
+        "min_margin": -0.069,
+        "max_margin": 0.0349,
+        "n_unique_titles": 3,
+        "times_predicted": 10,
+        "absorbed_from_other_models": 6,
+        "nearest_centroid": {
+          "model": "中联 YZK19 凸块式单钢轮振动压路机",
+          "cosine": 0.951,
+          "separation": 0.049
+        },
+        "confused_with": [
+          {
+            "predicted_model": "YZ7G",
+            "count": 1
+          },
+          {
+            "predicted_model": "LSS2101-2",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "YZ7G",
+        "family": "roller",
+        "n_images": 6,
+        "n_test": 6,
+        "hits": 1,
+        "accuracy": 0.1667,
+        "accuracy_wilson95": [
+          0.0301,
+          0.5635
+        ],
+        "mean_margin": -0.0145,
+        "min_margin": -0.0522,
+        "max_margin": 0.0308,
+        "n_unique_titles": 5,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "YZ18JC",
+          "cosine": 0.9447,
+          "separation": 0.0553
+        },
+        "confused_with": [
+          {
+            "predicted_model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+            "count": 2
+          },
+          {
+            "predicted_model": "YZ18JC",
+            "count": 2
+          },
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "Zetros 4051 AS 6×6",
+        "family": "desert",
+        "n_images": 6,
+        "n_test": 6,
+        "hits": 6,
+        "accuracy": 1.0,
+        "accuracy_wilson95": [
+          0.6097,
+          1.0
+        ],
+        "mean_margin": 0.0734,
+        "min_margin": 0.0434,
+        "max_margin": 0.0845,
+        "n_unique_titles": 4,
+        "times_predicted": 7,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "卡特彼勒735铰接式卡车",
+          "cosine": 0.8927,
+          "separation": 0.1073
+        },
+        "confused_with": []
+      },
+      {
+        "model": "东风 EQ2102G 6x6 沙漠越野卡车",
+        "family": "desert",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 1,
+        "accuracy": 0.3333,
+        "accuracy_wilson95": [
+          0.0615,
+          0.7923
+        ],
+        "mean_margin": -0.0001,
+        "min_margin": -0.0179,
+        "max_margin": 0.0331,
+        "n_unique_titles": 2,
+        "times_predicted": 2,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "东风6x6沙漠卡车",
+          "cosine": 0.9429,
+          "separation": 0.0571
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风6x6沙漠卡车",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "model": "东风6x6沙漠卡车",
+        "family": "desert",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 3,
+        "accuracy": 0.75,
+        "accuracy_wilson95": [
+          0.3006,
+          0.9544
+        ],
+        "mean_margin": 0.0121,
+        "min_margin": -0.0171,
+        "max_margin": 0.0273,
+        "n_unique_titles": 4,
+        "times_predicted": 7,
+        "absorbed_from_other_models": 4,
+        "nearest_centroid": {
+          "model": "东风 EQ2102G 6x6 沙漠越野卡车",
+          "cosine": 0.9429,
+          "separation": 0.0571
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风 EQ2102G 6x6 沙漠越野卡车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "东风多利卡D8 平板清障车（一拖二）",
+        "family": "wrecker",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.5615
+        ],
+        "mean_margin": -0.0496,
+        "min_margin": -0.0667,
+        "max_margin": -0.016,
+        "n_unique_titles": 3,
+        "times_predicted": 1,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "SHACMAN F3000 6x6 沙漠洒水车",
+          "cosine": 0.9569,
+          "separation": 0.0431
+        },
+        "confused_with": [
+          {
+            "predicted_model": "豪沃牌ZZ5187XXYN711GF1厢式运输车",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风天锦扫路车 CLW5180TSLD6",
+            "count": 1
+          },
+          {
+            "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "东风多利卡扫路车 CLW5120TSL6",
+        "family": "sweeper",
+        "n_images": 6,
+        "n_test": 6,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.3903
+        ],
+        "mean_margin": -0.0164,
+        "min_margin": -0.0414,
+        "max_margin": -0.0088,
+        "n_unique_titles": 6,
+        "times_predicted": 8,
+        "absorbed_from_other_models": 8,
+        "nearest_centroid": {
+          "model": "东风天锦扫路车 CLW5180TSLD6",
+          "cosine": 0.9747,
+          "separation": 0.0253
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风天锦扫路车 CLW5180TSLD6",
+            "count": 2
+          },
+          {
+            "predicted_model": "中联重科ZLJ5160TSLE3扫路车",
+            "count": 1
+          },
+          {
+            "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风多利卡D8 平板清障车（一拖二）",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "东风大多利卡扫路车国VI",
+        "family": "sweeper",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.4899
+        ],
+        "mean_margin": -0.0225,
+        "min_margin": -0.0299,
+        "max_margin": -0.0157,
+        "n_unique_titles": 3,
+        "times_predicted": 1,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "东风小多利卡扫路车国VI",
+          "cosine": 0.94,
+          "separation": 0.06
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风天锦扫路车 CLW5180TSLD6",
+            "count": 2
+          },
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风多利卡扫路车 CLW5120TSL6",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "东风天锦扫路车 CLW5180TSLD6",
+        "family": "sweeper",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 1,
+        "accuracy": 0.25,
+        "accuracy_wilson95": [
+          0.0456,
+          0.6994
+        ],
+        "mean_margin": -0.0216,
+        "min_margin": -0.0376,
+        "max_margin": 0.004,
+        "n_unique_titles": 4,
+        "times_predicted": 8,
+        "absorbed_from_other_models": 7,
+        "nearest_centroid": {
+          "model": "东风多利卡扫路车 CLW5120TSL6",
+          "cosine": 0.9747,
+          "separation": 0.0253
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风多利卡扫路车 CLW5120TSL6",
+            "count": 1
+          },
+          {
+            "predicted_model": "CLW5070TSLD6 东风（小）多利卡D6扫路车",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风大多利卡扫路车国VI",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "东风小多利卡扫路车国VI",
+        "family": "sweeper",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.5615
+        ],
+        "mean_margin": -0.0598,
+        "min_margin": -0.1039,
+        "max_margin": -0.0165,
+        "n_unique_titles": 2,
+        "times_predicted": 7,
+        "absorbed_from_other_models": 7,
+        "nearest_centroid": {
+          "model": "东风大多利卡扫路车国VI",
+          "cosine": 0.94,
+          "separation": 0.06
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风多利卡扫路车 CLW5120TSL6",
+            "count": 2
+          },
+          {
+            "predicted_model": "MOL H6066 6x6 特种运输车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "中联 YZK19 凸块式单钢轮振动压路机",
+        "family": "roller",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.5615
+        ],
+        "mean_margin": -0.0694,
+        "min_margin": -0.1024,
+        "max_margin": -0.0302,
+        "n_unique_titles": 3,
+        "times_predicted": 0,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "YZ18JC",
+          "cosine": 0.951,
+          "separation": 0.049
+        },
+        "confused_with": [
+          {
+            "predicted_model": "LSS1001",
+            "count": 1
+          },
+          {
+            "predicted_model": "YZ18JC",
+            "count": 1
+          },
+          {
+            "predicted_model": "YZ7G",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "中联重科ZLJ5160TSLE3扫路车",
+        "family": "sweeper",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 4,
+        "accuracy": 1.0,
+        "accuracy_wilson95": [
+          0.5101,
+          1.0
+        ],
+        "mean_margin": 0.0379,
+        "min_margin": 0.0105,
+        "max_margin": 0.057,
+        "n_unique_titles": 4,
+        "times_predicted": 7,
+        "absorbed_from_other_models": 3,
+        "nearest_centroid": {
+          "model": "Mercedes-Benz Arocs 6x6 牵引车",
+          "cosine": 0.932,
+          "separation": 0.068
+        },
+        "confused_with": []
+      },
+      {
+        "model": "卡特彼勒735铰接式卡车",
+        "family": "roller",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 0,
+        "accuracy": 0.0,
+        "accuracy_wilson95": [
+          0.0,
+          0.4899
+        ],
+        "mean_margin": -0.0721,
+        "min_margin": -0.1156,
+        "max_margin": -0.0324,
+        "n_unique_titles": 3,
+        "times_predicted": 2,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "沃尔沃A25E铰接式卡车",
+          "cosine": 0.9726,
+          "separation": 0.0274
+        },
+        "confused_with": [
+          {
+            "predicted_model": "卡特彼勒740铰接式卡车",
+            "count": 2
+          },
+          {
+            "predicted_model": "LSS320B",
+            "count": 1
+          },
+          {
+            "predicted_model": "沃尔沃A30E铰接式卡车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "卡特彼勒740铰接式卡车",
+        "family": "roller",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 2,
+        "accuracy": 0.5,
+        "accuracy_wilson95": [
+          0.15,
+          0.85
+        ],
+        "mean_margin": -0.0205,
+        "min_margin": -0.0586,
+        "max_margin": 0.0087,
+        "n_unique_titles": 2,
+        "times_predicted": 5,
+        "absorbed_from_other_models": 3,
+        "nearest_centroid": {
+          "model": "卡特彼勒735铰接式卡车",
+          "cosine": 0.9715,
+          "separation": 0.0285
+        },
+        "confused_with": [
+          {
+            "predicted_model": "沃尔沃A30E铰接式卡车",
+            "count": 1
+          },
+          {
+            "predicted_model": "卡特彼勒735铰接式卡车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "比亚迪 EL25 四支点平衡重电动叉车",
+        "family": "forklift",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 2,
+        "accuracy": 0.4,
+        "accuracy_wilson95": [
+          0.1176,
+          0.7693
+        ],
+        "mean_margin": 0.0226,
+        "min_margin": -0.0162,
+        "max_margin": 0.0795,
+        "n_unique_titles": 5,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "CPD25",
+          "cosine": 0.9306,
+          "separation": 0.0694
+        },
+        "confused_with": [
+          {
+            "predicted_model": "CPD25",
+            "count": 2
+          },
+          {
+            "predicted_model": "东风小多利卡扫路车国VI",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "沃尔沃A25E铰接式卡车",
+        "family": "roller",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 1,
+        "accuracy": 0.25,
+        "accuracy_wilson95": [
+          0.0456,
+          0.6994
+        ],
+        "mean_margin": -0.0343,
+        "min_margin": -0.0827,
+        "max_margin": 0.0083,
+        "n_unique_titles": 4,
+        "times_predicted": 1,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "卡特彼勒735铰接式卡车",
+          "cosine": 0.9726,
+          "separation": 0.0274
+        },
+        "confused_with": [
+          {
+            "predicted_model": "卡特彼勒740铰接式卡车",
+            "count": 1
+          },
+          {
+            "predicted_model": "沃尔沃A30E铰接式卡车",
+            "count": 1
+          },
+          {
+            "predicted_model": "卡特彼勒735铰接式卡车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "沃尔沃A30E铰接式卡车",
+        "family": "roller",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 3,
+        "accuracy": 1.0,
+        "accuracy_wilson95": [
+          0.4385,
+          1.0
+        ],
+        "mean_margin": 0.0306,
+        "min_margin": 0.0027,
+        "max_margin": 0.0607,
+        "n_unique_titles": 3,
+        "times_predicted": 8,
+        "absorbed_from_other_models": 5,
+        "nearest_centroid": {
+          "model": "LSS1001",
+          "cosine": 0.9301,
+          "separation": 0.0699
+        },
+        "confused_with": []
+      },
+      {
+        "model": "解放牌CA1040K2L3E6B3载货汽车",
+        "family": "wrecker",
+        "n_images": 4,
+        "n_test": 4,
+        "hits": 1,
+        "accuracy": 0.25,
+        "accuracy_wilson95": [
+          0.0456,
+          0.6994
+        ],
+        "mean_margin": -0.0205,
+        "min_margin": -0.0522,
+        "max_margin": 0.0223,
+        "n_unique_titles": 4,
+        "times_predicted": 3,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "SHACMAN F3000 6x6 沙漠洒水车",
+          "cosine": 0.935,
+          "separation": 0.065
+        },
+        "confused_with": [
+          {
+            "predicted_model": "东风天锦扫路车 CLW5180TSLD6",
+            "count": 1
+          },
+          {
+            "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+            "count": 1
+          },
+          {
+            "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "豪沃牌ZZ5187XXYN711GF1厢式运输车",
+        "family": "wrecker",
+        "n_images": 3,
+        "n_test": 3,
+        "hits": 1,
+        "accuracy": 0.3333,
+        "accuracy_wilson95": [
+          0.0615,
+          0.7923
+        ],
+        "mean_margin": -0.0061,
+        "min_margin": -0.0276,
+        "max_margin": 0.0175,
+        "n_unique_titles": 2,
+        "times_predicted": 2,
+        "absorbed_from_other_models": 1,
+        "nearest_centroid": {
+          "model": "东风多利卡扫路车 CLW5120TSL6",
+          "cosine": 0.9411,
+          "separation": 0.0589
+        },
+        "confused_with": [
+          {
+            "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+            "count": 1
+          },
+          {
+            "predicted_model": "东风天锦扫路车 CLW5180TSLD6",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "model": "陕汽德御Q200一拖二平板型清障车",
+        "family": "wrecker",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 5,
+        "accuracy": 1.0,
+        "accuracy_wilson95": [
+          0.5655,
+          1.0
+        ],
+        "mean_margin": 0.0382,
+        "min_margin": 0.0068,
+        "max_margin": 0.061,
+        "n_unique_titles": 2,
+        "times_predicted": 5,
+        "absorbed_from_other_models": 0,
+        "nearest_centroid": {
+          "model": "东风多利卡D8 平板清障车（一拖二）",
+          "cosine": 0.9257,
+          "separation": 0.0743
+        },
+        "confused_with": []
+      },
+      {
+        "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+        "family": "forklift",
+        "n_images": 5,
+        "n_test": 5,
+        "hits": 4,
+        "accuracy": 0.8,
+        "accuracy_wilson95": [
+          0.3755,
+          0.9638
+        ],
+        "mean_margin": 0.0094,
+        "min_margin": -0.1065,
+        "max_margin": 0.0521,
+        "n_unique_titles": 5,
+        "times_predicted": 6,
+        "absorbed_from_other_models": 2,
+        "nearest_centroid": {
+          "model": "CPD25",
+          "cosine": 0.9458,
+          "separation": 0.0542
+        },
+        "confused_with": [
+          {
+            "predicted_model": "解放牌CA1040K2L3E6B3载货汽车",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "top_failures": [
+      {
+        "asset_id": "63aa7cd88eb1",
+        "model": "26H",
+        "predicted_model": "东风小多利卡扫路车国VI",
+        "margin": -0.1325,
+        "run": "m43-base-c5-roller",
+        "image": "data-test/runs/m43-base-c5-roller/images/26H/63aa7cd88eb1.jpg"
+      },
+      {
+        "asset_id": "215d54dd723a",
+        "model": "卡特彼勒735铰接式卡车",
+        "predicted_model": "沃尔沃A30E铰接式卡车",
+        "margin": -0.1156,
+        "run": "m43-base-c5-roller",
+        "image": "data-test/runs/m43-base-c5-roller/images/卡特彼勒735铰接式卡车/215d54dd723a.jpg"
+      },
+      {
+        "asset_id": "26d1e958a177",
+        "model": "Mercedes-Benz Arocs 6x6 牵引车",
+        "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+        "margin": -0.1125,
+        "run": "m43-base-c1-desert",
+        "image": "data-test/runs/m43-base-c1-desert/images/Mercedes_Benz_Arocs_6x6_牵引车/26d1e958a177.jpg"
+      },
+      {
+        "asset_id": "ea1a9d66e385",
+        "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+        "predicted_model": "解放牌CA1040K2L3E6B3载货汽车",
+        "margin": -0.1065,
+        "run": "m43-base-c4-forklift",
+        "image": "data-test/runs/m43-base-c4-forklift/images/龙工_CPD30_5MJL_5MFL_电动叉车/ea1a9d66e385.jpg"
+      },
+      {
+        "asset_id": "ee5c4b2657b1",
+        "model": "东风小多利卡扫路车国VI",
+        "predicted_model": "MOL H6066 6x6 特种运输车",
+        "margin": -0.1039,
+        "run": "m43-sess-h3-sweeper",
+        "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/ee5c4b2657b1.jpg"
+      },
+      {
+        "asset_id": "b9f061846a73",
+        "model": "中联 YZK19 凸块式单钢轮振动压路机",
+        "predicted_model": "YZ18JC",
+        "margin": -0.1024,
+        "run": "m43-base-c5-roller",
+        "image": "data-test/runs/m43-base-c5-roller/images/中联_YZK19_凸块式单钢轮振动压路机/b9f061846a73.jpg"
+      },
+      {
+        "asset_id": "4b9f99d4c0c2",
+        "model": "CPD25",
+        "predicted_model": "比亚迪 EL25 四支点平衡重电动叉车",
+        "margin": -0.0918,
+        "run": "m43-base-c4-forklift",
+        "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/4b9f99d4c0c2.jpg"
+      },
+      {
+        "asset_id": "b91980fa5a2a",
+        "model": "沃尔沃A25E铰接式卡车",
+        "predicted_model": "沃尔沃A30E铰接式卡车",
+        "margin": -0.0827,
+        "run": "m43-base-c5-roller",
+        "image": "data-test/runs/m43-base-c5-roller/images/沃尔沃A25E铰接式卡车/b91980fa5a2a.jpg"
+      },
+      {
+        "asset_id": "bad319c6922d",
+        "model": "Mercedes-Benz Arocs 6x6 牵引车",
+        "predicted_model": "东风6x6沙漠卡车",
+        "margin": -0.0787,
+        "run": "m43-base-c1-desert",
+        "image": "data-test/runs/m43-base-c1-desert/images/Mercedes_Benz_Arocs_6x6_牵引车/bad319c6922d.jpg"
+      },
+      {
+        "asset_id": "d51e88b7a9af",
+        "model": "26H",
+        "predicted_model": "LSS320B",
+        "margin": -0.0783,
+        "run": "m43-base-c5-roller",
+        "image": "data-test/runs/m43-base-c5-roller/images/26H/d51e88b7a9af.jpg"
+      }
+    ]
+  },
+  "recommendation": {
+    "wiring_into_verify": "no-go-now",
+    "research_verdict": "positive: image-to-image 明显优于零样本文本",
+    "offline_library_build": "conditional-go: 先攒参考图并做 run-disjoint 验证，不接生产",
+    "headline": "信号真实存在，但绝对准确率/margin 不足以接 VERIFY；先离线建库、扩数据再评估",
+    "thresholds": {
+      "wire_go": "top1>=0.75 且 balanced>=0.70 且 去近重复 top1>=0.70",
+      "offline_conditional_go": "top1>=0.40 且 balanced>=0.35 且 lift>=5x",
+      "else": "no-go"
+    },
+    "rationale": [
+      "top-1 53.0% vs 机会 6.7%（8.0x），95% CI [0.4116, 0.6457]",
+      "balanced accuracy 49.7%，majority baseline 9.1%",
+      "去近重复测试集 top-1 51.6%",
+      "top-3 77.3% vs 机会 20.0%",
+      "二项检验 p=5.52e-24"
+    ]
+  },
+  "rows": [
+    {
+      "asset_id": "d51e88b7a9af",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/d51e88b7a9af.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "颠覆升级:全新山推SR26H-C6压路机演绎智控传奇",
+      "width": 550,
+      "height": 412,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8335,
+      "sim_best_other": 0.9118,
+      "best_other_model": "LSS320B",
+      "margin": -0.0783,
+      "rank_of_true": 8,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 35,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "6dcd559bfbd1",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/6dcd559bfbd1.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "颠覆升级:全新山推SR26H-C6压路机演绎智控传奇",
+      "width": 550,
+      "height": 734,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8424,
+      "sim_best_other": 0.8987,
+      "best_other_model": "LSS320B",
+      "margin": -0.0563,
+      "rank_of_true": 7,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 35,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "63aa7cd88eb1",
+      "image": "data-test/runs/m43-base-c5-roller/images/26H/63aa7cd88eb1.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "side",
+      "scene": "part",
+      "title": "芳恒适用雅迪g26h电动车坐垫套雅迪g26m电车g26座套g26d防晒防水加厚",
+      "width": 500,
+      "height": 500,
+      "model": "26H",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.5907,
+      "sim_best_other": 0.7232,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.1325,
+      "rank_of_true": 15,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "d05f40dad598",
+      "image": "data-test/runs/m43-base-h3-sweeper/images/CLW5040TSLB6型福田时代蓝牌扫路车/d05f40dad598.jpg",
+      "run": "m43-base-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "CLW5040TSLB6型主路快速路扫地车 福田小卡次路支干路清扫车",
+      "width": 750,
+      "height": 750,
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.7945,
+      "sim_best_other": 0.846,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0515,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "f94a596151bb",
+      "image": "data-test/runs/m43-base-h3-sweeper/images/CLW5040TSLB6型福田时代蓝牌扫路车/f94a596151bb.jpg",
+      "run": "m43-base-h3-sweeper",
+      "family": "sweeper",
+      "view": "side",
+      "scene": "single_vehicle",
+      "title": "clw5040tslb6型扫路车是c证可开的蓝牌车型,具备扫路,洒水,路缘清洗等",
+      "width": 750,
+      "height": 500,
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.9163,
+      "sim_best_other": 0.9075,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": 0.0088,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "2b73b43b6a30",
+      "image": "data-test/runs/m43-base-h3-sweeper/images/CLW5040TSLB6型福田时代蓝牌扫路车/2b73b43b6a30.jpg",
+      "run": "m43-base-h3-sweeper",
+      "family": "sweeper",
+      "view": "hero_45",
+      "scene": "part",
+      "title": "clw5040tslb6型扫路车",
+      "width": 608,
+      "height": 456,
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.911,
+      "sim_best_other": 0.8939,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": 0.0172,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "64698f4f82ee",
+      "image": "data-test/runs/m43-base-h3-sweeper/images/CLW5040TSLB6型福田时代蓝牌扫路车/64698f4f82ee.jpg",
+      "run": "m43-base-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "福田小卡之星4方(吨)小型马路清洗扫路车 clw5040tslb6 - 爱企查",
+      "width": 500,
+      "height": 826,
+      "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.82,
+      "sim_best_other": 0.8162,
+      "best_other_model": "26H",
+      "margin": 0.0039,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "4b9f99d4c0c2",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/4b9f99d4c0c2.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "比亚迪CPD25平衡重式叉车",
+      "width": 900,
+      "height": 600,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.8399,
+      "sim_best_other": 0.858,
+      "best_other_model": "LSS1001",
+      "margin": -0.0181,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "ca0889b6a3dd",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/ca0889b6a3dd.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "china forklift cpd25 2.",
+      "width": 500,
+      "height": 500,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8687,
+      "sim_best_other": 0.9023,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0336,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "38602fcd676e",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/38602fcd676e.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "cpd25蓄电池平衡重式叉车",
+      "width": 500,
+      "height": 499,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8044,
+      "sim_best_other": 0.8516,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0471,
+      "rank_of_true": 7,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "eb5630114abc",
+      "image": "data-test/runs/m43-base-c4-forklift/images/CPD25/eb5630114abc.jpg",
+      "run": "m43-base-c4-forklift",
+      "family": "forklift",
+      "view": "detail",
+      "scene": "part",
+      "title": "5吨电动叉车cpd25三节自由门架升降中缸 升高4.5米中间 - 爱企查",
+      "width": 566,
+      "height": 500,
+      "model": "CPD25",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.704,
+      "sim_best_other": 0.7378,
+      "best_other_model": "LSS320B",
+      "margin": -0.0338,
+      "rank_of_true": 6,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "80c30ac8627f",
+      "image": "data-test/runs/m43-base-c1-desert/images/EQ245_EQ2100E6D_六驱沙漠车/80c30ac8627f.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "hero_45",
+      "scene": "part",
+      "title": "EQ245六驱沙漠车",
+      "width": 550,
+      "height": 414,
+      "model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "predicted_family": "desert",
+      "sim_true": 0.8361,
+      "sim_best_other": 0.7978,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": 0.0383,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "866ab38a2a2d",
+      "image": "data-test/runs/m43-base-c1-desert/images/EQ245_EQ2100E6D_六驱沙漠车/866ab38a2a2d.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "hero_45",
+      "scene": "part",
+      "title": "EQ245六驱沙漠车",
+      "width": 550,
+      "height": 414,
+      "model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "predicted_family": "desert",
+      "sim_true": 0.9297,
+      "sim_best_other": 0.8024,
+      "best_other_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "margin": 0.1273,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "497df4186c98",
+      "image": "data-test/runs/m43-base-c1-desert/images/EQ245_EQ2100E6D_六驱沙漠车/497df4186c98.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "side",
+      "scene": "part",
+      "title": "EQ245六驱沙漠车",
+      "width": 550,
+      "height": 414,
+      "model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "EQ245（EQ2100E6D）六驱沙漠车",
+      "predicted_family": "desert",
+      "sim_true": 0.9235,
+      "sim_best_other": 0.8607,
+      "best_other_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "margin": 0.0628,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 23,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "a8b4767b6b10",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/a8b4767b6b10.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "供应洛阳一拖洛建lss1001型10吨单钢轮振动压路机",
+      "width": 536,
+      "height": 500,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.9117,
+      "sim_best_other": 0.9057,
+      "best_other_model": "LSS320B",
+      "margin": 0.006,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "d5eb534e404e",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/d5eb534e404e.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "洛建lss1001压路机",
+      "width": 750,
+      "height": 500,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.9415,
+      "sim_best_other": 0.9209,
+      "best_other_model": "LSS320B",
+      "margin": 0.0206,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": true,
+      "min_ref_hamming": 7,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "c8ab9d4e5260",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/c8ab9d4e5260.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "part",
+      "title": "供应洛阳一拖洛建lss1001型10吨单钢轮振动压路机",
+      "width": 808,
+      "height": 500,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8997,
+      "sim_best_other": 0.9187,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0189,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "feaeb0a8be41",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/feaeb0a8be41.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "国机洛建lss1001单钢轮压路机",
+      "width": 525,
+      "height": 500,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.8847,
+      "sim_best_other": 0.8835,
+      "best_other_model": "YZ7G",
+      "margin": 0.0012,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": true,
+      "min_ref_hamming": 7,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "218604218dfc",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS1001/218604218dfc.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "洛建lss1001压路机",
+      "width": 500,
+      "height": 375,
+      "model": "LSS1001",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8701,
+      "sim_best_other": 0.8914,
+      "best_other_model": "LSS320B",
+      "margin": -0.0213,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "b3a5b7a2cd8d",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/b3a5b7a2cd8d.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "洛建LSS2101压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8647,
+      "sim_best_other": 0.9289,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0642,
+      "rank_of_true": 6,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "7ec82b6be5ce",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/7ec82b6be5ce.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "二手洛建LSS2101压路机-二手压路机洛建LSS2101价格-洛建二手压路机LSS2101出售_铁甲二手机",
+      "width": 640,
+      "height": 853,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.9335,
+      "sim_best_other": 0.9102,
+      "best_other_model": "LSS320B",
+      "margin": 0.0233,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "b34fc063a420",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/b34fc063a420.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "二手洛建LSS2101压路机-二手压路机洛建LSS2101价格-洛建二手压路机LSS2101出售_铁甲二手机",
+      "width": 480,
+      "height": 360,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.9317,
+      "sim_best_other": 0.9076,
+      "best_other_model": "LSS320B",
+      "margin": 0.0242,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "b377ec8c6a11",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS2101_2/b377ec8c6a11.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "【洛建LSS2101压路机】-邵阳市二手洛建LSS2101转让出售信息_铁甲二手机",
+      "width": 640,
+      "height": 853,
+      "model": "LSS2101-2",
+      "identity": "confirmed",
+      "n_model_images": 4,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8485,
+      "sim_best_other": 0.8487,
+      "best_other_model": "LSS320B",
+      "margin": -0.0002,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "36a719d389ae",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/36a719d389ae.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "洛建lss320b压路机",
+      "width": 503,
+      "height": 403,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS1001",
+      "predicted_family": "roller",
+      "sim_true": 0.9011,
+      "sim_best_other": 0.9565,
+      "best_other_model": "LSS1001",
+      "margin": -0.0554,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "155ffd641bd4",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/155ffd641bd4.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "国机洛建lss320b压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.9385,
+      "sim_best_other": 0.9438,
+      "best_other_model": "LSS2101-2",
+      "margin": -0.0053,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 19,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "0b1167f1ac77",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/0b1167f1ac77.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "洛建lss320b压路机",
+      "width": 640,
+      "height": 480,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.9258,
+      "sim_best_other": 0.9321,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0063,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 31,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "df3fb03686d6",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/df3fb03686d6.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "国机洛建lss320b压路机",
+      "width": 500,
+      "height": 886,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.8523,
+      "sim_best_other": 0.8509,
+      "best_other_model": "LSS2101-2",
+      "margin": 0.0014,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 31,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "f8a38edfdf9e",
+      "image": "data-test/runs/m43-base-c5-roller/images/LSS320B/f8a38edfdf9e.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "广东出售转让二手3768小时2010年洛建lss320b单钢轮压路机",
+      "width": 500,
+      "height": 375,
+      "model": "LSS320B",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "LSS320B",
+      "predicted_family": "roller",
+      "sim_true": 0.9489,
+      "sim_best_other": 0.9346,
+      "best_other_model": "LSS1001",
+      "margin": 0.0143,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 19,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "299c1976a6f9",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/299c1976a6f9.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 450,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9024,
+      "sim_best_other": 0.8708,
+      "best_other_model": "LSS320B",
+      "margin": 0.0316,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 24,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "fa06bc3b76e6",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/fa06bc3b76e6.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 400,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9129,
+      "sim_best_other": 0.9296,
+      "best_other_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "margin": -0.0167,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 15,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "63130517d2c6",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/63130517d2c6.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 450,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9092,
+      "sim_best_other": 0.867,
+      "best_other_model": "LSS320B",
+      "margin": 0.0422,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 15,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "45dd6549629c",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/45dd6549629c.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 215,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.7744,
+      "sim_best_other": 0.8242,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0497,
+      "rank_of_true": 8,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 22,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "da9a32f3fd24",
+      "image": "data-test/runs/m43-base-c1-desert/images/MOL_H6066_6x6_特种运输车/da9a32f3fd24.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "塔里木油田里的沙漠孤鹰,H6066 6x6特种运输车了解一下",
+      "width": 600,
+      "height": 395,
+      "model": "MOL H6066 6x6 特种运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.8815,
+      "sim_best_other": 0.887,
+      "best_other_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "margin": -0.0055,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 19,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "3ef31a0dfdb6",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/3ef31a0dfdb6.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "part",
+      "title": "专用油田和沙漠的超级卡车,最大车重高达230吨,mol hf 8066 6x6越野",
+      "width": 522,
+      "height": 392,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9414,
+      "sim_best_other": 0.9226,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": 0.0188,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 12,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "d8d83bfe6f13",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/d8d83bfe6f13.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "专用油田和沙漠的超级卡车,比利时mol hf 8066 6x6越野底盘实拍",
+      "width": 893,
+      "height": 500,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9184,
+      "sim_best_other": 0.8445,
+      "best_other_model": "东风大多利卡扫路车国VI",
+      "margin": 0.0739,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "c6c82cad534c",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/c6c82cad534c.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "专用油田和沙漠的超级卡车,比利时mol hf 8066 6x6越野底盘实拍",
+      "width": 597,
+      "height": 500,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.9351,
+      "sim_best_other": 0.8686,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": 0.0665,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 12,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "2efbb06b02c2",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/2efbb06b02c2.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "专用油田和沙漠的超级卡车最大车重高达230吨molhf80666x6越野底盘",
+      "width": 626,
+      "height": 310,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.8744,
+      "sim_best_other": 0.9097,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": -0.0353,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "a05f5b68a93b",
+      "image": "data-test/runs/m43-base-c1-desert/images/Mol_HF8066_6x6_重型沙漠运输车/a05f5b68a93b.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "detail",
+      "scene": "part",
+      "title": "专用油田和沙漠的超级卡车,比利时mol hf 8066 6x6越野底盘实拍",
+      "width": 879,
+      "height": 500,
+      "model": "Mol HF8066 6x6 重型沙漠运输车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "Mol HF8066 6x6 重型沙漠运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.8771,
+      "sim_best_other": 0.8698,
+      "best_other_model": "东风大多利卡扫路车国VI",
+      "margin": 0.0073,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "5d79482ffa90",
+      "image": "data-test/runs/m43-base-c1-desert/images/SHACMAN_F3000_6x6_沙漠洒水车/5d79482ffa90.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "part",
+      "title": "生产工地工程shacman德龙f3000洒水车矿山道路降尘水运输车",
+      "width": 500,
+      "height": 500,
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "predicted_family": "desert",
+      "sim_true": 0.9301,
+      "sim_best_other": 0.879,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": 0.0511,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "95663e58d094",
+      "image": "data-test/runs/m43-base-c1-desert/images/SHACMAN_F3000_6x6_沙漠洒水车/95663e58d094.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "part",
+      "title": "shacman f3000 6*6 8tons 10tons 14tons crane mounted on cargo",
+      "width": 667,
+      "height": 500,
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "predicted_family": "desert",
+      "sim_true": 0.9521,
+      "sim_best_other": 0.891,
+      "best_other_model": "陕汽德御Q200一拖二平板型清障车",
+      "margin": 0.061,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "e85e56fb2615",
+      "image": "data-test/runs/m43-base-c1-desert/images/SHACMAN_F3000_6x6_沙漠洒水车/e85e56fb2615.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "part",
+      "title": "shacmanf3000动力发动机进气系统dz93259190009进气底座总成",
+      "width": 555,
+      "height": 500,
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "predicted_family": "desert",
+      "sim_true": 0.9691,
+      "sim_best_other": 0.9028,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": 0.0663,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "d870ba3d5030",
+      "image": "data-test/runs/m43-base-c1-desert/images/SHACMAN_F3000_6x6_沙漠洒水车/d870ba3d5030.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "side",
+      "scene": "multi_vehicle",
+      "title": "shacman f3000 6*4 20cbm 300hp septic tank fecal sewage suction",
+      "width": 668,
+      "height": 500,
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "predicted_family": "desert",
+      "sim_true": 0.9556,
+      "sim_best_other": 0.8762,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": 0.0794,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "44bbf296bd1a",
+      "image": "data-test/runs/m43-base-c1-desert/images/SHACMAN_F3000_6x6_沙漠洒水车/44bbf296bd1a.jpg",
+      "run": "m43-base-c1-desert",
+      "family": "desert",
+      "view": "front",
+      "scene": "multi_vehicle",
+      "title": "shacman f3000 ,430马力 陕汽德龙f3000 6*4底盘,潍柴大泵发动机,12挡",
+      "width": 858,
+      "height": 500,
+      "model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "SHACMAN F3000 6x6 沙漠洒水车",
+      "predicted_family": "desert",
+      "sim_true": 0.9174,
+      "sim_best_other": 0.8913,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": 0.0262,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "d085a382dae0",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/d085a382dae0.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手徐工YZ18JC压路机-二手压路机徐工YZ18JC价格-徐工二手压路机YZ18JC出售_铁甲二手机",
+      "width": 640,
+      "height": 480,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.9276,
+      "sim_best_other": 0.8927,
+      "best_other_model": "YZ7G",
+      "margin": 0.0349,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "c7d1d80cd1bc",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/c7d1d80cd1bc.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "【徐工YZ18JC压路机】-南宁市二手徐工YZ18JC转让出售信息_铁甲二手机",
+      "width": 640,
+      "height": 480,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.9273,
+      "sim_best_other": 0.9169,
+      "best_other_model": "LSS320B",
+      "margin": 0.0105,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 24,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "16d4496c72bf",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/16d4496c72bf.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手徐工YZ18JC压路机-二手压路机徐工YZ18JC价格-徐工二手压路机YZ18JC出售_铁甲二手机",
+      "width": 640,
+      "height": 480,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.9395,
+      "sim_best_other": 0.9149,
+      "best_other_model": "YZ7G",
+      "margin": 0.0245,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "54fa85dd631d",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/54fa85dd631d.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手徐工YZ18JC压路机-二手压路机徐工YZ18JC价格-徐工二手压路机YZ18JC出售_铁甲二手机",
+      "width": 640,
+      "height": 480,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.926,
+      "sim_best_other": 0.9061,
+      "best_other_model": "LSS2101-2",
+      "margin": 0.0199,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "014cb3c238d4",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/014cb3c238d4.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手徐工YZ18JC压路机-二手压路机徐工YZ18JC价格-徐工二手压路机YZ18JC出售_铁甲二手机",
+      "width": 640,
+      "height": 853,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ7G",
+      "predicted_family": "roller",
+      "sim_true": 0.8756,
+      "sim_best_other": 0.9196,
+      "best_other_model": "YZ7G",
+      "margin": -0.044,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 24,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "27eb55bc94d9",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ18JC/27eb55bc94d9.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "徐工yz18jc压路机配件:传动轴 变速箱齿轮轴,安排顺丰快",
+      "width": 475,
+      "height": 845,
+      "model": "YZ18JC",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "LSS2101-2",
+      "predicted_family": "roller",
+      "sim_true": 0.8544,
+      "sim_best_other": 0.9234,
+      "best_other_model": "LSS2101-2",
+      "margin": -0.069,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 33,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "12adde1b7ad5",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/12adde1b7ad5.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "【供应洛阳一拖7吨单钢轮振动压路机YZ7G及配件】价格,厂家,图片,其他工程机械,河南明洋实业有限公司李怡君-马可波罗网",
+      "width": 1920,
+      "height": 1289,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ7G",
+      "predicted_family": "roller",
+      "sim_true": 0.9101,
+      "sim_best_other": 0.8719,
+      "best_other_model": "YZ18JC",
+      "margin": 0.0382,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "03bdaebf4c76",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/03bdaebf4c76.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "front",
+      "scene": "part",
+      "title": "我公司供应一拖洛建7吨YZ7G单钢轮振动压路机_品牌_供求市场_摊铺机网",
+      "width": 1024,
+      "height": 768,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8885,
+      "sim_best_other": 0.9015,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0129,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 28,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "98051bac4940",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/98051bac4940.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "供应东方红yz7g单钢轮振动压路机_平地机_路面机械_整机供应_整机平台_中国路面机械网",
+      "width": 567,
+      "height": 477,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ7G",
+      "predicted_family": "roller",
+      "sim_true": 0.8734,
+      "sim_best_other": 0.866,
+      "best_other_model": "CPD25",
+      "margin": 0.0074,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": true,
+      "min_ref_hamming": 3,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "2b40e189c757",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/2b40e189c757.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手洛建YZ7G压路机-二手压路机洛建YZ7G价格-洛建二手压路机YZ7G出售_铁甲二手机",
+      "width": 640,
+      "height": 360,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8786,
+      "sim_best_other": 0.8826,
+      "best_other_model": "YZ18JC",
+      "margin": -0.004,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 29,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "66796ea30b17",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/66796ea30b17.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "part",
+      "title": "二手洛建YZ7G压路机-二手压路机洛建YZ7G价格-洛建二手压路机YZ7G出售_铁甲二手机",
+      "width": 640,
+      "height": 360,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "YZ18JC",
+      "predicted_family": "roller",
+      "sim_true": 0.8596,
+      "sim_best_other": 0.9118,
+      "best_other_model": "YZ18JC",
+      "margin": -0.0522,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 29,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "ddcc32969b9c",
+      "image": "data-test/runs/m43-base-c5-roller/images/YZ7G/ddcc32969b9c.jpg",
+      "run": "m43-base-c5-roller",
+      "family": "roller",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "【东方红YZ7G单钢轮压路机】 东方红YZ7G单钢轮压路机价格表|东方红YZ7G单钢轮压路机图片 - 中国工程机械商贸网",
+      "width": 567,
+      "height": 477,
+      "model": "YZ7G",
+      "identity": "confirmed",
+      "n_model_images": 6,
+      "predicted_model": "CPD25",
+      "predicted_family": "forklift",
+      "sim_true": 0.8772,
+      "sim_best_other": 0.9042,
+      "best_other_model": "CPD25",
+      "margin": -0.0269,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": true,
+      "min_ref_hamming": 3,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "50fa90d74a97",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/50fa90d74a97.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "detail",
+      "scene": "part",
+      "title": "程力专用汽车股份有限公司销售六分公司-东风大多利卡扫路车国VI",
+      "width": 771,
+      "height": 433,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.743,
+      "sim_best_other": 0.7867,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0437,
+      "rank_of_true": 5,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "2b67b579df67",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/2b67b579df67.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "东风大多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8894,
+      "sim_best_other": 0.9027,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0133,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 36,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "1a5a08ca17d2",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风大多利卡扫路车国VI/1a5a08ca17d2.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "hero_45",
+      "scene": "part",
+      "title": "东风大多利卡扫路车国vi",
+      "width": 668,
+      "height": 500,
+      "model": "东风大多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "东风小多利卡扫路车国VI",
+      "predicted_family": "sweeper",
+      "sim_true": 0.9067,
+      "sim_best_other": 0.9169,
+      "best_other_model": "东风小多利卡扫路车国VI",
+      "margin": -0.0102,
+      "rank_of_true": 2,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 38,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "18cac7f7a288",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/18cac7f7a288.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8792,
+      "sim_best_other": 0.8935,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0143,
+      "rank_of_true": 3,
+      "correct": false,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 27,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "cb96da2c4d90",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/cb96da2c4d90.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "predicted_family": "sweeper",
+      "sim_true": 0.8787,
+      "sim_best_other": 0.9161,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": -0.0374,
+      "rank_of_true": 4,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "ee5c4b2657b1",
+      "image": "data-test/runs/m43-sess-h3-sweeper/images/东风小多利卡扫路车国VI/ee5c4b2657b1.jpg",
+      "run": "m43-sess-h3-sweeper",
+      "family": "sweeper",
+      "view": "detail",
+      "scene": "part",
+      "title": "楚胜汽车集团有限公司销售分公司网站-东风小多利卡扫路车国vi",
+      "width": 667,
+      "height": 500,
+      "model": "东风小多利卡扫路车国VI",
+      "identity": "confirmed",
+      "n_model_images": 3,
+      "predicted_model": "MOL H6066 6x6 特种运输车",
+      "predicted_family": "desert",
+      "sim_true": 0.7419,
+      "sim_best_other": 0.8458,
+      "best_other_model": "MOL H6066 6x6 特种运输车",
+      "margin": -0.1039,
+      "rank_of_true": 13,
+      "correct": false,
+      "top3_correct": false,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": false
+    },
+    {
+      "asset_id": "b1d746fef82d",
+      "image": "data-test/runs/m43-base-h2-wrecker/images/陕汽德御Q200一拖二平板型清障车/b1d746fef82d.jpg",
+      "run": "m43-base-h2-wrecker",
+      "family": "wrecker",
+      "view": "front",
+      "scene": "single_vehicle",
+      "title": "陕汽德御q200一拖二清障车带随车吊 小谢说车8888",
+      "width": 750,
+      "height": 500,
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "陕汽德御Q200一拖二平板型清障车",
+      "predicted_family": "wrecker",
+      "sim_true": 0.8673,
+      "sim_best_other": 0.8346,
+      "best_other_model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+      "margin": 0.0327,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "5c2aaab98236",
+      "image": "data-test/runs/m43-base-h2-wrecker/images/陕汽德御Q200一拖二平板型清障车/5c2aaab98236.jpg",
+      "run": "m43-base-h2-wrecker",
+      "family": "wrecker",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "陕汽德御q200一拖二清障车带随车吊 小谢说车8888",
+      "width": 750,
+      "height": 500,
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "陕汽德御Q200一拖二平板型清障车",
+      "predicted_family": "wrecker",
+      "sim_true": 0.9419,
+      "sim_best_other": 0.8859,
+      "best_other_model": "YZ7G",
+      "margin": 0.056,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "6c49ecd4c121",
+      "image": "data-test/runs/m43-base-h2-wrecker/images/陕汽德御Q200一拖二平板型清障车/6c49ecd4c121.jpg",
+      "run": "m43-base-h2-wrecker",
+      "family": "wrecker",
+      "view": "rear",
+      "scene": "single_vehicle",
+      "title": "陕汽德御q200一拖二清障车带随车吊 小谢说车8888",
+      "width": 713,
+      "height": 475,
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "陕汽德御Q200一拖二平板型清障车",
+      "predicted_family": "wrecker",
+      "sim_true": 0.9144,
+      "sim_best_other": 0.8975,
+      "best_other_model": "LSS320B",
+      "margin": 0.0169,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "876a7a733e08",
+      "image": "data-test/runs/m43-base-h2-wrecker/images/陕汽德御Q200一拖二平板型清障车/876a7a733e08.jpg",
+      "run": "m43-base-h2-wrecker",
+      "family": "wrecker",
+      "view": "detail",
+      "scene": "single_vehicle",
+      "title": "陕汽德御q200一拖二清障车带随车吊 小谢说车8888",
+      "width": 750,
+      "height": 500,
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "陕汽德御Q200一拖二平板型清障车",
+      "predicted_family": "wrecker",
+      "sim_true": 0.945,
+      "sim_best_other": 0.8805,
+      "best_other_model": "YZ7G",
+      "margin": 0.0646,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 26,
+      "same_title_reference": true
+    },
+    {
+      "asset_id": "9e55b46399a9",
+      "image": "data-test/runs/m43-base-h2-wrecker/images/陕汽德御Q200一拖二平板型清障车/9e55b46399a9.jpg",
+      "run": "m43-base-h2-wrecker",
+      "family": "wrecker",
+      "view": "hero_45",
+      "scene": "single_vehicle",
+      "title": "陕汽德御q200带吊平板清障车",
+      "width": 750,
+      "height": 500,
+      "model": "陕汽德御Q200一拖二平板型清障车",
+      "identity": "confirmed",
+      "n_model_images": 5,
+      "predicted_model": "陕汽德御Q200一拖二平板型清障车",
+      "predicted_family": "wrecker",
+      "sim_true": 0.9602,
+      "sim_best_other": 0.8908,
+      "best_other_model": "LSS320B",
+      "margin": 0.0694,
+      "rank_of_true": 1,
+      "correct": true,
+      "top3_correct": true,
+      "near_dup_to_reference": false,
+      "min_ref_hamming": 25,
+      "same_title_reference": false
+    }
+  ],
+  "problems": [],
+  "hash_read_errors": []
+}

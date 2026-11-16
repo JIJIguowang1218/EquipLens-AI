@@ -5,6 +5,21 @@
 
 ## 2026-11-16
 
+### 55. S2-06 image-to-image 参考库探针（2026-11-16）
+
+- 方法：335 个 image+model 资产（10 个 m43 run），只取 identity=confirmed 的 92 对 → 15 个
+  ≥3 图的型号 → 66 折留一；UForm3 图像编码器，均值向量 top-1（离线，约 12s）。
+- 结果：top-1 **53.0%**（35/66）vs 机会 6.7% = **8.0×**（Wilson 41.2–64.6%，p=5.5e-24）；
+  balanced 49.7%；top-3 **77.3%** vs 20.0%；去同标题 51.7%、去 dHash 近重复 51.6%；
+  accepted-inclusive 敏感性 42.1% vs 3.0%（13.9×）。
+- 脆弱性：top-1 margin 中位 **+0.003**；4/15 型号 0 命中；扫路车家族 30% vs 33.3%；
+  31 个错误中 8 个被同一 hub 质心吸走、29% 跨家族；候选 15 vs 生产 90+。
+- 结论：**研究 positive（优于零样本文本 0.33×），工程 NO-GO 暂不接 VERIFY**；只允许
+  top-3 短名单。条件性 go 见 BL-012（≥30 型号/≥10 图/≥300 测试 + 人工核验；
+  top-1≥75%、balanced≥70%、margin p10>0）。
+- 产物：`scripts/probe_visual_reference.py`、`data-test/evals/visual-reference-20261116.json`、
+  `docs/visual-reference-probe-20261116.md`。
+
 ### 54. BL-010 P1：品牌配额披露 + views 消费 + 外国占比标记（2026-11-16）
 
 - `taskspec.to_brief` 把 `preferences.brand_quota/foreign_ratio` 透传到 `brief.request`；
