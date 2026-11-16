@@ -25,6 +25,7 @@
 | brief 组装（LLM） | `src/equiplens/briefing.py`、`skills/task-brief/SKILL.md` |
 | brief 旧路径（silent） | `briefing.generate_brief(use_taskspec=False)`（库默认）、`build_brief.py --legacy-brief`；仅对照/回滚 |
 | 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
+| 评测脚本（实验） | `scripts/eval_router_holdout.py`、`scripts/score_relabeled.py`、`scripts/eval_del10.py`、`scripts/eval_p3_staged.py`、`scripts/render_p3_review.py` |
 | S4 生效性/兜底设计 | `docs/S4-EFFECTIVENESS-AUDIT-20261117.md`、`docs/router-fallback-design-20261116.md` |
 | P3 分阶段输入 | `docs/p3-staged-input-plan-20261117.md`、`data-test/evals/p3-staged-290-*`、`scripts/eval_p3_staged.py`、`scripts/render_p3_review.py` |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |

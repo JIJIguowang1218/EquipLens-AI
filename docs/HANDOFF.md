@@ -38,7 +38,7 @@
     negative 进 `brief.negative` + FILL 过滤、add_targets 只抓新增 target；`test_session_engine` 12/12。
   - A/B：基线 `m43-base-*` vs session `m43-sess-*`（同 brief/plan），交付 42/42 对 42/42、
     missing 0、重复 0、patch 轮增量查询 3–6 条（4.5%–9.5%）、耗时 4 降 1 升（+10.9%）。
-  - **S4 仍 `planned`**：session 未接生产入口（M6），不按“active = 真实业务使用”提前切。
+  - **当时 S4 未接生产入口**；2026-11-16 M6 完成后已 `active`（仅后端入口；patch 生效范围见 S4 审计）。
   - 数据：`data-test/runs/m43-*`、`data-test/evals/m43-*.json`；脚本 `scripts/run_session_case.py`、
     `scripts/compare_m43_ab.py`。
 
