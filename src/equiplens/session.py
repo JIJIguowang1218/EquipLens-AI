@@ -323,10 +323,11 @@ class Session:
             else:
                 res = classify_text(text)
         self._event("user_msg", msg_id=msg_id, text=text[:120], result=res)
-        if res.get("action") == "explain" or res.get("feasibility") in (
+        if res.get("action") in ("explain", "guide") or res.get("feasibility") in (
                 "unsupported", "out_of_domain"):
             self._event("explain", msg_id=msg_id, message=str(res.get("message") or "")[:200])
-            return {"ok": True, "explain": True, "message": res.get("message"),
+            return {"ok": True, "explain": True, "guide": res.get("action") == "guide",
+                    "message": res.get("message"),
                     "feasibility": res.get("feasibility"), "status": self.status()}
         if res.get("action") == "clarify" and (res.get("message") or res.get("question"))                 and not res.get("targets"):
             self.state = SessionState.CLARIFYING

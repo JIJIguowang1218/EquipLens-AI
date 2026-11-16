@@ -47,6 +47,11 @@
 | [BC-S4-007](S4-router.md#bc-s4-007) | S4 | 缺阶段维度，跨阶段误读 | open |
 | [BC-S4-008](S4-router.md#bc-s4-008) | S4 | 数量语义未建模（总量/每款/同车/条件扩张） | open |
 | [BC-S4-009](S4-router.md#bc-s4-009) | S4 | 复合意图只出一个 target | fixed |
+| [BC-S4-011](S4-router.md#bc-s4-011) | S4 | 界面功能被当成对话意图 | fixed |
+| [BC-S4-012](S4-router.md#bc-s4-012) | S4 | 暂停+附带修改只出暂停 | open |
+| [BC-S4-013](S4-router.md#bc-s4-013) | S4 | 构型+排除复合漏项 | open |
+| [BC-S4-014](S4-router.md#bc-s4-014) | S4 | 部件召回：吊臂特写 | open |
+| [BC-S4-015](S4-router.md#bc-s4-015) | S4 | 身份错但未指哪张 | product-decision |
 | [BC-S4-010](S4-router.md#bc-s4-010) | S4 | 构型替换+补型号未拆全（#17） | open |
 | [BC-S01-014](S0-01-input.md#bc-s01-014) | S0-01 | 用户排除项被 negative 前 4 条截断 | fixed |
 | [BC-S05-001](S0-05-session.md#bc-s05-001) | S0-05 | 规则 router 对同义改写脆弱（holdout 7/14） | open |

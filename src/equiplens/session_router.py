@@ -126,7 +126,7 @@ CAPABILITIES = [
      {"fetch.filters.quality"}),
     ("print_export", r"印刷|打印|DPI|dpi|别压缩|不压缩", "unsupported",
      "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。",
-     {"fetch.filters.quality"}),
+     {"fetch.filters.quality", "delivery.report"}),
     ("scene_filter", r"车展|工地.{0,6}(实拍|干活|真实)|拍摄场景", "unsupported",
      "按拍摄场景（车展/工地）筛选暂不支持；可以按型号/品牌帮你换图。",
      {"plan.negative", "fetch.filters.quality", "scope.ratio"}),
@@ -134,9 +134,27 @@ CAPABILITIES = [
      "按天气筛选暂不支持。", {"plan.negative", "fetch.filters.quality"}),
     ("uncropped", r"原图|未裁|别裁|裁过", "unsupported",
      "保证未裁切/原图暂不支持；可以换一张来源图。", {"fetch.filters.quality"}),
+    ("layout_default", r"每款(两|2)页|每台(车)?.*两页|加(个)?封面|换(个)?目录|目录样式|带缩略图",
+     "unsupported", "默认一车一页；版式超出默认暂不支持。",
+     {"delivery.report", "plan.quantity_per_model"}),
     ("weekly_report", r"周报|日报|月报", "out_of_domain",
      "我只做工程车图检索与交付，不写周报/日报。", {"delivery.report"}),
 ]
+
+
+UI_GUIDE = [
+    (r"导出.*PPT|PPT.*(导出|在哪|怎么)|导(个|出)?PDF|格式按钮|交付格式|导出按钮",
+     "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。"),
+    (r"保存.*方案|分享.*同事|重新跑一次|历史记录.*(哪|怎么)",
+     "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。"),
+]
+
+
+def _ui_guide(text: str):
+    for pat, msg in UI_GUIDE:
+        if re.search(pat, text):
+            return msg
+    return None
 
 
 def _capability(text: str):
@@ -199,6 +217,12 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
     vals = proposal.get("values") if isinstance(proposal.get("values"), dict) else {}
     out["values"] = {k: v for k, v in vals.items()
                      if k in ALLOWED_TARGETS and isinstance(v, dict)}
+    # UI 引导：界面已有功能（导出/格式/保存/分享/重跑），回答在哪操作，不产 patch
+    guide_msg = _ui_guide(text)
+    if guide_msg:
+        out.update({"targets": [], "clarify": False, "action": "guide",
+                    "feasibility": "supported", "message": guide_msg})
+        return out
     # 能力门：明确做不到/越界的，不伪装成动作
     cap = _capability(text)
     if cap:
@@ -252,9 +276,11 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
 
     # 构型/配置 vs 部件：有配置词且不是“部件细节图”时，纠正成 plan.configuration
     config_kw = any(k in text for k in ("配置", "构型", "驱动", "6x6", "8x8", "4x2",
-                                        "双备胎", "涉水喉", "高顶", "平顶"))
+                                        "双备胎", "涉水喉", "高顶", "平顶", "国六", "国五",
+                                        "电动", "左舵", "右舵", "寒区", "爬梯", "排放", "动力"))
     part_kw = any(k in text for k in ("细节图", "特写", "部件图"))
-    image_edit = _clear_target(text) and any(k in text for k in ("这张", "不能进", "别用"))
+    image_edit = _clear_target(text) and any(
+        k in text for k in ("这张", "不能进", "别用", "不是", "另一款", "别家", "认错"))
     if (config_kw and not part_kw and "plan.configuration" not in out["targets"]
             and not image_edit):
         if "fetch.parts" in out["targets"]:
@@ -269,7 +295,10 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
 
     # 数量四义：总量 / 每款张数 / 同车补图 / 条件扩张
     per_model = any(k in text for k in ("每款", "每个车型", "每台", "各车型", "每种"))
-    same_vehicle = (any(k in text for k in ("同款", "这台", "那台", "这个车型", "该车", "这个型号", "它"))
+    same_vehicle = (any(k in text for k in ("同款", "这台", "那台", "这个车型", "该车",
+                                            "这个型号", "这型号", "这个款", "这款", "这个车",
+                                            "这辆车", "这车", "这辆", "这几张", "就这几张",
+                                            "该型号", "内饰", "它"))
                     or bool(re.search(r"[A-Za-z]{1,}\d|\d+[A-Za-z]", text)))
     total_cue = bool(re.search(
         r"(总共|一共|总数|总量|合计|凑(够|到)?|要\s*\d+\s*张|数量.{0,4}(改|调|到))", text))
@@ -307,6 +336,9 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
         out["options"] = ["同一台车多几张", "改总数量", "先不操作"]
     if image_edit and "plan.configuration" in out["targets"]:
         out["targets"] = [t for t in out["targets"] if t != "plan.configuration"]
+        if not any(t in ("delivered.remove", "delivered.replace", "verify.blacklist")
+                   for t in out["targets"]):
+            out["targets"] = list(dict.fromkeys(out["targets"] + ["verify.blacklist"]))
     # 报告里的“每款一张图”是交付格式，不是 per-model 数量
     report_cue = any(k in text for k in ("报告", "PPT", "ppt", "导出", "页面"))
     if report_cue and "plan.quantity_per_model" in out["targets"]:
@@ -315,6 +347,31 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
         out["targets"] = list(dict.fromkeys(out["targets"]))
         out["hard"] = False
         out["enforce"] = "soft"
+    # 配置词命中 scope（如“只要国六”）→ 构型配置，不是范围比例
+    if "scope.ratio" in out["targets"] and config_kw and not part_kw:
+        out["targets"] = [("plan.configuration" if t == "scope.ratio" else t)
+                          for t in out["targets"]]
+        out["hard"] = True
+        out["enforce"] = "hard"
+    # 身份错：明确第 N 张 + “不是/别家/认错/不能用” → blacklist，不是普通 remove
+    if ("delivered.remove" in out["targets"] and _clear_target(text)
+            and any(k in text for k in ("不是", "别家", "认错", "不能用", "不能进", "另一款", "别的车"))):
+        out["targets"] = [("verify.blacklist" if t == "delivered.remove" else t)
+                          for t in out["targets"]]
+    # 画质类表述 + 误判成排除项 → 画质
+    if ("plan.negative" in out["targets"]
+            and any(k in text for k in ("糊", "清晰", "反光", "分辨率", "灰扑扑", "画质", "翻拍"))
+            and not any(k in text for k in ("品牌", "车系", "日系", "进口", "国产"))):
+        out["targets"] = [("fetch.filters.quality" if t == "plan.negative" else t)
+                          for t in out["targets"]]
+        out["enforce"] = "hard"
+    # 内饰/车内视角：不是部件细节图
+    if ("fetch.parts" in out["targets"]
+            and any(k in text for k in ("驾驶室里面", "车内", "内饰"))
+            and not any(k in text for k in ("细节图", "特写"))):
+        out["targets"] = [("fetch.filters.views" if t == "fetch.parts" else t)
+                          for t in out["targets"]]
+
     # 复合：范围收窄 + “不要” → 同时排除
     if "scope.ratio" in out["targets"] and "plan.negative" not in out["targets"]             and any(k in text for k in ("不要", "排除", "去掉")):
         out["targets"] = list(dict.fromkeys(out["targets"] + ["plan.negative"]))

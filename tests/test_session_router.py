@@ -157,7 +157,18 @@ def test_report_not_per_model():
 def test_image_edit_not_configuration():
     r = R.guard("第4张是8x8的，我们要的是6x6，这张不能进",
                 {"targets": ["delivered.remove", "plan.configuration"], "confidence": 0.9})
-    assert r["targets"] == ["delivered.remove"], r
+    assert r["targets"] == ["verify.blacklist"], r
+
+
+def test_print_request_explained():
+    r = R.guard("打印成海报行不行", {"targets": ["delivery.report"], "confidence": 0.9})
+    assert r["targets"] == [] and r["action"] == "explain", r
+
+
+def test_identity_config_image_blacklisted():
+    r = R.guard("第4张是8x8，不是6x6",
+                {"targets": ["plan.configuration"], "confidence": 0.9})
+    assert r["targets"] == ["verify.blacklist"], r
 
 
 if __name__ == "__main__":

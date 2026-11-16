@@ -1,0 +1,5747 @@
+{
+ "all": [
+  280,
+  290
+ ],
+ "stages": {
+  "pre_run": [
+   118,
+   120
+  ],
+  "running": [
+   67,
+   70
+  ],
+  "delivered": [
+   95,
+   100
+  ]
+ },
+ "categories": {
+  "A1": [
+   14,
+   15
+  ],
+  "A2": [
+   15,
+   15
+  ],
+  "A3": [
+   10,
+   10
+  ],
+  "A4": [
+   15,
+   15
+  ],
+  "A5": [
+   15,
+   15
+  ],
+  "A6": [
+   15,
+   15
+  ],
+  "A7": [
+   19,
+   20
+  ],
+  "A8": [
+   10,
+   10
+  ],
+  "A9": [
+   5,
+   5
+  ],
+  "B1": [
+   20,
+   20
+  ],
+  "B2": [
+   19,
+   20
+  ],
+  "B3": [
+   8,
+   10
+  ],
+  "B4": [
+   15,
+   15
+  ],
+  "B5": [
+   5,
+   5
+  ],
+  "C1": [
+   30,
+   30
+  ],
+  "C2": [
+   20,
+   20
+  ],
+  "C3": [
+   19,
+   20
+  ],
+  "C4": [
+   13,
+   15
+  ],
+  "C5": [
+   9,
+   10
+  ],
+  "C6": [
+   4,
+   5
+  ]
+ },
+ "failures": [
+  {
+   "id": "C060",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "就这几张啊，再多给点",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C074",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这不是我要的那款，别放进来",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C084",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这图里的车不是我要的型号",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C086",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "再加两张内饰",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C099",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "每台车给我排两页",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "partial",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": false
+  },
+  {
+   "id": "A006",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "只要国六的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补排放配置",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "A104",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "不要翻拍的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "翻拍属画质",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B034",
+   "stage": "running",
+   "category": "B2",
+   "text": "这辆多给几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图，数量含糊",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B041",
+   "stage": "running",
+   "category": "B3",
+   "text": "先停一下，等我把品牌加上",
+   "expect_targets": [
+    "session.pause",
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "示例原话；暂停不吞修改，存 pending_on_resume",
+   "got": [
+    "session.pause"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B047",
+   "stage": "running",
+   "category": "B3",
+   "text": "先停，补几张底盘再继续",
+   "expect_targets": [
+    "session.pause",
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "附带部件要求；pending_on_resume",
+   "got": [
+    "session.pause",
+    "fill.quota",
+    "session.resume"
+   ],
+   "action": "clarify",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  }
+ ],
+ "rows": [
+  {
+   "id": "C001",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第3张不对，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C002",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第一张有点糊，换张清楚的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C003",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第5张角度不行，换一张侧面",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C004",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第二张换掉，重给一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C005",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第6张跟前面那张几乎一模一样，换张别的吧",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C006",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "弟4张不行，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C007",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "最后一张帮我换一下",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C008",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第2张背景太乱，换张干净的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C009",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "中间那张换掉，构图不好",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C010",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第8张不是我要的视角，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C011",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第三张换一涨",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C012",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第7张太小了，换张高清的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C013",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第10张换掉，要正脸的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C014",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第9张带了展台，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C015",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "换掉第4张，来台白色的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C016",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第12张糊得连车标都看不清，重新换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C017",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "倒数第二张不太行，换了",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C018",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第5张换成内饰的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C019",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第11张车头拍歪了，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C020",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第13张不行，换个正面",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C021",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第17张不对，换张同款别的角度",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C022",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "换第6张，那张是翻拍的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C023",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第15张换掉吧，画面太空",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C024",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第4张有点小，帮我重新换一张大点清楚点的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C025",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第14张构图不行，换",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C026",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第16张颜色不对，换一张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C027",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第一张重新给一张吧",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C028",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第3张跟第5张重了，换掉第3张",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C029",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第18张换张远一点的",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C030",
+   "stage": "delivered",
+   "category": "C1",
+   "text": "第二张糊的看不青，重换",
+   "expect_targets": [
+    "delivered.replace"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.replace"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C031",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "删掉第2张",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C032",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "把第4张去了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C033",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第6张不要了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C034",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "去掉最后一张",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C035",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第3张删了吧",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C036",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "删掉弟7张",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C037",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第9张拿掉",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C038",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第1张删掉",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C039",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第5张别要了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C040",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "删掉倒数第一张",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C041",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第8张不想要了，从清单里去掉吧",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C042",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第12张删了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C043",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第10张撤回不要",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C044",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "把第13张删掉吧",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C045",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第15张拿悼",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C046",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第11张去掉，重复了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C047",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "删第14张",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C048",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第16张移除",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C049",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "第7张不要放进去",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C050",
+   "stage": "delivered",
+   "category": "C2",
+   "text": "把倒数第二张删了",
+   "expect_targets": [
+    "delivered.remove"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "需补齐1张",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C051",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这个型号再多几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C052",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这台车再补两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C053",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "同款的多来几张吧，现在这几张不够挑",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C054",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "X3000这型好再多几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C055",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这型号图太少了，再加点",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C056",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "在加两张这个车的",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C057",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这台再来三张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C058",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这个款多给几张内饰",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C059",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这个车多来几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C060",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "就这几张啊，再多给点",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C061",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这台多补几张吧",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C062",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这个型号再来五张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C063",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "同款图不够，能不能再加几张不一样的",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C064",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这车看着不错，多来两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C065",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "再多几张这个型号的",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C066",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这台车图太少了把",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C067",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这个款再补四张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C068",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "同款外观再来几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C069",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "这型号才三张，再加两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C070",
+   "stage": "delivered",
+   "category": "C3",
+   "text": "给这台车多配几张图，角度全一点的",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota",
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C071",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第4张是8x8，不是6x6",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C072",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这张不是X3000",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C073",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第2张型号标错了，这台不能要，拉黑",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist",
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C074",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这不是我要的那款，别放进来",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C075",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第7张是吊车，不是泵车",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C076",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第3张那台不是德龙",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C077",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这张图不是这个车型",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C078",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第6张明显不是同款，拉黑",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C079",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第5张拍的是别家车，不能用",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C080",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这不是X3000，标错了",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C081",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第8张型号对不上，拉黑",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C082",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这张不是6x6那批的",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C083",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第9张是另一款，别进交付",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C084",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "这图里的车不是我要的型号",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "delivered.remove"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C085",
+   "stage": "delivered",
+   "category": "C4",
+   "text": "第10张认错了，不是这个车系",
+   "expect_targets": [
+    "verify.blacklist"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "verify.blacklist"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C086",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "再加两张内饰",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "C087",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "补几张这个车的外观",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C088",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "这车再来两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C089",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "再多补几张同款的",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C090",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "这台车再加两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C091",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "加个徐工",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C092",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "把三一也加上吧，他家挖机也看看",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C093",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "再加个德龙X3000",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C094",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "三一重工也来几台",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C095",
+   "stage": "delivered",
+   "category": "C5",
+   "text": "加上柳工，看看装载机",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "C096",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "每款两页",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": true
+  },
+  {
+   "id": "C097",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "加个封面",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": true
+  },
+  {
+   "id": "C098",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "换个目录样式",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": true
+  },
+  {
+   "id": "C099",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "每台车给我排两页",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "partial",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": false
+  },
+  {
+   "id": "C100",
+   "stage": "delivered",
+   "category": "C6",
+   "text": "目录换成带缩略图的",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": null,
+   "note": "默认一车一页，超出需解释",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "默认一车一页；版式超出默认暂不支持。",
+   "ok": true
+  },
+  {
+   "id": "A001",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "刚才忘说了，要6x6的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "漏说驱动，补配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A002",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "8x8的不要，只要6x6",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "换构型并排除8x8",
+   "got": [
+    "plan.negative",
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A003",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "得是高顶的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补高顶配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A004",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "平顶的别算",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "指定平顶并排除其余",
+   "got": [
+    "plan.negative",
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A005",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "要带双备胎的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补双备胎配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A006",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "只要国六的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补排放配置",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "A007",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "驱动得8x8",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补驱动形式",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A008",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "要有涉水喉那种",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补涉水喉配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A009",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "得带寒区包的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补寒区包配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A010",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "4x2就行，6x6别放",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "改4x2并排除6x6",
+   "got": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A011",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "要左舵的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补左舵配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A012",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "要电动的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补动力类型配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A013",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "平顶不要，要高顶",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "平顶+排除高顶",
+   "got": [
+    "plan.negative",
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A014",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "补个要求，6x6，另外把德龙X3000也加上",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补构型且新增车型",
+   "got": [
+    "plan.configuration",
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A015",
+   "stage": "pre_run",
+   "category": "A1",
+   "text": "车顶得有爬梯",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补车顶附件配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A016",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "总共12台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总数",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A017",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "再加两台凑10台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "凑数，落在总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A018",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "数量改成20台吧",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A019",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "一共要15台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A020",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "在加两台，凑够8台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘在加’，仍是总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A021",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "总数调到30",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A022",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "总共12抬吧",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘抬’，仍是总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A023",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "改一下，要18台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A024",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "凑个整数，20台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "凑整数即总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A025",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "调到25台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A026",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "整体要40台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A027",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "数量少了，加到16台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "改总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A028",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "我要12台，不是10台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "纠正总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A029",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "一共20台就够了",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "显式总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A030",
+   "stage": "pre_run",
+   "category": "A2",
+   "text": "台数改成9台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "‘台数’即总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A031",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每款6张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "每款张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A032",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "不够6张补到6张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "补齐到每款6张",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A033",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每款要8张图",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "每款张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A034",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "一款4张就行",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "每款张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A035",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每台车给5张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "每台张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A036",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每个型号7张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "型号级张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A037",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每款3张太少，改6张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "调整每款张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A038",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "单款张数调到10",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "单款张数",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A039",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "每样来4张",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "含糊说法，实为每款",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A040",
+   "stage": "pre_run",
+   "category": "A3",
+   "text": "一款至少5张，不够的在补",
+   "expect_targets": [
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘在补’，补到每款5张",
+   "got": [
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A041",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "把徐工加进来",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A042",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "再加德龙X3000",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增车型",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A043",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "三一也来几台",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A044",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "柳工的车也放进去",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A045",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "把中联加上",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A046",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "在加个山推",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘在加’，新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A047",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "徐工也加近来吧",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘近来’，新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A048",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "还想看临工的铲车",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "品牌+类目，新增目标",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A049",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "汕德卡C7H也加一批",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增车型",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A050",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "加上小松的挖机",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A051",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "再来点卡特的320",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "型号代码即新增车型",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A052",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "东风也别忘了",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A053",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "顺便把解放J6加上",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增车型",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A054",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "还想要两台沃尔沃",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "品牌+台数，仍归新增",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A055",
+   "stage": "pre_run",
+   "category": "A4",
+   "text": "把日立也带进来",
+   "expect_targets": [
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新增品牌",
+   "got": [
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A056",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "北奔别放",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "排除品牌",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A057",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "不要挂车",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "排除类目/车型",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A058",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "日系的全不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "按产地排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A059",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "北笨的别放进来",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘北笨’，排除品牌",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A060",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "展台图不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "场景排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A061",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "别给我带人的照片",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "场景排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A062",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "徐工的先排除",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "排除品牌",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A063",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "把铲车去掉",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "类目排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A064",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "带挂斗的别算",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "属性/车型排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A065",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "三一的那批拿掉",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "排除品牌批次",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A066",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "别要右舵的",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "属性排除",
+   "got": [
+    "plan.negative",
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A067",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "工地背景的别要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "场景排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A068",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "不要二手的",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "属性排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A069",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "山西的车源先别放",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "地域排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A070",
+   "stage": "pre_run",
+   "category": "A5",
+   "text": "重汽的先不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "排除品牌",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A071",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "只看沙漠版",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "类目内只看某版本",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A072",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "6x6换8x8",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "构型切换，不加排除",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A073",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "只看吊车这一类",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "范围收窄到一类",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A074",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "只要挖机，别的类目不要",
+   "expect_targets": [
+    "scope.ratio",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "范围+硬排除",
+   "got": [
+    "scope.ratio",
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A075",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "七成要精确的，三成相近款",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "精确-邻近比例",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A076",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "驱动改成8x8",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "构型切换",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A077",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "高顶换平顶",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "高顶平顶切换",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A078",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "都换成电动的",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "动力配置切换",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A079",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "范围锁在装载机",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "范围收窄",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A080",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "沙漠版多来点，普通版少点",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "比例倾斜，非硬排除",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A081",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "全换成双备胎",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "双备胎配置",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A082",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "6x6不要了，全上8x8",
+   "expect_targets": [
+    "plan.configuration",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "换构型+排除",
+   "got": [
+    "plan.negative",
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A083",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "只要寒区版的",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "类目内只看某版本",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A084",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "驱动从4x2调成6x6",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "构型切换",
+   "got": [
+    "plan.configuration"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A085",
+   "stage": "pre_run",
+   "category": "A6",
+   "text": "范围缩到泵车",
+   "expect_targets": [
+    "scope.ratio"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "范围收窄",
+   "got": [
+    "scope.ratio"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A086",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "要正脸",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "拍摄角度",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A087",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "侧面来几张",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "拍摄角度",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A088",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "45度角那种",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "含糊说法，仍是角度",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A089",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "要有车尾的",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "拍摄角度",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A090",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "内饰视角来点",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "内饰视角",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A091",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "俯视的有没有",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "拍摄角度",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A092",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "驾驶室里面也拍",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "内饰视角",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A093",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "大灯特写",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件特写",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A094",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "格栅细节图",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A095",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "底盘细节",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A096",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "吊臂特写要几张",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件特写",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A097",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "支腿的细节",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A098",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "保险杠近点拍",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件近景",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A099",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "悬挂那块也要",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A100",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "前大等来个特写",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错字‘大等’，仍是部件",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A101",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "图片要高清的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "画质要求",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A102",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "要4K的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "分辨率要求",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A103",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "别要糊的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "清晰度要求",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A104",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "不要翻拍的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "翻拍属画质",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "A105",
+   "stage": "pre_run",
+   "category": "A7",
+   "text": "屏幕反光那种别给我",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "反光属画质",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "A106",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "PPT在哪导出？",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 位置，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。",
+   "ok": true
+  },
+  {
+   "id": "A107",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "格式按钮在哪个菜单？",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 位置，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。",
+   "ok": true
+  },
+  {
+   "id": "A108",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "导出成PPT",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 功能指令；引导用户操作，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。",
+   "ok": true
+  },
+  {
+   "id": "A109",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "导出按钮在右上角吗？",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 位置确认",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。",
+   "ok": true
+  },
+  {
+   "id": "A110",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "给我导个PDF",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 功能指令；引导用户操作，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "交付格式在界面右上角「导出」里选 PPT/PDF/报告；当前页可直接切换格式预览。",
+   "ok": true
+  },
+  {
+   "id": "A111",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "历史记录在哪儿看？",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 位置",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。",
+   "ok": true
+  },
+  {
+   "id": "A112",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "保存一下这个方案",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 功能指令；引导用户操作，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。",
+   "ok": true
+  },
+  {
+   "id": "A113",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "重新跑一次的按钮在哪儿？",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 位置",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。",
+   "ok": true
+  },
+  {
+   "id": "A114",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "把结果分享给同事",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 功能指令；引导用户操作，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。",
+   "ok": true
+  },
+  {
+   "id": "A115",
+   "stage": "pre_run",
+   "category": "A8",
+   "text": "重新跑一次",
+   "expect_targets": [],
+   "expect_action": "guide",
+   "expect_feasibility": null,
+   "note": "UI 功能指令；引导用户操作，不产 patch",
+   "got": [],
+   "action": "guide",
+   "feasibility": "supported",
+   "message": "保存/分享/重跑/历史记录在右上角「更多」菜单；重跑会新建一次会话。",
+   "ok": true
+  },
+  {
+   "id": "A116",
+   "stage": "pre_run",
+   "category": "A9",
+   "text": "把水印去掉，我要干净的图",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "去水印不在能力内",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。",
+   "ok": true
+  },
+  {
+   "id": "A117",
+   "stage": "pre_run",
+   "category": "A9",
+   "text": "这些图能直接拿去印刷吗",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "印刷不在能力内",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。",
+   "ok": true
+  },
+  {
+   "id": "A118",
+   "stage": "pre_run",
+   "category": "A9",
+   "text": "能查下拍摄那天的天气吗",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "天气筛选：能力外",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "按天气筛选暂不支持。",
+   "ok": true
+  },
+  {
+   "id": "A119",
+   "stage": "pre_run",
+   "category": "A9",
+   "text": "给我没裁过的原图",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "交付原图不在能力内",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "保证未裁切/原图暂不支持；可以换一张来源图。",
+   "ok": true
+  },
+  {
+   "id": "A120",
+   "stage": "pre_run",
+   "category": "A9",
+   "text": "顺手出个每周汇总的周报",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "out_of_domain",
+   "note": "周报越界",
+   "got": [],
+   "action": "explain",
+   "feasibility": "out_of_domain",
+   "message": "我只做工程车图检索与交付，不写周报/日报。",
+   "ok": true
+  },
+  {
+   "id": "B001",
+   "stage": "running",
+   "category": "B1",
+   "text": "日系不要了",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B002",
+   "stage": "running",
+   "category": "B1",
+   "text": "不要展台图",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B003",
+   "stage": "running",
+   "category": "B1",
+   "text": "把北奔去掉",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B004",
+   "stage": "running",
+   "category": "B1",
+   "text": "三一别要了",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B005",
+   "stage": "running",
+   "category": "B1",
+   "text": "带司机的图去掉",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B006",
+   "stage": "running",
+   "category": "B1",
+   "text": "别放柳工了",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B007",
+   "stage": "running",
+   "category": "B1",
+   "text": "进口的先不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "属性排除，非 scope.ratio",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B008",
+   "stage": "running",
+   "category": "B1",
+   "text": "挖机不要了",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B009",
+   "stage": "running",
+   "category": "B1",
+   "text": "不要站台图",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：站台=展台",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B010",
+   "stage": "running",
+   "category": "B1",
+   "text": "灰扑扑那种别出",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "画面属性，按画质",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B011",
+   "stage": "running",
+   "category": "B1",
+   "text": "挂车别混进来",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B012",
+   "stage": "running",
+   "category": "B1",
+   "text": "带广告牌的不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "场景/画面属性排除",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B013",
+   "stage": "running",
+   "category": "B1",
+   "text": "德龙也不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B014",
+   "stage": "running",
+   "category": "B1",
+   "text": "别给我雪地的",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B015",
+   "stage": "running",
+   "category": "B1",
+   "text": "徐工的先去掉",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B016",
+   "stage": "running",
+   "category": "B1",
+   "text": "不要带吊篮的",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B017",
+   "stage": "running",
+   "category": "B1",
+   "text": "灰车不想要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B018",
+   "stage": "running",
+   "category": "B1",
+   "text": "二手翻新的别出",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B019",
+   "stage": "running",
+   "category": "B1",
+   "text": "军绿色涂装不要",
+   "expect_targets": [
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "",
+   "got": [
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B020",
+   "stage": "running",
+   "category": "B1",
+   "text": "不要背静太乱的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "画面属性，按画质",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B021",
+   "stage": "running",
+   "category": "B2",
+   "text": "加到12台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B022",
+   "stage": "running",
+   "category": "B2",
+   "text": "总数改成10台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B023",
+   "stage": "running",
+   "category": "B2",
+   "text": "总共15台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B024",
+   "stage": "running",
+   "category": "B2",
+   "text": "再加5台，凑20",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "凑总数",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B025",
+   "stage": "running",
+   "category": "B2",
+   "text": "在加两台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：在=再；总量+2",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B026",
+   "stage": "running",
+   "category": "B2",
+   "text": "台数调到8台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B027",
+   "stage": "running",
+   "category": "B2",
+   "text": "总共12台就够了",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B028",
+   "stage": "running",
+   "category": "B2",
+   "text": "少要两台，10台吧",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量下调",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B029",
+   "stage": "running",
+   "category": "B2",
+   "text": "家到14台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：家=加；总量",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B030",
+   "stage": "running",
+   "category": "B2",
+   "text": "整体数量砍到6台",
+   "expect_targets": [
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "总量下调",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B031",
+   "stage": "running",
+   "category": "B2",
+   "text": "这台再多两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图，无总数",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B032",
+   "stage": "running",
+   "category": "B2",
+   "text": "这个型号再来三张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同款补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B033",
+   "stage": "running",
+   "category": "B2",
+   "text": "刚才那台多补两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B034",
+   "stage": "running",
+   "category": "B2",
+   "text": "这辆多给几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图，数量含糊",
+   "got": [
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B035",
+   "stage": "running",
+   "category": "B2",
+   "text": "同款再多来点",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同款补图，含糊",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B036",
+   "stage": "running",
+   "category": "B2",
+   "text": "那台车图太少了，多补几张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B037",
+   "stage": "running",
+   "category": "B2",
+   "text": "这台车再多四张吧",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B038",
+   "stage": "running",
+   "category": "B2",
+   "text": "这型号图不够，再来两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同款补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B039",
+   "stage": "running",
+   "category": "B2",
+   "text": "就这台，多补三张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B040",
+   "stage": "running",
+   "category": "B2",
+   "text": "再给这台加两张",
+   "expect_targets": [
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图",
+   "got": [
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B041",
+   "stage": "running",
+   "category": "B3",
+   "text": "先停一下，等我把品牌加上",
+   "expect_targets": [
+    "session.pause",
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "示例原话；暂停不吞修改，存 pending_on_resume",
+   "got": [
+    "session.pause"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B042",
+   "stage": "running",
+   "category": "B3",
+   "text": "暂停，另外不要日系",
+   "expect_targets": [
+    "session.pause",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "示例原话；pending_on_resume",
+   "got": [
+    "session.pause",
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B043",
+   "stage": "running",
+   "category": "B3",
+   "text": "先暂停，数量改到10台",
+   "expect_targets": [
+    "session.pause",
+    "plan.quantity"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "暂停后不自动执行，恢复时确认",
+   "got": [
+    "session.pause",
+    "plan.quantity"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B044",
+   "stage": "running",
+   "category": "B3",
+   "text": "停一下，这台再多两张",
+   "expect_targets": [
+    "session.pause",
+    "fill.quota"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "同车补图；pending_on_resume",
+   "got": [
+    "session.pause",
+    "fill.quota"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B045",
+   "stage": "running",
+   "category": "B3",
+   "text": "先别跑了，我要加侧面图",
+   "expect_targets": [
+    "session.pause",
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "附带视角要求；pending_on_resume",
+   "got": [
+    "session.pause",
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B046",
+   "stage": "running",
+   "category": "B3",
+   "text": "暂停一下，画质调高点",
+   "expect_targets": [
+    "session.pause",
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "附带画质要求；pending_on_resume",
+   "got": [
+    "session.pause",
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B047",
+   "stage": "running",
+   "category": "B3",
+   "text": "先停，补几张底盘再继续",
+   "expect_targets": [
+    "session.pause",
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "附带部件要求；pending_on_resume",
+   "got": [
+    "session.pause",
+    "fill.quota",
+    "session.resume"
+   ],
+   "action": "clarify",
+   "feasibility": "supported",
+   "message": "",
+   "ok": false
+  },
+  {
+   "id": "B048",
+   "stage": "running",
+   "category": "B3",
+   "text": "停一下，把徐工加进来",
+   "expect_targets": [
+    "session.pause",
+    "plan.add_targets"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "新品牌；pending_on_resume",
+   "got": [
+    "session.pause",
+    "plan.add_targets"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B049",
+   "stage": "running",
+   "category": "B3",
+   "text": "暂停，展台图都去掉",
+   "expect_targets": [
+    "session.pause",
+    "plan.negative"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "附带排除；pending_on_resume",
+   "got": [
+    "session.pause",
+    "plan.negative"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B050",
+   "stage": "running",
+   "category": "B3",
+   "text": "先暂停，每款要6张",
+   "expect_targets": [
+    "session.pause",
+    "plan.quantity_per_model"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "每款张数；pending_on_resume",
+   "got": [
+    "session.pause",
+    "plan.quantity_per_model"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B051",
+   "stage": "running",
+   "category": "B4",
+   "text": "要侧面图",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "视角；3字原话补足到4字",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B052",
+   "stage": "running",
+   "category": "B4",
+   "text": "正脸也得有",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "视角",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B053",
+   "stage": "running",
+   "category": "B4",
+   "text": "多来点45度的",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "45°视角",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B054",
+   "stage": "running",
+   "category": "B4",
+   "text": "车尾也拍几张",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "视角",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B055",
+   "stage": "running",
+   "category": "B4",
+   "text": "要测面的",
+   "expect_targets": [
+    "fetch.filters.views"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：测面=侧面",
+   "got": [
+    "fetch.filters.views"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B056",
+   "stage": "running",
+   "category": "B4",
+   "text": "画质高点",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "画质",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B057",
+   "stage": "running",
+   "category": "B4",
+   "text": "糊的不要",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "清晰度",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B058",
+   "stage": "running",
+   "category": "B4",
+   "text": "要高清的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "分辨率",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B059",
+   "stage": "running",
+   "category": "B4",
+   "text": "画质搞点",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：搞点=高点",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B060",
+   "stage": "running",
+   "category": "B4",
+   "text": "别要那种屏幕反光的",
+   "expect_targets": [
+    "fetch.filters.quality"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "屏幕反光属画质",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B061",
+   "stage": "running",
+   "category": "B4",
+   "text": "补几张底盘",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B062",
+   "stage": "running",
+   "category": "B4",
+   "text": "大灯特写来两张",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件特写",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B063",
+   "stage": "running",
+   "category": "B4",
+   "text": "要吊臂细节",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件细节",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B064",
+   "stage": "running",
+   "category": "B4",
+   "text": "底盆也来几张",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "错别字：底盆=底盘",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B065",
+   "stage": "running",
+   "category": "B4",
+   "text": "格栅特写有吗",
+   "expect_targets": [
+    "fetch.parts"
+   ],
+   "expect_action": "apply",
+   "expect_feasibility": null,
+   "note": "部件特写",
+   "got": [
+    "fetch.parts"
+   ],
+   "action": "apply",
+   "feasibility": "supported",
+   "message": "",
+   "ok": true
+  },
+  {
+   "id": "B066",
+   "stage": "running",
+   "category": "B5",
+   "text": "能加水印吗",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "能力外：水印；不产生 patch",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。",
+   "ok": true
+  },
+  {
+   "id": "B067",
+   "stage": "running",
+   "category": "B5",
+   "text": "这个能印刷成册吗",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "能力外：印刷；不产生 patch",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。",
+   "ok": true
+  },
+  {
+   "id": "B068",
+   "stage": "running",
+   "category": "B5",
+   "text": "帮我打个水印",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "能力外：水印；不产生 patch",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。",
+   "ok": true
+  },
+  {
+   "id": "B069",
+   "stage": "running",
+   "category": "B5",
+   "text": "打印成海报行不行",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "能力外：印刷/打印；不产生 patch",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。",
+   "ok": true
+  },
+  {
+   "id": "B070",
+   "stage": "running",
+   "category": "B5",
+   "text": "无水印原图能给吗",
+   "expect_targets": [],
+   "expect_action": "explain",
+   "expect_feasibility": "unsupported",
+   "note": "能力外：原图；不产生 patch",
+   "got": [],
+   "action": "explain",
+   "feasibility": "unsupported",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。",
+   "ok": true
+  }
+ ]
+}
