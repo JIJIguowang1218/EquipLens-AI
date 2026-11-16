@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T16:18:43 · 共 128 条 · 待补人工结论 84 条
+> 生成时间：2026-11-16T16:20:07 · 共 127 条 · 待补人工结论 83 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -116,7 +116,6 @@
 | other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `verify-identity-20261114` | suite | 2026-11-14 | — | — | — |
 | other | `demo-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [prototype acceptance; conclusions in DATA-CHANGELOG §57/§59](data-test/runs/demo-offline/summary.json) |
-| other | `l2-live-c1-v2` | run | 2026-11-16 | — | images=0 · gate_pass=0 | — |
 | other | `l2-live-c1-v3` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=80 · gate_pass=72 · degraded=8 | [—](data-test/runs/l2-live-c1-v3/summary.json) |
 | other | `l2-live-c1-v4` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=82 · gate_pass=73 · degraded=8 | [—](data-test/runs/l2-live-c1-v4/summary.json) |
 | other | `l2-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [prototype acceptance; conclusions in DATA-CHANGELOG §57/§59](data-test/runs/l2-offline/summary.json) |
