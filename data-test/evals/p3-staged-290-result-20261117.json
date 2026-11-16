@@ -1,11 +1,11 @@
 {
  "all": [
-  286,
+  288,
   290
  ],
  "stages": {
   "pre_run": [
-   118,
+   120,
    120
   ],
   "running": [
@@ -39,11 +39,11 @@
    15
   ],
   "A6": [
-   14,
+   15,
    15
   ],
   "A7": [
-   19,
+   20,
    20
   ],
   "A8": [
@@ -120,43 +120,6 @@
    "ok": false
   },
   {
-   "id": "A082",
-   "stage": "pre_run",
-   "category": "A6",
-   "text": "6x6不要了，全上8x8",
-   "expect_targets": [
-    "plan.configuration",
-    "plan.negative"
-   ],
-   "expect_action": "apply",
-   "expect_feasibility": null,
-   "note": "换构型+排除",
-   "got": [
-    "plan.configuration"
-   ],
-   "action": "apply",
-   "feasibility": "supported",
-   "message": "",
-   "ok": false
-  },
-  {
-   "id": "A096",
-   "stage": "pre_run",
-   "category": "A7",
-   "text": "吊臂特写要几张",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
-   "expect_feasibility": null,
-   "note": "部件特写",
-   "got": [],
-   "action": "clarify",
-   "feasibility": "supported",
-   "message": "",
-   "ok": false
-  },
-  {
    "id": "B041",
    "stage": "running",
    "category": "B3",
@@ -228,8 +191,7 @@
    "expect_feasibility": null,
    "note": "",
    "got": [
-    "delivered.replace",
-    "fetch.filters.views"
+    "delivered.replace"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -552,8 +514,7 @@
    "expect_feasibility": null,
    "note": "",
    "got": [
-    "delivered.replace",
-    "fetch.filters.views"
+    "delivered.replace"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -1503,8 +1464,7 @@
    "expect_feasibility": null,
    "note": "",
    "got": [
-    "fill.quota",
-    "fetch.filters.views"
+    "fill.quota"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -1561,7 +1521,6 @@
    "expect_feasibility": null,
    "note": "",
    "got": [
-    "delivered.remove",
     "verify.blacklist"
    ],
    "action": "apply",
@@ -1923,7 +1882,8 @@
    "expect_feasibility": null,
    "note": "",
    "got": [
-    "plan.add_targets"
+    "plan.add_targets",
+    "scope.ratio"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -3091,8 +3051,7 @@
    "expect_feasibility": null,
    "note": "品牌+台数，仍归新增",
    "got": [
-    "plan.add_targets",
-    "plan.quantity"
+    "plan.add_targets"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -3320,8 +3279,7 @@
    "expect_feasibility": null,
    "note": "属性排除",
    "got": [
-    "plan.negative",
-    "plan.configuration"
+    "plan.negative"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -3628,12 +3586,13 @@
    "expect_feasibility": null,
    "note": "换构型+排除",
    "got": [
+    "plan.negative",
     "plan.configuration"
    ],
    "action": "apply",
    "feasibility": "supported",
    "message": "",
-   "ok": false
+   "ok": true
   },
   {
    "id": "A083",
@@ -3697,18 +3656,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "要正脸",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "拍摄角度",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3716,18 +3671,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "侧面来几张",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "拍摄角度",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3735,18 +3686,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "45度角那种",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "含糊说法，仍是角度",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3754,18 +3701,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "要有车尾的",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "拍摄角度",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3773,18 +3716,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "内饰视角来点",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "内饰视角",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3792,18 +3731,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "俯视的有没有",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "拍摄角度",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3811,18 +3746,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "驾驶室里面也拍",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "内饰视角",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3830,18 +3761,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "大灯特写",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件特写",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3849,18 +3776,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "格栅细节图",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3868,18 +3791,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "底盘细节",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3887,35 +3806,29 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "吊臂特写要几张",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件特写",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
    "got": [],
    "action": "clarify",
    "feasibility": "supported",
    "message": "",
-   "ok": false
+   "ok": true
   },
   {
    "id": "A097",
    "stage": "pre_run",
    "category": "A7",
    "text": "支腿的细节",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3923,18 +3836,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "保险杠近点拍",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件近景",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3942,18 +3851,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "悬挂那块也要",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -3961,18 +3866,14 @@
    "stage": "pre_run",
    "category": "A7",
    "text": "前大等来个特写",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "错字‘大等’，仍是部件",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5144,15 +5045,13 @@
    "category": "B3",
    "text": "先别跑了，我要加侧面图",
    "expect_targets": [
-    "session.pause",
-    "fetch.filters.views"
+    "session.pause"
    ],
    "expect_action": "apply",
    "expect_feasibility": null,
-   "note": "附带视角要求；pending_on_resume",
+   "note": "附带视角要求；pending_on_resume；角度/部件转澄清",
    "got": [
-    "session.pause",
-    "fetch.filters.views"
+    "session.pause"
    ],
    "action": "apply",
    "feasibility": "supported",
@@ -5186,18 +5085,17 @@
    "category": "B3",
    "text": "先停，补几张底盘再继续",
    "expect_targets": [
-    "session.pause",
-    "fetch.parts"
+    "session.pause"
    ],
    "expect_action": "apply",
    "expect_feasibility": null,
-   "note": "附带部件要求；pending_on_resume",
+   "note": "附带部件要求；pending_on_resume；角度/部件转澄清",
    "got": [
     "session.pause",
-    "fetch.parts",
+    "fill.quota",
     "session.resume"
    ],
-   "action": "apply",
+   "action": "clarify",
    "feasibility": "supported",
    "message": "",
    "ok": true
@@ -5270,18 +5168,14 @@
    "stage": "running",
    "category": "B4",
    "text": "要侧面图",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "视角；3字原话补足到4字",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5289,18 +5183,14 @@
    "stage": "running",
    "category": "B4",
    "text": "正脸也得有",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "视角",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5308,18 +5198,14 @@
    "stage": "running",
    "category": "B4",
    "text": "多来点45度的",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "45°视角",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5327,18 +5213,14 @@
    "stage": "running",
    "category": "B4",
    "text": "车尾也拍几张",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "视角",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5346,18 +5228,14 @@
    "stage": "running",
    "category": "B4",
    "text": "要测面的",
-   "expect_targets": [
-    "fetch.filters.views"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "错别字：测面=侧面",
-   "got": [
-    "fetch.filters.views"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5460,18 +5338,14 @@
    "stage": "running",
    "category": "B4",
    "text": "补几张底盘",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5479,16 +5353,14 @@
    "stage": "running",
    "category": "B4",
    "text": "大灯特写来两张",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件特写",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
    "got": [
-    "fetch.parts"
+    "fill.quota"
    ],
-   "action": "apply",
+   "action": "clarify",
    "feasibility": "supported",
    "message": "",
    "ok": true
@@ -5498,18 +5370,14 @@
    "stage": "running",
    "category": "B4",
    "text": "要吊臂细节",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件细节",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5517,18 +5385,14 @@
    "stage": "running",
    "category": "B4",
    "text": "底盆也来几张",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "错别字：底盆=底盘",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {
@@ -5536,18 +5400,14 @@
    "stage": "running",
    "category": "B4",
    "text": "格栅特写有吗",
-   "expect_targets": [
-    "fetch.parts"
-   ],
-   "expect_action": "apply",
+   "expect_targets": [],
+   "expect_action": "clarify",
    "expect_feasibility": null,
-   "note": "部件特写",
-   "got": [
-    "fetch.parts"
-   ],
-   "action": "apply",
+   "note": "角度/部件暂不支持：澄清并建议多找同车图",
+   "got": [],
+   "action": "clarify",
    "feasibility": "supported",
-   "message": "",
+   "message": "角度/部件特写暂不支持",
    "ok": true
   },
   {

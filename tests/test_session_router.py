@@ -34,7 +34,8 @@ def fake(payload, seen=None):
 
 def test_views():
     r = R.classify("全要正面", chat_fn=fake({"targets": ["fetch.filters.views"], "hard": False, "confidence": 0.9}))
-    assert r["targets"] == ["fetch.filters.views"] and r["hard"] is False, r
+    assert r["targets"] == [] and r["clarify"], r
+    assert "更多这辆车" in (r.get("question") or ""), r
 
 
 def test_invalid_target_clarifies():
@@ -102,12 +103,12 @@ def test_fallback_rules():
 
 
 def test_make_router():
-    r = R.make_router("", chat_fn=fake({"targets": ["fetch.filters.views"], "confidence": 0.9}))
-    out = r("全要正面", {})
-    assert out["targets"] == ["fetch.filters.views"], out
+    r = R.make_router("", chat_fn=fake({"targets": ["fetch.filters.quality"], "confidence": 0.9}))
+    out = r("要高清", {})
+    assert out["targets"] == ["fetch.filters.quality"], out
     s = Session({"request": {"class": "沙漠牵引车"}}, router=r)
-    res = s.interrupt("全要正面", msg_id="mk1")
-    assert res["ok"] and s.pending[0].target == "fetch.filters.views", res
+    res = s.interrupt("要高清", msg_id="mk1")
+    assert res["ok"] and s.pending[0].target == "fetch.filters.quality", res
 
 
 def test_session_uses_router():
@@ -138,7 +139,7 @@ def test_config_not_parts():
                 {"targets": ["fetch.parts"], "confidence": 0.9})
     assert r["targets"] == ["plan.configuration"], r
     r2 = R.guard("要格栅和大灯的细节图", {"targets": ["fetch.parts"], "confidence": 0.9})
-    assert r2["targets"] == ["fetch.parts"], r2
+    assert r2["targets"] == [] and r2["clarify"], r2
 
 
 def test_clarify_has_options():
@@ -169,6 +170,23 @@ def test_identity_config_image_blacklisted():
     r = R.guard("第4张是8x8，不是6x6",
                 {"targets": ["plan.configuration"], "confidence": 0.9})
     assert r["targets"] == ["verify.blacklist"], r
+
+
+def test_angle_parts_clarify():
+    for text, target in (("要正脸", "fetch.filters.views"), ("大灯特写", "fetch.parts")):
+        r = R.guard(text, {"targets": [target], "confidence": 0.9})
+        assert r["targets"] == [] and r["action"] == "clarify", (text, r)
+        assert "更多这辆车" in (r.get("question") or ""), r
+    # 混合：角度 + 画质 → 保留画质，不产角度 patch
+    r = R.guard("要正脸和高清", {"targets": ["fetch.filters.views", "fetch.filters.quality"],
+                                 "confidence": 0.9})
+    assert r["targets"] == ["fetch.filters.quality"], r
+
+
+def test_negated_attribute_not_configuration():
+    r = R.guard("别要右舵的", {"targets": ["plan.negative", "plan.configuration"],
+                               "confidence": 0.9})
+    assert r["targets"] == ["plan.negative"], r
 
 
 if __name__ == "__main__":

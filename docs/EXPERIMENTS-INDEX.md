@@ -58,7 +58,7 @@
 | V12 Router 新 holdout（M3.4） | 24 条一次性：guard 23/24、hard 23/24、target 23/24、destructive/confirm 8/8；规则 13/24；未调参 | `tmp/s0-05/holdout24-report.md`（临时，未入库） | `src/equiplens/session_router.py`、`tests/test_session_router.py` | 本次提交 |
 | V13 Session×FakeWorld（M4 初步） | 4/4：engine step 续跑、session checkpoint 不阻塞、交付编辑不确认、delta run 只抓新 target | `tests/test_session_engine.py` | `src/equiplens/session.py`、`retrieval_engine/engine.py` | 本次提交 |
 | V14 S4 纠错定位 + live router 冒烟 | 资产级 `asset_index` 纠错（第 N 张/中文数字）只降级目标资产；3 条 live router 冒烟：fill.quota/pause+scope 稳定，多意图单轮有波动 | `tmp/s0-05/live_router_smoke.json`（临时） | `src/equiplens/session.py`、`session_router.py` | 本次提交 |
-| V26 P3 290 条分阶段真实输入 | 290 条（A120/B70/C100，20 类）按真实输入执行：**286/290（98.6%）**；A118/120、B69/70、C99/100；剩 B3 pause+edit、构型+排除、吊臂部件、身份未指张 | `data-test/evals/p3-staged-290-*.json*`、`scripts/eval_p3_staged.py` | 本次提交 |
+| V26 P3 290 条分阶段真实输入 | 290 条（A120/B70/C100，20 类）按真实输入执行：**288/290（99.3%）**；A120/120、B69/70、C99/100；角度/部件改 clarify；剩 B3 pause+edit、身份未指张 | `data-test/evals/p3-staged-290-*.json*`、`scripts/eval_p3_staged.py` | 本次提交 |
 | V25 Router 用户口径重标 | 100 条重标（13 条非真实、6 条能力类、等价替代）；P2 结果 all 99/100、realistic 86/87、capability 6/6；唯一失败 #17 | `data-test/evals/router-holdout100-20261116-relabeled*.json*` | `scripts/score_relabeled.py` | 本次提交 |
 | V24 Router P0–P2 前后对比 | 同一 100 条合成 holdout：raw 81–82→86、capability-adjusted 87→91、能力拒绝 6；失败全部为能力/口径差异；单测 router 15→20 | `data-test/evals/router-holdout100-20261116-{before-p0p1,p0p1,result}.json` | `scripts/eval_router_holdout.py` | 本次提交 |
 | V23 10-case 交付回归（5 新类目） | 80/80 交付、missing 0；备选 38/40（h2e 池 8<16）；degraded 2–9；221–302s/case；新类目全部满交付 | `data-test/runs/del10-*`、`data-test/evals/del10-summary-20261116.json` | `scripts/eval_del10.py` | 本次提交 |

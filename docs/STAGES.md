@@ -56,6 +56,7 @@ PYTHONPATH=src python scripts/check_stages.py
 
 ## 5. 已知缺口
 
+- **S4 扩展“角度/部件补充”未做**：当前识别为澄清（建议“多找几张这辆车”），后续版本再按“主交付后剩余预算 delta”开发（状态：待后续版本开发）；
 - **S4 的 `active` 只覆盖后端入口**（`run_session.py` + SessionRunner）；前端/HTTP 入口、多用户并发、鉴权未接，
   接上后需在本表和 `stages.json` 补充说明；
 - 报告/PPT 生成尚未接（`delivery.report` 只记 `preferences.delivery`）；

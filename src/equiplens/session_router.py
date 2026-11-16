@@ -12,9 +12,9 @@ import re
 from .session import ALLOWED_TARGETS, DESTRUCTIVE_TARGETS, HARD_TARGETS, classify_text
 
 ACTIONS = {
-    "fetch.filters.views": "换/加拍摄角度（正脸、侧面、45 度、车尾、顶部）",
+    "fetch.filters.views": "（当前版本：识别后澄清，不做）换/加拍摄角度",
     "fetch.filters.quality": "清晰度/水印/分辨率要求",
-    "fetch.parts": "指定部件细节（格栅、保险杠、吊臂、支腿、踏步等）",
+    "fetch.parts": "（当前版本：识别后澄清，不做）指定部件细节",
     "fill.quota": "给**现有型号/现有 target** 加图或加数量",
     "plan.add_targets": "增加**新品牌/新车型/新车系**到检索范围",
     "plan.negative": "排除品牌/挂车/内饰/配件等（硬约束）",
@@ -281,8 +281,14 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
     part_kw = any(k in text for k in ("细节图", "特写", "部件图"))
     image_edit = _clear_target(text) and any(
         k in text for k in ("这张", "不能进", "别用", "不是", "另一款", "别家", "认错"))
+    neg_attr = (any(k in text for k in ("左舵", "右舵", "国六", "国五", "电动", "寒区", "爬梯", "排放", "动力"))
+                and any(k in text for k in ("不要", "别要", "别放", "排除")))
+    if neg_attr and "plan.configuration" in out["targets"]:
+        out["targets"] = [t for t in out["targets"] if t != "plan.configuration"]
+        if "plan.negative" not in out["targets"]:
+            out["targets"].append("plan.negative")
     if (config_kw and not part_kw and "plan.configuration" not in out["targets"]
-            and not image_edit):
+            and not image_edit and not neg_attr):
         if "fetch.parts" in out["targets"]:
             out["targets"] = [("plan.configuration" if t == "fetch.parts" else t)
                               for t in out["targets"]]
@@ -292,6 +298,21 @@ def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
             out["targets"] = list(dict.fromkeys(out["targets"] + ["plan.configuration"]))
             out["hard"] = True
             out["enforce"] = "hard"
+
+    # 角度/部件特写：当前版本不做，识别为澄清；只建议“多找同车图”
+    EXTRA_MEDIA = {"fetch.filters.views", "fetch.parts"}
+    extra = [t for t in out["targets"] if t in EXTRA_MEDIA]
+    if extra:
+        rest = [t for t in out["targets"] if t not in EXTRA_MEDIA]
+        if not rest:
+            out.update({"targets": [], "clarify": True, "action": "clarify",
+                        "feasibility": "supported",
+                        "question": "角度/部件特写当前版本暂不支持；要不要我再找更多这辆车的图片？",
+                        "options": ["多找几张这辆车", "先不操作"],
+                        "message": "角度/部件特写暂不支持"})
+            return out
+        out["targets"] = rest
+        out["extra_unsupported"] = extra
 
     # 数量四义：总量 / 每款张数 / 同车补图 / 条件扩张
     per_model = any(k in text for k in ("每款", "每个车型", "每台", "各车型", "每种"))
