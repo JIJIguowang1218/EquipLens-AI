@@ -38,7 +38,7 @@
 | 审核页 | `scripts/render_fetch_audit.py` |
 | 分析（视觉） | `src/equiplens/analysis.py`、`scripts/analyze_batch.py`、`docs/superpowers/specs/2026-10-31-analysis-schema-design.md` |
 | 报告/PPT | `scripts/build_report_page.py`、`scripts/export_pptx.py` |
-| 评测 | `scripts/eval_task_brief.py`、`data-test/evals/` |
+| 评测 | `scripts/eval_task_brief.py`、`data-test/evals/`；视觉身份探针 `scripts/probe_visual_identity.py`（实验，No-Go） |
 | 台账 | `scripts/run_ledger.py`、`data-test/runs/INDEX.md` |
 | 交付清单/监控 | `scripts/build_delivery_manifest.py`（DELIVERY.md/json）、`src/equiplens/pricing.py`、`summary.timings` |
 | 去重人工审核 | `scripts/build_dedupe_review.py`（生成可离线打开的 review.html） |

@@ -5,6 +5,17 @@
 
 ## 2026-11-16
 
+### 53. S2-01 视觉身份探针：No-Go（2026-11-16）
+
+- 方法：本地 UForm3（与 `gate.py` 同权重，离线）对 335 个 image+model 资产做
+  “真型号 vs 随机另一型号 vs truck”三选一；标签来自 `asset_meta.model`（搜索目标，非人工真值）。
+- 结果：3-way top-1 **11.0%**（随机 33.3%）、真 vs 随机 pairwise **51.9%**（95% CI 46.6–57.2）、
+  文本先验校正后 52.5%、1 图/型号子集 48.4%；truck 占 top-1 的 77.0%。
+- 结论：**不把视觉身份接进 VERIFY**；CLIP 继续只做 keep/drop + scene/view。
+  重开条件：image-to-image 参考嵌入或铭牌 OCR，预注册 ≥100 样本/≥10 类目。
+- 产物：`scripts/probe_visual_identity.py`、`data-test/evals/visual-identity-20261116.json`、
+  `docs/visual-identity-probe-20261116.md`；全程离线，约 28s CPU。
+
 ### 52. BL-010 P0 定向验证（2026-11-16）
 
 - 3 份 brief：`v-brand`（只要陕汽 8 台）、`v-exclude`（不要北奔 10 台）、`v-pin`（必须含 X3000 8 台）。
