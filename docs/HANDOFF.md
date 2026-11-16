@@ -36,6 +36,8 @@
   5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
 - **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
   BL-002 S1/S2 legacy 标注；BL-010 TaskSpec 字段接线（P0 是首次交付硬门槛）。
+- **L1 Session 入口（2026-11-16）**：`session_runner.py` + `scripts/run_session.py`；
+  offline 4/4、live c1 10/10、pending patch 持久化、崩溃续跑；S4 仍 planned。
 - **M4.3 完成（2026-11-16）**：patch → 引擎接线 + 5 case A/B（新建 brief/plan 统一基线）。
   - 接线：`engine.apply_patches` + `session.apply_to_brief`；views/parts/quality 写 brief、
     negative 进 `brief.negative` + FILL 过滤、add_targets 只抓新增 target；`test_session_engine` 12/12。

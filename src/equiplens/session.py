@@ -434,7 +434,8 @@ class Session:
     def to_dict(self) -> dict:
         return {"session_id": self.session_id, "state": self.state.value, "version": self.version,
                 "brief": self.brief, "brief_versions": self.brief_versions,
-                "patches": self.patches, "events": self.events, "delivered": self.delivered,
+                "patches": self.patches, "pending": [p.as_dict() for p in self.pending],
+                "events": self.events, "delivered": self.delivered,
                 "blacklist": self.blacklist, "preferences": self.preferences,
                 "next_seq": self.next_seq,
                 "rounds": self.rounds, "max_rounds": self.max_rounds,
@@ -448,6 +449,9 @@ class Session:
         s.version = data.get("version", 1)
         s.brief_versions = data.get("brief_versions") or []
         s.patches = data.get("patches") or []
+        s.pending = [Patch(**{k: v for k, v in d.items()
+                              if k in Patch.__dataclass_fields__})
+                     for d in (data.get("pending") or []) if isinstance(d, dict)]
         s.events = data.get("events") or []
         s.delivered = data.get("delivered") or []
         s.blacklist = data.get("blacklist") or []
