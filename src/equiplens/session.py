@@ -374,7 +374,14 @@ class Session:
             self.patches.append(p.as_dict())
             self.brief.setdefault("session_patches", []).append(p.as_dict())
             idx = (p.value or {}).get("asset_index") if isinstance(p.value, dict) else None
-            if p.target == "session.reset":
+            if p.target == "delivery.report":
+                txt = str((p.value or {}).get("text") or "") if isinstance(p.value, dict) else ""
+                low = txt.lower()
+                has_ppt = ("ppt" in low) or ("幻灯片" in txt) or ("演示" in txt)
+                has_report = ("报告" in txt) or ("文档" in txt)
+                fmt = "both" if (has_ppt and has_report) else ("pptx" if has_ppt else "report")
+                self.preferences["delivery"] = {"format": fmt, "requested": True}
+            elif p.target == "session.reset":
                 for d in self.delivered:
                     if d.get("status") == "active":
                         d["status"] = "superseded"

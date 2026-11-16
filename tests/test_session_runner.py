@@ -106,6 +106,7 @@ def test_report_intent_recorded():
         from equiplens.session import Patch  # noqa: F401
         assert any(p.get("target") == "delivery.report" for p in r.session.patches), r.session.patches
         assert r.summary()["report_requested"] is True
+        assert r.summary()["delivery_format"] == "both", r.summary()
 
 
 def test_increment_is_soft_quota_not_hard_quantity():
@@ -116,6 +117,19 @@ def test_increment_is_soft_quota_not_hard_quantity():
     assert out["hard"] is False, out
     out2 = guard("数量改成 12 台", {"targets": ["plan.quantity"], "hard": True, "confidence": 0.9})
     assert out2["targets"] == ["plan.quantity"] and out2["hard"] is True, out2
+
+
+def test_two_messages_before_run_keep_both_patches():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s6",
+                          store_path=Path(td) / "s.json")
+        r.run_until("FETCH", require_targets=True)
+        r.send("都要侧面", msg_id="a")
+        r.send("要高清", msg_id="b")
+        targets = [p["target"] for p in r.session.patches] + [p.target for p in r.session.pending]
+        assert "fetch.filters.views" in targets, targets
+        assert "fetch.filters.quality" in targets, targets
 
 
 if __name__ == "__main__":

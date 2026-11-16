@@ -5,6 +5,18 @@
 
 ## 2026-11-16
 
+### 60. L2 live 5 轮：10/10、5/5 意图、applied 2（2026-11-16）
+
+- 脚本：`data-test/sessions/l2-live5.jsonl`（跳过首轮建单；在第 1/2/3 个 FETCH 边界插
+  fill.quota / plan.negative / quality，最后 delivery.report）。
+- 结果：c1 沙漠 live **10/10、missing 0、degraded 8、24 步、applied 2**（negative + quality），
+  session=DELIVERED；意图 **5/5**；`delivery.report` 记录 `preferences.delivery={format:"both",requested:true}`。
+- 修了一个真 bug（v3 暴露）：连续两条消息之间没到边界时，`interrupt` 会**覆盖 pending** → v3
+  `applied=0`；现在 `send()` 在 FETCH 边界先 flush 上一条，**v4 applied=2**；测试 **7/7**。
+- 遗留：`fill.quota` 引擎不消费（只记 session）；`delivered.replace` 在交付前无资产可指；
+  报告/PPT 只记偏好、未生成文件；HF 模型下载会因网络中断（需 `HF_HUB_OFFLINE=1` 或重试）。
+- 产物：`data-test/runs/l2-live-c1-v{3,4}/`、`data-test/sessions/l2-live-c1-v{3,4}.json`。
+
 ### 59. L2 第二轮：5/5 意图（2026-11-16）
 
 - 修复三处后复跑同一份用户脚本（5 轮）：

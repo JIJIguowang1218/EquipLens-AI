@@ -76,6 +76,10 @@ class SessionRunner:
 
     # ---------------- 交互 ----------------
     def send(self, text: str, *, msg_id: str = "", result: dict | None = None) -> dict:
+        # 同一轮里连着说两句时，先把上一条的 pending 在边界落掉，
+        # 否则 interrupt 会覆盖 pending（2026-11-16 实测 applied=0）。
+        if self.session.pending and self.state.get("state") == "FETCH":
+            self._apply_at_boundary()
         res = self.session.interrupt(text, msg_id=msg_id, result=result)
         self.save()
         return res
@@ -120,6 +124,8 @@ class SessionRunner:
             if st.get("finished"):
                 break
             if st.get("state") == state_name and (not require_targets or st.get("active_targets")):
+                if self.session.pending and st.get("state") == "FETCH":
+                    self._apply_at_boundary()
                 break
             self.step()
         return self.status()
@@ -156,8 +162,10 @@ class SessionRunner:
     def summary(self) -> dict:
         delivery = (self.engine._summary(self.state).get("delivery") or {})
         report = any(p.get("target") == "delivery.report" for p in self.session.patches)
+        delivery_pref = (self.session.preferences or {}).get("delivery") or {}
         return {"session_id": self.session_id, "run_id": self.run_id,
                 "report_requested": report,
+                "delivery_format": delivery_pref.get("format"),
                 "engine_state": self.state.get("state"),
                 "delivered": delivery.get("delivered"),
                 "required": delivery.get("required"),

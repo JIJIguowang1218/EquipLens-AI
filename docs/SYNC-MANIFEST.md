@@ -33,6 +33,12 @@
 - `data-test/equiplens.db`、`data-test/ab-images/`、`data-test/ui-fixtures/`
 - `tmp/`、输出视频/PPT 中间产物
 
+## 临时资产（tmp/，2026-11-16 规则）
+
+- `tmp/` 仍 gitignore；但**实验结论所依赖的原始数据必须归档到 `data-test/evals/`**，确保任意机器可取；
+- 临时脚本可不入库；
+- V8–V12 的原始输入/holdout/分层报告当前只在另一台机器，待归档（BL-013，清单见 `data-test/evals/tmp-assets-inventory.md`）。
+
 ## 依赖/统计入口
 
 - 依赖：`docs/DEPENDENCIES.md`、`requirements.txt`
