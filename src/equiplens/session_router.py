@@ -21,7 +21,8 @@ ACTIONS = {
     "verify.blacklist": "单张图/单个资产判错，标黑名单",
     "fill.replace": "用新图替换错误图",
     "scope.ratio": "改精确/邻近比例或任务范围",
-    "plan.quantity": "改总交付台数",
+    "plan.quantity": "改总交付台数/总量",
+    "plan.quantity_per_model": "把每个车型的图片数量补到 N 张（条件扩张）",
     "plan.configuration": "改驱动/构型（6x6/4x2/8x4 等）",
     "session.reset": "整批重来/重新选（重大调整）",
     "delivered.remove": "从交付中移除某张/某型号（降级，不物理删除）",
@@ -42,8 +43,12 @@ PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用�
    构型（plan.configuration）、整批重置（session.reset）、暂停（session.pause）；
 2) 排除项（plan.negative）是**硬约束**（enforce=hard），但 hard=false（不重排）；
 3) 视角/质量/部件/加图/加品牌/纠错 → hard=false；
-4) “只要/仅限 + 类目/环境” → scope.ratio（hard），不是 plan.negative；
-   “再加/再补 N 台”（未说“数量/总量”）→ plan.quantity（hard）；只有“同款/这个型号再来 N 张”才是 fill.quota；
+4) 数量四义必须分清：
+   - 总量（总共/一共/总数/数量改成或调到 N、凑够 N）→ plan.quantity（hard）；
+   - 每款/每个车型/每台 + 张数（统一6张、从4调到6）→ plan.quantity_per_model（soft）；
+   - 同一台车/同款/这个型号要更多图（无总数）→ fill.quota；
+   - 其他“再加/再补 N 台” → plan.quantity；
+   “只要/仅限 + 类目/环境” → scope.ratio（hard），不是 plan.negative；
 5) destructive=true 只用于“删/换**已交付**内容”；
    - 文本明确“第 N 张”或具体型号码 → confirm=false（直接降级，不删除）；
    - 目标不明确（“删掉一张”“换掉那个”）→ confirm=true（先问）；
@@ -53,7 +58,7 @@ PROMPT = """你是工程车辆检索会话的“修改动作分类器”。用�
 9) values 可选，给出该 target 的结构化值：fetch.filters.views={"views":["front"|"side"|"45"|"rear"|"roof"]}；
    fetch.filters.quality={"min_width":1200} 或 {"no_watermark":true}；fetch.parts={"parts":["格栅"]}；
    plan.negative={"terms":["北奔"]}；plan.add_targets={"models":["HOWO TX"]}；
-   fill.quota={"count":2}；
+   fill.quota={"count":2}；plan.quantity_per_model={"count":6}；
    plan.quantity={"primary":12}；plan.configuration={"value":"8x8"}。
 
 动作定义：
@@ -72,6 +77,7 @@ EXAMPLES = [
     ("把重汽加进来", "plan.add_targets", False, False, False, False),
     ("不要挂车，不要内饰", "plan.negative", False, False, False, True),
     ("数量加到 14 台", "plan.quantity", True, False, False, True),
+    ("每个车型统一按6张来", "plan.quantity_per_model", False, False, False, True),
     ("只要沙漠版，别的都不要", "scope.ratio", True, False, False, True),
     ("删掉第 2 张", "delivered.remove", False, True, False, True),
     ("删掉一张", "delivered.remove", False, True, True, True),
@@ -107,15 +113,52 @@ def propose(text: str, context: dict | None, api_key: str, *,
     raise last
 
 
+CAPABILITIES = [
+    ("remove_watermark", r"水印", "unsupported",
+     "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。",
+     {"fetch.filters.quality"}),
+    ("print_export", r"印刷|打印|DPI|dpi|别压缩|不压缩", "unsupported",
+     "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。",
+     {"fetch.filters.quality"}),
+    ("scene_filter", r"车展|工地.{0,6}(实拍|干活|真实)|拍摄场景", "unsupported",
+     "按拍摄场景（车展/工地）筛选暂不支持；可以按型号/品牌帮你换图。",
+     {"plan.negative", "fetch.filters.quality", "scope.ratio"}),
+    ("weather_filter", r"阴天|雨天|天气", "unsupported",
+     "按天气筛选暂不支持。", {"plan.negative", "fetch.filters.quality"}),
+    ("uncropped", r"原图|未裁|别裁|裁过", "unsupported",
+     "保证未裁切/原图暂不支持；可以换一张来源图。", {"fetch.filters.quality"}),
+    ("weekly_report", r"周报|日报|月报", "out_of_domain",
+     "我只做工程车图检索与交付，不写周报/日报。", {"delivery.report"}),
+]
+
+
+def _capability(text: str):
+    for cid, pat, feas, msg, drop in CAPABILITIES:
+        if re.search(pat, text):
+            return cid, feas, msg, drop
+    return None
+
+
+def _count(text: str) -> int | None:
+    cn = {"一": 1, "二": 2, "两": 2, "三": 3, "四": 4, "五": 5,
+          "六": 6, "七": 7, "八": 8, "九": 9, "十": 10}
+    m = re.search(r"(\d+)\s*张", text)
+    if m:
+        return int(m.group(1))
+    m = re.search(r"([一二两三四五六七八九十])\s*张", text)
+    return cn.get(m.group(1)) if m else None
+
+
 def _clear_target(text: str) -> bool:
     return bool(re.search(r"第\s*[一二三四五六七八九十\d]+\s*张", text)) or bool(re.search(r"[A-Za-z]{2,}\d{2,}", text))
 
 
-def guard(text: str, proposal: dict) -> dict:
-    """确定性守卫：白名单、hard/enforce 强制、destructive 确认、歧义提问。"""
+def guard(text: str, proposal: dict, context: dict | None = None) -> dict:
+    """确定性守卫：能力/阶段门 → 白名单/数量语义 → destructive 确认 → 歧义提问。"""
     out = {"intent": "modify", "hard": False, "targets": [], "destructive": False,
            "confirm": False, "enforce": "soft", "confidence": 0.7, "clarify": False,
-           "evidence": "", "reason": ""}
+           "evidence": "", "reason": "", "feasibility": "supported",
+           "message": "", "action": "apply", "stage": (context or {}).get("stage") or ""}
     if not isinstance(proposal, dict):
         return out
     targets = [t for t in (proposal.get("targets") or []) if t in ALLOWED_TARGETS]
@@ -125,6 +168,7 @@ def guard(text: str, proposal: dict) -> dict:
         if t not in seen:
             seen.add(t)
             uniq.append(t)
+    too_many = len(uniq) > 3
     out["targets"] = uniq[:3]
     out["confidence"] = float(proposal.get("confidence") or 0.0)
     try:
@@ -140,7 +184,36 @@ def guard(text: str, proposal: dict) -> dict:
     vals = proposal.get("values") if isinstance(proposal.get("values"), dict) else {}
     out["values"] = {k: v for k, v in vals.items()
                      if k in ALLOWED_TARGETS and isinstance(v, dict)}
-    if len(uniq) > 3:
+    # 能力门：明确做不到/越界的，不伪装成动作
+    cap = _capability(text)
+    if cap:
+        cid, feas, msg, drop = cap
+        remaining = [t for t in out["targets"] if t not in drop]
+        if remaining:
+            out["targets"] = remaining
+            out["feasibility"] = "partial"
+            out["message"] = msg
+            out["capability"] = cid
+        else:
+            out.update({"targets": [], "clarify": False, "action": "explain",
+                        "feasibility": feas, "message": msg, "capability": cid,
+                        "hard": False, "destructive": False, "confirm": False})
+            return out
+    # 阶段门：还没有交付图时，不允许资产级动作
+    stage = (context or {}).get("stage") or ""
+    if stage in ("pre_run", "running"):
+        blocked = {"delivered.remove", "delivered.replace", "verify.blacklist", "fill.replace"}
+        hit = [t for t in out["targets"] if t in blocked]
+        if hit:
+            out["targets"] = [t for t in out["targets"] if t not in blocked]
+            out["stage_blocked"] = hit
+            out["message"] = "还没有交付图；等交付后再换/删。"
+            if not out["targets"]:
+                out.update({"clarify": True, "action": "clarify"})
+                return out
+    uniq = out["targets"]
+
+    if too_many:
         out["clarify"] = True
         out["targets"] = uniq[:3]
         return out
@@ -156,14 +229,42 @@ def guard(text: str, proposal: dict) -> dict:
     if "session.pause" in out["targets"]:
         out["hard"] = True
 
-    # “再加/再补/凑 N”是增量，不是改总量：把 hard 的 plan.quantity 降为 fill.quota
-    if ("plan.quantity" in out["targets"]
-            and any(k in text for k in ("再加", "再补", "凑", "多来", "加两台", "加几台"))
-            and not any(k in text for k in ("改成", "调到", "改为", "改到"))):
-        converted = [("fill.quota" if t == "plan.quantity" else t) for t in out["targets"]]
-        out["targets"] = list(dict.fromkeys(converted))
+    # 数量四义：总量 / 每款张数 / 同车补图 / 条件扩张
+    per_model = any(k in text for k in ("每款", "每个车型", "每台", "各车型", "每种"))
+    same_vehicle = (any(k in text for k in ("同款", "这台", "那台", "这个车型", "该车", "这个型号", "它"))
+                    or bool(re.search(r"[A-Za-z]{1,}\d|\d+[A-Za-z]", text)))
+    total_cue = bool(re.search(
+        r"(总共|一共|总数|总量|合计|凑(够|到)?|要\s*\d+\s*张|数量.{0,4}(改|调|到))", text))
+    add_cue = any(k in text for k in ("再加", "再补", "再来", "多来", "多给", "加两", "加几", "凑"))
+    if per_model:
+        conv = [("plan.quantity_per_model" if t in ("plan.quantity", "fill.quota") else t)
+                for t in out["targets"]]
+        out["targets"] = list(dict.fromkeys(conv))
         out["hard"] = False
         out["enforce"] = "soft"
+        if ("plan.quantity_per_model" in out["targets"]
+                and not out["values"].get("plan.quantity_per_model")):
+            n = _count(text)
+            if n:
+                out["values"]["plan.quantity_per_model"] = {"count": n}
+    elif total_cue or (add_cue and not same_vehicle):
+        conv = [("plan.quantity" if t == "fill.quota" else t) for t in out["targets"]]
+        out["targets"] = list(dict.fromkeys(conv))
+        if "plan.quantity" in out["targets"]:
+            out["hard"] = True
+            out["enforce"] = "hard"
+            if not out["values"].get("plan.quantity") and _count(text):
+                out["values"]["plan.quantity"] = {"primary": _count(text)}
+    elif same_vehicle and add_cue and "plan.quantity" in out["targets"]:
+        conv = [("fill.quota" if t == "plan.quantity" else t) for t in out["targets"]]
+        out["targets"] = list(dict.fromkeys(conv))
+        out["hard"] = False
+        out["enforce"] = "soft"
+    if ("fill.quota" in out["targets"] and not same_vehicle
+            and not (context or {}).get("last_model") and not re.search(r"\d", text)):
+        out["clarify"] = True
+        out["action"] = "clarify"
+        out["message"] = "你是要同一台车多几张，还是总数改？"
     # 排除项：约束硬、打断软
     if "plan.negative" in out["targets"]:
         out["enforce"] = "hard"
@@ -172,7 +273,8 @@ def guard(text: str, proposal: dict) -> dict:
 
     # 画质类表述（高清/水印/清晰度）不是删除/替换：去掉误判的交付编辑
     if (any(k in text for k in ("高清", "水印", "清晰", "分辨率"))
-            and not any(k in text for k in ("删", "去掉第", "换掉第"))):
+            and not any(k in text for k in ("删", "去掉第", "换掉第"))
+            and not (_clear_target(text) and any(k in text for k in ("换", "替换")))):
         out["targets"] = [t for t in out["targets"] if t not in DESTRUCTIVE_TARGETS]
 
     # 交付编辑
@@ -209,11 +311,16 @@ def make_router(api_key: str, *, model: str = "deepseek-flash", chat_fn=None):
 
 
 def classify(text: str, *, context: dict | None = None, api_key: str = "",
-             model: str = "deepseek-flash", chat_fn=None, rules_fallback: bool = True) -> dict:
+             model: str = "deepseek-flash", chat_fn=None, rules_fallback: bool = True,
+             stage: str | None = None) -> dict:
     """LLM 提议 + 守卫；无 key/失败时回退规则版。"""
+    ctx = dict(context or {})
+    if stage:
+        ctx["stage"] = stage
     if api_key or chat_fn:
         try:
-            return guard(text, propose(text, context, api_key, model=model, chat_fn=chat_fn))
+            return guard(text, propose(text, ctx, api_key, model=model, chat_fn=chat_fn),
+                         context=ctx)
         except Exception:  # noqa: BLE001
             if not rules_fallback:
                 raise

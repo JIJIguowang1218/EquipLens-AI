@@ -1,8 +1,12 @@
 {
  "n": 100,
- "exact_subset": 0.81,
- "any_overlap": 0.79,
- "hard_match": 0.63,
+ "exact_subset": 0.82,
+ "exact_with_capability": 0.87,
+ "capability_refused": 6,
+ "capability_expected_ok": 6,
+ "capability_expected": 6,
+ "any_overlap": 0.82,
+ "hard_match": 0.61,
  "errors": 0,
  "rows": [
   {
@@ -13,7 +17,10 @@
    "note": "无明确指令，clarify",
    "got": [],
    "hard": false,
-   "clarify": true
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 2,
@@ -27,7 +34,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 3,
@@ -42,7 +52,10 @@
     "session.reset"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 4,
@@ -56,7 +69,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 5,
@@ -72,7 +88,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 6,
@@ -83,11 +102,13 @@
    "expect_hard": true,
    "note": "排除挂车",
    "got": [
-    "plan.negative",
-    "fetch.filters.views"
+    "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 7,
@@ -101,7 +122,10 @@
     "session.pause"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 8,
@@ -115,7 +139,10 @@
     "fetch.filters.views"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 9,
@@ -129,7 +156,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 10,
@@ -144,7 +174,10 @@
     "session.resume"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 11,
@@ -154,7 +187,10 @@
    "note": "只是评价，clarify",
    "got": [],
    "hard": false,
-   "clarify": true
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 12,
@@ -168,7 +204,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 13,
@@ -182,7 +221,10 @@
     "fetch.parts"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 14,
@@ -196,7 +238,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 15,
@@ -210,7 +255,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 16,
@@ -224,7 +272,10 @@
     "session.resume"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 17,
@@ -235,10 +286,14 @@
    "expect_hard": true,
    "note": "排除8x8",
    "got": [
-    "plan.configuration"
+    "plan.configuration",
+    "plan.negative"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 18,
@@ -253,7 +308,10 @@
     "scope.ratio"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 19,
@@ -264,10 +322,13 @@
    "expect_hard": true,
    "note": "明确总数10张",
    "got": [
-    "fill.quota"
+    "plan.quantity"
    ],
-   "hard": false,
-   "clarify": false
+   "hard": true,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 20,
@@ -281,7 +342,10 @@
     "session.pause"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 21,
@@ -295,7 +359,10 @@
     "fetch.filters.views"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 22,
@@ -305,11 +372,12 @@
    ],
    "expect_hard": true,
    "note": "排除水印",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。"
   },
   {
    "id": 23,
@@ -323,7 +391,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 24,
@@ -337,7 +408,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 25,
@@ -351,7 +425,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 26,
@@ -365,7 +442,10 @@
     "fetch.filters.quality"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 27,
@@ -379,7 +459,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 28,
@@ -393,7 +476,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 29,
@@ -407,7 +493,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 30,
@@ -421,7 +510,10 @@
     "fetch.parts"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 31,
@@ -435,7 +527,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 32,
@@ -449,7 +544,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 33,
@@ -459,11 +557,12 @@
    ],
    "expect_hard": true,
    "note": "排除车展摆拍",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "按拍摄场景（车展/工地）筛选暂不支持；可以按型号/品牌帮你换图。"
   },
   {
    "id": 34,
@@ -474,10 +573,13 @@
    "expect_hard": true,
    "note": "统一每款6张",
    "got": [
-    "fill.quota"
+    "plan.quantity_per_model"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 35,
@@ -491,7 +593,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 36,
@@ -505,7 +610,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 37,
@@ -516,10 +624,13 @@
    "expect_hard": true,
    "note": "每款4改6",
    "got": [
-    "fill.quota"
+    "plan.quantity_per_model"
    ],
-   "hard": true,
-   "clarify": false
+   "hard": false,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 38,
@@ -530,11 +641,13 @@
    "expect_hard": true,
    "note": "第2张换侧面",
    "got": [
-    "delivered.replace",
-    "fetch.filters.views"
+    "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 39,
@@ -548,7 +661,10 @@
     "fetch.filters.quality"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 40,
@@ -559,10 +675,13 @@
    "expect_hard": true,
    "note": "按沙漠配置，带错字",
    "got": [
-    "plan.configuration"
+    "fetch.parts"
    ],
-   "hard": true,
-   "clarify": false
+   "hard": false,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 41,
@@ -576,7 +695,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 42,
@@ -590,7 +712,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "clarify",
+   "message": "你是要同一台车多几张，还是总数改？"
   },
   {
    "id": 43,
@@ -604,7 +729,10 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 44,
@@ -615,10 +743,13 @@
    "expect_hard": true,
    "note": "有他牌logo",
    "got": [
-    "verify.blacklist"
+    "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 45,
@@ -632,7 +763,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 46,
@@ -643,10 +777,13 @@
    "expect_hard": true,
    "note": "第4张换高清",
    "got": [
-    "fetch.filters.quality"
+    "delivered.replace"
    ],
-   "hard": true,
-   "clarify": false
+   "hard": false,
+   "clarify": false,
+   "feasibility": "partial",
+   "action": "apply",
+   "message": "保证未裁切/原图暂不支持；可以换一张来源图。"
   },
   {
    "id": 47,
@@ -660,7 +797,10 @@
     "verify.blacklist"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 48,
@@ -671,11 +811,13 @@
    "expect_hard": false,
    "note": "前脸格栅大灯",
    "got": [
-    "fetch.parts",
-    "fetch.filters.views"
+    "fetch.parts"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 49,
@@ -689,7 +831,10 @@
     "fetch.filters.views"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 50,
@@ -703,7 +848,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 51,
@@ -717,7 +865,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 52,
@@ -729,10 +880,13 @@
    "note": "长句补图，用于内部评审",
    "got": [
     "fill.quota",
-    "fetch.filters.views"
+    "fetch.parts"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 53,
@@ -742,7 +896,10 @@
    "note": "能力询问，clarify",
    "got": [],
    "hard": false,
-   "clarify": true
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 54,
@@ -756,7 +913,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 55,
@@ -767,10 +927,13 @@
    "expect_hard": true,
    "note": "明确8张",
    "got": [
-    "fill.quota"
+    "plan.quantity"
    ],
-   "hard": false,
-   "clarify": false
+   "hard": true,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 56,
@@ -784,7 +947,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 57,
@@ -798,7 +964,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 58,
@@ -813,7 +982,10 @@
     "plan.negative"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 59,
@@ -827,7 +999,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 60,
@@ -841,7 +1016,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 61,
@@ -855,7 +1033,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 62,
@@ -869,7 +1050,10 @@
     "fetch.parts"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 63,
@@ -880,11 +1064,14 @@
    "expect_hard": true,
    "note": "配置不符，拉黑",
    "got": [
-    "verify.blacklist",
-    "delivered.remove"
+    "delivered.remove",
+    "verify.blacklist"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 64,
@@ -896,11 +1083,13 @@
    "expect_hard": true,
    "note": "排除翻拍+画质偏好",
    "got": [
-    "plan.negative",
     "fetch.filters.quality"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 65,
@@ -914,7 +1103,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 66,
@@ -928,7 +1120,10 @@
     "session.resume"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 67,
@@ -940,11 +1135,13 @@
    "expect_hard": true,
    "note": "补位替换+拉黑",
    "got": [
-    "delivered.replace",
-    "fetch.filters.quality"
+    "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 68,
@@ -957,10 +1154,13 @@
    "note": "新增品牌+补图",
    "got": [
     "plan.add_targets",
-    "fill.quota"
+    "plan.quantity"
    ],
-   "hard": false,
-   "clarify": false
+   "hard": true,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 69,
@@ -971,11 +1171,13 @@
    "expect_hard": true,
    "note": "最后一张替换",
    "got": [
-    "delivered.replace",
-    "fill.replace"
+    "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 70,
@@ -989,7 +1191,10 @@
     "session.pause"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 71,
@@ -1003,7 +1208,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 72,
@@ -1017,7 +1225,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 73,
@@ -1029,11 +1240,13 @@
    "expect_hard": true,
    "note": "补图+改总数",
    "got": [
-    "fill.quota",
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 74,
@@ -1047,7 +1260,10 @@
     "fetch.filters.views"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 75,
@@ -1061,7 +1277,10 @@
     "plan.quantity"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 76,
@@ -1075,7 +1294,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 77,
@@ -1089,7 +1311,10 @@
     "scope.ratio"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 78,
@@ -1103,7 +1328,10 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 79,
@@ -1117,7 +1345,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 80,
@@ -1131,7 +1362,10 @@
     "scope.ratio"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 81,
@@ -1145,7 +1379,10 @@
     "fetch.filters.views"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 82,
@@ -1159,7 +1396,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 83,
@@ -1173,7 +1413,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 84,
@@ -1183,7 +1426,10 @@
    "note": "征求意见，无指令，clarify",
    "got": [],
    "hard": false,
-   "clarify": true
+   "clarify": true,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 85,
@@ -1197,7 +1443,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 86,
@@ -1207,11 +1456,12 @@
    ],
    "expect_hard": false,
    "note": "图片不压缩",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。"
   },
   {
    "id": 87,
@@ -1225,7 +1475,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 88,
@@ -1239,7 +1492,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 89,
@@ -1253,7 +1509,10 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 90,
@@ -1261,11 +1520,12 @@
    "expect_targets": [],
    "expect_hard": false,
    "note": "离题，clarify",
-   "got": [
-    "delivery.report"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "out_of_domain",
+   "action": "explain",
+   "message": "我只做工程车图检索与交付，不写周报/日报。"
   },
   {
    "id": 91,
@@ -1279,7 +1539,10 @@
     "fill.quota"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 92,
@@ -1293,7 +1556,10 @@
     "plan.configuration"
    ],
    "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 93,
@@ -1307,7 +1573,10 @@
     "fetch.filters.quality"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 94,
@@ -1321,7 +1590,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 95,
@@ -1335,7 +1607,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 96,
@@ -1349,7 +1624,10 @@
     "plan.add_targets"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 97,
@@ -1360,10 +1638,14 @@
    "expect_hard": true,
    "note": "改装车不算原厂",
    "got": [
-    "delivered.remove"
+    "delivered.remove",
+    "verify.blacklist"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 98,
@@ -1377,7 +1659,10 @@
     "delivery.report"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 99,
@@ -1387,11 +1672,12 @@
    ],
    "expect_hard": true,
    "note": "排除阴天图",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "按天气筛选暂不支持。"
   },
   {
    "id": 100,
@@ -1401,11 +1687,12 @@
    ],
    "expect_hard": true,
    "note": "排除裁切图",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "保证未裁切/原图暂不支持；可以换一张来源图。"
   }
  ],
  "failures": [
@@ -1422,21 +1709,10 @@
     "session.reset"
    ],
    "hard": true,
-   "clarify": false
-  },
-  {
-   "id": 17,
-   "text": "8x8的不要，我只要6x6",
-   "expect_targets": [
-    "plan.negative"
-   ],
-   "expect_hard": true,
-   "note": "排除8x8",
-   "got": [
-    "plan.configuration"
-   ],
-   "hard": true,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 18,
@@ -1451,21 +1727,10 @@
     "scope.ratio"
    ],
    "hard": true,
-   "clarify": false
-  },
-  {
-   "id": 19,
-   "text": "豪沃那个凑够10张吧",
-   "expect_targets": [
-    "plan.quantity"
-   ],
-   "expect_hard": true,
-   "note": "明确总数10张",
-   "got": [
-    "fill.quota"
-   ],
-   "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 22,
@@ -1475,11 +1740,12 @@
    ],
    "expect_hard": true,
    "note": "排除水印",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "去水印/保证无水印暂不支持；可以帮你换一张来源没有水印的图。"
   },
   {
    "id": 27,
@@ -1493,7 +1759,10 @@
     "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 33,
@@ -1503,11 +1772,12 @@
    ],
    "expect_hard": true,
    "note": "排除车展摆拍",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "按拍摄场景（车展/工地）筛选暂不支持；可以按型号/品牌帮你换图。"
   },
   {
    "id": 34,
@@ -1518,10 +1788,13 @@
    "expect_hard": true,
    "note": "统一每款6张",
    "got": [
-    "fill.quota"
+    "plan.quantity_per_model"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 37,
@@ -1532,10 +1805,30 @@
    "expect_hard": true,
    "note": "每款4改6",
    "got": [
-    "fill.quota"
+    "plan.quantity_per_model"
    ],
-   "hard": true,
-   "clarify": false
+   "hard": false,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
+  },
+  {
+   "id": 40,
+   "text": "配置按沙莫版那种来，双备胎加涉水喉",
+   "expect_targets": [
+    "plan.configuration"
+   ],
+   "expect_hard": true,
+   "note": "按沙漠配置，带错字",
+   "got": [
+    "fetch.parts"
+   ],
+   "hard": false,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 43,
@@ -1549,35 +1842,27 @@
     "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
-   "id": 46,
-   "text": "第4张换成高清原图",
+   "id": 44,
+   "text": "中间那张有别的品牌logo，别用",
    "expect_targets": [
-    "delivered.replace"
+    "verify.blacklist"
    ],
    "expect_hard": true,
-   "note": "第4张换高清",
+   "note": "有他牌logo",
    "got": [
-    "fetch.filters.quality"
-   ],
-   "hard": true,
-   "clarify": false
-  },
-  {
-   "id": 55,
-   "text": "德龙X3000要8张，现在才4张",
-   "expect_targets": [
-    "plan.quantity"
-   ],
-   "expect_hard": true,
-   "note": "明确8张",
-   "got": [
-    "fill.quota"
+    "delivered.remove"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 56,
@@ -1591,7 +1876,28 @@
     "plan.negative"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
+  },
+  {
+   "id": 64,
+   "text": "不要翻拍的、有屏幕反光的，画质也尽量好点",
+   "expect_targets": [
+    "plan.negative",
+    "fetch.filters.quality"
+   ],
+   "expect_hard": true,
+   "note": "排除翻拍+画质偏好",
+   "got": [
+    "fetch.filters.quality"
+   ],
+   "hard": false,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 67,
@@ -1603,11 +1909,50 @@
    "expect_hard": true,
    "note": "补位替换+拉黑",
    "got": [
-    "delivered.replace",
-    "fetch.filters.quality"
+    "delivered.replace"
    ],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
+  },
+  {
+   "id": 68,
+   "text": "再加个徐工，顺便图也多来几张",
+   "expect_targets": [
+    "plan.add_targets",
+    "fill.quota"
+   ],
+   "expect_hard": false,
+   "note": "新增品牌+补图",
+   "got": [
+    "plan.add_targets",
+    "plan.quantity"
+   ],
+   "hard": true,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
+  },
+  {
+   "id": 73,
+   "text": "杰狮那台多弄几张，顺便总数改成12张",
+   "expect_targets": [
+    "fill.quota",
+    "plan.quantity"
+   ],
+   "expect_hard": true,
+   "note": "补图+改总数",
+   "got": [
+    "plan.quantity"
+   ],
+   "hard": true,
+   "clarify": false,
+   "feasibility": "supported",
+   "action": "apply",
+   "message": ""
   },
   {
    "id": 86,
@@ -1617,37 +1962,12 @@
    ],
    "expect_hard": false,
    "note": "图片不压缩",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
-  },
-  {
-   "id": 90,
-   "text": "帮我写个周报吧",
-   "expect_targets": [],
-   "expect_hard": false,
-   "note": "离题，clarify",
-   "got": [
-    "delivery.report"
-   ],
-   "hard": false,
-   "clarify": false
-  },
-  {
-   "id": 97,
-   "text": "第2张是同款改装过的，不算原厂，别用了",
-   "expect_targets": [
-    "verify.blacklist"
-   ],
-   "expect_hard": true,
-   "note": "改装车不算原厂",
-   "got": [
-    "delivered.remove"
-   ],
-   "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "印刷级/不压缩导出暂不支持；可以导出原图供你自行处理。"
   },
   {
    "id": 99,
@@ -1657,11 +1977,12 @@
    ],
    "expect_hard": true,
    "note": "排除阴天图",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "按天气筛选暂不支持。"
   },
   {
    "id": 100,
@@ -1671,11 +1992,12 @@
    ],
    "expect_hard": true,
    "note": "排除裁切图",
-   "got": [
-    "fetch.filters.quality"
-   ],
+   "got": [],
    "hard": false,
-   "clarify": false
+   "clarify": false,
+   "feasibility": "unsupported",
+   "action": "explain",
+   "message": "保证未裁切/原图暂不支持；可以换一张来源图。"
   }
  ]
 }

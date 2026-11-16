@@ -119,6 +119,18 @@ class RetrievalEngine:
                     if tid not in active:
                         active.append(tid)
                     applied.append(target)
+            elif target == "plan.quantity_per_model":
+                data = data or {}
+                n = int(data.get("count") or 0)
+                if n > 0:
+                    state["per_model_quota"] = n
+                    fq = state.setdefault("fill_quota", {})
+                    active = state.setdefault("active_targets", [])
+                    for tid in (state.get("targets") or {}):
+                        fq[tid] = max(int(fq.get(tid, 0)), n)
+                        if tid not in active:
+                            active.append(tid)
+                    applied.append(target)
             elif target == "plan.negative":
                 terms = [str(x).strip() for x in (data.get("terms") or []) if str(x).strip()]
                 if terms:

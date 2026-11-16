@@ -592,6 +592,25 @@ def test_fill_quota_before_any_accept_uses_active_target():
         assert st["fill_quota"].get("t1") == 2, st.get("fill_quota")
 
 
+def test_quantity_per_model_sets_quota():
+    b = base_brief(parts=("bumper",), slots=1)
+    world = {"external": {"u-exact": [target("t1", ["bumper"])]},
+             "assets": {"t1": {"bumper": [asset("a1")]}},
+             "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        e = RetrievalEngine(Brief.from_dict(b), FakeWorld(world), run_root=td, run_id="q4")
+        st = e._load_or_init()
+        for _ in range(12):
+            if st.get("state") == "FETCH" and st.get("active_targets"):
+                break
+            st = e.step(st)
+        res = e.apply_patches(st, [{"target": "plan.quantity_per_model",
+                                    "value": {"data": {"count": 6}}}])
+        assert res["applied"] == ["plan.quantity_per_model"], res
+        assert st["per_model_quota"] == 6, st.get("per_model_quota")
+        assert st["fill_quota"].get("t1") == 6, st.get("fill_quota")
+
+
 def test_fill_quota_patch_reactivates_target():
     b = base_brief(parts=("bumper",), slots=1)
     world = {"external": {"u-exact": [target("t1", ["bumper"])]},
@@ -1020,6 +1039,7 @@ if __name__ == "__main__":
     check("交付台数跟随用户输入", test_delivery_required_follows_user_slots)
     check("交付披露：品牌配额/外国占比", test_delivery_brand_quota_and_foreign_ratio)
     check("fill.quota：目标重新激活", test_fill_quota_patch_reactivates_target)
+    check("每款张数：写 quota", test_quantity_per_model_sets_quota)
     check("fill.quota：首轮无 accepted 时用 active target", test_fill_quota_before_any_accept_uses_active_target)
     check("备选固定 4 台按优先级", test_delivery_backup_four_by_priority)
     check("备选不足要显式报短", test_delivery_backup_short_is_visible)

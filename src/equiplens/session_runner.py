@@ -98,12 +98,28 @@ class SessionRunner:
         return runner
 
     # ---------------- 交互 ----------------
+    def _stage(self) -> str:
+        st = self.state or {}
+        if st.get("finished") or st.get("state") in ("DELIVERED", "DONE"):
+            return "delivered"
+        if st.get("state") in ("BRIEF_READY", ""):
+            return "pre_run"
+        return "running"
+
     def send(self, text: str, *, msg_id: str = "", result: dict | None = None) -> dict:
         # 同一轮里连着说两句时，先把上一条的 pending 在边界落掉，
         # 否则 interrupt 会覆盖 pending（2026-11-16 实测 applied=0）。
         if self.session.pending and self.state.get("state") == "FETCH":
             self._apply_at_boundary()
-        res = self.session.interrupt(text, msg_id=msg_id, result=result)
+        if (self.session.pending and (self.state.get("finished")
+                                      or self.state.get("state") in ("DELIVERED", "DONE"))):
+            self.session.apply_pending()
+        res = self.session.interrupt(text, msg_id=msg_id, result=result, stage=self._stage())
+        if (not res.get("clarify") and self.session.pending
+                and (self.state.get("finished")
+                     or self.state.get("state") in ("DELIVERED", "DONE"))):
+            # 交付后没有 FETCH 边界，会话类 patch 直接落地
+            self.session.apply_pending()
         self.save()
         return res
 
@@ -198,6 +214,7 @@ class SessionRunner:
         return {"session_id": self.session_id, "run_id": self.run_id,
                 "report_requested": report,
                 "delivery_format": delivery_pref.get("format"),
+                "pending_replenish": (self.session.preferences or {}).get("pending_replenish") or 0,
                 "engine_state": self.state.get("state"),
                 "delivered": delivery.get("delivered"),
                 "required": delivery.get("required"),

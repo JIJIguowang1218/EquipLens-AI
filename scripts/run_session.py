@@ -188,6 +188,9 @@ def main(argv=None) -> int:
         print(f"session: {runner.session_id}  engine: {runner.state.get('state')}  "
               f"steps: {runner.steps}  applied: {runner.applied}")
         for t in out["turns"]:
+            if t.get("explain"):
+                print(f"  explain: {t.get('message')}")
+                continue
             if t.get("created"):
                 print(f"  created brief: {t.get('brief_id')}")
                 continue

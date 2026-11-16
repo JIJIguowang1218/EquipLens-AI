@@ -109,14 +109,37 @@ def test_report_intent_recorded():
         assert r.summary()["delivery_format"] == "both", r.summary()
 
 
-def test_increment_is_soft_quota_not_hard_quantity():
+def test_quantity_semantics():
     from equiplens.session_router import guard
+    # 显式总数/凑够 N：改总数，不是同款补图
     out = guard("同款再加两台吧，凑 12 个。", {"targets": ["plan.quantity"], "hard": True,
                                               "confidence": 0.9})
-    assert out["targets"] == ["fill.quota"], out
-    assert out["hard"] is False, out
-    out2 = guard("数量改成 12 台", {"targets": ["plan.quantity"], "hard": True, "confidence": 0.9})
-    assert out2["targets"] == ["plan.quantity"] and out2["hard"] is True, out2
+    assert out["targets"] == ["plan.quantity"] and out["hard"] is True, out
+    # 同款 + 无总数：同车补图
+    out2 = guard("同款再来三张", {"targets": ["plan.quantity"], "hard": True, "confidence": 0.9})
+    assert out2["targets"] == ["fill.quota"] and out2["hard"] is False, out2
+    # 每款张数：条件扩张
+    out3 = guard("每个车型统一按6张来", {"targets": ["plan.quantity"], "hard": True,
+                                         "confidence": 0.9})
+    assert out3["targets"] == ["plan.quantity_per_model"] and out3["hard"] is False, out3
+    assert out3["values"]["plan.quantity_per_model"]["count"] == 6, out3
+    # 能力门
+    out4 = guard("别给我带水印的图", {"targets": ["fetch.filters.quality"], "confidence": 0.9})
+    assert out4["targets"] == [] and out4["feasibility"] == "unsupported", out4
+    assert out4["action"] == "explain" and out4["message"], out4
+    # 部分能力：换图可做、原图保证不可做
+    out5 = guard("第4张换成高清原图", {"targets": ["delivered.replace", "fetch.filters.quality"],
+                                       "confidence": 0.9})
+    assert out5["targets"] == ["delivered.replace"], out5
+    assert out5["feasibility"] == "partial" and out5["message"], out5
+    # 阶段门：交付前不许资产级动作
+    out6 = guard("第3张换掉", {"targets": ["delivered.replace"], "confidence": 0.9},
+                 context={"stage": "pre_run"})
+    assert out6["targets"] == [] and out6["action"] == "clarify", out6
+    # 交付后允许
+    out7 = guard("第3张换掉", {"targets": ["delivered.replace"], "confidence": 0.9},
+                 context={"stage": "delivered"})
+    assert out7["targets"] == ["delivered.replace"], out7
 
 
 def test_two_messages_before_run_keep_both_patches():
@@ -158,6 +181,33 @@ def test_create_from_text_builds_brief_without_patch():
         assert r.created_from_text == "沙漠牵引车 10 台"
         out = r.run()
         assert out["delivered"] == 1, out
+
+
+def test_unsupported_explain_no_patch():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s8",
+                          store_path=Path(td) / "s.json")
+        res = r.send("别给我带水印的图", msg_id="u1",
+                     result={"targets": [], "action": "explain", "feasibility": "unsupported",
+                             "message": "去水印暂不支持"})
+        assert res.get("explain") is True, res
+        assert not r.session.pending and not r.session.patches, (r.session.pending, r.session.patches)
+
+
+def test_post_delivery_remove_records_replenish():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, FakeWorld(world_for()), run_root=td, run_id="s9",
+                          store_path=Path(td) / "s.json")
+        r.run()
+        res = r.send("第1张删掉", msg_id="d1",
+                     result={"targets": ["delivered.remove"], "asset_index": 1,
+                             "destructive": True, "confirm": False, "hard": False,
+                             "confidence": 0.9})
+        assert res["ok"], res
+        assert r.summary()["pending_replenish"] == 1, r.summary()
+        assert any(d.get("status") == "superseded" for d in r.session.delivered), r.session.delivered
 
 
 if __name__ == "__main__":

@@ -30,7 +30,7 @@ ALLOWED_TARGETS = {
     "fetch.filters.views", "fetch.filters.quality", "fetch.parts",
     "plan.add_targets", "plan.negative", "fill.quota",
     "verify.blacklist", "fill.replace", "scope.ratio",
-    "plan.quantity", "plan.configuration", "session.reset",
+    "plan.quantity", "plan.quantity_per_model", "plan.configuration", "session.reset",
     "delivered.remove", "delivered.replace", "delivery.report",
     "session.pause", "session.resume",
 }
@@ -202,6 +202,10 @@ def extract_values(text: str, targets: list[str]) -> dict:
             q["no_watermark"] = True
         if q:
             out["fetch.filters.quality"] = q
+    if "plan.quantity_per_model" in targets:
+        m = re.search(r"(\d+)\s*张", t)
+        if m:
+            out["plan.quantity_per_model"] = {"count": int(m.group(1))}
     if "fill.quota" in targets:
         m = re.search(r"(?:再|多)?(?:加|补|来)\s*([一二两三四五六七八九十\d]+)\s*(?:台|张|个)", t)
         if m:
@@ -297,7 +301,8 @@ class Session:
                                     "hash": str(abs(hash(json.dumps(self.brief, sort_keys=True, ensure_ascii=False))))})
 
     # ---------- 输入 ----------
-    def interrupt(self, text: str, *, msg_id: str = "", result: dict | None = None) -> dict:
+    def interrupt(self, text: str, *, msg_id: str = "", result: dict | None = None,
+                  stage: str | None = None) -> dict:
         msg_id = msg_id or "m-" + uuid.uuid4().hex[:8]
         if msg_id in self._seen_msgs:
             return {"ok": True, "duplicate": True, "status": self.status()}
@@ -309,12 +314,24 @@ class Session:
         if res is None:
             if self.router:
                 try:
-                    res = self.router(text, self.context())
+                    ctx = self.context()
+                    if stage:
+                        ctx["stage"] = stage
+                    res = self.router(text, ctx)
                 except Exception:  # noqa: BLE001
                     res = classify_text(text)
             else:
                 res = classify_text(text)
         self._event("user_msg", msg_id=msg_id, text=text[:120], result=res)
+        if res.get("action") == "explain" or res.get("feasibility") in (
+                "unsupported", "out_of_domain"):
+            self._event("explain", msg_id=msg_id, message=str(res.get("message") or "")[:200])
+            return {"ok": True, "explain": True, "message": res.get("message"),
+                    "feasibility": res.get("feasibility"), "status": self.status()}
+        if res.get("action") == "clarify" and res.get("message") and not res.get("targets"):
+            self.state = SessionState.CLARIFYING
+            return {"ok": True, "clarify": True, "question": res.get("message"),
+                    "status": self.status()}
         if not res.get("targets"):
             self.state = SessionState.CLARIFYING
             return {"ok": True, "intent": res.get("intent"), "clarify": True,
@@ -407,6 +424,10 @@ class Session:
                 if p.target == "verify.blacklist":
                     self.blacklist.append({"patch_id": p.patch_id, "value": p.value,
                                            "asset": (hit or {}).get("asset_id") or (hit or {}).get("sha1")})
+                if p.target in ("delivered.remove", "delivered.replace"):
+                    # 删/换后需要补齐同等数量；真实补抓在下一轮 delta（P1 仅记录）
+                    self.preferences["pending_replenish"] = int(
+                        self.preferences.get("pending_replenish") or 0) + 1
         if subset is None:
             self.pending = []
         else:

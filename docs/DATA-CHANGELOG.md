@@ -5,6 +5,25 @@
 
 ## 2026-11-16
 
+### 67. P0+P1：能力/阶段/数量语义（2026-11-16）
+
+- **P0（能力+阶段）**：`classify/guard` 增加 `feasibility`（supported/partial/unsupported/out_of_domain）、
+  `stage`（pre_run/running/delivered）、`message`；不支持/越界返回 `action=explain`，**不产生 patch**；
+  阶段门禁止交付前 `delivered.*`/`verify.blacklist`/`fill.replace`（改为澄清“还没有交付图”）。
+- **P1（数量四义）**：新增 `plan.quantity_per_model`（每款补到 N）；`fill.quota` 只用于
+  “同款/这台/型号代码 + 加图”；显式总数/凑够 N/每款 N 分别走 `plan.quantity` / per-model；
+  交付后 remove/replace 记录 `pending_replenish`（真补抓待 delta）；引擎支持 per-model quota（best-effort）。
+- **测试（前后对比，同机）**：
+  - 单测：before → after：session_router 15/15→15/15、session_runner 9/9→**11/11**、
+    retrieval_engine 50/50→**52/52**；taskspec 22、briefing 7、planning 21、session 15、session_engine 12、
+    manifest 5、delivery 3 全过。
+  - Router holdout 100（合成，非真实分布）：before raw **81–82%**；after raw **82%**、
+    **capability-adjusted 87%**、refusal 6 条；按用户审核口径修正标注后约 **95/100**；
+    仍有 **5 条框架缺口**（18/56/68/73 复合意图、40 构型→部件）。
+  - 行为变化：交付前“第 3 张换掉”现在澄清而不是记账（符合阶段口径）；L2 5-case 的旧脚本
+    需改为“交付后纠错”才有意义。
+- **未做**：P2 复合意图拆分/选项化澄清；真实分阶段高频集（BL-016，P3，等指令）；删后自动补抓。
+
 ### 66. 用户审核 router holdout：广度≠频率（2026-11-16）
 
 - 产品负责人逐条审核 100 条：**13 条判定为不合理/罕见/非产品任务**（1,7,11,16,20,22,34,46,50,51,57,70,90）；
