@@ -5,6 +5,19 @@
 
 ## 2026-11-16
 
+### 70. P3 分阶段输入 290 条草案（2026-11-17）
+
+- 按产品反馈修订：A8 改为 **UI 操作引导**（guide，不产 patch）、B3 改为 **暂停+附带修改**、
+  C6 改为 **版式超默认解释**（默认一车一页）、比例 A 120（41%）> C 100（35%）> B 70（24%）。
+- 产物：`data-test/evals/p3-staged-290-20261117.jsonl`（290 条，A/B/C 三阶段、20 类）、
+  `p3-staged-290-20261117-review.md`（中文审阅表）、`scripts/render_p3_review.py`。
+- 标签审计：**0 冲突**（无 `fill.replace`、无 remove+replace 同句、无 quantity+per_model 同句、
+  guide/explain 均不带 target、B3 均含 pause+一个修改）；仅 2 条跨阶段重复原话，已改写。
+- 标签口径文档：`docs/router-label-taxonomy-20261117.md`（数量/交付编辑/范围/部件/报告/暂停冲突裁决）。
+- 5.4 负样本/小模型训练评估：记 **BL-022，状态=待后续版本开发测试**（数据量与标签稳定性不足，
+  先做反馈闭环 + few-shot，500–1000 真实确认案例后再评估）。
+- **P3 未执行**：等用户逐条审完 290 条、视为真实原话后再启动。
+
 ### 69. 按用户审核口径重标 holdout（2026-11-16）
 
 - 按产品负责人逐条审核，重建标注：`data-test/evals/router-holdout100-20261116-relabeled.jsonl`
