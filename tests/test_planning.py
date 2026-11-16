@@ -329,6 +329,27 @@ def test_model_code_validation_and_verifiable():
     assert rows2[0]["verifiable"] is False and rows2[0]["code_core"] == "", rows2[0]
 
 
+def test_brand_and_pinned_queries():
+    b = brief()
+    b["request"]["brands_include"] = ["陕汽"]
+    b["request"]["models_pinned"] = ["X3000 6×6"]
+    plan = planning.build_query_plan(b)
+    qs = [q["query"] for q in plan]
+    assert any("陕汽" in q for q in qs), qs
+    assert any("X3000" in q for q in qs), qs
+    assert any(q["dimension"] == "brand" for q in plan), plan
+    assert any(q["dimension"] == "pinned" for q in plan), plan
+
+
+def test_negative_terms_from_request():
+    b = brief()
+    b["negative"] = []
+    b["request"]["brands_exclude"] = ["北奔"]
+    b["request"]["constraints"] = {"exclude": ["挂车"]}
+    terms = planning.negative_terms(b)
+    assert "北奔" in terms and "挂车" in terms, terms
+
+
 if __name__ == "__main__":
     check("查询计划：维度与 query_id", test_query_plan_dimensions)
     check("查询计划：extra/去重", test_query_plan_extra_and_dedupe)
@@ -347,6 +368,8 @@ if __name__ == "__main__":
     check("model_code 校验与可核验标记", test_model_code_validation_and_verifiable)
     check("search_key 过校验/合并", test_search_key_survives_validation_and_merge)
     check("槽位派生 key/合并补齐", test_slots_derive_search_key_and_merge)
+    check("品牌/指定车型进查询", test_brand_and_pinned_queries)
+    check("排除项进 negative", test_negative_terms_from_request)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

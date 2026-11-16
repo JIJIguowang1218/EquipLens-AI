@@ -123,6 +123,28 @@ def test_slots_must_come_from_input():
     assert b["stop_rules"] == {}, b["stop_rules"]
 
 
+def test_apply_taskspec_carries_request_fields():
+    from equiplens import taskspec as _ts
+    spec = _ts.normalize({"intent": "new_task", "class": "沙漠牵引车",
+                          "class_raw": "沙漠车", "class_aliases": [],
+                          "environment": "沙漠/油田", "configuration": "6x6",
+                          "quantity": {"primary": 4, "backup": 0, "delta": None},
+                          "brands_include": ["陕汽"], "brands_exclude": ["北奔"],
+                          "preferences": {}, "models_pinned": ["X3000"],
+                          "models_provided": [], "parts": [],
+                          "constraints": {"exclude": ["挂车"]},
+                          "scope": None, "delivery": None,
+                          "policy": {"hard": ["quantity"], "soft": []},
+                          "unknowns": [], "assumptions": [], "questions": [],
+                          "session_context_used": False})
+    brief = {"brief_id": "b", "request": {"class": ""}}
+    out = briefing.apply_taskspec(brief, spec)
+    assert out["request"]["brands_include"] == ["陕汽"], out["request"]
+    assert out["request"]["brands_exclude"] == ["北奔"], out["request"]
+    assert out["request"]["models_pinned"] == ["X3000"], out["request"]
+    assert out["request"]["constraints"]["exclude"] == ["挂车"], out["request"]
+
+
 if __name__ == "__main__":
     check("LLM 输出 → 完整 brief", test_assemble_brief)
     check("单槽规则", test_single_slot)
@@ -130,6 +152,7 @@ if __name__ == "__main__":
     check("缺 class 拒绝", test_missing_class_rejected)
     check("generate 调 LLM 并带 skill", test_generate_uses_llm_prompt)
     check("台数必须来自用户输入", test_slots_must_come_from_input)
+    check("apply_taskspec 透传品牌/引脚/约束", test_apply_taskspec_carries_request_fields)
     fails = [r for r in results if r[1] == "FAIL"]
     for name, status, err in results:
         print(f"  [{status}] {name}" + (f" — {err}" if err else ""))

@@ -200,6 +200,18 @@ def test_no_mutation():
     assert src == snapshot
 
 
+def test_to_brief_carries_brands_pins_constraints():
+    s = taskspec.normalize(base(brands_include=["陕汽"], brands_exclude=["北奔"],
+                                models_pinned=["X3000"],
+                                constraints={"exclude": ["挂车"], "origin": None,
+                                             "powertrain": None, "min_width": None}))
+    req = taskspec.to_brief(s)["request"]
+    assert req["brands_include"] == ["陕汽"], req
+    assert req["brands_exclude"] == ["北奔"], req
+    assert req["models_pinned"] == ["X3000"], req
+    assert req["constraints"]["exclude"] == ["挂车"], req
+
+
 if __name__ == "__main__":
     tests = [(k, v) for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
     for name, fn in tests:

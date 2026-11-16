@@ -351,6 +351,9 @@ def apply_taskspec(brief: dict, spec: dict) -> dict:
         budget["vehicle_slots"] = pb["vehicle_slots"]
     if pb.get("backup_slots") is not None:
         budget["backup_slots"] = pb["backup_slots"]
+    for key in ("brands_include", "brands_exclude", "models_pinned", "constraints"):
+        if key in partial:
+            req[key] = partial[key]
     brief["taskspec"] = spec
     brief["s0"] = {"mechanism": "taskspec", "version": "v0.4"}
     return brief

@@ -266,4 +266,17 @@ def to_brief(spec: dict) -> dict:
     env = s.get("environment")
     if env:
         req["environment"] = {"value": env}
+    pinned = []
+    for m in s.get("models_pinned") or []:
+        mm = m.get("model") if isinstance(m, dict) else m
+        if mm:
+            pinned.append(str(mm))
+    cons = s.get("constraints") or {}
+    req.update({
+        "brands_include": [str(x) for x in (s.get("brands_include") or [])],
+        "brands_exclude": [str(x) for x in (s.get("brands_exclude") or [])],
+        "models_pinned": pinned,
+        "constraints": {"exclude": [str(x) for x in (cons.get("exclude") or [])],
+                        "views": [str(x) for x in (cons.get("views") or [])]},
+    })
     return {"request": req, "taskspec": s}

@@ -734,6 +734,16 @@ h3 2.0（1–4）、h4 2.7（1–4）。
 - S4 仍 `planned`；未新增正式 run。
 
 
+### 49. BL-010 P0：TaskSpec 品牌/指定车型/排除项接线（2026-11-16）
+
+- `taskspec.to_brief` 增加 `brands_include/brands_exclude/models_pinned/constraints`；
+  `briefing.apply_taskspec` 透传到 `brief.request`。
+- `planning.build_query_plan`：用户指定品牌生成 `brand` 维度查询（≤6 条）、指定车型生成 `pinned` 查询（≤6 条）；
+  `negative_terms` 合并 `request.brands_exclude` + `constraints.exclude`。
+- engine CLI：`pins` 默认取 `brief.request.models_pinned`（仍可与 `--pin` 合并）。
+- 测试：`taskspec 22/22`、`planning 19/19`、`briefing 7/7`。
+- 未做（P1）：`brand_quota/foreign_ratio` 软配额执行 + 交付披露；`scope` 邻近设计。
+
 ### 48. M4.3：Session patch 接入引擎（2026-11-15）
 
 - `engine.apply_patches(state, patches)`：`fetch.filters.views/parts/quality` 写进 brief（views 只产生核验

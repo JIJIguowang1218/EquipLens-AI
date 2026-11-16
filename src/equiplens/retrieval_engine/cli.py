@@ -99,11 +99,14 @@ def main(argv=None) -> int:
                                 or ("llm" if plan_doc.get("ranking") else None)),
                 "created_at": plan_doc.get("created_at"),
             }
+        pins = [x.strip() for x in args.pin.split(",") if x.strip()]
+        pins += [str(x) for x in ((brief.request or {}).get("models_pinned") or [])
+                 if str(x).strip()]
         world = WebWorld(models or None, brief.parts_by_key, router=router,
                          image_dir=Path(args.run_root) / run_id / "images",
                          plan=plan, citation_check=not args.no_citation,
                          plan_meta=plan_meta,
-                         pins=[x.strip() for x in args.pin.split(",") if x.strip()],
+                         pins=pins,
                          unit_quotas={u.unit_id: u.quota for u in brief.research_units},
                          platform_extra=args.platform_extra,
                          code_prefilter=args.code_prefilter,

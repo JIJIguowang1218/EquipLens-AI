@@ -233,8 +233,12 @@ def negative_terms(brief: dict) -> list[str]:
               "取证", "输出", "字段", "配额", "预算", "单元", "用户", "点名",
               "仅", "除非", "标注", "拆", "扩展", "补充", "跨")
     meta = {"模型", "品牌", "型号", "车型", "汽车", "卡车", "车", "图片", "素材"}
+    req = brief.get("request") or {}
+    raw = list(brief.get("negative") or [])
+    raw += list(req.get("brands_exclude") or [])
+    raw += list((req.get("constraints") or {}).get("exclude") or [])
     out: list[str] = []
-    for x in (brief.get("negative") or [])[:8]:
+    for x in raw[:12]:
         t = normalize_text(x).strip("“”\"'")
         if not t or len(t) > 8:
             continue
@@ -284,6 +288,12 @@ def build_query_plan(brief: dict, extra: list[str] | None = None, *,
         "邻域工况/上装")
     add("english", "q-en", short_text(f"{klass} {conf} truck brands", 30),
         "英文品牌兜底")
+    for i, brand in enumerate([b for b in (req.get("brands_include") or []) if b][:6], start=1):
+        add("brand", f"q-brand-{i}", short_text(f"{brand} {klass} {conf}", 30),
+            "用户指定品牌覆盖")
+    for i, model in enumerate([m for m in (req.get("models_pinned") or []) if m][:6], start=1):
+        add("pinned", f"q-pin-{i}", short_text(f"{model} {klass}", 30),
+            "用户指定车型")
 
     for unit in brief.get("research_units") or []:
         uid = normalize_text(unit.get("unit_id")) or f"u{len(rows)}"
