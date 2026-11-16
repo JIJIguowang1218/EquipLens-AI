@@ -5,6 +5,16 @@
 
 ## 2026-11-16
 
+### 69. 按用户审核口径重标 holdout（2026-11-16）
+
+- 按产品负责人逐条审核，重建标注：`data-test/evals/router-holdout100-20261116-relabeled.jsonl`
+  （100 条；13 条标 `realistic=false`；能力类 6 条标 `expect_feasibility`；破坏性允许
+  `verify.blacklist↔delivered.remove` 等等价替代）。
+- 用 P2 当前结果重打分（不重跑模型）：**all 99/100、realistic 86/87、capability 6/6**；
+  唯一失败 **#17**（8x8→6x6，漏 `plan.add_targets`，见 BC-S4-010）。
+- 说明：这是**按用户口径的对照分**，不是真实频率指标；13 条不合理/罕见已从 realistic 子集剔除。
+- 产物：`scripts/score_relabeled.py`、`data-test/evals/router-holdout100-20261116-relabeled-result.json`。
+
 ### 68. P2：复合意图 + 选项化澄清 + 构型/部件（2026-11-16）
 
 - 复合意图：prompt 要求“一句多动作分别列出（≤3，按顺序）”；守卫补三条组合规则
