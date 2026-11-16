@@ -16,6 +16,8 @@
   target 重复调用返回同一批资产，没有“新查询/翻页/新来源”。
 - 结论：**delta 机制已通，但 live 新图源未通**；S4 尚未收敛，阻塞项为 fetch-more（BL-027 /
   BC-S4-017）。
+- **新版 live 验证（h2e，seq1 replace）**：`added=0, old_active=true`，提示“没有找到可替换的新图；
+  旧图保持交付”；session active=14、superseded=0，**交付未缩水**。
 
 ### 73. S4 hard 动作 gate（2026-11-17）
 
