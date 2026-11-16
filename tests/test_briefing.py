@@ -130,19 +130,25 @@ def test_apply_taskspec_carries_request_fields():
                           "environment": "沙漠/油田", "configuration": "6x6",
                           "quantity": {"primary": 4, "backup": 0, "delta": None},
                           "brands_include": ["陕汽"], "brands_exclude": ["北奔"],
-                          "preferences": {}, "models_pinned": ["X3000"],
+                          "preferences": {"brand_quota": {"brands": ["奔驰"], "min": 3, "of": 10},
+                                          "foreign_ratio": {"min": 0.2, "max": 0.4}},
+                          "models_pinned": ["X3000"],
                           "models_provided": [], "parts": [],
-                          "constraints": {"exclude": ["挂车"]},
+                          "constraints": {"exclude": ["挂车"], "views": ["front"]},
                           "scope": None, "delivery": None,
                           "policy": {"hard": ["quantity"], "soft": []},
                           "unknowns": [], "assumptions": [], "questions": [],
                           "session_context_used": False})
-    brief = {"brief_id": "b", "request": {"class": ""}}
+    brief = {"brief_id": "b", "request": {"class": ""},
+             "part_requirements": [{"part": "bumper", "views": []}]}
     out = briefing.apply_taskspec(brief, spec)
     assert out["request"]["brands_include"] == ["陕汽"], out["request"]
     assert out["request"]["brands_exclude"] == ["北奔"], out["request"]
     assert out["request"]["models_pinned"] == ["X3000"], out["request"]
     assert out["request"]["constraints"]["exclude"] == ["挂车"], out["request"]
+    assert out["request"]["brand_quota"]["min"] == 3, out["request"]
+    assert out["request"]["foreign_ratio"]["min"] == 0.2, out["request"]
+    assert out["part_requirements"][0]["views"] == ["front"], out["part_requirements"]
 
 
 if __name__ == "__main__":

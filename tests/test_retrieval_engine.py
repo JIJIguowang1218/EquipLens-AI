@@ -575,6 +575,21 @@ def test_budget_queries_are_issued_queries_not_targets():
         assert used["models"] == 1, used            # 候选车型数单独记
 
 
+def test_delivery_brand_quota_and_foreign_ratio():
+    b = base_brief(parts=("bumper",), slots=1)
+    b["request"]["brand_quota"] = {"brands": ["HOWO"], "min": 1, "of": 1}
+    b["request"]["foreign_ratio"] = {"min": 0.5, "max": 1.0}
+    world = {"external": {"u-exact": [target("t-howo", ["bumper"])]},
+             "assets": {"t-howo": {"bumper": [dict(asset("a1"), model="HOWO TX")]}},
+             "verify": {"a1": ok()}}
+    with tempfile.TemporaryDirectory() as td:
+        d = RetrievalEngine(Brief.from_dict(b), FakeWorld(world),
+                            run_root=td, run_id="q1").run()["delivery"]
+    assert d["brand_quota"] == {"brands": ["HOWO"], "min": 1, "of": 1,
+                               "hit": 1, "met": True}, d["brand_quota"]
+    assert d["foreign_ratio"]["status"] == "unverified", d["foreign_ratio"]
+
+
 def test_delivery_required_follows_user_slots():
     """交付台数来自用户输入（brief.page_budget.vehicle_slots），不是写死 12。"""
     b = base_brief(parts=("bumper",), slots=5)
@@ -967,6 +982,7 @@ if __name__ == "__main__":
     check("attempts 真实计数", test_attempts_asset_count_is_real)
     check("预算按真实查询计数", test_budget_queries_are_issued_queries_not_targets)
     check("交付台数跟随用户输入", test_delivery_required_follows_user_slots)
+    check("交付披露：品牌配额/外国占比", test_delivery_brand_quota_and_foreign_ratio)
     check("备选固定 4 台按优先级", test_delivery_backup_four_by_priority)
     check("备选不足要显式报短", test_delivery_backup_short_is_visible)
     check("备选排除无图车型", test_backup_excludes_models_without_images)

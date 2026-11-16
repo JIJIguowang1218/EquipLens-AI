@@ -758,10 +758,30 @@ class RetrievalEngine:
                                                       (by_target.get(m) or {}).values())],
                        "short": max(0, backup_required - len(backup_models))},
             "backup_short": max(0, backup_required - len(backup_models)),
+            "brand_quota": self._brand_quota(state, accepted_ids),
+            "foreign_ratio": ({"target": (self.brief.request or {}).get("foreign_ratio"),
+                               "status": "unverified",
+                               "reason": "缺可审计国别信号（V16 No-Go）"}
+                              if (self.brief.request or {}).get("foreign_ratio") else None),
             "query_tiers": self._tier_counts(state, accepted_ids),
             "unavailable": self._unavailable(state),
             "status": "complete" if accepted >= target else "short",
         }
+
+    def _brand_quota(self, state: dict, accepted_ids: set[str]) -> dict | None:
+        """品牌配额只做**软执行 + 披露**（BC-S01-004）：不阻断交付，只报达成度。"""
+        quota = (self.brief.request or {}).get("brand_quota") or {}
+        if not isinstance(quota, dict) or not quota.get("brands"):
+            return None
+        brands = [str(b) for b in quota["brands"] if str(b).strip()]
+        hit = 0
+        for tid in accepted_ids:
+            model = str((state.get("targets", {}).get(tid) or {}).get("model") or "").lower()
+            if any(b.lower() in model for b in brands):
+                hit += 1
+        minimum = int(quota.get("min") or 0)
+        return {"brands": brands, "min": minimum, "of": quota.get("of"),
+                "hit": hit, "met": hit >= minimum}
 
     def _tier_counts(self, state: dict, accepted_ids: set[str]) -> dict:
         """已交付 target 的图片按来源查询档位计数（待办A：来源可解释）。

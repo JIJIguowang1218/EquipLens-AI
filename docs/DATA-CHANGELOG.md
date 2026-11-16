@@ -5,6 +5,17 @@
 
 ## 2026-11-16
 
+### 54. BL-010 P1：品牌配额披露 + views 消费 + 外国占比标记（2026-11-16）
+
+- `taskspec.to_brief` 把 `preferences.brand_quota/foreign_ratio` 透传到 `brief.request`；
+  `briefing.apply_taskspec` 把 `constraints.views` 合并进每个 `part_requirements[*].views`。
+- 引擎 `delivery` 新增：
+  - `brand_quota = {brands, min, of, hit, met}`：**软执行**（不阻断交付，只报达成度，BC-S01-004）；
+  - `foreign_ratio = {target, status:"unverified", reason}`：无国别信号（V16 No-Go），只披露未核验。
+- `DELIVERY.md` 的“边界与缺口”增加两行：品牌配额达成度、外国占比未核验说明。
+- 测试：`retrieval_engine 49/49`（新增交付披露用例）、`briefing 7/7`（新增 views/quota 透传断言）。
+- 影响面：S0 透传 + S3 渲染；不改检索默认行为、不阻断交付。
+
 ### 53. S2-01 视觉身份探针：No-Go（2026-11-16）
 
 - 方法：本地 UForm3（与 `gate.py` 同权重，离线）对 335 个 image+model 资产做

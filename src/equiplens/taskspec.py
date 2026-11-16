@@ -278,5 +278,7 @@ def to_brief(spec: dict) -> dict:
         "models_pinned": pinned,
         "constraints": {"exclude": [str(x) for x in (cons.get("exclude") or [])],
                         "views": [str(x) for x in (cons.get("views") or [])]},
+        "brand_quota": (s.get("preferences") or {}).get("brand_quota"),
+        "foreign_ratio": (s.get("preferences") or {}).get("foreign_ratio"),
     })
     return {"request": req, "taskspec": s}

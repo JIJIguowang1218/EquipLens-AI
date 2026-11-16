@@ -277,6 +277,13 @@ def render_md(m: dict) -> str:
         f"- citation_only：{citation_n} 台",
         f"- 无图交付车型：{no_image} 台",
     ]
+    quota = s.get("brand_quota")
+    if quota:
+        lines.append(
+            f"- 品牌配额：{quota.get('hit')}/{quota.get('min')}"
+            f"（{'达标' if quota.get('met') else '未达'}；目标品牌 {'/'.join(quota.get('brands') or [])}）")
+    if s.get("foreign_ratio"):
+        lines.append("- 外国品牌占比：**未核验**（缺可审计国别信号，V16 No-Go）")
     if mon["unavailable"]:
         lines.append("- 缺图归因（summary.delivery.unavailable）："
                      f"{_reason_counts(mon['unavailable'])}")
