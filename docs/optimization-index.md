@@ -20,4 +20,5 @@
 - 每轮一份 `optimization-roundN-YYYYMMDD.md`；设计类放 `a3-*`/`query-*`；
 - 实验数据：`data-test/runs/<topic>-YYYYMMDD/`；评测 JSON：`data-test/evals/`；
 - 调研报告：`docs/research/`，索引 `docs/research/README.md`；
-- 机制状态只维护在 `backlog-mechanisms-20261114.md`（单一事实源）。
+- 机制状态以 `docs/external/doubao-consult-decisions.md` + `docs/EXPERIMENTS-INDEX.md` 为准；
+  `backlog-mechanisms-20261114.md` 是 2026-11-14 冻结的**历史档案**（默认不读），用于查旧机制。

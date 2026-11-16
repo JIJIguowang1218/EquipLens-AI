@@ -1,5 +1,10 @@
 # 机制待尝试清单（2026-11-14）
 
+> **状态：历史机制档案（2026-11-14 冻结）。默认不读。**
+> 新决策与状态以 [`docs/external/doubao-consult-decisions.md`](external/doubao-consult-decisions.md)（外部意见）、
+> [`docs/EXPERIMENTS-INDEX.md`](EXPERIMENTS-INDEX.md)（实验）、[`docs/stages.json`](stages.json)（正式链路）为准。
+> 本文件只用于查“旧机制试过什么、结论是什么”，**不是台账的替代品**；与台账冲突时以台账为准。
+
 > 来源：10-13 至 11-14 的讨论与实验。每条标注：状态 / 成本 / 风险 / 需要的数据。
 > 目的：避免“提过就忘”，也避免一次叠多个变量。
 

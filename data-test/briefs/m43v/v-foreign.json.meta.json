@@ -1,0 +1,205 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "沙漠牵引车",
+  "class_raw": "沙漠牵引车",
+  "class_aliases": [],
+  "environment": "沙漠",
+  "configuration": "6x6",
+  "quantity": {
+   "primary": 8,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": {
+    "min": 0.333,
+    "max": 0.333
+   },
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity",
+    "configuration",
+    "environment"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "preferences.foreign_ratio",
+    "text": "8 台的三分之一为非整数（约 2.67 台），外资品牌具体台数需取整",
+    "severity": "defaultable",
+    "proposal": "按 3 台外资品牌（占比 37.5%，满足不低于三分之一）"
+   },
+   {
+    "field": "brands_include",
+    "text": "未指定具体品牌，仅限定外资品牌比例",
+    "severity": "informational",
+    "proposal": "在满足三分之一外资比例前提下由供应商选型"
+   }
+  ],
+  "assumptions": [
+   "“外国品牌占三分之一”按外资品牌台数不低于总量的三分之一理解，8 台取整为 3 台外资",
+   "“沙漠”被视为该类车辆的典型作业工况"
+  ],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "8 台沙漠牵引车",
+   "environment": "沙漠牵引车",
+   "configuration": "6x6",
+   "quantity": "8 台",
+   "brands": "外国品牌占三分之一",
+   "models": "",
+   "constraints": "外国品牌占三分之一",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T14:09:44",
+ "raw_input": "外国品牌占三分之一，8 台沙漠牵引车，6x6",
+ "brief_path": "data-test\\briefs\\m43v\\v-foreign.json",
+ "attempts": 2,
+ "usage": {
+  "prompt_tokens": 2874,
+  "completion_tokens": 1819,
+  "total_tokens": 4693,
+  "prompt_tokens_details": {
+   "cached_tokens": 2688
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 1275
+  },
+  "prompt_cache_hit_tokens": 2688,
+  "prompt_cache_miss_tokens": 186
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "沙漠牵引车",
+   "environment": "沙漠",
+   "base_platform": "6×6 重型牵引车底盘（假设，需确认具体基型）",
+   "configuration": "6x6",
+   "design_questions": [
+    "8 台沙漠牵引车（6x6）中，外资品牌约占三分之一时，整车造型与沙漠防护构型如何保持平台一致性？",
+    "6x6 沙漠牵引车的牵引连接与防护部件在沙尘工况下需要哪些结构与密封证据？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "front_face",
+    "label": "前脸",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "design_axes": [
+     "form_gesture",
+     "proportion",
+     "environment_protection"
+    ]
+   },
+   {
+    "region": "side",
+    "label": "侧面",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "environment_protection"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_fifth_wheel",
+    "label": "牵引鞍座（第五轮）",
+    "kind": "function",
+    "location": "底盘后部/牵引连接处",
+    "part_family": "cast_forged",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "structure",
+     "environment_protection"
+    ],
+    "views": [
+     "side",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "B",
+    "mechanism": [
+     "load_transfer",
+     "dust_ingress",
+     "maintenance_access"
+    ],
+    "why": "牵引车 6x6 沙漠工况下，牵引鞍座承担载荷传递并暴露于沙尘，能提供结构节点、密封防尘与维护可达性的设计证据；属于品类定义性功能件，不是用户未提的造型拆分件。"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "preferences.foreign_ratio",
+    "value": "8 台取整为 3 台外资品牌（37.5%）",
+    "why": "8 的三分之一非整数，按不低于三分之一取整",
+    "confidence": 0.8
+   },
+   {
+    "field": "request.base_platform",
+    "value": "6×6 重型牵引车底盘",
+    "why": "由 class=沙漠牵引车、configuration=6x6 推断基型平台，具体底盘型号未指定",
+    "confidence": 0.6
+   },
+   {
+    "field": "environment",
+    "value": "沙漠为典型作业工况",
+    "why": "用户原话“沙漠牵引车”，按工况理解",
+    "confidence": 0.9
+   }
+  ],
+  "negative": [
+   "未指定具体品牌与型号，不锁定单一品牌",
+   "用户未点名造型部件，不扩展为格栅/大灯/保险杠等拆分件",
+   "不做跨车型功能件借用（cross_vehicle）",
+   "不评估内饰与乘员舱舒适性"
+  ]
+ },
+ "duration_ms": 33708
+}

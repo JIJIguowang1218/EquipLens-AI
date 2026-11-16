@@ -5,6 +5,17 @@
 
 ## 2026-11-16
 
+### 56. 池供给预注册结果（S1-05 / A6 / A2，2026-11-16）
+
+- 8 brief × 3 臂（default / topup4 / wide），只跑 plan 层，24 次，约 31 分钟。
+- 结果：default pool_ok **7/8**、候选均 **21.8**、verifiable 78.9%；topup4 24.4（+12%）、仍 7/8；
+  wide 28.4（+30%）、**8/8**，但 verifiable **68.0%**（离类风险）。
+- **关键发现**：品牌约束 brief（“只要陕汽 8 台”）default/topup4 只有 **2/20**，wide **31/20** ——
+  wide 是唯一能救品牌约束的臂；其余 7 个 brief 三臂均 pool_ok。
+- 结论：不改全局默认；紧供/品牌约束用 `wide` + 离类护栏（护栏待做）；70% 配额先不做。
+- 产物：`data-test/plans/pool/*.json`（gitignored 中间产物）、`data-test/evals/pool-supply-20261116.json`、
+  `docs/pool-supply-plan-20261116.md` §9。
+
 ### 55. S2-06 image-to-image 参考库探针（2026-11-16）
 
 - 方法：335 个 image+model 资产（10 个 m43 run），只取 identity=confirmed 的 92 对 → 15 个

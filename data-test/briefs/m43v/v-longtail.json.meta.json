@@ -1,0 +1,214 @@
+{
+ "ok": true,
+ "source": "deepseek-chat",
+ "model": "deepseek-flash",
+ "skill_version": "task-brief@v2",
+ "s0": {
+  "mechanism": "taskspec",
+  "version": "v0.4"
+ },
+ "taskspec": {
+  "intent": "new_task",
+  "class": "随车起重运输车",
+  "class_raw": "随车吊",
+  "class_aliases": [
+   "随车吊"
+  ],
+  "environment": null,
+  "configuration": null,
+  "quantity": {
+   "primary": 6,
+   "backup": null,
+   "delta": null
+  },
+  "brands_include": [],
+  "brands_exclude": [],
+  "preferences": {
+   "soft_brands": [],
+   "brand_quota": null,
+   "foreign_ratio": null,
+   "views": [],
+   "quality": [],
+   "year": null,
+   "tonnage": null,
+   "price": null
+  },
+  "models_pinned": [],
+  "models_provided": [],
+  "parts": [],
+  "constraints": {
+   "exclude": [],
+   "origin": null,
+   "powertrain": null,
+   "min_width": null
+  },
+  "scope": null,
+  "delivery": null,
+  "policy": {
+   "hard": [
+    "class",
+    "quantity"
+   ],
+   "soft": []
+  },
+  "unknowns": [
+   {
+    "field": "constraints.registration",
+    "text": "要能上牌",
+    "severity": "informational",
+    "proposal": "确认上牌地区及公告/排放等上牌要求"
+   }
+  ],
+  "assumptions": [],
+  "questions": [],
+  "session_context_used": false,
+  "evidence": {
+   "class": "随车吊",
+   "environment": "",
+   "configuration": "",
+   "quantity": "6 台",
+   "brands": "",
+   "models": "",
+   "constraints": "要能上牌",
+   "scope": ""
+  }
+ },
+ "skill_path": "skills/task-brief/SKILL.md",
+ "created_at": "2026-11-16T14:10:09",
+ "raw_input": "随车吊 6 台，要能上牌",
+ "brief_path": "data-test\\briefs\\m43v\\v-longtail.json",
+ "attempts": 1,
+ "usage": {
+  "prompt_tokens": 2680,
+  "completion_tokens": 2558,
+  "total_tokens": 5238,
+  "prompt_tokens_details": {
+   "cached_tokens": 1920
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 1437
+  },
+  "prompt_cache_hit_tokens": 1920,
+  "prompt_cache_miss_tokens": 760
+ },
+ "validation": {
+  "ok": true,
+  "errors": []
+ },
+ "llm_payload": {
+  "request": {
+   "class": "随车起重运输车（随车吊）",
+   "environment": null,
+   "base_platform": "二类卡车底盘（4×2 / 6×4 / 8×4，公路公告类），上装为吊机 + 货箱",
+   "configuration": "默认吊机后置（驾驶室后方、货箱前端），直臂或折臂待确认",
+   "design_questions": [
+    "“要能上牌”对应哪些法规与公告要素（外廓尺寸、后悬、轴荷、侧/后防护、反光标识、牌照与灯光安装），这些要素在整车侧面与尾部如何体现？",
+    "吊机—货箱—底盘三者的布置比例与轴荷分配如何影响整车姿态与可用货箱长度？",
+    "驾驶室与上装是平台继承还是工况特化，造型语言与结构分缝如何统一？"
+   ]
+  },
+  "regions": [
+   {
+    "region": "side",
+    "label": "整车侧面（底盘—吊机—货箱布置关系）",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "design_axes": [
+     "proportion",
+     "structure",
+     "regulation"
+    ]
+   },
+   {
+    "region": "rear",
+    "label": "尾部（后防护、牌照与灯光位置、吊机尾端收纳状态）",
+    "views": [
+     "rear",
+     "detail"
+    ],
+    "design_axes": [
+     "regulation",
+     "structure"
+    ]
+   }
+  ],
+  "parts": [
+   {
+    "part": "custom_mounted_crane",
+    "label": "随车吊（吊机总成）",
+    "kind": "function",
+    "location": "上装，驾驶室后方/货箱前端",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "exact",
+    "design_axes": [
+     "proportion",
+     "structure",
+     "regulation"
+    ],
+    "views": [
+     "side",
+     "hero_45",
+     "rear",
+     "detail"
+    ],
+    "design_relevance": "strong",
+    "accept": "A",
+    "mechanism": [
+     "吊机自重与位置决定轴荷分配与后悬长度，直接影响公告参数",
+     "吊臂收纳姿态与货箱长度/高度的空间冲突决定整车侧面比例",
+     "支腿跨距与展开包络影响侧向净空与侧防护布置"
+    ],
+    "why": "吊机是这类车的定义性上装，也是“能否上牌”的关键变量；其布置姿态能提供轴荷、外廓、侧向包络的直接证据"
+   }
+  ],
+  "assumptions": [
+   {
+    "field": "request.class",
+    "value": "随车起重运输车（卡车底盘 + 吊机 + 货箱）",
+    "why": "用户原词“随车吊”为口语，落到产品类别即为随车起重运输车",
+    "confidence": 0.85
+   },
+   {
+    "field": "request.base_platform",
+    "value": "二类卡车底盘，4×2 / 6×4 / 8×4 待定",
+    "why": "上牌要求意味着需为公告内底盘改装，吨位与轴数未给出",
+    "confidence": 0.6
+   },
+   {
+    "field": "request.configuration",
+    "value": "吊机后置（驾驶室后方），直臂/折臂未定",
+    "why": "国内随车吊主流布置；折臂与直臂对货箱长度与收纳高度影响不同，需确认",
+    "confidence": 0.55
+   },
+   {
+    "field": "request.environment",
+    "value": "无特殊工况（公路运输/城建物流为主）",
+    "why": "用户未提沙尘、寒区、矿区等环境，暂按常规公路使用",
+    "confidence": 0.6
+   },
+   {
+    "field": "constraints.registration",
+    "value": "按中国公告/上牌合规处理：外廓尺寸、后悬、轴荷、侧后防护、反光标识、牌照与灯光、排放阶段",
+    "why": "用户明确提出“要能上牌”，属硬约束但地区与公告批次未知",
+    "confidence": 0.7
+   },
+   {
+    "field": "quantity_intent",
+    "value": "6 台为批量采购，倾向已公告的量产在售配置",
+    "why": "批量数量一般对应车队/项目采购，非单台定制",
+    "confidence": 0.6
+   }
+  ],
+  "negative": [
+   "不检索无公告/不可上牌的改装或自制上装方案",
+   "不引入军用、越野特化、非公路矿用等与上牌无关的构型",
+   "不把用户未点名的部件（具体吊机品牌型号、货箱、防护栏、踏步等）作为独立检索对象补齐",
+   "不以“同系列/相似车型”作为入选理由，入选须给出可读的设计证据"
+  ]
+ },
+ "duration_ms": 23809
+}
