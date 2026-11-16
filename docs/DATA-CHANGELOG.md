@@ -7,12 +7,13 @@
 
 ### 74. S4 交付后 delta 编辑（机制与 live 结果，2026-11-17）
 
-- 新增 `SessionRunner.delta_edit(seq, kind)` + CLI `--delta replace|remove --seq N`：
-  标旧图 superseded → 重开引擎只抓该 target → 合并新图（`asset_id` 去重）→ 有新增则减
-  `pending_replenish`。
-- FakeWorld 单测通过（runner 14/14）：第二轮多给一张新图时，active 仍 1、旧图 superseded。
-- **live c1e 实测**：`added=0`，提示“没有找到可替换的新图”。根因：`world.fetch` 对同一 target
-  重复调用返回同一批资产，没有“新查询/翻页/新来源”。
+- 新增 `SessionRunner.delta_edit(seq, kind)` + CLI `--delta replace|remove --seq N`。
+  **replace：先抓新图，拿到并 verified 后才降级旧图；找不到新图时旧图保持 active、交付不变**。
+  **remove：先删（用户明确动作），再补；补不到则保留 `pending_replenish` 并告知。**
+- FakeWorld 单测（runner 16/16）：有新增时旧图 superseded、active 不变；无新增时 replace 保留旧图、
+  remove 报缺口。
+- **live c1e 实测（旧版）**：`added=0`；新版策略下 replace 应保留旧图。根因：`world.fetch` 对同一
+  target 重复调用返回同一批资产，没有“新查询/翻页/新来源”。
 - 结论：**delta 机制已通，但 live 新图源未通**；S4 尚未收敛，阻塞项为 fetch-more（BL-027 /
   BC-S4-017）。
 

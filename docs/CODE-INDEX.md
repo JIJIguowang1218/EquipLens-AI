@@ -30,7 +30,7 @@
 | P3 分阶段输入 | `docs/p3-staged-input-plan-20261117.md`、`data-test/evals/p3-staged-290-*`、`scripts/eval_p3_staged.py`、`scripts/render_p3_review.py` |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
-| S4 Session 后端入口（active） | `src/equiplens/session_runner.py`、`scripts/run_session.py`（`--delta replace|remove --seq`）；会话 `data-test/sessions/<id>.json`（已入库）；测试 `tests/test_session_runner.py`（14） |
+| S4 Session 后端入口（active） | `src/equiplens/session_runner.py`、`scripts/run_session.py`（`--delta replace|remove --seq`）；会话 `data-test/sessions/<id>.json`（已入库）；测试 `tests/test_session_runner.py`（16） |
 | S4 Session/Router/M4.3 接线 | `src/equiplens/session.py`、`session_router.py`、`retrieval_engine/engine.py::apply_patches`；A/B：`scripts/run_session_case.py`、`scripts/compare_m43_ab.py`；数据 `data-test/runs/m43-*`、`data-test/evals/m43-*.json` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |

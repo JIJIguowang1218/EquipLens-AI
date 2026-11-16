@@ -16,6 +16,19 @@
 | **S4 Loop / 反馈 / 记忆** | **active（仅后端入口）** | session-v3 | `session.py::Session`、`session_router.py::make_router`、`session_runner.py::SessionRunner`、`scripts/run_session.py` | 前端/API 入口未接（见 §5） |
 | **S5 产品/工程** | n/a | — | 不驱动代码 | — |
 
+### S4 能力分解（避免把 active 误读为“全部生效”）
+
+| 能力 | status | 成熟度 | 覆盖 | 说明 |
+|---|---|---|---|---|
+| 会话入口/持久化 | active | 生产生效 | backend | M6 建单、续跑 |
+| Router/守卫 | active | 生产生效 | backend | P3 288/290 |
+| 核心 patch 子集 | active | 生产生效 | partial | add_targets/fill.quota/negative/quality/per_model |
+| hard 动作 | planned | 计划 | gated | quantity/config/scope/reset/pause 当前 clarify；BL-026 |
+| delta 换图/删图 | planned | 原型 | mechanism | 机制通，live 新图源未通；BL-027 |
+| UI 引导 | active | 生产生效 | backend | 前端未接 |
+| 报告格式偏好 | planned | 计划 | preference | 只记格式，不生成 |
+| 角度/部件 | planned | 计划 | clarify | 当前澄清；后续 delta |
+
 ## 2. S0 正式链路
 
 ```

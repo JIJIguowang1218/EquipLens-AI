@@ -166,24 +166,26 @@ class SessionRunner:
         return self.status()
 
     def delta_edit(self, seq: int, kind: str = "replace", max_steps: int = 60) -> dict:
-        """交付后编辑：标旧图 superseded，重开引擎只抓该 target，合并新图。
+        """交付后编辑：replace 先拿到新图再降级旧图；remove 先删再补。
 
-        kind: replace（换图）/ remove（删除并补齐）。没有新图时保留 pending_replenish。
+        - replace：找不到新图时旧图保持 active，不改变交付，返回说明；
+        - remove：用户明确删除，先标 superseded；补不到新图时保留 pending_replenish，并说明。
         """
         d = next((x for x in self.session.delivered if int(x.get("seq") or 0) == int(seq)), None)
         if not d:
             return {"ok": False, "error": f"no_delivered_seq:{seq}"}
         tid = d.get("target") or ""
-        target = "delivered.replace" if kind == "replace" else "delivered.remove"
-        self.session.interrupt(f"第{seq}张{kind}", msg_id=f"delta-{kind}-{seq}",
-                               result={"targets": [target], "asset_index": int(seq),
-                                       "destructive": True, "confirm": False,
-                                       "hard": False, "confidence": 0.9},
-                               stage="delivered")
-        self.session.apply_pending()
         if not tid:
-            self.save()
             return {"ok": False, "error": "no_target", "seq": seq}
+        target = "delivered.replace" if kind == "replace" else "delivered.remove"
+        if kind == "remove":
+            # 删除是用户明确动作：先降级，再尝试补齐
+            self.session.interrupt(f"第{seq}张删除", msg_id=f"delta-{kind}-{seq}",
+                                   result={"targets": [target], "asset_index": int(seq),
+                                           "destructive": True, "confirm": False,
+                                           "hard": False, "confidence": 0.9},
+                                   stage="delivered")
+            self.session.apply_pending()
         self.engine.reopen(self.state, [tid])
         steps = 0
         while not self.state.get("finished") and steps < max_steps:
@@ -196,14 +198,26 @@ class SessionRunner:
                if a.get("target") == tid and a.get("asset_id") not in seen_ids
                and self.session.asset_key(a) not in active]
         added = self.session.deliver(new)["added"] if new else []
-        self.save()
+        if added and kind == "replace":
+            # 新图已进交付，再降级旧图；失败则旧图仍 active
+            self.session.interrupt(f"第{seq}张替换", msg_id=f"delta-{kind}-{seq}-swap",
+                                   result={"targets": ["delivered.replace"], "asset_index": int(seq),
+                                           "destructive": True, "confirm": False,
+                                           "hard": False, "confidence": 0.9},
+                                   stage="delivered")
+            self.session.apply_pending()
         if new:
             self.session.preferences["pending_replenish"] = max(
                 0, int(self.session.preferences.get("pending_replenish") or 0) - 1)
+        self.save()
+        msg = ""
+        if not new:
+            msg = ("没有找到可替换的新图；旧图保持交付" if kind == "replace"
+                   else "已删除，但没有找到替补新图；请稍后重试或人工补图")
         return {"ok": True, "seq": seq, "kind": kind, "target": tid,
-                "steps": steps, "added": len(added),
-                "replenished": bool(new),
-                "message": "" if new else "没有找到可替换的新图，已保留补齐标记"}
+                "steps": steps, "added": len(added), "replenished": bool(new),
+                "old_active": kind == "replace" and not new,
+                "message": msg}
 
     def run_until(self, state_name: str, max_steps: int = 80,
                   require_targets: bool = False) -> dict:

@@ -134,6 +134,73 @@
           "desc": "quantity/config/scope/reset/pause 的真实重排/重跑；当前 gate 为 clarify",
           "status": "待后续版本开发"
         }
+      ],
+      "scope": "backend entry only; frontend/HTTP/auth/multi-user not connected",
+      "capabilities": [
+        {
+          "id": "s4-session-entry",
+          "name": "Session 建单/对话/持久化/续跑",
+          "status": "active",
+          "maturity": "生产生效",
+          "coverage": "backend",
+          "note": "M6 create_from_text；run_session CLI"
+        },
+        {
+          "id": "s4-router-guard",
+          "name": "Router + 能力/阶段/数量/复合/UI 引导守卫",
+          "status": "active",
+          "maturity": "生产生效",
+          "coverage": "backend",
+          "note": "P3 288/290 分类口径"
+        },
+        {
+          "id": "s4-patch-core",
+          "name": "核心 patch：add_targets/fill.quota/negative/quality/per_model",
+          "status": "active",
+          "maturity": "生产生效",
+          "coverage": "partial",
+          "note": "best-effort；negative 只做 FILL 过滤，不重排"
+        },
+        {
+          "id": "s4-hard-actions",
+          "name": "hard 动作：quantity/config/scope/reset/pause",
+          "status": "planned",
+          "maturity": "计划",
+          "coverage": "gated",
+          "note": "当前 gate 为 clarify；真实重排 BL-026"
+        },
+        {
+          "id": "s4-delta-edit",
+          "name": "交付后 delta 换图/删图",
+          "status": "planned",
+          "maturity": "原型",
+          "coverage": "mechanism",
+          "note": "机制已通；live 新图源未通 BL-027"
+        },
+        {
+          "id": "s4-ui-guide",
+          "name": "UI 操作引导（导出/格式/保存/分享）",
+          "status": "active",
+          "maturity": "生产生效",
+          "coverage": "backend",
+          "note": "前端未接，仅后端返回位置"
+        },
+        {
+          "id": "s4-report-format",
+          "name": "交付格式偏好",
+          "status": "planned",
+          "maturity": "计划",
+          "coverage": "preference",
+          "note": "只记 preferences.delivery，不生成文件"
+        },
+        {
+          "id": "s4-extra-media",
+          "name": "角度/部件补充",
+          "status": "planned",
+          "maturity": "计划",
+          "coverage": "clarify",
+          "note": "当前澄清；后续主交付后 delta"
+        }
       ]
     },
     {

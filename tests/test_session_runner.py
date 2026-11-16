@@ -255,6 +255,31 @@ def test_delta_replace_fetches_new_asset():
         assert any(x.get("status") == "superseded" for x in r.session.delivered)
 
 
+def test_delta_replace_no_new_keeps_old():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    world = FakeWorld(world_for())
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, world, run_root=td, run_id="s13", store_path=Path(td) / "s.json")
+        r.run()
+        out = r.delta_edit(1, "replace")
+        assert out["added"] == 0 and out["old_active"], out
+        active = [x for x in r.session.delivered if x.get("status") == "active"]
+        assert len(active) == 1 and active[0]["asset_id"] == "a1", active
+        assert not any(x.get("status") == "superseded" for x in r.session.delivered)
+
+
+def test_delta_remove_no_new_reports_shortfall():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    world = FakeWorld(world_for())
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, world, run_root=td, run_id="s14", store_path=Path(td) / "s.json")
+        r.run()
+        out = r.delta_edit(1, "remove")
+        assert out["added"] == 0 and not out["replenished"], out
+        assert r.summary()["pending_replenish"] == 1, r.summary()
+        assert not [x for x in r.session.delivered if x.get("status") == "active"]
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

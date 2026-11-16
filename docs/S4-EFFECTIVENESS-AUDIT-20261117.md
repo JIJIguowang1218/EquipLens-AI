@@ -15,7 +15,7 @@
 | `scope.ratio`（范围比例） | ❌ | **已 gate：clarify** | **gate（未执行）** |
 | `session.reset`（整批重来） | ❌ 只把 delivered 标 superseded | **已 gate：clarify** | **gate（未执行）** |
 | `session.pause`（暂停） | ❌ runner 不检查 | **已 gate：clarify** | **gate（未执行）** |
-| `delivered.remove/replace` | ⚠️ delta 机制已接（重开引擎/合并），但 live 同 target 无新图 | `added=0`；见 BC-S4-017 | **原型（机制通、源未通）** |
+| `delivered.remove/replace` | ⚠️ 机制已接：replace 先拿新图再降级（无新图保留旧图）、remove 先删再补 | live 同 target 无新图；见 BC-S4-017 | **原型（机制通、源未通）** |
 | `verify.blacklist` / `fill.replace` | ⚠️ 只标记 | 无重抓 | **原型（部分）** |
 | `delivery.report` | ⚠️ 只记 `preferences.delivery` | 不生成文件 | **计划/原型** |
 | `fetch.filters.views/parts` | ❌（产品决定） | 识别为 clarify | **计划（待后续版本开发）** |
