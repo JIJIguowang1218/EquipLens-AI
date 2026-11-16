@@ -22,7 +22,8 @@ from .session import Session
 class SessionRunner:
     def __init__(self, brief: dict, world: Any, *, run_root: str | Path = "data-test/runs",
                  run_id: str | None = None, session_id: str | None = None,
-                 store_path: str | Path | None = None, max_steps: int = 240):
+                 store_path: str | Path | None = None, max_steps: int = 240,
+                 router=None, router_name: str = "rules"):
         self.brief_dict = brief
         self.world = world
         self.run_root = str(run_root)
@@ -32,9 +33,11 @@ class SessionRunner:
                                       run_root=self.run_root, run_id=self.run_id,
                                       max_steps=max_steps)
         self.state = self.engine._load_or_init()
-        self.session = Session(brief, session_id=self.session_id)
+        self.router_name = router_name
+        self.router = router
+        self.session = Session(brief, session_id=self.session_id, router=router)
         self.store_path = Path(store_path) if store_path else \
-            Path("data/sessions") / f"{self.session_id}.json"
+            Path("data-test/sessions") / f"{self.session_id}.json"
         self.steps = 0
         self.applied = 0
 
@@ -46,6 +49,7 @@ class SessionRunner:
             "run_id": self.run_id,
             "run_root": self.run_root,
             "brief": self.brief_dict,
+            "router_name": self.router_name,
             "session": self.session.to_dict(),
             "steps": self.steps,
             "applied": self.applied,
@@ -56,14 +60,16 @@ class SessionRunner:
         return self.store_path
 
     @classmethod
-    def load(cls, path: str | Path, world: Any) -> "SessionRunner":
+    def load(cls, path: str | Path, world: Any, router=None) -> "SessionRunner":
         payload = json.loads(Path(path).read_text(encoding="utf-8"))
         runner = cls(payload["brief"], world,
                      run_root=payload.get("run_root") or "data-test/runs",
                      run_id=payload.get("run_id"),
                      session_id=payload.get("session_id"),
-                     store_path=path)
+                     store_path=path, router=router,
+                     router_name=payload.get("router_name") or "rules")
         runner.session = Session.from_dict(payload.get("session") or {})
+        runner.session.router = router
         runner.steps = int(payload.get("steps") or 0)
         runner.applied = int(payload.get("applied") or 0)
         return runner
@@ -104,6 +110,18 @@ class SessionRunner:
         if not self.state.get("finished"):
             self.session.last_checkpoint = self.state.get("state") or ""
         self.save()
+        return self.status()
+
+    def run_until(self, state_name: str, max_steps: int = 80,
+                  require_targets: bool = False) -> dict:
+        """推进引擎直到到达某个状态（默认要求有 target 的 FETCH），用于多轮模拟。"""
+        for _ in range(max(1, max_steps)):
+            st = self.state
+            if st.get("finished"):
+                break
+            if st.get("state") == state_name and (not require_targets or st.get("active_targets")):
+                break
+            self.step()
         return self.status()
 
     def run(self, max_steps: int | None = None) -> dict:

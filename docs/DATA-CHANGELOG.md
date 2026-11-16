@@ -10,14 +10,14 @@
 - 新模块 `src/equiplens/session_runner.py`：Session 外层驱动（引擎 step / 状态边界应用 patch /
   session JSON 持久化 / 崩溃续跑 / 交付回填）。
 - 新 CLI `scripts/run_session.py`：`--message` 追加、`--confirm/--reject`、`--run`、`--status`、
-  离线 `--fixtures`、live `--brief --plan`；会话文件 `data/sessions/<id>.json`（**gitignored**）。
+  离线 `--fixtures`、live `--brief --plan`；会话文件 `data-test/sessions/<id>.json`（**gitignored**）。
 - 修复：`Session.to_dict/from_dict` 之前**不带 pending**，崩溃会把待应用 patch 丢掉；现已持久化。
 - 验收：
   - `tests/test_session_runner.py` **4/4**（边界应用/持久化续跑/歧义确认/无消息不误发）；
   - 离线 CLI（fixtures）：3/3 交付、applied 1、25 步；
   - live c1 沙漠（真实 360 + 下载）：**10/10**、missing 0、degraded 8、applied 1、18 步、session=DELIVERED。
 - 限制：live 验收用的是**规则版** `classify_text`（未接 LLM router）；单进程、无会话锁；S4 仍 `planned`。
-- 影响面：新增原型入口，**不改生产 CLI**；`data/sessions/` 不进仓库。
+- 影响面：新增原型入口，**不改生产 CLI**；`data-test/sessions/` 不进仓库。
 
 ### 56. 池供给预注册结果（S1-05 / A6 / A2，2026-11-16）
 

@@ -1,0 +1,917 @@
+{
+ "brief_id": "m43-c4-forklift",
+ "created_at": "2026-11-16T14:29:22",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "仓储物流工况 电动 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 5,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "仓储物流工况 工程车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 112,
+ "candidates": [
+  {
+   "model": "EL-Pro40MAX",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL-Pro",
+    "model_code": "EL-Pro40MAX",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL-Pro40MAX 电动平衡重叉车",
+   "reason": "结果明确为4吨座驾式纯电动平衡重叉车，适用于仓储堆垛、工厂转运等仓储物流搬运场景。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el-pro40max"
+   ],
+   "source_query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "PRO40MAX",
+   "identity": "generic/ELPRO40MAX",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL-Pro40MAX"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EL-Pro16 MAX",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL-Pro",
+    "model_code": "EL-Pro16 MAX",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL-Pro16 MAX 电动平衡重叉车",
+   "reason": "结果明确为1.6吨四轮电动平衡重式叉车，面向仓储、工厂、商超等物料搬运，符合电动平衡重叉车基型。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el-pro16-max"
+   ],
+   "source_query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "PRO16",
+   "identity": "generic/ELPRO16MAX",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL-Pro16 MAX"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SCP80C6",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "",
+    "model_code": "SCP80C6",
+    "config": ""
+   },
+   "search_key": "三一 SCP80C6 锂电平衡重叉车",
+   "reason": "结果标题与页面标注为8吨锂电平衡重叉车，并带“仓储物流 电动叉车”标签，构型匹配。",
+   "sources": [
+    "https://www.sanygroup.com/product/1520.html"
+   ],
+   "source_query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "SCP80C6",
+   "identity": "generic/SCP80C6",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SCP80C6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EFL302",
+   "brand": "EP",
+   "slots": {
+    "brand": "EP",
+    "series": "EFL 2系列",
+    "model_code": "EFL302",
+    "config": ""
+   },
+   "search_key": "EP EFL302 电动平衡叉车 3.0吨",
+   "reason": "结果明确为EFL302电动平衡叉车3.0吨，属电动平衡重叉车，适合室内外物流搬运。",
+   "sources": [
+    "https://ep-equipment.com/cn/product/efl302/"
+   ],
+   "source_query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "EFL302",
+   "identity": "code/EFL302",
+   "identity_kind": "code",
+   "model_variants": [
+    "EFL302"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EFX3-301",
+   "brand": "EP",
+   "slots": {
+    "brand": "EP",
+    "series": "X3系列",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "EP EFX3-301 锂离子平衡叉车 3.0吨",
+   "reason": "结果为EFX3-301锂离子平衡叉车3.0吨，适合仓库和户外物流操作，构型与工况匹配。",
+   "sources": [
+    "https://ep-equipment.com/cn/product/efx3-301/#brx-content"
+   ],
+   "source_query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/EFX3301",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EFX3-301"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流工况 叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "杭叉 XC系列新能源叉车",
+   "brand": "杭叉",
+   "slots": {
+    "brand": "杭叉",
+    "series": "XC系列",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "杭叉 XC系列新能源叉车",
+   "reason": "结果为杭叉锂电专用叉车产品，含四支点/三支点系列，适合仓储物流电动搬运；具体吨位需确认。",
+   "sources": [
+    "https://baike.baidu.com/item/XC%E7%B3%BB%E5%88%97%E6%96%B0%E8%83%BD%E6%BA%90%E5%8F%89%E8%BD%A6/67375019?bst=1793060514.2331a4127fe22336#1#1"
+   ],
+   "source_query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/杭叉XC系列新能源叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "杭叉 XC系列新能源叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "尤恩 FE系列三支点电动叉车",
+   "brand": "尤恩",
+   "slots": {
+    "brand": "尤恩",
+    "series": "FE系列",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "尤恩 FE系列三支点电动叉车",
+   "reason": "结果列出FE系列三支点电动叉车及四支点电动叉车，属于电动叉车产品，适配仓储物流；吨位需确认。",
+   "sources": [
+    "https://365.cantonfair.org.cn/zh-CN/shops?id=0854355468"
+   ],
+   "source_query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/尤恩FE系列三支点电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "尤恩 FE系列三支点电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "比亚迪 EL20 PRO 锂电电动叉车",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL/PRO系列",
+    "model_code": "EL20 PRO",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL20 PRO 电动叉车",
+   "reason": "结果为2吨锂电电动叉车、标准仓库货物堆垛转运车，符合仓储物流工况；具体配置未指定。",
+   "sources": [
+    "https://www.bydfork.com/cn/product/list_1_7/",
+    "https://www.bydfork.com/cn/forklift/list_23_3/"
+   ],
+   "source_query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "EL20",
+   "identity": "generic/比亚迪EL20PRO锂电电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "比亚迪 EL20 PRO 锂电电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "诺力 CPD20/25/30/35/38 四支点锂电平衡重叉车",
+   "brand": "诺力",
+   "slots": {
+    "brand": "诺力",
+    "series": "A系列",
+    "model_code": "CPD20/25/30/35/38",
+    "config": ""
+   },
+   "search_key": "诺力 CPD20/25/30/35/38 四支点锂电平衡重叉车",
+   "reason": "结果明确为四支点锂电平衡重叉车，吨位覆盖2.0-3.8t，适合仓储物流电动搬运；具体吨位需确认。",
+   "sources": [
+    "https://www.noblelift.cn/product/pro-list-94.htm"
+   ],
+   "source_query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CPD20",
+   "identity": "generic/诺力CPD2025303538四支点锂电平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "诺力 CPD20/25/30/35/38 四支点锂电平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LGMG CPD25 锂电四支点平衡重叉车",
+   "brand": "LGMG",
+   "slots": {
+    "brand": "LGMG",
+    "series": "",
+    "model_code": "CPD25",
+    "config": ""
+   },
+   "search_key": "LGMG CPD25 锂电四支点平衡重叉车",
+   "reason": "结果为LGMG展出的锂电四支点平衡重叉车CPD25，属于电动物料搬运设备，适合仓储物流；吨位需确认。",
+   "sources": [
+    "https://www.lgmg.com.cn/about/news-detail-12506.htm"
+   ],
+   "source_query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CPD25",
+   "identity": "generic/LGMGCPD25锂电四支点平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LGMG CPD25 锂电四支点平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 电动 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Linde E 系列电动叉车",
+   "brand": "Linde",
+   "slots": {
+    "brand": "Linde",
+    "series": "E",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Linde E electric forklift",
+   "reason": "结果中出现 Linde E 电动叉车（elektrische vorkheftrucks），属于仓储物流电动叉车方向；结果未给出具体吨位与驱动形式。",
+   "sources": [
+    "https://www.warehousetotaal.nl/?s=elektrisch+heftrucks"
+   ],
+   "source_query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/LINDEE系列电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Linde E 系列电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Linde Xi 系列电动叉车",
+   "brand": "Linde",
+   "slots": {
+    "brand": "Linde",
+    "series": "Xi",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Linde Xi electric forklift",
+   "reason": "结果中与 Linde E 一同出现 Linde Xi 电动叉车；可作为电动叉车候选，具体构型未说明。",
+   "sources": [
+    "https://www.warehousetotaal.nl/?s=elektrisch+heftrucks"
+   ],
+   "source_query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/LINDEXI系列电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Linde Xi 系列电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Yale 8 吨锂电电动叉车",
+   "brand": "Yale",
+   "slots": {
+    "brand": "Yale",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Yale 8 ton lithium-ion electric forklift",
+   "reason": "结果提到 Yale 推出 8 吨锂离子电动叉车，适合仓储物流电动叉车方向；具体系列/型号码未给出。",
+   "sources": [
+    "https://www.warehousetotaal.nl/page/4/?s=elektrisch+heftrucks"
+   ],
+   "source_query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/YALE锂电电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Yale 8 吨锂电电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Clark Crossover 系列电动叉车",
+   "brand": "Clark",
+   "slots": {
+    "brand": "Clark",
+    "series": "Crossover",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Clark Crossover electric forklift",
+   "reason": "结果提到 Clark 在 LogiMat 2025 展示 Crossover 系列，并强调 Electrified；可作为电动叉车候选，但结果未给出吨位/驱动形式。",
+   "sources": [
+    "https://www.int-liftandhoist.com/product_category/forklift-trucks/page/2/"
+   ],
+   "source_query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/CLARKCROSSOVER系列电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Clark Crossover 系列电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "STILL RX50-10",
+   "brand": "STILL",
+   "slots": {
+    "brand": "STILL",
+    "series": "RX50",
+    "model_code": "RX50-10",
+    "config": ""
+   },
+   "search_key": "STILL RX50-10 electric forklift",
+   "reason": "对比表中列出 STILL RX50-10，Power Type 为 Electric；可作为仓储物流电动叉车候选，具体构型未说明。",
+   "sources": [
+    "http://mail.heavyvehicleinspection.com/equipment/forklifts-comparison-guide"
+   ],
+   "source_query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "RX50",
+   "identity": "generic/STILLRX5010",
+   "identity_kind": "generic",
+   "model_variants": [
+    "STILL RX50-10"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 电动 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EP EFL302X2 锂电平衡叉车 3.0T",
+   "brand": "EP",
+   "slots": {
+    "brand": "EP",
+    "series": "EFL",
+    "model_code": "EFL302X2",
+    "config": ""
+   },
+   "search_key": "EFL302X2 锂电平衡叉车 3.0T",
+   "reason": "结果为锂电平衡叉车3.0T，适合室内外应用，符合电动平衡重叉车基型。",
+   "sources": [
+    "https://ep-equipment.com/cn/product/efl302x2/"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EFL302X2",
+   "identity": "code/EFL302X2",
+   "identity_kind": "code",
+   "model_variants": [
+    "EP EFL302X2 锂电平衡叉车 3.0T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "比亚迪 EL25 四支点平衡重电动叉车",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL",
+    "model_code": "EL25",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL25 四支点平衡重电动叉车",
+   "reason": "结果明确为2.5吨四支点座驾式电动叉车，适用于仓储库房重载堆垛与转运。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el25"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EL25",
+   "identity": "generic/比亚迪EL25四支点平衡重电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "比亚迪 EL25 四支点平衡重电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "富得旺 FE30 电动叉车",
+   "brand": "富得旺(Fullwin)",
+   "slots": {
+    "brand": "富得旺(Fullwin)",
+    "series": "FE",
+    "model_code": "FE30",
+    "config": ""
+   },
+   "search_key": "FE30 电动叉车",
+   "reason": "结果为3吨电动叉车，面向仓储、物流及工业物料搬运，含护顶架与门架等平衡重叉车特征。",
+   "sources": [
+    "https://community.b-china.cn/product/info/15625"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "FE30",
+   "identity": "generic/富得旺FE30电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "富得旺 FE30 电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "龙工 CPD30-5MJL/5MFL 电动叉车",
+   "brand": "龙工",
+   "slots": {
+    "brand": "龙工",
+    "series": "CPD",
+    "model_code": "CPD30-5MJL/5MFL",
+    "config": ""
+   },
+   "search_key": "CPD30-5MJL/5MFL 电动叉车",
+   "reason": "结果为3吨电动叉车，采用短后悬低重心平衡重与交流动力系统，适合仓储物流工况。",
+   "sources": [
+    "https://cc.lonking.cn/product/pro-detail-3437.htm"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CPD30",
+   "identity": "generic/龙工CPD305MJL5MFL电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "龙工 CPD30-5MJL/5MFL 电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "比亚迪 C08T 三支点锂电电动叉车",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "C",
+    "model_code": "C08T",
+    "config": ""
+   },
+   "search_key": "比亚迪 C08T 三支点锂电电动叉车",
+   "reason": "结果为0.8吨三支点窄通道轻型仓储电动叉车，适合室内仓储物流转运堆垛。",
+   "sources": [
+    "https://www.bydfork.com/cn/product/bydforklift/threewheel/c08t"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "C08",
+   "identity": "generic/比亚迪C08T三支点锂电电动叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "比亚迪 C08T 三支点锂电电动叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "加力 JIALIFT E1630A 座驾式平衡重式叉车",
+   "brand": "JIALIFT加力",
+   "slots": {
+    "brand": "JIALIFT加力",
+    "series": "E",
+    "model_code": "E1630A",
+    "config": ""
+   },
+   "search_key": "JIALIFT E1630A 座驾式平衡重式叉车",
+   "reason": "结果为座驾式平衡重式电动叉车，标注适用仓储物流场景，符合电动平衡重叉车方向。",
+   "sources": [
+    "https://www.vipmro.com/product/82125894"
+   ],
+   "source_query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "E1630",
+   "identity": "code/E1630A",
+   "identity_kind": "code",
+   "model_variants": [
+    "加力 JIALIFT E1630A 座驾式平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EFL PRO",
+   "brand": "JEAKUE",
+   "slots": {
+    "brand": "JEAKUE",
+    "series": "EFL PRO",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "JEAKUE EFL PRO 电动",
+   "reason": "结果中唯一明确指向物料搬运/电动化产品系列的条目（JEAKUE EFL PRO），与仓储物流电动搬运场景最接近；但原文未给出叉车吨位、门架/配重等构型信息，需进一步确认。",
+   "sources": [
+    "http://www.jeakue.com/2026/04/20/efl-pro-lands-in-europe-and-changes-the-game/#sidr-id-mobile-categories"
+   ],
+   "source_query": "仓储物流工况 工程车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/EFLPRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EFL PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流工况 工程车 电动 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 22
+ },
+ "pool": {
+  "count": 22,
+  "required": 16,
+  "verifiable": 14,
+  "verifiable_share": 0.636,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 8
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 22,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 30,
+  "unique": 22,
+  "removed": 8,
+  "generic": 19
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

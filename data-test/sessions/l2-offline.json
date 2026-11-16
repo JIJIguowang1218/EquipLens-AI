@@ -1,0 +1,473 @@
+{
+ "session_id": "l2-offline",
+ "run_id": "l2-offline",
+ "run_root": "data-test/runs",
+ "brief": {
+  "brief_id": "b-20261109-p1",
+  "request": {
+   "raw": "沙漠牵引车（保险杠、防护栏、登车踏步）",
+   "class": "沙漠牵引车",
+   "environment": {
+    "value": "沙漠工况",
+    "confidence": 0.85
+   },
+   "base_platform": {
+    "value": "6×6 重型卡车",
+    "confidence": 0.8
+   },
+   "configuration": "6×6",
+   "page_budget": {
+    "total": 20,
+    "vehicle_slots": 3,
+    "part_pages": 1
+   }
+  },
+  "assumptions": [
+   {
+    "field": "environment",
+    "value": "沙漠工况",
+    "why": "用户原话 + 类目档案",
+    "confidence": 0.85
+   }
+  ],
+  "region_requirements": [],
+  "part_requirements": [
+   {
+    "part": "bumper",
+    "label": "保险杠",
+    "location": "front_lower",
+    "design_relevance": "strong",
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "沙石冲击",
+     "接近角"
+    ]
+   },
+   {
+    "part": "side_guard",
+    "label": "防护栏",
+    "location": "side_chassis",
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "rear"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "沙石",
+     "防撞"
+    ]
+   },
+   {
+    "part": "step",
+    "label": "登车踏步",
+    "location": "side_lower",
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "防滑",
+     "沙尘"
+    ]
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "沙漠工况 6×6 牵引车",
+    "parts": [
+     "bumper",
+     "step"
+    ],
+    "quota": 2,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "2 台满足验收即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "沙漠环境用车",
+    "parts": [
+     "side_guard",
+     "step"
+    ],
+    "quota": 1,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "1 台满足验收即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 10,
+   "max_rounds": 2,
+   "max_models": 6
+  },
+  "stop_rules": {
+   "no_new_after": 3,
+   "max_rounds": 2
+  },
+  "negative": [
+   "乘用车",
+   "SUV",
+   "多车合影",
+   "内饰"
+  ],
+  "strategy_ref": "default@v1"
+ },
+ "router_name": "rules",
+ "session": {
+  "session_id": "l2-offline",
+  "state": "DELIVERED",
+  "version": 2,
+  "brief": {
+   "brief_id": "b-20261109-p1",
+   "request": {
+    "raw": "沙漠牵引车（保险杠、防护栏、登车踏步）",
+    "class": "沙漠牵引车",
+    "environment": {
+     "value": "沙漠工况",
+     "confidence": 0.85
+    },
+    "base_platform": {
+     "value": "6×6 重型卡车",
+     "confidence": 0.8
+    },
+    "configuration": "6×6",
+    "page_budget": {
+     "total": 20,
+     "vehicle_slots": 3,
+     "part_pages": 1
+    }
+   },
+   "assumptions": [
+    {
+     "field": "environment",
+     "value": "沙漠工况",
+     "why": "用户原话 + 类目档案",
+     "confidence": 0.85
+    }
+   ],
+   "region_requirements": [],
+   "part_requirements": [
+    {
+     "part": "bumper",
+     "label": "保险杠",
+     "location": "front_lower",
+     "design_relevance": "strong",
+     "views": [
+      "front",
+      "hero_45"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "沙石冲击",
+      "接近角"
+     ]
+    },
+    {
+     "part": "side_guard",
+     "label": "防护栏",
+     "location": "side_chassis",
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "rear"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "沙石",
+      "防撞"
+     ]
+    },
+    {
+     "part": "step",
+     "label": "登车踏步",
+     "location": "side_lower",
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "防滑",
+      "沙尘"
+     ]
+    }
+   ],
+   "research_units": [
+    {
+     "unit_id": "u-exact",
+     "tier": "exact",
+     "scope": "沙漠工况 6×6 牵引车",
+     "parts": [
+      "bumper",
+      "step"
+     ],
+     "quota": 2,
+     "budget": {
+      "max_queries": 6,
+      "max_rounds": 2
+     },
+     "stop": "2 台满足验收即停"
+    },
+    {
+     "unit_id": "u-env",
+     "tier": "environment",
+     "scope": "沙漠环境用车",
+     "parts": [
+      "side_guard",
+      "step"
+     ],
+     "quota": 1,
+     "budget": {
+      "max_queries": 4,
+      "max_rounds": 2
+     },
+     "stop": "1 台满足验收即停"
+    }
+   ],
+   "tiers": [
+    "exact",
+    "environment"
+   ],
+   "budget": {
+    "max_queries": 10,
+    "max_rounds": 2,
+    "max_models": 6
+   },
+   "stop_rules": {
+    "no_new_after": 3,
+    "max_rounds": 2
+   },
+   "negative": [
+    "乘用车",
+    "SUV",
+    "多车合影",
+    "内饰"
+   ],
+   "strategy_ref": "default@v1",
+   "session_patches": [
+    {
+     "patch_id": "p-f52224e8",
+     "base_version": 1,
+     "target": "delivered.remove",
+     "op": "set",
+     "value": {
+      "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+      "asset_index": null,
+      "index_basis": "original"
+     },
+     "confidence": 0.8,
+     "destructive": true,
+     "enforce": "hard",
+     "source_msg_id": "m-687ac597",
+     "note": "未指明哪张/哪个型号，先确认"
+    }
+   ]
+  },
+  "brief_versions": [
+   {
+    "v": 1,
+    "hash": "2762693690121718236"
+   },
+   {
+    "v": 2,
+    "hash": "7653134482447138711"
+   }
+  ],
+  "patches": [
+   {
+    "patch_id": "p-f52224e8",
+    "base_version": 1,
+    "target": "delivered.remove",
+    "op": "set",
+    "value": {
+     "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+     "asset_index": null,
+     "index_basis": "original"
+    },
+    "confidence": 0.8,
+    "destructive": true,
+    "enforce": "hard",
+    "source_msg_id": "m-687ac597",
+    "note": "未指明哪张/哪个型号，先确认"
+   }
+  ],
+  "pending": [],
+  "events": [
+   {
+    "at": 1794815527.153,
+    "kind": "created"
+   },
+   {
+    "at": 1794815527.163,
+    "kind": "user_msg",
+    "msg_id": "m-ed76cd68",
+    "text": "帮我看下沙漠牵引车，要 10 台左右，最好是 6x6 那种越野底盘。图一定要清楚，前脸、保险杠、防沙罩这些能看明白，别全是展台拍的糊图。下周要给客户过一遍，急。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fetch.parts"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.8,
+     "reason": "部件细节",
+     "asset_index": null
+    }
+   },
+   {
+    "at": 1794815527.171,
+    "kind": "user_msg",
+    "msg_id": "m-0437bfbe",
+    "text": "同款再加两台吧，凑 12 个。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fill.quota"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.8,
+     "reason": "增加数量",
+     "asset_index": null
+    }
+   },
+   {
+    "at": 1794815527.173,
+    "kind": "user_msg",
+    "msg_id": "m-7005b9f4",
+    "text": "对了，北奔的别放了，上次汇报已经用过一轮，再放领导该说重复了；其他牌子照旧。",
+    "result": {
+     "intent": "question",
+     "hard": false,
+     "targets": [],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.4,
+     "reason": "无法判定，需澄清",
+     "asset_index": null
+    }
+   },
+   {
+    "at": 1794815527.174,
+    "kind": "user_msg",
+    "msg_id": "m-54bbe08a",
+    "text": "第 3 张不队，不是我要的那种感觉，你换一张吧。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "verify.blacklist",
+      "fill.replace"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.8,
+     "reason": "替换错误图",
+     "asset_index": 3,
+     "enforce": "hard"
+    }
+   },
+   {
+    "at": 1794815527.176,
+    "kind": "user_msg",
+    "msg_id": "m-687ac597",
+    "text": "图都换成高清的，右下角的水印也去掉，汇报投屏太明显了。前面那几张一起弄。",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "delivered.remove"
+     ],
+     "destructive": true,
+     "confirm": true,
+     "confidence": 0.8,
+     "reason": "未指明哪张/哪个型号，先确认",
+     "asset_index": null,
+     "enforce": "hard"
+    }
+   },
+   {
+    "at": 1794815527.207,
+    "kind": "user_msg",
+    "msg_id": "m-a5ad3b36",
+    "text": "行，先这样，出报告吧，PPT 版本给我，我下午自己再调。",
+    "result": {
+     "intent": "question",
+     "hard": false,
+     "targets": [],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.4,
+     "reason": "无法判定，需澄清",
+     "asset_index": null
+    }
+   },
+   {
+    "at": 1794815527.28,
+    "kind": "delivered",
+    "added": 3,
+    "skipped": 3
+   }
+  ],
+  "delivered": [
+   {
+    "asset_id": "lib-1-bumper",
+    "url": "",
+    "model": "",
+    "target": "lib-1",
+    "seq": 1,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "ext-1-bumper",
+    "url": "",
+    "model": "",
+    "target": "ext-1",
+    "seq": 2,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "ext-2-bumper",
+    "url": "",
+    "model": "",
+    "target": "ext-2",
+    "seq": 3,
+    "status": "active",
+    "round": 2
+   }
+  ],
+  "blacklist": [],
+  "preferences": {},
+  "next_seq": 3,
+  "rounds": 1,
+  "max_rounds": 5,
+  "last_checkpoint": "WRITEBACK"
+ },
+ "steps": 25,
+ "applied": 0,
+ "updated_at": "2026-11-16T15:52:07"
+}

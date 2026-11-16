@@ -18,6 +18,8 @@
 - 2026-11-13 实验数据：`data-test/runs/ab-negative-20261113/`（含 `SEARCH-LEVEL.json`、
   `AUDIT-DELIVERY-TIMING.md`、`DELIVERY-AUDIT.json`）、`ab-plan-concurrency-20261113/`、
   `ab-rank-20261113/`、`verify-fillfix-20261113/`；这些目录的 `images/` 仍不同步
+- 实验设计（2026-11-16 起）：`data-test/briefs/**`、`data-test/plans/**`（含 pool A/B）、
+  `data-test/sessions/**`（Session 入口轨迹）、`data-test/evals/**`；图片与 DB 仍不同步
 - 台账：`data-test/runs/INDEX.json/md`（由 `run_ledger.py` 生成；语义见 `DATA-CHANGELOG.md`）
 - 测试夹具：`data-test/retrieval-fixtures-20261109/**`（P1 测试必需）
 - 人工审核页：部分 `review.html` + 其中跟踪的缩略图

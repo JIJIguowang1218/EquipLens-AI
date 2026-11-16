@@ -1,0 +1,794 @@
+{
+ "brief_id": "m43v-v-longtail",
+ "created_at": "2026-11-16T14:42:28",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "wide",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "随车起重运输车 默认吊机后置 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 79,
+ "candidates": [
+  {
+   "model": "解放J6 DWJ5311JSQ 随车起重运输车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6",
+    "model_code": "DWJ5311JSQ",
+    "config": "8*4"
+   },
+   "search_key": "解放J6 DWJ5311JSQ 8*4 后置",
+   "reason": "结果写整车型号DWJ5311JSQ随车起重运输车，底盘为解放J6 CA5310JSQP63K1L6T4E5，驱动形式8*4。",
+   "sources": [
+    "https://www.nongjx.com/chanpin/3026968.html",
+    "https://supply.nongjx.com/sale/detail-1702884.html",
+    "https://www.nongjx.com/st137849/product_3026968.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "DWJ5311JSQ",
+   "identity": "code/DWJ5311JSQ",
+   "identity_kind": "code",
+   "model_variants": [
+    "解放J6 DWJ5311JSQ 随车起重运输车",
+    "解放 J6 DWJ5311JSQ 随车起重运输车",
+    "DWJ5311JSQ 解放国五折臂吊随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "解放J6 CA5310JSQP63K1L6T4E5 底盘",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6",
+    "model_code": "CA5310JSQP63K1L6T4E5",
+    "config": "8*4"
+   },
+   "search_key": "解放J6 CA5310JSQP63K1L6T4E5 8*4 底盘",
+   "reason": "结果单列底盘型号“解放J6 CA5310JSQP63K1L6T4E5”，并给出8*4驱动。",
+   "sources": [
+    "https://www.nongjx.com/chanpin/3026968.html",
+    "https://supply.nongjx.com/sale/detail-1702884.html",
+    "https://www.nongjx.com/st137849/product_3026968.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CA5310JSQP63K1L6T4E5",
+   "identity": "code/CA5310JSQP63K1L6T4E5",
+   "identity_kind": "code",
+   "model_variants": [
+    "解放J6 CA5310JSQP63K1L6T4E5 底盘",
+    "CA5310JSQP63K1L6T4E5 解放J6随车吊底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "乘龙 LZ5311JSQQELA 后置随车起重运输车",
+   "brand": "乘龙",
+   "slots": {
+    "brand": "乘龙",
+    "series": "乘龙",
+    "model_code": "LZ5311JSQQELA",
+    "config": "8X4"
+   },
+   "search_key": "乘龙 LZ5311JSQQELA 后置 8X4",
+   "reason": "结果写后置乘龙牌随车吊LZ5311JSQQELA型后置随车起重运输车，驱动型式8X4。",
+   "sources": [
+    "http://www.hbcsdzqc.com/news/1948.html",
+    "http://www.hbcsdzqc.com/news/1940.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LZ5311JSQQELA",
+   "identity": "code/LZ5311JSQQELA",
+   "identity_kind": "code",
+   "model_variants": [
+    "乘龙 LZ5311JSQQELA 后置随车起重运输车",
+    "乘龙 LZ5311JSQQELA 随车起重运输车",
+    "LZ5311JSQQELA 后置随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "environment",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "重汽豪沃 SZD5310JSQZ5 14吨随车吊（吊机后置）",
+   "brand": "重汽",
+   "slots": {
+    "brand": "重汽",
+    "series": "豪沃",
+    "model_code": "SZD5310JSQZ5",
+    "config": ""
+   },
+   "search_key": "重汽豪沃 14 后置 随车吊 SZD5310JSQZ5",
+   "reason": "标题写重汽豪沃14随车吊(吊机后置)，整车型号SZD5310JSQZ5随车起重运输车。",
+   "sources": [
+    "http://www.tclgou.com/shop/content/show/id/43.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "SZD5310JSQZ5",
+   "identity": "code/SZD5310JSQZ5",
+   "identity_kind": "code",
+   "model_variants": [
+    "重汽豪沃 SZD5310JSQZ5 14吨随车吊（吊机后置）",
+    "重汽豪沃 14吨随车吊 SZD5310JSQZ5",
+    "重汽豪沃14随车吊 SZD5310JSQZ5",
+    "SZD5310JSQZ5 重汽豪沃14吨随车吊(吊机后置)"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "environment",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "程力威 CLW5310JSQH3 后置随车起重运输车",
+   "brand": "程力威",
+   "slots": {
+    "brand": "程力威",
+    "series": "",
+    "model_code": "CLW5310JSQH3",
+    "config": "8x4"
+   },
+   "search_key": "程力威 CLW5310JSQH3 后置 随车起重运输车",
+   "reason": "结果写整车型号程力威牌CLW5310JSQH3型随车起重运输车，并描述为后置随车吊。",
+   "sources": [
+    "http://www.hbcsdzqc.com/news/1671.html",
+    "http://www.hbcsdzqc.com/news/1670.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5310JSQH3",
+   "identity": "code/CLW5310JSQH3",
+   "identity_kind": "code",
+   "model_variants": [
+    "程力威 CLW5310JSQH3 后置随车起重运输车",
+    "程力威 CLW5310JSQH3 随车起重运输车",
+    "CLW5310JSQH3 后置华菱随车吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东风天锦 EQ5201 6X6越野随车起重运输车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "EQ5201",
+    "config": "6X6"
+   },
+   "search_key": "东风天锦 6X6 EQ5201 随车起重运输车",
+   "reason": "标题/正文写东风天锦6X6驱动越野随车起重运输车EQ5201。",
+   "sources": [
+    "http://www.51dfc.com/car/newsview2266.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "EQ5201",
+   "identity": "code/EQ5201",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风天锦 EQ5201 6X6越野随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "随车起重运输车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "王牌 CDW5163JSQA1R5 随车起重运输车",
+   "brand": "王牌牌",
+   "slots": {
+    "brand": "王牌牌",
+    "series": "",
+    "model_code": "CDW5163JSQA1R5",
+    "config": ""
+   },
+   "search_key": "王牌 CDW5163JSQA1R5 随车吊 后置",
+   "reason": "公告型号明确，结果写明吊机安装位置为后置。",
+   "sources": [
+    "https://m.cn-truck.com/zhuanyongche/show_1164_404877.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CDW5163JSQA1R5",
+   "identity": "code/CDW5163JSQA1R5",
+   "identity_kind": "code",
+   "model_variants": [
+    "王牌 CDW5163JSQA1R5 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风 EQ5168JSQLV1 随车起重运输车",
+   "brand": "东风牌",
+   "slots": {
+    "brand": "东风牌",
+    "series": "御虎",
+    "model_code": "EQ5168JSQLV1",
+    "config": ""
+   },
+   "search_key": "东风 EQ5168JSQLV1 随车吊",
+   "reason": "公告型号明确，驾驶室为东风御虎D912。",
+   "sources": [
+    "https://m.cn-truck.com/zhuanyongche/show_1164_317624.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "EQ5168JSQLV1",
+   "identity": "code/EQ5168JSQLV1",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风 EQ5168JSQLV1 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "陆霸 LB5251JSQG10 随车起重运输车",
+   "brand": "陆霸牌",
+   "slots": {
+    "brand": "陆霸牌",
+    "series": "",
+    "model_code": "LB5251JSQG10",
+    "config": ""
+   },
+   "search_key": "陆霸 LB5251JSQG10 随车吊",
+   "reason": "公告型号明确，结果写明可选直臂式或折臂式吊机。",
+   "sources": [
+    "https://m.cn-truck.com/zhuanyongche/show_1164_180241.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LB5251JSQG10",
+   "identity": "code/LB5251JSQG10",
+   "identity_kind": "code",
+   "model_variants": [
+    "陆霸 LB5251JSQG10 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "随车起重运输车 默认吊机后置 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Mercedes-Benz Actros 2543 L",
+   "brand": "Mercedes-Benz",
+   "slots": {
+    "brand": "Mercedes-Benz",
+    "series": "Actros",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Mercedes-Benz Actros 2543 L hook lift tr",
+   "reason": "结果标题明确写Mercedes-Benz Actros 2543 L hook lift truck。",
+   "sources": [
+    "https://autoline24.nz/-/sale/hook-lift-trucks/Mercedes-Benz/Actros-2543-L--26111312281645907700"
+   ],
+   "source_query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/ACTROS/2543",
+   "identity_kind": "series",
+   "model_variants": [
+    "Mercedes-Benz Actros 2543 L"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "龙帝牌 SLA5311JSQZ 随车起重运输车",
+   "brand": "龙帝牌",
+   "slots": {
+    "brand": "龙帝牌",
+    "series": "",
+    "model_code": "SLA5311JSQZ",
+    "config": "8X4"
+   },
+   "search_key": "龙帝牌 SLA5311JSQZ 8X4 后置随车吊",
+   "reason": "结果标题写重汽后置随车吊前四后八后置随车起重运输车龙帝牌SLA5311JSQZ，正文列驱动型式8X4。",
+   "sources": [
+    "http://www.hbcsdzqc.com/phone/show.asp?id=564"
+   ],
+   "source_query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "SLA5311JSQZ",
+   "identity": "code/SLA5311JSQZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "龙帝牌 SLA5311JSQZ 随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SINOTRUK HOWO ZZ1257N5247C",
+   "brand": "SINOTRUK HOWO",
+   "slots": {
+    "brand": "SINOTRUK HOWO",
+    "series": "HOWO",
+    "model_code": "ZZ1257N5247C",
+    "config": "6x4"
+   },
+   "search_key": "HOWO ZZ1257N5247C 6x4 cargo truck with c",
+   "reason": "结果写Howo Cargo Truck with Crane，Model No. ZZ1257N5247C，并注明SINOTRUK HOWO 6x4 Cargo Truck with 12T Crane。",
+   "sources": [
+    "http://sinotruk-howo.com/product-122.html"
+   ],
+   "source_query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ZZ1257N5247",
+   "identity": "code/ZZ1257N5247C",
+   "identity_kind": "code",
+   "model_variants": [
+    "SINOTRUK HOWO ZZ1257N5247C"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "默认吊机后置 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放牌ABC5072JSQCA6随车起重运输车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "",
+    "model_code": "ABC5072JSQCA6",
+    "config": ""
+   },
+   "search_key": "解放 ABC5072JSQCA6 随车起重运输车",
+   "reason": "公告条目给出完整产品型号ABC5072JSQCA6及底盘型号CA1070P40K51L2RBE6A85",
+   "sources": [
+    "https://aivehicle.cn/suichediao/index_146.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "ABC5072JSQCA6",
+   "identity": "generic/解放牌ABC5072JSQCA6随车起重运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放牌ABC5072JSQCA6随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "随车起重运输车 默认吊机后置 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放牌HPJ5310JSQCA随车起重运输车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "",
+    "model_code": "HPJ5310JSQCA",
+    "config": ""
+   },
+   "search_key": "解放 HPJ5310JSQCA 随车起重运输车",
+   "reason": "公告条目给出产品型号HPJ5310JSQCA",
+   "sources": [
+    "https://aivehicle.cn/suichediao/index_146.html"
+   ],
+   "source_query": "随车起重运输车 默认吊机后置 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HPJ5310JSQCA",
+   "identity": "generic/解放牌HPJ5310JSQCA随车起重运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放牌HPJ5310JSQCA随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "随车起重运输车 默认吊机后置 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "安徽华菱重卡前四后八(8×4)后置吊机式直臂随车吊",
+   "brand": "华菱/程力威",
+   "slots": {
+    "brand": "华菱",
+    "series": "华菱重卡",
+    "model_code": "",
+    "config": "8x4"
+   },
+   "search_key": "华菱重卡 8x4 后置吊机 直臂随车吊",
+   "reason": "结果标题明确为安徽华菱重卡前四后八(8×4)后置吊机式直臂随车吊，属程力威牌随车起重运输车，吊机后置，符合任务单默认后置构型。",
+   "sources": [
+    "http://ftclqc.com/scd/964.html"
+   ],
+   "source_query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/安徽华菱重卡前四后八后置吊机式直臂随车吊",
+   "identity_kind": "generic",
+   "model_variants": [
+    "安徽华菱重卡前四后八(8×4)后置吊机式直臂随车吊"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5310JSQT4型随车起重运输车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "",
+    "model_code": "CLW5310JSQT4",
+    "config": ""
+   },
+   "search_key": "CLW5310JSQT4 随车起重运输车",
+   "reason": "结果标题即CLW5310JSQT4型随车起重运输车，给出底盘型号EQ1310VFJ、总质量31000kg、货厢尺寸等公告参数。",
+   "sources": [
+    "http://www.tyqcxs.com/5233.html"
+   ],
+   "source_query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5310JSQT4",
+   "identity": "generic/CLW5310JSQT4型随车起重运输车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5310JSQT4型随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EQ5258JSQFV 东风牌随车起重运输车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "",
+    "model_code": "EQ5258JSQFV",
+    "config": ""
+   },
+   "search_key": "EQ5258JSQFV 东风 随车起重运输车",
+   "reason": "结果标题为EQ5258JSQFV东风牌随车起重运输车，可选装直臂式或折臂式吊机，含多组轴距公告参数。",
+   "sources": [
+    "https://www.cn-truck.com//zhuanyongche/show_1164_317369.html"
+   ],
+   "source_query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EQ5258JSQFV",
+   "identity": "code/EQ5258JSQFV",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ5258JSQFV 东风牌随车起重运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "随车起重运输车 工程车 默认吊机后置 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 17
+ },
+ "pool": {
+  "count": 17,
+  "required": 16,
+  "verifiable": 15,
+  "verifiable_share": 0.882,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "unit": {
+    "queries": 1,
+    "candidates": 8
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 5,
+  "candidates": 17,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 40,
+  "unique": 17,
+  "removed": 23,
+  "generic": 4
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

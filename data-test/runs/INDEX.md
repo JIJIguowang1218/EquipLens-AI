@@ -1,7 +1,7 @@
 # 运行台账（data-test/runs）
 
 > 由 `scripts/run_ledger.py` 生成，**不要手改**；结论请写在各目录的 `RUN.json.conclusion` 或 `REPORT.md`。
-> 生成时间：2026-11-16T15:26:29 · 共 124 条 · 待补人工结论 82 条
+> 生成时间：2026-11-16T15:48:46 · 共 124 条 · 待补人工结论 82 条
 
 | 阶段 | run_id | 类型 | 日期 | 状态 | 关键指标 | 结论/报告 |
 |---|---|---|---|---|---|---|
@@ -115,13 +115,13 @@
 | other | `p8b-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `p8c-topup4-20261114` | plan-set | 2026-11-14 | — | — | — |
 | other | `verify-identity-20261114` | suite | 2026-11-14 | — | — | — |
-| other | `demo-offline` | run | 2026-11-16 | DONE | — | — |
+| other | `demo-offline` | run | 2026-11-16 | DONE | delivery=3/3 · backup=0/4 · degraded=0 | [—](data-test/runs/demo-offline/summary.json) |
 | other | `m43-base-c1-desert` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=96 · gate_pass=85 · degraded=7 · $0.01425 | [—](data-test/runs/m43-base-c1-desert/summary.json) |
 | other | `m43-base-c4-forklift` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=71 · gate_pass=42 · degraded=3 · $0.01275 | [—](data-test/runs/m43-base-c4-forklift/summary.json) |
 | other | `m43-base-c5-roller` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=97 · gate_pass=78 · degraded=7 · $0.012 | [—](data-test/runs/m43-base-c5-roller/summary.json) |
 | other | `m43-base-h2-wrecker` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=31 · gate_pass=30 · degraded=5 · $0.009 | [—](data-test/runs/m43-base-h2-wrecker/summary.json) |
 | other | `m43-base-h3-sweeper` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=48 · gate_pass=39 · degraded=4 · $0.0075 | [—](data-test/runs/m43-base-h3-sweeper/summary.json) |
-| other | `m43-l1-c1` | run | 2026-11-16 | DONE | images=68 · gate_pass=60 · $0.009 | — |
+| other | `m43-l1-c1` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=68 · gate_pass=60 · degraded=8 · $0.009 | [—](data-test/runs/m43-l1-c1/summary.json) |
 | other | `m43-sess-c1-desert` | run | 2026-11-16 | DONE | delivery=10/10 · backup=4/4 · images=95 · gate_pass=85 · degraded=7 · $0.01575 | [—](data-test/runs/m43-sess-c1-desert/summary.json) |
 | other | `m43-sess-c4-forklift` | run | 2026-11-16 | DONE | delivery=6/6 · backup=4/4 · images=57 · gate_pass=38 · degraded=4 · $0.01575 | [—](data-test/runs/m43-sess-c4-forklift/summary.json) |
 | other | `m43-sess-c5-roller` | run | 2026-11-16 | DONE | delivery=14/14 · backup=4/4 · images=92 · gate_pass=70 · degraded=5 · $0.01425 | [—](data-test/runs/m43-sess-c5-roller/summary.json) |

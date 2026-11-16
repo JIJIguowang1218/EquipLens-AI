@@ -1,0 +1,891 @@
+{
+ "brief_id": "m43-h3-sweeper",
+ "created_at": "2026-11-16T14:27:26",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "扫路车 中置扫盘 + 底盘下 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 0,
+   "error": "JSONDecodeError"
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 83,
+ "candidates": [
+  {
+   "model": "CLW5040TSLB6型福田时代蓝牌扫路车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "福田时代",
+    "model_code": "CLW5040TSLB6",
+    "config": ""
+   },
+   "search_key": "CLW5040TSLB6 福田时代 扫路车 中置四扫盘",
+   "reason": "结果明确为扫路车，采用吸扫混合、中置四扫盘+后置吸嘴布局，适用于道路清扫；但未写明驱动形式，且与“底盘下吸口”细节需进一步核对。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3682.html"
+   ],
+   "source_query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5040TSLB6",
+   "identity": "generic/CLW5040TSLB6型福田时代蓝牌扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5040TSLB6型福田时代蓝牌扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5080TSL6CD型江铃3815扫路车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "江铃3815",
+    "model_code": "CLW5080TSL6CD",
+    "config": ""
+   },
+   "search_key": "CLW5080TSL6CD 江铃3815 扫路车 中置四扫盘",
+   "reason": "结果明确采用江铃底盘，上装为中置四扫盘、后置吸盘，并配垃圾箱，适用于城市道路、高速公路、广场等路面清扫保洁；驱动形式未写明。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3155.html"
+   ],
+   "source_query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CLW5080TSL6",
+   "identity": "generic/CLW5080TSL6CD型江铃3815扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5080TSL6CD型江铃3815扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中联重科ZBH5073TSUXE6湿式扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "湿式扫路车",
+    "model_code": "ZBH5073TSUXE6",
+    "config": ""
+   },
+   "search_key": "ZBH5073TSUXE6 湿式扫路车 中置四扫盘",
+   "reason": "结果明确采用“中置四扫盘＋后置吸嘴”布置形式，作业效率高，适合道路左右两边路沿清扫，并给出垃圾箱、清扫宽度等市政扫路车参数。",
+   "sources": [
+    "http://zoomlion.brand.lmjx.net/qsc/Mzg1Nzg=/"
+   ],
+   "source_query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "ZBH5073TSUXE6",
+   "identity": "generic/中联重科ZBH5073TSUXE6湿式扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中联重科ZBH5073TSUXE6湿式扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "恒润高科HHR5071TSL3QL扫路车",
+   "brand": "恒润高科",
+   "slots": {
+    "brand": "恒润高科",
+    "series": "扫路车",
+    "model_code": "HHR5071TSL3QL",
+    "config": ""
+   },
+   "search_key": "HHR5071TSL3QL 扫路车",
+   "reason": "结果明确为路面干式保洁产品/扫路车，属于道路清扫装备候选；结果未明确上装扫盘与吸口布置，构型需进一步核验。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/HHR5071TSL3QL.htm"
+   ],
+   "source_query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "HHR5071TSL3",
+   "identity": "generic/恒润高科HHR5071TSL3QL扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "恒润高科HHR5071TSL3QL扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "浙江築馬機械ZZM5181TSL掃路車",
+   "brand": "浙江築馬機械",
+   "slots": {
+    "brand": "浙江築馬機械",
+    "series": "掃路車",
+    "model_code": "ZZM5181TSL",
+    "config": ""
+   },
+   "search_key": "ZZM5181TSL 掃路車 中置四掃盤",
+   "reason": "结果明确为扫路车，采用吸扫结合、湿式除尘，中置四扫盘并配吸嘴结构，适用于路面清扫和重尘清理；驱动形式未写明。",
+   "sources": [
+    "http://mbig5.lmjx.net/detail/a/657/1557657.shtml"
+   ],
+   "source_query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "ZZM5181TSL",
+   "identity": "generic/浙江築馬機械ZZM5181TSL掃路車",
+   "identity_kind": "generic",
+   "model_variants": [
+    "浙江築馬機械ZZM5181TSL掃路車"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "市政道路清扫工况 扫路车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风天锦洗扫车 CLW5180TXSAQZ",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "CLW5180TXSAQZ",
+    "config": ""
+   },
+   "search_key": "东风天锦 CLW5180TXSAQZ 洗扫车 中置2扫盘 中置吸盘",
+   "reason": "东风天锦DFH1180EX8二类底盘改装，上装中置2扫盘+中置吸盘+不锈钢水箱9m³与垃圾箱7m³，适用于城市道路清扫保洁；扫盘中置、吸口在底盘下、箱体后置，构型与任务单主流市政扫路/洗扫车假设相符。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3342.html"
+   ],
+   "source_query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CLW5180TXSAQZ",
+   "identity": "code/CLW5180TXSAQZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风天锦洗扫车 CLW5180TXSAQZ"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "一汽解放J6L 扫路车（中联重科上装）",
+   "brand": "一汽解放",
+   "slots": {
+    "brand": "一汽解放",
+    "series": "J6L",
+    "model_code": "ZBH5180TXSCAE6",
+    "config": "4X2"
+   },
+   "search_key": "解放J6L ZBH5180TXSCAE6 扫路车 中置两扫盘 中置宽吸嘴",
+   "reason": "J6L专用车底盘，4X2驱动、轴距5300mm、总质量18000kg，上装为中联重科洗扫车公告，采用“中置两扫盘+中置宽吸嘴+U型喷杆”布置，作业速度与市政清扫工况匹配。",
+   "sources": [
+    "https://www.yunshuren.com/parameter_compare-xl_261-yt_27-jyfw_11-zdmlmin_220-zdmlmax_220.html"
+   ],
+   "source_query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/一汽解放J6L扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "一汽解放J6L 扫路车（中联重科上装）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田小卡之星（小卡时代）扫路车",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "小卡之星/小卡时代",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田小卡之星 扫路车 中置四盘扫 后置吸嘴",
+   "reason": "轻卡底盘扫路车，全系标配中置扫盘（伸缩式2.5-3米）+尾部加宽吸盘、3方尘箱/1.54方水，扫刷带喷淋降尘、扫盘可自动避障，属市政道路清扫的典型小型扫路车构型。",
+   "sources": [
+    "https://hgjx.xwboo.com/product/23477868.html"
+   ],
+   "source_query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福田小卡之星扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田小卡之星（小卡时代）扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽豪沃TX5洗扫车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃TX5",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "重汽豪沃TX5 洗扫车 中置2扫盘 吸盘",
+   "reason": "豪沃TX5底盘（5000mm轴距、潍柴220马力）改装，上装水箱9方/垃圾箱7方，配中置2扫盘扫刷带吸盘、免维护风机及高压水泵，具备路面清扫+冲洗功能，符合中置扫盘+底盘下吸口+后置箱的市政作业构型。",
+   "sources": [
+    "http://www.icljt.com/saoluche/856.html"
+   ],
+   "source_query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/重汽豪沃TX5洗扫车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽豪沃TX5洗扫车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "市政道路清扫工况 中置扫盘 + 底盘下 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5120TSL6型东风多利卡扫路车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡",
+    "model_code": "CLW5120TSL6",
+    "config": ""
+   },
+   "search_key": "东风多利卡 CLW5120TSL6 中置四扫盘 后置吸盘",
+   "reason": "结果4明确采用东风多利卡EQ1125SJ8CDC底盘，上装为中置四扫盘、后置吸盘，适用于城市道路/高速/广场清扫。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3656.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLW5120TSL6",
+   "identity": "generic/CLW5120TSL6型东风多利卡扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5120TSL6型东风多利卡扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5180TSLD6型东风天锦扫路车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "CLW5180TSLD6",
+    "config": ""
+   },
+   "search_key": "东风天锦 CLW5180TSLD6 中置四扫盘 后置吸盘",
+   "reason": "结果8显示采用东风天锦DFH1180EX8底盘，总质量18000kg，上装中置四扫盘+后置吸盘，适用于市政道路等。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3528.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLW5180TSLD6",
+   "identity": "generic/CLW5180TSLD6型东风天锦扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5180TSLD6型东风天锦扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5070TSLD6型扫路车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "",
+    "model_code": "CLW5070TSLD6",
+    "config": "4x2"
+   },
+   "search_key": "CLW5070TSLD6 扫路车 4×2",
+   "reason": "结果18给出整车型号CLW5070TSLD6、驱动形式4×2（后驱）、总质量7360kg、垃圾箱4.0m³/清水箱1.5m³，可作为二类底盘扫路车候选；扫盘/吸口构型需再核验。",
+   "sources": [
+    "http://www.icljt.com/saoluche/564.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CLW5070TSLD6",
+   "identity": "generic/CLW5070TSLD6型扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CLW5070TSLD6型扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "扫路车 中置扫盘 + 底盘下 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "ZBH5073TSUXE6 湿式扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "湿式扫路车",
+    "model_code": "ZBH5073TSUXE6",
+    "config": ""
+   },
+   "search_key": "ZBH5073TSUXE6 中置四扫盘+后置吸嘴",
+   "reason": "结果明确为该湿式扫路车，采用“中置四扫盘+后置吸嘴”布置，适用于道路清扫；结果未给出驱动形式。",
+   "sources": [
+    "http://zoomlion.brand.lmjx.net/qsc/Mzg1Nzg=/"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZBH5073TSUXE6",
+   "identity": "code/ZBH5073TSUXE6",
+   "identity_kind": "code",
+   "model_variants": [
+    "ZBH5073TSUXE6 湿式扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5040TSLB6 型福田时代蓝牌扫路车",
+   "brand": "程力威牌",
+   "slots": {
+    "brand": "程力威牌",
+    "series": "福田时代",
+    "model_code": "CLW5040TSLB6",
+    "config": ""
+   },
+   "search_key": "CLW5040TSLB6 中置四扫盘+后置吸嘴",
+   "reason": "结果明确为CLW5040TSLB6型福田时代蓝牌扫路车，采用吸扫混合、中置四扫盘+后置吸嘴布局；未给驱动形式。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3682.html",
+    "https://www.hbcljyc.com/carprod/_off_prod3682.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5040TSLB6",
+   "identity": "code/CLW5040TSLB6",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLW5040TSLB6 型福田时代蓝牌扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "CLW5030TSL6HL 型东风途逸蓝牌扫路车",
+   "brand": "程力威牌",
+   "slots": {
+    "brand": "程力威牌",
+    "series": "东风途逸",
+    "model_code": "CLW5030TSL6HL",
+    "config": ""
+   },
+   "search_key": "CLW5030TSL6HL 中置四扫盘+后置吸盘",
+   "reason": "结果明确为CLW5030TSL6HL型扫路车，采用东风途逸底盘，配备中置四扫盘、后置吸盘，适用于城市道路、广场清扫；未给驱动形式。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3689.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5030TSL6",
+   "identity": "code/CLW5030TSL6HL",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLW5030TSL6HL 型东风途逸蓝牌扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田2600mm扫路车国V",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "2600mm扫路车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "福田2600mm扫路车 中置四扫盘+后置吸嘴",
+   "reason": "结果明确为福田2600mm扫路车国V，采用“中置四扫盘+后置吸嘴”对称结构布置，适合道路左右路沿清扫；未给驱动形式。",
+   "sources": [
+    "http://www.hbrlqz.com/show-12-1007-378.html",
+    "http://m.hbchusheng.com/show-12-1007-192.html"
+   ],
+   "source_query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/福田2600MM扫路车国V",
+   "identity_kind": "generic",
+   "model_variants": [
+    "福田2600mm扫路车国V"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "扫路车 中置扫盘 + 底盘下吸口 + 后 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "盈峰环境ZLJ5163TSLE3/E4清扫机",
+   "brand": "盈峰环境",
+   "slots": {
+    "brand": "盈峰环境",
+    "series": "",
+    "model_code": "ZLJ5163TSLE3/E4",
+    "config": ""
+   },
+   "search_key": "ZLJ5163TSLE3/E4 清扫机 中置四盘刷 后置吸嘴",
+   "reason": "结果描述采用中置四盘刷—后置吸嘴布置，吸扫结合、湿式除尘，符合市政道路清扫构型。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/ZLJ5163TSLE3E4.shtm"
+   ],
+   "source_query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5163TSLE3",
+   "identity": "generic/盈峰环境ZLJ5163TSLE3E4清扫机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "盈峰环境ZLJ5163TSLE3/E4清扫机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中联重科ZLJ5164TSLE4扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "",
+    "model_code": "ZLJ5164TSLE4",
+    "config": ""
+   },
+   "search_key": "ZLJ5164TSLE4 扫路车 中置两扫刷 滚扫吸嘴",
+   "reason": "结果页明确为扫路车，采用中置两扫刷+中置反吹风和滚扫吸嘴布置，适合路面清扫作业。",
+   "sources": [
+    "https://m.chinaspv.com.cn/products/26399.html"
+   ],
+   "source_query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5164TSLE4",
+   "identity": "generic/中联重科ZLJ5164TSLE4扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中联重科ZLJ5164TSLE4扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CL5040TSL6QZ型福田时代2.5方扫路车",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "福田时代",
+    "model_code": "CL5040TSL6QZ",
+    "config": ""
+   },
+   "search_key": "CL5040TSL6QZ 扫路车 中置四扫盘 后置吸盘",
+   "reason": "结果页显示该扫路车上装配备中置四扫盘、后置吸盘，适用于城市道路、广场等路面清扫保洁。",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod3756.html"
+   ],
+   "source_query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CL5040TSL6",
+   "identity": "generic/CL5040TSL6QZ型福田时代25方扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CL5040TSL6QZ型福田时代2.5方扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "中联重科ZLJ5160TSLE3扫路车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "",
+    "model_code": "ZLJ5160TSLE3",
+    "config": ""
+   },
+   "search_key": "ZLJ5160TSLE3 扫路车 中置两扫盘 后置吸嘴",
+   "reason": "结果页明确为扫路车，采用中置两扫盘+后置吸嘴结构，吸扫结合、湿式除尘，符合任务构型。",
+   "sources": [
+    "http://cnesip.com/products/detail.aspx?Id=40"
+   ],
+   "source_query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ZLJ5160TSLE3",
+   "identity": "generic/中联重科ZLJ5160TSLE3扫路车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "中联重科ZLJ5160TSLE3扫路车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "MAX60清扫车",
+   "brand": "MAX",
+   "slots": {
+    "brand": "MAX",
+    "series": "MAX60",
+    "model_code": "MAX60",
+    "config": ""
+   },
+   "search_key": "MAX60 清扫车 中置四扫盘 后置吸嘴",
+   "reason": "结果描述MAX60采用中置四扫盘+后置吸嘴+内置横滚扫布置，适用于路面清扫作业。",
+   "sources": [
+    "https://www.zjjkzn.com/m/products/shop_447.html"
+   ],
+   "source_query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "MAX60",
+   "identity": "generic/MAX60清扫车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "MAX60清扫车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "市政道路清扫工况 工程车 中置扫盘 + 底盘下 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 4,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 21
+ },
+ "pool": {
+  "count": 21,
+  "required": 16,
+  "verifiable": 17,
+  "verifiable_share": 0.81,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 11
+   }
+  },
+  "missing": [
+   "model"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 21,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 38,
+  "unique": 21,
+  "removed": 17,
+  "generic": 17
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

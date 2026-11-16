@@ -1,0 +1,1416 @@
+{
+ "brief_id": "m43-c5-roller",
+ "created_at": "2026-11-16T14:34:13",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "wide",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 4
+  }
+ ],
+ "search_results": 69,
+ "candidates": [
+  {
+   "model": "LSS320B",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LSS",
+    "model_code": "LSS320B",
+    "config": ""
+   },
+   "search_key": "LSS320B 单钢轮振动压路机 自行式铰接式",
+   "reason": "结果称LSS320B为自行式铰接式单钢轮振动压路机。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/JZJH200706012.html",
+    "https://d.wanfangdata.com.cn/periodical/jzjxh200706012"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LSS320",
+   "identity": "code/LSS320B",
+   "identity_kind": "code",
+   "model_variants": [
+    "LSS320B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "LSS2101-2",
+   "brand": "洛建",
+   "slots": {
+    "brand": "洛建",
+    "series": "LSS",
+    "model_code": "LSS2101-2",
+    "config": ""
+   },
+   "search_key": "洛建LSS2101-2 单钢轮振动压路机 自行铰接式",
+   "reason": "结果列出洛建LSS2101-2型单钢轮振动压路机，并称其为自行铰接式单钢轮压路机。",
+   "sources": [
+    "https://kms.wanfangdata.com.cn/IndustryZN/Detail/Periodical?id=gcjxywx201103032",
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJW201103065.html"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LSS2101",
+   "identity": "code/LSS21012",
+   "identity_kind": "code",
+   "model_variants": [
+    "LSS2101-2"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "6312D",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "",
+    "model_code": "6312D",
+    "config": ""
+   },
+   "search_key": "6312D 单钢轮振动压路机 铰接型全液压",
+   "reason": "结果列出6312D单钢轮振动压路机，称其为铰接型全液压传动单钢轮振动压路机。",
+   "sources": [
+    "https://d.wanfangdata.com.cn/cstad/ChxDc3RhZE5ld1NvbHI5UzIwMjYwNzEwMDEzOTM0EgowOTAwOTkwMDM1GghhYzJwNzdhOA%3D%3D"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "6312",
+   "identity": "generic/6312D",
+   "identity_kind": "generic",
+   "model_variants": [
+    "6312D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "YZ7G",
+   "brand": "洛阳",
+   "slots": {
+    "brand": "洛阳",
+    "series": "YZ",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "洛阳YZ7G 单钢轮振动压路机 铰接转向",
+   "reason": "结果列出洛阳YZ7G单钢轮振动压路机，称其为自行式铰接转向振动压路机。",
+   "sources": [
+    "http://www.yto999.com/4g.php?m=pdshow&cid=44&id=147",
+    "http://www.yto999.com/pdshow.php?cid=44&id=147",
+    "https://www.gkzhan.com/st280343/product_14152040.html",
+    "http://www.jx.cn/jixie/gy44/ljcpgyview.asp?id=32761588&l=%BC%AA%C1%D6&l2=%D1%D3%B1%DF",
+    "https://m.cehome.com/zhengji/yaluji/ly_yz7g_view/"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/YZ7G",
+   "identity_kind": "generic",
+   "model_variants": [
+    "YZ7G"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 5
+  },
+  {
+   "model": "LG514D",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LG",
+    "model_code": "LG514D",
+    "config": ""
+   },
+   "search_key": "LG514D 全液压双驱单钢轮振动压路机",
+   "reason": "结果将LG514D列为全液压双驱单钢轮振动压路机。",
+   "sources": [
+    "https://m.zjtcn.com/baike/zdyljzyfl#1"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LG514",
+   "identity": "code/LG514D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG514D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG520D",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LG",
+    "model_code": "LG520D",
+    "config": ""
+   },
+   "search_key": "LG520D 全液压双驱单钢轮振动压路机",
+   "reason": "结果将LG520D列为全液压双驱单钢轮振动压路机。",
+   "sources": [
+    "https://m.zjtcn.com/baike/zdyljzyfl#1"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LG520",
+   "identity": "code/LG520D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG520D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG518D",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LG",
+    "model_code": "LG518D",
+    "config": ""
+   },
+   "search_key": "LG518D 全液压双驱单钢轮振动压路机",
+   "reason": "结果将LG518D列为全液压双驱单钢轮振动压路机。",
+   "sources": [
+    "https://m.zjtcn.com/baike/zdyljzyfl#1"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LG518",
+   "identity": "code/LG518D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG518D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LG512D",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LG",
+    "model_code": "LG512D",
+    "config": ""
+   },
+   "search_key": "LG512D 全液压双驱单钢轮振动压路机",
+   "reason": "结果将LG512D列为全液压双驱单钢轮振动压路机。",
+   "sources": [
+    "https://m.zjtcn.com/baike/zdyljzyfl#1"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LG512",
+   "identity": "code/LG512D",
+   "identity_kind": "code",
+   "model_variants": [
+    "LG512D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "单钢轮压路机 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "悍马320型单钢轮振动压路机",
+   "brand": "维特根/悍马",
+   "slots": {
+    "brand": "维特根/悍马",
+    "series": "320型",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "悍马320 单钢轮振动压路机",
+   "reason": "标题明确为维特根 悍马320型单钢轮振动压路机，摘要提到3点式铰接。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJW201604042.html"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/悍马320型单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍马320型单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "科泰26H单钢轮振动压路机",
+   "brand": "科泰",
+   "slots": {
+    "brand": "科泰",
+    "series": "",
+    "model_code": "26H",
+    "config": ""
+   },
+   "search_key": "科泰26H 单钢轮振动压路机",
+   "reason": "结果标题/摘要明确出租科泰26H单钢轮振动压路机，并称采用铰接式车架。",
+   "sources": [
+    "https://m.bjhuizhu.com/machine/6111.html"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "26",
+   "identity": "generic/科泰26H单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "科泰26H单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "YZ7G单钢轮振动压路机",
+   "brand": "国机洛建/洛阳",
+   "slots": {
+    "brand": "国机洛建/洛阳",
+    "series": "YZ",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "洛阳YZ7G 单钢轮振动压路机",
+   "reason": "多条结果分别以国机洛建、洛阳牌出现YZ7G，且说明为自行式铰接转向振动压路机。",
+   "sources": [
+    "https://m.cehome.com/zhengji/yaluji/ly_yz7g_view/",
+    "http://www.yto999.com/4g.php?m=pdshow&cid=44&id=147",
+    "http://www.jx.cn/jixie/gy44/ljcpgyview.asp?id=32761588&l=%BC%AA%C1%D6&l2=%D1%D3%B1%DF",
+    "http://www.yto999.com/pdshow.php?cid=44&id=147"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/YZ7G单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "YZ7G单钢轮振动压路机",
+    "洛阳YZ7G单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 4
+  },
+  {
+   "model": "路星 YZ20H-I 单钢轮振动压路机",
+   "brand": "路星",
+   "slots": {
+    "brand": "路星",
+    "series": "",
+    "model_code": "YZ20H-I",
+    "config": ""
+   },
+   "search_key": "路星 YZ20H-I 单钢轮振动压路机",
+   "reason": "标题和摘要明确路星YZ20H-I单钢轮振动压路机，采用铰接式车架。",
+   "sources": [
+    "https://www.aichehome.com/wjjdetails/12458.htm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "YZ20",
+   "identity": "generic/路星YZ20HI单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "路星 YZ20H-I 单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "洛阳路通LTS208H全液压单钢轮压路机",
+   "brand": "洛阳路通",
+   "slots": {
+    "brand": "洛阳路通",
+    "series": "LTS208H",
+    "model_code": "LTS208H",
+    "config": ""
+   },
+   "search_key": "洛阳路通LTS208H 全液压单钢轮压路机",
+   "reason": "标题明确洛阳路通LTS208H全液压单钢轮压路机。",
+   "sources": [
+    "https://m.cehome.com/zhengji/yaluji/lutong_lts208h_view/"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LTS208",
+   "identity": "generic/洛阳路通LTS208H全液压单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "洛阳路通LTS208H全液压单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LTS308H全液压8吨单钢轮压路机",
+   "brand": "洛阳路通",
+   "slots": {
+    "brand": "洛阳路通",
+    "series": "LTS308H",
+    "model_code": "LTS308H",
+    "config": ""
+   },
+   "search_key": "LTS308H 全液压8吨单钢轮压路机",
+   "reason": "标题明确LTS308H全液压8吨单钢轮压路机，页面公司为洛阳路通重工机械有限公司。",
+   "sources": [
+    "http://www.chinagongcheng.com/supply/3_136554416.html"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LTS308",
+   "identity": "generic/LTS308H全液压单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LTS308H全液压8吨单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "洛建LSS1001压路机",
+   "brand": "洛建",
+   "slots": {
+    "brand": "洛建",
+    "series": "LSS1001",
+    "model_code": "LSS1001",
+    "config": ""
+   },
+   "search_key": "洛建LSS1001 单钢轮振动压路机",
+   "reason": "标题明确洛建LSS1001压路机，简介称LSS1001单钢轮振动压路机并采用液压铰接转向。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%B4%9B%E5%BB%BALSS1001%E5%8E%8B%E8%B7%AF%E6%9C%BA/716786?anchor=2&fragment=2#2"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LSS1001",
+   "identity": "generic/洛建LSS1001压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "洛建LSS1001压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LSS320B振动压路机",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "LSS320B",
+    "model_code": "LSS320B",
+    "config": ""
+   },
+   "search_key": "LSS320B 单钢轮振动压路机",
+   "reason": "结果明确LSS320B为自行式铰接式单钢轮振动压路机，但未给出品牌。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/JZJH200706012.html",
+    "https://d.wanfangdata.com.cn/periodical/jzjxh200706012"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LSS320",
+   "identity": "generic/LSS320B振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LSS320B振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 铰接式自行走 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "斗山Moxy-MT26",
+   "brand": "斗山Moxy",
+   "slots": {
+    "brand": "斗山Moxy",
+    "series": "Moxy",
+    "model_code": "MT26",
+    "config": ""
+   },
+   "search_key": "斗山Moxy-MT26铰接式卡车",
+   "reason": "结果标题明确给出斗山Moxy-MT26铰接式卡车。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%96%97%E5%B1%B1Moxy-MT26%E9%93%B0%E6%8E%A5%E5%BC%8F%E5%8D%A1%E8%BD%A6"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "MT26",
+   "identity": "generic/斗山MOXYMT26",
+   "identity_kind": "generic",
+   "model_variants": [
+    "斗山Moxy-MT26"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沃尔沃A25E",
+   "brand": "沃尔沃",
+   "slots": {
+    "brand": "沃尔沃",
+    "series": "A",
+    "model_code": "A25E",
+    "config": ""
+   },
+   "search_key": "沃尔沃A25E铰接式卡车",
+   "reason": "结果标题列出沃尔沃铰接式卡车A25E、A30E。",
+   "sources": [
+    "https://www.volvoce.com/-/media/volvoce/global-site/products-and-services/past-products/documents/09-articulated-haulers/05-volvo/v-a25e/v-a25e-a30e-78-20101203-2010-10.pdf?v=GH1HPw#1#4#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "A25",
+   "identity": "generic/沃尔沃A25E",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沃尔沃A25E"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沃尔沃A30E",
+   "brand": "沃尔沃",
+   "slots": {
+    "brand": "沃尔沃",
+    "series": "A",
+    "model_code": "A30E",
+    "config": ""
+   },
+   "search_key": "沃尔沃A30E铰接式卡车",
+   "reason": "结果标题列出沃尔沃铰接式卡车A25E、A30E。",
+   "sources": [
+    "https://www.volvoce.com/-/media/volvoce/global-site/products-and-services/past-products/documents/09-articulated-haulers/05-volvo/v-a25e/v-a25e-a30e-78-20101203-2010-10.pdf?v=GH1HPw#1#4#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "A30",
+   "identity": "generic/沃尔沃A30E",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沃尔沃A30E"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "卡特彼勒740",
+   "brand": "卡特彼勒",
+   "slots": {
+    "brand": "卡特彼勒",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "卡特彼勒740铰接式卡车",
+   "reason": "结果中列出卡特彼勒740铰接式卡车。",
+   "sources": [
+    "https://product.360che.com/s14/3717_104_param.html#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/卡特彼勒740",
+   "identity_kind": "generic",
+   "model_variants": [
+    "卡特彼勒740"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "卡特彼勒735",
+   "brand": "卡特彼勒",
+   "slots": {
+    "brand": "卡特彼勒",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "卡特彼勒735铰接式卡车",
+   "reason": "结果中列出卡特彼勒735铰接式卡车。",
+   "sources": [
+    "https://product.360che.com/s14/3717_104_param.html#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/卡特彼勒735",
+   "identity_kind": "generic",
+   "model_variants": [
+    "卡特彼勒735"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "卡特彼勒73D",
+   "brand": "卡特彼勒",
+   "slots": {
+    "brand": "卡特彼勒",
+    "series": "",
+    "model_code": "73D",
+    "config": ""
+   },
+   "search_key": "卡特彼勒73D铰接式卡车",
+   "reason": "结果中明确出现卡特彼勒73D铰接式卡车。",
+   "sources": [
+    "https://product.360che.com/s14/3717_104_param.html#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "73",
+   "identity": "generic/卡特彼勒73D",
+   "identity_kind": "generic",
+   "model_variants": [
+    "卡特彼勒73D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "卡特彼勒725",
+   "brand": "卡特彼勒",
+   "slots": {
+    "brand": "卡特彼勒",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "卡特彼勒725铰接式卡车",
+   "reason": "结果中列出卡特彼勒725铰接式卡车，另有专门词条说明。",
+   "sources": [
+    "https://product.360che.com/s14/3717_104_param.html#1",
+    "https://baike.baidu.com/item/%E5%8D%A1%E7%89%B9%E5%BD%BC%E5%8B%92725%E9%93%B0%E6%8E%A5%E5%BC%8F%E5%8D%A1%E8%BD%A6/1817515#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/卡特彼勒725",
+   "identity_kind": "generic",
+   "model_variants": [
+    "卡特彼勒725"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "卡特彼勒735B",
+   "brand": "卡特彼勒",
+   "slots": {
+    "brand": "卡特彼勒",
+    "series": "",
+    "model_code": "735B",
+    "config": ""
+   },
+   "search_key": "卡特彼勒735B铰接式卡车",
+   "reason": "结果中列出卡特彼勒735B铰接式卡车。",
+   "sources": [
+    "https://product.360che.com/s14/3717_104_param.html#1"
+   ],
+   "source_query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "735",
+   "identity": "generic/卡特彼勒735B",
+   "identity_kind": "generic",
+   "model_variants": [
+    "卡特彼勒735B"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "铰接式自行走 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "悍马 HC 208i P",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "HC",
+    "model_code": "208i P",
+    "config": ""
+   },
+   "search_key": "悍马 HC 208i P 凸块式单钢轮压路机",
+   "reason": "结果明确写有悍马HC 208i P凸块式单钢轮压路机。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/31178.htm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HC208",
+   "identity": "generic/悍马HC208IP",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍马 HC 208i P"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "悍马 322P",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "",
+    "model_code": "322P",
+    "config": ""
+   },
+   "search_key": "悍马 322P 凸块式单钢轮振动压路机",
+   "reason": "同一结果页出现悍马322P凸块式单钢轮振动压路机。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/31178.htm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "322",
+   "identity": "generic/悍马322P",
+   "identity_kind": "generic",
+   "model_variants": [
+    "悍马 322P"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "科泰 26H",
+   "brand": "科泰",
+   "slots": {
+    "brand": "科泰",
+    "series": "",
+    "model_code": "26H",
+    "config": ""
+   },
+   "search_key": "科泰 26H 单钢轮振动压路机",
+   "reason": "结果写有科泰26H单钢轮振动压路机，并提到铰接式车架。",
+   "sources": [
+    "https://m.bjhuizhu.com/machine/6111.html"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "26",
+   "identity": "generic/科泰26H",
+   "identity_kind": "generic",
+   "model_variants": [
+    "科泰 26H"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "三一 YZ18",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "",
+    "model_code": "YZ18",
+    "config": ""
+   },
+   "search_key": "三一 YZ18 振动压路机",
+   "reason": "18吨级压路机比较表中列出三一重工YZ18。",
+   "sources": [
+    "https://max.book118.com/html/2016/0917/54841830.shtm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "YZ18",
+   "identity": "generic/三一YZ18",
+   "identity_kind": "generic",
+   "model_variants": [
+    "三一 YZ18"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BOMAG BW219DH-3",
+   "brand": "BOMAG",
+   "slots": {
+    "brand": "BOMAG",
+    "series": "BW",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "BOMAG BW219DH-3 振动压路机",
+   "reason": "比较表中列出德国BOMAG公司BW219DH-3。",
+   "sources": [
+    "https://max.book118.com/html/2016/0917/54841830.shtm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "BW219",
+   "identity": "code/BW219DH3",
+   "identity_kind": "code",
+   "model_variants": [
+    "BOMAG BW219DH-3"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "DYNAPAC CA602D",
+   "brand": "DYNAPAC",
+   "slots": {
+    "brand": "DYNAPAC",
+    "series": "CA",
+    "model_code": "602D",
+    "config": ""
+   },
+   "search_key": "DYNAPAC CA602D 振动压路机",
+   "reason": "比较表中列出瑞典DYNAPAC公司CA602D。",
+   "sources": [
+    "https://max.book118.com/html/2016/0917/54841830.shtm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CA602",
+   "identity": "code/CA602D",
+   "identity_kind": "code",
+   "model_variants": [
+    "DYNAPAC CA602D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Ingersoii-Rand SD-175D",
+   "brand": "Ingersoii-Rand",
+   "slots": {
+    "brand": "Ingersoii-Rand",
+    "series": "SD",
+    "model_code": "175D",
+    "config": ""
+   },
+   "search_key": "SD-175D 振动压路机",
+   "reason": "比较表中列出美国Ingersoii-Rand SD-175D（原文拼写如此）。",
+   "sources": [
+    "https://max.book118.com/html/2016/0917/54841830.shtm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "SD175",
+   "identity": "code/SD175D",
+   "identity_kind": "code",
+   "model_variants": [
+    "Ingersoii-Rand SD-175D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工 YZ18",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "",
+    "model_code": "YZ18",
+    "config": ""
+   },
+   "search_key": "徐工 YZ18 振动压路机",
+   "reason": "比较表中列出徐工集团徐州工程机械厂YZ18。",
+   "sources": [
+    "https://max.book118.com/html/2016/0917/54841830.shtm"
+   ],
+   "source_query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "YZ18",
+   "identity": "generic/徐工YZ18",
+   "identity_kind": "generic",
+   "model_variants": [
+    "徐工 YZ18"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 铰接式自行走 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "天工JC系列单钢轮振动压路机",
+   "brand": "天工",
+   "slots": {
+    "brand": "天工",
+    "series": "JC",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "天工 JC 单钢轮振动压路机",
+   "reason": "结果标题和摘要明确为天工JC系列单钢轮振动压路机，采用铰接车架。",
+   "sources": [
+    "https://d.wanfangdata.com.cn/periodical/CihQZXJpb2RpY2FsQ0hJU29scjkyMDI2MDYxMDIwMjYwNjEwMTYxMjM4EhBnY2p4eXd4MjAwNDA4MDI5Gghrbm5sZWc4Yg%253D%253D"
+   ],
+   "source_query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/天工JC系列单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "天工JC系列单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "洛建LSS2101-2型单钢轮振动压路机",
+   "brand": "洛建",
+   "slots": {
+    "brand": "洛建",
+    "series": "LSS",
+    "model_code": "LSS2101-2",
+    "config": ""
+   },
+   "search_key": "洛建 LSS2101-2 单钢轮振动压路机",
+   "reason": "结果标题和摘要明确洛建LSS2101-2型为自行铰接式单钢轮振动压路机。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJW201103065.html",
+    "https://kms.wanfangdata.com.cn/IndustryZN/Detail/Periodical?id=gcjxywx201103032"
+   ],
+   "source_query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "LSS2101",
+   "identity": "generic/洛建LSS21012型单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "洛建LSS2101-2型单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "硕阳机械SY-5T单钢轮压路机",
+   "brand": "硕阳机械",
+   "slots": {
+    "brand": "硕阳机械",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "硕阳机械 SY-5T 单钢轮压路机",
+   "reason": "结果标题和参数表明确品牌硕阳机械、型号SY-5T，为5吨座驾式单钢轮柴油压路机。",
+   "sources": [
+    "https://m.makepolo.com/product/101009180193.html"
+   ],
+   "source_query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/硕阳机械SY5T单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "硕阳机械SY-5T单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "路捷YZD-6.0T单钢轮压路机",
+   "brand": "路捷",
+   "slots": {
+    "brand": "路捷",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "路捷 YZD-6.0T 单钢轮压路机",
+   "reason": "结果标题明确YZD-6.0T路捷6吨单钢轮压路机，正文称其为6吨机械式单钢轮振动压路机。",
+   "sources": [
+    "http://wap.makepolo.com/product-detail/100472352157.html"
+   ],
+   "source_query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/路捷YZD60T单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "路捷YZD-6.0T单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "单钢轮压路机 工程车 铰接式自行走 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 37
+ },
+ "pool": {
+  "count": 36,
+  "required": 29,
+  "verifiable": 27,
+  "verifiable_share": 0.75,
+  "slots": 14,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 1,
+    "candidates": 7
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 5,
+  "candidates": 36,
+  "slots": 14,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 40,
+  "unique": 36,
+  "removed": 4,
+  "generic": 27
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

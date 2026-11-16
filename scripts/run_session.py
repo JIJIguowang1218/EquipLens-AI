@@ -4,13 +4,13 @@
 用法（离线，夹具）:
   PYTHONPATH=src python scripts/run_session.py --brief data-test/retrieval-fixtures-20261109/brief-desert.json \
       --fixtures data-test/retrieval-fixtures-20261109/world-desert.json \
-      --session data/sessions/demo.json --run-id demo-1 \
+      --session data-test/sessions/demo.json --run-id demo-1 \
       --message "都要侧面" --run
 
 用法（live，brief+plan）:
   PYTHONPATH=src python scripts/run_session.py --brief data-test/briefs/m43/c1-desert.json \
       --plan data-test/plans/m43-c1-desert.json \
-      --session data/sessions/c1.json --run-id m43-sess-l1 --message "都要正脸" --run
+      --session data-test/sessions/c1.json --run-id m43-sess-l1 --message "都要正脸" --run
 
 注意：这是**原型入口**，不进生产链路；S4 仍 planned。
 """
@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -27,6 +28,26 @@ sys.path.insert(0, str(ROOT / "src"))
 from equiplens.retrieval_engine.adapters import FakeWorld  # noqa: E402
 from equiplens.retrieval_engine.web import WebWorld  # noqa: E402
 from equiplens.session_runner import SessionRunner  # noqa: E402
+
+KEY_FILE = Path.home() / ".equiplens" / "deepseek.env"
+
+
+def load_key() -> str:
+    key = os.environ.get("DEEPSEEK_API_KEY")
+    if key:
+        return key
+    if KEY_FILE.exists():
+        for line in KEY_FILE.read_text(encoding="utf-8").splitlines():
+            if line.startswith("DEEPSEEK_API_KEY="):
+                return line.split("=", 1)[1].strip()
+    raise SystemExit("no DEEPSEEK_API_KEY（--router llm 需要 key）")
+
+
+def build_router(kind: str):
+    if kind != "llm":
+        return None
+    from equiplens.session_router import make_router
+    return make_router(load_key())
 
 
 def build_world(args, brief_doc: dict):
@@ -68,15 +89,19 @@ def main(argv=None) -> int:
     ap.add_argument("--max-steps", type=int, default=240)
     ap.add_argument("--download-workers", type=int, default=4)
     ap.add_argument("--no-citation", action="store_true")
+    ap.add_argument("--router", choices=["rules", "llm"], default="rules",
+                    help="rules=规则版（默认）；llm=LLM 提议+守卫")
+    ap.add_argument("--script", default="", help="JSONL 动作脚本：message/confirm/run/run_to_end")
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args(argv)
 
+    router = build_router(args.router)
     session_path = Path(args.session)
     if session_path.exists():
         brief_doc = json.loads(Path(args.brief).read_text(encoding="utf-8")) if args.brief else \
             json.loads(session_path.read_text(encoding="utf-8")).get("brief") or {}
         world = build_world(args, brief_doc)
-        runner = SessionRunner.load(session_path, world)
+        runner = SessionRunner.load(session_path, world, router=router)
     else:
         if not args.brief:
             ap.error("新建会话需要 --brief")
@@ -84,7 +109,8 @@ def main(argv=None) -> int:
         world = build_world(args, brief_doc)
         runner = SessionRunner(brief_doc, world, run_root=args.run_root,
                                run_id=args.run_id or None,
-                               store_path=session_path)
+                               store_path=session_path, router=router,
+                               router_name=args.router)
 
     run_id = runner.run_id if not args.run_id else args.run_id
     out = {"run_id": run_id, "session": runner.session_id, "turns": []}
@@ -93,14 +119,44 @@ def main(argv=None) -> int:
         out["turns"].append({"msg": msg, "clarify": bool(res.get("clarify")),
                              "question": res.get("question"), "hard": bool(res.get("hard")),
                              "targets": [p.get("target") for p in res.get("patches") or []]})
-    if args.confirm:
-        out["confirm"] = runner.confirm(True)
-    if args.reject:
-        out["confirm"] = runner.confirm(False)
-    if args.run:
-        out["summary"] = runner.run(max_steps=args.max_steps)
+    actions = []
+    if args.script:
+        actions = [json.loads(line) for line in
+                   Path(args.script).read_text(encoding="utf-8").splitlines() if line.strip()]
+    if actions:
+        for act in actions:
+            if "message" in act:
+                res = runner.send(str(act["message"]))
+                out["turns"].append({"msg": act["message"], "clarify": bool(res.get("clarify")),
+                                     "question": res.get("question"),
+                                     "hard": bool(res.get("hard")),
+                                     "targets": [p.get("target") for p in res.get("patches") or []]})
+            elif "confirm" in act:
+                out["confirm"] = runner.confirm(bool(act["confirm"]))
+            elif "run_until" in act:
+                runner.run_until(str(act["run_until"]),
+                                 require_targets=bool(act.get("require_targets")))
+            elif act.get("run_to_end"):
+                out["summary"] = runner.run(max_steps=args.max_steps)
+            elif "run" in act:
+                n = 10 if act["run"] is True else int(act["run"])
+                for _ in range(max(1, n)):
+                    if runner.state.get("finished"):
+                        break
+                    runner.step()
+        if "summary" not in out and args.run:
+            out["summary"] = runner.run(max_steps=args.max_steps)
+        if "summary" not in out:
+            out["status"] = runner.status()
     else:
-        out["status"] = runner.status()
+        if args.confirm:
+            out["confirm"] = runner.confirm(True)
+        if args.reject:
+            out["confirm"] = runner.confirm(False)
+        if args.run:
+            out["summary"] = runner.run(max_steps=args.max_steps)
+        else:
+            out["status"] = runner.status()
     if args.json:
         print(json.dumps(out, ensure_ascii=False, indent=2))
     else:

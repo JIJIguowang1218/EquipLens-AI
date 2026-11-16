@@ -1,0 +1,1409 @@
+{
+ "brief_id": "m43-h2-wrecker",
+ "created_at": "2026-11-16T14:16:11",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "wide",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 1,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "城市道路与高速救援通用工况 工程车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 112,
+ "candidates": [
+  {
+   "model": "东风天锦5吨平板带PK15500折臂吊清障车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天锦",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "东风天锦 5吨平板 PK15500 折臂吊清障车",
+   "reason": "结果标题和正文明确出现东风天锦、5吨平板、PK15500折臂吊清障车。",
+   "sources": [
+    "http://hbpft.com/m/cpzx/dlqzc/cpzx/pbdd/110.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "PK15500",
+   "identity": "generic/东风天锦平板带PK15500折臂吊清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风天锦5吨平板带PK15500折臂吊清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SXT5110TQZ6平板型清障车（欧马可底盘）",
+   "brand": "沈阳捷通",
+   "slots": {
+    "brand": "沈阳捷通",
+    "series": "",
+    "model_code": "SXT5110TQZ6",
+    "config": ""
+   },
+   "search_key": "SXT5110TQZ6 欧马可底盘 平板型清障车",
+   "reason": "结果标题为SXT5110TQZ6清障车，正文注明欧马可底盘国六平板型清障车。",
+   "sources": [
+    "http://www.syxfc.com/pro/32.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "SXT5110TQZ6",
+   "identity": "generic/SXT5110TQZ6平板型清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SXT5110TQZ6平板型清障车（欧马可底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "程力城峰 CXF5120TQZEQ6 清障车",
+   "brand": "程力城峰",
+   "slots": {
+    "brand": "程力城峰",
+    "series": "",
+    "model_code": "CXF5120TQZEQ6",
+    "config": ""
+   },
+   "search_key": "CXF5120TQZEQ6 清障车",
+   "reason": "结果正文明确主力车型CXF5120TQZEQ6，并称品牌程力城峰/程力新富襄阳公司。",
+   "sources": [
+    "https://www.chenglib.com/info-news/222398.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CXF5120TQZEQ6",
+   "identity": "code/CXF5120TQZEQ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "程力城峰 CXF5120TQZEQ6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽豪沃国六清障车（ZZ1097H3815F1912底盘）",
+   "brand": "重汽",
+   "slots": {
+    "brand": "重汽",
+    "series": "豪沃",
+    "model_code": "ZZ1097H3815F1912",
+    "config": ""
+   },
+   "search_key": "重汽豪沃 国六清障车 ZZ1097H3815F1912",
+   "reason": "结果标题为国六重汽豪沃清障车，正文给出底盘型号ZZ1097H3815F1912。",
+   "sources": [
+    "https://www.yoojia.com/article/10271545366657561643.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "ZZ1097H3815F1912",
+   "identity": "generic/重汽豪沃国六清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "重汽豪沃国六清障车（ZZ1097H3815F1912底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放蓝牌3600轴距清障车",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "解放 蓝牌 3600轴距 清障车",
+   "reason": "结果标题明确解放蓝牌3600轴距清障车。",
+   "sources": [
+    "https://www.yoojia.com/article/9159404198263461272.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放蓝牌3600轴距清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放蓝牌3600轴距清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "城市道路与高速救援通用工况 清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田牌 XTP5045TQZPBJ6 清障车",
+   "brand": "福田牌",
+   "slots": {
+    "brand": "福田牌",
+    "series": "",
+    "model_code": "XTP5045TQZPBJ6",
+    "config": ""
+   },
+   "search_key": "福田牌 XTP5045TQZPBJ6 清障车",
+   "reason": "结果中明确给出福田牌清障车产品型号XTP5045TQZPBJ6。",
+   "sources": [
+    "http://aivehicle.cn/qingzhangche/index_129.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "XTP5045TQZPBJ6",
+   "identity": "code/XTP5045TQZPBJ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田牌 XTP5045TQZPBJ6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "江铃牌 LMX5040TQZJX6 清障车",
+   "brand": "江铃牌",
+   "slots": {
+    "brand": "江铃牌",
+    "series": "",
+    "model_code": "LMX5040TQZJX6",
+    "config": ""
+   },
+   "search_key": "江铃牌 LMX5040TQZJX6 清障车",
+   "reason": "结果中明确给出江铃牌清障车产品型号LMX5040TQZJX6。",
+   "sources": [
+    "http://aivehicle.cn/qingzhangche/index_129.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "LMX5040TQZJX6",
+   "identity": "code/LMX5040TQZJX6",
+   "identity_kind": "code",
+   "model_variants": [
+    "江铃牌 LMX5040TQZJX6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风多利卡D8 HCQ5091TQZG5 清障车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D8",
+    "model_code": "HCQ5091TQZG5",
+    "config": "4X2"
+   },
+   "search_key": "东风多利卡D8 4X2 清障车 华通牌 HCQ5091TQZG5",
+   "reason": "标题明确为东风多利卡D8 156马力4X2清障车（华通牌）（HCQ5091TQZG5）。",
+   "sources": [
+    "https://product.360che.com/m335/83750_param.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "HCQ5091TQZG5",
+   "identity": "code/HCQ5091TQZG5",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风多利卡D8 HCQ5091TQZG5 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "华通牌 HCQ5046TQZEQ6 清障车",
+   "brand": "华通牌",
+   "slots": {
+    "brand": "华通牌",
+    "series": "",
+    "model_code": "HCQ5046TQZEQ6",
+    "config": ""
+   },
+   "search_key": "华通牌 HCQ5046TQZEQ6 一拖二清障车",
+   "reason": "同一结果参数表中出现HCQ5046TQZEQ6，并标注上装品牌华通牌/一拖二清障车。",
+   "sources": [
+    "https://product.360che.com/m335/83750_param.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "HCQ5046TQZEQ6",
+   "identity": "code/HCQ5046TQZEQ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "华通牌 HCQ5046TQZEQ6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "华通牌 HCQ5042TQZEQ5 清障车",
+   "brand": "华通牌",
+   "slots": {
+    "brand": "华通牌",
+    "series": "",
+    "model_code": "HCQ5042TQZEQ5",
+    "config": ""
+   },
+   "search_key": "华通牌 HCQ5042TQZEQ5 清障车",
+   "reason": "同一结果参数表中出现HCQ5042TQZEQ5，并标注上装品牌华通牌。",
+   "sources": [
+    "https://product.360che.com/m335/83750_param.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "HCQ5042TQZEQ5",
+   "identity": "code/HCQ5042TQZEQ5",
+   "identity_kind": "code",
+   "model_variants": [
+    "华通牌 HCQ5042TQZEQ5 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风天龙 JDF5250TQZDFL 清障车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "天龙",
+    "model_code": "JDF5250TQZDFL",
+    "config": "6X4"
+   },
+   "search_key": "东风天龙 6X4 清障车 江特牌 JDF5250TQZDFL",
+   "reason": "标题为东风商用车天龙260马力6X4清障车，公告型号JDF5250TQZDFL，上装江特牌。",
+   "sources": [
+    "https://product.360che.com/m27/6964_index.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "JDF5250TQZDFL",
+   "identity": "code/JDF5250TQZDFL",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风天龙 JDF5250TQZDFL 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风多利卡D9 AAA5185TQZE6 清障车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡D9",
+    "model_code": "AAA5185TQZE6",
+    "config": ""
+   },
+   "search_key": "东风多利卡D9 清障车 AAA5185TQZE6",
+   "reason": "结果标题为东风多利卡D9清障车，产品型号AAA5185TQZE6。",
+   "sources": [
+    "http://hbsbzq.com/au0tsrk1oa05gyci4/"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "AAA5185TQZE6",
+   "identity": "code/AAA5185TQZE6",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风多利卡D9 AAA5185TQZE6 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风凯普特K7 CSC5090TQZPD5 清障车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "凯普特K7",
+    "model_code": "CSC5090TQZPD5",
+    "config": "4X2"
+   },
+   "search_key": "东风凯普特K7 4X2 清障车 楚胜牌 CSC5090TQZPD5",
+   "reason": "标题明确为东风凯普特K7 150马力4X2清障车（楚胜牌）（CSC5090TQZPD5）。",
+   "sources": [
+    "https://productedit.360che.com.cn/m373/93359_param.html"
+   ],
+   "source_query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "CSC5090TQZPD5",
+   "identity": "code/CSC5090TQZPD5",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风凯普特K7 CSC5090TQZPD5 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 未指定 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放牌CA5040XXHP40K61L2E6A84救险车",
+   "brand": "解放牌",
+   "slots": {
+    "brand": "解放牌",
+    "series": "救险车",
+    "model_code": "CA5040XXHP40K61L2E6A84",
+    "config": ""
+   },
+   "search_key": "解放牌 CA5040XXHP40K61L2E6A84 救险车",
+   "reason": "结果标题直接给出解放牌救险车完整公告型号；非清障车但按宁多勿少保留。",
+   "sources": [
+    "https://m.aivehicle.cn/a6zborz80r150nwal/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CA5040XXHP40K61L2E6A84",
+   "identity": "generic/解放牌CA5040XXHP40K61L2E6A84救险车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放牌CA5040XXHP40K61L2E6A84救险车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "解放牌 CA1040P40K61L2BE6A84 底盘",
+   "brand": "解放牌",
+   "slots": {
+    "brand": "解放牌",
+    "series": "",
+    "model_code": "CA1040P40K61L2BE6A84",
+    "config": ""
+   },
+   "search_key": "解放牌 CA1040P40K61L2BE6A84 底盘",
+   "reason": "同一结果给出底盘型号，按具体型号保留候选。",
+   "sources": [
+    "https://m.aivehicle.cn/a6zborz80r150nwal/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CA1040P40K61L2BE6A84",
+   "identity": "code/CA1040P40K61L2BE6A84",
+   "identity_kind": "code",
+   "model_variants": [
+    "解放牌 CA1040P40K61L2BE6A84 底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃牌CAA5070XXHZZ6救险车",
+   "brand": "豪沃牌",
+   "slots": {
+    "brand": "豪沃牌",
+    "series": "救险车",
+    "model_code": "CAA5070XXHZZ6",
+    "config": ""
+   },
+   "search_key": "豪沃牌 CAA5070XXHZZ6 救险车",
+   "reason": "结果标题直接给出豪沃牌救险车完整公告型号；非清障车但按宁多勿少保留。",
+   "sources": [
+    "https://m.aivehicle.cn/ahr39i1lgzsbzpwqx/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CAA5070XXHZZ6",
+   "identity": "generic/豪沃牌CAA5070XXHZZ6救险车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃牌CAA5070XXHZZ6救险车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃牌 ZZ1077F3315F174 底盘",
+   "brand": "豪沃牌",
+   "slots": {
+    "brand": "豪沃牌",
+    "series": "",
+    "model_code": "ZZ1077F3315F174",
+    "config": ""
+   },
+   "search_key": "豪沃牌 ZZ1077F3315F174 底盘",
+   "reason": "同一结果给出底盘型号，按具体型号保留候选。",
+   "sources": [
+    "https://m.aivehicle.cn/ahr39i1lgzsbzpwqx/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ZZ1077F3315F174",
+   "identity": "code/ZZ1077F3315F174",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃牌 ZZ1077F3315F174 底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "汕德卡牌LLC5160XXH救险车",
+   "brand": "汕德卡牌",
+   "slots": {
+    "brand": "汕德卡牌",
+    "series": "救险车",
+    "model_code": "LLC5160XXH",
+    "config": ""
+   },
+   "search_key": "汕德卡牌 LLC5160XXH 救险车",
+   "reason": "结果标题直接给出汕德卡牌救险车完整公告型号；非清障车但按宁多勿少保留。",
+   "sources": [
+    "http://m.hbsbzq.com/a051b09ojs7cdojyt/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "LLC5160XXH",
+   "identity": "generic/汕德卡牌LLC5160XXH救险车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "汕德卡牌LLC5160XXH救险车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "汕德卡牌 ZZ5206N501GF1 底盘",
+   "brand": "汕德卡牌",
+   "slots": {
+    "brand": "汕德卡牌",
+    "series": "",
+    "model_code": "ZZ5206N501GF1",
+    "config": ""
+   },
+   "search_key": "汕德卡牌 ZZ5206N501GF1 底盘",
+   "reason": "结果中两款汕德卡救险车均列此底盘型号，合并来源保留。",
+   "sources": [
+    "http://m.hbsbzq.com/a051b09ojs7cdojyt/",
+    "https://m.hbsbzq.com/a3cep69hqp9xmp6ky/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ZZ5206N501GF1",
+   "identity": "code/ZZ5206N501GF1",
+   "identity_kind": "code",
+   "model_variants": [
+    "汕德卡牌 ZZ5206N501GF1 底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "豪沃牌CLW5150XXHZ6救险车",
+   "brand": "豪沃牌",
+   "slots": {
+    "brand": "豪沃牌",
+    "series": "救险车",
+    "model_code": "CLW5150XXHZ6",
+    "config": ""
+   },
+   "search_key": "豪沃牌 CLW5150XXHZ6 救险车",
+   "reason": "结果标题直接给出豪沃牌救险车完整公告型号；非清障车但按宁多勿少保留。",
+   "sources": [
+    "https://m.aivehicle.cn/anjpty15pgpgyfll7/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "CLW5150XXHZ6",
+   "identity": "generic/豪沃牌CLW5150XXHZ6救险车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪沃牌CLW5150XXHZ6救险车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃牌 ZZ2187V452GF1 底盘",
+   "brand": "豪沃牌",
+   "slots": {
+    "brand": "豪沃牌",
+    "series": "",
+    "model_code": "ZZ2187V452GF1",
+    "config": ""
+   },
+   "search_key": "豪沃牌 ZZ2187V452GF1 底盘",
+   "reason": "同一结果给出底盘型号，按具体型号保留候选。",
+   "sources": [
+    "https://m.aivehicle.cn/anjpty15pgpgyfll7/"
+   ],
+   "source_query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ZZ2187V452GF1",
+   "identity": "code/ZZ2187V452GF1",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃牌 ZZ2187V452GF1 底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "城市道路与高速救援通用工况 未指定 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "江铃牌 PFT5042TQZP6C 清障车",
+   "brand": "江铃",
+   "slots": {
+    "brand": "江铃",
+    "series": "帕菲特",
+    "model_code": "PFT5042TQZP6C",
+    "config": ""
+   },
+   "search_key": "江铃 PFT5042TQZP6C 清障车",
+   "reason": "结果中明确出现江铃牌清障车及产品型号PFT5042TQZP6C。",
+   "sources": [
+    "http://aivehicle.cn/qingzhangche/index_137.html"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "PFT5042TQZP6",
+   "identity": "code/PFT5042TQZP6C",
+   "identity_kind": "code",
+   "model_variants": [
+    "江铃牌 PFT5042TQZP6C 清障车",
+    "PFT5042TQZP6C 江铃牌清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "重汽豪沃TX PFT5251TQZL6B 清障车",
+   "brand": "重汽豪沃",
+   "slots": {
+    "brand": "重汽豪沃",
+    "series": "TX",
+    "model_code": "PFT5251TQZL6B",
+    "config": ""
+   },
+   "search_key": "重汽豪沃TX PFT5251TQZL6B 清障车",
+   "reason": "结果中明确出现重汽豪沃TX后八轮及产品型号PFT5251TQZL6B清障车。",
+   "sources": [
+    "http://aivehicle.cn/qingzhangche/index_137.html"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "PFT5251TQZL6",
+   "identity": "code/PFT5251TQZL6B",
+   "identity_kind": "code",
+   "model_variants": [
+    "重汽豪沃TX PFT5251TQZL6B 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "雷诺 K520 清障车",
+   "brand": "雷诺",
+   "slots": {
+    "brand": "雷诺",
+    "series": "K",
+    "model_code": "K520",
+    "config": ""
+   },
+   "search_key": "雷诺 K520 清障车",
+   "reason": "结果中明确出现雷诺K520底盘清障车/雷诺K520清障车。",
+   "sources": [
+    "http://www.autohome.com.cn/ask/22295784.html"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "K520",
+   "identity": "code/K520",
+   "identity_kind": "code",
+   "model_variants": [
+    "雷诺 K520 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沃尔沃 FH16 清障车",
+   "brand": "沃尔沃",
+   "slots": {
+    "brand": "沃尔沃",
+    "series": "FH16",
+    "model_code": "FH16",
+    "config": ""
+   },
+   "search_key": "沃尔沃 FH16 清障车",
+   "reason": "结果中明确出现沃尔沃FH16清障车。",
+   "sources": [
+    "http://www.autohome.com.cn/ask/22641850.html"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "FH16",
+   "identity": "generic/沃尔沃FH16清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沃尔沃 FH16 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "曼恩 TGM 四驱清障车",
+   "brand": "曼恩",
+   "slots": {
+    "brand": "曼恩",
+    "series": "TGM",
+    "model_code": "",
+    "config": "四驱"
+   },
+   "search_key": "曼恩 TGM 四驱清障车",
+   "reason": "结果中明确出现曼恩TGM四驱清障车。",
+   "sources": [
+    "http://www.autohome.com.cn/ask/22641850.html"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/曼恩TGM四驱清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "曼恩 TGM 四驱清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "十通牌 CL5125TQZ6BZQ 清障车",
+   "brand": "十通",
+   "slots": {
+    "brand": "十通",
+    "series": "",
+    "model_code": "CL5125TQZ6BZQ",
+    "config": ""
+   },
+   "search_key": "十通 CL5125TQZ6BZQ 清障车",
+   "reason": "结果中明确出现十通牌清障车及产品型号CL5125TQZ6BZQ。",
+   "sources": [
+    "https://www.aivehicle.cn/tag_%E6%B8%85%E9%9A%9C%E8%BD%A6_111/"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "CL5125TQZ6BZQ",
+   "identity": "code/CL5125TQZ6BZQ",
+   "identity_kind": "code",
+   "model_variants": [
+    "十通牌 CL5125TQZ6BZQ 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "福田牌 JZD5044TQZFTP6-GY 清障车",
+   "brand": "福田",
+   "slots": {
+    "brand": "福田",
+    "series": "",
+    "model_code": "JZD5044TQZFTP6-GY",
+    "config": ""
+   },
+   "search_key": "福田 JZD5044TQZFTP6-GY 清障车",
+   "reason": "结果中明确出现福田牌清障车及产品型号JZD5044TQZFTP6-GY。",
+   "sources": [
+    "https://www.aivehicle.cn/tag_%E6%B8%85%E9%9A%9C%E8%BD%A6_111/"
+   ],
+   "source_query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "JZD5044TQZFTP6",
+   "identity": "code/JZD5044TQZFTP6GY",
+   "identity_kind": "code",
+   "model_variants": [
+    "福田牌 JZD5044TQZFTP6-GY 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 未指定 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5251TQZCDP 清障车（解放25吨）",
+   "brand": "程力威牌",
+   "slots": {
+    "brand": "程力威牌",
+    "series": "解放",
+    "model_code": "CLW5251TQZCDP",
+    "config": ""
+   },
+   "search_key": "程力威 CLW5251TQZCDP 清障车",
+   "reason": "结果标题与参数表明确写有程力威牌CLW5251TQZCDP型解放25吨清障车，采用解放CA1250P62K1L5T3E6底盘",
+   "sources": [
+    "https://www.hbcljyc.com/carprod/prod7898.html"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5251TQZCDP",
+   "identity": "code/CLW5251TQZCDP",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLW5251TQZCDP 清障车（解放25吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HTW5183TQZDCA6 清障车（龙V2.0 220马力）",
+   "brand": "专威牌",
+   "slots": {
+    "brand": "专威牌",
+    "series": "龙V2.0",
+    "model_code": "HTW5183TQZDCA6",
+    "config": "4X2"
+   },
+   "search_key": "专威牌 HTW5183TQZDCA6 4X2 清障车",
+   "reason": "结果标题为“青岛解放 龙V2.0 220马力 4X2 清障车(专威牌)”，公告型号HTW5183TQZDCA6，总质量18吨，一拖一清障车",
+   "sources": [
+    "https://product.360che.com/m809/202253_index.html"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "HTW5183TQZDCA6",
+   "identity": "code/HTW5183TQZDCA6",
+   "identity_kind": "code",
+   "model_variants": [
+    "HTW5183TQZDCA6 清障车（龙V2.0 220马力）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "PWS5140TQZ 清障车",
+   "brand": "金侍卫牌",
+   "slots": {
+    "brand": "金侍卫牌",
+    "series": "",
+    "model_code": "PWS5140TQZ",
+    "config": ""
+   },
+   "search_key": "金侍卫牌 PWS5140TQZ 清障车",
+   "reason": "结果中明确写有金侍卫牌PWS5140TQZ清障车，并列出公告型号、外形尺寸等参数",
+   "sources": [
+    "https://m.cn-truck.com/canshu/754_487866.html"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "PWS5140TQZ",
+   "identity": "code/PWS5140TQZ",
+   "identity_kind": "code",
+   "model_variants": [
+    "PWS5140TQZ 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CLW5090TQZD5 清障车",
+   "brand": "程力威牌",
+   "slots": {
+    "brand": "程力威牌",
+    "series": "",
+    "model_code": "CLW5090TQZD5",
+    "config": ""
+   },
+   "search_key": "程力威 CLW5090TQZD5 清障车",
+   "reason": "结果标题及参数区明确写有程力威牌CLW5090TQZD5型清障车",
+   "sources": [
+    "https://www.chengliqichejituan.com/shop/content/show/id/550.html"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CLW5090TQZD5",
+   "identity": "code/CLW5090TQZD5",
+   "identity_kind": "code",
+   "model_variants": [
+    "CLW5090TQZD5 清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪曼H3（先锋）清障车",
+   "brand": "中国重汽",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪曼H3(先锋)",
+    "model_code": "",
+    "config": "4X2"
+   },
+   "search_key": "重汽豪曼H3 先锋 4X2 清障车",
+   "reason": "结果标题写有“重汽豪曼H3(先锋)清障车”，基本信息中的驱动形式为4X2",
+   "sources": [
+    "https://product.360che.com/price/c4_s78_b1169_s6720.html#1"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/豪曼H3清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "豪曼H3（先锋）清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SYC5090TQZHW6 豪沃牌清障车",
+   "brand": "豪沃",
+   "slots": {
+    "brand": "豪沃",
+    "series": "",
+    "model_code": "SYC5090TQZHW6",
+    "config": ""
+   },
+   "search_key": "豪沃 SYC5090TQZHW6 清障车",
+   "reason": "结果中写有“豪沃牌清障车 产品型号SYC5090TQZHW6”，由襄阳腾龙汽车有限公司生产",
+   "sources": [
+    "http://aivehicle.cn/qingzhangche/index_137.html"
+   ],
+   "source_query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SYC5090TQZHW6",
+   "identity": "code/SYC5090TQZHW6",
+   "identity_kind": "code",
+   "model_variants": [
+    "SYC5090TQZHW6 豪沃牌清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "依维柯得意工程车 DLQ5041XGCYK6",
+   "brand": "依维柯",
+   "slots": {
+    "brand": "依维柯",
+    "series": "得意",
+    "model_code": "DLQ5041XGCYK6",
+    "config": ""
+   },
+   "search_key": "依维柯得意工程车 DLQ5041XGCYK6",
+   "reason": "结果中明确写有“依维柯得意工程车 DLQ5041XGCYK6”。",
+   "sources": [
+    "https://m.jdzj.com/dianligongchengche/1-19717079.html",
+    "http://www.ixsj.com/products/1_19717079.html",
+    "http://www.chinagkong.com/supplys/19_5_31952471.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 工程车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "DLQ5041XGCYK6",
+   "identity": "code/DLQ5041XGCYK6",
+   "identity_kind": "code",
+   "model_variants": [
+    "依维柯得意工程车 DLQ5041XGCYK6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "城市道路与高速救援通用工况 工程车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "依维柯工程车 DLQ5040XGCYK6",
+   "brand": "依维柯",
+   "slots": {
+    "brand": "依维柯",
+    "series": "",
+    "model_code": "DLQ5040XGCYK6",
+    "config": ""
+   },
+   "search_key": "依维柯工程车 DLQ5040XGCYK6",
+   "reason": "结果中写有“9人座蓝牌C证可驾驶 公告型号：DLQ5040XGCYK6”，且上下文为依维柯工程车。",
+   "sources": [
+    "https://m.jdzj.com/dianligongchengche/1-19717079.html",
+    "http://www.chinagkong.com/supplys/19_5_31952471.html"
+   ],
+   "source_query": "城市道路与高速救援通用工况 工程车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "DLQ5040XGCYK6",
+   "identity": "code/DLQ5040XGCYK6",
+   "identity_kind": "code",
+   "model_variants": [
+    "依维柯工程车 DLQ5040XGCYK6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "城市道路与高速救援通用工况 工程车 未指定 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 37
+ },
+ "pool": {
+  "count": 36,
+  "required": 16,
+  "verifiable": 33,
+  "verifiable_share": 0.917,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 5
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 9
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 36,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 48,
+  "unique": 36,
+  "removed": 12,
+  "generic": 11
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 1
+}

@@ -1,0 +1,283 @@
+{
+ "brief_id": "m43v-v-brand",
+ "created_at": "2026-11-16T14:35:16",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-brand-1",
+   "dimension": "brand",
+   "query": "陕汽 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "用户指定品牌覆盖",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "沙漠 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 1,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-3",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 图集",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-4",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 参数",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 99,
+ "candidates": [
+  {
+   "model": "陕汽重卡 德龙X3000 SX5258TYT5V385",
+   "brand": "陕汽重卡",
+   "slots": {
+    "brand": "陕汽重卡",
+    "series": "德龙X3000",
+    "model_code": "SX5258TYT5V385",
+    "config": "6X6"
+   },
+   "search_key": "陕汽德龙X3000 6X6 沙漠越野",
+   "reason": "结果中明确为陕汽品牌、德龙X3000车系且驱动形式为6X6的沙漠越野车型/底盘，符合品牌和6×6沙漠工况；但页面标注为载货车底盘，需二次确认其牵引车/鞍座配置是否满足沙漠牵引车任务。",
+   "sources": [
+    "https://product.360che.com/m159/39814_param.html#1",
+    "https://www.chinatruck.org/product/truck/21165_36_1.html",
+    "https://www.360che.com/news/170620/80847_all.html#t4",
+    "https://www.chinatruck.org/product/truck/21165.html",
+    "https://baijiahao.baidu.com/s?id=1570865514685320"
+   ],
+   "source_query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "X3000",
+   "identity": "code/SX5258TYT5V385",
+   "identity_kind": "code",
+   "model_variants": [
+    "陕汽重卡 德龙X3000 SX5258TYT5V385",
+    "陕汽重卡 德龙X3000 6X6 沙漠越野车（SX5258TYT5V385）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-brand-1",
+     "query": "陕汽 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "brand"
+   ],
+   "source_count": 5
+  },
+  {
+   "model": "陕汽通力 6×6全驱沙漠车（STL5250TSM）",
+   "brand": "陕汽通力（陕汽集团）",
+   "slots": {
+    "brand": "陕汽",
+    "series": "陕汽通力沙漠车",
+    "model_code": "STL5250TSM",
+    "config": "6x6"
+   },
+   "search_key": "STL5250TSM 陕汽通力 沙漠车",
+   "reason": "公告型号STL5250TSM、底盘SX2259XD5Z1，为陕汽通力6×6全驱沙漠专用作业车（可改装载货/油田/罐式），沙漠环境与6x6构型均符合；当前为专用车/底盘形态而非牵引车，可作沙漠牵引车底盘来源候选。",
+   "sources": [
+    "https://m.cn-truck.com/zhuanyongche/show_1641_439473.html",
+    "https://gxj.baoji.gov.cn/col3954/col3962/202505/t20250509_1146992.html",
+    "https://shanqx.com/index.php?m=home&c=View&a=index&aid=2570"
+   ],
+   "source_query": "陕汽 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-brand-1",
+   "dimension": "brand",
+   "verifiable": true,
+   "code_core": "STL5250TSM",
+   "identity": "code/STL5250TSM",
+   "identity_kind": "code",
+   "model_variants": [
+    "陕汽通力 6×6全驱沙漠车（STL5250TSM）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-brand-1",
+     "query": "陕汽 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "brand"
+   ],
+   "source_count": 3
+  }
+ ],
+ "topup": {
+  "enabled": 4,
+  "queries": 4,
+  "kept": 0,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 2,
+  "required": 20,
+  "verifiable": 2,
+  "verifiable_share": 1.0,
+  "slots": 8,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": false,
+  "warning": "候选池 2 < 建议 20（1.6×(8+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "brand": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 0
+   }
+  },
+  "missing": [
+   "base",
+   "model"
+  ],
+  "international_covered": false,
+  "queries": 7,
+  "candidates": 2,
+  "slots": 8,
+  "pool_shortfall": 6
+ },
+ "dedupe": {
+  "input": 6,
+  "unique": 2,
+  "removed": 4,
+  "generic": 0
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

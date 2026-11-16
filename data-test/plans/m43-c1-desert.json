@@ -1,0 +1,1307 @@
+{
+ "brief_id": "m43-c1-desert",
+ "created_at": "2026-11-16T11:51:14",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 4,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "沙漠牵引车 6x6 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 73,
+ "candidates": [
+  {
+   "model": "Zetros 4051 AS 6×6",
+   "brand": "梅赛德斯-奔驰",
+   "slots": {
+    "brand": "梅赛德斯-奔驰",
+    "series": "Zetros",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "Mercedes-Benz Zetros 4051 AS 6×6",
+   "reason": "结果明确为奔驰Zetros 4051 AS 6×6重型牵引车，并针对沙漠、高温、沙尘环境优化，符合沙漠牵引车与6x6构型要求。",
+   "sources": [
+    "https://www.edrmagazine.eu/wds-2026-heavy-metal-in-the-desert-mercedes-benz-defence-trucks-zetros-4051-as-6x6-steps-into-the-spotlight#1",
+    "http://mp.weixin.qq.com/s?__biz=MzI2NTU0MzY5MA==&mid=2247484125&idx=1&sn=1ec438901cd2d459752c0b95d1152030",
+    "https://es.topwar.ru/277745-mnogocelevoj-tjagach-mercedes-benz-defence-zetros-4051-as-6x6.html#1",
+    "https://gulfconstructiononline.com/Article/380113/daimler-supplies-27-zetros-trucks",
+    "https://vi.topwar.ru/277745-mnogocelevoj-tjagach-mercedes-benz-defence-zetros-4051-as-6x6.html"
+   ],
+   "source_query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/ZETROS/4051",
+   "identity_kind": "series",
+   "model_variants": [
+    "Zetros 4051 AS 6×6",
+    "Zetros 4051 AS 6x6",
+    "Zetros 4051 AS 6x6 牵引车",
+    "Mercedes-Benz Zetros 4051 AS 6x6 牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english",
+    "unit",
+    "topup"
+   ],
+   "source_count": 5
+  },
+  {
+   "model": "TAZ4922 6X6油田牵引车",
+   "brand": "中国重汽 豪沃",
+   "slots": {
+    "brand": "中国重汽 豪沃",
+    "series": "油田牵引车",
+    "model_code": "TAZ4922",
+    "config": "6x6"
+   },
+   "search_key": "豪沃 TAZ4922 6X6油田牵引车",
+   "reason": "结果给出豪沃6X6油田牵引车图解，并明确TAZ4922为适应沙漠地带运输油田设备的牵引车，符合沙漠牵引车、6x6要求。",
+   "sources": [
+    "https://www.360che.com/tech/160303/52370_all.html#t2",
+    "https://www.yunshuren.com/article-3419.html#1",
+    "http://ecv360.com/e/DoPrint/?classid=56&id=19543",
+    "https://www.360che.com/tech/160303/52370_2.html",
+    "https://www.360che.com/tech/160303/52370_1.html",
+    "http://ecv360.com/special/201603/19543.html",
+    "https://tu.360che.com/news/545.html#1",
+    "http://www.ecv360.com/e/DoPrint/?classid=47&id=19014"
+   ],
+   "source_query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "TAZ4922",
+   "identity": "code/TAZ4922",
+   "identity_kind": "code",
+   "model_variants": [
+    "TAZ4922 6X6油田牵引车",
+    "豪沃 TAZ4922 油田牵引车",
+    "TAZ4922 油田专用牵引车",
+    "豪沃 6X6 油田牵引车（泰安五岳 TAZ4922）",
+    "TAZ4922 6X6 油田专用牵引车（豪沃驾驶室）",
+    "中国重汽 豪沃 TAZ4922 6x6 油田牵引车",
+    "TAZ4922 油田专用全驱牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "environment",
+    "english",
+    "unit",
+    "topup"
+   ],
+   "source_count": 8
+  },
+  {
+   "model": "东风6x6沙漠卡车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "沙漠卡车",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "东风6x6沙漠卡车",
+   "reason": "结果标题与正文明确为东风6x6沙漠卡车，400马力、6x6驱动，面向沙漠和越野重载运输，符合任务环境与构型。",
+   "sources": [
+    "https://www.clw-international.com/zh-CN/products/6x6-dongfeng-desert-truck/",
+    "https://www.clw-international.com/zh-CN/author/claiman-ginger/page/2/"
+   ],
+   "source_query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风6X6沙漠卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风6x6沙漠卡车",
+    "东风 6x6 沙漠卡车",
+    "东风 6×6 沙漠卡车（400马力 25吨越野货车）",
+    "东风 6×6 沙漠卡车（400马力 25吨）",
+    "东风 6x6 沙漠卡车（400马力25吨）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "environment",
+    "english",
+    "unit",
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "OTTC越野460马力6×6牵引头卡车",
+   "brand": "OTTC",
+   "slots": {
+    "brand": "OTTC",
+    "series": "越野牵引头卡车",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "OTTC越野460马力6×6牵引头卡车",
+   "reason": "结果明确为OTTC越野460马力6×6牵引头卡车，采用越野底盘和6×6驱动，适合极端条件与重型牵引作业，可对应沙漠牵引车需求。",
+   "sources": [
+    "https://www.clw-international.com/zh-CN/products/6x6-tractor-head/"
+   ],
+   "source_query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/OTTC越野6X6牵引头卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "OTTC越野460马力6×6牵引头卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "沙漠 沙漠牵引车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "MOL H6066 6x6 特种运输车",
+   "brand": "MOL",
+   "slots": {
+    "brand": "MOL",
+    "series": "H6066",
+    "model_code": "H6066",
+    "config": "6x6"
+   },
+   "search_key": "H6066 6x6",
+   "reason": "结果介绍比利时MOL可生产6x6特种车型，并提到H6066 6x6特种运输车用于塔里木油田沙漠运输。",
+   "sources": [
+    "https://baijiahao.baidu.com/s?id=1673725984830224021",
+    "https://en.wikipedia.org/wiki/MOL_Trucks?oldid=904458041&ns=0#1"
+   ],
+   "source_query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "H6066",
+   "identity": "code/H6066",
+   "identity_kind": "code",
+   "model_variants": [
+    "MOL H6066 6x6 特种运输车",
+    "H6066 6x6特种运输车",
+    "MOL H6066"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "environment",
+    "unit",
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "雷诺 TRM700-100 牵引车",
+   "brand": "雷诺",
+   "slots": {
+    "brand": "雷诺",
+    "series": "",
+    "model_code": "TRM700-100",
+    "config": "6x6"
+   },
+   "search_key": "TRM700-100(6×6)",
+   "reason": "结果明确为法国雷诺TRM700-100(6×6)重型军用牵引车。",
+   "sources": [
+    "https://baike.baidu.com/item/%E6%B3%95%E5%9B%BD%E9%9B%B7%E8%AF%BATRM700-100%286%C3%976%29%E7%89%B5%E5%BC%95%E8%BD%A6/1986279?bst=1793817217.b6e7a10023dffaac"
+   ],
+   "source_query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "TRM700",
+   "identity": "code/TRM700100",
+   "identity_kind": "code",
+   "model_variants": [
+    "雷诺 TRM700-100 牵引车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Mercedes-Benz Arocs 6x6 牵引车",
+   "brand": "Mercedes-Benz",
+   "slots": {
+    "brand": "Mercedes-Benz",
+    "series": "Arocs",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "Arocs 6x6",
+   "reason": "结果提到奔驰在防务展展示Zetros与Arocs特种版本，并提及重型6x6/8x8全驱牵引车。",
+   "sources": [
+    "https://www.auto-motor-und-sport.de/neuheiten/mercedes-im-militaer-modus-arocs-und-zetros-allrad-zugmaschinen-fuer-die-richtig-harten-jobs/#1",
+    "https://jdlgroupe.com/2026/02/09/daimler-truck-expose-ses-camions-mercedes-benz-arocs-et-zetros-au-world-defense-show/#content"
+   ],
+   "source_query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "series/AROCS",
+   "identity_kind": "series",
+   "model_variants": [
+    "Mercedes-Benz Arocs 6x6 牵引车",
+    "Arocs 全驱牵引车",
+    "Mercedes-Benz Arocs 全驱牵引车 6x6"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "沙漠牵引车 6x6 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+   "brand": "陕汽重卡",
+   "slots": {
+    "brand": "陕汽重卡",
+    "series": "德龙X3000",
+    "model_code": "SX5258TYT5V385",
+    "config": "6X6"
+   },
+   "search_key": "德龙X3000 6X6 沙漠越野",
+   "reason": "结果明确为陕汽重卡德龙X3000 375马力 6X6 沙漠越野载货车底盘，公告型号SX5258TYT5V385，符合沙漠6x6重卡底盘。",
+   "sources": [
+    "https://product.360che.com/m159/39814_param.html#1",
+    "https://www.chinatruck.org/product/truck/21165_36_1.html",
+    "https://www.360che.com/news/170620/80847_all.html#t4"
+   ],
+   "source_query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "X3000",
+   "identity": "series/X3000",
+   "identity_kind": "series",
+   "model_variants": [
+    "德龙X3000 6X6 沙漠越野载货车底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "K-65959",
+   "brand": "KAMAZ",
+   "slots": {
+    "brand": "KAMAZ",
+    "series": "K-65959",
+    "model_code": "K-65959",
+    "config": "6X6"
+   },
+   "search_key": "KAMAZ K-65959 6X6",
+   "reason": "结果列出KAMAZ K-65959，标注6X6、GVW 35000 KG，属于外国品牌6x6重卡。",
+   "sources": [
+    "https://kamazexport.ae/",
+    "https://kamazexport.ae/models_en/tractor"
+   ],
+   "source_query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "K65959",
+   "identity": "code/K65959",
+   "identity_kind": "code",
+   "model_variants": [
+    "K-65959",
+    "K-65959 6X6 牵引车或自卸底盘"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "KAMAZ-43118",
+   "brand": "KAMAZ",
+   "slots": {
+    "brand": "KAMAZ",
+    "series": "",
+    "model_code": "",
+    "config": "6X6"
+   },
+   "search_key": "KAMAZ-43118 6X6",
+   "reason": "结果列出KAMAZ-43118，标注6X6、GVW 21600 KG，属于外国品牌6x6越野卡车。",
+   "sources": [
+    "https://kamazexport.ae/"
+   ],
+   "source_query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "code/KAMAZ43118",
+   "identity_kind": "code",
+   "model_variants": [
+    "KAMAZ-43118"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "沙漠 6x6 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+   "brand": "MOL（比利时）",
+   "slots": {
+    "brand": "MOL",
+    "series": "Brec",
+    "model_code": "TB 800",
+    "config": ""
+   },
+   "search_key": "MOL-Brec TB 800 Desert Lion",
+   "reason": "结果说明 MOL 接手 BREC 的 KFM“Desert Lion”沙漠卡车项目并升级为 MOL-Brec TB 800，并说明 MOL 曾在 1970 年代生产油田用车，与沙漠油田专用车方向一致；但结果未写明驱动形式，所以 config 留空。",
+   "sources": [
+    "https://en.wikipedia.org/wiki/MOL_Trucks?oldid=904458041&ns=0#1",
+    "https://fragments.dbpedia.org/2016-04/en?subject=http%3A%2F%2Fdbpedia.org%2Fresource%2FMOL_Trucks#1"
+   ],
+   "source_query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "TB800",
+   "identity": "code/TB800",
+   "identity_kind": "code",
+   "model_variants": [
+    "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "Titan 沙漠用越野卡车",
+   "brand": "Titan（德国）",
+   "slots": {
+    "brand": "Titan",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Titan 沙漠越野卡车",
+   "reason": "结果提到在塔克拉玛干沙漠油田作业中使用的“德国Titan沙漠用越野卡车”，环境与用途符合沙漠油田重型越野车；但未给出型号或 6x6/8x8 驱动形式，所以 series、model_code、config 均留空，作为待核实的候选。",
+   "sources": [
+    "https://chejiahao.autohome.com.cn/info/11614539?isfrom=m#1"
+   ],
+   "source_query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/TITAN沙漠用越野卡车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Titan 沙漠用越野卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "沙漠牵引车 6x6 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "ND5250TSMZ04 沙漠车",
+   "brand": "北奔牌",
+   "slots": {
+    "brand": "北奔牌",
+    "series": "沙漠车",
+    "model_code": "ND5250TSMZ04",
+    "config": ""
+   },
+   "search_key": "北奔 ND5250TSMZ04 沙漠车",
+   "reason": "公告类结果明确为北奔牌 ND5250TSMZ04 沙漠车，三轴、轴荷 7000/18000（二轴组）、12.00R20 越野轮胎、国Ⅵ 柴油，属沙漠专用越野底盘车型；结果未直接写明驱动形式，故 config 留空。",
+   "sources": [
+    "https://www.17vin.com/gonggao/442074/ND5250TSMZ04.html"
+   ],
+   "source_query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "ND5250TSMZ04",
+   "identity": "code/ND5250TSMZ04",
+   "identity_kind": "code",
+   "model_variants": [
+    "ND5250TSMZ04 沙漠车",
+    "北奔牌 ND5250TSMZ04 沙漠车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "unit",
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "DFV5253TSMGP6D 沙漠车",
+   "brand": "东风牌",
+   "slots": {
+    "brand": "东风牌",
+    "series": "DFV5253TSMGP6D",
+    "model_code": "DFV5253TSMGP6D",
+    "config": "6x6"
+   },
+   "search_key": "东风 DFV5253TSMGP6D 沙漠车",
+   "reason": "公告结果明确为东风牌 DFV5253TSMGP6D 沙漠车，总质量 25000kg、轴荷 7000/18000（二轴组）、接近/离去角 30/21，属沙漠工况重型越野车；驱动形式文本未标注，config 留空。",
+   "sources": [
+    "https://www.17vin.com/gonggao/105818/DFV5253TSMGP6D.html",
+    "http://m.hbsygw.com/show-11-110-358.html"
+   ],
+   "source_query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "DFV5253TSMGP6",
+   "identity": "code/DFV5253TSMGP6D",
+   "identity_kind": "code",
+   "model_variants": [
+    "DFV5253TSMGP6D 沙漠车",
+    "DFV5253TSMGP6D 沙漠车（六驱沙漠卡车）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "unit",
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "460马力 6×6 越野牵引头",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "越野牵引头",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "6x6 越野牵引头 460马力",
+   "reason": "结果页为 460 马力 6×6 越野牵引头/鞍式牵引车产品页，强调极端地形资源勘探与偏远地区后勤牵引能力，配 425/85R21 越野轮胎与专用 6×6 驱动系统，符合沙漠牵引车构型；结果未给出明确品牌名，brand 留空。",
+   "sources": [
+    "https://www.clw-international.com/zh-CN/products/6x6-tractor-head/"
+   ],
+   "source_query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/6X6越野牵引头",
+   "identity_kind": "generic",
+   "model_variants": [
+    "460马力 6×6 越野牵引头"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "沙漠牵引车 6×6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "临工重机 CMT66A",
+   "brand": "临工重机",
+   "slots": {
+    "brand": "临工重机",
+    "series": "CMT Series",
+    "model_code": "CMT66A",
+    "config": "6x6"
+   },
+   "search_key": "LGMG CMT66A 6x6",
+   "reason": "结果参数页写明CMT66A为6x6驱动，面向泥泞、湿滑及沙漠工况，属于重型工程底盘车型。",
+   "sources": [
+    "https://www.lgmgme.com/product/cmt-series/cmt66a/#mm-m0-p0"
+   ],
+   "source_query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CMT66",
+   "identity": "generic/临工重机CMT66A",
+   "identity_kind": "generic",
+   "model_variants": [
+    "临工重机 CMT66A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SHACMAN F3000 6x6 沙漠洒水车",
+   "brand": "SHACMAN",
+   "slots": {
+    "brand": "SHACMAN",
+    "series": "F3000",
+    "model_code": "F3000",
+    "config": "6x6"
+   },
+   "search_key": "SHACMAN F3000 6x6 沙漠洒水车",
+   "reason": "结果标题与页面明确为SHACMAN F3000 6x6全驱沙漠洒水车，属于沙漠环境6x6工程车。",
+   "sources": [
+    "https://th.chinashacmantruck.com/china-suppliers-factory-shacman-f3000-6x6-all-wheel-drive-desert-sprinkler-truck-for-efficient-operation-product/"
+   ],
+   "source_query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "F3000",
+   "identity": "code/F3000",
+   "identity_kind": "code",
+   "model_variants": [
+    "SHACMAN F3000 6x6 沙漠洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风153 六驱后双桥洒水车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "东风153",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "东风153 6x6 沙漠越野洒水车",
+   "reason": "结果写明沙漠越野工地降尘六驱东风后双桥洒水车，驱动类型6*6、带分动箱，符合沙漠6x6工程底盘。",
+   "sources": [
+    "https://www.aivehicle.cn/a4d6b845262b8041e/",
+    "https://m.aivehicle.cn/a4d6b845262b8041e/",
+    "http://m.hbsbzq.com/a4d6b845262b8041e/"
+   ],
+   "source_query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风153六驱后双桥洒水车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风153 六驱后双桥洒水车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "HOWO 6x6 沙漠砂泵车",
+   "brand": "HOWO",
+   "slots": {
+    "brand": "HOWO",
+    "series": "",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "HOWO 6x6 沙漠砂泵车",
+   "reason": "结果商品页写明用于沙漠油井区域的6x6可拆卸砂泵车/吸砂车，驱动形式6x6。",
+   "sources": [
+    "https://www.machinio.com/listings/100511091-howo-iisuzu-used-in-desert-oil-well-areas-6x6-detachable-sand-pump-truck-sand-suction-truck-in-hubei-china#1"
+   ],
+   "source_query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HOWO6X6沙漠砂泵车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HOWO 6x6 沙漠砂泵车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TA25 铰接式自卸车",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "TA25",
+    "model_code": "TA25",
+    "config": "6x6"
+   },
+   "search_key": "TA25 6x6 铰接式自卸车",
+   "reason": "结果写明TA25铰接式自卸车采用6×6全轮驱动，适用于沙漠地区及不良路面，属于6x6工程车辆。",
+   "sources": [
+    "https://kms.wanfangdata.com.cn/clxk/Detail/Cstad?id=0200500814"
+   ],
+   "source_query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "TA25",
+   "identity": "generic/TA25铰接式自卸车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TA25 铰接式自卸车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "沙漠/高温沙尘 工程车 6x6 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Mol HF8066 6x6 重型沙漠运输车",
+   "brand": "Mol",
+   "slots": {
+    "brand": "Mol",
+    "series": "HF8066",
+    "model_code": "HF8066",
+    "config": "6x6"
+   },
+   "search_key": "Mol HF8066 6x6",
+   "reason": "比利时 Mol 的 6x6 重型沙漠运输车，230吨连接总重，2019年起在北非与中东油田使用，超大全地形轮胎、实车展车，符合沙漠重型牵引/运输场景。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzU3NTAzMDcxMg==&mid=2247497572&idx=1&sn=ca518f425b1d481e1e3ef0f64d0d473b"
+   ],
+   "source_query": "沙漠牵引车 6x6 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "HF8066",
+   "identity": "code/HF8066",
+   "identity_kind": "code",
+   "model_variants": [
+    "Mol HF8066 6x6 重型沙漠运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风 EQ2102G 6x6 沙漠越野卡车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ2102G",
+    "model_code": "EQ2102G",
+    "config": "6x6"
+   },
+   "search_key": "东风 EQ2102G 6x6 沙漠越野卡车",
+   "reason": "结果给出具体型号与 6X6（六驱）驱动形式、平头一排半驾驶室、康明斯 6BT5.9 发动机，属沙漠越野实车；品牌为国产。",
+   "sources": [
+    "http://qcgq168.com/proshow/goods5807.html?kkfizq=af9ta1"
+   ],
+   "source_query": "沙漠牵引车 6x6 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "EQ2102",
+   "identity": "code/EQ2102G",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风 EQ2102G 6x6 沙漠越野卡车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风 EQ2082E6D 6x6 沙漠运输车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ2082E6D",
+    "model_code": "EQ2082E6D",
+    "config": "6x6"
+   },
+   "search_key": "东风 EQ2082E6D 6x6 沙漠运输车",
+   "reason": "结果列出 6×6 驱动型式、越野装载/牵引质量、最高车速 87km/h 等实车参数，属沙漠运输车型；品牌为国产。",
+   "sources": [
+    "http://qcgq168.com/car/5640.html",
+    "http://qcgq168.com/proshow/goods5640.html",
+    "http://51dfc.com/carprod/prodview5753.html"
+   ],
+   "source_query": "沙漠牵引车 6x6 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "EQ2082E6",
+   "identity": "code/EQ2082E6D",
+   "identity_kind": "code",
+   "model_variants": [
+    "东风 EQ2082E6D 6x6 沙漠运输车",
+    "EQ2082E6D 六驱沙漠运输车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "沙漠牵引车 6x6 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "EQ245（EQ2100E6D）六驱沙漠车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ245/EQ2100E6D",
+    "model_code": "EQ2100E6D",
+    "config": "6x6"
+   },
+   "search_key": "EQ245六驱沙漠车",
+   "reason": "标为“EQ245六驱沙漠车”，采用东风康明斯B190 33与12.5R20越野胎，属六驱沙漠越野车型。",
+   "sources": [
+    "http://sfzyche.com/html/lqyykc/1994.html"
+   ],
+   "source_query": "沙漠牵引车 6x6 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "EQ245",
+   "identity": "code/EQ2100E6D",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ245（EQ2100E6D）六驱沙漠车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EQ245（EQ2100E6D）六驱沙漠车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ245/EQ2100E6D",
+    "model_code": "EQ2100E6D",
+    "config": "6x6"
+   },
+   "search_key": "EQ245六驱沙漠车",
+   "reason": "标为“EQ245六驱沙漠车”，采用东风康明斯B190 33与12.5R20越野胎，属六驱沙漠越野车型。",
+   "sources": [
+    "http://sfzyche.com/html/lqyykc/1994.html"
+   ],
+   "source_query": "沙漠牵引车 6x6 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "EQ245",
+   "identity": "code/EQ245",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ245（EQ2100E6D）六驱沙漠车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EQ2220GD5D 六驱沙漠车/越野载货车",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "EQ2220GD5D",
+    "model_code": "EQ2220GD5D",
+    "config": "6x6"
+   },
+   "search_key": "东风EQ2220GD5D 6*6六驱沙漠车",
+   "reason": "结果写明6*6驱动、可在山地/沙漠/矿区/雪地执行载人载货及特种任务，康明斯ISB190国五、315/80R22.5越野胎。",
+   "sources": [
+    "http://m.hbsygw.com/show-11-110-92.html"
+   ],
+   "source_query": "沙漠牵引车 6x6 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "EQ2220GD5",
+   "identity": "code/EQ2220GD5D",
+   "identity_kind": "code",
+   "model_variants": [
+    "EQ2220GD5D 六驱沙漠车/越野载货车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "东风六驱越野沙漠载货车（无具体公告型号）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "东风六驱越野载货车",
+    "model_code": "",
+    "config": "6x6"
+   },
+   "search_key": "东风六驱越野车 6*6 沙漠载货车",
+   "reason": "结果明确6*6驱动、315/80R22.5越野胎、轴距3500+1250mm、加厚双层大梁，属沙漠越野六驱底盘，但未给出具体型号码。",
+   "sources": [
+    "http://www.hbsygw.com/show-11-111-218.html"
+   ],
+   "source_query": "沙漠牵引车 6x6 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风六驱越野沙漠载货车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风六驱越野沙漠载货车（无具体公告型号）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "沙漠越野重型牵引车（沙漠越野运输底盘）",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "沙漠越野重型牵引车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "沙漠越野重型牵引车 康明斯 艾利逊",
+   "reason": "结果描述为在沙漠中运输大型油田设备的沙漠越野运输底盘（康明斯+艾利逊、满载100t、整备≤38t），属牵引/运输类沙漠重型底盘；页面未给出品牌与驱动形式，故留空。",
+   "sources": [
+    "https://www.zontvik.com/products/3c026fec-21fb-429b-809f-e677fe7de57a"
+   ],
+   "source_query": "沙漠牵引车 6x6 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/沙漠越野重型牵引车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "沙漠越野重型牵引车（沙漠越野运输底盘）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "沙漠牵引车 6x6 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 16,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 28,
+  "required": 23,
+  "verifiable": 17,
+  "verifiable_share": 0.607,
+  "slots": 10,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 4
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 12
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 28,
+  "slots": 10,
+  "pool_shortfall": 0
+ },
+ "dedupe": {
+  "input": 55,
+  "unique": 28,
+  "removed": 27,
+  "generic": 10
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

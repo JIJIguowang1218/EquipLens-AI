@@ -1,0 +1,1084 @@
+{
+ "session_id": "m43-l1-c1",
+ "run_id": "m43-l1-c1",
+ "run_root": "data-test/runs",
+ "brief": {
+  "brief_id": "m43-c1-desert",
+  "request": {
+   "raw": "沙漠车 10 个 6x6 要外国牌子的 国内外都行 别给我内饰 高清",
+   "class": "沙漠牵引车",
+   "environment": {
+    "value": "沙漠",
+    "source": "taskspec"
+   },
+   "base_platform": {
+    "value": "6×6 重型越野卡车底盘（军警/油田/矿区越野底盘，带分动箱与越野轮胎）",
+    "confidence": 0.8
+   },
+   "configuration": "6x6",
+   "page_budget": {
+    "vehicle_slots": 10
+   }
+  },
+  "assumptions": [
+   {
+    "field": "class",
+    "value": "沙漠牵引车 = 沙漠/沙尘工况用 6×6 重型越野卡车（含越野载货与牵引）",
+    "why": "用户只说“沙漠车”，需要确认是越野卡车底盘而非沙漠越野 SUV/沙滩车",
+    "confidence": 0.7
+   },
+   {
+    "field": "constraints.origin",
+    "value": "外国品牌优先，国内品牌也可接受",
+    "why": "用户原话“要外国牌子的 国内外都行”，按进口品牌优先、国产可接受的软偏好处理",
+    "confidence": 0.6
+   },
+   {
+    "field": "quantity.primary",
+    "value": "10（按 10 台/组图片计）",
+    "why": "“10 个”按 10 台车理解",
+    "confidence": 0.75
+   },
+   {
+    "field": "parts",
+    "value": "进气防沙罩、防沙挡沙件、越野轮胎轮系为按“沙漠工况 + 6×6”推断的环境特化对象",
+    "why": "用户未点名部件，为回答沙漠环境造型问题而选取环境敏感件，均可按需删减",
+    "confidence": 0.5
+   },
+   {
+    "field": "page_budget",
+    "value": 10,
+    "why": "规则：exact 7 + environment 3",
+    "confidence": 1.0
+   }
+  ],
+  "region_requirements": [
+   {
+    "region": "front_face",
+    "label": "整车前脸（沙漠车外部造型）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "front",
+     "hero_45"
+    ],
+    "accept": "C"
+   },
+   {
+    "region": "side",
+    "label": "整车侧面（6×6 轮系与底盘姿态）",
+    "fields": [
+     "gesture",
+     "proportion",
+     "character_lines",
+     "cmf",
+     "judgement"
+    ],
+    "views": [
+     "side",
+     "hero_45"
+    ],
+    "accept": "C"
+   }
+  ],
+  "part_requirements": [
+   {
+    "part": "custom_sand_intake",
+    "label": "进气/空滤防沙罩（高位进气）",
+    "kind": "function",
+    "location": "驾驶室后方或侧面高位进气口",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "function_ergonomics"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail",
+     "hero_45"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "沙尘分离/预滤",
+     "高位取气",
+     "滤芯可维护开启"
+    ],
+    "why": "沙漠工况最典型的环境特化件，能提供沙尘环境下进气防护的形态、布置高度与拆装节点的直接视觉证据。"
+   },
+   {
+    "part": "custom_dust_guard",
+    "label": "防沙板/挡沙帘（轮后与底盘挡沙件）",
+    "kind": "part",
+    "location": "轮拱后方、底盘侧面、驾驶室下沿",
+    "part_family": "sheet_metal",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "environment_protection",
+     "structure",
+     "manufacturing"
+    ],
+    "design_relevance": "strong",
+    "views": [
+     "side",
+     "detail"
+    ],
+    "accept": "A",
+    "mechanism": [
+     "阻挡扬沙回卷",
+     "橡胶/板金柔性挡板",
+     "支架固定与快拆"
+    ],
+    "why": "能看出沙尘环境如何改变覆盖件形态：挡沙件的材料、悬垂长度、与轮拱和车架的分缝关系。"
+   },
+   {
+    "part": "custom_wheel_tire",
+    "label": "越野轮胎与轮拱/轮系布置",
+    "kind": "part",
+    "location": "6×6 前轴、双后轴轮位",
+    "part_family": "function_attachment",
+    "taxonomy_status": "new",
+    "relation_axis": "environment",
+    "design_axes": [
+     "proportion",
+     "environment_protection",
+     "function_ergonomics"
+    ],
+    "design_relevance": "conditional",
+    "views": [
+     "side",
+     "hero_45",
+     "detail"
+    ],
+    "accept": "B",
+    "mechanism": [
+     "低气压越野胎",
+     "离地间隙",
+     "轮拱包覆与轮胎的间隙"
+    ],
+    "why": "用户明确 6×6 构型，轮系与轮拱关系是判断沙漠车体量比例与通过性的主要视觉证据。"
+   }
+  ],
+  "research_units": [
+   {
+    "unit_id": "u-exact",
+    "tier": "exact",
+    "scope": "沙漠牵引车（沙漠工况 6×6 越野卡车/牵引车） 6×6",
+    "parts": [
+     "custom_sand_intake",
+     "custom_dust_guard",
+     "custom_wheel_tire"
+    ],
+    "quota": 7,
+    "budget": {
+     "max_queries": 6,
+     "max_rounds": 2
+    },
+    "stop": "7 台占满即停"
+   },
+   {
+    "unit_id": "u-env",
+    "tier": "environment",
+    "scope": "沙漠/高温沙尘（foreign 品牌优先，国内外品牌均可） 工程车",
+    "parts": [
+     "custom_sand_intake",
+     "custom_dust_guard",
+     "custom_wheel_tire"
+    ],
+    "quota": 3,
+    "budget": {
+     "max_queries": 4,
+     "max_rounds": 2
+    },
+    "stop": "3 台占满即停"
+   }
+  ],
+  "tiers": [
+   "exact",
+   "environment"
+  ],
+  "budget": {
+   "max_queries": 34
+  },
+  "stop_rules": {},
+  "negative": [
+   "客车",
+   "SUV",
+   "房车",
+   "多车拼图",
+   "内饰",
+   "广告"
+  ],
+  "strategy_ref": "default@v1",
+  "taskspec": {
+   "intent": "new_task",
+   "class": "沙漠牵引车",
+   "class_raw": "沙漠车",
+   "class_aliases": [
+    "沙漠车"
+   ],
+   "environment": "沙漠",
+   "configuration": "6x6",
+   "quantity": {
+    "primary": 10,
+    "backup": null,
+    "delta": null
+   },
+   "brands_include": [],
+   "brands_exclude": [],
+   "preferences": {
+    "soft_brands": [],
+    "brand_quota": null,
+    "foreign_ratio": null,
+    "views": [],
+    "quality": [
+     "高清"
+    ],
+    "year": null,
+    "tonnage": null,
+    "price": null
+   },
+   "models_pinned": [],
+   "models_provided": [],
+   "parts": [],
+   "constraints": {
+    "exclude": [
+     "内饰"
+    ],
+    "origin": null,
+    "powertrain": null,
+    "min_width": null
+   },
+   "scope": null,
+   "delivery": null,
+   "policy": {
+    "hard": [
+     "quantity",
+     "class",
+     "configuration"
+    ],
+    "soft": [
+     "quality"
+    ]
+   },
+   "unknowns": [
+    {
+     "field": "constraints.origin",
+     "text": "要外国牌子的 国内外都行",
+     "severity": "defaultable",
+     "proposal": "进口（外国）品牌优先，国产亦可接受"
+    }
+   ],
+   "assumptions": [
+    "“10 个”按 10 台车理解",
+    "“别给我内饰”按排除内饰相关图片/内容处理",
+    "“高清”按图片清晰度偏好处理"
+   ],
+   "questions": [],
+   "session_context_used": false,
+   "evidence": {
+    "class": "沙漠车",
+    "environment": "沙漠车",
+    "configuration": "6x6",
+    "quantity": "10 个",
+    "brands": "要外国牌子的 国内外都行",
+    "models": "",
+    "constraints": "别给我内饰",
+    "scope": ""
+   }
+  },
+  "s0": {
+   "mechanism": "taskspec",
+   "version": "v0.4"
+  }
+ },
+ "session": {
+  "session_id": "m43-l1-c1",
+  "state": "DELIVERED",
+  "version": 2,
+  "brief": {
+   "brief_id": "m43-c1-desert",
+   "request": {
+    "raw": "沙漠车 10 个 6x6 要外国牌子的 国内外都行 别给我内饰 高清",
+    "class": "沙漠牵引车",
+    "environment": {
+     "value": "沙漠",
+     "source": "taskspec"
+    },
+    "base_platform": {
+     "value": "6×6 重型越野卡车底盘（军警/油田/矿区越野底盘，带分动箱与越野轮胎）",
+     "confidence": 0.8
+    },
+    "configuration": "6x6",
+    "page_budget": {
+     "vehicle_slots": 10
+    }
+   },
+   "assumptions": [
+    {
+     "field": "class",
+     "value": "沙漠牵引车 = 沙漠/沙尘工况用 6×6 重型越野卡车（含越野载货与牵引）",
+     "why": "用户只说“沙漠车”，需要确认是越野卡车底盘而非沙漠越野 SUV/沙滩车",
+     "confidence": 0.7
+    },
+    {
+     "field": "constraints.origin",
+     "value": "外国品牌优先，国内品牌也可接受",
+     "why": "用户原话“要外国牌子的 国内外都行”，按进口品牌优先、国产可接受的软偏好处理",
+     "confidence": 0.6
+    },
+    {
+     "field": "quantity.primary",
+     "value": "10（按 10 台/组图片计）",
+     "why": "“10 个”按 10 台车理解",
+     "confidence": 0.75
+    },
+    {
+     "field": "parts",
+     "value": "进气防沙罩、防沙挡沙件、越野轮胎轮系为按“沙漠工况 + 6×6”推断的环境特化对象",
+     "why": "用户未点名部件，为回答沙漠环境造型问题而选取环境敏感件，均可按需删减",
+     "confidence": 0.5
+    },
+    {
+     "field": "page_budget",
+     "value": 10,
+     "why": "规则：exact 7 + environment 3",
+     "confidence": 1.0
+    }
+   ],
+   "region_requirements": [
+    {
+     "region": "front_face",
+     "label": "整车前脸（沙漠车外部造型）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "front",
+      "hero_45"
+     ],
+     "accept": "C"
+    },
+    {
+     "region": "side",
+     "label": "整车侧面（6×6 轮系与底盘姿态）",
+     "fields": [
+      "gesture",
+      "proportion",
+      "character_lines",
+      "cmf",
+      "judgement"
+     ],
+     "views": [
+      "side",
+      "hero_45"
+     ],
+     "accept": "C"
+    }
+   ],
+   "part_requirements": [
+    {
+     "part": "custom_sand_intake",
+     "label": "进气/空滤防沙罩（高位进气）",
+     "kind": "function",
+     "location": "驾驶室后方或侧面高位进气口",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "environment",
+     "design_axes": [
+      "environment_protection",
+      "structure",
+      "function_ergonomics"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "detail",
+      "hero_45"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "沙尘分离/预滤",
+      "高位取气",
+      "滤芯可维护开启"
+     ],
+     "why": "沙漠工况最典型的环境特化件，能提供沙尘环境下进气防护的形态、布置高度与拆装节点的直接视觉证据。"
+    },
+    {
+     "part": "custom_dust_guard",
+     "label": "防沙板/挡沙帘（轮后与底盘挡沙件）",
+     "kind": "part",
+     "location": "轮拱后方、底盘侧面、驾驶室下沿",
+     "part_family": "sheet_metal",
+     "taxonomy_status": "new",
+     "relation_axis": "environment",
+     "design_axes": [
+      "environment_protection",
+      "structure",
+      "manufacturing"
+     ],
+     "design_relevance": "strong",
+     "views": [
+      "side",
+      "detail"
+     ],
+     "accept": "A",
+     "mechanism": [
+      "阻挡扬沙回卷",
+      "橡胶/板金柔性挡板",
+      "支架固定与快拆"
+     ],
+     "why": "能看出沙尘环境如何改变覆盖件形态：挡沙件的材料、悬垂长度、与轮拱和车架的分缝关系。"
+    },
+    {
+     "part": "custom_wheel_tire",
+     "label": "越野轮胎与轮拱/轮系布置",
+     "kind": "part",
+     "location": "6×6 前轴、双后轴轮位",
+     "part_family": "function_attachment",
+     "taxonomy_status": "new",
+     "relation_axis": "environment",
+     "design_axes": [
+      "proportion",
+      "environment_protection",
+      "function_ergonomics"
+     ],
+     "design_relevance": "conditional",
+     "views": [
+      "side",
+      "hero_45",
+      "detail"
+     ],
+     "accept": "B",
+     "mechanism": [
+      "低气压越野胎",
+      "离地间隙",
+      "轮拱包覆与轮胎的间隙"
+     ],
+     "why": "用户明确 6×6 构型，轮系与轮拱关系是判断沙漠车体量比例与通过性的主要视觉证据。"
+    }
+   ],
+   "research_units": [
+    {
+     "unit_id": "u-exact",
+     "tier": "exact",
+     "scope": "沙漠牵引车（沙漠工况 6×6 越野卡车/牵引车） 6×6",
+     "parts": [
+      "custom_sand_intake",
+      "custom_dust_guard",
+      "custom_wheel_tire"
+     ],
+     "quota": 7,
+     "budget": {
+      "max_queries": 6,
+      "max_rounds": 2
+     },
+     "stop": "7 台占满即停"
+    },
+    {
+     "unit_id": "u-env",
+     "tier": "environment",
+     "scope": "沙漠/高温沙尘（foreign 品牌优先，国内外品牌均可） 工程车",
+     "parts": [
+      "custom_sand_intake",
+      "custom_dust_guard",
+      "custom_wheel_tire"
+     ],
+     "quota": 3,
+     "budget": {
+      "max_queries": 4,
+      "max_rounds": 2
+     },
+     "stop": "3 台占满即停"
+    }
+   ],
+   "tiers": [
+    "exact",
+    "environment"
+   ],
+   "budget": {
+    "max_queries": 34
+   },
+   "stop_rules": {},
+   "negative": [
+    "客车",
+    "SUV",
+    "房车",
+    "多车拼图",
+    "内饰",
+    "广告"
+   ],
+   "strategy_ref": "default@v1",
+   "taskspec": {
+    "intent": "new_task",
+    "class": "沙漠牵引车",
+    "class_raw": "沙漠车",
+    "class_aliases": [
+     "沙漠车"
+    ],
+    "environment": "沙漠",
+    "configuration": "6x6",
+    "quantity": {
+     "primary": 10,
+     "backup": null,
+     "delta": null
+    },
+    "brands_include": [],
+    "brands_exclude": [],
+    "preferences": {
+     "soft_brands": [],
+     "brand_quota": null,
+     "foreign_ratio": null,
+     "views": [],
+     "quality": [
+      "高清"
+     ],
+     "year": null,
+     "tonnage": null,
+     "price": null
+    },
+    "models_pinned": [],
+    "models_provided": [],
+    "parts": [],
+    "constraints": {
+     "exclude": [
+      "内饰"
+     ],
+     "origin": null,
+     "powertrain": null,
+     "min_width": null
+    },
+    "scope": null,
+    "delivery": null,
+    "policy": {
+     "hard": [
+      "quantity",
+      "class",
+      "configuration"
+     ],
+     "soft": [
+      "quality"
+     ]
+    },
+    "unknowns": [
+     {
+      "field": "constraints.origin",
+      "text": "要外国牌子的 国内外都行",
+      "severity": "defaultable",
+      "proposal": "进口（外国）品牌优先，国产亦可接受"
+     }
+    ],
+    "assumptions": [
+     "“10 个”按 10 台车理解",
+     "“别给我内饰”按排除内饰相关图片/内容处理",
+     "“高清”按图片清晰度偏好处理"
+    ],
+    "questions": [],
+    "session_context_used": false,
+    "evidence": {
+     "class": "沙漠车",
+     "environment": "沙漠车",
+     "configuration": "6x6",
+     "quantity": "10 个",
+     "brands": "要外国牌子的 国内外都行",
+     "models": "",
+     "constraints": "别给我内饰",
+     "scope": ""
+    }
+   },
+   "s0": {
+    "mechanism": "taskspec",
+    "version": "v0.4"
+   },
+   "session_patches": [
+    {
+     "patch_id": "p-69f5076c",
+     "base_version": 1,
+     "target": "fetch.filters.views",
+     "op": "set",
+     "value": {
+      "text": "都要正脸",
+      "asset_index": null,
+      "index_basis": "original",
+      "data": {
+       "views": [
+        "front"
+       ]
+      }
+     },
+     "confidence": 0.8,
+     "destructive": false,
+     "enforce": "soft",
+     "source_msg_id": "m-c97a4644",
+     "note": "视角要求"
+    }
+   ]
+  },
+  "brief_versions": [
+   {
+    "v": 1,
+    "hash": "3064462126647012175"
+   },
+   {
+    "v": 2,
+    "hash": "1465590000765634932"
+   }
+  ],
+  "patches": [
+   {
+    "patch_id": "p-69f5076c",
+    "base_version": 1,
+    "target": "fetch.filters.views",
+    "op": "set",
+    "value": {
+     "text": "都要正脸",
+     "asset_index": null,
+     "index_basis": "original",
+     "data": {
+      "views": [
+       "front"
+      ]
+     }
+    },
+    "confidence": 0.8,
+    "destructive": false,
+    "enforce": "soft",
+    "source_msg_id": "m-c97a4644",
+    "note": "视角要求"
+   }
+  ],
+  "pending": [],
+  "events": [
+   {
+    "at": 1794813774.778,
+    "kind": "created"
+   },
+   {
+    "at": 1794813774.778,
+    "kind": "user_msg",
+    "msg_id": "m-c97a4644",
+    "text": "都要正脸",
+    "result": {
+     "intent": "modify",
+     "hard": false,
+     "targets": [
+      "fetch.filters.views"
+     ],
+     "destructive": false,
+     "confirm": false,
+     "confidence": 0.8,
+     "reason": "视角要求",
+     "asset_index": null
+    }
+   },
+   {
+    "at": 1794813957.676,
+    "kind": "delivered",
+    "added": 42,
+    "skipped": 84
+   }
+  ],
+  "delivered": [
+   {
+    "asset_id": "01666b41b52a",
+    "url": "https://img0.baidu.com/it/u=602083448,3892101920&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 1,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "3892fdb246e3",
+    "url": "https://img2.baidu.com/it/u=2810898510,3106686056&fm=253&fmt=auto&app=138&f=JPEG?w=934&h=500",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 2,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "93fbfbcf0770",
+    "url": "https://img1.baidu.com/it/u=2663000871,3559880636&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=380",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 3,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "878a0a38ddb1",
+    "url": "https://img2.baidu.com/it/u=998698532,2517872935&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=412",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 4,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "cab94c2cbbdf",
+    "url": "https://img1.baidu.com/it/u=165543563,146625474&fm=253&fmt=auto&app=138&f=JPEG?w=569&h=364",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 5,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "a4c0dc8109fe",
+    "url": "https://img1.baidu.com/it/u=18429807,3325299691&fm=253&fmt=auto&app=138&f=JPEG?w=570&h=359",
+    "model": "Zetros 4051 AS 6×6",
+    "target": "Zetros 4051 AS 6×6",
+    "seq": 6,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "ad70acc27016",
+    "url": "http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20190110/0fe0de8336c648c2b0916372b2b1f411.jpeg",
+    "model": "TAZ4922 6X6油田牵引车",
+    "target": "TAZ4922 6X6油田牵引车",
+    "seq": 7,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "b111bd882436",
+    "url": "http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20190110/b70d48388f7a45d088be21ee6e8f7ea9.jpeg",
+    "model": "TAZ4922 6X6油田牵引车",
+    "target": "TAZ4922 6X6油田牵引车",
+    "seq": 8,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "077061c2a3d9",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20190110/25a350ca9a99444da303f73f8590fbe0.jpeg",
+    "model": "TAZ4922 6X6油田牵引车",
+    "target": "TAZ4922 6X6油田牵引车",
+    "seq": 9,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "739a6d215d0c",
+    "url": "http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20190110/6cbf9a9a33c94cecafec6bd6c8c3697c.jpeg",
+    "model": "TAZ4922 6X6油田牵引车",
+    "target": "TAZ4922 6X6油田牵引车",
+    "seq": 10,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "e9474aed9b9b",
+    "url": "https://source.cn-truck.com/ggimg/clcp/261/q11127420.jpg",
+    "model": "TAZ4922 6X6油田牵引车",
+    "target": "TAZ4922 6X6油田牵引车",
+    "seq": 11,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "e5c0bd2f7793",
+    "url": "http://www.dfc123.com/prodpic/20171127165803996.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 12,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "fc51ed511ed9",
+    "url": "http://www.qcgq168.com/prodpic/20170122200045435.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 13,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "8585e1f0168b",
+    "url": "https://t10.baidu.com/it/u=852192264,3481855241&fm=199&app=68&f=JPEG?w=480&h=480&s=F3A69B40E8136ACE3410F8010300F0C1",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 14,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d91811044c39",
+    "url": "https://b2b-material.cdn.bcebos.com/_J7rbuh405-xlbgYQuAlwRABK6g.jpg",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 15,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "5010e584bd69",
+    "url": "https://t11.baidu.com/it/u=2108595391,789154470&fm=199&app=68&f=JPEG?w=750&h=487&s=89B26F910E4226C65510A1060300E0E1",
+    "model": "东风6x6沙漠卡车",
+    "target": "东风6x6沙漠卡车",
+    "seq": 16,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "b7d7b6c06f80",
+    "url": "https://img0.baidu.com/it/u=1357730941,2391188081&fm=253&fmt=auto&app=120&f=JPEG?w=750&h=500",
+    "model": "OTTC越野460马力6×6牵引头卡车",
+    "target": "OTTC越野460马力6×6牵引头卡车",
+    "seq": 17,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d730979704fe",
+    "url": "http://t14.baidu.com/it/u=2749589125,739277005&fm=224&app=112&f=JPEG?w=500&h=500",
+    "model": "OTTC越野460马力6×6牵引头卡车",
+    "target": "OTTC越野460马力6×6牵引头卡车",
+    "seq": 18,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "299c1976a6f9",
+    "url": "https://t10.baidu.com/it/u=3714538125,2748883997&fm=173&app=49&f=JPEG?w=600&h=450&s=B9B04B97CE9B2BCC229CB9A40300F001",
+    "model": "MOL H6066 6x6 特种运输车",
+    "target": "MOL H6066 6x6 特种运输车",
+    "seq": 19,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "fa06bc3b76e6",
+    "url": "https://t10.baidu.com/it/u=3448705386,3765804423&fm=173&app=49&f=JPEG?w=600&h=400&s=1D8242964E1323CCC0169BA503006001",
+    "model": "MOL H6066 6x6 特种运输车",
+    "target": "MOL H6066 6x6 特种运输车",
+    "seq": 20,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "63130517d2c6",
+    "url": "https://p0.ssl.img.360kuai.com/t01b433b95d66d8d8dc.jpg?size=600x450",
+    "model": "MOL H6066 6x6 特种运输车",
+    "target": "MOL H6066 6x6 特种运输车",
+    "seq": 21,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "45dd6549629c",
+    "url": "https://p0.ssl.img.360kuai.com/t018bce3e168113b490.jpg?size=600x215",
+    "model": "MOL H6066 6x6 特种运输车",
+    "target": "MOL H6066 6x6 特种运输车",
+    "seq": 22,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "da9a32f3fd24",
+    "url": "https://p0.ssl.img.360kuai.com/t0156a8d10263227358.jpg?size=600x395",
+    "model": "MOL H6066 6x6 特种运输车",
+    "target": "MOL H6066 6x6 特种运输车",
+    "seq": 23,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "bad319c6922d",
+    "url": "https://i0.hdslb.com/bfs/archive/08c8a324c7711ef09b06c5e5d3537e3363bc7b4b.jpg",
+    "model": "Mercedes-Benz Arocs 6x6 牵引车",
+    "target": "Mercedes-Benz Arocs 6x6 牵引车",
+    "seq": 24,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "a518e030ece5",
+    "url": "https://pic12.secooimg.com/vendor_product_mall/15/11/562fccda2683477699d9bdd16c86fa43.jpg",
+    "model": "Mercedes-Benz Arocs 6x6 牵引车",
+    "target": "Mercedes-Benz Arocs 6x6 牵引车",
+    "seq": 25,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "a041db3e2155",
+    "url": "http://pic12.secooimg.com/vendor_product_mall/15/10/bc87c65afded4e6f9493efa84ce926d6.jpg",
+    "model": "Mercedes-Benz Arocs 6x6 牵引车",
+    "target": "Mercedes-Benz Arocs 6x6 牵引车",
+    "seq": 26,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "26d1e958a177",
+    "url": "https://img2.baidu.com/it/u=143501012,1137311362&fm=253&fmt=auto&app=120&f=JPEG?w=667&h=500",
+    "model": "Mercedes-Benz Arocs 6x6 牵引车",
+    "target": "Mercedes-Benz Arocs 6x6 牵引车",
+    "seq": 27,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d254a086f62c",
+    "url": "https://img4.kcimg.cn/imgc/0/495/495541.jpg_1200x800.jpg",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 28,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "23cbcb8843ed",
+    "url": "https://f11.baidu.com/it/u=2281618549,1034785405&fm=175&s=9B90DBA25F4132CA21BC2CA40300D083&w=640&h=427&img.JPEG&access=215967316",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 29,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "2f16ca60c202",
+    "url": "https://inews.gtimg.com/newsapp_bt/0/15027309774/1000",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 30,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "968f8fd9af8a",
+    "url": "https://inews.gtimg.com/newsapp_bt/0/15027309760/1000",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 31,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "1a5576c20f44",
+    "url": "https://inews.gtimg.com/newsapp_bt/0/15027309833/1000",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 32,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d54496c64c65",
+    "url": "https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2968915160,3869805221&fm=173&s=9C93D8B60528B74958F2D7BD0300E00A&w=640&h=427&img.JPEG",
+    "model": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "target": "德龙X3000 6X6 沙漠越野载货车底盘",
+    "seq": 33,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "b0389357f8d0",
+    "url": "https://resource.21-sun.com/internet/manage2021/image//2022/04/15/2022092814_1649986094684.jpeg",
+    "model": "K-65959",
+    "target": "K-65959",
+    "seq": 34,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d82c68445899",
+    "url": "http://5b0988e595225.cdn.sohucs.com/images/20190202/05228fc6d69d4df9b5b0895014c887ab.jpeg",
+    "model": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "target": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "seq": 35,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "d981e9f8bfa0",
+    "url": "https://pics2.baidu.com/feed/6c224f4a20a44623efb6817d7833160a0cf3d743.jpeg?token=ab8bd7928243f0dc24086f63b12d0725&s=76945D8D901235C84C185597030030EA",
+    "model": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "target": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "seq": 36,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "51240a360437",
+    "url": "https://papr.yunshuren.com/file/42/752/1536727609991.jpg!news.pc",
+    "model": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "target": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "seq": 37,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "34e9afdc38f6",
+    "url": "https://img2.baidu.com/it/u=1224877454,620132178&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=333",
+    "model": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "target": "MOL-Brec TB 800（KFM“Desert Lion”沙漠狮）",
+    "seq": 38,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "0c3f0f21f2c4",
+    "url": "https://t11.baidu.com/it/u=2044758934,262881107&fm=30&app=106&f=JPEG?w=640&h=394&s=5F303CC45A130AC82C888513010050C3",
+    "model": "Titan 沙漠用越野卡车",
+    "target": "Titan 沙漠用越野卡车",
+    "seq": 39,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "797168ae77a4",
+    "url": "https://t12.baidu.com/it/u=257307341,262881108&fm=30&app=106&f=JPEG?w=640&h=395&s=07977C8452032CEC13A518810300D093",
+    "model": "Titan 沙漠用越野卡车",
+    "target": "Titan 沙漠用越野卡车",
+    "seq": 40,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "f1adba7986db",
+    "url": "http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20171031/14410adc0e204c0ea9c0c7529642c123.jpeg",
+    "model": "Titan 沙漠用越野卡车",
+    "target": "Titan 沙漠用越野卡车",
+    "seq": 41,
+    "status": "active",
+    "round": 2
+   },
+   {
+    "asset_id": "02b9ee3db73a",
+    "url": "https://f11.baidu.com/it/u=512438953,3466048895&fm=173&s=2FE24C85080380C23A158011030050C1&w=640&h=390&img.JPEG&access=215967316",
+    "model": "Titan 沙漠用越野卡车",
+    "target": "Titan 沙漠用越野卡车",
+    "seq": 42,
+    "status": "active",
+    "round": 2
+   }
+  ],
+  "blacklist": [],
+  "preferences": {},
+  "next_seq": 42,
+  "rounds": 1,
+  "max_rounds": 5,
+  "last_checkpoint": "WRITEBACK"
+ },
+ "steps": 18,
+ "applied": 1,
+ "updated_at": "2026-11-16T15:25:57"
+}
