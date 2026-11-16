@@ -27,7 +27,7 @@
 | 状态机检查 | `docs/stages.json`、`scripts/check_stages.py`、`scripts/check_machine.py`（换机器全检） |
 | 协作/指令 | `AGENTS.md`、`docs/COMMANDS.md`、`docs/BACKLOG.md` |
 | S0-05 设计 | `docs/s0-05-session-loop-plan-20261115.md`、`docs/s0-05-router-strategy-20261115.md` |
-| S0-05 Session 入口（原型 L1） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（gitignored）；测试 `tests/test_session_runner.py`（4） |
+| S0-05 Session 入口原型（M4.3 后） | `src/equiplens/session_runner.py`、`scripts/run_session.py`；会话 `data-test/sessions/<id>.json`（gitignored）；测试 `tests/test_session_runner.py`（8） |
 | S0-05 Session（原型）/ M4.3 | `src/equiplens/session.py`、`session_router.py`、`retrieval_engine/engine.py::apply_patches`；A/B：`scripts/run_session_case.py`、`scripts/compare_m43_ab.py`；数据 `data-test/runs/m43-*`、`data-test/evals/m43-*.json` |
 | 查询规划/候选 | `src/equiplens/planning.py`、`scripts/plan_candidates.py`（`--concurrency` 默认 4；`--topup` 默认 2、可显式 4；抽取输出 slots/search_key） |
 | 意图排序 N+4（N=brief 槽数） | `scripts/rank_plan.py`（`--deterministic` 仅实验开关） |
@@ -53,12 +53,12 @@
 | 模块 | 代码 |
 |---|---|
 | 数据库/摄取 | `db.py`、`ingest.py`、`corpus.py` |
-| 源适配/健康 | `channels.py`、`webchannel.py`、`retrieval_engine/sources.py` |
-| 证据 | `retrieval_engine/evidence.py` |
+| 源适配/健康 | `src/equiplens/channels.py`、`webchannel.py`、`retrieval_engine/sources.py` |
+| 证据 | `src/equiplens/retrieval_engine/evidence.py` |
 | 审核服务 | `review.py`、`reviewserver.py`、`scripts/build_*_review.py` |
 | L3 段落质检 | `passage.py`、`l3gate.py`、`scripts/eval_l3gate.py` |
 | 旧 text/workflow | `textrun.py`、`workflow.py`、`runner.py`、`strategy.py`、`query.py`、`roster.py` |
-| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S0-05 Session 原型 + `apply_to_brief`；S4 未激活）、`session_router.py`（LLM 提议 + context + 守卫 + `values` 结构化值）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`retrieval_engine/discover.py`、`retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
+| 辅助模块 | `doctor.py`（环境自检）、`identity.py`（**车型标识规范，第一段/第二段共用**）、`taskspec.py`（S0-01 任务单规范化/校验，含固定 policy 枚举）、`session.py`（S0-05 Session 原型 + `apply_to_brief`；S4 未激活）、`session_router.py`（LLM 提议 + context + 守卫 + `values` 结构化值）、`domainbench.py`（域名基准）、`probe.py`（判向探针）、`retrieval.py`（R1 检索任务）、`runlog.py`（run 日志，`est` 恒为真，成本仅估算）、`src/equiplens/retrieval_engine/discover.py`、`src/equiplens/retrieval_engine/adapters.py`（FakeWorld，仅 `--fixtures`） |
 
 ## 4. 实验脚本（不得默认进生产）
 
@@ -89,9 +89,9 @@
 | 测试 | 覆盖 |
 |---|---|
 | `tests/test_briefing.py` | brief API/组装/校验（7） |
-| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划（48） |
+| `tests/test_retrieval_engine.py` | 状态机/配额/fill/跨 unit 借位/code prefilter/重规划/fill.quota（50） |
 | `tests/test_imagesearch.py` | 搜索/平台预筛/下载阶梯 |
-| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验（20） |
+| `tests/test_planning.py` | 查询计划/候选归并/negative 护栏/slots/model_code 校验/离类护栏（21） |
 | `tests/test_identity.py` | 车型标识归一化（主码/括号规则/尾部后缀/边界，10） |
 | `tests/test_session.py` | Session 状态机：软/硬打断、两轴约束、确认、幂等、去重、轮次、持久化、资产定位（15） |
 | `tests/test_session_router.py` | Router 守卫：白名单/硬软/删除确认/上下文/回退/工厂（15） |

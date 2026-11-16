@@ -1,0 +1,466 @@
+{
+ "brief_id": "m43e-h2e",
+ "created_at": "2026-11-16T16:32:17",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "清障车 道路清障车：拖吊式与 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "清障车 道路清障车：拖吊式与 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "道路清障车：拖吊式与 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "清障车 道路清障车：拖吊式与平板背负式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "清障车 工程车 道路清障车：拖吊式与 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "清障车 道路清障车：拖吊式与 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "清障车 道路清障车：拖吊式与 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 88,
+ "candidates": [
+  {
+   "model": "庆铃五十铃 KV100 平板清障车",
+   "brand": "五十铃（庆铃）",
+   "slots": {
+    "brand": "五十铃",
+    "series": "KV100",
+    "model_code": "KV100",
+    "config": ""
+   },
+   "search_key": "庆铃五十铃KV100 平板清障车",
+   "class_match": "unknown",
+   "reason": "结果中五十铃清障车词条明确列出庆铃五十铃KV100平板清障车，属轻/中型二类底盘改装的平板背负式清障车，符合任务单构型未锁定情形。",
+   "sources": [
+    "https://baike.baidu.com/item/%E4%BA%94%E5%8D%81%E9%93%83%E6%B8%85%E9%9A%9C%E8%BD%A6?bst=1789939408.0755c6a510bbb473#1"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "KV100",
+   "identity": "code/KV100",
+   "identity_kind": "code",
+   "model_variants": [
+    "庆铃五十铃 KV100 平板清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 道路清障车：拖吊式与 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "庆铃五十铃 700P 平板清障车",
+   "brand": "五十铃（庆铃）",
+   "slots": {
+    "brand": "五十铃",
+    "series": "700P",
+    "model_code": "700P",
+    "config": ""
+   },
+   "search_key": "庆铃五十铃700P 平板清障车",
+   "class_match": "unknown",
+   "reason": "同一词条列出600P、700P平板清障车，700P为中重型底盘平板背负式清障车，与任务单“轻/中重型商用车二类底盘+平板背负式”吻合；同车系600P不再重复列出。",
+   "sources": [
+    "https://baike.baidu.com/item/%E4%BA%94%E5%8D%81%E9%93%83%E6%B8%85%E9%9A%9C%E8%BD%A6?bst=1789939408.0755c6a510bbb473#1"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "700",
+   "identity": "generic/庆铃五十铃700P平板清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "庆铃五十铃 700P 平板清障车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "清障车 道路清障车：拖吊式与 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "江淮骏铃一拖二平板清障车",
+   "brand": "江淮",
+   "slots": {
+    "brand": "江淮",
+    "series": "骏铃",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "江淮骏铃 一拖二平板清障车",
+   "class_match": "unknown",
+   "reason": "结果列出江淮骏铃一拖二平板清障车（轴距3815、潍柴130马力，黄牌），为平板背负式清障车。",
+   "sources": [
+    "http://www.zgtzc.com/product/index_3.html",
+    "http://www.autohome.com.cn/ask/22641850.html"
+   ],
+   "source_query": "道路清障车：拖吊式与 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/江淮骏铃一拖二平板清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "江淮骏铃一拖二平板清障车",
+    "骏铃一拖二平板清障车（黄牌）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "道路清障车：拖吊式与 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment",
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "斯太尔后双桥清障车（ZZ1256M4646C）",
+   "brand": "斯太尔",
+   "slots": {
+    "brand": "斯太尔",
+    "series": "",
+    "model_code": "ZZ1256M4646C",
+    "config": ""
+   },
+   "search_key": "斯太尔后双桥清障车",
+   "class_match": "unknown",
+   "reason": "结果中给出“斯太尔后双桥清障车 底盘型号ZZ1256M4646C”，属重型拖吊/平板类清障车底盘，符合二类底盘改装路线；配置（驱动形式）结果未标明，留空。",
+   "sources": [
+    "http://www.hbcsdzqc.com/product/21_0_1.html"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "ZZ1256M4646",
+   "identity": "code/ZZ1256M4646C",
+   "identity_kind": "code",
+   "model_variants": [
+    "斯太尔后双桥清障车（ZZ1256M4646C）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "豪沃牌清障车（HTW5097TQZPZZ6）",
+   "brand": "中国重汽/豪沃",
+   "slots": {
+    "brand": "中国重汽",
+    "series": "豪沃",
+    "model_code": "HTW5097TQZPZZ6",
+    "config": ""
+   },
+   "search_key": "豪沃牌清障车 HTW5097TQZPZZ6",
+   "class_match": "unknown",
+   "reason": "结果公告条目给出“豪沃牌清障车 产品型号HTW5097TQZPZZ6，底盘型号ZZ1097H3815F191Z”，另有“重汽前四后八25吨清障车”说明重汽在清障车领域有主流产品；驱动形式未标明，留空。",
+   "sources": [
+    "https://www.aivehicle.cn/qingzhangche/index_119.html",
+    "http://www.autohome.com.cn/ask/22641850.html"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HTW5097TQZPZZ6",
+   "identity": "code/HTW5097TQZPZZ6",
+   "identity_kind": "code",
+   "model_variants": [
+    "豪沃牌清障车（HTW5097TQZPZZ6）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "清障车 道路清障车：拖吊式与 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "东风多利卡清障车（平板式）",
+   "brand": "东风",
+   "slots": {
+    "brand": "东风",
+    "series": "多利卡",
+    "model_code": "DFA1080SJ11D3",
+    "config": ""
+   },
+   "search_key": "东风多利卡 平板清障车",
+   "class_match": "unknown",
+   "reason": "结果中唯一给出完整品牌+车系+底盘型号的整车条目，且明确为平板式上装，符合平板背负式构型；总质量8495kg、136PS，属轻/中型二类底盘改装。",
+   "sources": [
+    "http://zhdljc.com/html/qzc/149.html"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与平板背负式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/东风多利卡清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "东风多利卡清障车（平板式）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 道路清障车：拖吊式与平板背负式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "程力 托吊型清障车（拖吊式）",
+   "brand": "程力",
+   "slots": {
+    "brand": "程力",
+    "series": "托吊型",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "程力 托吊型清障车",
+   "class_match": "unknown",
+   "reason": "结果给出程力托吊型清障车的托吊分离型/托吊联体型划分及托举、拖牵、起吊装置描述，对应任务单的拖吊式构型。",
+   "sources": [
+    "http://www.clqcdy.com/Company-news/40.html",
+    "http://dfclzyc.com/m/xinwen/1267.html"
+   ],
+   "source_query": "清障车 道路清障车：拖吊式与平板背负式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/程力托吊型清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "程力 托吊型清障车（拖吊式）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "清障车 道路清障车：拖吊式与平板背负式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "解放J6一拖二带吊清障车（国六）",
+   "brand": "解放",
+   "slots": {
+    "brand": "解放",
+    "series": "J6",
+    "model_code": "CA1080P62K1E5Z",
+    "config": ""
+   },
+   "search_key": "解放J6一拖二带吊清障车（国六）",
+   "class_match": "unknown",
+   "reason": "结果标题为解放J6一拖二带吊清障车（国六），产品详情给出底盘型号CA1080P62K1E5Z。",
+   "sources": [
+    "http://dfclzyc.com/cp/382.html"
+   ],
+   "source_query": "清障车 工程车 道路清障车：拖吊式与 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/解放J6一拖二带吊清障车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "解放J6一拖二带吊清障车（国六）"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "清障车 工程车 道路清障车：拖吊式与 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 16,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 8,
+  "required": 16,
+  "verifiable": 4,
+  "verifiable_share": 0.5,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": false,
+  "warning": "候选池 8 < 建议 16（1.6×(6+4)）：按当前有图率可能凑不齐备选，建议扩池或接受 short"
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 1
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 3
+   }
+  },
+  "missing": [
+   "base"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 8,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 59,
+  "unique": 8,
+  "removed": 51,
+  "generic": 5
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

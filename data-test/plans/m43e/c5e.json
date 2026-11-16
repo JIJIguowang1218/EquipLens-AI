@@ -1,0 +1,1561 @@
+{
+ "brief_id": "m43e-c5e",
+ "created_at": "2026-11-16T16:34:44",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "未指定工况 单钢轮前置于铰接前车 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 0,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 2
+  },
+  {
+   "query_id": "q-topup-1",
+   "dimension": "topup",
+   "query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-topup-2",
+   "dimension": "topup",
+   "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家",
+   "purpose": "候选池不足，补 1 条同义查询",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 4
+  }
+ ],
+ "search_results": 116,
+ "candidates": [
+  {
+   "model": "SR18M/SR18MP",
+   "brand": "山推",
+   "slots": {
+    "brand": "山推",
+    "series": "SR18",
+    "model_code": "SR18M/SR18MP",
+    "config": ""
+   },
+   "search_key": "山推SR18M/SR18MP单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题明确为山推SR18M/SR18MP单钢轮压路机，摘要写明采用铰接式车架，符合单钢轮前置于铰接前车架的任务构型。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/SR18MSR18MP.shtm"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "SR18",
+   "identity": "generic/SR18MSR18MP",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SR18M/SR18MP",
+    "山推 SR18M/SR18MP"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS262J",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS262J",
+    "config": ""
+   },
+   "search_key": "徐工XS262J机械驱动单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为徐工XS262J机械驱动单钢轮振动压路机，属于单钢轮振动压路机，可用于通用路基/土方压实候选。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/XS262J.shtm"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "XS262",
+   "identity": "code/XS262J",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS262J",
+    "徐工 XS262J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "LSS2101-2",
+   "brand": "洛建",
+   "slots": {
+    "brand": "洛建",
+    "series": "LSS",
+    "model_code": "LSS2101-2",
+    "config": ""
+   },
+   "search_key": "洛建LSS2101-2型单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果写明洛建LSS2101-2型单钢轮振动压路机为自行铰接式单钢轮压路机，符合铰接车架与单钢轮构型。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJW201103065.html"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "LSS2101",
+   "identity": "code/LSS21012",
+   "identity_kind": "code",
+   "model_variants": [
+    "LSS2101-2"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "8208T",
+   "brand": "国机常林",
+   "slots": {
+    "brand": "国机常林",
+    "series": "8208T",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "国机常林8208T单钢轮机械式压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为国机常林8208T单钢轮机械式压路机，摘要提到十字铰接、整体式后车架、框架式前车架结构，符合任务单铰接前车架特征。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/29125.shtm",
+    "https://m.21-sun.com/product/proDetail/29125.htm",
+    "http://mbig5.lmjx.net/detail/a/475/1424475.shtml"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/8208T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8208T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "model",
+    "english"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "XS45",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS45",
+    "config": ""
+   },
+   "search_key": "徐工XS45单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为徐工XS45单钢轮压路机，摘要写明铰接转向、转弯半径小，属于单钢轮压路机候选。",
+   "sources": [
+    "http://m.jdzj.com/jiage/5_22127680.html",
+    "https://www.bilibili.com/video/BV1UT411H7gM/"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "XS45",
+   "identity": "generic/XS45",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XS45"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "SY-5T",
+   "brand": "路邦",
+   "slots": {
+    "brand": "路邦",
+    "series": "SY",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "路邦SY-5T单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标注品牌路邦、型号SY-5T、产品特性单钢轮，并说明前轮系铰接式振动轮，属于单钢轮压路机候选。",
+   "sources": [
+    "https://lubangjx123860.gys.cn/supply/4254956478.html"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SY5T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SY-5T",
+    "路邦 SY-5T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SY-3.5T",
+   "brand": "路邦",
+   "slots": {
+    "brand": "路邦",
+    "series": "SY",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "路邦SY-3.5T单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果标注品牌路邦、型号SY-3.5T、单钢轮压路机，并写明由铰接式车架等组成，符合单钢轮铰接构型。",
+   "sources": [
+    "https://lubangjx123860.gys.cn/supply/4959103456.html",
+    "http://wap.makepolo.com/product-detail/101042138767.html",
+    "http://wap.makepolo.com/product-detail/101045146609.html"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/SY35T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "SY-3.5T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "XS65",
+   "brand": "山东徐工路恒",
+   "slots": {
+    "brand": "山东徐工路恒",
+    "series": "XS",
+    "model_code": "XS65",
+    "config": ""
+   },
+   "search_key": "XS65单钢轮6吨压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为单钢轮6吨压路机，产品型号XS65，供应方为山东徐工路恒机械有限公司，可作为单钢轮压路机候选。",
+   "sources": [
+    "https://www.gkzhan.com/st250743/product_11454653.html"
+   ],
+   "source_query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "XS65",
+   "identity": "generic/XS65",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XS65"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "未指定工况 单钢轮压路机 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "YZ6C",
+   "brand": "江苏骏马",
+   "slots": {
+    "brand": "江苏骏马",
+    "series": "YZ6C",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "江苏骏马 YZ6C 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为单钢轮振动压路机，且描述“铰接车架，转向灵活；前车架叉脚支撑设计”，符合单钢轮前置于铰接前车架、后轮驱动的构型。",
+   "sources": [
+    "https://m.cehome.com/zhengji/yaluji/rollerco_yz6c_view/"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/YZ6C",
+   "identity_kind": "generic",
+   "model_variants": [
+    "YZ6C"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS190A",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS190A",
+    "model_code": "XS190A",
+    "config": ""
+   },
+   "search_key": "徐工 XS190A 全液压单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果标题即“徐工XS190A型全液压单钢轮振动压路机”，正文写明“机架采用铰接式车架，液压铰接转向”，与任务单底盘构型一致。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJA200605005.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "XS190",
+   "identity": "code/XS190A",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS190A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "8228T",
+   "brand": "常林",
+   "slots": {
+    "brand": "常林",
+    "series": "8228T",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "常林 8228T 单钢轮机械式压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为“常林8228T机械式高端型单钢轮压路机”，并写明“采用十字铰接、整体式后车架、框架式前车架结构，采用全液压转向”，符合铰接单钢轮构型。",
+   "sources": [
+    "https://product.d1cm.com/heli004/102386/",
+    "https://m.hbzhan.com/chanpin/26026692.html",
+    "http://www.hzsinomach.com/products_info.php?vid=55"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/8228T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8228T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 3
+  },
+  {
+   "model": "ASC 200 PD",
+   "brand": "安迈",
+   "slots": {
+    "brand": "安迈",
+    "series": "ASC 200 PD",
+    "model_code": "ASC 200 PD",
+    "config": ""
+   },
+   "search_key": "安迈 ASC 200 PD 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为“安迈ASC 200 PD单钢轮压路机”，特点中包含“双承重铰接”与液压驱动、驾驶室等，属单钢轮铰接车架压路机。",
+   "sources": [
+    "https://m.21-sun.com/product/proDetail/ASC200PD.htm"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "ASC200",
+   "identity": "code/ASC200",
+   "identity_kind": "code",
+   "model_variants": [
+    "ASC 200 PD",
+    "安迈 ASC 200 PD"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SD100D",
+   "brand": "沃尔沃",
+   "slots": {
+    "brand": "沃尔沃",
+    "series": "SD100D",
+    "model_code": "SD100D",
+    "config": ""
+   },
+   "search_key": "沃尔沃 SD100D 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为“沃尔沃SD100D单钢轮压路机”，属自行式单钢轮压路机产品页，型号与任务单的通用单钢轮压实工况一致。",
+   "sources": [
+    "https://m.cehome.com/zhengji/wajueji/volvo_sd100d_view/"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "SD100",
+   "identity": "code/SD100D",
+   "identity_kind": "code",
+   "model_variants": [
+    "SD100D"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XG626M",
+   "brand": "厦工",
+   "slots": {
+    "brand": "厦工",
+    "series": "XG626M",
+    "model_code": "XG626M",
+    "config": ""
+   },
+   "search_key": "厦工 XG626M 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题为“厦工XG626M单钢轮压路机”，描述含“铰接锁止结构将前后车架安全锁紧”“大直径轮胎、大扭矩驱动桥”，符合铰接车架单钢轮压路机构型。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/20353.shtm"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "XG626",
+   "identity": "code/XG626M",
+   "identity_kind": "code",
+   "model_variants": [
+    "XG626M"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model",
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HC 228",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "HC",
+    "model_code": "HC 228",
+    "config": ""
+   },
+   "search_key": "悍马 HC 228 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果明确标注为悍马HC 228全液压单钢轮压路机，符合单钢轮压路机任务类别；来源未给出6x6/8x8等驱动形式，config留空。",
+   "sources": [
+    "https://mbig5.lmjx.net/detail/a/540/1617540.shtml"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HC228",
+   "identity": "code/HC228",
+   "identity_kind": "code",
+   "model_variants": [
+    "HC 228"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "HC 268i P",
+   "brand": "悍马",
+   "slots": {
+    "brand": "悍马",
+    "series": "HC",
+    "model_code": "HC 268i P",
+    "config": ""
+   },
+   "search_key": "悍马 HC 268i P 国四单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果相关推荐中出现“悍马 HC 268i P 国四单钢轮压路机”，属于单钢轮压路机系列；未给出驱动形式。",
+   "sources": [
+    "https://mzhidao.lmjx.net/question/18/184929.shtml"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "HC268",
+   "identity": "generic/HC268IP",
+   "identity_kind": "generic",
+   "model_variants": [
+    "HC 268i P"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "BW226-5 CL",
+   "brand": "宝马格",
+   "slots": {
+    "brand": "宝马格",
+    "series": "BW",
+    "model_code": "BW226-5 CL",
+    "config": ""
+   },
+   "search_key": "宝马格 BW226-5 CL 单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果标题与正文明确为宝马格26吨单钢轮振动压路机BW226-5 CL，符合单钢轮压路机类别；未给出驱动形式。",
+   "sources": [
+    "http://www.chinacar.com.cn/newsview537842.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "BW226",
+   "identity": "code/BW2265",
+   "identity_kind": "code",
+   "model_variants": [
+    "BW226-5 CL"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XS222",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS222",
+    "config": ""
+   },
+   "search_key": "徐工 XS222 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果页面列出徐工XS222单钢轮压路机，属于任务要求的单钢轮压路机；未给出驱动形式。",
+   "sources": [
+    "https://product.360che.com/price/c8_s169_b1492_s8630.html#1"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "XS222",
+   "identity": "code/XS222",
+   "identity_kind": "code",
+   "model_variants": [
+    "XS222"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "JC系列",
+   "brand": "天工",
+   "slots": {
+    "brand": "天工",
+    "series": "JC",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "天工 JC系列 单钢轮振动压路机 前轮振动 后轮驱动 铰接车架",
+   "class_match": "unknown",
+   "reason": "结果描述天工JC系列为超重型单钢轮压路机，采用前轮振动、后轮驱动、铰接车架，符合任务单的前置单钢轮与铰接车架构型。",
+   "sources": [
+    "https://d.wanfangdata.com.cn/periodical/CihQZXJpb2RpY2FsQ0hJU29scjkyMDI2MDYxMDIwMjYwNjEwMTYxMjM4EhBnY2p4eXd4MjAwNDA4MDI5Gghrbm5sZWc4Yg%253D%253D"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/JC系列",
+   "identity_kind": "generic",
+   "model_variants": [
+    "JC系列"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "TY-6T",
+   "brand": "腾宇",
+   "slots": {
+    "brand": "腾宇",
+    "series": "TY",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "腾宇 TY-6T 单钢轮振动压路机 铰接架 前轮振动",
+   "class_match": "unknown",
+   "reason": "结果给出TY-6T型振动压路机，含铰接架总成、前轮系铰接式振动轮，后车架/驱动桥，符合单钢轮前置铰接车架特征。",
+   "sources": [
+    "https://www.gytc.com/goods/752206",
+    "http://www.chinafbdj.com/cpview5-31-35470446.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/TY6T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "TY-6T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "8吨单钢轮压路机",
+   "brand": "经纬",
+   "slots": {
+    "brand": "经纬",
+    "series": "单钢轮",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "经纬 8吨 单钢轮压路机 前置单钢轮 后置双胶轮驱动",
+   "class_match": "unknown",
+   "reason": "结果明确经纬品牌8吨单钢轮压路机，前置单钢轮液压振动、后置双胶轮驱动，符合任务单的单钢轮前置于铰接前车架、后部轮胎驱动构型。",
+   "sources": [
+    "https://www.b2b168.org/wvs93707100.html",
+    "https://m.912688.com//supply/312448794.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8吨单钢轮压路机",
+    "经纬8吨单钢轮压路机",
+    "20吨单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车架 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "unit",
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "厦工 XG626MH",
+   "brand": "厦工",
+   "slots": {
+    "brand": "厦工",
+    "series": "",
+    "model_code": "XG626MH",
+    "config": ""
+   },
+   "search_key": "厦工 XG626MH 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果为厦工XG626MH机械式单钢轮压路机，含大扭矩驱动桥、大直径轮胎等参数，符合单钢轮压路机候选。",
+   "sources": [
+    "https://m.d1cm.com/schq/202105060120577.shtml"
+   ],
+   "source_query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "XG626",
+   "identity": "code/XG626MH",
+   "identity_kind": "code",
+   "model_variants": [
+    "厦工 XG626MH"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工 XS600J",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "",
+    "model_code": "XS600J",
+    "config": ""
+   },
+   "search_key": "徐工 XS600J 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果为徐工XS600J单钢轮压路机，提及铰接转向、轮边减速驱动桥，匹配铰接底盘单钢轮构型。",
+   "sources": [
+    "http://www.xcmg-roller.com/news/1-236.html"
+   ],
+   "source_query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "XS600",
+   "identity": "code/XS600J",
+   "identity_kind": "code",
+   "model_variants": [
+    "徐工 XS600J"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "山东友浚 SYL-8t",
+   "brand": "山东友浚",
+   "slots": {
+    "brand": "山东友浚",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "山东友浚 SYL-8t 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果为SYL-8t单钢轮压路机，明确前置单钢轮、后置双胶轮驱动、前后机身铰接，构型匹配度高。",
+   "sources": [
+    "http://www.shandongyouyijixie.com/yljsb/dglylj2.html"
+   ],
+   "source_query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/山东友浚SYL8T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山东友浚 SYL-8t"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "北京乐丰 LF-SG20T",
+   "brand": "北京乐丰",
+   "slots": {
+    "brand": "北京乐丰",
+    "series": "",
+    "model_code": "LF-SG20T",
+    "config": ""
+   },
+   "search_key": "北京乐丰 LF-SG20T 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果为LF-SG20T单钢轮压路机，给出20t级工作质量、钢轮宽度和激振力等参数，可作为大吨位单钢轮候选。",
+   "sources": [
+    "https://linan.19lou.com/pinpai/chanpin-539718/"
+   ],
+   "source_query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "SG20",
+   "identity": "generic/北京乐丰LFSG20T",
+   "identity_kind": "generic",
+   "model_variants": [
+    "北京乐丰 LF-SG20T"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "未指定工况 单钢轮前置于铰接前车 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工XS265JSIV单钢轮压路机",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS265JSIV",
+    "config": ""
+   },
+   "search_key": "徐工XS265JSIV 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果标题和页面为徐工XS265JSIV单钢轮压路机实机信息，属于单钢轮压路机；结果未给出驱动形式。",
+   "sources": [
+    "https://m.xcmgused.com/index.php/detail/1748600152586863.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "XS265JSIV",
+   "identity": "generic/徐工XS265JSIV单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "徐工XS265JSIV单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "徐工XS190A全液压单钢轮振动压路机",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "XS",
+    "model_code": "XS190A",
+    "config": ""
+   },
+   "search_key": "徐工XS190A 单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为XS190A全液压单钢轮振动压路机，并说明机架采用铰接式车架、液压铰接转向。",
+   "sources": [
+    "https://wap.cnki.net/touch/web/Journal/Article/GCJA200605005.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "XS190",
+   "identity": "generic/徐工XS190A全液压单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "徐工XS190A全液压单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "国机常林8208T单钢轮机械式压路机",
+   "brand": "国机常林",
+   "slots": {
+    "brand": "国机常林",
+    "series": "单钢轮机械式",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "国机常林8208T 单钢轮机械式压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为8208T单钢轮机械式压路机，并提到十字铰接、整体式后车架、框架式前车架结构。",
+   "sources": [
+    "https://www.tiebimall.com/proDetail/29125.shtm"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/国机常林8208T单钢轮机械式压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "国机常林8208T单钢轮机械式压路机",
+    "8208T单钢轮机械式压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    },
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "常林YZ14H单钢轮压路机",
+   "brand": "常林",
+   "slots": {
+    "brand": "常林",
+    "series": "YZ",
+    "model_code": "YZ14H",
+    "config": ""
+   },
+   "search_key": "常林YZ14H 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为常林YZ14H单钢轮压路机，后轮液压驱动；属于任务类别单钢轮压路机。",
+   "sources": [
+    "http://nxxty.com/view.asp?newsid=131&aid=53"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "YZ14",
+   "identity": "generic/常林YZ14H单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "常林YZ14H单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "国机洛建LSS327机械式单钢轮振动压路机",
+   "brand": "国机洛建",
+   "slots": {
+    "brand": "国机洛建",
+    "series": "LSS",
+    "model_code": "LSS327",
+    "config": ""
+   },
+   "search_key": "国机洛建LSS327 单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为国机洛建LSS327机械式单钢轮振动压路机，并称其为超重型单钢轮振动压路机。",
+   "sources": [
+    "http://mp.weixin.qq.com/s?__biz=MzA5NjM5NzgzNg==&mid=2652192760&idx=1&sn=82a377f4155602ab8de660b70fb42d33"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "LSS327",
+   "identity": "generic/国机洛建LSS327机械式单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "国机洛建LSS327机械式单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "洛建LSS2301单钢轮压路机",
+   "brand": "洛建",
+   "slots": {
+    "brand": "洛建",
+    "series": "LSS",
+    "model_code": "LSS2301",
+    "config": ""
+   },
+   "search_key": "洛建LSS2301 单钢轮压路机",
+   "class_match": "unknown",
+   "reason": "结果文章介绍洛建LSS2301为常见单钢轮压路机实车，并给出工作质量23吨等信息。",
+   "sources": [
+    "https://nbbs.cehome.com/thread-455501-1-1.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "LSS2301",
+   "identity": "generic/洛建LSS2301单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "洛建LSS2301单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "天工JC系列单钢轮振动压路机",
+   "brand": "天工",
+   "slots": {
+    "brand": "天工",
+    "series": "JC",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "天工JC系列 单钢轮振动压路机",
+   "class_match": "unknown",
+   "reason": "结果明确为天工JC系列单钢轮振动压路机，采用前轮振动、后轮驱动、铰接车架。",
+   "sources": [
+    "https://d.wanfangdata.com.cn/periodical/CihQZXJpb2RpY2FsQ0hJU29scjkyMDI2MDYxMDIwMjYwNjEwMTYxMjM4EhBnY2p4eXd4MjAwNDA4MDI5Gghrbm5sZWc4Yg%253D%253D"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 实车",
+   "source_query_id": "q-topup-1",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/天工JC系列单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "天工JC系列单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-1",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 实车"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "YZ6C单钢轮振动压路机",
+   "brand": "骏马",
+   "slots": {
+    "brand": "骏马",
+    "series": "单钢轮",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "骏马YZ6C单钢轮压路机 铰接车架",
+   "class_match": "unknown",
+   "reason": "结果明确为骏马YZ6C单钢轮振动压路机，采用铰接车架，符合单钢轮+铰接车架构型。",
+   "sources": [
+    "https://m.cehome.com/zhengji/yaluji/rollerco_yz6c_view/",
+    "http://www.yunjianji.net/sell/show.php?itemid=251"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/YZ6C单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "YZ6C单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "JM506X机械单钢轮压路机",
+   "brand": "骏马",
+   "slots": {
+    "brand": "骏马",
+    "series": "单钢轮",
+    "model_code": "JM506X",
+    "config": ""
+   },
+   "search_key": "骏马JM506X机械单钢轮压路机 铰接式车架",
+   "class_match": "unknown",
+   "reason": "结果标明JM506X为机械单钢轮压路机，液压转向、铰接式车架。",
+   "sources": [
+    "https://www.junmagroup.cn/product-72.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "JM506",
+   "identity": "generic/JM506X机械单钢轮压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "JM506X机械单钢轮压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "8228T单钢轮机械式压路机",
+   "brand": "国机常林",
+   "slots": {
+    "brand": "国机常林",
+    "series": "单钢轮机械式",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "国机常林8228T单钢轮机械式压路机 十字铰接",
+   "class_match": "unknown",
+   "reason": "结果给出8228T单钢轮机械式压路机，采用十字铰接、整体式后车架、框架式前车架。",
+   "sources": [
+    "https://m.hbzhan.com/chanpin/26026692.html",
+    "http://www.jixie19.com/zhengji/show-2.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/8228T单钢轮机械式压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "8228T单钢轮机械式压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "LTS728H全液压单钢轮振动压路机",
+   "brand": "路通重工",
+   "slots": {
+    "brand": "路通重工",
+    "series": "单钢轮",
+    "model_code": "LTS728H",
+    "config": ""
+   },
+   "search_key": "路通重工LTS728H全液压单钢轮振动压路机 铰接式转向",
+   "class_match": "unknown",
+   "reason": "结果标题含路通重工LTS728H全液压单钢轮振动压路机及铰接式转向描述，符合铰接单钢轮构型。",
+   "sources": [
+    "https://www.zchui.com/productDetail/4508001.html"
+   ],
+   "source_query": "单钢轮压路机 单钢轮前置于铰接前车 厂家",
+   "source_query_id": "q-topup-2",
+   "dimension": "topup",
+   "verifiable": true,
+   "code_core": "LTS728",
+   "identity": "generic/LTS728H全液压单钢轮振动压路机",
+   "identity_kind": "generic",
+   "model_variants": [
+    "LTS728H全液压单钢轮振动压路机"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-topup-2",
+     "query": "单钢轮压路机 单钢轮前置于铰接前车 厂家"
+    }
+   ],
+   "dimensions": [
+    "topup"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 2,
+  "kept": 16,
+  "candidates_before": null
+ },
+ "pool": {
+  "count": 36,
+  "required": 29,
+  "verifiable": 23,
+  "verifiable_share": 0.639,
+  "slots": 14,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 0
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 8
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 14
+   }
+  },
+  "missing": [
+   "environment"
+  ],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 36,
+  "slots": 14,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 54,
+  "unique": 36,
+  "removed": 18,
+  "generic": 25
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 0
+}

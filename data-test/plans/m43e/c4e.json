@@ -1,0 +1,1129 @@
+{
+ "brief_id": "m43e-c4e",
+ "created_at": "2026-11-16T16:33:30",
+ "model": "deepseek-flash",
+ "planner_version": "v2-provenance",
+ "concurrency": 4,
+ "extract_mode": "model",
+ "glean": {
+  "rounds": 0,
+  "added": 0
+ },
+ "queries": [
+  {
+   "query_id": "q-base",
+   "dimension": "base",
+   "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "工况 + 类目 + 构型",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-model",
+   "dimension": "model",
+   "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "车型候选主查询",
+   "results": 20,
+   "kept": 7,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 3
+  },
+  {
+   "query_id": "q-env",
+   "dimension": "environment",
+   "query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "邻域工况/上装",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-en",
+   "dimension": "english",
+   "query": "叉车 平衡重式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "英文品牌兜底",
+   "results": 20,
+   "kept": 3,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 0
+  },
+  {
+   "query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-exact 的 scope",
+   "results": 20,
+   "kept": 8,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 0,
+   "dropped_invalid_code": 1
+  },
+  {
+   "query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "query": "仓储物流 工程车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "purpose": "research_unit u-env 的 scope",
+   "results": 20,
+   "kept": 6,
+   "dropped_no_source": 0,
+   "dropped_invalid_source": 1,
+   "dropped_invalid_code": 0
+  }
+ ],
+ "search_results": 109,
+ "candidates": [
+  {
+   "model": "山推SF18S（3）蓄电池平衡重式叉车",
+   "brand": "山推",
+   "slots": {
+    "brand": "山推",
+    "series": "SF18S（3）蓄电池平衡重式叉车",
+    "model_code": "SF18S（3）",
+    "config": ""
+   },
+   "search_key": "山推 SF18S（3）蓄电池平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为山东山推机械公司开发的蓄电池平衡重式叉车，明确用于仓储物流、物流业等场景。",
+   "sources": [
+    "http://www.cgfh.com.cn/GeneralEquMan/72757.jhtml",
+    "http://www.tckjdsc.com/tec/143/143012.html"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "SF18",
+   "identity": "generic/山推SF18S蓄电池平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "山推SF18S（3）蓄电池平衡重式叉车",
+    "SF18S（3）蓄电池平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流 工程车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 2
+  },
+  {
+   "model": "CPD15 1.5吨电动平衡重式叉车",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "电动平衡重式叉车",
+    "model_code": "CPD15",
+    "config": ""
+   },
+   "search_key": "CPD15 电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "采购技术要求中出现1.5吨电动平衡重式叉车型号CPD15，并给出锂电池、门架、起升高度等参数，构型匹配。",
+   "sources": [
+    "https://ztbxx.caep.ac.cn/TPWeb/WebbuilderMIS/attach/downloadZtbAttach.jspx?attachGuid=d24b1428-f221-461f-bac7-3be4416e1fd0&appUrlFlag=ztbAttach&siteGuid=7eb5f7f1-9041-43ad-8e13-8fcb82ea831a#1"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CPD15",
+   "identity": "generic/CPD15电动平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD15 1.5吨电动平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    },
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流 工程车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base",
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CPD30型锂电平衡叉车",
+   "brand": "",
+   "slots": {
+    "brand": "",
+    "series": "锂电平衡叉车",
+    "model_code": "CPD30",
+    "config": ""
+   },
+   "search_key": "CPD30 锂电平衡叉车",
+   "class_match": "unknown",
+   "reason": "产品描述列出1.5-4t锂电平衡叉车及CPD30型，属于锂电池平衡重式叉车，可用于仓库等场景。",
+   "sources": [
+    "https://www.alibaba.com/product-detail/description/descIframe.html?productId=1601437027652"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "CPD30",
+   "identity": "generic/CPD30型锂电平衡叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD30型锂电平衡叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "林德10吨高压锂电平衡重叉车",
+   "brand": "林德",
+   "slots": {
+    "brand": "林德",
+    "series": "高压锂电平衡重叉车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "林德 10吨高压锂电平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为林德高压锂电平衡重叉车交付案例，属于电动平衡重式叉车，虽为重载工况但仍为仓储物流搬运设备。",
+   "sources": [
+    "https://mh.jgvogel.cn/c/1630/1630224.shtml"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/林德高压锂电平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "林德10吨高压锂电平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "安徽宇锋平衡重式叉车AGV",
+   "brand": "安徽宇锋",
+   "slots": {
+    "brand": "安徽宇锋",
+    "series": "平衡重式叉车AGV",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "安徽宇锋 平衡重式叉车AGV",
+   "class_match": "unknown",
+   "reason": "结果介绍安徽宇锋自主研发的平衡重式叉车AGV，用于仓库、码头码垛及生产线物流，符合仓储物流自动化方向。",
+   "sources": [
+    "http://www.ca800.com:8002/news/d_1o18itiib2iu1.html"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/安徽宇锋平衡重式叉车AGV",
+   "identity_kind": "generic",
+   "model_variants": [
+    "安徽宇锋平衡重式叉车AGV"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "华创科技AT20/30平衡重式AGV无人叉车",
+   "brand": "华创科技",
+   "slots": {
+    "brand": "华创科技",
+    "series": "平衡重式AGV无人叉车",
+    "model_code": "AT20/30",
+    "config": ""
+   },
+   "search_key": "AT20/30 平衡重式 AGV 无人叉车",
+   "class_match": "unknown",
+   "reason": "结果明确AT20/30为激光SLAM平衡重式AGV无人叉车，用于工厂仓储物流托盘货物叉取转运堆垛出入库。",
+   "sources": [
+    "http://www.huachuankeji.com/news_d.html?newsid=6635519&_t=1788744682"
+   ],
+   "source_query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-base",
+   "dimension": "base",
+   "verifiable": true,
+   "code_core": "AT20",
+   "identity": "generic/华创科技AT2030平衡重式AGV无人叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "华创科技AT20/30平衡重式AGV无人叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-base",
+     "query": "仓储物流 叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "base"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "FB50H 电动平衡重式叉车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "H系列",
+    "model_code": "FB50H",
+    "config": ""
+   },
+   "search_key": "FB50H 电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为H系列5吨电动平衡重叉车，属于平衡重式电动叉车。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202411/542308994136446869.html"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "FB50",
+   "identity": "generic/FB50H电动平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FB50H 电动平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "FBA0S 电动平衡重式叉车",
+   "brand": "中联重科",
+   "slots": {
+    "brand": "中联重科",
+    "series": "S系列",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "FBA0S 电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为S系列10吨电动平衡重叉车，属于平衡重式电动叉车。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202411/542308994136446869.html"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/FBA0S电动平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FBA0S 电动平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XVB18-K1-N3 鲲鹏系列电动平衡重叉车",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "鲲鹏系列",
+    "model_code": "XVB18-K1-N3",
+    "config": ""
+   },
+   "search_key": "XVB18-K1-N3 鲲鹏系列电动平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为鲲鹏系列电动平衡重叉车，额定起重量1800kg，符合平衡重式电动叉车方向。",
+   "sources": [
+    "https://www.xcmg.com/product/pro-detail-136230.htm"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "XVB18",
+   "identity": "generic/XVB18K1N3鲲鹏系列电动平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XVB18-K1-N3 鲲鹏系列电动平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "SCP100E 平衡重式叉车",
+   "brand": "三一",
+   "slots": {
+    "brand": "三一",
+    "series": "",
+    "model_code": "SCP100E",
+    "config": ""
+   },
+   "search_key": "SCP100E 平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果含电池品牌、额定电压、电量及驱动电机参数，可推断为电动平衡重式叉车。",
+   "sources": [
+    "https://m.sanygroup.com/product/1207.html"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "SCP100",
+   "identity": "code/SCP100E",
+   "identity_kind": "code",
+   "model_variants": [
+    "SCP100E 平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EFG-Vac22 四轮电动平衡重叉车",
+   "brand": "永恒力",
+   "slots": {
+    "brand": "永恒力",
+    "series": "",
+    "model_code": "EFG-Vac22",
+    "config": ""
+   },
+   "search_key": "EFG-Vac22 四轮电动平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果文本明确出现永恒力EFG-Vac22四轮电动平衡重叉车。",
+   "sources": [
+    "https://b2b.bjx.com.cn/Search/?t=hb&s=p&q=%e5%b9%b3%e8%a1%a1%e9%87%8d%e5%8f%89%e8%bd%a6"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": true,
+   "code_core": "VAC22",
+   "identity": "generic/EFGVAC22四轮电动平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EFG-Vac22 四轮电动平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EXBY-2.0T/DC(1.8) 防爆电动平衡重叉车",
+   "brand": "英鹏",
+   "slots": {
+    "brand": "英鹏",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "EXBY-2.0T/DC(1.8) 电动平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为英鹏1.8/2.0吨防爆电动平衡重叉车，型号为EXBY-2.0T/DC(1.8)。",
+   "sources": [
+    "https://b2b.bjx.com.cn/Search/?t=hb&s=p&q=%e5%b9%b3%e8%a1%a1%e9%87%8d%e5%8f%89%e8%bd%a6"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/EXBY20TDC防爆电动平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EXBY-2.0T/DC(1.8) 防爆电动平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "KBE-X3 锂电叉车",
+   "brand": "宝骊",
+   "slots": {
+    "brand": "宝骊",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "KBE-X3 锂电叉车",
+   "class_match": "unknown",
+   "reason": "结果文本提到宝骊主产平衡重式叉车、电动叉车，并列出KBE-X3等锂电叉车。",
+   "sources": [
+    "https://baike.baidu.com/item/%E5%AE%9D%E9%AA%8A%E5%8F%89%E8%BD%A6/9768044?bst=1790156908.ae98898333a114b6#1#1"
+   ],
+   "source_query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-model",
+   "dimension": "model",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/KBEX3锂电叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "KBE-X3 锂电叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-model",
+     "query": "叉车 平衡重式 车型 品牌 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "model"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "比亚迪 ECB50 平衡重式叉车",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "ECB",
+    "model_code": "ECB50",
+    "config": ""
+   },
+   "search_key": "比亚迪 ECB50 平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果提到ECB50平衡重式叉车，属于比亚迪仓储物流纯电产品。",
+   "sources": [
+    "http://m.find800.cn/index.php?&a=show&catid=46&typeid=13&id=125740"
+   ],
+   "source_query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ECB50",
+   "identity": "generic/比亚迪ECB50平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "比亚迪 ECB50 平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "比亚迪 ECB25 纯电动平衡重式叉车",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "ECB",
+    "model_code": "ECB25",
+    "config": ""
+   },
+   "search_key": "比亚迪 ECB25 纯电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果明确出现比亚迪纯电动平衡重式叉车ECB25，符合电动平衡重仓储场景。",
+   "sources": [
+    "http://m.find800.cn/index.php?&a=show&catid=46&typeid=13&id=125740"
+   ],
+   "source_query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": true,
+   "code_core": "ECB25",
+   "identity": "generic/比亚迪ECB25纯电动平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "比亚迪 ECB25 纯电动平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "Hubtex FLUX 电动多向平衡重叉车",
+   "brand": "Hubtex",
+   "slots": {
+    "brand": "Hubtex",
+    "series": "多向平衡重叉车",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "Hubtex FLUX 电动多向平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果称FLUX为新一代电动多向平衡重卡车/叉车，用于仓库物流与托盘搬运。",
+   "sources": [
+    "https://zh-cn.woodandpanel.com/%E6%9C%A8%E6%9D%90%E6%96%B0%E9%97%BB/%E5%88%8A%E6%96%87/hubtex-%E4%BC%98%E5%8C%96%E4%BB%93%E5%82%A8%E7%89%A9%E6%B5%81/"
+   ],
+   "source_query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-env",
+   "dimension": "environment",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/HUBTEXFLUX电动多向平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "Hubtex FLUX 电动多向平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-env",
+     "query": "仓储物流 平衡重式 卡车 车型 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "environment"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "7FB系列平衡重式电瓶叉车",
+   "brand": "丰田",
+   "slots": {
+    "brand": "丰田",
+    "series": "7FB",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "丰田 7FB 平衡重式电瓶叉车",
+   "class_match": "unknown",
+   "reason": "结果中明确列出丰田7FB系列平衡重式电瓶叉车，属于电动平衡重式叉车，符合仓储物流电动叉车方向。",
+   "sources": [
+    "https://www.forkliftnet.com/sell/list-12-57.html"
+   ],
+   "source_query": "叉车 平衡重式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/7FB系列平衡重式电瓶叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "7FB系列平衡重式电瓶叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 平衡重式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "XCB35-PWJ7/PWJ2-G 鲲鹏系列电动平衡重叉车",
+   "brand": "徐工",
+   "slots": {
+    "brand": "徐工",
+    "series": "鲲鹏系列",
+    "model_code": "XCB35-PWJ7/PWJ2-G",
+    "config": ""
+   },
+   "search_key": "徐工 XCB35-PWJ7/PWJ2-G 鲲鹏系列电动平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果中明确为徐工鲲鹏系列电动平衡重叉车，并提到广泛应用于物流等行业，与仓储物流电动平衡重叉车任务相符。",
+   "sources": [
+    "http://cc.lmjx.net/l/480/?p=18"
+   ],
+   "source_query": "叉车 平衡重式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-en",
+   "dimension": "english",
+   "verifiable": true,
+   "code_core": "XCB35",
+   "identity": "generic/XCB35PWJ7PWJ2G鲲鹏系列电动平衡重叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "XCB35-PWJ7/PWJ2-G 鲲鹏系列电动平衡重叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-en",
+     "query": "叉车 平衡重式 truck brands -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "english"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EL25",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "",
+    "model_code": "EL25",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL25 四支点平衡重电动叉车",
+   "class_match": "unknown",
+   "reason": "结果明确为2.5吨四支点平衡重电动叉车，四轮底盘，适配仓储库房堆垛与转运，符合仓储物流和平衡重式电动叉车要求。",
+   "sources": [
+    "https://www.bydfork.com/cn/forklift/el25"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EL25",
+   "identity": "generic/EL25",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL25"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EL30 PRO",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL-PRO",
+    "model_code": "EL30 PRO",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL30 PRO 锂电电动叉车",
+   "class_match": "unknown",
+   "reason": "结果为3.0吨锂电电动叉车，属于中小吨位平衡重电动叉车，适合仓储物流常规货物搬运。",
+   "sources": [
+    "https://www.bydfork.com/cn/product/bydforklift/"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EL30",
+   "identity": "generic/EL30PRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL30 PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EL40M-PRO",
+   "brand": "比亚迪",
+   "slots": {
+    "brand": "比亚迪",
+    "series": "EL-PRO",
+    "model_code": "EL40M-PRO",
+    "config": ""
+   },
+   "search_key": "比亚迪 EL40M-PRO 电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为4.0吨电动平衡重式叉车，定位高效节能、稳定安全，可用于较重货物仓储转运。",
+   "sources": [
+    "https://www.bydfork.com/cn/product/bydforklift/"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "EL40",
+   "identity": "generic/EL40MPRO",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EL40M-PRO"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CPD20/25/30/35/38",
+   "brand": "诺力",
+   "slots": {
+    "brand": "诺力",
+    "series": "A系列",
+    "model_code": "CPD20/25/30/35/38",
+    "config": ""
+   },
+   "search_key": "诺力 CPD20 四支点锂电平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果列出A系列四支点锂电平衡重叉车，覆盖2.0/2.5/3.0/3.5/3.8吨，适合仓储物流多吨位选型。",
+   "sources": [
+    "https://www.noblelift.cn/product/pro-list-88-111.htm"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CPD20",
+   "identity": "generic/CPD2025303538",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD20/25/30/35/38"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "J1.50EX-2.50EX",
+   "brand": "Hyster",
+   "slots": {
+    "brand": "Hyster",
+    "series": "",
+    "model_code": "J1.50EX-2.50EX",
+    "config": ""
+   },
+   "search_key": "Hyster J1.50EX-2.50EX 四轮电动平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为四轮电动平衡重式叉车，承载1500-2500千克，四轮结构符合平衡重式仓储搬运场景。",
+   "sources": [
+    "https://www.hyster.com/zh-cn/china/%E5%9B%9B%E8%BD%AE%E7%94%B5%E5%8A%A8%E5%8F%89%E8%BD%A6/j1.50-2.50ex/"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "J1.50",
+   "identity": "generic/J150EX250EX",
+   "identity_kind": "generic",
+   "model_variants": [
+    "J1.50EX-2.50EX"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "EFX2-251",
+   "brand": "EP Equipment",
+   "slots": {
+    "brand": "EP Equipment",
+    "series": "",
+    "model_code": "",
+    "config": ""
+   },
+   "search_key": "EP EFX2-251 锂离子平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为2.5吨锂离子平衡重式叉车，适用于室内与室外工况，符合仓储物流电动平衡重叉车需求。",
+   "sources": [
+    "https://ep-equipment.com/cn/product/efx2-251/#brx-content"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": false,
+   "code_core": "",
+   "identity": "generic/EFX2251",
+   "identity_kind": "generic",
+   "model_variants": [
+    "EFX2-251"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "CPD20-FS",
+   "brand": "柳工",
+   "slots": {
+    "brand": "柳工",
+    "series": "F系列",
+    "model_code": "CPD20-FS",
+    "config": ""
+   },
+   "search_key": "柳工 CPD20-FS 锂电平衡重叉车",
+   "class_match": "unknown",
+   "reason": "结果为F系列锂电平衡重叉车，轴距短、重心低、转向灵活，专为室内狭窄作业工况设计，适配仓储物流。",
+   "sources": [
+    "https://www.mei.net.cn/gcjx/202409/530286777248814997.html"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "CPD20",
+   "identity": "generic/CPD20FS",
+   "identity_kind": "generic",
+   "model_variants": [
+    "CPD20-FS"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "E2530A",
+   "brand": "加力",
+   "slots": {
+    "brand": "加力",
+    "series": "",
+    "model_code": "E2530A",
+    "config": ""
+   },
+   "search_key": "加力 E2530A 座驾式平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为座驾式平衡重式电动叉车，载荷2.5吨，适用于运输/仓储及零售物流场景。",
+   "sources": [
+    "https://www.vipmro.com/product/82125883"
+   ],
+   "source_query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-exact",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "E2530",
+   "identity": "code/E2530A",
+   "identity_kind": "code",
+   "model_variants": [
+    "E2530A"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-exact",
+     "query": "电动叉车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  },
+  {
+   "model": "FE4P16-35N-N系列平衡重式叉车",
+   "brand": "诺力",
+   "slots": {
+    "brand": "诺力",
+    "series": "FE4P16-35N-N",
+    "model_code": "FE4P16-35N",
+    "config": ""
+   },
+   "search_key": "FE4P16-35N-N系列平衡重式叉车",
+   "class_match": "unknown",
+   "reason": "结果为诺力N系列平衡重式叉车，含FE4P16N等型号，属于电动平衡重式叉车产品线。",
+   "sources": [
+    "https://www.noblelift.cn/product/pro-detail-277.htm"
+   ],
+   "source_query": "仓储物流 工程车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\"",
+   "source_query_id": "q-unit-u-env",
+   "dimension": "unit",
+   "verifiable": true,
+   "code_core": "FE4P16",
+   "identity": "generic/FE4P1635NN系列平衡重式叉车",
+   "identity_kind": "generic",
+   "model_variants": [
+    "FE4P16-35N-N系列平衡重式叉车"
+   ],
+   "source_queries": [
+    {
+     "query_id": "q-unit-u-env",
+     "query": "仓储物流 工程车 平衡重式 -\"客车\" -\"SUV\" -\"房车\" -\"多车拼图\""
+    }
+   ],
+   "dimensions": [
+    "unit"
+   ],
+   "source_count": 1
+  }
+ ],
+ "topup": {
+  "enabled": 2,
+  "queries": 0,
+  "kept": 0,
+  "candidates_before": 27
+ },
+ "pool": {
+  "count": 27,
+  "required": 16,
+  "verifiable": 19,
+  "verifiable_share": 0.704,
+  "slots": 6,
+  "backup": 4,
+  "per_query": 8,
+  "limit": 36,
+  "ok": true,
+  "warning": ""
+ },
+ "coverage": {
+  "dimensions": {
+   "base": {
+    "queries": 1,
+    "candidates": 6
+   },
+   "model": {
+    "queries": 1,
+    "candidates": 7
+   },
+   "environment": {
+    "queries": 1,
+    "candidates": 3
+   },
+   "english": {
+    "queries": 1,
+    "candidates": 2
+   },
+   "unit": {
+    "queries": 2,
+    "candidates": 11
+   }
+  },
+  "missing": [],
+  "international_covered": false,
+  "queries": 6,
+  "candidates": 27,
+  "slots": 6,
+  "pool_shortfall": 0
+ },
+ "offclass": {
+  "enabled": false,
+  "dropped": 0,
+  "unknown": 0,
+  "samples": []
+ },
+ "dedupe": {
+  "input": 38,
+  "unique": 27,
+  "removed": 11,
+  "generic": 25
+ },
+ "dropped_without_valid_source": 0,
+ "dropped_invalid_sources": 1
+}

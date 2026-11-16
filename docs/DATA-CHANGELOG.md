@@ -5,7 +5,7 @@
 
 ## 2026-11-16
 
-### 61. L2 5-case live 验收（2026-11-16）
+### 61. Session 5-case live 验收（M5 前，2026-11-16）
 
 - 隔离：5 份**新** brief（`m43e-*`）+ 5 份**新** plan（`m43e/*`）+ 全新 run/session；
   不复用 m43 历史 run；每 case 独立目录，跑前删除同名目录。
@@ -24,11 +24,11 @@
   fetch.filters.quality / delivery.report。
 - 修了两处验收中暴露的问题：`再+加` 转换后 target 重复（会重复 fill.quota）；
   “高清/水印”被误判成交付编辑（现在画质类表述不再触发删除/替换）。
-- 仍未做：首轮建单（M6）、交付后编辑的引擎侧效果、报告/PPT 生成（按产品决定放 L3 前）。
+- 仍未做：首轮建单（M6）、交付后编辑的引擎侧效果、报告/PPT 生成（按产品决定放 M6 前）。
 - 产物：`data-test/runs/l2e-*`、`data-test/sessions/l2e-*.json`、
   `data-test/evals/l2-acceptance-20261116.json`、`scripts/eval_l2_acceptance.py`。
 
-### 60. L2 live 5 轮：10/10、5/5 意图、applied 2（2026-11-16）
+### 60. Session live 5 轮：10/10、5/5 意图、applied 2（2026-11-16）
 
 - 脚本：`data-test/sessions/l2-live5.jsonl`（跳过首轮建单；在第 1/2/3 个 FETCH 边界插
   fill.quota / plan.negative / quality，最后 delivery.report）。
@@ -40,7 +40,7 @@
   报告/PPT 只记偏好、未生成文件；HF 模型下载会因网络中断（需 `HF_HUB_OFFLINE=1` 或重试）。
 - 产物：`data-test/runs/l2-live-c1-v{3,4}/`、`data-test/sessions/l2-live-c1-v{3,4}.json`。
 
-### 59. L2 第二轮：5/5 意图（2026-11-16）
+### 59. Session 模拟第二轮：5/5 意图（2026-11-16）
 
 - 修复三处后复跑同一份用户脚本（5 轮）：
   1. `delivery.report` 动作（出报告/PPT）进 ACTIONS + 白名单，交付意图不再 clarify；
@@ -50,7 +50,7 @@
   fetch.filters.quality / delivery.report；`session_runner` 测试 **6/6**。
 - 仍未解决：首轮建单（M6）；交付后资产编辑的引擎侧效果；报告/PPT 只记录意图、未生成文件。
 
-### 58. L2 用户模拟第一轮（2026-11-16）
+### 58. Session 用户模拟第一轮（2026-11-16）
 
 - 方法：子代理**盲写** 6 轮“真实用户”脚本（含错字/模糊反馈），主体用 `run_session.py --script`
   回放；离线（rules）与 live（LLM router）各跑一次。
@@ -68,7 +68,7 @@
 - 产物：`data-test/sessions/l2-user-script.jsonl`（盲写）、`l2-interleaved.jsonl`（回放动作）、
   `l2-intents.jsonl`、`l2-offline.json`、`l2-intents.json`；失败的 live 目录已删除，不入账。
 
-### 57. L1 Session 入口（原型）：SessionRunner + run_session CLI（2026-11-16）
+### 57. Session 入口原型（M4.3 后）：SessionRunner + run_session CLI（2026-11-16）
 
 - 新模块 `src/equiplens/session_runner.py`：Session 外层驱动（引擎 step / 状态边界应用 patch /
   session JSON 持久化 / 崩溃续跑 / 交付回填）。
@@ -143,7 +143,7 @@
     `planning.negative_terms`（用户排除项优先）+ 回归测试；重跑后 query 含 `-"北奔"`。
 - `v-brand` 真跑（8 槽）：**7/8 交付、missing 1、degraded 4、state FAILED**；7 台里 3 台陕汽系
   （通力 STL5250TSM、德龙 X3000 ×2）→ 品牌约束生效；缺 1 台是 **plan 池 7 < 需求 20**，
-  归 D2 池供给，不是接线 bug。
+  归台账 S1-05 池供给（A6/A2），不是接线 bug。
 - 指纹：`summary.config` 新增 `session_patches`（生产必须 0）与 `s0_mechanism/s0_version`（CLI 落盘）。
 - 产物：`data-test/briefs/m43v/`、`data-test/plans/m43v-*`（gitignored）、
   `data-test/runs/m43v-v-brand/`、`data-test/evals/m43v-v-brand.json`。

@@ -3,7 +3,7 @@
 | 属性 | 内容 |
 |---|---|
 | 更新日期 | **2026-11-16** |
-| 当前阶段 | **S0-05 原型（S4 planned）；M4.3 接线 + 5 case A/B 通过（2026-11-16）**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
+| 当前阶段 | **S0-05 原型（S4 planned）；M4.3 接线 + 5 case A/B 通过、Session 入口 5-case 验收通过（2026-11-16）**。整体框架以 `docs/CURRENT-ARCHITECTURE.md` 为准。 |
 | 用途 | 新会话 / 新成员 / 换电脑从此接续，不必重读全部讨论历史 |
 | 最新提交 | 见 `git log -1`（本文件不锁 commit）；完整测试报告 `docs/fulltest-report-20261114.md`（历史）。 |
 | 工作树提醒 | 2026-11-15：已 push 到 `origin/main`；仅未跟踪 PDF/promo 文件，无未提交源码。 |
@@ -36,7 +36,7 @@
   5. 通过后才把 S4 从 `planned` 改 `active`，更新 `STAGES.md`。
 - **待办**：BL-006 扩大测试（holdout 100+、真实话术）；BL-001 库默认切 TaskSpec；
   BL-002 S1/S2 legacy 标注；BL-010 TaskSpec 字段接线（P0 是首次交付硬门槛）。
-- **L1 Session 入口（2026-11-16）**：`session_runner.py` + `scripts/run_session.py`；
+- **Session 入口原型（M4.3 后，2026-11-16）**：`session_runner.py` + `scripts/run_session.py`；
   offline 4/4、live c1 10/10、pending patch 持久化、崩溃续跑；S4 仍 planned。
 - **M4.3 完成（2026-11-16）**：patch → 引擎接线 + 5 case A/B（新建 brief/plan 统一基线）。
   - 接线：`engine.apply_patches` + `session.apply_to_brief`；views/parts/quality 写 brief、

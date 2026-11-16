@@ -13,7 +13,7 @@
 | **S1 第一段检索** | active | p8-idmatch | `planning.build_query_plan`、`scripts/plan_candidates.py`、`scripts/rank_plan.py`（intent N+4） | — |
 | **S2 第二段检索** | active | p8-idmatch | `retrieval_engine/web.py`、`gate.py`、`identity.py` | — |
 | **S3 交付验收** | active | manifest-v1 | `scripts/build_delivery_manifest.py` | — |
-| **S4 Loop / 反馈 / 记忆** | planned | session-v0 | 未实现 | — |
+| **S4 Loop / 反馈 / 记忆** | planned | session-v0 | 原型已有（Session/Router + 入口），未接生产入口（M6） | — |
 | **S5 产品/工程** | n/a | — | 不驱动代码 | — |
 
 ## 2. S0 正式链路
