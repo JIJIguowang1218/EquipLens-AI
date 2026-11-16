@@ -236,6 +236,25 @@ def test_hard_action_gated_in_runner():
         assert r.summary()["gated_actions"] == 1, r.summary()
 
 
+def test_delta_replace_fetches_new_asset():
+    b = TE.base_brief(parts=("bumper",), slots=1)
+    world = FakeWorld(world_for())
+    with tempfile.TemporaryDirectory() as td:
+        r = SessionRunner(b, world, run_root=td, run_id="s12", store_path=Path(td) / "s.json")
+        r.run()
+        assert len([x for x in r.session.delivered if x.get("status") == "active"]) == 1
+        # 第二轮抓取时多给一张新图（模拟 delta 源）
+        a2 = TE.asset("a2")
+        a2["url"] = "https://example.test/a2.jpg"
+        world.data["assets"]["t1"]["bumper"].append(a2)
+        world.data["verify"]["a2"] = TE.ok()
+        out = r.delta_edit(1, "replace")
+        assert out["ok"] and out["added"] == 1, out
+        active = [x for x in r.session.delivered if x.get("status") == "active"]
+        assert len(active) == 1 and active[0]["asset_id"] == "a2", active
+        assert any(x.get("status") == "superseded" for x in r.session.delivered)
+
+
 if __name__ == "__main__":
     for name, fn in [(k, v) for k, v in sorted(globals().items())
                      if k.startswith("test_") and callable(v)]:

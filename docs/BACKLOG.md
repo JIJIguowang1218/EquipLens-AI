@@ -21,6 +21,7 @@
 | **BL-020** | 低置信/兜底反馈闭环：记录 proposal+用户二次反馈→人工判定→案例库→相似 few-shot 检索；定期复盘机制漏洞 | pending | 不训练小模型；先做数据闭环与检索增强的离线 A/B |
 | **BL-021** | 分层模型路由评估（小模型/规则/LLM 级联） | pending | 当前单 LLM + 守卫；低 QPS/高模糊，暂不必要；触发条件=QPS/成本/延迟或意图分布稳定后 |
 | **BL-025** | S4 hard 动作 no-op：先 gate 为 clarify/explain | **done** | 2026-11-17：`Session.interrupt` 已 gate 5 个动作，返回 clarify + 选项，不产 patch；`gated_action` 事件/`gated_actions` 计数已记 |
+| **BL-027** | delta 编辑的新图源：fetch-more（换查询/翻页/新来源），否则 live 换图 added=0 | pending | 2026-11-17 live c1e 实测；机制已通，源未通；对应 BC-S4-017 |
 | **BL-026** | hard 动作真实重排/重跑（quantity/config/scope/reset/pause） | **待后续版本开发** | gate 已完成；真实执行需重建 plan/engine，放 delta 之后；对应 BC-S4-016 的后续 |
 | **BL-024** | 角度/部件补充（主交付后剩余预算 delta） | **待后续版本开发** | 2026-11-17 产品决定：当前版本不保留角度/部件要求，识别为澄清并建议“多找几张这辆车”；已在 `stages.json` S4 `planned_extensions` 登记 |
 | **BL-023** | 低置信日志 + 案例库 + few-shot 离线 A/B（先记录、后改行为） | pending | P3 后推荐：记录 proposal/confidence/用户二次反馈→人工判定→检索相似案例；先离线 A/B，确认增益后再接 prompt；训练仍走 BL-022 |

@@ -139,3 +139,12 @@
 - **证据**：`engine.apply_patches` 只有 views/parts/quality/fill.quota/quantity_per_model/
   negative/add_targets；`session_runner.py` 无 pause/reset 处理。
 - **下一步**：delta 前先 gate 为 clarify/explain，或实现重排/重跑；不能继续静默记录。
+
+## BC-S4-017（delta 换图 live 拿不到新图）
+
+- **状态**：open（BL-027）
+- **触发**：`l2e-c1e` 交付后 `--delta replace --seq 1`
+- **期望**：替换第 1 张，active 仍 10；**实际**：`added=0`，提示“没有找到可替换的新图”。
+- **根因**：`world.fetch(target, part)` 对同一 target 重复调用返回同一批资产（缓存/同一查询），
+  delta 没有“新图源/新查询/page2”能力。
+- **下一步**：实现 fetch-more（换查询词/翻页/加来源），再做 3-case live 验收。

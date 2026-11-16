@@ -165,6 +165,46 @@ class SessionRunner:
         self.save()
         return self.status()
 
+    def delta_edit(self, seq: int, kind: str = "replace", max_steps: int = 60) -> dict:
+        """交付后编辑：标旧图 superseded，重开引擎只抓该 target，合并新图。
+
+        kind: replace（换图）/ remove（删除并补齐）。没有新图时保留 pending_replenish。
+        """
+        d = next((x for x in self.session.delivered if int(x.get("seq") or 0) == int(seq)), None)
+        if not d:
+            return {"ok": False, "error": f"no_delivered_seq:{seq}"}
+        tid = d.get("target") or ""
+        target = "delivered.replace" if kind == "replace" else "delivered.remove"
+        self.session.interrupt(f"第{seq}张{kind}", msg_id=f"delta-{kind}-{seq}",
+                               result={"targets": [target], "asset_index": int(seq),
+                                       "destructive": True, "confirm": False,
+                                       "hard": False, "confidence": 0.9},
+                               stage="delivered")
+        self.session.apply_pending()
+        if not tid:
+            self.save()
+            return {"ok": False, "error": "no_target", "seq": seq}
+        self.engine.reopen(self.state, [tid])
+        steps = 0
+        while not self.state.get("finished") and steps < max_steps:
+            self.state = self.engine.step(self.state)
+            steps += 1
+        active = {self.session.asset_key(x) for x in self.session.delivered
+                  if x.get("status") == "active"}
+        seen_ids = {x.get("asset_id") for x in self.session.delivered}
+        new = [a for a in self._delivered_assets()
+               if a.get("target") == tid and a.get("asset_id") not in seen_ids
+               and self.session.asset_key(a) not in active]
+        added = self.session.deliver(new)["added"] if new else []
+        self.save()
+        if new:
+            self.session.preferences["pending_replenish"] = max(
+                0, int(self.session.preferences.get("pending_replenish") or 0) - 1)
+        return {"ok": True, "seq": seq, "kind": kind, "target": tid,
+                "steps": steps, "added": len(added),
+                "replenished": bool(new),
+                "message": "" if new else "没有找到可替换的新图，已保留补齐标记"}
+
     def run_until(self, state_name: str, max_steps: int = 80,
                   require_targets: bool = False) -> dict:
         """推进引擎直到到达某个状态（默认要求有 target 的 FETCH），用于多轮模拟。"""

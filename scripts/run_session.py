@@ -85,6 +85,9 @@ def main(argv=None) -> int:
     ap.add_argument("--message", action="append", default=[], help="可重复：逐条追加用户消息")
     ap.add_argument("--confirm", action="store_true")
     ap.add_argument("--reject", action="store_true")
+    ap.add_argument("--delta", choices=["replace", "remove"], default="",
+                    help="交付后 delta 编辑（配合 --seq）")
+    ap.add_argument("--seq", type=int, default=0, help="delta 编辑的交付序号")
     ap.add_argument("--run", action="store_true", help="驱动引擎直到结束")
     ap.add_argument("--status", action="store_true")
     ap.add_argument("--max-steps", type=int, default=240)
@@ -135,6 +138,14 @@ def main(argv=None) -> int:
                                run_id=args.run_id or None,
                                store_path=session_path, router=router,
                                router_name=args.router)
+
+    if args.delta:
+        if not args.seq:
+            ap.error("--delta 需要 --seq")
+        out = runner.delta_edit(args.seq, args.delta)
+        print(json.dumps(out, ensure_ascii=False))
+        runner.save()
+        return 0
 
     run_id = runner.run_id if not args.run_id else args.run_id
     if not created:

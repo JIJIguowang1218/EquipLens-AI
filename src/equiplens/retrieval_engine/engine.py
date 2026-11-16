@@ -304,6 +304,16 @@ class RetrievalEngine:
                                        if t.get("source") == "library"]
         state["state"] = "FETCH"
 
+    def reopen(self, state: dict, targets: list[str]) -> dict:
+        """交付后 delta：把已完成的 run 重新打开到 FETCH，只抓指定 target。"""
+        state["finished"] = False
+        state["final_state"] = state.get("state")
+        state["state"] = "FETCH"
+        state["active_targets"] = list(dict.fromkeys(targets))
+        for tid in state["active_targets"]:
+            state.setdefault("attempts", {})[tid] = {"fetched": False}
+        return state
+
     def _state_fetch(self, state: dict) -> None:
         # 去重键 = (asset, part)：一张整车图可以同时是 bumper / step / side_guard 的证据；
         # 旧实现按 asset_id 全局去重，导致后面的部件永远拿不到资产（M1 loop 实测 0/2）。

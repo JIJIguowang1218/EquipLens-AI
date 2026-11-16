@@ -51,6 +51,7 @@
 | [BC-S4-012](S4-router.md#bc-s4-012) | S4 | 暂停+附带修改只出暂停 | open |
 | [BC-S4-013](S4-router.md#bc-s4-013) | S4 | 构型+排除复合漏项 | open |
 | [BC-S4-014](S4-router.md#bc-s4-014) | S4 | 部件召回：吊臂特写 | open |
+| [BC-S4-017](S4-router.md#bc-s4-017) | S4 | delta 换图 live 拿不到新图 | open |
 | [BC-S4-016](S4-router.md#bc-s4-016) | S4 | hard 动作只记录、不执行 | open |
 | [BC-S4-015](S4-router.md#bc-s4-015) | S4 | 身份错但未指哪张 | product-decision |
 | [BC-S4-010](S4-router.md#bc-s4-010) | S4 | 构型替换+补型号未拆全（#17） | open |
